@@ -1,4 +1,3 @@
-local rules = viber.load("lib/rules.lua")
 -- lib/fsm.lua: máquina wander↔chase partilhada dos inimigos/bosses.
 -- Fatorada dos ~11 scripts que tinham o MESMO bloco copiado (steering,
 -- anti-stuck, aggro-window, cadência de ataque) — a engine provê os blocos
@@ -68,6 +67,11 @@ local rules = viber.load("lib/rules.lua")
 local M = {}
 
 local rules = viber.load("lib/rules.lua")
+
+-- Marca da sessão da VM: `viber.game().enemies` não é persistido, mas um
+-- registo pode sobreviver a um `load` dentro da mesma VM. Só um registo da
+-- MESMA sessão conserva o HP através de uma pausa de menu/LOD.
+local SESSION = tostring(viber.time()) .. ":" .. tostring(math.random(100000, 999999))
 
 -- Folga de alcance no impacto (m): o golpe apanha quem estava colado e deu
 -- meio passo; quem recua a sério ou dá dash sai.
@@ -256,15 +260,18 @@ function M.new(cfg)
       viber.shake(0.16)
       viber.sound("hit")
       if dist2(px, pz, st.ax, st.az) <= r and math.abs(py - y) <= REACH_VERTICAL + 1.0 then
-        rules.damage_player(dmg(st) * (sp.mult or 1.6))
-        if sp.on_hit then sp.on_hit() end
+        -- `on_hit` só quando o dano ENTRA: um parry/i-frame não envenena.
+        if rules.damage_player(dmg(st) * (sp.mult or 1.6)) and sp.on_hit then
+          sp.on_hit()
+        end
       else
         viber.damage_number("ESQUIVA", { color = "#9fd8ff", x = px, y = py + 2.0, z = pz })
       end
     else
       if dist2(px, pz, x, z) <= cfg.range + REACH_SLACK and math.abs(py - y) <= REACH_VERTICAL then
-        rules.damage_player(dmg(st))
-        if cfg.on_attack then cfg.on_attack() end
+        if rules.damage_player(dmg(st)) and cfg.on_attack then
+          cfg.on_attack()
+        end
       else
         viber.sound("whoosh")
         viber.damage_number("ESQUIVA", { color = "#9fd8ff", x = px, y = py + 2.0, z = pz })
@@ -328,17 +335,32 @@ function M.new(cfg)
       cfg.on_first()
     end
     local has, px, _, pz = viber.player_position()
-    if not has then return end
+    local id = viber.self_id()
+    -- O registo vivo não pode envelhecer durante uma pausa (menu, cinemática,
+    -- LOD): `M.hostiles` só lista entradas com `t` fresco e a recriação
+    -- devolvia HP cheio a um inimigo já ferido.
+    local function touch_registry()
+      if not id then return end
+      local enemies = viber.game().enemies or {}
+      local e = enemies[id]
+      if e then e.t = viber.time() end
+    end
+    if not has then
+      touch_registry()
+      return
+    end
     -- Cinemática a tocar: o mundo suspende a respiração — ninguém ataca nem
     -- persegue; quem estava a armar um golpe larga-o e encara o herói.
     if viber.cinematic_playing() then
       st.phase = nil
       viber.face_player()
+      touch_registry()
       return
     end
     -- Mapa, diário, loja: o golpe que já estava armado não aterra por baixo.
     if viber.menu_open() then
       st.phase = nil
+      touch_registry()
       return
     end
     local x, _, z = viber.position()
@@ -351,18 +373,18 @@ function M.new(cfg)
     end
 
     local py = select(2, viber.position())
-    local id = viber.self_id()
     local g = viber.game()
     g.enemies = g.enemies or {}
     local now = viber.time()
     local entry = id and g.enemies[id] or nil
-    -- Save/restart deixa registos velhos: `t` no futuro ou há demasiado tempo.
+    -- Save/restart deixa registos de OUTRA sessão. Uma pausa longa da MESMA
+    -- sessão (menu, LOD) conserva o HP em vez de recriar a criatura cheia.
     local stale = entry ~= nil
-      and (entry.t == nil or entry.t > now + 1.0 or (now - entry.t) > 5.0)
+      and (entry.t == nil or entry.t > now + 1.0 or entry.session ~= SESSION)
     if entry == nil or stale then
       entry = {
         kind = cfg.kind, hp = cfg.hp, max = cfg.hp, boss = cfg.boss,
-        x = x, y = py, z = z, fx = 0, fz = 1, t = viber.time(),
+        x = x, y = py, z = z, t = now, session = SESSION,
       }
       st.hp, st.max_hp = entry.hp, entry.max
       if id then g.enemies[id] = entry end
@@ -382,10 +404,11 @@ function M.new(cfg)
       end
     end
     -- O registro é a fonte da verdade: o melee do jogador escreve `entry.hp`.
-    st.hp, st.max_hp = entry.hp, entry.max
+    -- `react_to_damage` compara com o `st.hp` anterior; sobrescrevê-lo aqui
+    -- fazia `lost` ser sempre 0 (sem flinch, sem poise, sem aggro).
     entry.kind, entry.boss = cfg.kind, cfg.boss
     entry.x, entry.y, entry.z = x, py, z
-    entry.fx, entry.fz = (st.hx or 0), (st.hz or 1)
+    entry.fx, entry.fz = st.hx, st.hz
     entry.t = viber.time()
     if entry.hp <= 0 then
       if not st.dead then
@@ -432,7 +455,9 @@ function M.new(cfg)
     end
 
     if tick_phase(st, dt) then
-      if ok and st.state == "chase" then boss_bar(st, hp, max) end
+      -- `ok/hp/max` eram restos do antigo `viber.entity_hp()`: `ok` era nil
+      -- e a barra de chefe nunca era publicada.
+      if st.state == "chase" then boss_bar(st, entry.hp, entry.max) end
       return
     end
 
@@ -463,8 +488,11 @@ function M.new(cfg)
     st.pstate = st.state
 
     if st.state == "chase" then
-      if ok then boss_bar(st, hp, max) end
+      boss_bar(st, entry.hp, entry.max)
       local rg = cfg.ranged
+      -- Fora da banda de tiro o arqueiro não está encurralado: sem isto um
+      -- `flee_t` antigo fazia-o lutar corpo a corpo ao voltar ao alcance.
+      if not rg or dist > rg.range then st.flee_t = 0 end
       if rg and dist <= rg.range then
         -- Atirador: abaixo de `min` recua (a arma de perto só sai encurralado —
         -- colado ao herói há mais de 1,5 s); entre `min` e `range` dispara.
@@ -515,6 +543,8 @@ function M.new(cfg)
           if st.stuck > 6 then
             pick_target(st)
             st.stuck, st.last_td = 0, nil
+            -- `pick_target` deixa `target` nil se as 6 amostras falharem.
+            if st.target == nil then return end
           end
         else
           st.stuck = 0
