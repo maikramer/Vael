@@ -79,8 +79,9 @@
   <Entity name="interior.house_c.wooden.crate-2" translation="-7.8 0 -3" transform="rotation: 0 12 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base">
     <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
   </Entity>
-  <Entity name="interior.house_c.cook" translation="-1.4 0 3.4" transform="rotation: 0 180 0" script="townsfolk.lua" prop-banter="“Mais lenha para o forno e o pão sai.”|“Fome? Volta daqui a pouco.”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
+  <Entity name="interior.house_c.cook" translation="-1.4 0 3.4" transform="rotation: 0 180 0" script="townsfolk.lua" prop-dialogue_id="house_c_cook" prop-banter="“Mais lenha para o forno e o pão sai.”|“Fome? Volta daqui a pouco.”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
     <GltfScene url="/assets/meshes/characters/npc_cook_lod0.glb" />
+    <DialogueNPC dialogue-id="house_c_cook" portrait-url="" voice-sfx="" marker-height="2.5" />
   </Entity>
   <Entity name="interior.house_c.bard" translation="3.4 0 -3" transform="rotation: 0 40 0" script="townsfolk.lua" prop-banter="“Queres ouvir a balada da ponte norte?”|“Uma moeda por uma canção!”" prop-interact_range="3" prop-radius="1.6" prop-speed="0.6" prop-talk_range="3">
     <GltfScene url="/assets/meshes/characters/npc_bard_lod0.glb" />

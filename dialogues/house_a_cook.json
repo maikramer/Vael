@@ -1,0 +1,51 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Tomas",
+      "text": "@house_a_cook.start",
+      "choices": [
+        { "text": "Onde apanhaste o javali?", "goto": "javali" },
+        { "text": "Os lobos dão trabalho?", "goto": "lobos" },
+        { "text": "Quem é que come aqui?", "goto": "comensais" },
+        { "text": "Bom apetite.", "goto": "adeus" }
+      ]
+    },
+    "javali": {
+      "speaker": "Tomas",
+      "text": "No bosque, antes do sol nascer. Depois disso, quem manda lá é outra gente. Javali de manhã, lobo ao meio-dia, sombra à noite.",
+      "choices": [
+        { "text": "Sombra?", "goto": "sombra" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "sombra": {
+      "speaker": "Tomas",
+      "text": "É o que os caçadores chamam àquilo que não deixa rasto. Eu chamo-lhe motivo para voltar antes do escuro.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "lobos": {
+      "speaker": "Tomas",
+      "text": "Dão. Comem o gado do Hald e depois vêm cheirar a horta. Se ele te pedir ajuda, vai — o homem não dorme há uma semana.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "comensais": {
+      "speaker": "Tomas",
+      "text": "Viajantes, pastores, o guarda da praça. Gente que trabalha e não faz perguntas. Gosto assim.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "adeus": {
+      "speaker": "Tomas",
+      "text": "Bom apetite, forasteiro. E não toques no tacho.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    }
+  }
+}

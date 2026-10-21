@@ -1,0 +1,67 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Mestre Orin",
+      "text": "Shh. Estou a ler. …Pronto, perdeste-me o parágrafo. O que queres?",
+      "choices": [
+        { "text": "O que andas a ler?", "goto": "mapas" },
+        { "text": "Falas da cidadela a oeste?", "goto": "cidadela" },
+        { "text": "E os cristais do leste?", "goto": "cristais" },
+        { "text": "Desculpa. Até logo.", "goto": "adeus" }
+      ]
+    },
+    "mapas": {
+      "speaker": "Mestre Orin",
+      "text": "Mapas antigos. Nenhum concorda com o outro, o que é ótimo sinal: os mapas que concordam foram copiados por quem nunca saiu da aldeia.",
+      "choices": [
+        { "text": "E qual parece mais certo?", "goto": "mapa_certo" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "mapa_certo": {
+      "speaker": "Mestre Orin",
+      "text": "O que tem a mancha de vinho. Quem desenhava a beber não estava a inventar caminhos para impressionar reis.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "cidadela": {
+      "speaker": "Mestre Orin",
+      "text": "A oeste, para lá do campo de batalha. As muralhas caíram por dentro, não por fora — isso está escrito em três sítios e nenhum explica como.",
+      "choices": [
+        { "text": "Há sombras por lá?", "goto": "sombras" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "sombras": {
+      "speaker": "Mestre Orin",
+      "text": "Há. E não gostam de perguntas. Se vais, leva aço e não leves esperança — a esperança faz barulho.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "cristais": {
+      "speaker": "Mestre Orin",
+      "text": "Brilham à noite, sim. E cantam quando se partem. Já pedi a três pessoas para trazerem um pedaço e todas voltaram com a mesma história: o cristal não quis.",
+      "choices": [
+        { "text": "Não quis?", "goto": "nao_quis" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "nao_quis": {
+      "speaker": "Mestre Orin",
+      "text": "Exatamente. Eu também não percebo. É por isso que ainda estou aqui a ler.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "adeus": {
+      "speaker": "Mestre Orin",
+      "text": "Fecha a porta devagar. E não me mexas nos livros.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    }
+  }
+}

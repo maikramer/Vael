@@ -1,0 +1,67 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Alda",
+      "text": "@house_c_cook.start",
+      "choices": [
+        { "text": "Que pão fazes?", "goto": "pao" },
+        { "text": "De onde vem a lenha?", "goto": "lenha" },
+        { "text": "O forno é antigo?", "goto": "forno" },
+        { "text": "Fico para depois. Até logo.", "goto": "adeus" }
+      ]
+    },
+    "pao": {
+      "speaker": "Alda",
+      "text": "Centeio, com uma crosta que aguenta a estrada. O pão branco é para os dias de festa. Ultimamente não há muitos.",
+      "choices": [
+        { "text": "Por causa do Coro?", "goto": "coro" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "coro": {
+      "speaker": "Alda",
+      "text": "Por causa de tudo. Sem o Coro, o Vale anda nervoso, e gente nervosa come mais e ri menos.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "lenha": {
+      "speaker": "Alda",
+      "text": "Do bosque, cortada por quem tem braços e juízo. Se vais lá, leva machado — e volta antes de escurecer.",
+      "choices": [
+        { "text": "Há lobos?", "goto": "lobos" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "lobos": {
+      "speaker": "Alda",
+      "text": "Há. E agora andam em matilha. O Hald sabe mais do que eu, mas o Hald também já não dorme.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "forno": {
+      "speaker": "Alda",
+      "text": "Antigo como a vila. A pedra já sabe o que fazer — eu só a acordo. Dizem que foi construído com pedra da cidadela caída.",
+      "choices": [
+        { "text": "Da cidadela a oeste?", "goto": "cidadela" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "cidadela": {
+      "speaker": "Alda",
+      "text": "Dizem. Eu não vou lá ver. Pão não se faz com pedra que anda à noite.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "adeus": {
+      "speaker": "Alda",
+      "text": "Volta quando o pão estiver quente. E traz fome.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    }
+  }
+}

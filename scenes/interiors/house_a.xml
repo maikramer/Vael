@@ -79,11 +79,13 @@
   <Entity name="interior.house_a.wooden.crate" translation="7.6 0 -5.4" transform="rotation: 0 20 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base">
     <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
   </Entity>
-  <Entity name="interior.house_a.cook" translation="-6.4 0 5.2" transform="rotation: 0 200 0" script="townsfolk.lua" prop-banter="“Cheira bem, não cheira? Guisado de javali.”|“Não toques no tacho!”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
+  <Entity name="interior.house_a.cook" translation="-6.4 0 5.2" transform="rotation: 0 200 0" script="townsfolk.lua" prop-dialogue_id="house_a_cook" prop-banter="“Cheira bem, não cheira? Guisado de javali.”|“Não toques no tacho!”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
     <GltfScene url="/assets/meshes/characters/npc_cook_lod0.glb" />
+    <DialogueNPC dialogue-id="house_a_cook" portrait-url="" voice-sfx="" marker-height="2.5" />
   </Entity>
-  <Entity name="interior.house_a.innkeeper" translation="2.6 0 1.2" transform="rotation: 0 20 0" script="townsfolk.lua" prop-banter="“Uma cama e uma refeição quente, forasteiro?”|“Os viajantes trazem sempre histórias — e lama.”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
+  <Entity name="interior.house_a.innkeeper" translation="2.6 0 1.2" transform="rotation: 0 20 0" script="townsfolk.lua" prop-dialogue_id="house_a_innkeeper" prop-banter="“Uma cama e uma refeição quente, forasteiro?”|“Os viajantes trazem sempre histórias — e lama.”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
     <GltfScene url="/assets/meshes/characters/npc_innkeeper_lod0.glb" />
+    <DialogueNPC dialogue-id="house_a_innkeeper" portrait-url="" voice-sfx="" marker-height="2.5" />
   </Entity>
   <Group translation="0 0 0" body="none" collider="none">
     <PointLight translation="0 2.30 0" color="0xffcf9a" intensity="9000" />

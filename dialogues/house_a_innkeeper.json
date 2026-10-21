@@ -1,0 +1,59 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Nela",
+      "text": "Uma cama e uma refeição quente, forasteiro? Os viajantes trazem sempre histórias — e lama.",
+      "choices": [
+        { "text": "Tens quartos livres?", "goto": "quartos" },
+        { "text": "Que viajantes passam por aqui?", "goto": "viajantes" },
+        { "text": "O que há de novo na vila?", "goto": "novidades" },
+        { "text": "Só vim ver. Obrigado.", "goto": "adeus" }
+      ]
+    },
+    "quartos": {
+      "speaker": "Nela",
+      "text": "Dois. O do fundo tem a janela que range e o da frente tem o hóspede que ronca. Escolhe o teu veneno.",
+      "choices": [
+        { "text": "Fico com o da janela.", "goto": "janela" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "janela": {
+      "speaker": "Nela",
+      "text": "Boa escolha. A janela range, mas deixa entrar a lua. O ronco não deixa entrar nada.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "viajantes": {
+      "speaker": "Nela",
+      "text": "Cartógrafos, mercadores, um homem dos mojões que não diz o nome. Todos procuram qualquer coisa no Vale. Nenhum diz o quê.",
+      "choices": [
+        { "text": "E tu, achas que encontram?", "goto": "encontram" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "encontram": {
+      "speaker": "Nela",
+      "text": "Acho que encontram uma cama quente e uma história para contar em casa. Já é mais do que muitos.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "novidades": {
+      "speaker": "Nela",
+      "text": "O forno da Alda abriu, o Hald anda atrás dos lobos e o Ancião Edmar não sai do salão. O resto é o resto.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "adeus": {
+      "speaker": "Nela",
+      "text": "A porta não tem fechadura. Também ninguém rouba quem tem tão pouco.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    }
+  }
+}

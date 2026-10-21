@@ -1,0 +1,67 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Bera",
+      "text": "@longhouse_innkeeper.start",
+      "choices": [
+        { "text": "Que histórias se contam?", "goto": "historias" },
+        { "text": "O que há para comer?", "goto": "comida" },
+        { "text": "Alguém precisa de ajuda?", "goto": "ajuda" },
+        { "text": "Só vim aquecer. Obrigado.", "goto": "adeus" }
+      ]
+    },
+    "historias": {
+      "speaker": "Bera",
+      "text": "As do Alto e do Coro. Dizem que quem sobe aos picos ouve as Notas antes de as ver. Dizem também que é o vento. Cada um escolhe o que lhe serve.",
+      "choices": [
+        { "text": "E tu, o que escolhes?", "goto": "escolha" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "escolha": {
+      "speaker": "Bera",
+      "text": "Eu escolho servir hidromel e não discutir com o vento. Dá menos trabalho e rende mais.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "comida": {
+      "speaker": "Bera",
+      "text": "Guisado de javali, pão do forno da Alda e queijo do pastor. Se não gostares, o cão gosta.",
+      "choices": [
+        { "text": "Onde fica o forno?", "goto": "forno" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "forno": {
+      "speaker": "Bera",
+      "text": "Na casa amarela, a poucos passos. A Alda abre cedo e fecha quando o pão acaba — ou quando a paciência acaba, o que vier primeiro.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "ajuda": {
+      "speaker": "Bera",
+      "text": "O Hald, a norte, perdeu gado para os lobos. E o Bram, na forja, paga bem por minério. Fora isso, só precisamos que o Vale volte a cantar.",
+      "choices": [
+        { "text": "Onde está o Hald?", "goto": "hald" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "hald": {
+      "speaker": "Bera",
+      "text": "Segue a estrada para norte até ao curral. Se ouvires latidos, já passaste.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "adeus": {
+      "speaker": "Bera",
+      "text": "O lume fica aceso até tarde. Volta quando quiseres.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    }
+  }
+}

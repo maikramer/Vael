@@ -1,0 +1,59 @@
+{
+  "start": "start",
+  "nodes": {
+    "start": {
+      "speaker": "Irmã Ansel",
+      "text": "@chapel_priest.start",
+      "choices": [
+        { "text": "Falas do Coro de Vael?", "goto": "coro" },
+        { "text": "Que se passa com os sinos?", "goto": "sinos" },
+        { "text": "Precisas de alguma coisa?", "goto": "ajuda" },
+        { "text": "Até à vista.", "goto": "adeus" }
+      ]
+    },
+    "coro": {
+      "speaker": "Irmã Ansel",
+      "text": "As quatro Notas do Coro partiram-se. Uma canta na Bruxa, outra no Verme, outra no Lodo, a última no Ogro. Enquanto não voltarem, o Vale ouve-se a si próprio.",
+      "choices": [
+        { "text": "Como as recupero?", "goto": "como" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "como": {
+      "speaker": "Irmã Ansel",
+      "text": "O Ancião Edmar sabe o caminho. Leva-lhe o que encontrares e não forces a nota a cantar sozinha — ela morde.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "sinos": {
+      "speaker": "Irmã Ansel",
+      "text": "Tocavam a cada hora. Agora só quando alguém morre no bosque. Os mais velhos dizem que é a capela a contar os que não voltaram.",
+      "choices": [
+        { "text": "E os que voltaram?", "goto": "voltaram" },
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "voltaram": {
+      "speaker": "Irmã Ansel",
+      "text": "Esses trazem lama nas botas e histórias nos olhos. Senta-te ao lume quando quiseres contar as tuas.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "ajuda": {
+      "speaker": "Irmã Ansel",
+      "text": "Se encontrares alguém ferido no bosque, manda-o para cá. Não prometo milagres, mas prometo uma cama e uma reza.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    },
+    "adeus": {
+      "speaker": "Irmã Ansel",
+      "text": "Que a luz te guarde. E olha para trás de vez em quando — o Vale tem dentes.",
+      "choices": [
+        { "text": "Voltar.", "goto": "start" }
+      ]
+    }
+  }
+}
