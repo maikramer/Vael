@@ -2,9 +2,36 @@
 # Relativos a ESTA pasta. Obrigatório: o run/analyze não arranca sem ele.
 title: Vael
 # Preset da lente (docs/PERFORMANCE.md): alto | equilibrado | desempenho.
-# `equilibrado` é o default; `desempenho` é o que dá 60 fps numa RTX 4050
-# Laptop a 1280x720 (troca god-rays volumétricos, SSAO e DOF por 9 ms).
+# `equilibrado` mantém sombras, relva e alcance; o post-FX abaixo corta só a
+# lente que não se lê em movimento (o `desempenho` também cortaria o mundo).
 graphics: equilibrado
+
+# Post-FX por jogo (engine LÊ `postfx.disabled`; `VIBER_NO_*` ainda ganha).
+# Fica o que dá resultado barato: tonemapping, bloom, exposição automática,
+# perspetiva aérea, SSAO Medium (assenta os objetos), CAS e TAA.
+postfx:
+  disabled:
+    - volumetrics          # god-rays: ~6 ms de raymarch; quase não se lê a jogar
+    - dof                  # desfoca o que o jogador precisa de ler
+    - motion-blur          # com frame-time variável, a imagem "vibra"
+    - contact-shadows      # subtil; o SSAO já faz o contacto com o chão
+    - chromatic-aberration # firula de lente, retorno ~zero em gameplay
+    - vignette             # idem
+    - split-tone           # tinge os MIOLOS (poças) de azul: lê-se cinzento;
+                           # a saturação do grading já separa o azul do quente
+  ssao: medium             # High (18 spp) → Medium (8 spp); o TAA limpa o ruído
+
+# Reflexos de cena (SSR raster). `auto` segue o preset: `equilibrado` não paga
+# o passe; `alto` liga-o. O chão molhado NÃO entra no raymarch — era o custo
+# que aparecia quando chovia no mapa todo. O sheen de chão molhado continua
+# barato no material do terreno (albedo escurecido + roughness 0.16).
+# Para ter a água a refletir também no `equilibrado`, troca `mode` para `water`
+# (água só, sem o chão).
+reflections:
+  mode: auto
+  wet-ground: false
+  steps: 16
+  max-distance: 90
 
 assets:
   # Roots extra, por ordem, DEPOIS da pasta do jogo (que é sempre a 1.ª —

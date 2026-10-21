@@ -3,7 +3,6 @@
   <ProjectileTemplate id="enemy-arrow" speed="16" damage="8" max-life="2.5" sensor-radius="0.3" faction="enemy" />
   <Include src="/world/environment.xml" />
   <SpawnGate target-entity="player" y-fallback="150" />
-  <PostFxDebugToggle />
   <Group name="world-base" translation="0 38.7304 0">
     <Terrain render-distance="950" world-size="4000" max-height="200" levels="5" resolution="128" collision-resolution="64" lod-hysteresis="1.3" lod-distance-ratio="1.7" height-smoothing="1" heightmap="world.data/terrain.ahgt" base-color="#c9c5ba" layers="grass vale_grass dirt dirt_trail forest_floor gravel mountain_stone sand desert_sand snow_peak swamp_mud dirt_road" shore-width="6" cliff-angle="50" sharpen="true" sharpen-angle="35" sharpen-seed="7" cliff-streaks="0.55" cliff-moss="0.4" />
     <NavMesh />
