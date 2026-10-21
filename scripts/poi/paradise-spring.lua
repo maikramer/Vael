@@ -12,8 +12,19 @@ function on_update(dt)
   if viber.interacted("e") and not st.read then
     st.read = true
     once.mark()
-    rules.heal_player(40)
+    local ok, hp, max_hp = viber.player_hp()
+    local healed = 40
+    if ok then
+      healed = math.min(40, math.max(0, (max_hp or 0) - (hp or 0)))
+    end
+    if healed >= 1 then
+      rules.heal_player(healed)
+    end
     rules.add_xp(35)
-    viber.toast("A água da fonte restaura o corpo e a mente (+40 HP, +35 XP).")
+    if healed >= 1 then
+      viber.toast("A água da fonte restaura o corpo e a mente (+" .. math.floor(healed) .. " HP, +35 XP).")
+    else
+      viber.toast("A água da fonte clareia a mente (+35 XP).")
+    end
   end
 end

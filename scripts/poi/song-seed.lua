@@ -80,7 +80,7 @@ function on_update(dt)
     rules.item_add("korok-seed", 1)
     if count % 5 == 0 then
       rules.add_skill_points(1)
-      viber.toast(phrase .. " — semente " .. count .. "/20: +1 PONTO DE TALENTO!")
+      viber.toast(phrase .. " — semente " .. count .. "/22: +1 PONTO DE TALENTO!")
     else
       viber.toast(phrase .. " (" .. count .. " na bolsa)")
     end

@@ -38,6 +38,14 @@ function on_update(dt)
     viber.cinematic("prologo")
   end
 
+  -- A entrega vive em Lua (`quest_turn_in`). A engine já não emite
+  -- `quest_done` para estas missões, por isso o epílogo nunca arrancava.
+  if rules.quest_state("story_notas") == "done" and not g.story_epilogo
+      and not viber.cinematic_playing() then
+    g.story_epilogo = true
+    viber.cinematic("epilogo")
+  end
+
   for _, ev in ipairs(viber.events()) do
     if ev.type == "kill" and GUARDIANS[ev.name] and not g["nota_" .. ev.name] then
       g["nota_" .. ev.name] = true
@@ -48,9 +56,6 @@ function on_update(dt)
       viber.ring(x, z, 4, "#9fd8ff")
       viber.toast(GUARDIANS[ev.name] .. " recuperada (" .. n .. "/4)")
       viber.cinematic("nota")
-    elseif ev.type == "quest_done" and ev.id == "story_notas" and not g.story_epilogo then
-      g.story_epilogo = true
-      viber.cinematic("epilogo")
     elseif ev.type == "cinematic_end" and ev.id == "prologo" then
       viber.toast("Fala com o Ancião Edmar, no salão comunal.")
     end

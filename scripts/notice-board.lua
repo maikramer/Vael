@@ -42,8 +42,11 @@ function on_update(dt)
   end
   local i, id = find("ready")
   if id then
-    speak(id, "lines_complete")
-    rules.quest_turn_in(id)
+    if rules.quest_turn_in(id) then
+      speak(id, "lines_complete")
+    else
+      speak(id, "lines_progress")
+    end
     st.index = i
     return
   end

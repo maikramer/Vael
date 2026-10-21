@@ -44,6 +44,9 @@ function on_update(_dt)
   if viber.input.pressed("v") then
     if #ids == 0 then
       st.target = nil
+      if viber.lock_target then
+        viber.lock_target(nil)
+      end
     else
       local at = 1
       for i, h in ipairs(ids) do
@@ -53,6 +56,9 @@ function on_update(_dt)
         end
       end
       st.target = ids[at].id
+      if viber.lock_target then
+        viber.lock_target(st.target)
+      end
     end
   end
 
@@ -71,6 +77,7 @@ function on_update(_dt)
     show_target(shown.kind, shown.hp, shown.max)
   elseif st.target ~= nil then
     st.target = nil
+    viber.ui.set("target", 0)
     viber.ui.set("target.alive", false)
     viber.ui.set("target.name", "")
   end

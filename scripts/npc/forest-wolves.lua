@@ -49,8 +49,11 @@ function on_update(dt)
   elseif state == "active" then
     say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
   elseif state == "ready" then
-    say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
-    rules.quest_turn_in(QUEST)
+    if rules.quest_turn_in(QUEST) then
+      say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+    else
+      say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
+    end
   else
     say_lines(def and def.lines_complete, "“Já cumpriste. O rebanho agradece.”")
   end

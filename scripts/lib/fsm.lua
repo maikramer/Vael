@@ -272,25 +272,24 @@ function M.new(cfg)
   -- o frame (a criatura não anda nem reavalia a FSM).
   local function tick_phase(st, dt)
     if not st.phase then return false end
-    st.pt = st.pt - dt
+    st.pt = (st.pt or 0) - dt
     if st.phase == "windup" then
+      -- Hot-reload a meio do golpe deixava `pulse` nil e o script morria.
+      st.pulse = (st.pulse or 0) - dt
       if st.kind == "special" then
         -- Aviso pulsado da zona; a criatura fica parada a olhar o herói.
-        st.pulse = st.pulse - dt
         if st.pulse <= 0 then
           st.pulse = TELEGRAPH_PULSE
           viber.ring(st.ax, st.az, cfg.special.radius or 4.5, cfg.special.color or "#ff4a2a")
         end
       elseif st.kind == "shot" then
         -- Arco a tensar: anel pequeno no atirador (lê-se "vai disparar").
-        st.pulse = st.pulse - dt
         if st.pulse <= 0 then
           st.pulse = TELEGRAPH_PULSE
           local x, _, z = viber.position()
           viber.ring(x, z, 0.9, SHOT_COLOR)
         end
       else
-        st.pulse = st.pulse - dt
         if st.pulse <= 0 then
           st.pulse = TELEGRAPH_PULSE
           local x, _, z = viber.position()

@@ -45,8 +45,11 @@ function on_update(_dt)
     rules.quest_accept(id)
     say(def and def.lines_intro, "Aceite.", remaining)
   elseif state == "ready" then
-    rules.quest_turn_in(id)
-    say(def and def.lines_complete, "Entregue.", 0)
+    if rules.quest_turn_in(id) then
+      say(def and def.lines_complete, "Entregue.", 0)
+    else
+      say(def and def.lines_progress, "Ainda não tens o que a missão pede.", remaining)
+    end
   elseif state == "active" then
     say(def and def.lines_progress, "Ainda não.", remaining)
   else

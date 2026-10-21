@@ -44,7 +44,8 @@ local function pay(kind, id)
   -- Elites (lib/fsm.lua regista-os): ouro ×3, poção garantida e chance de
   -- bomba — vale a pena o risco.
   local elites = viber.game().elites
-  local elite = elites and elites[id]
+  -- `elites[nil]` derruba o script no frame do abate e o ouro não cai.
+  local elite = id ~= nil and elites and elites[id]
   if elite then
     elites[id] = nil
     entry = { entry[1] * 3, entry[2] * 3, entry[3] + 1, entry[4] }

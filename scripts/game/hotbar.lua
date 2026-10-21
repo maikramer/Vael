@@ -4,6 +4,9 @@ local rules = viber.load("lib/rules.lua")
 local POTION_HEAL = 50
 local COOLDOWN = 1.0
 
+-- A hotbar nativa gastava a poção no mesmo [1] que este script.
+viber.own_system("hotbar")
+
 -- Ctrl/Alt+dígito são atalhos (o `<PostFxDebugToggle>` vive em Ctrl+1..6).
 local function modifier_held()
   return viber.input.down("lctrl") or viber.input.down("rctrl")

@@ -25,6 +25,13 @@ local KILL_XP = {
 }
 local STACK = 99
 local RESOURCES = { gold = true, wood = true, stone = true }
+-- Passivas do diário. A lista é a fonte da verdade: `viber.sync_skills`
+-- aplica HP, velocidade, dano e crítico. O diário só gasta o ponto.
+local SKILL_IDS = {
+  "vitality1", "strength1", "agility1", "precision1",
+  "vitality2", "strength2", "agility2", "precision2",
+}
+local REVEAL_SECS = 2.5
 -- Veneno gravado no save: empurra-se UMA vez para a engine por sessão.
 -- (A flag em viber.game() sobreviveria ao load e nunca reaplicava.)
 local venom_pushed = false
@@ -546,8 +553,23 @@ function M.grant_iframes(secs)
   g().iframes = math.max(num("iframes", 0), secs or 0)
 end
 
+local function sync_passives()
+  if type(viber.sync_skills) ~= "function" then
+    return
+  end
+  local game = g()
+  local ids = {}
+  for _, id in ipairs(SKILL_IDS) do
+    if game["skill." .. id] == true then
+      ids[#ids + 1] = id
+    end
+  end
+  viber.sync_skills(ids)
+end
+
 function M.tick(dt)
   M.pull_engine()
+  sync_passives()
   local id = viber.player_id()
   local ok = select(1, viber.player_hp())
   if id and not ok then
@@ -657,27 +679,38 @@ function M.publish()
   viber.ui.set("quest.active", title ~= "")
   viber.ui.set("abilities.active", true)
   viber.ui.set("vitals.active", true)
-  viber.ui.set("xp.recent", false)
-  viber.ui.set("quest.recent", false)
-  viber.ui.set("quests.others", false)
-  viber.ui.set("purse.recent", false)
-  viber.ui.set("belt.recent", false)
-  viber.ui.set("combat.active", false)
-  viber.ui.set("target", 0)
-  viber.ui.set("target.alive", false)
-  viber.ui.set("target.name", "")
-  viber.ui.set("boss", 0)
-  viber.ui.set("boss.active", false)
-  viber.ui.set("boss.enraged", false)
-  viber.ui.set("boss.name", "")
-  viber.ui.set("combo", false)
-  viber.ui.set("combo.text", "")
-  viber.ui.set("ab.dash", 0)
-  viber.ui.set("ab.dash.ready", true)
-  viber.ui.set("ab.heal", 0)
-  viber.ui.set("ab.heal.ready", true)
-  viber.ui.set("ab.strike", 0)
-  viber.ui.set("ab.strike.ready", true)
+  -- Uma vez: o analyze avisa "unknown binding" se ninguém escreveu o nome.
+  -- Todos os frames apagava a barra de alvo, o chefe e as recargas quando
+  -- este script corria depois dos outros.
+  if not M._hud_seeded then
+    M._hud_seeded = true
+    viber.ui.set("target", 0)
+    viber.ui.set("target.alive", false)
+    viber.ui.set("target.name", "")
+    viber.ui.set("combo", false)
+    viber.ui.set("combo.text", "")
+    viber.ui.set("quests.others", false)
+  end
+  -- O número de XP e o brilho da missão só aparecem com a classe `shown`/
+  -- `fresh`. Forçar false todos os frames apagava-os para sempre. Alvo,
+  -- chefe, recargas e as outras missões são doutros scripts: zerá-los aqui
+  -- ganhava a corrida e escondia a barra.
+  local xp_sig = string.format("%d/%d/%d", game.level, math.floor(game.xp), math.floor(game.xp_next))
+  if M._xp_sig ~= xp_sig then
+    if M._xp_sig ~= nil then
+      M._xp_until = viber.time() + REVEAL_SECS
+    end
+    M._xp_sig = xp_sig
+  end
+  viber.ui.set("xp.recent", (M._xp_until or 0) > viber.time())
+  local quest_sig = title .. "\0" .. text
+  if M._quest_sig ~= quest_sig then
+    if M._quest_sig ~= nil then
+      M._quest_until = viber.time() + REVEAL_SECS
+    end
+    M._quest_sig = quest_sig
+  end
+  viber.ui.set("quest.recent", (M._quest_until or 0) > viber.time())
 end
 
 return M

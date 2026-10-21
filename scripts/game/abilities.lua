@@ -25,6 +25,11 @@ local BOMB_LAUNCH_DISTANCE = 2.6
 
 local PERIOD = { dash = CD_DASH, heal = CD_HEAL, strike = CD_STRIKE }
 
+-- Sem isto o handler nativo (se o plugin voltar ao App) dispara por cima
+-- e o [C]/[R]/[B] saem duas vezes.
+viber.own_system("abilities")
+viber.own_system("bomb")
+
 -- O dock do HUD lê `ab.<nome>` (fração em recarga) e `ab.<nome>.ready`
 -- (class-bind que acende o slot) — os `cd.*` nativos ficam a zero com o
 -- sistema reclamado, e sem isto o dock mostrava tudo sempre pronto.
