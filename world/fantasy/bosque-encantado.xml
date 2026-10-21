@@ -189,9 +189,15 @@
     <Entity translation="150 74.1316 1300">
       <ParticleSystem preset="magic" transform="pos: 0 1.4 0" particle-emitter="preset: magic; emission-rate: 20; shape-radius: 2.2; start-life-min: 1.4; start-life-max: 3.2; start-speed-min: 0.2; start-speed-max: 0.7; start-size-min: 0.12; start-size-max: 0.28; looping: 1; world-space: 1" />
     </Entity>
-    <Entity name="bosque-forage-1" translation="168 73.5258 1322" script="mushroom.lua" prop-label="Cogumelo encantado" prop-xp="8" />
-    <Entity name="bosque-forage-2" translation="216 74.9399 1462" script="mushroom.lua" prop-label="Cogumelo encantado" prop-xp="8" />
-    <Entity name="bosque-forage-3" translation="132 72.7864 1386" script="mushroom.lua" prop-label="Cogumelo encantado" prop-xp="8" />
+    <Entity name="bosque-forage-1" translation="168 73.5258 1322" script="mushroom.lua" prop-label="Cogumelo encantado" prop-xp="8">
+      <GltfScene url="/assets/meshes/forest/mushroom_glow_lod0.glb" />
+    </Entity>
+    <Entity name="bosque-forage-2" translation="216 74.9399 1462" script="mushroom.lua" prop-label="Cogumelo encantado" prop-xp="8">
+      <GltfScene url="/assets/meshes/forest/mushroom_glow_lod0.glb" />
+    </Entity>
+    <Entity name="bosque-forage-3" translation="132 72.7864 1386" script="mushroom.lua" prop-label="Cogumelo encantado" prop-xp="8">
+      <GltfScene url="/assets/meshes/forest/mushroom_glow_lod0.glb" />
+    </Entity>
     <Arch name="bosque-portao" at="240 1250" width="9" height="7.5" thickness="2.4" depth="4.5" yaw="205" profile="natural" />
     <Arch name="bosque-portao-2" at="205 1580" width="8" height="6.5" thickness="2.2" depth="4" yaw="90" profile="natural" />
     <Entity translation="200 70.1069 1400">

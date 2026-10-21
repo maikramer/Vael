@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
-  <!-- SEMENTES DE CANÇÃO (colecionáveis estilo Korok, 22 no mundo) + BAÚS
+  <!-- SEMENTES DE CANÇÃO (colecionáveis estilo Korok, 28 no mundo) + BAÚS
        ESCONDIDOS (11 fora do caminho principal). Fumo subindo = "há segredo
        aqui" (tese BotW: korok smoke plume); pedras/fundos/lapos escondem os
        demais. Recompensa própria: item korok-seed; a cada 5 → +1 talento.
@@ -109,7 +109,7 @@
       <ParticleSystem preset="smoke" transform="pos: 0 0.7 0" particle-emitter="preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" />
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
     </Entity>
-    <Entity name="korok-picos-anel-c-3" translation="-70.0 88.32 -210.0" euler="0 0 0" scale="0.55" script="poi/song-seed.lua" prop-mode="ring" prop-group="anel-picos" prop-index="3" prop-prompt="Tocar a nota" prop-range="3.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" >
+    <Entity name="korok-picos-anel-c-3" translation="-70.0 93.10 -210.0" euler="0 0 0" scale="0.55" script="poi/song-seed.lua" prop-mode="ring" prop-group="anel-picos" prop-index="3" prop-prompt="Tocar a nota" prop-range="3.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" >
       <ParticleSystem preset="smoke" transform="pos: 0 0.7 0" particle-emitter="preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" />
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
     </Entity>
@@ -155,7 +155,7 @@
     <Entity name="bau-bosque-encantado" translation="200.0 70.11 1400.0" euler="0 10 0" script="chest.lua" prop-gold="160" prop-xp="80" prop-item="potion" prop-item_count="3" prop-item_label="poções" prop-prompt="Abrir o baú do bosque encantado" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/treasure_chest_lod0.glb" />
     </Entity>
-    <Entity name="bau-vael" translation="700.0 182.58 210.0" euler="0 130 0" script="chest.lua" prop-gold="150" prop-xp="75" prop-item="antidote" prop-item_count="2" prop-item_label="antídotos" prop-prompt="Abrir o baú do Alto de Vael" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
+    <Entity name="bau-vael" translation="702.5 182.58 212.5" euler="0 130 0" script="chest.lua" prop-gold="150" prop-xp="75" prop-item="antidote" prop-item_count="2" prop-item_label="antídotos" prop-prompt="Abrir o baú do Alto de Vael" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/treasure_chest_lod0.glb" />
     </Entity>
     <Entity name="bau-porta-ermo" translation="505.0 81.52 -57.0" euler="0 190 0" script="chest.lua" prop-gold="140" prop-xp="70" prop-item="bomb" prop-item_count="1" prop-item_label="bomba" prop-prompt="Abrir o baú escondido na boca do Ermo" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
