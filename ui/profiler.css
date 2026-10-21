@@ -183,6 +183,15 @@
 #profiler-win .extra.on .state { color: amber-300 }
 #profiler-win .desc { font-size: 1.15vmin; color: stone-500 }
 
+/* ── sparkline da aba FRAMES ──────────────────────────────── */
+#profiler-win .hist {
+  font-size: 1.15vmin;
+  color: amber-200;
+  letter-spacing: 0.05vmin;
+  overflow: clip;
+  max-width: 48vmin;
+}
+
 /* ── rodapé de estado ──────────────────────────────────────── */
 #profiler-win .status {
   font-size: 1.15vmin;

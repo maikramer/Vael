@@ -143,7 +143,6 @@ local function fill_audio(audio)
 end
 
 local EXTRAS = { "colliders", "grass", "physics-pause", "" }
-
 local function fill_extras(snap)
   local list = snap.extras or {}
   local descs = {}
@@ -161,6 +160,84 @@ local function fill_extras(snap)
     end
   end
   viber.ui.set_text("prof-extra-desc", table.concat(descs, "\n"))
+end
+
+-- ── aba FRAMES: série de frame-times, hitches e trace ─────────
+local SPARK = { "▁", "▂", "▃", "▄", "▅", "▆", "▇", "█" }
+
+local function sparkline(values)
+  local n = #values
+  if n == 0 then return "—" end
+  -- Últimos 40 frames cabem na largura do painel.
+  local first = math.max(1, n - 39)
+  local ceiling = 16.7
+  for i = first, n do
+    local v = values[i] or 0
+    if v > ceiling then ceiling = v end
+  end
+  local out = {}
+  for i = first, n do
+    local v = values[i] or 0
+    local idx = math.floor((v / ceiling) * 7 + 0.5) + 1
+    if idx < 1 then idx = 1 elseif idx > 8 then idx = 8 end
+    out[#out + 1] = SPARK[idx]
+  end
+  return table.concat(out)
+end
+
+local function fill_frames(snap)
+  local t = snap.tabs and snap.tabs.frames
+  if t == nil then return end
+  local frame = t.frame_ms or {}
+  viber.ui.set_text("prof-f-frame", fmt_ms(frame.avg))
+  viber.ui.set_text("prof-f-p95", fmt_ms(frame.p95))
+  viber.ui.set_text("prof-f-max", fmt_ms(frame.max))
+  local h = t.hitches or {}
+  viber.ui.set_text("prof-f-hitches", string.format("%d ≥%.0f",
+    h.count or 0, h.threshold_ms or 50))
+  viber.ui.set_text("prof-f-history", sparkline(t.history or {}))
+
+  local rows = {}
+  local recent = h.recent or {}
+  for i = #recent, 1, -1 do
+    local hit = recent[i] or {}
+    local top = hit.top and hit.top[1]
+    rows[#rows + 1] = {
+      name = string.format("#%d  %.1f ms  @%.0fs",
+        hit.frame or 0, hit.frame_ms or 0, hit.uptime_s or 0),
+      val = top and string.format("%s %.1f", top.name or "?", top.ms or 0) or "—",
+    }
+    if #rows >= 8 then break end
+  end
+  viber.ui.list("prof-f-hitch-rows", rows)
+
+  local top_rows = {}
+  for i, s in ipairs(t.top or {}) do
+    if i > 12 then break end
+    top_rows[#top_rows + 1] = {
+      name = string.format("%s · %s", s.group or "?", s.name or "?"),
+      val = string.format("%.2f · p95 %.2f", s.avg_ms or 0, s.p95_ms or 0),
+    }
+  end
+  viber.ui.list("prof-f-top-rows", top_rows)
+
+  local mem = t.memory or {}
+  viber.ui.set_text("prof-f-mem", mem.rss_mb and string.format(
+    "rss %.0f MiB · pico %.0f MiB · %d threads",
+    mem.rss_mb, mem.peak_rss_mb or 0, mem.threads or 0) or "—")
+
+  local tr = t.trace or {}
+  if tr.recording then
+    viber.ui.set_text("prof-f-trace", string.format(
+      "● a gravar %.1f/%.0f s · %d frames · %d eventos",
+      tr.elapsed_s or 0, tr.max_seconds or 0, tr.frames or 0, tr.events or 0))
+  elseif tr.last then
+    viber.ui.set_text("prof-f-trace", string.format(
+      "parado · último trace: %d frames · %d eventos · %.1f s",
+      tr.last.frames or 0, tr.last.events or 0, tr.last.duration_s or 0))
+  else
+    viber.ui.set_text("prof-f-trace", "parado · sem trace (TRAÇAR 10s)")
+  end
 end
 
 -- ── preenchimento por aba (só a activa: o resto fica barato) ──
@@ -226,6 +303,8 @@ local function fill_active(snap)
     fill_audio(snap.tabs.audio or {})
   elseif which == "extras" then
     fill_extras(snap)
+  elseif which == "frames" then
+    fill_frames(snap)
   end
 end
 
@@ -242,10 +321,14 @@ function on_update(dt)
   if viber.ui.clicked("prof-reset") then viber.profiler_cmd("reset") end
   -- COPIAR/EXPORTAR existem em TODAS as abas (o JSON é sempre o completo;
   -- o export escreve ficheiro, o copy vai ao clipboard via engine).
-  for _, t in ipairs({ "systems", "world", "physics", "audio", "extras" }) do
+  for _, t in ipairs({ "systems", "world", "physics", "audio", "extras", "frames" }) do
     if viber.ui.clicked("prof-copy-" .. t) then viber.profiler_cmd("copy") end
     if viber.ui.clicked("prof-export-" .. t) then viber.profiler_cmd("export") end
   end
+  -- Trace: 10 s por clique; PARAR fecha; EXPORTAR escreve o último trace.
+  if viber.ui.clicked("prof-trace-start") then viber.profiler_cmd("trace:start:10") end
+  if viber.ui.clicked("prof-trace-stop") then viber.profiler_cmd("trace:stop") end
+  if viber.ui.clicked("prof-trace-export") then viber.profiler_cmd("trace:export") end
   for i, id in ipairs(EXTRAS) do
     if id ~= "" and viber.ui.clicked("prof-extra-" .. i) then
       viber.profiler_cmd("extra:" .. id)

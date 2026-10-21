@@ -30,6 +30,9 @@
         <UiButton id="prof-tab-extras" class="tab" tab-group="prof" tab="extras">
           <UiText>EXTRAS</UiText>
         </UiButton>
+        <UiButton id="prof-tab-frames" class="tab" tab-group="prof" tab="frames">
+          <UiText>FRAMES</UiText>
+        </UiButton>
       </UiRow>
       <UiColumn class="pane" tab-group="prof" tab="systems">
         <UiRow class="statgrid">
@@ -275,6 +278,73 @@
           <UiText id="prof-extra-state-4" class="state">—</UiText>
         </UiButton>
         <UiText id="prof-extra-desc" class="desc" />
+      </UiColumn>
+      <UiColumn class="pane" tab-group="prof" tab="frames">
+        <UiRow class="statgrid">
+          <UiColumn class="stat">
+            <UiText class="k">FRAME</UiText>
+            <UiText id="prof-f-frame" class="v">—</UiText>
+          </UiColumn>
+          <UiColumn class="stat">
+            <UiText class="k">P95</UiText>
+            <UiText id="prof-f-p95" class="v">—</UiText>
+          </UiColumn>
+          <UiColumn class="stat">
+            <UiText class="k">PICO</UiText>
+            <UiText id="prof-f-max" class="v">—</UiText>
+          </UiColumn>
+          <UiColumn class="stat">
+            <UiText class="k">HITCHES</UiText>
+            <UiText id="prof-f-hitches" class="v">—</UiText>
+          </UiColumn>
+        </UiRow>
+        <UiRow class="actions">
+          <UiButton id="prof-trace-start" class="btn">
+            <UiText>TRAÇAR 10s</UiText>
+          </UiButton>
+          <UiButton id="prof-trace-stop" class="btn">
+            <UiText>PARAR</UiText>
+          </UiButton>
+          <UiButton id="prof-trace-export" class="btn">
+            <UiText>EXPORTAR TRACE</UiText>
+          </UiButton>
+          <UiButton id="prof-copy-frames" class="btn">
+            <UiText>COPIAR</UiText>
+          </UiButton>
+          <UiButton id="prof-export-frames" class="btn">
+            <UiText>EXPORTAR</UiText>
+          </UiButton>
+        </UiRow>
+        <UiText id="prof-f-history" class="hist">—</UiText>
+        <UiText class="sect">HITCHES RECENTES (frame · ms · topo)</UiText>
+        <UiList class="rows tall" bind="prof-f-hitch-rows" scroll="y">
+          <UiTemplate>
+            <UiRow class="lrow">
+              <UiText class="l-name">{name}</UiText>
+              <UiSpacer />
+              <UiText class="l-val">{val}</UiText>
+            </UiRow>
+          </UiTemplate>
+          <UiEmpty>
+            <UiText class="empty">sem hitches</UiText>
+          </UiEmpty>
+        </UiList>
+        <UiText class="sect">SISTEMAS MAIS CAROS (média · p95)</UiText>
+        <UiList class="rows" bind="prof-f-top-rows" scroll="y">
+          <UiTemplate>
+            <UiRow class="lrow">
+              <UiText class="l-name">{name}</UiText>
+              <UiSpacer />
+              <UiText class="l-val">{val}</UiText>
+            </UiRow>
+          </UiTemplate>
+          <UiEmpty>
+            <UiText class="empty">sem amostras</UiText>
+          </UiEmpty>
+        </UiList>
+        <UiText class="sect">MEMÓRIA / TRACE</UiText>
+        <UiText id="prof-f-mem" class="v">—</UiText>
+        <UiText id="prof-f-trace" class="v">—</UiText>
       </UiColumn>
       <UiText id="prof-status" class="status">—</UiText>
     </UiModal>
