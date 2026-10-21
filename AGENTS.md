@@ -78,13 +78,18 @@ Três checkouts irmãos, cada um com o seu remoto:
 | Repo | Papel |
 |------|--------|
 | `Vael` | Mundo, quests, scripts, pool `assets/`. Binários versionados vão em Git LFS |
-| `Viber` | Engine e editor (`editor/`). `./install.sh` põe `viber` em `~/.local/bin` |
+| `Viber` | Engine e editor (`editor/`). `~/.local/bin/viber` é um wrapper que segue o checkout |
 | `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
 
-`viber run` dentro de `Viber/` reconstrói a engine (`cargo run --release`).
-Na pasta do jogo corre o binário do PATH, que não vê o código do irmão.
-Depois de mudar a engine: `cd ../Viber && ./install.sh`. O editor:
-`./install.sh editor`, ou `viber editor world.xml` (acha `../Viber/editor`).
+`~/.local/bin/viber` é o `../Viber/scripts/viber-latest.sh`: tira um
+fingerprint das fontes da engine e só chama `cargo build --release` quando
+mudaram; senão corre a cache (`~/.local/share/viber/bin/viber-release`). Build
+falhado → corre o último binário bom e não volta a tentar até a árvore mudar.
+`debug`/`session` nunca compilam. `VIBER_NO_BUILD=1` salta, `VIBER_FORCE_BUILD=1`
+força. NÃO correr `./install.sh` (viber) por cima — substitui o wrapper por um
+binário fixo que deixa de ver o código. Reinstalar o wrapper:
+`install -m 755 ../Viber/scripts/viber-latest.sh ~/.local/bin/viber`. O editor:
+`cd ../Viber && ./install.sh editor`, ou `viber editor world.xml`.
 
 Assets: `cd assets && gameassets resume --profile game.yaml --manifest manifests/<pack>`.
 Output em `assets/public`. Intermediários (`meshes/_intermediate`, imagens de
