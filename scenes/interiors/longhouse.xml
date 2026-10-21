@@ -101,7 +101,7 @@
   </Entity>
   <Entity name="interior.longhouse.innkeeper" translation="-2 0 4" script="townsfolk.lua" prop-dialogue_id="longhouse_innkeeper" prop-banter="“Bem-vindo à casa longa! Senta-te ao lume.”|“Hidromel? É da colheita passada.”" prop-gestures="talk|yes|no|wave" prop-interact_range="3" prop-radius="0" prop-talk_range="6">
     <GltfScene url="/assets/meshes/characters/npc_innkeeper_lod0.glb" />
-    <DialogueNPC dialogue-id="longhouse_innkeeper" portrait-url="" voice-sfx="" marker-height="2.5" />
+    <NpcBody />
   </Entity>
   <Entity name="interior.longhouse.bard" translation="2.6 0 -3.6" transform="rotation: 0 30 0" script="townsfolk.lua" prop-banter="“Cantam-se feitos de heróis aqui — faz o teu.”|“Ouvi dizer que há um verme nas areias.”" prop-interact_range="3" prop-radius="1.6" prop-speed="0.6" prop-talk_range="3">
     <GltfScene url="/assets/meshes/characters/npc_bard_lod0.glb" />

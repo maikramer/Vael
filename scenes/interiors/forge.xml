@@ -73,7 +73,7 @@
   <Entity name="interior.forge.wooden.barrel-2" translation="-9 0 3.6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base">
     <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb" />
   </Entity>
-  <Entity name="interior.forge.blacksmith" translation="2.2 0 3" script="anvil.lua">
+  <Entity name="interior.forge.blacksmith" translation="2.2 0 3" script="townsfolk.lua" prop-prompt="Falar" prop-banter="“A forja lá fora é a de Bram. Aqui só se tempera o aço.”" prop-radius="1.2">
     <GltfScene url="/assets/meshes/characters/npc_blacksmith_lod0.glb" />
   </Entity>
   <Group translation="0 0 0" body="none" collider="none">
