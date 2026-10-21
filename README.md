@@ -58,7 +58,7 @@ hitches e RSS. Limiar de hitch: `VIBER_HITCH_MS` (default 50 ms).
 Jogável de ponta a ponta: **player** com combate melee ([J]/clique, alvo [V]
 ou ação `lock` — [Z]/gamepad, dash [C], golpe radial [R], bomba [B], guard
 [L], talentos com [Q]→Talentos),
-**27 quests** (JSON em `quests/`, diálogo [E] com os NPCs, tracker no HUD,
+**28 quests** (JSON em `quests/`, diálogo [E] com os NPCs, tracker no HUD,
 bounties no notice-board; os NPCs ambientais usam grafos em
 `dialogues/*.json`), **economia** (vault gold/wood/stone, colheita de
 árvores/pedras, loja no diário [Q]→Loja — falar com o Bram [E] abre-a —,
@@ -101,6 +101,33 @@ missão nova. Minimapa e bússola só mostram NPC que valem a pena.
 **Exploração:** baús escondidos junto a seis marcos (caravana, barco, menires,
 altar, obelisco, mojão) com loot próprio (`prop-*`).
 
+## Fronteira engine/jogo
+
+A engine é generalista: render, física, animação, partículas, áudio,
+terreno, streaming, save, input, UI declarativa, cinemáticas e a API de
+script. **Não** tem combate, colheita, cofre, XP, quests, talentos, viagem,
+loja, lock-on, respawn, veneno nem intérprete de diálogo. Essas regras vivem
+todas em Lua:
+
+| Sistema | Ficheiro |
+|---------|----------|
+| melee/chain/crítico/execução | `scripts/game/combat.lua` |
+| dash/cura/radial/bomba/guarda | `scripts/game/abilities.lua` + `lib/rules.lua` |
+| colheita (golpes, loot, XP) | `scripts/game/harvest.lua` |
+| arma na mão (attach ao osso) | `scripts/game/equipment.lua` |
+| quests, cofre, XP, veneno, HUD | `scripts/lib/rules.lua` |
+| talentos/passivas | `scripts/ui/journal.lua` + `lib/rules.lua` |
+| viagem/Nota/mapa | `scripts/game/travel.lua` + `lib/landmarks.lua` |
+| loja e despojos | `scripts/game/shop.lua`, `game/loot.lua` |
+| diálogo por grafo | `scripts/townsfolk.lua` + `dialogues/*.json` |
+| IA/FSM das criaturas | `scripts/lib/fsm.lua` + `enemies/`, `bosses/` |
+
+A engine expõe os DADOS autorais (`viber.player_nearby` com `props`,
+`viber.markers`) e as primitivas (`entity_damage`, `burst`, `play_clip`,
+`prompt`, `topple`, `attach`, `spawn_prototype`…); nunca decide quando os
+usar. Os ~2.700 props `destructible=` viajam como props autorais; o parser
+do component-string e as regras estão em `game/harvest.lua`.
+
 As teclas de debug ([H] dano, [N] cura total, [K] +XP, F6/F7/F9/F10/F11
 teleportes e recursos) só existem com `VIBER_DEBUG_KEYS=1`.
 
@@ -120,7 +147,7 @@ descomprime meshopt/KTX2 à leitura.
   geradores), vegetação com `instances="world.data/veg/NNN.vinst"`, interiores
 - `world.data/` — dados binários: `terrain.ahgt` (+ `.paint`), `veg/*.vinst`,
   `bake.json` (documento da conversão — World Overview do editor)
-- `quests/*.json` — definições das 27 quests (lidas do disco pela engine via
+- `quests/*.json` — definições das 28 quests (lidas do disco pela engine via
   `game.quests_dir`; campos: `id, npc, biome, title, lines_*, objective, rewards`)
 - `scripts/**.lua` — comportamento Luau (inimigos/bosses, colheita, POIs,
   HUD/UI) via a API `viber.*` (`Viber/docs/LUA_API.md`)

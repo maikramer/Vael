@@ -38,7 +38,7 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `world.xml` | raiz estática e os `<Include src="/world/…">` |
 | `world/**.xml` | cidades, criaturas, landmarks, `spawn/…`, HUD |
 | `scenes/interiors/` | salas (cenas próprias, sem terreno) |
-| `quests/*.json` | 27 quests, lidas do disco (reiniciar a engine; sem `cargo build`) |
+| `quests/*.json` | 28 quests, lidas do disco (reiniciar a engine; sem `cargo build`) |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
 | `ui/*.css` | HUD e menu |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
@@ -59,6 +59,10 @@ na vila. `viber scene lint` valida alvos.
 - Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag.
   `viber scene insert` não tem este problema. O `analyze` não apanha.
 - `shaders/*.wesl` são reescritos em cada `run`. Não editar à mão.
+- Luzes de fogo/partículas são `PointLight` SEM `shadows="true"`: o cube
+  shadow map custa 6 vistas por luz e pisca no chão. A luz simples ilumina
+  igual; o pool noturno fica em `WARM_FILL_NIGHT_GAIN` (×2), não no ×8 das
+  tochas com sombra.
 - Depois de editar: `viber analyze` (exit 1 em erro).
 
 ## Correr
