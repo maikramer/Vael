@@ -1,10 +1,65 @@
--- O melee nativo (chain, crítico, costas, cadáver, XP) já acerta quem
--- tem script em enemies/ ou bosses/. Este ficheiro só mantém a barra de
--- alvo: um segundo entity_damage no mesmo [J] cortava o TTK ao meio e o
--- play_clip("attack") cancelava o corte da chain.
+-- game/combat.lua: o MELEE do jogo, em Lua.
+--
+-- A engine só expõe primitivas — `viber.play_clip`, `hit_stop`, `shake`,
+-- `damage_number`, `hit_flash` e `entity_knockback`. Os alvos vêm do
+-- registro `viber.game().enemies` (cada criatura escreve kind/hp/pos) e o
+-- dano é escrito nesse registro; a engine não tem Health/hostis.
+-- Aqui vive a regra: passos 0→1→2→0, janela da chain, buffer curto, dano,
+-- crítico, costas, combo, execução e o feedback do impacto.
+--
+-- Corre num controller `tag="always-active"` (`world/gameplay.xml`), por
+-- isso `viber.play_clip`/`entity_*` levam o id do HERÓI — o controller não
+-- tem rig.
 
-local VERTICAL = 2.2
+local rules = viber.load("lib/rules.lua")
+
+local VERTICAL = 2.5
 local CYCLE_RANGE = 14
+local LOCK_RANGE = 3.6
+local MELEE_RANGE = 3.0
+local FINISHER_RANGE = 3.5
+local ATTACK_ARC = 0.0
+local FINISHER_ARC = 0.342 -- cos(70°)
+local BASE_DAMAGE = 25
+local ATTACK_SPEED = 1.4
+local CHAIN_MULTS = { 1.0, 1.15, 1.7 }
+local CHAIN_CLIPS = { "sworda", "swordb", "swordc" }
+local FALLBACK_DURATION = { sworda = 0.417, swordb = 0.5, swordc = 2.0, attack = 1.5 }
+local IMPACT_FRACTION = { sworda = 0.30, swordb = 0.38, swordc = 0.42 }
+local CHAIN_LINK = 0.45
+local CHAIN_FLOOR = 1.1
+local BUFFER_SECS = 0.3
+local CRIT_CHANCE = 0.15
+local CRIT_MULT = 2.0
+local COMBO_WINDOW = 2.5
+local COMBO_PER_HIT = 0.02
+local COMBO_CAP = 0.3
+local EXECUTE_FRAC = 0.15
+local BOSSES = {
+  witch = true, ["sand-worm"] = true, ["bog-warden"] = true, boss = true,
+}
+
+local function stats()
+  return rules.player_stats()
+end
+
+local function clip_duration(name)
+  if viber.clip_duration then
+    local d = viber.clip_duration(name)
+    if d and d > 0 then
+      return d
+    end
+  end
+  return FALLBACK_DURATION[name] or 0
+end
+
+local function chain_mult(step)
+  return CHAIN_MULTS[math.min(step + 1, #CHAIN_MULTS)] or 1.0
+end
+
+local function combo_mult(hits)
+  return 1.0 + math.min(hits * COMBO_PER_HIT, COMBO_CAP)
+end
 
 local function show_target(kind, hp, max_hp)
   viber.ui.set("target.name", kind or "")
@@ -16,69 +71,217 @@ local function show_target(kind, hp, max_hp)
   end
 end
 
-function on_update(_dt)
+local function start_swing(st)
+  -- Dentro da janela avança 0→1→2→0; fora, recomeça no primeiro corte.
+  local step = 0
+  if (st.chain_timer or 0) > 0 then
+    step = ((st.chain_step or 0) + 1) % #CHAIN_CLIPS
+  end
+  st.chain_step = step
+  local clip = CHAIN_CLIPS[step + 1]
+  local duration = clip_duration(clip)
+  if not duration or duration <= 0 then
+    clip = "attack"
+    duration = clip_duration(clip)
+  end
+  if not duration or duration <= 0 then
+    duration = 0.5
+  end
+  local occupy = duration / ATTACK_SPEED
+  local fraction = IMPACT_FRACTION[clip] or 0.35
+  local delay = math.min(0.45, math.max(0.12, duration * fraction / ATTACK_SPEED))
+  st.attack_t = occupy
+  st.chain_timer = math.max(occupy + CHAIN_LINK, CHAIN_FLOOR)
+  st.swing = { t = delay, step = step }
+  local pid = viber.player_id()
+  if pid then
+    viber.play_clip(clip, { speed = ATTACK_SPEED, id = pid })
+  end
+  viber.sound("whoosh")
+end
+
+local function resolve_swing(st, sw)
+  local has, px, py, pz = viber.player_position()
+  if not has then
+    return
+  end
+  local fx, fz = viber.player_forward()
+  local step = sw.step or 0
+  local finisher = step >= 2
+  local range = finisher and FINISHER_RANGE or MELEE_RANGE
+  local arc = finisher and FINISHER_ARC or ATTACK_ARC
+  local bonus = stats()
+  local hits, crit_any, kill_any = 0, false, false
+  for _, h in ipairs(rules.hostiles(range + 1.0) or {}) do
+    local hp = h.hp or 0
+    if hp > 0 then
+      local dx, dz = (h.x or px) - px, (h.z or pz) - pz
+      local dist = math.sqrt(dx * dx + dz * dz)
+      if dist >= 1e-3 and dist <= range and math.abs((h.y or py) - py) <= VERTICAL then
+        local ux, uz = dx / dist, dz / dist
+        if (fx * ux + fz * uz) >= arc then
+          local dmg = (BASE_DAMAGE + (bonus.bonus_damage or 0))
+            * chain_mult(step) * combo_mult(st.combo_hits or 0)
+          local backstab = false
+          if h.forward_x and h.forward_z then
+            backstab = (h.forward_x * -ux + h.forward_z * -uz) < -0.1
+          end
+          if backstab then
+            dmg = dmg * 2.0
+          end
+          local crit = math.random() < (CRIT_CHANCE + (bonus.crit_bonus or 0))
+          if crit then
+            dmg = dmg * CRIT_MULT
+          end
+          -- Execução: alvo abaixo de 15 % cai na hora. O HP do snapshot é
+          -- o do início do frame; o dano garante a morte mesmo assim.
+          local execute = (h.max or 0) > 0 and hp < (h.max or 0) * EXECUTE_FRAC
+          if execute then
+            dmg = math.max(dmg, hp + 1)
+          end
+          local killed = rules.damage_enemy(h.id, dmg)
+          if viber.hit_flash then
+            viber.hit_flash(h.id)
+          end
+          if viber.entity_knockback and not BOSSES[h.kind or ""] then
+            local meters = crit and 0.65 or (finisher and 0.55 or 0.45)
+            viber.entity_knockback(h.id, ux, uz, meters * 6.0)
+          end
+          viber.damage_number("-" .. math.floor(dmg), {
+            color = (crit or execute) and "#ff8c47" or "#f5efe0",
+            x = h.x, y = (h.y or py) + 1.8, z = h.z,
+          })
+          viber.burst("sparks", h.x or px, (h.y or py) + 1.1, h.z or pz,
+            crit and 8 or 5)
+          hits = hits + 1
+          crit_any = crit_any or crit
+          kill_any = kill_any or killed
+        end
+      end
+    end
+  end
+  if hits > 0 then
+    st.combo_hits = (st.combo_hits or 0) + hits
+    st.combo_window = COMBO_WINDOW
+    viber.sound("hit")
+    viber.hit_stop(kill_any and 0.09 or (crit_any and 0.07 or 0.05))
+    viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))
+    viber.punch(crit_any and 0.09 or 0.06, 0.02)
+    if finisher then
+      viber.ring(px, pz, FINISHER_RANGE)
+      viber.burst("ground-dust", px, py + 0.15, pz, 8)
+    end
+  end
+end
+
+function on_update(dt)
   local st = viber.state()
+
+  -- Timers do melee (correm mesmo com o menu aberto, como o combo nativo).
+  st.attack_t = math.max(0, (st.attack_t or 0) - dt)
+  st.chain_timer = math.max(0, (st.chain_timer or 0) - dt)
+  if st.chain_timer <= 0 then
+    st.chain_step = 0
+  end
+  st.combo_window = math.max(0, (st.combo_window or 0) - dt)
+  if st.combo_window <= 0 then
+    st.combo_hits = 0
+  end
+  st.buffer_t = math.max(0, (st.buffer_t or 0) - dt)
+  if st.buffer_t <= 0 then
+    st.buffer_queued = false
+  end
+
   if viber.menu_open() then
     return
   end
-  local alive, hp = viber.player_hp()
+  local alive, hp = rules.player_hp()
   if alive and hp <= 0 then
     st.target = nil
     viber.ui.set("target.alive", false)
     viber.ui.set("target.name", "")
     return
   end
+  -- Dano no herói zera o combo (o nativo fazia-o em `notifyPlayerDamaged`).
+  if alive and st.last_hp and hp < st.last_hp then
+    st.combo_hits = 0
+    st.combo_window = 0
+  end
+  st.last_hp = hp
+
+  -- ── barra de alvo + lock-on (o [V] ou a ação nativa `lock`) ──
   local has, _, py, _ = viber.player_position()
-  if not has then
-    return
-  end
-
-  local list = viber.hostiles(CYCLE_RANGE) or {}
-  local ids = {}
-  for _, h in ipairs(list) do
-    if math.abs((h.y or py) - py) <= VERTICAL then
-      ids[#ids + 1] = h
-    end
-  end
-
-  if viber.input.pressed("v") then
-    if #ids == 0 then
-      st.target = nil
-      if viber.lock_target then
-        viber.lock_target(nil)
+  if has then
+    local list = rules.hostiles(CYCLE_RANGE) or {}
+    local ids = {}
+    for _, h in ipairs(list) do
+      if math.abs((h.y or py) - py) <= 2.2 then
+        ids[#ids + 1] = h
       end
-    else
-      local at = 1
-      for i, h in ipairs(ids) do
-        if h.id == st.target then
-          at = i % #ids + 1
-          break
+    end
+    local lock_pressed = viber.input.pressed("v")
+      or (viber.action ~= nil and viber.action("lock"))
+    if lock_pressed then
+      if #ids == 0 then
+        st.target = nil
+        if viber.lock_target then
+          viber.lock_target(nil)
+        end
+      else
+        local at = 1
+        for i, h in ipairs(ids) do
+          if h.id == st.target then
+            at = i % #ids + 1
+            break
+          end
+        end
+        st.target = ids[at].id
+        if viber.lock_target then
+          viber.lock_target(st.target)
         end
       end
-      st.target = ids[at].id
-      if viber.lock_target then
-        viber.lock_target(st.target)
+    end
+    local shown
+    for _, h in ipairs(ids) do
+      if h.id == st.target then
+        shown = h
+        break
       end
+    end
+    if not shown then
+      shown = ids[1]
+      st.target = shown and shown.id or nil
+    end
+    if shown then
+      show_target(shown.kind, shown.hp, shown.max)
+    elseif st.target ~= nil then
+      st.target = nil
+      viber.ui.set("target", 0)
+      viber.ui.set("target.alive", false)
+      viber.ui.set("target.name", "")
     end
   end
 
-  local shown
-  for _, h in ipairs(ids) do
-    if h.id == st.target then
-      shown = h
-      break
+  -- ── melee ──
+  local pressed = viber.input.pressed("j") or viber.input.pressed("lmb")
+  local busy = (st.attack_t or 0) > 0 or st.swing ~= nil
+  if pressed then
+    if busy then
+      st.buffer_queued = true
+      st.buffer_t = BUFFER_SECS
+    else
+      start_swing(st)
     end
+  elseif st.buffer_queued and not busy then
+    st.buffer_queued = false
+    start_swing(st)
   end
-  if not shown then
-    shown = ids[1]
-    st.target = shown and shown.id or nil
-  end
-  if shown then
-    show_target(shown.kind, shown.hp, shown.max)
-  elseif st.target ~= nil then
-    st.target = nil
-    viber.ui.set("target", 0)
-    viber.ui.set("target.alive", false)
-    viber.ui.set("target.name", "")
+  if st.swing then
+    st.swing.t = st.swing.t - dt
+    if st.swing.t <= 0 then
+      local sw = st.swing
+      st.swing = nil
+      resolve_swing(st, sw)
+    end
   end
 end

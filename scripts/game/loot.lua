@@ -28,6 +28,8 @@ local TABLE = {
   boss         = { 150, 200, 3.0, 1.0 },
 }
 
+local M = {}
+
 local GOLD_COLOR = "#ffd35a"
 local ITEM_COLOR = "#8fe3a0"
 
@@ -38,7 +40,7 @@ local function roll_count(p)
   return n
 end
 
-local function pay(kind, id)
+function M.pay(kind, id, x, y, z)
   local entry = TABLE[kind]
   if not entry then return end
   -- Elites (lib/fsm.lua regista-os): ouro ×3, poção garantida e chance de
@@ -50,10 +52,14 @@ local function pay(kind, id)
     elites[id] = nil
     entry = { entry[1] * 3, entry[2] * 3, entry[3] + 1, entry[4] }
   end
-  local ok, x, y, z = viber.entity_position(id)
-  if not ok then
-    local _, px, py, pz = viber.player_position()
-    x, y, z = px, py, pz
+  if x == nil then
+    local ok, ex, ey, ez = viber.entity_position(id)
+    if ok then
+      x, y, z = ex, ey, ez
+    else
+      local _, px, py, pz = viber.player_position()
+      x, y, z = px, py, pz
+    end
   end
   local gold = math.random(entry[1], entry[2])
   rules.vault_add("gold", gold)
@@ -82,7 +88,9 @@ end
 function on_update(dt)
   for _, ev in ipairs(viber.events()) do
     if ev.type == "kill" then
-      pay(ev.name, ev.entity)
+      M.pay(ev.name, ev.entity)
     end
   end
 end
+
+return M

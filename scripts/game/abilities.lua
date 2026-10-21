@@ -29,6 +29,9 @@ local PERIOD = { dash = CD_DASH, heal = CD_HEAL, strike = CD_STRIKE }
 -- e o [C]/[R]/[B] saem duas vezes.
 viber.own_system("abilities")
 viber.own_system("bomb")
+-- A guarda [L] também é do jogo: `rules.guard` abre a janela de parry e o
+-- dano dos inimigos passa todo por `rules.damage_player`.
+viber.own_system("guard")
 
 -- O dock do HUD lê `ab.<nome>` (fração em recarga) e `ab.<nome>.ready`
 -- (class-bind que acende o slot) — os `cd.*` nativos ficam a zero com o
@@ -62,13 +65,18 @@ function on_update(dt)
   if viber.menu_open() then
     return
   end
-  local alive, hp = viber.player_hp()
+  local alive, hp = rules.player_hp()
   if alive and hp <= 0 then
     return
   end
   local has, px, py, pz = viber.player_position()
   if not has then
     return
+  end
+
+  -- [L] guarda/parry: janela curta; o dano que chegar nela é aparado.
+  if viber.input.pressed("l") then
+    rules.guard()
   end
 
   -- [C] dash: reto no forward do herói; o teleport assenta o Y.
@@ -90,7 +98,7 @@ function on_update(dt)
   -- Com a vida cheia não gasta a recarga; o número mostra o que CUROU (e
   -- nasce sobre o herói — sem x/y/z saía sobre a entidade controller).
   if viber.input.pressed("e") and st.cd.heal <= 0 and not e_is_interaction() then
-    local _, hp, max_hp = viber.player_hp()
+    local _, hp, max_hp = rules.player_hp()
     local healed = math.min(HEAL_AMOUNT, math.max(0, (max_hp or 0) - (hp or 0)))
     if healed < 1 then
       viber.toast("Vida já está cheia.")

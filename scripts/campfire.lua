@@ -9,7 +9,7 @@ function on_update(dt)
   if viber.menu_open() or not viber.interacted("e") then
     return
   end
-  local ok, hp, max_hp = viber.player_hp()
+  local ok, hp, max_hp = rules.player_hp()
   if ok and hp <= 0 then
     return
   end
@@ -19,5 +19,9 @@ function on_update(dt)
     return
   end
   rules.heal_player(healed)
+  local has, px, py, pz = viber.player_position()
+  if has then
+    rules.set_spawn(px, py, pz)
+  end
   viber.toast("O calor da fogueira restaura " .. math.floor(healed) .. " de vida.")
 end

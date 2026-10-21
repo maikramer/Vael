@@ -1,6 +1,7 @@
 -- enemies/wolf.lua: matilha com aggro-chain, steering e pivô rápido.
 -- Toda a máquina vive em lib/fsm.lua (viber.load) — aqui ficam só os números.
 local fsm = viber.load("lib/fsm.lua").new{
+  kind = "wolf",
   wander = 2.2, chase = 4.6,
   aggro = 11, deaggro = 16,
   range = 1.6, damage = 9, cooldown = 1.2,

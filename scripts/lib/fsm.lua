@@ -67,6 +67,8 @@ local rules = viber.load("lib/rules.lua")
 
 local M = {}
 
+local rules = viber.load("lib/rules.lua")
+
 -- Folga de alcance no impacto (m): o golpe apanha quem estava colado e deu
 -- meio passo; quem recua a sério ou dá dash sai.
 local REACH_SLACK = 0.7
@@ -105,6 +107,8 @@ function M.new(cfg)
   cfg.windup = cfg.windup or 0.45
   cfg.recover = cfg.recover or 0.35
   cfg.radius = cfg.radius or 8
+  cfg.kind = cfg.kind or "creature"
+  cfg.hp = cfg.hp or 100
   if cfg.anti_stuck == nil then cfg.anti_stuck = true end
   if cfg.elite_chance == nil then cfg.elite_chance = cfg.boss and 0 or 0.08 end
 
@@ -340,38 +344,76 @@ function M.new(cfg)
     local x, _, z = viber.position()
     -- Herói caído (à espera do respawn): ninguém morde o cadáver — larga o
     -- golpe em curso e volta ao passeio.
-    local hero_ok, hero_hp = viber.player_hp()
-    if hero_ok and hero_hp <= 0 then
+    local _, hero_hp = rules.player_hp()
+    if hero_hp <= 0 then
       st.phase, st.state, st.aggro_until = nil, "wander", 0
       px, pz = x + 1e4, z + 1e4
     end
 
-    local ok, hp, max = viber.entity_hp()
-    -- Elite: rolado UMA vez por entidade, quando acorda.
-    -- `entity_set_max_hp`/`entity_heal` são comandos: `hp` deste frame ainda
-    -- é o valor antigo. Tratar a diferença como dano fazia o elite nascer
-    -- em flinch (clip `hit` + stagger) e repor `st.hp` no HP pré-boost.
+    local py = select(2, viber.position())
+    local id = viber.self_id()
+    local g = viber.game()
+    g.enemies = g.enemies or {}
+    local now = viber.time()
+    local entry = id and g.enemies[id] or nil
+    -- Save/restart deixa registos velhos: `t` no futuro ou há demasiado tempo.
+    local stale = entry ~= nil
+      and (entry.t == nil or entry.t > now + 1.0 or (now - entry.t) > 5.0)
+    if entry == nil or stale then
+      entry = {
+        kind = cfg.kind, hp = cfg.hp, max = cfg.hp, boss = cfg.boss,
+        x = x, y = py, z = z, fx = 0, fz = 1, t = viber.time(),
+      }
+      st.hp, st.max_hp = entry.hp, entry.max
+      if id then g.enemies[id] = entry end
+    end
+    -- Elite: uma vez por entidade, no primeiro update.
     local promoted = false
-    if ok and st.elite == nil then
+    if st.elite == nil then
       st.elite = cfg.elite_chance > 0 and math.random() < cfg.elite_chance
       if st.elite then
-        local id = viber.self_id()
-        viber.entity_set_max_hp(max * ELITE_HP)
-        viber.entity_heal(max * ELITE_HP)
+        entry.max = entry.max * ELITE_HP
+        entry.hp = entry.max
+        st.hp, st.max_hp = entry.hp, entry.max
         viber.set_scale(ELITE_SCALE)
-        local g = viber.game()
         g.elites = g.elites or {}
         if id then g.elites[id] = true end
-        st.hp = max * ELITE_HP
         promoted = true
       end
     end
-    if ok then
-      if hp <= 0 then return end
-      if not promoted then
-        react_to_damage(st, hp, max)
-        check_enrage(st, hp, max)
+    -- O registro é a fonte da verdade: o melee do jogador escreve `entry.hp`.
+    st.hp, st.max_hp = entry.hp, entry.max
+    entry.kind, entry.boss = cfg.kind, cfg.boss
+    entry.x, entry.y, entry.z = x, py, z
+    entry.fx, entry.fz = (st.hx or 0), (st.hz or 1)
+    entry.t = viber.time()
+    if entry.hp <= 0 then
+      if not st.dead then
+        st.dead = true
+        st.phase, st.state = nil, "dead"
+        viber.play_clip("death", { lock = true })
+        viber.sound("enemy_death")
+        if id and viber.corpse then
+          viber.corpse(id)
+        end
+        rules.award_kill(cfg.kind, id)
+        local loot = viber.load("game/loot.lua")
+        if loot and loot.pay then
+          loot.pay(cfg.kind, id, x, py, z)
+        end
+        if id then
+          viber.after(2.6, function()
+            local gg = viber.game()
+            if gg.enemies then gg.enemies[id] = nil end
+            viber.entity_despawn(id)
+          end)
+        end
       end
+      return
+    end
+    if not promoted then
+      react_to_damage(st, entry.hp, entry.max)
+      check_enrage(st, entry.hp, entry.max)
     end
 
     -- Nominais + taxa de viragem do rig (1.ª vez só; desliga auto-calibração).

@@ -3,6 +3,8 @@ local rules = viber.load("lib/rules.lua")
 -- lib/fsm.lua (viber.load). Especial: GOLPE DE LODO — pancada no chão que
 -- envenena quem ficar na zona (o antídoto [2] ganha uso).
 local fsm = viber.load("lib/fsm.lua").new{
+  kind = "bog-warden",
+  hp = 600,
   intro = "guardiao-lodo", -- cena de despertar (world/cinematics.xml)
   wander = 1.0, chase = 3.0,
   aggro = 13, deaggro = 18,

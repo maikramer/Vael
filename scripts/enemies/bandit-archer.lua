@@ -3,6 +3,7 @@
 -- linha). Colado ao herói recua; encurralado dá com a adaga.
 -- Toda a máquina vive em lib/fsm.lua (viber.load).
 local fsm = viber.load("lib/fsm.lua").new{
+  kind = "bandit-archer",
   wander = 1.6, chase = 3.4,
   aggro = 16, deaggro = 22, -- vê de longe
   range = 1.6, damage = 7, cooldown = 1.5, -- adaga: fraca

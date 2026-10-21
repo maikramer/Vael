@@ -10,7 +10,7 @@ function on_update(dt)
   if viber.menu_open() or not viber.interacted("e") then
     return
   end
-  local ok, hp, max_hp = viber.player_hp()
+  local ok, hp, max_hp = rules.player_hp()
   if ok and hp <= 0 then
     return
   end

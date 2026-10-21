@@ -21,12 +21,12 @@ function on_update(dt)
   if viber.menu_open() or st.cd > 0 or modifier_held() then
     return
   end
-  local alive, hp = viber.player_hp()
+  local alive, hp = rules.player_hp()
   if alive and hp <= 0 then
     return
   end
   if viber.input.pressed("1") then
-    local _, hp, max_hp = viber.player_hp()
+    local _, hp, max_hp = rules.player_hp()
     local healed = math.min(POTION_HEAL, math.max(0, (max_hp or 0) - (hp or 0)))
     if rules.item_count("potion") > 0 and healed < 1 then
       -- Vida cheia: a poção fica no cinto e o [2] não fica bloqueado 1 s.

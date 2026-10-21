@@ -2,6 +2,8 @@
 -- lib/fsm.lua (viber.load). Especial: TREMOR — mergulha e rebenta a areia à
 -- volta; o aviso cobre um círculo largo, sair dele a correr ou com dash.
 local fsm = viber.load("lib/fsm.lua").new{
+  kind = "sand-worm",
+  hp = 500,
   intro = "guardiao-verme", -- cena de despertar (world/cinematics.xml)
   wander = 1.2, chase = 4.0,
   aggro = 12, deaggro = 17,

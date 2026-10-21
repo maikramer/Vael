@@ -12,7 +12,7 @@ function on_update(dt)
   if viber.interacted("e") and not st.read then
     st.read = true
     once.mark()
-    local ok, hp, max_hp = viber.player_hp()
+    local ok, hp, max_hp = rules.player_hp()
     local healed = 40
     if ok then
       healed = math.min(40, math.max(0, (max_hp or 0) - (hp or 0)))

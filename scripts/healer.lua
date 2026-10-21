@@ -10,7 +10,7 @@ function on_update(dt)
     return
   end
   viber.face_player()
-  local ok, hp, max = viber.player_hp()
+  local ok, hp, max = rules.player_hp()
   if ok and hp <= 0 then
     viber.gesture("no")
     viber.toast("“Já não há o que curar.”")
