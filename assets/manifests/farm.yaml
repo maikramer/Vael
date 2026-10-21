@@ -16,18 +16,48 @@ meshes_subdir: meshes/farm
 images_subdir: images/farm
 assets:
   # ── Alvos de recolha ────────────────────────────────────────────────
+  # Par frutífero: a MESMA descrição e o MESMO seed; a única diferença é a
+  # cláusula das bagas. A versão `bare` é a árvore que fica depois da colheita
+  # (o harvest.lua troca uma pela outra), por isso as duas têm de ser a mesma
+  # árvore. Não separar as descrições: é isso que mantém a silhueta alinhada.
   - id: berry_bush
     seed: 51101
     idea:
-      cartoon fantasy berry bush, round leafy green shrub heavy with clusters of
-      ripe red berries, a few berries on the ground at the base, painterly
-      storybook style, three quarter view, white background
+      one single small cartoon fantasy orchard tree, about two meters tall,
+      sturdy short warm brown trunk with two low forked roots gripping the soil,
+      trunk splitting into a few short branches, broad rounded crown of large
+      layered painterly green leaves, dense even canopy covering every branch,
+      many small clusters of glossy ripe red berries hanging between the leaves
+      all around the crown, each berry round with a tiny bright highlight,
+      perfectly centered front view, whole tree visible from roots to crown top,
+      plain pure white background, no ground plane, no grass, no cast shadow,
+      crisp clean silhouette, storybook painterly style, bright cheerful Crystal
+      Vale fantasy game asset
     kind: environment
     category: vegetation
     pipeline: [3d, paint, lod, collision]
     omni:
       control_type: bbox
-      size_m: [1.2, 1.0, 1.2]
+      size_m: [1.2, 1.5, 1.2]
+
+  - id: berry_bush_bare
+    seed: 51101
+    idea:
+      one single small cartoon fantasy orchard tree, about two meters tall,
+      sturdy short warm brown trunk with two low forked roots gripping the soil,
+      trunk splitting into a few short branches, broad rounded crown of large
+      layered painterly green leaves, dense even canopy covering every branch,
+      every branch covered in plain layered green foliage with no berries and no
+      fruit on the tree, perfectly centered front view, whole tree visible from
+      roots to crown top, plain pure white background, no ground plane, no grass,
+      no cast shadow, crisp clean silhouette, storybook painterly style, bright
+      cheerful Crystal Vale fantasy game asset
+    kind: environment
+    category: vegetation
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [1.2, 1.5, 1.2]
 
   - id: ore_vein
     seed: 51107

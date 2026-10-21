@@ -23,6 +23,7 @@ local CATALOG = {
   bomb      = { label = "Comprar bomba",       buy = 40 },
   wood      = { label = "Vender madeira",      sell = 3 },
   stone     = { label = "Vender pedra",        sell = 5 },
+  berry     = { label = "Vender frutas",       sell = 4 },
   -- Loot de quest sem consumidor: SÓ venda, preço por raridade acima do
   -- feito bruto (madeira 3 g / pedra 5 g).
   wolf_pelt      = { label = "Vender pele de lobo",        sell = 15 },
@@ -43,12 +44,14 @@ local function rows()
   for id, entry in pairs(CATALOG) do
     local selling = entry.sell ~= nil
     local stock = rules.vault_get(id)
-    -- status alimenta a classe CSS da linha ({status} no template).
-    local status = "ready"
+    -- status alimenta a classe CSS da linha ({status} no template). As
+    -- classes `buy`/`sell`/`unaffordable` existiam no menu.css mas o script
+    -- só emitia ready/locked: a linha não distinguia comprar de vender.
+    local status
     if selling then
-      if (stock or 0) == 0 then status = "locked" end
-    elseif gold < entry.buy then
-      status = "locked"
+      status = (stock or 0) > 0 and "sell" or "locked"
+    else
+      status = gold >= entry.buy and "buy" or "unaffordable"
     end
     local label = entry.label
     if selling then
