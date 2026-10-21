@@ -24,12 +24,14 @@ Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
 ## Correr
 
 ```bash
+cd ../Viber && ./install.sh                 # uma vez, ou depois de mudar a engine
 cd ../Viber && cargo run -- run ../Vael/world.xml
 cd ../Viber && cargo run -- analyze ../Vael/world.xml   # headless + cobertura
 ```
 
-(ou, com o CLI instalado e o cwd NA pasta do mundo: `viber run` — a
-descoberta procura `world.xml` → `worlds/*.xml`)
+Com o CLI instalado e o cwd nesta pasta: `viber run` (procura `world.xml`).
+Esse binário **não** recompila o irmão `../Viber` — o `./install.sh` é que
+o actualiza. Fluxo completo (LFS, assets, editor): [`AGENTS.md`](AGENTS.md).
 
 ## Estado atual
 

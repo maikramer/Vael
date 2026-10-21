@@ -58,31 +58,19 @@ só gera o que falta — com os binários já presentes, o batch valida e faz sk
 > correto é `../public/assets`; com `public/assets` o resume aponta para
 > `manifests/public/assets`, não encontra nada e marca tudo como `need_image`.
 
-## Como os exemplos consomem isto
+## Como o Vael consome isto
 
-Nos exemplos antigos de browser (motor TS), cada `vite.config.ts` passava o
-pool ao plugin da engine; a semântica era:
+O `config.yaml` do jogo declara `assets.roots: assets/public`. A pasta do
+jogo responde primeiro (overrides); o que faltar vem deste pool. URLs no XML
+ficam `/assets/…`. Detalhe: `../Viber/docs/ASSETS.md`.
 
-- **dev**: o `public/` do próprio exemplo responde primeiro; o que faltar vem do
-  pool. Um jogo pode portanto sobrepor um asset largando um ficheiro com o mesmo
-  caminho no seu `public/`.
-- **build**: o pool é copiado para `dist/assets/`, sem `_intermediate/`.
+Binários versionados (texturas, ícones, BGM, heightmaps, GLBs finais) entram
+por Git LFS. `_intermediate/`, `images/` e `sky/` ficam locais — a receita
+está nos manifests.
 
-Sem symlinks e sem binários duplicados em disco. Não há passo de sync: editar
-aqui chega a todos os exemplos no reload seguinte.
+## O que não vive aqui
 
-**Viber nativo** (`viber run/analyze`): a mesma semântica sem vite — cada
-jogo declara este pool como root extra no seu `config.yaml`
-(`assets.roots`); a pasta do jogo responde primeiro (overrides por-mundo
-ganham). Detalhe e regras: `Viber/docs/ASSETS.md` (o guarda
-`tests/asset_pool_dedup.rs` parte a build de quem recriar cópias por
-exemplo).
-
-## O que **não** vive aqui
-
-Media específico de cada jogo — `icons/`, `particles/`, `terrain/`
-(heightmaps), `world/*.xml`, `data/` — fica no `public/` do respetivo exemplo.
-O áudio ** vive** aqui desde 2026-08 (packs `audio-*`): os jogos referenciam
-`/assets/audio/...` e o plugin serve do pool; para variante própria de um
-jogo, larga um ficheiro com o mesmo caminho no `public/` desse jogo (o
-`public/` local responde primeiro em dev e build).
+O mundo (`world.xml`, `world/**`, `world.data/`, `scripts/`, `quests/`) fica
+na raiz do Vael, não neste pool. Ícones, texturas, áudio e meshes do jogo
+vivem em `public/assets/`. Um override por-mundo é um ficheiro com o mesmo
+caminho na raiz do jogo (a 1.ª asset root).

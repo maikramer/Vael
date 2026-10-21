@@ -66,7 +66,32 @@ na vila. `viber scene lint` valida alvos.
 ```bash
 cd ../Viber && cargo run -- run ../Vael/world.xml
 cd ../Viber && cargo run -- analyze ../Vael/world.xml
-viber run          # com o cwd nesta pasta e o binário no PATH
+viber run          # cwd nesta pasta: binário do PATH, não recompila ../Viber
 ```
 
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
+
+## Fluxo depois da separação
+
+Três checkouts irmãos, cada um com o seu remoto:
+
+| Repo | Papel |
+|------|--------|
+| `Vael` | Mundo, quests, scripts, pool `assets/`. Binários versionados vão em Git LFS |
+| `Viber` | Engine e editor (`editor/`). `./install.sh` põe `viber` em `~/.local/bin` |
+| `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
+
+`viber run` dentro de `Viber/` reconstrói a engine (`cargo run --release`).
+Na pasta do jogo corre o binário do PATH, que não vê o código do irmão.
+Depois de mudar a engine: `cd ../Viber && ./install.sh`. O editor:
+`./install.sh editor`, ou `viber editor world.xml` (acha `../Viber/editor`).
+
+Assets: `cd assets && gameassets resume --profile game.yaml --manifest manifests/<pack>`.
+Output em `assets/public`. Intermediários (`meshes/_intermediate`, imagens de
+trabalho) ficam de fora do git. O que entra no repo (`.ktx2`, `.ogg`, `.png`,
+`.webp`, `.ahgt`, `.vinst`, `.wasm`, `.glb`) é Git LFS — actualizar quando
+um pack muda, não a cada frame de geração.
+
+Cofre, XP e quests vivem em `scripts/lib/rules.lua`. A engine não expõe
+`viber.vault_*` / `viber.add_xp`. O kit inicial (30 ouro, 1 poção) semeia-se
+aí quando o save ainda não tem inventário.

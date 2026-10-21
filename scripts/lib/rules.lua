@@ -322,38 +322,65 @@ function M.vault_get(kind)
   return num("item." .. kind, 0)
 end
 
+-- A engine tirou o cofre da API (`viber.vault_*` / `item_*`). O espelho
+-- só corre quando a função ainda existe; senão o estado em `viber.game()`
+-- é a única fonte.
+local function engine_fn(name)
+  local fn = viber[name]
+  if type(fn) == "function" then
+    return fn
+  end
+  return nil
+end
+
 local function mirror_add(kind, amount)
   if amount <= 0 then
     return
   end
-  echo[kind] = (echo[kind] or 0) + amount
-  if RESOURCES[kind] then
-    viber.vault_add(kind, amount)
-  else
-    viber.item_add(kind, amount)
+  local fn = RESOURCES[kind] and engine_fn("vault_add") or engine_fn("item_add")
+  if not fn then
+    return
   end
+  echo[kind] = (echo[kind] or 0) + amount
+  fn(kind, amount)
 end
 
 local function mirror_take(kind, amount)
-  if amount > 0 then
-    viber.vault_take(kind, amount)
+  local fn = engine_fn("vault_take")
+  if amount > 0 and fn then
+    fn(kind, amount)
   end
 end
 
 function M.pull_engine()
-  if g().eco_pulled == true then
-    return
-  end
-  g().eco_pulled = true
   local tracked = {
     "gold", "wood", "stone", "dark-wood", "bog-moss", "nota",
     "potion", "antidote", "bomb", "korok-seed",
   }
-  for _, kind in ipairs(tracked) do
-    local n = RESOURCES[kind] and (viber.vault_get(kind) or 0) or (viber.item_count(kind) or 0)
-    if n > 0 then
-      g()["item." .. kind] = n
+  local vault_get = engine_fn("vault_get")
+  local item_count = engine_fn("item_count")
+  if g().eco_pulled ~= true then
+    g().eco_pulled = true
+    if vault_get or item_count then
+      for _, kind in ipairs(tracked) do
+        local fn = RESOURCES[kind] and vault_get or item_count
+        if fn then
+          local n = fn(kind) or 0
+          if n > 0 then
+            g()["item." .. kind] = n
+          end
+        end
+      end
+      return
     end
+  end
+  -- Sem leitura do cofre nativo. Kit de arranque (economy::STARTING_GOLD /
+  -- STARTING_POTIONS) quando o save ainda não gravou estas chaves — um 0
+  -- explícito (ouro gasto) não volta a encher.
+  if not vault_get and not item_count
+      and g()["item.gold"] == nil and g()["item.potion"] == nil then
+    g()["item.gold"] = 30
+    g()["item.potion"] = 1
   end
 end
 
@@ -409,8 +436,9 @@ function M.add_xp(gain, mirror)
   end
   -- `false` = a engine já creditou este ganho (abate do melee). O resto
   -- (baú, marco, colheita) também sobe o XP que dá pontos de talento.
-  if mirror ~= false then
-    viber.add_xp(math.floor(gain))
+  local add_xp = engine_fn("add_xp")
+  if mirror ~= false and add_xp then
+    add_xp(math.floor(gain))
   end
   ensure_xp()
   local game = g()
@@ -430,8 +458,12 @@ function M.add_skill_points(n)
   end
   ensure_xp()
   g().skill_points = num("skill_points", 0) + n
-  -- O ponto visível no HUD é o das regras; o botão Aprender gasta o da engine.
-  viber.add_skill_points(math.floor(n))
+  -- O HUD e o diário gastam `viber.game().skill_points`. O espelho nativo
+  -- só existe se a engine ainda expuser a função.
+  local add_points = engine_fn("add_skill_points")
+  if add_points then
+    add_points(math.floor(n))
+  end
 end
 
 function M.reveal_biome(name)
@@ -540,7 +572,8 @@ function M.tick(dt)
       viber.sound("enemy_death")
     elseif ev.type == "hit" then
       if ev.faction == "player" then
-        viber.entity_damage(ev.entity, ev.amount or 0)
+        -- Assinatura: amount, id. Trocar os args aplicava o id como dano.
+        viber.entity_damage(ev.amount or 0, ev.entity)
         if ev.x then
           viber.damage_number("-" .. tostring(math.floor(ev.amount or 0)), {
             x = ev.x, y = (ev.y or 0) + 1.8, z = ev.z, color = "#8cd9ff",
@@ -645,7 +678,6 @@ function M.publish()
   viber.ui.set("ab.heal.ready", true)
   viber.ui.set("ab.strike", 0)
   viber.ui.set("ab.strike.ready", true)
-  viber.ui.set("prompt.active", false)
 end
 
 return M

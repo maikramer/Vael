@@ -1,4 +1,4 @@
-# CONTEXT.md — examples/simple-rpg
+# CONTEXT.md — Vael
 
 O mundo que valida a engine de ponta a ponta: port do exemplo original
 (motor TS), convertido uma única vez por um script de migração (já removido).
