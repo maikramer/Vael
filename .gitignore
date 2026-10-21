@@ -1,0 +1,18 @@
+# Shaders especializados, reescritos por `viber run`.
+shaders/
+
+# Backups locais e lixo de agente.
+*.bak
+.omo/
+.claude/
+logs/
+__pycache__/
+
+# Pool: binários grandes ficam locais; manifests versionam a receita.
+# (espelho de assets/.gitignore, para quem clona só a raiz)
+assets/public/assets/meshes/
+assets/public/assets/images/
+assets/public/assets/sky/
+assets/public/assets/audio/sfx/
+assets/__pycache__/
+**/__pycache__/

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<world static="true">
+  <UiStyle src="ui/menu.css" />
+  <UiRoot id="explore" script="ui/map.lua">
+    <UiModal id="region-map" class="overlay">
+      <UiColumn class="frame">
+        <UiText class="frame-title">MAPA</UiText>
+        <UiList class="rows" bind="region-map" scroll="y">
+          <UiTemplate>
+            <UiButton id="pin-{id}" class="row {status}">
+              <UiText class="row-title">{label}</UiText>
+              <UiSpacer />
+              <UiText class="row-note">{biome} · {distance}</UiText>
+            </UiButton>
+          </UiTemplate>
+          <UiEmpty>
+            <UiText class="empty">Nenhum marco cartografado.</UiText>
+          </UiEmpty>
+        </UiList>
+      </UiColumn>
+    </UiModal>
+    <UiModal id="travel" class="overlay">
+      <UiColumn class="frame">
+        <UiText class="frame-title">VIAGEM</UiText>
+        <UiList class="rows" bind="travel" scroll="y">
+          <UiTemplate>
+            <UiButton id="go-{id}" class="row {status}">
+              <UiText class="row-title">{label}</UiText>
+              <UiSpacer />
+              <UiText class="row-note">{distance}</UiText>
+            </UiButton>
+          </UiTemplate>
+          <UiEmpty>
+            <UiText class="empty">Assina um marco com [F] para viajar até lá.</UiText>
+          </UiEmpty>
+        </UiList>
+      </UiColumn>
+    </UiModal>
+  </UiRoot>
+</world>
