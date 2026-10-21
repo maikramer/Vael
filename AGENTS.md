@@ -71,6 +71,13 @@ viber run          # cwd nesta pasta: binário do PATH, não recompila ../Viber
 
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
 
+Profiling sem screenshots (engine com `--bridge`): `viber debug prof --tab
+frames` (frame/p95/topo/hitches), `--hitches` (picos com atribuição),
+`--record 30 --hz 2 -o perf.jsonl` (série + resumo), `viber debug trace 10
+-o trace.json` (Perfetto) / `--status` / `--stop`, e `viber debug mark "…"`
+para correlacionar. No jogo: **P → FRAMES** e o overlay **F3** (p95, topo,
+hitches, RSS). Detalhe: `../Viber/docs/PERFORMANCE.md`.
+
 ## Fluxo depois da separação
 
 Três checkouts irmãos, cada um com o seu remoto:

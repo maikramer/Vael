@@ -33,12 +33,34 @@ Com o CLI instalado e o cwd nesta pasta: `viber run` (procura `world.xml`).
 Esse binário **não** recompila o irmão `../Viber` — o `./install.sh` é que
 o actualiza. Fluxo completo (LFS, assets, editor): [`AGENTS.md`](AGENTS.md).
 
+## Profiling (sem screenshots)
+
+Com a engine viva (`viber run --bridge`), o CLI responde ao ciclo completo:
+
+```bash
+viber debug prof --tab frames              # frame avg/p95/max, topo, hitches, memória
+viber debug prof --hitches                 # cada engasgo + o sistema que o causou
+viber debug prof --record 30 --hz 2 -o perf.jsonl   # série + resumo
+viber debug trace 10 -o trace.json         # Perfetto (chrome://tracing / ui.perfetto.dev)
+viber debug trace --seconds 0              # gravação manual…
+viber debug mark "entrei na vila"          # …com marcas no trace
+viber debug trace --stop -o trace.json
+```
+
+O `trace` imprime o resumo analítico (p50/p95/p99, frames acima do orçamento,
+top sistemas por total e por pico, hitches e contadores) e o ficheiro abre em
+Perfetto. No jogo, **P → FRAMES** mostra a mesma série, os hitches e os
+botões TRAÇAR/PARAR/EXPORTAR; **F3** passou a incluir p95, topo do frame,
+hitches e RSS. Limiar de hitch: `VIBER_HITCH_MS` (default 50 ms).
+
 ## Estado atual
 
-Jogável de ponta a ponta: **player** com combate melee ([J]/clique, alvo [V],
-dash [C], golpe radial [R], bomba [B], guard [L], talentos com [Q]→Talentos),
+Jogável de ponta a ponta: **player** com combate melee ([J]/clique, alvo [V]
+ou ação `lock` — [Z]/gamepad, dash [C], golpe radial [R], bomba [B], guard
+[L], talentos com [Q]→Talentos),
 **27 quests** (JSON em `quests/`, diálogo [E] com os NPCs, tracker no HUD,
-bounties no notice-board), **economia** (vault gold/wood/stone, colheita de
+bounties no notice-board; os NPCs ambientais usam grafos em
+`dialogues/*.json`), **economia** (vault gold/wood/stone, colheita de
 árvores/pedras, loja no diário [Q]→Loja — falar com o Bram [E] abre-a —,
 hotbar [1]/[2], despojos de ouro/poções nos abates), **travel** (A Nota —
 12 marcos para assinar com [F], viagem rápida [G] nas fogueiras, seta de
@@ -46,7 +68,7 @@ waypoint), **save/load** (menu [Q]→Sistema: [J] grava, [L] carrega; JSON em
 `~/.local/share/viber/`), **mundo vivo** (céu procedural + ciclo dia/noite,
 clima, fog/tint por BiomeRegion, BGM com crossfade por zona, SFX, emissores
 de partícula) e **física** (character controller cinemático, knockback,
-destrutíveis que tombam). Os ~46 scripts Luau em `scripts/` (inimigos,
+destrutíveis que tombam, ragdoll nos chefes). Os ~46 scripts Luau em `scripts/` (inimigos,
 bosses, colheita, POIs, HUD) correm via a API `viber.*` com "LOD de IA" —
 além do raio de ativação (default 45 m) o `on_update` nem corre — e têm
 hot-reload ao gravar. A referência da API está em `Viber/docs/LUA_API.md`.
