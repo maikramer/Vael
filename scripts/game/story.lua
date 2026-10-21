@@ -28,6 +28,26 @@ local function notes_found(g)
   return n
 end
 
+-- O abate chega do FSM (regra do jogo) via `rules.award_kill`; não há
+-- evento global de kill na engine.
+rules.on_kill = function(kind)
+  local g = viber.game()
+  if not GUARDIANS[kind] or g["nota_" .. kind] then
+    return
+  end
+  g["nota_" .. kind] = true
+  rules.item_add("nota", 1)
+  local n = notes_found(g)
+  -- O abate pode chegar durante a troca de cena: sem player não há burst.
+  local has, x, y, z = viber.player_position()
+  if has then
+    viber.burst("sparkle", x, y + 1.2, z, 40)
+    viber.ring(x, z, 4, "#9fd8ff")
+  end
+  viber.toast(GUARDIANS[kind] .. " recuperada (" .. n .. "/4)")
+  viber.cinematic("nota")
+end
+
 function on_update(dt)
   local g = viber.game()
   local st = viber.state()
@@ -47,16 +67,7 @@ function on_update(dt)
   end
 
   for _, ev in ipairs(viber.events()) do
-    if ev.type == "kill" and GUARDIANS[ev.name] and not g["nota_" .. ev.name] then
-      g["nota_" .. ev.name] = true
-      rules.item_add("nota", 1)
-      local n = notes_found(g)
-      local _, x, y, z = viber.player_position()
-      viber.burst("sparkle", x, y + 1.2, z, 40)
-      viber.ring(x, z, 4, "#9fd8ff")
-      viber.toast(GUARDIANS[ev.name] .. " recuperada (" .. n .. "/4)")
-      viber.cinematic("nota")
-    elseif ev.type == "cinematic_end" and ev.id == "prologo" then
+    if ev.type == "cinematic_end" and ev.id == "prologo" then
       viber.toast("Fala com o Ancião Edmar, no salão comunal.")
     end
   end

@@ -15,7 +15,6 @@ local rules = viber.load("lib/rules.lua")
 
 local VERTICAL = 2.5
 local CYCLE_RANGE = 14
-local LOCK_RANGE = 3.6
 local MELEE_RANGE = 3.0
 local FINISHER_RANGE = 3.5
 local ATTACK_ARC = 0.0
@@ -61,6 +60,19 @@ local function combo_mult(hits)
   return 1.0 + math.min(hits * COMBO_PER_HIT, COMBO_CAP)
 end
 
+-- O HUD lê `combo`/`combo.text`, mas ninguém os escrevia desde que o combo
+-- passou para Lua: a coluna e a animação `shake` nunca apareciam.
+local function publish_combo(st)
+  local n = st.combo_hits or 0
+  local text = n > 0 and (n .. " HITS") or ""
+  if st.combo_text == text then
+    return
+  end
+  st.combo_text = text
+  viber.ui.set("combo", n > 0)
+  viber.ui.set("combo.text", text)
+end
+
 local function show_target(kind, hp, max_hp)
   viber.ui.set("target.name", kind or "")
   if max_hp and max_hp > 0 then
@@ -97,7 +109,13 @@ local function start_swing(st)
   if pid then
     viber.play_clip(clip, { speed = ATTACK_SPEED, id = pid })
   end
-  viber.sound("whoosh")
+  -- O controller vive na origem: sem posição o whoosh tocava a 40+ m.
+  local has, px, py, pz = viber.player_position()
+  if has then
+    viber.sound("whoosh", { x = px, y = py, z = pz })
+  else
+    viber.sound("whoosh")
+  end
 end
 
 local function resolve_swing(st, sw)
@@ -163,7 +181,8 @@ local function resolve_swing(st, sw)
   if hits > 0 then
     st.combo_hits = (st.combo_hits or 0) + hits
     st.combo_window = COMBO_WINDOW
-    viber.sound("hit")
+    publish_combo(st)
+    viber.sound("hit", { x = px, y = py, z = pz })
     viber.hit_stop(kill_any and 0.09 or (crit_any and 0.07 or 0.05))
     viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))
     viber.punch(crit_any and 0.09 or 0.06, 0.02)
@@ -184,8 +203,9 @@ function on_update(dt)
     st.chain_step = 0
   end
   st.combo_window = math.max(0, (st.combo_window or 0) - dt)
-  if st.combo_window <= 0 then
+  if st.combo_window <= 0 and (st.combo_hits or 0) > 0 then
     st.combo_hits = 0
+    publish_combo(st)
   end
   st.buffer_t = math.max(0, (st.buffer_t or 0) - dt)
   if st.buffer_t <= 0 then
@@ -193,6 +213,11 @@ function on_update(dt)
   end
 
   if viber.menu_open() then
+    -- Um golpe pendente não pode aterrar depois de fechar o menu, muito
+    -- depois da animação/posição que o originou.
+    st.swing = nil
+    st.buffer_queued = false
+    st.buffer_t = 0
     return
   end
   local alive, hp = rules.player_hp()
@@ -206,10 +231,11 @@ function on_update(dt)
   if alive and st.last_hp and hp < st.last_hp then
     st.combo_hits = 0
     st.combo_window = 0
+    publish_combo(st)
   end
   st.last_hp = hp
 
-  -- ── barra de alvo + lock-on (o [V] ou a ação nativa `lock`) ──
+  -- ── barra de alvo (o [V] ou a ação nativa `lock`) ──
   local has, _, py, _ = viber.player_position()
   if has then
     local list = rules.hostiles(CYCLE_RANGE) or {}
@@ -224,9 +250,6 @@ function on_update(dt)
     if lock_pressed then
       if #ids == 0 then
         st.target = nil
-        if viber.lock_target then
-          viber.lock_target(nil)
-        end
       else
         local at = 1
         for i, h in ipairs(ids) do
@@ -236,9 +259,6 @@ function on_update(dt)
           end
         end
         st.target = ids[at].id
-        if viber.lock_target then
-          viber.lock_target(st.target)
-        end
       end
     end
     local shown

@@ -3,10 +3,9 @@ local rules = viber.load("lib/rules.lua")
 -- reclama os sistemas nativos [C]/[E]/[R] e [B] (`viber.own_system`) — os
 -- handlers da engine calam — e reimplementa-os sobre a API genérica:
 --
---   [C] dash     → player_forward + push_player (colide; i-frames) + FOV kick
+--   [C] dash     → player_forward + push_player (colide) + grant_iframes + FOV kick
 --   [E] cura     → heal_player + número flutuante
---   [R] radial   → radial_damage (falloff + knockback + morte com paridade
---                  nativa) + anel fino da zona e um shake curto
+--   [R] radial   → rules.radial_damage (falloff + knockback) + anel e shake
 --   [B] bomba    → vault_take + spawn_prototype do `<Prototype id="bomb-lua">`
 --                  (o script da bomba detona: ver game/bomb-lua.lua)
 --
@@ -83,13 +82,13 @@ function on_update(dt)
   if viber.input.pressed("c") and st.cd.dash <= 0 then
     st.cd.dash = CD_DASH
     local fx, fz = viber.player_forward()
-    viber.face_player()
+    -- Sem `face_player()`: o controller roda-se a si próprio, não o herói.
     -- Pelo character controller: colide com muros (o teleporte atravessava
     -- a muralha) e dá i-frames durante a rajada.
-    viber.push_player(fx * DASH_DISTANCE, fz * DASH_DISTANCE, DASH_IFRAMES)
+    viber.push_player(fx * DASH_DISTANCE, fz * DASH_DISTANCE)
     rules.grant_iframes(DASH_IFRAMES)
     viber.fov_kick(8)
-    viber.sound("dash")
+    viber.sound("dash", { x = px, y = py, z = pz })
     viber.burst("ground-dust", px, py + 0.2, pz, 10)
   end
 
@@ -105,7 +104,7 @@ function on_update(dt)
     else
       st.cd.heal = CD_HEAL
       rules.heal_player(healed)
-      viber.sound("heal")
+      viber.sound("heal", { x = px, y = py, z = pz })
       viber.burst("sparkle", px, py + 1.0, pz, 14)
       viber.damage_number("+" .. math.floor(healed) .. " HP", { color = "#7ef29d", x = px, y = py + 2.0, z = pz })
     end
@@ -114,16 +113,15 @@ function on_update(dt)
   -- [R] golpe radial com juice completo (valores do nativo).
   if viber.input.pressed("r") and st.cd.strike <= 0 then
     st.cd.strike = CD_STRIKE
-    viber.face_player()
-    viber.radial_damage(px, pz, STRIKE_RADIUS, STRIKE_DAMAGE, { knockback = STRIKE_KNOCKBACK })
+    rules.radial_damage(px, pz, STRIKE_RADIUS, STRIKE_DAMAGE, STRIKE_KNOCKBACK)
     viber.burst("sparks", px, py + 1.0, pz, 6)
     viber.ring(px, pz, STRIKE_RADIUS)
     viber.shake(0.22)
     viber.kick(0, 0.35, 0)
     viber.hit_stop(0.07)
     viber.punch(0.12, 0.04)
-    viber.sound("whoosh")
-    viber.sound("hit")
+    viber.sound("whoosh", { x = px, y = py, z = pz })
+    viber.sound("hit", { x = px, y = py, z = pz })
   end
 
   -- [B] bomba: larga o prototype à frente (detona com fuse — bomb-lua.lua).
@@ -137,10 +135,10 @@ function on_update(dt)
       viber.spawn_prototype("bomb-lua", px + fx * BOMB_LAUNCH_DISTANCE, pz + fz * BOMB_LAUNCH_DISTANCE, {
         y = py + 1.1,
       })
-      viber.sound("bomb_drop")
+      viber.sound("bomb_drop", { x = px, y = py, z = pz })
     else
       viber.toast("Sem bombas — compra ao mercador.")
-      viber.sound("error")
+      viber.sound("error", { x = px, y = py, z = pz })
     end
   end
 end

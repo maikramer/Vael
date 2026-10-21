@@ -4,6 +4,10 @@
 
 local M = {}
 
+-- Declarada cedo (a definição vem mais abaixo) para os handlers de quest
+-- poderem tocar o som no herói e não na origem do controller.
+local sound_at_player
+
 local QUEST_FILES = {
   "quests/city_quests.json",
   "quests/dark_forest_quests.json",
@@ -32,9 +36,6 @@ local SKILL_IDS = {
   "vitality2", "strength2", "agility2", "precision2",
 }
 local REVEAL_SECS = 2.5
--- Veneno gravado no save: empurra-se UMA vez para a engine por sessão.
--- (A flag em viber.game() sobreviveria ao load e nunca reaplicava.)
-local venom_pushed = false
 -- `vault_add` espelha na engine, e a engine devolve um evento `collect`.
 -- Sem este crédito o mesmo monte entrava outra vez no cofre do jogo.
 local echo = {}
@@ -43,9 +44,15 @@ local function g()
   return viber.game()
 end
 
+-- NaN/±inf não são números úteis: um save corrompido não pode envenenar a
+-- economia nem o HP para sempre.
+local function finite(v)
+  return type(v) == "number" and v == v and v ~= math.huge and v ~= -math.huge
+end
+
 local function num(key, default)
   local v = g()[key]
-  if type(v) ~= "number" then
+  if not finite(v) then
     return default or 0
   end
   return v
@@ -53,22 +60,36 @@ end
 
 local function ensure_xp()
   local game = g()
-  if type(game.xp) ~= "number" then game.xp = 0 end
-  if type(game.xp_next) ~= "number" or game.xp_next < 1 then game.xp_next = 100 end
-  if type(game.level) ~= "number" or game.level < 1 then game.level = 1 end
-  if type(game.skill_points) ~= "number" then game.skill_points = 0 end
+  if not finite(game.xp) then game.xp = 0 end
+  if not finite(game.xp_next) or game.xp_next < 1 then game.xp_next = 100 end
+  if not finite(game.level) or game.level < 1 then game.level = 1 end
+  if not finite(game.skill_points) then game.skill_points = 0 end
+end
+
+-- O save é JSON PLANO: uma tabela `spawn_pos` era descartada em silêncio e o
+-- jogador renascia onde carregou, não no último descanso. Guardam-se três
+-- números; a tabela antiga ainda é lida para migrar saves da mesma sessão.
+local function stored_spawn(game)
+  if finite(game.spawn_x) and finite(game.spawn_y) and finite(game.spawn_z) then
+    return { x = game.spawn_x, y = game.spawn_y, z = game.spawn_z }
+  end
+  local s = game.spawn_pos
+  if type(s) == "table" and finite(s.x) and finite(s.y) and finite(s.z) then
+    return { x = s.x, y = s.y, z = s.z }
+  end
+  return nil
 end
 
 -- HP do herói vive no JOGO (`viber.game()`), não em `Health` da engine.
 local function ensure_hp()
   local game = g()
-  if type(game.max_hp) ~= "number" or game.max_hp < 1 then game.max_hp = 100 end
-  if type(game.hp) ~= "number" then game.hp = game.max_hp end
+  if not finite(game.max_hp) or game.max_hp < 1 then game.max_hp = 100 end
+  if not finite(game.hp) then game.hp = game.max_hp end
   if game.hp > game.max_hp then game.hp = game.max_hp end
-  if not game.spawn_pos then
+  if not stored_spawn(game) then
     local has, x, y, z = viber.player_position()
-    if has then
-      game.spawn_pos = { x = x, y = y, z = z }
+    if has and finite(x) and finite(y) and finite(z) then
+      game.spawn_x, game.spawn_y, game.spawn_z = x, y, z
     end
   end
 end
@@ -103,8 +124,9 @@ local function learned_stats()
 end
 
 function M.set_spawn(x, y, z)
-  if x and y and z then
-    g().spawn_pos = { x = x, y = y, z = z }
+  if finite(x) and finite(y) and finite(z) then
+    local game = g()
+    game.spawn_x, game.spawn_y, game.spawn_z = x, y, z
   end
 end
 
@@ -163,7 +185,8 @@ function M.quest_progress(id)
   local def = find_def(id)
   local need = 1
   if def and def.objective and def.objective.count then
-    need = def.objective.count
+    -- `count: 0`/ausente não pode dividir por zero no HUD.
+    need = math.max(1, math.floor(tonumber(def.objective.count) or 1))
   end
   return num("q." .. id .. ".n", 0), need
 end
@@ -194,7 +217,7 @@ local function mark_ready(def)
   if progress_of(def.id) >= need and M.quest_state(def.id) == "active" then
     g()[qkey(def.id)] = "ready"
     viber.toast("Objetivo completo: " .. (def.title or def.id))
-    viber.sound("notification")
+    sound_at_player("notification")
   end
 end
 
@@ -217,7 +240,7 @@ function M.quest_accept(id)
   set_progress(id, 0)
   clear_visits(def)
   viber.toast("Quest aceite: " .. (def.title or id))
-  viber.sound("quest_accept")
+  sound_at_player("quest_accept")
   M.sync_collect()
   return true
 end
@@ -266,7 +289,7 @@ function M.quest_turn_in(id)
   grant_rewards(def)
   local gold = (def.rewards or {}).gold or 0
   viber.toast("Quest entregue: " .. (def.title or id) .. (gold > 0 and (" (+" .. gold .. " ouro)") or ""))
-  viber.sound("quest_complete")
+  sound_at_player("quest_complete")
   return true
 end
 
@@ -385,6 +408,9 @@ function M.sync_collect()
 end
 
 function M.vault_get(kind)
+  if not kind or kind == "" then
+    return 0
+  end
   return num("item." .. kind, 0)
 end
 
@@ -420,7 +446,7 @@ end
 function M.pull_engine()
   local tracked = {
     "gold", "wood", "stone", "dark-wood", "bog-moss", "nota",
-    "potion", "antidote", "bomb", "korok-seed",
+    "potion", "antidote", "bomb", "korok-seed", "berry",
   }
   local vault_get = engine_fn("vault_get")
   local item_count = engine_fn("item_count")
@@ -451,7 +477,7 @@ end
 
 function M.vault_add(kind, amount, mirror)
   amount = amount or 1
-  if type(amount) ~= "number" or amount ~= amount or amount <= 0 or not kind or kind == "" then
+  if not finite(amount) or amount <= 0 or not kind or kind == "" then
     return 0
   end
   local key = "item." .. kind
@@ -472,7 +498,7 @@ end
 
 function M.vault_take(kind, amount)
   amount = amount or 1
-  if type(amount) ~= "number" or amount ~= amount or amount <= 0 then
+  if not kind or kind == "" or not finite(amount) or amount <= 0 then
     return false
   end
   local key = "item." .. kind
@@ -496,7 +522,7 @@ end
 
 function M.add_xp(gain, mirror)
   gain = gain or 0
-  if gain <= 0 then
+  if not finite(gain) or gain <= 0 then
     return
   end
   -- `false` = a engine já creditou este ganho (abate do melee). O resto
@@ -554,18 +580,14 @@ end
 -- Registro vivo dos hostis: cada script de criatura mantém
 -- `viber.game().enemies[id]` (kind/hp/max/pos/forward/t). O jogador lê daqui;
 -- a engine não tem lista de hostis nem Health.
-function M.hostiles(range)
-  ensure_hp()
+-- Hostis a `range` de um PONTO (o centro da explosão, não o herói).
+function M.hostiles_near(cx, cz, range)
   local game = g()
-  local ok, px, py, pz = viber.player_position()
-  if not ok then
-    return {}
-  end
   local now = viber.time()
   local out = {}
   for id, e in pairs(game.enemies or {}) do
-    if (e.hp or 0) > 0 and e.t and e.t <= now and (now - e.t) < 1.0 then
-      local dx, dz = (e.x or px) - px, (e.z or pz) - pz
+    if type(id) == "number" and (e.hp or 0) > 0 and e.t and e.t <= now and (now - e.t) < 1.0 then
+      local dx, dz = (e.x or cx) - cx, (e.z or cz) - cz
       local dist = math.sqrt(dx * dx + dz * dz)
       if dist <= (range or 2.4) then
         out[#out + 1] = {
@@ -583,21 +605,66 @@ function M.hostiles(range)
   return out
 end
 
+function M.hostiles(range)
+  ensure_hp()
+  local ok, px, _, pz = viber.player_position()
+  if not ok then
+    return {}
+  end
+  return M.hostiles_near(px, pz, range)
+end
+
 function M.damage_enemy(id, amount)
   ensure_hp()
   local e = (g().enemies or {})[id]
   if not e or (e.hp or 0) <= 0 then
     return false, e
   end
-  e.hp = math.max(0, e.hp - (amount or 0))
+  if not finite(amount) or amount < 0 then
+    amount = 0
+  end
+  e.hp = math.max(0, e.hp - amount)
   return e.hp <= 0, e
 end
 
+-- Dano em área do JOGO: falloff linear (cheio → metade na borda), knockback
+-- e números. A morte é decidida pelo script da criatura no frame seguinte.
+function M.radial_damage(x, z, radius, damage, knockback)
+  local hits = 0
+  -- A busca E o falloff medem-se do centro da explosão. Antes usavam
+  -- `h.distance` (distância ao herói): a bomba largada à frente atingia
+  -- inimigos atrás do jogador e ignorava os que estavam na borda real.
+  for _, h in ipairs(M.hostiles_near(x, z, radius)) do
+    local dx, dz = (h.x or x) - x, (h.z or z) - z
+    local dist = math.sqrt(dx * dx + dz * dz)
+    local falloff = 1.0 - 0.5 * (dist / math.max(radius, 1e-3))
+    local dmg = (damage or 0) * falloff
+    M.damage_enemy(h.id, dmg)
+    if viber.hit_flash then
+      viber.hit_flash(h.id)
+    end
+    if knockback and knockback > 0 and viber.entity_knockback then
+      local len = math.sqrt(dx * dx + dz * dz)
+      if len > 1e-3 then
+        viber.entity_knockback(h.id, dx / len, dz / len, knockback * falloff)
+      end
+    end
+    viber.damage_number("-" .. math.floor(dmg), {
+      color = "#ffd35a", x = h.x, y = (h.y or 0) + 1.6, z = h.z,
+    })
+    hits = hits + 1
+  end
+  return hits
+end
+
+-- Gate de chefe: lê o REGISTO inteiro (sem o filtro de frescura de
+-- `hostiles`, que só via criaturas perto do herói e deixava o gate abrir
+-- com os guardiões vivos longe do LOD).
 function M.alive_in_region(idx)
-  local list = M.hostiles(4000)
   local n = 0
-  for _, h in ipairs(list) do
-    if region_of(h.x or 0, h.z or 0) == idx and (h.hp or 0) > 0 then
+  for id, e in pairs(g().enemies or {}) do
+    if type(id) == "number" and (e.hp or 0) > 0
+        and region_of(e.x or 0, e.z or 0) == idx then
       n = n + 1
     end
   end
@@ -639,57 +706,104 @@ end
 local GUARD_SECS = 0.5
 local PARRY_WINDOW = 0.2
 local GUARD_REDUCTION = 0.25
+-- Timers de SESSÃO, não de save: `viber.time()` recomeça em 0 e um
+-- `guard_until` gravado deixava o herói invencível (parry eterno) até o
+-- relógio novo alcançar o timestamp antigo.
+local guard_until, guard_start, guard_lock = 0, nil, 0
 
 function M.guard()
-  local game = g()
-  game.guard_until = viber.time() + GUARD_SECS
-  game.guard_start = viber.time()
+  local now = viber.time()
+  if now < guard_lock then
+    return
+  end
+  guard_until, guard_start = now + GUARD_SECS, now
 end
 
 local function guarding()
-  return viber.time() < (g().guard_until or 0)
+  return viber.time() < guard_until
 end
 
+-- Números/SFX sobre o HERÓI. O host das regras vive em (0, 38.73, 0):
+-- sem x/y/z o dano e o som apareciam na origem do mundo.
+function sound_at_player(name)
+  local has, x, y, z = viber.player_position()
+  if has then
+    viber.sound(name, { x = x, y = y, z = z })
+  else
+    viber.sound(name)
+  end
+end
+
+local function player_fx(text, color, sfx)
+  local has, x, y, z = viber.player_position()
+  local opts = { color = color }
+  if has then
+    opts.x, opts.y, opts.z = x, y + 2.0, z
+  end
+  viber.damage_number(text, opts)
+  if sfx then
+    sound_at_player(sfx)
+  end
+end
+
+local function start_death(game)
+  if num("dying", 0) > 0 then
+    return
+  end
+  game.dying = 2.2
+  local id = viber.player_id()
+  if id then
+    viber.play_clip("death", { id = id })
+  end
+  sound_at_player("game_over")
+end
+
+-- Devolve true só quando o dano ENTROU: os `on_attack`/`on_hit` das
+-- criaturas (veneno) não podem disparar contra um parry/i-frame.
 function M.damage_player(amount)
   if num("iframes", 0) > 0 or num("dying", 0) > 0 then
-    return
+    return false
   end
   ensure_hp()
   local game = g()
   amount = math.max(0, amount or 0)
-  if guarding() and amount > 0 then
-    local parried = viber.time() - (game.guard_start or 0) <= PARRY_WINDOW
+  if not finite(amount) or amount <= 0 then
+    return false
+  end
+  local now = viber.time()
+  if guarding() then
+    local parried = guard_start and (now - guard_start) <= PARRY_WINDOW
     if parried then
-      -- Aparo: o golpe não entra e o herói ganha um instante de i-frames.
+      -- Aparo: o golpe não entra. Larga a guarda e trava o [L] por
+      -- GUARD_SECS — bater L em cadência anulava todo o dano para sempre.
+      guard_until, guard_start = 0, nil
+      guard_lock = now + GUARD_SECS
       game.iframes = math.max(num("iframes", 0), 0.25)
       viber.toast("ESQUIVA")
-      viber.sound("block")
-      viber.damage_number("ESQUIVA", { color = "#9fd8ff" })
-      return
+      player_fx("ESQUIVA", "#9fd8ff", "block")
+      return false
     end
     amount = amount * GUARD_REDUCTION
     viber.toast("Bloqueaste")
-    viber.sound("block")
+    sound_at_player("block")
   end
   game.hp = math.max(0, game.hp - amount)
-  viber.damage_number("-" .. math.floor(amount), { color = "#ff6b6b" })
-  viber.sound("hurt")
+  player_fx("-" .. math.floor(amount), "#ff6b6b", "hurt")
   viber.shake(0.18)
   game.iframes = 0.35
   if game.hp <= 0 then
-    game.dying = 2.2
-    local id = viber.player_id()
-    if id then
-      viber.play_clip("death", { id = id })
-    end
-    viber.sound("game_over")
+    start_death(game)
   end
+  return true
 end
 
 function M.heal_player(amount)
   ensure_hp()
+  if not finite(amount) or amount <= 0 then
+    return
+  end
   local game = g()
-  game.hp = math.min(game.max_hp, game.hp + math.max(0, amount or 0))
+  game.hp = math.min(game.max_hp, game.hp + amount)
 end
 
 function M.grant_iframes(secs)
@@ -719,14 +833,23 @@ function M.tick(dt)
   local game = g()
   game.iframes = math.max(0, num("iframes", 0) - dt)
 
-  -- Veneno: 4 dps, tick de 1 s (antes era a engine).
+  -- Veneno: 4 dps, tick de 1 s. Não corre durante a morte (o cadáver ficava
+  -- a 0 HP sem `dying` e nenhum caminho o curava/matava) e um frame longo
+  -- aplica TODOS os ticks devidos, não só um.
   if num("venom", 0) > 0 then
     game.venom = math.max(0, game.venom - dt)
-    game.venom_tick = (game.venom_tick or 0) + dt
-    if game.venom_tick >= 1.0 then
-      game.venom_tick = game.venom_tick % 1.0
-      game.hp = math.max(0, game.hp - 4)
-      viber.damage_number("-4", { color = "#7ed957" })
+    if num("dying", 0) <= 0 then
+      game.venom_tick = (game.venom_tick or 0) + dt
+      local ticks = math.floor(game.venom_tick)
+      if ticks > 0 then
+        game.venom_tick = game.venom_tick - ticks
+        local dmg = ticks * 4
+        game.hp = math.max(0, game.hp - dmg)
+        player_fx("-" .. dmg, "#7ed957")
+        if game.hp <= 0 then
+          start_death(game)
+        end
+      end
     end
   else
     game.venom_tick = 0
@@ -736,14 +859,14 @@ function M.tick(dt)
   if num("dying", 0) > 0 then
     game.dying = math.max(0, game.dying - dt)
     if game.dying <= 0 then
-      local s = game.spawn_pos or { x = 0, y = 150, z = 0 }
+      local s = stored_spawn(game) or { x = 0, y = 150, z = 0 }
       viber.teleport_player(s.x, s.y, s.z)
       game.hp = game.max_hp
       game.venom = 0
       game.venom_tick = 0
       game.iframes = 2.0
       viber.toast("Renasces no último descanso.")
-      viber.sound("levelup")
+      sound_at_player("levelup")
     end
   end
 
@@ -751,7 +874,7 @@ function M.tick(dt)
     if ev.type == "kill" and ev.name then
       M.add_xp(M.kill_xp(ev.name))
       M.report_kill(ev.name)
-      viber.sound("enemy_death")
+      sound_at_player("enemy_death")
     elseif ev.type == "hit" then
       if ev.faction == "player" and ev.entity then
         local enemy = (g().enemies or {})[ev.entity]
@@ -776,16 +899,6 @@ function M.tick(dt)
       if rest > 0 then
         M.vault_add(ev.item, rest, false)
         M.add_xp(30)
-      end
-    elseif ev.type == "harvest" then
-      -- A engine partiu o prop e publicou item/quantidade/posição.
-      local item, amount = ev.item or "", ev.amount or 0
-      if item ~= "" and amount > 0 then
-        M.vault_add(item, amount, false)
-        M.add_xp(30)
-        viber.damage_number("+" .. amount .. " " .. item, {
-          x = ev.x, y = (ev.y or 0) + 1.6, z = ev.z, color = "#8fe3a0",
-        })
       end
     end
   end
@@ -814,6 +927,7 @@ function M.publish()
   viber.ui.set("gold", M.vault_get("gold"))
   viber.ui.set("wood", M.vault_get("wood"))
   viber.ui.set("stone", M.vault_get("stone"))
+  viber.ui.set("berry", M.vault_get("berry"))
   viber.ui.set("korok-seed", M.vault_get("korok-seed"))
   viber.ui.set("potion", M.vault_get("potion"))
   viber.ui.set("antidote", M.vault_get("antidote"))
