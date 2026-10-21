@@ -153,6 +153,10 @@ uibutton.row:active { background: stone-800 }
 .row.buy .row-flag { background: emerald-400 }
 .row.sell .row-flag { background: sky-400 }
 .row.unaffordable .row-flag { background: rose-500 }
+/* Classes semânticas emitidas pelos templates (`class="row skill …"` e
+   `class="row trade …"`): sem regra, as duas listas perdiam o acento. */
+.row.skill .row-title { color: sky-400 }
+.row.trade .row-title { color: amber-400 }
 
 .row-body {
   flex-grow: 1;
