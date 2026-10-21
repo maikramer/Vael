@@ -65,7 +65,12 @@ function M.sign_nearest()
   else
     viber.toast("Medido e assinado: " .. best.label .. " (faltam " .. left .. " em " .. label .. ")")
   end
-  viber.sound("quest_complete")
+  local has, px, py, pz = viber.player_position()
+  if has then
+    viber.sound("quest_complete", { x = px, y = py, z = pz })
+  else
+    viber.sound("quest_complete")
+  end
 end
 
 function M.rows(only_marked)
@@ -98,11 +103,13 @@ function M.go(name)
   end
   local ground = viber.ground_below(x, (y or 0) + 80, z)
   local py = ground or y or 0
-  viber.set_pose(x, py + 0.2, z, 0, viber.player_id())
+  -- `teleport_player` assenta o character controller; `set_pose` deixava
+  -- velocidade/estado de movimento do salto anterior.
+  viber.teleport_player(x, py + 0.2, z)
   viber.game().travel_open = false
   viber.ui.open("travel", false)
   viber.toast("A fogueira leva-te até lá.")
-  viber.sound("travel")
+  viber.sound("travel", { x = x, y = py, z = z })
 end
 
 function M.pin(name)
@@ -186,7 +193,8 @@ function M.update(dt)
     end
     if viber.input.pressed("g") then
       local open = viber.ui.is_open("travel")
-      if open or near_fire() then
+      -- Abrir por cima do mapa regional empilhava dois modais.
+      if open or (near_fire() and not viber.menu_open()) then
         viber.ui.open("travel", not open)
       end
     end

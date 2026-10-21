@@ -57,15 +57,22 @@ function M.pay(kind, id, x, y, z)
     if ok then
       x, y, z = ex, ey, ez
     else
-      local _, px, py, pz = viber.player_position()
-      x, y, z = px, py, pz
+      local pok, px, py, pz = viber.player_position()
+      if pok then
+        x, y, z = px, py, pz
+      end
     end
+  end
+  -- Sem cadáver nem player (troca de cena) o pagamento continua; só não há
+  -- sítio para o número. `nil + 1.6` rebentava depois do ouro já creditado.
+  if x == nil or y == nil or z == nil then
+    x, y, z = x or 0, y or 0, z or 0
   end
   local gold = math.random(entry[1], entry[2])
   rules.vault_add("gold", gold)
   viber.damage_number("+" .. gold .. " ouro", { color = GOLD_COLOR, x = x, y = y + 1.6, z = z })
   viber.burst("sparkle", x, y + 0.8, z, 10)
-  viber.sound("coin")
+  viber.sound("coin", { x = x, y = y, z = z })
   local potions, antidotes = roll_count(entry[3]), roll_count(entry[4])
   if potions > 0 then
     rules.item_add("potion", potions)
