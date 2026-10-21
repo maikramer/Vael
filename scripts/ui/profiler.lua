@@ -14,6 +14,9 @@ local CADENCE = 0.2
 local ACC = 1.0 -- >CADENCE: preenche no primeiro frame com o modal aberto
 local LAST_STATUS = nil -- só reescreve o rodapé quando muda
 local LAST_UI_TAB = nil -- detetor de mudança de aba (UI → engine)
+-- Aba ativa lida do widget nativo. Antes era uma local de `on_update` e
+-- `fill_active` lia um GLOBAL nil (caía sempre no `state.tab_name` atrasado).
+local ui_tab = ""
 
 -- ── formatação ────────────────────────────────────────────────
 local function fmt_ms(v)
@@ -142,11 +145,13 @@ local function fill_audio(audio)
   viber.ui.list("prof-sink-rows", srows)
 end
 
-local EXTRAS = { "colliders", "grass", "physics-pause", "" }
 local function fill_extras(snap)
   local list = snap.extras or {}
   local descs = {}
-  for i = 1, 4 do
+  -- Itera o SNAPSHOT: a lista fixa de 4 nomes (e em ordem diferente da
+  -- engine) fazia o botão 3 ligar `physics-pause` em vez de `dir-shadows`
+  -- e deixava `point-shadows` inacessível.
+  for i = 1, #list do
     local e = list[i]
     local slot = tostring(i)
     if e then
@@ -329,16 +334,16 @@ function on_update(dt)
   if viber.ui.clicked("prof-trace-start") then viber.profiler_cmd("trace:start:10") end
   if viber.ui.clicked("prof-trace-stop") then viber.profiler_cmd("trace:stop") end
   if viber.ui.clicked("prof-trace-export") then viber.profiler_cmd("trace:export") end
-  for i, id in ipairs(EXTRAS) do
-    if id ~= "" and viber.ui.clicked("prof-extra-" .. i) then
-      viber.profiler_cmd("extra:" .. id)
-    end
-  end
-
   local snap = viber.profiler()
   if snap == nil then
     ACC = 1.0 -- modal fechado: primeiro frame após abrir já preenche
     return
+  end
+  -- O comando sai do id REAL da linha do snapshot (a ordem é da engine).
+  for i, e in ipairs(snap.extras or {}) do
+    if e.id and viber.ui.clicked("prof-extra-" .. i) then
+      viber.profiler_cmd("extra:" .. e.id)
+    end
   end
   local state = snap.state or {}
 
@@ -347,7 +352,7 @@ function on_update(dt)
   -- mudança e espelha para a engine (o snapshot passa a refletir a aba).
   -- Sem force-back nenhum: dois sincronizadores a escrever a mesma aba
   -- ping-pongam via publish atrasado.
-  local ui_tab = viber.ui.tab("prof")
+  ui_tab = viber.ui.tab("prof")
   if ui_tab ~= "" and ui_tab ~= LAST_UI_TAB then
     LAST_UI_TAB = ui_tab
     viber.profiler_cmd("tab:" .. ui_tab)
