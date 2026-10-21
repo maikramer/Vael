@@ -67,8 +67,16 @@ function on_update(dt)
 
   -- ── Eventos: o lote do frame drenado UMA vez. Substitui o padrão
   --    `clicked()` de 1 frame (que perdia cliques com polling lento)
-  --    e a detecção de mudança manual. Sem prefixo: vem tudo.
-  for _, ev in ipairs(viber.ui.events()) do
+  --    e a detecção de mudança manual. Com prefixos PRÓPRIOS: `events()`
+  --    sem prefixo consome a fila inteira e roubava os eventos de outros
+  --    scripts de UI.
+  local evs = {}
+  for _, prefix in ipairs({ "demo-", "banner", "hero-", "volume" }) do
+    for _, ev in ipairs(viber.ui.events(prefix)) do
+      evs[#evs + 1] = ev
+    end
+  end
+  for _, ev in ipairs(evs) do
     if ev.type == "click" and ev.id == "demo-btn" then
       -- Tween explícito: o banner esbate — a volta começa no tween_done.
       viber.ui.tween("banner", { property = "opacity", to = 0.25,

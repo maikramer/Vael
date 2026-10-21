@@ -10,7 +10,11 @@ local last_travel = ""
 local function signature(rows)
   local parts = {}
   for i, row in ipairs(rows) do
-    parts[i] = row.id .. row.distance .. row.status
+    -- Inclui label/bioma (renderizados pelo XML) e separa os campos: sem
+    -- isto, uma tradução a quente nunca refrescava o mapa aberto.
+    parts[i] = table.concat({
+      row.id, row.label, row.biome, row.distance, row.status,
+    }, "\2")
   end
   return table.concat(parts, "\1")
 end

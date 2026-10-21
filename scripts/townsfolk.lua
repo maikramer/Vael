@@ -75,6 +75,9 @@ local function show_dialogue(st)
   if body then
     viber.say(body)
     viber.gesture("talk")
+    -- A hotbar também lê 1/2: enquanto a conversa está no ecrã, os dígitos
+    -- são escolhas e não poção/antídoto. Timestamp de UI (não vai ao save).
+    viber.ui.set("dialogue.until", viber.time() + 0.75)
   end
 end
 
@@ -112,6 +115,15 @@ function on_update(dt)
       st.graph = graph_for(st.dialogue_id)
     end
   end
+  -- Um JSON ilegível no arranque (ficheiro renomeado, IO transitório)
+  -- deixava o NPC sem conversa para sempre: tenta de novo de 2 em 2 s.
+  if st.dialogue_id ~= "" and not st.graph then
+    st.graph_t = (st.graph_t or 0) - dt
+    if st.graph_t <= 0 then
+      st.graph_t = 2.0
+      st.graph = graph_for(st.dialogue_id)
+    end
+  end
   local has, px, py, pz = viber.player_position()
   if not has then return end
   local x, y, z = viber.position()
@@ -129,15 +141,21 @@ function on_update(dt)
     if not viber.menu_open() then
       if st.dialogue_id ~= "" and st.graph then
         if viber.interacted("e") then
+          st.talking = true
           show_dialogue(st)
         end
-        for digit = 1, 9 do
-          if viber.input.pressed(tostring(digit)) then
-            choose(st, digit)
-            break
+        -- Escolhas só com a conversa ABERTA: antes, a 6 m de distância (o
+        -- `talk_range`), 1/2 avançavam o grafo e ainda bebiam poções.
+        if st.talking then
+          for digit = 1, 9 do
+            if viber.input.pressed(tostring(digit)) then
+              choose(st, digit)
+              break
+            end
           end
         end
-      elseif st.dialogue_id == "" and viber.interacted("e") then
+      elseif (st.dialogue_id == "" or not st.graph) and viber.interacted("e") then
+        -- Grafo em falta não pode matar a conversa: cai para a banter.
         local banter = viber.prop("banter")
         if #banter > 0 then
           st.i = ((st.i or 0) % #banter) + 1
@@ -148,6 +166,7 @@ function on_update(dt)
     end
     return
   end
+  st.talking = false
   local radius = viber.prop("radius")
   if radius <= 0 then return end -- balcão: não passeia
   if st.target == nil then
