@@ -109,6 +109,11 @@
           <UiText class="clock-time" bind="clock">06:00</UiText>
         </UiRow>
         <UiBar id="day-bar" class="track day" bind="day" value="0" />
+        <UiRow class="weather-row" bind="net.on" fade="0.2 0.2">
+          <UiText class="hud-label">REDE</UiText>
+          <UiSpacer />
+          <UiText class="clock-time" bind="net.label">HOST</UiText>
+        </UiRow>
         <UiRow class="weather-row" bind="weather.wet:wet">
           <UiIcon class="weather-icon" src="/assets/icons/icon_rain.png" />
           <UiText class="hud-label">CHUVA</UiText>
