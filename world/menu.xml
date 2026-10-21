@@ -45,6 +45,9 @@
           <UiButton class="tab" tab-group="menu" tab="controls">
             <UiText>Controlos</UiText>
           </UiButton>
+          <UiButton class="tab" tab-group="menu" tab="a11y">
+            <UiText>Acessibilidade</UiText>
+          </UiButton>
           <UiButton class="tab" tab-group="menu" tab="system">
             <UiText>Sistema</UiText>
           </UiButton>
@@ -129,6 +132,17 @@
                 </UiPanel>
                 <UiText class="row-note">{action}</UiText>
               </UiRow>
+            </UiTemplate>
+          </UiList>
+        </UiColumn>
+        <UiColumn class="page" tab-group="menu" tab="a11y">
+          <UiList class="rows tight" bind="a11y" scroll="y">
+            <UiTemplate>
+              <UiButton id="a11y-{id}" class="row keyline">
+                <UiText class="row-note">{label}</UiText>
+                <UiSpacer />
+                <UiText class="row-title">{value}</UiText>
+              </UiButton>
             </UiTemplate>
           </UiList>
         </UiColumn>
