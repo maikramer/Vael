@@ -13,12 +13,27 @@ local function modifier_held()
     or viber.input.down("lalt") or viber.input.down("ralt")
 end
 
+-- O host da hotbar vive na origem: posiciona o SFX no herói.
+local function sfx(name)
+  local has, x, y, z = viber.player_position()
+  if has then
+    viber.sound(name, { x = x, y = y, z = z })
+  else
+    viber.sound(name)
+  end
+end
+
 function on_update(dt)
   local st = viber.state()
   st.cd = math.max(0, (st.cd or 0) - dt)
   -- O profiler é `profiler-win`: `is_open("profiler")` era sempre falso e a
   -- poção saía com o painel aberto. Mapa e viagem entram no mesmo portão.
   if viber.menu_open() or st.cd > 0 or modifier_held() then
+    return
+  end
+  -- Balão de diálogo aberto: 1/2 são escolhas do grafo (townsfolk.lua).
+  local dialogue_until = tonumber(viber.ui.get("dialogue.until")) or 0
+  if viber.time() < dialogue_until then
     return
   end
   local alive, hp = rules.player_hp()
@@ -38,11 +53,11 @@ function on_update(dt)
       -- O número nasce SOBRE O HERÓI (sem x/y/z saía sobre o controller).
       local _, px, py, pz = viber.player_position()
       viber.damage_number("+" .. math.floor(healed) .. " HP", { color = "#7ef29d", x = px, y = py + 2.0, z = pz })
-      viber.sound("heal")
+      sfx("heal")
       viber.toast("Poção usada (+" .. math.floor(healed) .. " HP)")
     else
       viber.toast("Sem poções.")
-      viber.sound("error")
+      sfx("error")
     end
   elseif viber.input.pressed("2") then
     if rules.item_count("antidote") > 0 then
@@ -58,7 +73,7 @@ function on_update(dt)
       end
     else
       viber.toast("Sem antídotos.")
-      viber.sound("error")
+      sfx("error")
     end
   end
 end

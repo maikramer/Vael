@@ -8,6 +8,7 @@ function on_update(dt)
     st.done = once.taken()
     viber.set_interaction("Falar com o guarda", "e", 3.5)
   end
+  if viber.menu_open() then return end
   if viber.interacted("e") then
     viber.face_player()
     -- "salute" 1.º; rigs sem o clip caem para "yes"/"talk" (fuzzy do gesto)

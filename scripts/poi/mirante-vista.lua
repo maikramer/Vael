@@ -9,6 +9,7 @@ function on_update(dt)
     st.read = once.taken()
     viber.set_interaction("Contemplar a vista", "e", 4.0)
   end
+  if viber.menu_open() then return end
   if viber.interacted("e") and not st.read then
     st.read = true
     once.mark()

@@ -26,6 +26,8 @@ function on_update(dt)
   if viber.interacted("e") and not st.opened then
     st.opened = true
     once.mark()
+    -- O prompt nasce no ready: sem o re-registar continuava "Abrir o baú".
+    viber.set_interaction("Vazio", "e", viber.prop("range"))
     local p = viber.props()
     local loot = {}
     if p.xp > 0 then

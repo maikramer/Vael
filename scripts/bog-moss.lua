@@ -13,6 +13,7 @@ function on_update(dt)
     end
     viber.set_interaction("Colher musgo", "j", 2.5)
   end
+  if viber.menu_open() then return end
   if viber.interacted("j") and not st.done then
     st.done = true
     once.mark()
@@ -20,5 +21,7 @@ function on_update(dt)
     rules.item_add("bog-moss", 1)
     viber.toast("Musgo-do-pântano colhido (+8 XP, +1 bog-moss)")
     viber.topple()
+    -- O prop tombado continuava a oferecer "Colher musgo" para sempre.
+    viber.despawn_self()
   end
 end

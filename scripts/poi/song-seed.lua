@@ -80,7 +80,7 @@ function on_update(dt)
     rules.item_add("korok-seed", 1)
     if count % 5 == 0 then
       rules.add_skill_points(1)
-      viber.toast(phrase .. " — semente " .. count .. "/22: +1 PONTO DE TALENTO!")
+      viber.toast(phrase .. " — semente " .. count .. "/28: +1 PONTO DE TALENTO!")
     else
       viber.toast(phrase .. " (" .. count .. " na bolsa)")
     end
@@ -94,6 +94,7 @@ function on_update(dt)
       viber.despawn_self()
       return
     end
+    if viber.menu_open() then return end
     if viber.interacted("e") then
       if (game[st.key] or 0) > 0 then
         viber.despawn_self()
@@ -116,6 +117,7 @@ function on_update(dt)
   end
 
   -- rock / odd / hide: um [E] e a semente é tua.
+  if viber.menu_open() then return end
   if viber.interacted("e") and not st.taken then
     local phrase = ({
       rock = "A pedra ergue-se: uma semente de canção!",

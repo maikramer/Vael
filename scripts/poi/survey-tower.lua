@@ -29,12 +29,14 @@ function on_update(dt)
       st.told = true
       viber.set_interaction("A atalaia já falou", "e", viber.prop("range"))
     end
+    if viber.menu_open() then return end
     if viber.interacted("e") and not st.reminded then
       st.reminded = true
       viber.toast("A " .. viber.prop("label") .. " já cartografou esta terra.")
     end
     return
   end
+  if viber.menu_open() then return end
   if viber.interacted("e") then
     st.done = true
     local p = viber.props()

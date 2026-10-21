@@ -9,6 +9,7 @@ function on_update(dt)
     st.done = once.taken()
     viber.set_interaction("Orar ao santuário", "e", 3.0)
   end
+  if viber.menu_open() then return end
   if viber.interacted("e") and not st.done then
     st.done = true
     once.mark()

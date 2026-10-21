@@ -21,6 +21,7 @@ function on_update(dt)
     st.i = nil -- saiu de alcance: banter recomeça
   end
   st.near = near
+  if viber.menu_open() then return end
   if viber.interacted("e") then
     local lines = viber.prop("lines")
     st.i = ((st.i or 0) % math.max(#lines, 1)) + 1

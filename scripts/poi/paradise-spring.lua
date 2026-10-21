@@ -9,10 +9,20 @@ function on_update(dt)
     st.read = once.taken()
     viber.set_interaction("Banhar-se na fonte", "e", 3.5)
   end
+  if viber.menu_open() then
+    return
+  end
   if viber.interacted("e") and not st.read then
+    local alive, hp = rules.player_hp()
+    -- Consumir a fonte de uma vez enquanto o herói está caído dava a cura
+    -- e o respawn por cima.
+    if alive and hp <= 0 then
+      return
+    end
     st.read = true
     once.mark()
-    local ok, hp, max_hp = rules.player_hp()
+    viber.set_interaction("A fonte está calma", "e", 3.5)
+    local ok, _, max_hp = rules.player_hp()
     local healed = 40
     if ok then
       healed = math.min(40, math.max(0, (max_hp or 0) - (hp or 0)))
