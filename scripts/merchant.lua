@@ -16,11 +16,16 @@ function on_update(dt)
     viber.set_interaction(viber.prop("prompt"), "e", viber.prop("range"))
   end
   local dist = viber.distance_to_player()
-  local near = dist ~= nil and dist <= viber.prop("range")
+  -- O alcance do [E] é o AUTORADO escalado pela config global; comparar com
+  -- o valor cru (3.5 m) mantinha a banter viva até ao dobro do alcance real.
+  local near = dist ~= nil and dist <= viber.interact_range(viber.prop("range"))
   if st.near and not near then
     st.i = nil -- saiu de alcance: banter recomeça
   end
   st.near = near
+  -- A loja corre SEMPRE, inclusive com o menu aberto: era a única coisa que
+  -- drenava buy/sell, e a banca abre o menu no frame seguinte.
+  shop.update(dt)
   if viber.menu_open() then return end
   if viber.interacted("e") then
     local lines = viber.prop("lines")
@@ -38,6 +43,4 @@ function on_update(dt)
     viber.ui.open("menu", true)
     viber.ui.select_tab("menu", "shop")
   end
-  -- A loja (lista + cliques + ações buy/sell) é atualizada daqui.
-  shop.update(dt)
 end

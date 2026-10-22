@@ -19,6 +19,16 @@ function on_update(dt)
     end
     viber.set_interaction("Colher " .. string.lower(viber.prop("label")), key, viber.prop("range"))
   end
+  -- Relê a marca: um Load na MESMA cena não recria a entidade, e o
+  -- `st.done` em cache deixava colher (ou bloqueava) outra vez.
+  if once.taken() then
+    if not st.done then
+      st.done = true
+      viber.despawn_self()
+    end
+    return
+  end
+  if viber.menu_open() then return end
   if viber.interacted(key) and not st.done then
     st.done = true
     once.mark()

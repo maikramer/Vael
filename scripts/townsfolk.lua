@@ -24,6 +24,10 @@ local rules = viber.load("lib/rules.lua")
 -- moradores do grupo reagirem (vira-se para o player, abana a cabeça e,
 -- com `prop-notice`, comenta). Os argumentos do sinal não interessam aqui.
 function notice(...)
+  -- Menu/diário/mapa abertos: o jogador parou para ler; um sinal de baú não
+  -- pode virar o NPC e atirar um toast por cima do menu (os restantes
+  -- handlers já devolvem cedo com `menu_open`).
+  if viber.menu_open() then return end
   local has, px, _, pz = viber.player_position()
   if not has then return end
   local x, _, z = viber.position()
@@ -70,13 +74,17 @@ local function cursor(st)
   return st.graph.start
 end
 
+local BALLOON_SECS = 4.0 -- `hud::BALLOON_DURATION`: o balão nativo dura 4 s
+
 local function show_dialogue(st)
   local body = node_body(st.graph, cursor(st))
   if body then
     viber.say(body)
     viber.gesture("talk")
-    -- A hotbar também lê 1/2: enquanto a conversa está no ecrã, os dígitos
-    -- são escolhas e não poção/antídoto. Timestamp de UI (não vai ao save).
+    -- A hotbar também lê 1/2: enquanto o BALÃO está no ecrã, os dígitos são
+    -- escolhas e não poção/antídoto. Depois de 4 s a conversa expira (antes
+    -- renovávamos para sempre e beber uma poção perto do NPC era impossível).
+    st.dialog_until = viber.time() + BALLOON_SECS
     viber.ui.set("dialogue.until", viber.time() + 0.75)
   end
 end
@@ -103,6 +111,15 @@ end
 
 function on_update(dt)
   local st = viber.state() -- POR ENTIDADE (o top-level é partilhado)
+  -- Relógio para trás = load: um `st.talking` de outra sessão não pode
+  -- manter a hotbar trancada até o relógio alcançar o timestamp antigo.
+  local now = viber.time()
+  if st.clock and now < st.clock then
+    st.talking = false
+    st.dialog_until = 0
+    viber.ui.set("dialogue.until", 0)
+  end
+  st.clock = now
   if not st.ready then
     st.ready = true
     st.gesture_t = 3 + math.random() * 4 -- 1.º gesto cedo
@@ -110,6 +127,8 @@ function on_update(dt)
     -- sem ele, a conversa é a banter. O foco de interação escolhe o NPC
     -- mais próximo e só ele vê `viber.interacted("e")`.
     st.dialogue_id = viber.prop("dialogue_id")
+    -- Um bind de diálogo de outra sessão/cena não pode trancar a hotbar.
+    viber.ui.set("dialogue.until", 0)
     viber.set_interaction(viber.prop("prompt"), "e", viber.prop("interact_range"))
     if st.dialogue_id ~= "" then
       st.graph = graph_for(st.dialogue_id)
@@ -146,7 +165,17 @@ function on_update(dt)
         end
         -- Escolhas só com a conversa ABERTA: antes, a 6 m de distância (o
         -- `talk_range`), 1/2 avançavam o grafo e ainda bebiam poções.
+        if st.talking and viber.time() >= (st.dialog_until or 0) then
+          -- O balão expirou (4 s sem escolha): a conversa fechou. Sem isto o
+          -- `st.talking` ficava true para sempre e a hotbar/equipamento
+          -- continuavam trancados enquanto o jogador estivesse perto.
+          st.talking = false
+          viber.ui.set("dialogue.until", 0)
+        end
         if st.talking then
+          -- Renova o portão da hotbar/equipamento ENQUANTO o balão está no
+          -- ecrã (o timestamp de 0,75 s expirava se o jogador lesse devagar).
+          viber.ui.set("dialogue.until", viber.time() + 0.75)
           for digit = 1, 9 do
             if viber.input.pressed(tostring(digit)) then
               choose(st, digit)
@@ -166,7 +195,10 @@ function on_update(dt)
     end
     return
   end
-  st.talking = false
+  if st.talking then
+    st.talking = false
+    viber.ui.set("dialogue.until", 0)
+  end
   local radius = viber.prop("radius")
   if radius <= 0 then return end -- balcão: não passeia
   if st.target == nil then

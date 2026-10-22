@@ -18,6 +18,13 @@ function on_update(dt)
   local has, px, py, pz = viber.player_position()
   if has then
     rules.set_spawn(px, py, pz)
+    -- Checkpoint = autosave (slot 0). O jogador pode sempre Tentar de novo.
+    -- No máximo 1×/2 s: bater E à fogueira não pode escrever o save a 60 Hz.
+    local now = viber.time()
+    if st.save_t == nil or now < st.save_t or now - st.save_t >= 2.0 then
+      st.save_t = now
+      viber.save_slot(0)
+    end
   end
   local healed = math.min(25, math.max(0, (max_hp or 0) - (hp or 0)))
   if healed < 1 then

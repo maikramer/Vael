@@ -7,12 +7,18 @@ function on_update(dt)
   if not st.ready then
     st.ready = true
     st.read = once.taken()
-    viber.set_interaction("Tocar a relíquia", "e", 3.0)
+    viber.set_interaction(st.read and "A relíquia está quente" or "Tocar a relíquia", "e", 3.0)
+  end
+  local taken = once.taken()
+  if taken ~= st.read then
+    st.read = taken
+    viber.set_interaction(st.read and "A relíquia está quente" or "Tocar a relíquia", "e", 3.0)
   end
   if viber.menu_open() then return end
   if viber.interacted("e") and not st.read then
     st.read = true
     once.mark()
+    viber.set_interaction("A relíquia está quente", "e", 3.0)
     rules.add_xp(30)
     viber.toast("A relíquia do sol aquece as mãos (+30 XP).")
   end

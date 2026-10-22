@@ -20,5 +20,7 @@ function on_update(dt)
     return
   end
   rules.heal_player(healed)
+  -- Sem SFX a cura do poço era a única do mundo sem confirmação audível.
+  viber.sound("heal")
   viber.toast("A água fresca restaura o ânimo (+" .. math.floor(healed) .. " HP).")
 end

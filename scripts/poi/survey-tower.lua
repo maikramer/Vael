@@ -22,13 +22,17 @@ function on_update(dt)
   if not st.ready then
     st.ready = true
     st.done = rules.biome_revealed(viber.prop("biome"))
-    viber.set_interaction(viber.prop("prompt"), "e", viber.prop("range"))
+    viber.set_interaction(st.done and "A atalaia já falou" or viber.prop("prompt"), "e", viber.prop("range"))
+  end
+  -- Relê o bioma a cada frame: carregar um save anterior reabre a atalaia.
+  -- O prompt acompanha o ESTADO (antes ficava "já falou" para sempre mesmo
+  -- depois de um load que apagasse `biome.*`).
+  local done = rules.biome_revealed(viber.prop("biome"))
+  if done ~= st.done then
+    st.done = done
+    viber.set_interaction(done and "A atalaia já falou" or viber.prop("prompt"), "e", viber.prop("range"))
   end
   if st.done then
-    if not st.told then
-      st.told = true
-      viber.set_interaction("A atalaia já falou", "e", viber.prop("range"))
-    end
     if viber.menu_open() then return end
     if viber.interacted("e") and not st.reminded then
       st.reminded = true
@@ -38,7 +42,6 @@ function on_update(dt)
   end
   if viber.menu_open() then return end
   if viber.interacted("e") then
-    st.done = true
     local p = viber.props()
     rules.reveal_biome(p.biome)
     if p.xp > 0 then

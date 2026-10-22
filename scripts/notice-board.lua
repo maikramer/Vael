@@ -20,10 +20,16 @@ function on_update(dt)
     local def = rules.quest_def(id)
     local lines = def and def[which]
     local have, need = rules.quest_progress(id)
+    local obj = def and def.objective
+    if obj and obj.type == "collect" then
+      -- Vender o item depois de a quest ficar pronta deixava `{remaining}=0`.
+      have = rules.vault_get(obj.target or "")
+    end
     local text = table.concat(lines or {}, "\n")
     text = text:gsub("{remaining}", tostring(math.max(0, (need or 1) - (have or 0))))
     if text ~= "" then
       viber.say(text)
+      viber.ui.set("dialogue.until", viber.time() + 0.75)
     end
   end
 

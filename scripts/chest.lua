@@ -20,6 +20,14 @@ function on_update(dt)
     st.opened = once.taken()
     viber.set_interaction(st.opened and "Vazio" or viber.prop("prompt"), "e", viber.prop("range"))
   end
+  -- Relê a marca todos os frames: um Load na MESMA cena troca o
+  -- `viber.game()` sem recriar a entidade; com `st.opened` em cache o baú
+  -- voltava a pagar (ou ficava "Abrir" depois de carregar um save aberto).
+  local taken = once.taken()
+  if taken ~= st.opened then
+    st.opened = taken
+    viber.set_interaction(taken and "Vazio" or viber.prop("prompt"), "e", viber.prop("range"))
+  end
   if viber.menu_open() then
     return
   end
@@ -30,23 +38,50 @@ function on_update(dt)
     viber.set_interaction("Vazio", "e", viber.prop("range"))
     local p = viber.props()
     local loot = {}
+    local short = false
     if p.xp > 0 then
       rules.add_xp(p.xp)
       loot[#loot + 1] = "+" .. p.xp .. " XP"
     end
+    local paid_gold = 0
     if p.gold > 0 then
-      rules.vault_add("gold", p.gold)
-      loot[#loot + 1] = "+" .. p.gold .. " ouro"
+      -- `vault_add` devolve o que REALMENTE entrou (teto de 1e6 no ouro).
+      paid_gold = rules.vault_add("gold", p.gold) or 0
+      if paid_gold > 0 then
+        loot[#loot + 1] = "+" .. paid_gold .. " ouro"
+      end
+      if paid_gold < p.gold then
+        short = true
+      end
     end
     if p.item ~= "" and p.item_count > 0 then
-      rules.item_add(p.item, p.item_count)
-      loot[#loot + 1] = "+" .. p.item_count .. " " .. p.item_label
+      -- A mochila tem teto de 99: o toast dizia "+3 poções" mesmo quando só
+      -- uma cabia. Mostra o crédito real e avisa que ficou conteúdo atrás.
+      local paid_items = rules.item_add(p.item, p.item_count) or 0
+      if paid_items > 0 then
+        loot[#loot + 1] = "+" .. paid_items .. " " .. p.item_label
+      end
+      if paid_items < p.item_count then
+        short = true
+      end
     end
-    viber.emit("opened", p.gold, p.xp)
-    if #loot == 0 then
-      viber.toast("O baú range e cede... está vazio.")
+    -- O sinal leva o que foi pago, não o que estava autorado no baú.
+    viber.emit("opened", paid_gold, p.xp)
+    local ok, x, y, z = viber.entity_position()
+    if ok then
+      viber.sound("chest_open", { x = x, y = y, z = z })
     else
-      viber.toast("O baú range e cede... " .. table.concat(loot, ", "))
+      viber.sound("chest_open")
+    end
+    if #loot == 0 then
+      if short then
+        viber.toast("O baú range e cede... mas não coube nada na mochila.")
+      else
+        viber.toast("O baú range e cede... está vazio.")
+      end
+    else
+      local tail = short and " (não coube tudo)" or ""
+      viber.toast("O baú range e cede... " .. table.concat(loot, ", ") .. tail)
     end
   elseif viber.interacted("e") then
     viber.toast("O baú está vazio.")

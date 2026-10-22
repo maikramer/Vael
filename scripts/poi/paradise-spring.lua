@@ -7,7 +7,14 @@ function on_update(dt)
   if not st.ready then
     st.ready = true
     st.read = once.taken()
-    viber.set_interaction("Banhar-se na fonte", "e", 3.5)
+    viber.set_interaction(st.read and "A fonte está calma" or "Banhar-se na fonte", "e", 3.5)
+  end
+  -- Um Load na MESMA cena repõe `viber.game()` sem recriar a entidade; o
+  -- prompt tem de acompanhar a marca (antes ficava "Banhar-se" para sempre).
+  local taken = once.taken()
+  if taken ~= st.read then
+    st.read = taken
+    viber.set_interaction(taken and "A fonte está calma" or "Banhar-se na fonte", "e", 3.5)
   end
   if viber.menu_open() then
     return

@@ -28,6 +28,10 @@ local rules = viber.load("lib/rules.lua")
 --@export range: number(0.5..10) = 2.2    -- alcance do [E] (m)
 --@export seed_key: string = ""           -- chave de persistência (default: nome da entidade)
 
+-- Recompensas REAIS: 22. O mundo tem 28 entidades, mas cada anel de 3
+-- cristais paga UMA semente no fecho (3 anéis = 3 sementes, não 9).
+local TOTAL_REWARDS = 22
+
 function on_update(dt)
   local st = viber.state()
 
@@ -70,6 +74,14 @@ function on_update(dt)
       viber.despawn_self()
       return
     end
+    -- Bolsa cheia: NÃO marca a recompensa nem despawna. Antes a semente era
+    -- gasta (item_add devolvia 0) e o anel fechava sem prémio possível.
+    -- (Depois do teste de recompensa: uma semente já paga não fica no mundo
+    -- só porque a bolsa encheu.)
+    if rules.vault_get("korok-seed") >= 99 then
+      viber.toast("A bolsa de sementes está cheia (99).")
+      return
+    end
     game[reward_key()] = 1
     game[st.key] = 1
     local _, x, y, z = viber.entity_position()
@@ -78,9 +90,10 @@ function on_update(dt)
     viber.sound("loot")
     local count = rules.vault_get("korok-seed") + 1
     rules.item_add("korok-seed", 1)
-    if count % 5 == 0 then
+    local every = rules.talent_every()
+    if every > 0 and count % every == 0 then
       rules.add_skill_points(1)
-      viber.toast(phrase .. " — semente " .. count .. "/28: +1 PONTO DE TALENTO!")
+      viber.toast(phrase .. " — semente " .. count .. "/" .. TOTAL_REWARDS .. ": +1 PONTO DE TALENTO!")
     else
       viber.toast(phrase .. " (" .. count .. " na bolsa)")
     end
@@ -94,10 +107,21 @@ function on_update(dt)
       viber.despawn_self()
       return
     end
+    -- Cristal já aceso num save carregado na MESMA cena: a entidade não é
+    -- recriada pelo load, por isso a marca individual tem de ser relida.
+    if (game[st.key] or 0) > 0 then
+      st.taken = true
+      viber.despawn_self()
+      return
+    end
     if viber.menu_open() then return end
     if viber.interacted("e") then
       if (game[st.key] or 0) > 0 then
         viber.despawn_self()
+        return
+      end
+      if rules.vault_get("korok-seed") >= 99 then
+        viber.toast("A bolsa de sementes está cheia (99).")
         return
       end
       game[st.key] = 1
@@ -117,6 +141,15 @@ function on_update(dt)
   end
 
   -- rock / odd / hide: um [E] e a semente é tua.
+  -- A marca tem de ser relida todos os frames: um Load na MESMA cena troca
+  -- `viber.game()` sem recriar a entidade, e com `st.taken` só do arranque a
+  -- semente colectada no save voltava a pagar (semente + talento).
+  local game = viber.game()
+  if (game[st.key] or 0) > 0 then
+    st.taken = true
+    viber.despawn_self()
+    return
+  end
   if viber.menu_open() then return end
   if viber.interacted("e") and not st.taken then
     local phrase = ({
