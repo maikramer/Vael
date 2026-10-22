@@ -6,6 +6,34 @@ local marks = viber.load("lib/landmarks.lua")
 
 local last_map = ""
 local last_travel = ""
+local WORLD = 4000
+
+local function project(x, z)
+  local left = ((x + WORLD * 0.5) / WORLD) * 100
+  local top = ((z + WORLD * 0.5) / WORLD) * 100
+  return math.max(0, math.min(100, left)), math.max(0, math.min(100, top))
+end
+
+local function update_markers()
+  local has, x, _, z = viber.player_position()
+  if has then
+    local left, top = project(x, z)
+    viber.ui.set_style("map-player", string.format(
+      "left: %.2f%%; top: %.2f%%", left, top))
+    viber.ui.set_visible("map-player", true)
+  else
+    viber.ui.set_visible("map-player", false)
+  end
+  local waypoint = travel.waypoint and travel.waypoint()
+  if waypoint and waypoint.x then
+    local left, top = project(waypoint.x, waypoint.z)
+    viber.ui.set_style("map-waypoint", string.format(
+      "left: %.2f%%; top: %.2f%%", left, top))
+    viber.ui.set_visible("map-waypoint", true)
+  else
+    viber.ui.set_visible("map-waypoint", false)
+  end
+end
 
 local function signature(rows)
   local parts = {}
@@ -31,9 +59,16 @@ end
 function on_update(_dt)
   if viber.ui.is_open("region-map") then
     last_map = refresh("region-map", travel.rows(false), last_map)
+    update_markers()
   end
   if viber.ui.is_open("travel") then
     last_travel = refresh("travel", travel.rows(true), last_travel)
+  end
+  if viber.ui.clicked("map-close") then
+    viber.ui.open("region-map", false)
+  end
+  if viber.ui.clicked("travel-close") then
+    viber.ui.open("travel", false)
   end
   for _, mark in ipairs(marks.LIST) do
     if viber.ui.clicked("pin-" .. mark.name) then

@@ -1,0 +1,90 @@
+/* ============================================================
+   Vael — mapa regional [M]
+   ------------------------------------------------------------
+   A imagem é o hillshade do heightmap real (tools/make_map.py);
+   os marcadores são nós absolutos posicionados por ui/map.lua.
+   ============================================================ */
+
+.map-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #0c0a09dd;
+  align: center;
+  justify: center;
+  direction: column;
+}
+
+.map-frame {
+  width: 96vmin;
+  max-width: 94vw;
+  max-height: 94vh;
+  gap: 1.2vmin;
+}
+
+.map-canvas {
+  position: relative;
+  /* Quadrado de verdade: o height fixo a 68vmin com `max-height: 58vh`
+     esmagava o hillshade (o PNG é quadrado) em janelas baixas. `min()`
+     fecha os dois eixos no mesmo valor. */
+  width: min(68vmin, 58vh);
+  height: min(68vmin, 58vh);
+  max-width: 86vw;
+  max-height: 58vh;
+  align: center;
+  justify: center;
+  background: #0c0a09;
+  border: 1 #f59e0b33;
+  radius: 1.2vmin;
+  overflow: clip;
+}
+
+.map-image {
+  width: 100%;
+  height: 100%;
+}
+
+.map-marker {
+  position: absolute;
+  width: 1.8vmin;
+  height: 1.8vmin;
+  radius: 50%;
+  margin-left: -0.9vmin;
+  margin-top: -0.9vmin;
+  border: 0.25vmin #0c0a09;
+}
+
+.map-marker.player {
+  background: amber-300;
+  box-shadow: 0 0 1.4vmin #f59e0bcc;
+}
+
+.map-marker.waypoint {
+  background: sky-300;
+  box-shadow: 0 0 1.6vmin #38bdf8cc;
+}
+
+.map-legend {
+  gap: 0.8vmin;
+  align: center;
+}
+
+.map-dot {
+  width: 1.4vmin;
+  height: 1.4vmin;
+  radius: 50%;
+}
+
+.map-dot.player { background: amber-300 }
+.map-dot.waypoint { background: sky-300 }
+
+.map-legend-text {
+  font-size: 1.6vmin;
+  color: stone-400;
+}
+
+.map-rows {
+  max-height: 18vh;
+}

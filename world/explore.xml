@@ -1,11 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
   <UiStyle src="ui/menu.css" />
+  <UiStyle src="ui/map.css" />
   <UiRoot id="explore" script="ui/map.lua">
-    <UiModal id="region-map" class="overlay">
-      <UiColumn class="frame">
-        <UiText class="frame-title">MAPA</UiText>
-        <UiList class="rows" bind="region-map" scroll="y">
+    <UiModal id="region-map" class="overlay map-overlay">
+      <UiColumn class="frame map-frame">
+        <UiRow class="frame-head">
+          <UiColumn class="title-block">
+            <UiText class="frame-title">MAPA</UiText>
+            <UiText class="frame-sub">O Vale de Vael</UiText>
+          </UiColumn>
+          <UiSpacer />
+          <UiButton id="map-close" class="close">
+            <UiText>×</UiText>
+          </UiButton>
+        </UiRow>
+        <UiPanel class="map-canvas">
+          <UiIcon src="/ui/vael_map.png" class="map-image" />
+          <!-- Escondidos até o script os posicionar: sem isto apareciam no
+               canto superior esquerdo no primeiro frame do mapa. -->
+          <UiPanel id="map-player" class="map-marker player" hidden="true" />
+          <UiPanel id="map-waypoint" class="map-marker waypoint" anim="pulse" hidden="true" />
+        </UiPanel>
+        <UiRow class="map-legend">
+          <UiPanel class="map-dot player" />
+          <UiText class="map-legend-text">tu</UiText>
+          <UiPanel class="map-dot waypoint" />
+          <UiText class="map-legend-text">destino</UiText>
+          <UiSpacer />
+          <UiText class="map-legend-text">Clica num marco para fixar o destino.</UiText>
+        </UiRow>
+        <UiList class="rows map-rows" bind="region-map" scroll="y">
           <UiTemplate>
             <UiButton id="pin-{id}" class="row {status}">
               <UiText class="row-title">{label}</UiText>
@@ -21,7 +46,16 @@
     </UiModal>
     <UiModal id="travel" class="overlay">
       <UiColumn class="frame">
-        <UiText class="frame-title">VIAGEM</UiText>
+        <UiRow class="frame-head">
+          <UiColumn class="title-block">
+            <UiText class="frame-title">VIAGEM</UiText>
+            <UiText class="frame-sub">Fogueiras assinadas</UiText>
+          </UiColumn>
+          <UiSpacer />
+          <UiButton id="travel-close" class="close" tooltip="Fechar viagem [G]">
+            <UiText>×</UiText>
+          </UiButton>
+        </UiRow>
         <UiList class="rows" bind="travel" scroll="y">
           <UiTemplate>
             <UiButton id="go-{id}" class="row {status}">
