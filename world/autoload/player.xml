@@ -3,4 +3,19 @@
 <world>
   <PlayerGLTF name="player" pos="0 150 0" model-url="/assets/meshes/characters/hero_lod0.glb" />
   <OrbitCamera distance="3.3" height="1.55" pitch="18.3" fov="64" follow-lag="0.18" turn-lag="0.38" min-terrain-distance="1.0" />
+  <!-- Autoload de jogo: reverb por cena (também corre nos interiores). -->
+  <Entity name="game-audio-zone" tag="always-active" script="game/audio_zone.lua" translation="0 38.7304 0" />
+  <!-- Regras, habilidades, combate, hotbar e equipamento são do HERÓI, não
+       do mundo: sem eles dentro de uma casa o HUD ficava congelado, não se
+       podia beber uma poção nem trocar de item. Autoload = uma vez, em todas
+       as cenas. `rules_host` ignora a cena de menu (título). -->
+  <Entity name="game-rules" tag="always-active" script="game/rules_host.lua" translation="0 38.7304 0" />
+  <Entity name="game-lua-controller" tag="always-active" script="game/abilities.lua" translation="0 38.7304 0" />
+  <Entity name="game-lua-combat" tag="always-active" script="game/combat.lua" translation="0 38.7304 0" />
+  <Entity name="game-lua-hotbar" tag="always-active" script="game/hotbar.lua" translation="0 38.7304 0" />
+  <!-- Em `main` quem corre o equipamento é o host de `world/gameplay.xml`
+       (com as props do editor); este só acorda nas cenas próprias. O índice
+       escolhido vive em `viber.game()`, por isso a arma na mão sobrevive à
+       troca de cena. -->
+  <Entity name="game-lua-equipment-interior" tag="always-active" script="game/equipment.lua" translation="0 38.7304 0" />
 </world>

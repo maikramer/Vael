@@ -6,21 +6,15 @@
       <PointLight color="#ff8a3d" intensity="300" radius="6" />
     </Entity>
   </Prototype>
-  <!-- Par da berry_bush: o harvest.lua troca a árvore com frutas por esta
-       quando a colheita acaba (mesma pose/escala). O save volta a spawná-la
-       no arranque para a árvore não "renascer" com frutas. -->
   <Prototype id="berry-bush-bare">
     <Entity rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/berry_bush_bare_lod0.glb">
       <GltfScene url="/assets/meshes/farm/berry_bush_bare_lod0.glb" lod1-url="/assets/meshes/farm/berry_bush_bare_lod1.glb" lod2-url="/assets/meshes/farm/berry_bush_bare_lod2.glb" lod-threshold-near="34" lod-threshold-mid="95" />
     </Entity>
   </Prototype>
-  <Entity name="game-rules" tag="always-active" script="game/rules_host.lua" translation="0 38.7304 0" />
-  <Entity name="game-lua-controller" tag="always-active" script="game/abilities.lua" translation="0 38.7304 0" />
-  <Entity name="game-lua-combat" tag="always-active" script="game/combat.lua" translation="0 38.7304 0" />
+  <Entity name="game-lua-audio" tag="always-active" script="game/audio.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-harvest" tag="always-active" script="game/harvest.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-travel" tag="always-active" script="game/travel_host.lua" translation="0 38.7304 0" />
-  <Entity name="game-lua-hotbar" tag="always-active" script="game/hotbar.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-loot" tag="always-active" script="game/loot.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-story" tag="always-active" script="game/story.lua" translation="0 38.7304 0" />
-  <Entity name="game-lua-equipment" tag="always-active" script="game/equipment.lua" translation="0 38.7304 0" />
+  <Entity name="game-lua-equipment" tag="always-active" script="game/equipment.lua" translation="0 38.7304 0" groups="grip-preview" prop-preview="tocha" prop-tocha-x="-0.002" prop-tocha-y="0.241" />
 </world>
