@@ -41,7 +41,7 @@
       <ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="-9 38.7304 -6" body="fixed" collider="none">
-      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="300000" radius="0.6" shadows="false" />
+      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="120000" radius="0.6" shadows="false" />
     </Group>
     <Group translation="5 38.7304 -11" body="fixed" collider="none">
       <PointLight translation="0 2.3 0" color="0xffb264" intensity="130000" radius="0.7" shadows="false" />
@@ -56,7 +56,7 @@
       <ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="-2.9 38.7304 34.5" body="fixed" collider="none">
-      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="300000" radius="0.6" shadows="false" />
+      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="120000" radius="0.6" shadows="false" />
     </Group>
     <Entity translation="2.9 38.7304 34.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb"/>
@@ -65,7 +65,7 @@
       <ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="2.9 38.7304 34.5" body="fixed" collider="none">
-      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="300000" radius="0.6" shadows="false" />
+      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="120000" radius="0.6" shadows="false" />
     </Group>
     <Entity translation="-2.9 38.7304 -34.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb"/>
@@ -74,7 +74,7 @@
       <ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="-2.9 38.7304 -34.5" body="fixed" collider="none">
-      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="300000" radius="0.6" shadows="false" />
+      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="120000" radius="0.6" shadows="false" />
     </Group>
     <Entity translation="2.9 38.7304 -34.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb"/>
@@ -83,7 +83,7 @@
       <ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="2.9 38.7304 -34.5" body="fixed" collider="none">
-      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="300000" radius="0.6" shadows="false" />
+      <PointLight translation="0 1.2 0" color="0xffa83a" intensity="120000" radius="0.6" shadows="false" />
     </Group>
     <Group translation="32 38.7304 32" body="fixed" collider="none">
       <PointLight translation="0 7.2 0" color="0xffa050" intensity="120000" radius="0.6" shadows="false" />
@@ -96,12 +96,15 @@
     </Group>
     <Entity name="fogo_aldeao_1" translation="-10.4 38.7304 -4.6" euler="180 -40 180" scale="1">
       <GltfScene url="/assets/meshes/characters/npc_elder_lod0.glb"/>
+      <NpcBody />
     </Entity>
     <Entity name="fogo_aldeao_2" translation="-7.6 38.7304 -4.9" euler="180 30 180" scale="1">
       <GltfScene url="/assets/meshes/characters/npc_healer_lod0.glb"/>
+      <NpcBody />
     </Entity>
     <Entity name="fogo_aldeao_3" translation="-8.8 38.7304 -7.8" euler="0 20 0" scale="1">
       <GltfScene url="/assets/meshes/characters/npc_guard_lod0.glb"/>
+      <NpcBody />
     </Entity>
     <Entity translation="-12 38.7304 9" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" euler="180 65 180" scale="1">
       <GltfScene url="/assets/meshes/village/market_stall_lod0.glb"/>

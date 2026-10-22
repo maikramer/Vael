@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
-  <Group name="scene.smugglers" translation="0 39.2443 0">
-    <SpawnExclusion at="-90 240" radius="34" />
+  <Group name="scene.smugglers" translation="0 39.5 20">
+    <SpawnExclusion at="-90 260" radius="34" />
+    <GroundDecal name="smugglers.floor" at="-90 240" radius="14" feather="8" noise="0.26" seed="93" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="4" base-color="#9c8568" roughness="0.98" />
     <Entity name="smugglers-campfire" translation="-90 0 240" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/campfire_pit_lod0.glb"/>
     </Entity>
@@ -58,7 +59,7 @@
          acampamento existe para os spawners SELVAGENS (lobos da floresta);
          sem a exceção ela engolia a própria região de spawn e os guardas
          nunca nasciam (0 placed / 192 attempts, covil vazio). -->
-    <DynamicSpawner avoid-water="1" avoid-road="1" honor-exclusion="0" count="6" seed="6171" region-min="-118 0 218" region-max="-62 0 262" random-yaw="true" avoid-overlaps="false" max-slope-deg="30" max-distance="300">
+    <DynamicSpawner avoid-water="1" avoid-road="1" honor-exclusion="0" count="8" seed="6171" region-min="-118 0 238" region-max="-62 0 282" random-yaw="true" avoid-overlaps="false" max-slope-deg="30" max-distance="300">
       <Creature role="enemy" script="enemies/bandit.lua">
         <GLTFLoader role="visual" url="/assets/meshes/characters/bandit_lod0.glb" lod1-url="/assets/meshes/characters/bandit_lod1.glb" lod2-url="/assets/meshes/characters/bandit_lod2.glb" lod-threshold-near="18" lod-threshold-mid="55" />
       </Creature>

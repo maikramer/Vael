@@ -234,7 +234,7 @@
     <Entity translation="-880 188.574 -352">
       <ParticleSystem preset="sparkle" transform="pos: 0 1.2 0" />
     </Entity>
-    <DynamicSpawner avoid-water="1" avoid-road="1" count="8" seed="9901" region-min="-916 0 -336" region-max="-844 0 -264" random-yaw="true" avoid-overlaps="false" max-slope-deg="26" max-distance="1440">
+    <DynamicSpawner avoid-water="1" avoid-road="1" honor-exclusion="0" count="8" seed="9901" region-min="-916 0 -336" region-max="-844 0 -264" random-yaw="true" avoid-overlaps="false" max-slope-deg="26" max-distance="1440">
       <Creature role="enemy" script="enemies/shade.lua">
         <GLTFLoader role="visual" url="/assets/meshes/characters/shade_lod0.glb" lod1-url="/assets/meshes/characters/shade_lod1.glb" lod2-url="/assets/meshes/characters/shade_lod2.glb" lod-threshold-near="20" lod-threshold-mid="60" />
       </Creature>

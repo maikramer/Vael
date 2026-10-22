@@ -61,7 +61,7 @@
     <Entity translation="-770 0 -265">
       <ParticleSystem preset="smoke" transform="pos: 0 0.9 0" particle-emitter="preset: smoke; emission-rate: 5; start-life-min: 5; start-life-max: 9; start-speed-min: 0.06; start-speed-max: 0.22; start-size-min: 2.0; start-size-max: 3.8; start-color: #8e8a84; looping: 1; world-space: 1" />
     </Entity>
-    <DynamicSpawner avoid-water="1" avoid-road="1" count="8" seed="6151" region-min="-810 0 -300" region-max="-730 0 -235" random-yaw="true" avoid-overlaps="false" max-slope-deg="24" max-distance="1420">
+    <DynamicSpawner avoid-water="1" avoid-road="1" honor-exclusion="0" count="8" seed="6151" region-min="-810 0 -300" region-max="-730 0 -235" random-yaw="true" avoid-overlaps="false" max-slope-deg="24" max-distance="1420">
       <Creature role="enemy" script="enemies/shade.lua">
         <GLTFLoader role="visual" url="/assets/meshes/characters/shade_lod0.glb" lod1-url="/assets/meshes/characters/shade_lod1.glb" lod2-url="/assets/meshes/characters/shade_lod2.glb" lod-threshold-near="20" lod-threshold-mid="60" />
       </Creature>

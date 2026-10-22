@@ -4,11 +4,11 @@
     <Lake at="-190 -16" radius="24" depth="2.6" water-offset="0.5" color="#2f5a4a" opacity="0.8" ripple="0.7" rocks="0" water-level="25.70439" />
     <Lake at="-156 68" radius="14" depth="2.1" water-offset="0.5" color="#2f5a4a" opacity="0.8" ripple="0.7" water-level="29.236782" rocks="0" />
     <Lake at="-236 -84" radius="18" depth="2.3" water-offset="0.5" color="#2f5a4a" opacity="0.8" ripple="0.7" water-level="34.62166" rocks="0" />
-    <Entity name="swamp-wrecked-boat" translation="-184 26.4173 -52" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/swamp/wrecked_boat_collision.glb; mesh-anchor: base" euler="180 66 180" scale="1">
+    <Entity name="swamp-wrecked-boat" translation="-187 25.55 -39" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/swamp/wrecked_boat_collision.glb; mesh-anchor: base" euler="180 66 180" scale="1">
       <GltfScene url="/assets/meshes/swamp/wrecked_boat_lod0.glb"/>
       <PointLight translation="0 1.5 0" color="0x7dff8a" intensity="65000" radius="0.7" shadows="false" />
     </Entity>
-    <Entity translation="-178 26.2029 -58" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base">
+    <Entity translation="-181 25.9 -36.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb"/>
     </Entity>
     <Entity translation="-174 26.1874 -42" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base">
@@ -171,7 +171,7 @@
     <Entity name="bog-moss-16" translation="-282 32.2844 54" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" script="bog-moss.lua" euler="180 -52 180" scale="1">
       <GltfScene url="/assets/meshes/swamp/moss_rock_lod0.glb" />
     </Entity>
-    <Entity name="barco-arca" translation="-181.00 26.270 -54.60" euler="0 40 0" script="chest.lua" prop-gold="55" prop-xp="40" prop-item="antidote" prop-item_count="3" prop-item_label="antídotos" prop-prompt="Abrir a arca do barco" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
+    <Entity name="barco-arca" translation="-183.60 25.90 -36.20" euler="0 40 0" script="chest.lua" prop-gold="55" prop-xp="40" prop-item="antidote" prop-item_count="3" prop-item_label="antídotos" prop-prompt="Abrir a arca do barco" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/treasure_chest_lod0.glb" />
     </Entity>
     <Entity name="altar-relicario" translation="-267.00 33.044 98.20" euler="0 300 0" script="chest.lua" prop-gold="90" prop-xp="60" prop-item="potion" prop-item_count="2" prop-item_label="poções" prop-prompt="Abrir o relicário do altar" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">

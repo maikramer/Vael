@@ -2,6 +2,7 @@
 <world static="true">
   <Group name="scene.pilgrims-camp" translation="0 80.8973 0">
     <TerrainPad at="484 -70" size="34 30" falloff="12" corner-radius="10" height="80.89815" pre-carved="1" />
+    <GroundDecal name="pilgrim.floor" at="484 -70" radius="16" feather="9" noise="0.26" seed="91" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="4" base-color="#b39a78" roughness="0.98" />
     <SpawnExclusion at="484 -70" radius="26" />
     <Entity name="pilgrim-tent-a" translation="476 0 -76" transform="rotation: 0 25 0; scale: 1.25 1.25 1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/market_stall_lod0.glb"/>
@@ -12,7 +13,7 @@
     <Entity name="pilgrim-tent-c" translation="484 0 -56" transform="rotation: 0 300 0; scale: 1.3 1.3 1.3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/market_stall_lod0.glb"/>
     </Entity>
-    <Entity name="pilgrim-camp" translation="484 0 -70" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base">
+    <Entity name="pilgrim-campfire" translation="484 0 -70" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/campfire_pit_lod0.glb"/>
     </Entity>
     <Entity translation="484 0 -70">
@@ -79,9 +80,11 @@
     </Entity>
     <Entity name="pilgrim-folk-a" translation="489 0 -73" transform="rotation: 0 200 0" script="townsfolk.lua" prop-banter="“Caminhamos até ao santuário desde o amanhecer.”|“Partilhas o nosso lume?”" prop-speed="0.8">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
+      <NpcBody />
     </Entity>
     <Entity name="pilgrim-folk-b" translation="477 0 -72" transform="rotation: 0 120 0" script="townsfolk.lua" prop-banter="“A estrada é longa, mas a fé é mais.”|“Ouvi passos na noite passada...”" prop-speed="0.8">
       <GltfScene url="/assets/meshes/characters/npc_healer_lod0.glb" />
+      <NpcBody />
     </Entity>
   </Group>
 </world>

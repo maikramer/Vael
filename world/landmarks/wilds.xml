@@ -53,7 +53,7 @@
     <Entity translation="1516 159.5273 -723" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 0.7 0.55">
       <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb"/>
     </Entity>
-    <DynamicSpawner avoid-water="1" count="5" seed="7331" region-min="1430 0 -750" region-max="1530 0 -650" random-yaw="true" avoid-overlaps="false" max-slope-deg="40" max-distance="1962">
+    <DynamicSpawner avoid-water="1" honor-exclusion="0" count="5" seed="7331" region-min="1430 0 -750" region-max="1530 0 -650" random-yaw="true" avoid-overlaps="false" max-slope-deg="40" max-distance="1962">
       <Creature role="enemy" script="enemies/bandit.lua">
         <GLTFLoader role="visual" url="/assets/meshes/characters/bandit_lod0.glb" lod1-url="/assets/meshes/characters/bandit_lod1.glb" lod2-url="/assets/meshes/characters/bandit_lod2.glb" lod-threshold-near="18" lod-threshold-mid="55" />
       </Creature>

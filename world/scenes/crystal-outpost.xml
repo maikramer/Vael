@@ -14,11 +14,11 @@
       <Box translation="0 0.1 2.2" half-size="1.1 0.1 1.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="3.0" normal-map="/assets/textures/mountain_stone/normal.ktx2" />
       <PointLight translation="0 3.0 0" color="0xffd9a0" intensity="6000" radius="0.9" />
     </Composition>
-    <Entity name="outpost-vein-a" translation="793 0 719" transform="rotation: 0 25 0; scale: 2.4 2.4 2.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+    <Entity name="outpost-vein-a" translation="793 0 719" transform="rotation: 0 25 0; scale: 2.4 2.4 2.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" destructible="popup-text: Pedra; popup-color: #cccccc; preset: dust; burst-count: 22; hits: 3; spark-on-hit: 1; hit-preset: rockshards; hit-burst-count: 10; crack-on-hit: 1; break-style: shatter" resource-kind="stone" resource-yield="8">
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb"/>
       <PointLight translation="0 1.4 0" color="0x8fd0ff" intensity="3200" radius="0.9" shadows="false" />
     </Entity>
-    <Entity name="outpost-vein-b" translation="790 0 724" transform="rotation: 0 160 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+    <Entity name="outpost-vein-b" translation="790 0 724" transform="rotation: 0 160 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" destructible="popup-text: Pedra; popup-color: #cccccc; preset: dust; burst-count: 22; hits: 3; spark-on-hit: 1; hit-preset: rockshards; hit-burst-count: 10; crack-on-hit: 1; break-style: shatter" resource-kind="stone" resource-yield="8">
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb"/>
     </Entity>
     <Entity translation="805 0 722" transform="rotation: 0 105 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base">
@@ -60,9 +60,11 @@
     </Entity>
     <Entity name="outpost-miner-a" translation="802 0 731" transform="rotation: 0 240 0" script="townsfolk.lua" prop-banter="“Os cristais cantam quando se partem.”|“Cuidado com as escarpas.”" prop-radius="2">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
+      <NpcBody />
     </Entity>
     <Entity name="outpost-miner-b" translation="795 0 722" transform="rotation: 0 60 0" script="townsfolk.lua" prop-banter="“Mais um dia, mais um veio.”|“Já viste o santuário de cristal?”" prop-radius="2">
       <GltfScene url="/assets/meshes/characters/npc_cook_lod0.glb" />
+      <NpcBody />
     </Entity>
   </Group>
 </world>
