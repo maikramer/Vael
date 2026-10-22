@@ -8,9 +8,16 @@ shaders/
 logs/
 __pycache__/
 
-# Pool: binários grandes ficam locais; manifests versionam a receita.
+# Pool: só o modelo BASE vai para o LFS. LOD1/LOD2 são derivados e
+# reconstruídos com `tools/make_lods.py` (mesmo binário + mesmos parâmetros
+# em qualquer máquina). `_intermediate` é cache local de geração.
 # (espelho de assets/.gitignore, para quem clona só a raiz)
-assets/public/assets/meshes/
+assets/public/assets/meshes/**
+!assets/public/assets/meshes/**/
+!assets/public/assets/meshes/**/*_lod0.glb
+!assets/public/assets/meshes/**/*_collision.glb
+!assets/public/assets/meshes/vegetation/*.glb
+assets/public/assets/meshes/**/_intermediate/
 assets/public/assets/images/
 assets/public/assets/sky/
 assets/public/assets/audio/sfx/

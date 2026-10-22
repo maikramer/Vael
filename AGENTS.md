@@ -125,6 +125,15 @@ trabalho) ficam de fora do git. O que entra no repo (`.ktx2`, `.ogg`, `.png`,
 `.webp`, `.ahgt`, `.vinst`, `.wasm`, `.glb`) é Git LFS — actualizar quando
 um pack muda, não a cada frame de geração.
 
+Dos GLB, só o **modelo base** vai para o LFS: `*_lod0.glb`, as colisões
+`*_collision.glb` e os que não têm ladder (`vegetation/*.glb`). LOD1/LOD2 são
+derivados e ficam fora do git — reconstrói-os com
+`python3 tools/make_lods.py` (a partir da raiz; `--jobs N`, `--force`,
+`--only 'characters/*'`). O script usa o `text3d lod` + `text3d finish` com os
+parâmetros do pipeline (`assets/game.yaml`: ratios 0.40/0.22, textura 2048,
+`rig_max_level: 2`), por isso o mesmo base dá sempre a mesma ladder. Um clone
+só precisa de correr o script uma vez depois de `gameassets resume`.
+
 Cofre, XP e quests vivem em `scripts/lib/rules.lua`. A engine não expõe
 `viber.vault_*` / `viber.add_xp`. O kit inicial (30 ouro, 1 poção) semeia-se
 aí quando o save ainda não tem inventário.

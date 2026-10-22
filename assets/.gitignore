@@ -1,6 +1,12 @@
-# Gen cache + binários GameAssets (~GB) ficam locais; o pool CC0 versiona.
+# Só o modelo BASE entra no Git LFS; LOD1/LOD2 são derivados e gerados com
+# `python3 tools/make_lods.py` a partir do base. O cache de geração fica fora.
 public/assets/images/
-public/assets/meshes/
+public/assets/meshes/**
+!public/assets/meshes/**/
+!public/assets/meshes/**/*_lod0.glb
+!public/assets/meshes/**/*_collision.glb
+!public/assets/meshes/vegetation/*.glb
+public/assets/meshes/**/_intermediate/
 public/assets/sky/
 
 # SFX vivem no exemplo (assets/ do simple-rpg); espelhos no pool ficam de fora.
