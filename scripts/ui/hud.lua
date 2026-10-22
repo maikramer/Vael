@@ -60,11 +60,18 @@ function on_update(dt)
 
   if viber.ui.clicked("open-journal") then
     viber.ui.open("menu", true)
+    -- O botão diz "DIÁRIO": abrir na última aba (a loja, por exemplo) fazia
+    -- o clique parecer que não tinha aberto as missões.
+    if viber.ui.select_tab then
+      viber.ui.select_tab("menu", "quests")
+    end
   end
 
   local seen = viber.game().boss_bar_t or -100
   -- `viber.game()` viaja no save: um carimbo vindo de outra sessão pode
-  -- estar no "futuro" do relógio desta — vale como sinal nenhum.
+  -- estar no "futuro" do relógio desta — vale como sinal nenhum. Um valor
+  -- não numérico (save antigo/corrompido) também não pode rebentar o HUD.
+  if type(seen) ~= "number" then seen = -100 end
   if seen > viber.time() then seen = -100 end
   local boss_live = viber.time() - seen < BOSS_BAR_TTL
   if boss_live ~= st.boss_live then

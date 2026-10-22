@@ -128,6 +128,7 @@
 #hud #day-bar { width: 100%; height: 2 }
 #hud .weather-row { display: none }
 #hud .weather-row.wet { display: flex; width: 100%; align: center; gap: 6 }
+#hud .weather-row.net-row.on { display: flex; width: 100%; align: center; gap: 6 }
 #hud .weather-icon { width: 13; height: 13 }
 #hud .weather-row .track.rain { flex-grow: 1; min-width: 0; height: 3 }
 
@@ -223,4 +224,26 @@
   #hud .dock { gap: 3; padding: 7 }
   #hud .anchor-clock { width: 208; bottom: 298 }
   #hud .clock-card { padding: 8 11 }
+}
+
+/* ── direção do dano ─────────────────────────────────────────
+   Quatro faixas curtas nas bordas; a que corresponde ao atacante
+   acende 0,35 s. Sem rotação/transform: lê-se em qualquer resolução. */
+.dmg-edge {
+  position: absolute;
+  pointer-events: none;
+  background: linear-gradient(180deg, #dc2626cc 0%, #dc262600 100%);
+}
+.dmg-edge.front { left: 0; top: 0; width: 100%; height: 11vmin }
+.dmg-edge.back {
+  left: 0; bottom: 0; width: 100%; height: 11vmin;
+  background: linear-gradient(0deg, #dc2626cc 0%, #dc262600 100%);
+}
+.dmg-edge.left {
+  left: 0; top: 0; width: 11vmin; height: 100%;
+  background: linear-gradient(90deg, #dc2626cc 0%, #dc262600 100%);
+}
+.dmg-edge.right {
+  right: 0; top: 0; width: 11vmin; height: 100%;
+  background: linear-gradient(270deg, #dc2626cc 0%, #dc262600 100%);
 }

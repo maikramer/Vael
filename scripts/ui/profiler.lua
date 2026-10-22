@@ -56,13 +56,14 @@ local function fill_systems(systems)
     -- Bevy 0.20: contagem de componentes lidos/escritos por sistema (o
     -- `schedule.graph` do BRP) — diz EM QUÊ o sistema caro toca.
     local rw = ""
-    if s.reads or s.writes then
+    -- Em Lua 0 é verdadeiro: `if s.reads or s.writes` mostrava "R0/W0" em
+    -- sistemas sem dados de acesso. Só interessa quando há toques.
+    if (s.reads or 0) + (s.writes or 0) > 0 then
       rw = string.format(" · R%d/W%d", s.reads or 0, s.writes or 0)
     end
     rows[#rows + 1] = {
       name = hot .. s.name,
-      val = string.format("%s · %s%s",
-        string.format("%.2f", s.avg_ms or 0), fmt_ms(s.p95_ms), rw),
+      val = string.format("%s · p95 %s%s", fmt_ms(s.avg_ms), fmt_ms(s.p95_ms), rw),
     }
   end
   viber.ui.list("prof-systems", rows)
@@ -164,6 +165,11 @@ local function fill_extras(snap)
       viber.ui.set_visible("prof-extra-" .. slot, false)
     end
   end
+  -- Esconde slots que sobraram de um snapshot maior (senão ficavam com
+  -- label/estado velhos e clicáveis).
+  for i = #list + 1, 5 do
+    viber.ui.set_visible("prof-extra-" .. i, false)
+  end
   viber.ui.set_text("prof-extra-desc", table.concat(descs, "\n"))
 end
 
@@ -247,16 +253,22 @@ end
 
 -- ── preenchimento por aba (só a activa: o resto fica barato) ──
 local function fill_active(snap)
-  local systems = snap.tabs and snap.tabs.systems
-  if systems == nil then return end
+  local tabs = snap.tabs or {}
+  local systems = tabs.systems
   local state = snap.state or {}
-  viber.ui.set_text("prof-fps", string.format("%.0f", systems.fps or 0))
+  -- Só a aba SISTEMAS depende de `tabs.systems`; antes um snapshot sem essa
+  -- aba (ou uma publicação parcial) congelava também MUNDO/FÍSICA/ÁUDIO/
+  -- FRAMES em "—" para sempre.
+  if systems ~= nil then
+    viber.ui.set_text("prof-fps", string.format("%.0f", systems.fps or 0))
+  end
 
   -- A aba REAL é a do widget nativo (o espelho state.tab_name chega com
   -- até um ciclo de publish de atraso — usar o ui_tab evita preencher a
   -- aba errada no frame da troca).
   local which = ui_tab ~= "" and ui_tab or (state.tab_name or "systems")
   if which == "systems" then
+    if systems == nil then return end
     local frame = systems.frame_ms or {}
     viber.ui.set_text("prof-frame", fmt_ms(frame.avg))
     viber.ui.set_text("prof-p95", fmt_ms(frame.p95))
@@ -274,7 +286,8 @@ local function fill_active(snap)
     fill_systems(systems)
     fill_scripts(systems)
   elseif which == "world" then
-    local t = snap.tabs.world or {}
+    local t = tabs.world or {}
+    local sys = systems or {}
     local p = t.player
     viber.ui.set_text("prof-player", p and string.format("%s  %s  yaw %.0f°",
       p.name or "player", fmt_pos(p.pos), p.yaw_deg or 0) or "(nenhum)")
@@ -283,11 +296,11 @@ local function fill_active(snap)
       c.name or "câmera", fmt_pos(c.pos)) or "(nenhuma)")
     viber.ui.set_text("prof-entities", string.format("%d  ·  scripts %d/%d activos  ·  partículas %d  ·  chunks %d",
       t.entity_count or 0,
-      (systems.scripts or {}).active or 0, (systems.scripts or {}).total or 0,
-      systems.particle_emitters or 0, systems.terrain_chunks or 0))
+      (sys.scripts or {}).active or 0, (sys.scripts or {}).total or 0,
+      sys.particle_emitters or 0, sys.terrain_chunks or 0))
     fill_nearby(snap)
   elseif which == "physics" then
-    local ph = snap.tabs.physics or {}
+    local ph = tabs.physics or {}
     local b = ph.bodies or {}
     viber.ui.set_text("prof-bodies", string.format("%d  (fixos %d · din %d · cin %d)",
       b.total or 0, b.fixed or 0, b.dynamic or 0, b.kinematic or 0))
@@ -305,7 +318,7 @@ local function fill_active(snap)
       r.bodies, r.colliders, r.impulse_joints, r.timestep) or "sem contexto")
     fill_shapes(ph)
   elseif which == "audio" then
-    fill_audio(snap.tabs.audio or {})
+    fill_audio(tabs.audio or {})
   elseif which == "extras" then
     fill_extras(snap)
   elseif which == "frames" then
@@ -324,6 +337,9 @@ function on_update(dt)
   -- (sem depender de clicked(), que vale só no frame do press).
   if viber.ui.clicked("prof-freeze") then viber.profiler_cmd("freeze") end
   if viber.ui.clicked("prof-reset") then viber.profiler_cmd("reset") end
+  -- Os botões de raio existiam no XML sem consumidor.
+  if viber.ui.clicked("prof-radius-down") then viber.profiler_cmd("radius:-10") end
+  if viber.ui.clicked("prof-radius-up") then viber.profiler_cmd("radius:+10") end
   -- COPIAR/EXPORTAR existem em TODAS as abas (o JSON é sempre o completo;
   -- o export escreve ficheiro, o copy vai ao clipboard via engine).
   for _, t in ipairs({ "systems", "world", "physics", "audio", "extras", "frames" }) do

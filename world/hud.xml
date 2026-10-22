@@ -115,7 +115,7 @@
           <UiText class="clock-time" bind="clock">06:00</UiText>
         </UiRow>
         <UiBar id="day-bar" class="track day" bind="day" value="0" />
-        <UiRow class="weather-row" bind="net.on" fade="0.2 0.2">
+        <UiRow class="weather-row net-row" bind="net.on:on" fade="0.2 0.2">
           <UiText class="hud-label">REDE</UiText>
           <UiSpacer />
           <UiText class="clock-time" bind="net.label">HOST</UiText>
@@ -215,5 +215,11 @@
         <UiText id="notification-text" bind="toast" />
       </UiPanel>
     </UiColumn>
+    <!-- Direção do dano: quatro faixas nas bordas; rules.lua acende a que
+         corresponde ao atacante e apaga-a 0,35 s depois. -->
+    <UiPanel id="dmg-front" class="dmg-edge front" hidden="true" />
+    <UiPanel id="dmg-back" class="dmg-edge back" hidden="true" />
+    <UiPanel id="dmg-left" class="dmg-edge left" hidden="true" />
+    <UiPanel id="dmg-right" class="dmg-edge right" hidden="true" />
   </UiRoot>
 </world>

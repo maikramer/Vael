@@ -20,6 +20,9 @@
   width: 52vmin;
   max-width: 94vw;
   max-height: 86vh;
+  /* Instrumento de debug: por cima do véu do título (z 40) e do ecrã de
+     morte (z 60). Sem isto o P no título abria o modal ATRÁS do véu. */
+  z-index: 70;
   direction: column;
   gap: 1vmin;
   padding: 1.6vmin 1.8vmin;
@@ -63,6 +66,8 @@
   cursor: pointer;
 }
 #profiler-win .tab:hover { background: stone-700 }
+#profiler-win .tab:focus,
+#profiler-win .tab.focused { background: stone-600; border-color: amber-300 }
 #profiler-win .tab.active {
   background: amber-600;
   border-color: amber-400;
@@ -130,10 +135,18 @@
   cursor: pointer;
 }
 #profiler-win .btn:hover { background: stone-700 }
+#profiler-win .btn:focus,
+#profiler-win .btn.focused {
+  background: stone-700;
+  border-color: amber-300;
+  box-shadow: 0 0 0.8vmin amber-50055;
+}
 #profiler-win .btn uitext { color: stone-200; font-size: 1.4vmin }
 #profiler-win .btn:hover uitext { color: stone-50 }
 /* CONGELAR activo (classe do driver): vermelho de gravação. */
 #profiler-win .btn.armed { background: rose-900; border-color: rose-500 }
+#profiler-win .btn.armed:focus,
+#profiler-win .btn.armed.focused { background: rose-900; border-color: rose-400 }
 #profiler-win .btn.armed uitext { color: rose-100 }
 
 /* ── secções e listas de linhas ────────────────────────────── */
@@ -178,6 +191,12 @@
   cursor: pointer;
 }
 #profiler-win .extra:hover { background: stone-700 }
+#profiler-win .extra:focus,
+#profiler-win .extra.focused {
+  background: stone-700;
+  border-color: amber-300;
+  box-shadow: 0 0 0.8vmin amber-50055;
+}
 #profiler-win .extra .state { font-size: 1.4vmin; color: stone-500; font-weight: bold }
 #profiler-win .extra.on { border-color: amber-500 }
 #profiler-win .extra.on .state { color: amber-300 }
@@ -187,7 +206,9 @@
 #profiler-win .hist {
   font-size: 1.15vmin;
   color: amber-200;
-  letter-spacing: 0.05vmin;
+  /* `letter-spacing` só aceita px/em no parser da UI; `0.05vmin` era
+     descartado com warning (a sparkline ficava sem o espaçamento). */
+  letter-spacing: 0.05em;
   overflow: clip;
   max-width: 48vmin;
 }
