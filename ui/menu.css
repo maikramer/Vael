@@ -76,6 +76,8 @@
   cursor: pointer;
 }
 .close:hover { background: rose-900; border-color: rose-500 }
+.close:focus,
+.close.focused { background: rose-900; border-color: amber-300 }
 .close uitext { color: stone-300; font-size: 2.6vmin }
 .close:hover uitext { color: stone-50 }
 
@@ -83,7 +85,7 @@
 .tabbar {
   width: 100%;
   gap: 0.9vmin;
-  /* Seis abas não cabem sempre numa linha: quebram em vez de
+  /* Sete abas não cabem sempre numa linha: quebram em vez de
       cortarem na borda do frame. */
   wrap: wrap;
 }
@@ -96,6 +98,8 @@
   cursor: pointer;
 }
 .tab:hover { background: stone-700 }
+.tab:focus,
+.tab.focused { background: stone-600; border-color: amber-300 }
 .tab.active {
   background: amber-600;
   border-color: amber-400;
@@ -134,10 +138,18 @@
   border: 1 stone-70055;
   radius: 1.1vmin;
 }
-/* Botões (talentos/loja) reagem: hover de tinta, active afunda. */
 uibutton.row { cursor: pointer }
+uibutton.row:hover uitext { color: stone-100 }
 uibutton.row:hover { background: stone-700cc; border-color: stone-50088 }
 uibutton.row:active { background: stone-800 }
+/* Foco do gamepad/teclado: a engine marca o botão com `.focused` (não há
+   :hover no comando). Sem esta regra o jogador de comando não via onde estava. */
+uibutton.row:focus,
+uibutton.row.focused {
+  background: stone-700cc;
+  border-color: amber-300;
+  box-shadow: 0 0 0.9vmin amber-50055;
+}
 
 .row-flag {
   width: 0.9vmin;
@@ -157,6 +169,18 @@ uibutton.row:active { background: stone-800 }
    `class="row trade …"`): sem regra, as duas listas perdiam o acento. */
 .row.skill .row-title { color: sky-400 }
 .row.trade .row-title { color: amber-400 }
+
+/* Missão seguida: o clique alterna `tracked_quest`, por isso a linha tem de
+   mostrar qual está a guiar a bússola/HUD (antes só um toast de 2 s). */
+.row.tracked {
+  border-color: amber-400aa;
+  box-shadow: 0 0 0.8vmin amber-50055;
+}
+.row.tracked .row-title { color: amber-100 }
+
+/* Pontos de talento: a primeira linha da aba Talentos. */
+.skills-points { background: amber-90066; border-color: amber-50055 }
+.skills-points .row-note { color: amber-200 }
 
 .row-body {
   flex-grow: 1;
@@ -217,7 +241,7 @@ uibutton.row:active { background: stone-800 }
 .row.keyline .row-title { color: amber-200 }
 
 /* ── acções do sistema ─────────────────────────────────────── */
-.actions { gap: 1vmin; justify: end }
+.actions { gap: 1vmin; justify: end; wrap: wrap }
 
 .action {
   padding: 1vmin 2.4vmin;
@@ -235,6 +259,16 @@ uibutton.row:active { background: stone-800 }
 }
 .action.ghost:hover { background: stone-700 }
 .action.ghost uitext { color: stone-300; font-weight: normal }
+/* Foco do gamepad e botões desactivados (slots vazios / cena de menu): a
+   acção continua visível mas deixa de parecer clicável. */
+.action:focus,
+.action.focused { background: amber-500; border-color: amber-200 }
+.action.ghost:focus,
+.action.ghost.focused { background: stone-700; border-color: amber-300 }
+.action:disabled { background: stone-800; border-color: stone-700; cursor: default }
+.action.ghost:disabled { background: stone-900; border-color: stone-800 }
+.action:disabled uitext,
+.action.ghost:disabled uitext { color: stone-600 }
 
 /* ── rodapé ────────────────────────────────────────────────── */
 .frame-foot { justify: center }
