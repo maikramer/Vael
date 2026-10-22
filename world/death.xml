@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ecrã de morte (autoload): cobre o jogo até o jogador escolher. -->
+<world static="true">
+  <!-- `.frame` (padding/radius) vem do menu; `.death-frame` só o especializa. -->
+  <UiStyle src="ui/menu.css" />
+  <UiStyle src="ui/title.css" />
+  <UiRoot id="death-layer" script="ui/death.lua">
+    <UiModal id="death" class="death-overlay" escape-closes="false">
+      <UiColumn class="frame death-frame">
+        <UiText class="death-kicker">O VALE FICA À ESPERA</UiText>
+        <UiText class="frame-title">@death.title</UiText>
+        <UiText class="death-line">@death.line</UiText>
+        <UiText id="death-save-info" class="death-save-info">—</UiText>
+        <UiRow class="death-actions">
+          <UiButton id="death-retry" class="title-btn primary">
+            <UiText>@death.retry</UiText>
+          </UiButton>
+          <UiButton id="death-load" class="title-btn">
+            <UiText>@death.load</UiText>
+          </UiButton>
+          <UiButton id="death-title" class="title-btn">
+            <UiText>@death.to_title</UiText>
+          </UiButton>
+        </UiRow>
+      </UiColumn>
+    </UiModal>
+  </UiRoot>
+</world>
