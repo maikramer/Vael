@@ -24,14 +24,29 @@ Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
 ## Correr
 
 ```bash
-cd ../Viber && ./install.sh                 # uma vez, ou depois de mudar a engine
+install -m 755 ../Viber/scripts/viber-latest.sh ~/.local/bin/viber   # uma vez
 cd ../Viber && cargo run -- run ../Vael/world.xml
 cd ../Viber && cargo run -- analyze ../Vael/world.xml   # headless + cobertura
 ```
 
 Com o CLI instalado e o cwd nesta pasta: `viber run` (procura `world.xml`).
-Esse binário **não** recompila o irmão `../Viber` — o `./install.sh` é que
-o actualiza. Fluxo completo (LFS, assets, editor): [`AGENTS.md`](AGENTS.md).
+O wrapper segue o checkout e só recompila quando as fontes mudam; não correr
+`./install.sh` por cima (substitui o wrapper). Fluxo completo (LFS, assets,
+editor): [`AGENTS.md`](AGENTS.md).
+
+### Arranque directo (debug)
+
+Para iterar em gameplay sem passar pelo menu e pelo prólogo de ~35 s:
+
+```bash
+viber run --scene main --entry dev
+```
+
+Cai directo em `main`, com o HUD ligado e o estado de um **Novo Jogo** (sem
+save carregado). A entrada `dev` de `world.xml` é o sinal lido por
+`scripts/lib/dev.lua`; o título (`ui/title.lua`) e o prólogo
+(`game/story.lua`) saltam-se sem tocar na engine. Detalhe, efeitos no save e
+o que continua a tocar: [`docs/DEBUG.md`](docs/DEBUG.md).
 
 ## Profiling (sem screenshots)
 
@@ -55,7 +70,9 @@ hitches e RSS. Limiar de hitch: `VIBER_HITCH_MS` (default 50 ms).
 
 ## Estado atual
 
-Jogável de ponta a ponta: **player** com combate melee ([J]/clique, alvo [V]
+Jogável de ponta a ponta: **ecrã de título** (Continuar/Novo Jogo/
+Definições/Créditos/Sair), **morte** com Tentar de novo/Carregar/Título,
+**player** com combate melee ([J]/clique, alvo [V]
 ou ação `lock` — [Z]/gamepad, dash [C], golpe radial [R], bomba [B], guard
 [L], talentos com [Q]→Talentos),
 **28 quests** (JSON em `quests/`, diálogo [E] com os NPCs, tracker no HUD,
@@ -63,15 +80,19 @@ bounties no notice-board; os NPCs ambientais usam grafos em
 `dialogues/*.json`), **economia** (vault gold/wood/stone, colheita de
 árvores/pedras, loja no diário [Q]→Loja — falar com o Bram [E] abre-a —,
 hotbar [1]/[2], despojos de ouro/poções nos abates), **travel** (A Nota —
-12 marcos para assinar com [F], viagem rápida [G] nas fogueiras, seta de
-waypoint), **save/load** (menu [Q]→Sistema: [J] grava, [L] carrega; JSON em
-`~/.local/share/viber/`), **mundo vivo** (céu procedural + ciclo dia/noite,
-clima, fog/tint por BiomeRegion, BGM com crossfade por zona, SFX, emissores
-de partícula) e **física** (character controller cinemático, knockback,
-destrutíveis que tombam, ragdoll nos chefes). Os ~46 scripts Luau em `scripts/` (inimigos,
-bosses, colheita, POIs, HUD) correm via a API `viber.*` com "LOD de IA" —
-além do raio de ativação (default 45 m) o `on_update` nem corre — e têm
-hot-reload ao gravar. A referência da API está em `Viber/docs/LUA_API.md`.
+12 marcos para assinar com [F], viagem rápida [G] nas fogueiras, mapa
+visual [M] com hillshade do heightmap e seta para o objetivo da quest),
+**save em slots** (0 = autosave em fogueiras/entrega de quest/chefe,
+1–3 manuais em [Q]→Sistema; JSON em `~/.local/share/viber/`), **mundo vivo**
+(céu procedural + ciclo dia/noite, clima, fog/tint por BiomeRegion, BGM com
+crossfade por zona e música de combate, SFX, emissores de partícula,
+reverb em interiores), **combate com feedback** (hit-stop, shake, números de
+dano, sparks e decals de impacto) e **física** (character controller
+cinemático, knockback, destrutíveis que tombam, ragdoll nos chefes). Os ~65
+scripts Luau em `scripts/` (inimigos, bosses, colheita, POIs, HUD) correm via
+a API `viber.*` com "LOD de IA" — além do raio de ativação (default 45 m) o
+`on_update` nem corre — e têm hot-reload ao gravar. A referência da API está
+em `Viber/docs/LUA_API.md`.
 
 O `analyze` imprime o relatório de cobertura — é o roteiro do que falta à
 engine.
@@ -147,8 +168,16 @@ descomprime meshopt/KTX2 à leitura.
   geradores), vegetação com `instances="world.data/veg/NNN.vinst"`, interiores
 - `world.data/` — dados binários: `terrain.ahgt` (+ `.paint`), `veg/*.vinst`,
   `bake.json` (documento da conversão — World Overview do editor)
-- `quests/*.json` — definições das 28 quests (lidas do disco pela engine via
-  `game.quests_dir`; campos: `id, npc, biome, title, lines_*, objective, rewards`)
+- `scenes/menu.xml` + `scenes/menu.data/terrain.ahgt` — cena de arranque
+  (`project.start-scene`): acampamento pequeno atrás do título. As salas
+  continuam em `scenes/interiors/`
+- `quests/*.json` + `quests/index.json` — definições das 28 quests (lidas por
+  `scripts/lib/rules.lua`; campos: `id, npc, biome, title, lines_*, objective, rewards`)
+- `dialogues/*.json` — grafos de diálogo ambientais (lidos por `scripts/townsfolk.lua`)
+- `data/items.json`, `data/landmarks.json`, `data/progression.json` — itens/loja,
+  marcos da Nota e progressão (XP/talentos), editáveis como conteúdo
+- `editor/plugins/*.lua` — plugins de autoria do Vael no ViberEditor; o editor
+  em si não tem regras de jogo (`Viber/editor/PLUGINS.md`)
 - `scripts/**.lua` — comportamento Luau (inimigos/bosses, colheita, POIs,
   HUD/UI) via a API `viber.*` (`Viber/docs/LUA_API.md`)
 - `config.yaml` — **contrato de paths com a engine** (obrigatório; roots,
@@ -160,7 +189,9 @@ descomprime meshopt/KTX2 à leitura.
 ## Editar
 
 Por operações — `viber scene` / `viber tool` / `viber terrain` (offline ou
-`--live`) ou o ViberEditor. Re-gerar a partir do exemplo original do motor TS
+`--live`) ou o ViberEditor. No editor, a autoria de conteúdo vive nos plugins
+do projeto (`Vael/editor/plugins/`): quests, diálogos, itens/loja, marcos,
+progressão e o grip das armas. Re-gerar a partir do exemplo original do motor TS
 deixou de ser o fluxo: produz um
 mundo procedural que teria de ser convertido (`viber bake`) e substituiria o
 estático editado. GLBs novos entram por `assets/` (`gameassets resume`);

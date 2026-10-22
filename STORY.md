@@ -1,6 +1,6 @@
 # O Silêncio de Vael — bíblia narrativa do simple-rpg
 
-> Capítulo I · A Nota. O fio que liga as 27 missões, os quatro chefes, os marcos da
+> Capítulo I · A Nota. O fio que liga as 28 missões, os quatro chefes, os marcos da
 > Nota e as cinemáticas. Quem escreve conteúdo novo (falas, missões, cenas) lê isto
 > primeiro: nomes, tom e cronologia vivem aqui.
 

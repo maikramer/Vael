@@ -37,8 +37,12 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 |---------|---------|
 | `world.xml` | raiz estática e os `<Include src="/world/…">` |
 | `world/**.xml` | cidades, criaturas, landmarks, `spawn/…`, HUD |
+| `scenes/menu.xml` | cena de arranque: acampamento pequeno atrás do título |
 | `scenes/interiors/` | salas (cenas próprias, sem terreno) |
-| `quests/*.json` | 28 quests, lidas do disco (reiniciar a engine; sem `cargo build`) |
+| `quests/*.json` | 28 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
+| `dialogues/*.json` | grafos ambientais; lidos por `scripts/townsfolk.lua` |
+| `data/*.json` | itens/loja, marcos e progressão; lidos por `rules.lua`/`shop.lua`/`landmarks.lua` |
+| `editor/plugins/*.lua` | autoria do jogo no ViberEditor (quests, diálogos, itens, marcos, progressão, grip) |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
 | `ui/*.css` | HUD e menu |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
@@ -53,6 +57,12 @@ Portas da vila: `world/cities/discordia/portals.xml`. Jogador, câmara e HUD
 são autoloads (`world/autoload/*.xml`). Sala nova:
 `viber scene new-scene interiors/<nome> --interior "20 16"` mais um portal
 na vila. `viber scene lint` valida alvos.
+
+A cena de menu (`scenes/menu.xml`) é o `project.start-scene` do `config.yaml`:
+sem `--scene`, o `viber run` arranca nela em vez de `main`. É só o acampamento
+(o terreno pequeno `scenes/menu.data/terrain.ahgt`) atrás do título; `Novo
+Jogo`/`Continuar` trocam para `main`, e a morte/botão "Ecrã de título" voltam
+a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 
 ## Gotchas
 
@@ -71,7 +81,14 @@ na vila. `viber scene lint` valida alvos.
 cd ../Viber && cargo run -- run ../Vael/world.xml
 cd ../Viber && cargo run -- analyze ../Vael/world.xml
 viber run          # cwd nesta pasta: binário do PATH, não recompila ../Viber
+viber run --scene main --entry dev   # debug: directo ao jogo, sem título/prólogo
 ```
+
+Arranque directo: `--scene main` salta a cena de menu e `--entry dev` (a
+`<SceneEntry name="dev">` de `world.xml`) faz `scripts/lib/dev.lua` marcar
+`skip_intro`; `title.lua` e `story.lua` saltam o véu e o prólogo. É por
+execução (não grava modo nenhum); o autosave seguinte fica com
+`story_prologo` marcado. Detalhe: `docs/DEBUG.md`.
 
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
 

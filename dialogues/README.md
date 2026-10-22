@@ -1,7 +1,9 @@
 # dialogues/ — grafos de diálogo nativos
 
-Um ficheiro por `dialogue-id` (o mesmo do `<DialogueNPC>`). A engine lê esta
-pasta ao arrancar; o `[E]` avança o nó e os dígitos `1`..`9` escolhem.
+Um ficheiro por `dialogue-id` (o mesmo do `<DialogueNPC>`). Quem lê esta pasta
+é `scripts/townsfolk.lua` (o `[E]` avança o nó e os dígitos `1`..`9` escolhem);
+a engine só localiza o texto e desenha o balão. O editor edita estes grafos
+pelo plugin `editor/plugins/dialogues.lua`.
 
 Sem ficheiro, o `<DialogueNPC>` cai no fluxo de quest nativo (linhas
 `intro/progress/complete` de `quests/*.json`). Com ficheiro, o grafo manda —
