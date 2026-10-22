@@ -31,17 +31,20 @@ local function descreve()
   local vol = viber.ui.read("volume")
   local hud = viber.ui.read("check-hud")
   local anim = viber.ui.read("check-anim")
+  local sfx = viber.ui.read("check-sfx")
   return string.format(
     "read() em vivo:\n" ..
     "  hero-name .text = %s\n" ..
     "  volume    .value = %s\n" ..
     "  check-hud .checked = %s\n" ..
     "  check-anim .checked = %s\n" ..
+    "  check-sfx .checked = %s\n" ..
     "  listas: quests=%d, bag-demo=%d",
     nome and nome.text or "—",
     vol and tostring(vol.value) or "—",
     hud and tostring(hud.checked) or "—",
     anim and tostring(anim.checked) or "—",
+    sfx and tostring(sfx.checked) or "—",
     viber.ui.list_count("quests"),
     viber.ui.list_count("bag-demo")
   )
@@ -57,6 +60,15 @@ viber.ui.set("demo.gradiente", true)
 function on_update(dt)
   viber.ui.set_text("readout-text", descreve())
 
+  -- A vitrina não corre regras de jogo: nenhum script alimenta `xp`/`cd.*`
+  -- neste mundo, por isso as barras e os cooldowns ficavam parados no valor
+  -- autoral. A demo publica-os (bind de script) para se ver a animação.
+  st.demo_t = (st.demo_t or 0) + dt
+  local xp = 0.35 + 0.35 * (0.5 + 0.5 * math.sin(st.demo_t * 0.7))
+  viber.ui.set("xp", xp)
+  viber.ui.set("cd.dash", 1 - (st.demo_t % 6) / 6)
+  viber.ui.set("cd.heal", 1 - ((st.demo_t + 3) % 6) / 6)
+
   -- O selo roda só enquanto o check o manda (set_anim em runtime).
   local anim = viber.ui.read("check-anim")
   local a_ligar = anim and anim.checked or false
@@ -71,7 +83,7 @@ function on_update(dt)
   --    sem prefixo consome a fila inteira e roubava os eventos de outros
   --    scripts de UI.
   local evs = {}
-  for _, prefix in ipairs({ "demo-", "banner", "hero-", "volume" }) do
+  for _, prefix in ipairs({ "demo-", "banner", "hero-", "volume", "check-" }) do
     for _, ev in ipairs(viber.ui.events(prefix)) do
       evs[#evs + 1] = ev
     end
@@ -89,12 +101,16 @@ function on_update(dt)
       viber.log("hero-name mudou -> " .. tostring(ev.text))
     elseif ev.type == "value_changed" then
       viber.log("volume -> " .. tostring(ev.value))
+    elseif ev.type == "checked_changed" then
+      -- O check-sfx não tinha consumidor: o prefixo "check-" não estava na
+      -- lista e o toggle não fazia (nem registava) nada.
+      viber.log(tostring(ev.id) .. " -> " .. tostring(ev.checked))
     end
   end
 
   -- ── Criação dinâmica: uma linha nova a cada 4 s (cap 3), com tween
   --    de entrada; contada por viber.ui.query(".linha-dinamica").
-  st.spawn_timer = (st.spawn_timer or 3.5) + dt
+  st.spawn_timer = (st.spawn_timer or 0.0) + dt
   if st.spawn_timer >= 4.0 then
     st.spawn_timer = 0.0
     local linhas = viber.ui.query(".linha-dinamica")
