@@ -12,8 +12,9 @@ local rules = viber.load("lib/rules.lua")
 -- [J] melee, [L] guarda (precisa do componente nativo `Guarding`) e o
 -- diálogo [E] continuam da engine — a posse é POR SISTEMA.
 --
--- Host: `world/gameplay.xml` (`<Entity tag="always-active">` — o controller
--- corre onde o herói andar; sem o tag o LOD de 45 m congelava-o).
+-- Host: `world/autoload/player.xml` (`<Entity tag="always-active">` — o
+-- controller corre onde o herói andar; sem o tag o LOD de 45 m congelava-o).
+-- Autoload para dash/cura/impacto funcionarem também dentro das casas.
 
 local CD_DASH, CD_HEAL, CD_STRIKE = 6.0, 12.0, 8.0
 local DASH_DISTANCE = 5.0 -- o controller perde ~15 % no atrito: anda ~4,2 m
@@ -55,6 +56,19 @@ end
 function on_update(dt)
   local st = viber.state()
   st.cd = st.cd or { dash = 0, heal = 0, strike = 0 }
+  -- Novo Jogo / save de outra partida: recargas limpas.
+  local sid = tonumber(viber.game().session_id) or 0
+  if st.session ~= sid then
+    st.session = sid
+    st.cd = { dash = 0, heal = 0, strike = 0 }
+  end
+  -- Relógio para trás = load: recargas da sessão anterior não valem no jogo
+  -- carregado.
+  local now = viber.time()
+  if st.clock and now < st.clock then
+    st.cd = { dash = 0, heal = 0, strike = 0 }
+  end
+  st.clock = now
   for k, v in pairs(st.cd) do
     st.cd[k] = math.max(0, v - dt)
   end
@@ -127,15 +141,29 @@ function on_update(dt)
   -- [B] bomba: larga o prototype à frente (detona com fuse — bomb-lua.lua).
   if viber.input.pressed("b") then
     if rules.item_count("bomb") > 0 then
-      rules.vault_take("bomb", 1)
       local fx, fz = viber.player_forward()
       if fx * fx + fz * fz < 1e-4 then
         fx, fz = 0, 1
       end
-      viber.spawn_prototype("bomb-lua", px + fx * BOMB_LAUNCH_DISTANCE, pz + fz * BOMB_LAUNCH_DISTANCE, {
-        y = py + 1.1,
-      })
-      viber.sound("bomb_drop", { x = px, y = py, z = pz })
+      local bx = px + fx * BOMB_LAUNCH_DISTANCE
+      local bz = pz + fz * BOMB_LAUNCH_DISTANCE
+      -- O `<Prototype id="bomb-lua">` só existe onde `world/gameplay.xml`
+      -- está incluído. Em vez de adivinhar pela cena (bloqueava os mundos QA
+      -- e dependia de o id ser "main"), tenta e DEVOLVE a bomba se o spawn
+      -- rebentar ("prototype desconhecido" é erro de script).
+      -- O prototype não tem física: assenta-o no chão (o `y` da mão deixava
+      -- a bomba a flutuar 1,1 m durante todo o rastilho).
+      local gy = viber.ground_below and viber.ground_below(bx, py + 2.0, bz)
+      local by = (gy or py) + 0.25
+      rules.vault_take("bomb", 1)
+      local ok = pcall(viber.spawn_prototype, "bomb-lua", bx, bz, { y = by })
+      if ok then
+        viber.sound("bomb_drop", { x = px, y = py, z = pz })
+      else
+        rules.item_add("bomb", 1)
+        viber.toast("Aqui dentro não há espaço para bombas.")
+        viber.sound("error", { x = px, y = py, z = pz })
+      end
     else
       viber.toast("Sem bombas — compra ao mercador.")
       viber.sound("error", { x = px, y = py, z = pz })

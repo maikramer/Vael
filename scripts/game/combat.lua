@@ -13,7 +13,10 @@
 
 local rules = viber.load("lib/rules.lua")
 
-local VERTICAL = 2.5
+-- Janela vertical do golpe. Igual à do `lib/fsm.lua` (REACH_VERTICAL) e à
+-- lista de alvos abaixo: com 2,5 m o melee acertava através de um piso/pontes
+-- de 2,4 m e o herói batia em quem não o podia atingir de volta.
+local VERTICAL = 2.2
 local CYCLE_RANGE = 14
 local MELEE_RANGE = 3.0
 local FINISHER_RANGE = 3.5
@@ -36,6 +39,15 @@ local COMBO_CAP = 0.3
 local EXECUTE_FRAC = 0.15
 local BOSSES = {
   witch = true, ["sand-worm"] = true, ["bog-warden"] = true, boss = true,
+}
+
+-- Nome legível na barra de alvo (o id do script é dado interno).
+local TARGET_NAME = {
+  wolf = "Lobo", bandit = "Bandido", ["bandit-archer"] = "Arqueiro",
+  goblin = "Goblin", scorpion = "Escorpião", slime = "Gosma",
+  bogling = "Bogling", shade = "Sombra", witch = "Bruxa do Bosque",
+  ["sand-worm"] = "Verme das Areias", ["bog-warden"] = "Guardião do Lodo",
+  boss = "Ogro dos Picos",
 }
 
 local function stats()
@@ -79,6 +91,9 @@ local function show_target(kind, hp, max_hp)
     viber.ui.set("target", math.max(0, hp or 0) / max_hp)
     viber.ui.set("target.alive", (hp or 0) > 0)
   else
+    -- Sem max válido a barra ficava com a fração do alvo ANTERIOR (cheia)
+    -- enquanto o nome já era outro. Zera-a com o resto.
+    viber.ui.set("target", 0)
     viber.ui.set("target.alive", false)
   end
 end
@@ -135,8 +150,16 @@ local function resolve_swing(st, sw)
     if hp > 0 then
       local dx, dz = (h.x or px) - px, (h.z or pz) - pz
       local dist = math.sqrt(dx * dx + dz * dz)
-      if dist >= 1e-3 and dist <= range and math.abs((h.y or py) - py) <= VERTICAL then
-        local ux, uz = dx / dist, dz / dist
+      if dist <= range and math.abs((h.y or py) - py) <= VERTICAL then
+        local ux, uz
+        if dist > 1e-3 then
+          ux, uz = dx / dist, dz / dist
+        else
+          -- Criatura empilhada com o herói (dist≈0): não havia direção e o
+          -- golpe era descartado — um inimigo em cima ficava invulnerável.
+          -- Usa o forward do herói como direção do golpe.
+          ux, uz = fx, fz
+        end
         if (fx * ux + fz * uz) >= arc then
           local dmg = (BASE_DAMAGE + (bonus.bonus_damage or 0))
             * chain_mult(step) * combo_mult(st.combo_hits or 0)
@@ -161,6 +184,7 @@ local function resolve_swing(st, sw)
           if viber.hit_flash then
             viber.hit_flash(h.id)
           end
+          viber.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
           if viber.entity_knockback and not BOSSES[h.kind or ""] then
             local meters = crit and 0.65 or (finisher and 0.55 or 0.45)
             viber.entity_knockback(h.id, ux, uz, meters * 6.0)
@@ -171,6 +195,19 @@ local function resolve_swing(st, sw)
           })
           viber.burst("sparks", h.x or px, (h.y or py) + 1.1, h.z or pz,
             crit and 8 or 5)
+          -- Marca de impacto no chão (decal genérico): lê-se o golpe depois
+          -- de as partículas apagarem. O chão vem do terreno, não do centro
+          -- do inimigo (que pode estar acima do solo).
+          local gx, gz = h.x or px, h.z or pz
+          local gy = viber.ground_below(gx, (h.y or py) + 2.0, gz) or (h.y or py)
+          if viber.decal then
+            viber.decal("/assets/particles/dirt_01.ktx2", gx, gy + 0.02, gz, {
+              nx = 0, ny = 1, nz = 0,
+              size = finisher and 0.85 or (crit and 0.65 or 0.5),
+              life = 2.4,
+              color = "#3a2f28",
+            })
+          end
           hits = hits + 1
           crit_any = crit_any or crit
           kill_any = kill_any or killed
@@ -195,6 +232,48 @@ end
 
 function on_update(dt)
   local st = viber.state()
+  -- Novo Jogo / save de outra partida: nada do combate anterior (golpe no
+  -- ar, chain, combo, alvo) pode atravessar a fronteira.
+  local sid = tonumber(viber.game().session_id) or 0
+  if st.session ~= sid then
+    st.session = sid
+    st.swing = nil
+    st.attack_t = 0
+    st.chain_timer = 0
+    st.chain_step = 0
+    st.buffer_queued = false
+    st.buffer_t = 0
+    st.combo_hits = 0
+    st.combo_window = 0
+    st.target = nil
+    st.last_hp = nil
+    publish_combo(st)
+    viber.ui.set("target.alive", false)
+    viber.ui.set("target.name", "")
+  end
+
+  -- Troca de cena (portal/interior) NÃO muda a sessão: sem isto um golpe
+  -- pendente aterrava já na cena nova, no sítio onde o herói entrou (o
+  -- `resolve_swing` lê a posição ATUAL), e a barra de alvo/combo do mundo
+  -- anterior ficava no HUD.
+  local scene = viber.scene_name and viber.scene_name() or nil
+  if st.scene ~= scene then
+    st.scene = scene
+    st.swing = nil
+    st.attack_t = 0
+    st.chain_timer = 0
+    st.chain_step = 0
+    st.buffer_queued = false
+    st.buffer_t = 0
+    st.combo_hits = 0
+    st.combo_window = 0
+    st.target = nil
+    st.last_hp = nil
+    publish_combo(st)
+    viber.ui.set("target", 0)
+    viber.ui.set("target.alive", false)
+    viber.ui.set("target.name", "")
+  end
 
   -- Timers do melee (correm mesmo com o menu aberto, como o combo nativo).
   st.attack_t = math.max(0, (st.attack_t or 0) - dt)
@@ -222,7 +301,17 @@ function on_update(dt)
   end
   local alive, hp = rules.player_hp()
   if alive and hp <= 0 then
-    st.target = nil
+    -- O golpe que estava no ar não pode aterrar depois do respawn, no sítio
+    -- onde o herói caiu. Fecha também a janela de chain e o buffer.
+    st.swing = nil
+    st.attack_t = 0
+    st.chain_timer = 0
+    st.chain_step = 0
+    st.buffer_queued = false
+    st.buffer_t = 0
+    st.combo_hits = 0
+    st.combo_window = 0
+    publish_combo(st)
     viber.ui.set("target.alive", false)
     viber.ui.set("target.name", "")
     return
@@ -235,7 +324,7 @@ function on_update(dt)
   end
   st.last_hp = hp
 
-  -- ── barra de alvo (o [V] ou a ação nativa `lock`) ──
+  -- ── barra de alvo (ação nativa `lock`; o V é do equipamento) ──
   local has, _, py, _ = viber.player_position()
   if has then
     local list = rules.hostiles(CYCLE_RANGE) or {}
@@ -245,8 +334,7 @@ function on_update(dt)
         ids[#ids + 1] = h
       end
     end
-    local lock_pressed = viber.input.pressed("v")
-      or (viber.action ~= nil and viber.action("lock"))
+    local lock_pressed = viber.action ~= nil and viber.action("lock")
     if lock_pressed then
       if #ids == 0 then
         st.target = nil
@@ -273,7 +361,7 @@ function on_update(dt)
       st.target = shown and shown.id or nil
     end
     if shown then
-      show_target(shown.kind, shown.hp, shown.max)
+      show_target(TARGET_NAME[shown.kind or ""] or shown.kind, shown.hp, shown.max)
     elseif st.target ~= nil then
       st.target = nil
       viber.ui.set("target", 0)
@@ -283,7 +371,36 @@ function on_update(dt)
   end
 
   -- ── melee ──
-  local pressed = viber.input.pressed("j") or viber.input.pressed("lmb")
+  -- Com a TOCHA na mão não há arma para atacar: o `equip.kind` é publicado
+  -- por game/equipment.lua (o V troca Espada↔Tocha). Sem este portão o
+  -- herói "atacava com o lampião" (swing + dano com o GLB da lanterna).
+  -- O [J] é o mesmo verbo da colheita: perto de uma árvore/pedra com o
+  -- prompt "J" no ecrã, o golpe de espada disparava POR CIMA do machado
+  -- (dois `play_clip` no herói e dano a inimigos vizinhos). O rato continua
+  -- a atacar; só o J cede o lugar à interação.
+  local j_key = viber.input.pressed("j")
+  local prompt_j = viber.ui.get("prompt.key") == "J"
+    and viber.ui.get("prompt.label") ~= ""
+  -- `viber.action("attack")` é o mapa de ações (rebindável no save) e cobre
+  -- o botão do gamepad; ler só o J fixo deixava o ataque morto com o comando
+  -- trocado e sem nenhum botão no pad. O J do mapa é a MESMA tecla do prompt
+  -- de colheita: quando o prompt é dono do J, só rato/pad atacam (o pad não
+  -- toca no J, por isso `not j_key` distingue-o).
+  local action_attack = viber.action ~= nil and viber.action("attack")
+  local pressed = (j_key and not prompt_j)
+    or viber.input.pressed("lmb")
+    or (action_attack and not j_key)
+  local torch = viber.ui.get("equip.kind") == "torch"
+  if torch then
+    if pressed then
+      viber.toast("Tocha na mão — troca com V para atacar.")
+    end
+    pressed = false
+    -- Um golpe em BUFFER (premido com a espada) não pode sair do bolso
+    -- depois da troca: o portão da tocha fechava a tecla, não o buffer.
+    st.buffer_queued = false
+    st.buffer_t = 0
+  end
   local busy = (st.attack_t or 0) > 0 or st.swing ~= nil
   if pressed then
     if busy then
@@ -292,7 +409,7 @@ function on_update(dt)
     else
       start_swing(st)
     end
-  elseif st.buffer_queued and not busy then
+  elseif st.buffer_queued and not busy and not torch then
     st.buffer_queued = false
     start_swing(st)
   end

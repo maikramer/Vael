@@ -14,12 +14,22 @@ local RADIUS, DAMAGE, KNOCKBACK = 6.0, 90, 9
 
 function on_update(dt)
   local st = viber.state()
+  -- Menu/diário aberto: o rastilho congela com o resto do combate. Antes a
+  -- bomba largada antes do menu explodia enquanto o jogador lia o diário.
+  if viber.menu_open() then
+    return
+  end
   st.t = (st.t or 0) + dt
-  -- pisca (aviso) nos últimos 0,4 s
-  if st.t > FUSE - 0.4 and st.t < FUSE and not st.blink then
-    st.blink = true
-    local x, y, z = viber.position()
-    viber.burst("sparkle", x, y + 0.3, z, 6)
+  -- Aviso nos últimos 0,5 s: pisca VÁRIAS vezes. Um único burst (e só se um
+  -- frame calhasse dentro da janela) perdia-se num hitch — a bomba explodia
+  -- sem aviso visível.
+  if st.t > FUSE - 0.5 and st.t < FUSE then
+    st.blink_t = (st.blink_t or 0) - dt
+    if st.blink_t <= 0 then
+      st.blink_t = 0.12
+      local x, y, z = viber.position()
+      viber.burst("sparkle", x, y + 0.3, z, 4)
+    end
   end
   if st.t < FUSE or st.boom then
     return

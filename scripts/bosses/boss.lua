@@ -22,8 +22,10 @@ local fsm = viber.load("lib/fsm.lua").new{
   enrage = { at = 0.4, speed = 1.2, cooldown = 0.7,
              toast = "O Ogro entra em FÚRIA!" },
   gate = function()
-    -- `> 1`: ele próprio é hostil e conta-se — com `> 0` nunca despertava.
-    return rules.alive_in_region(2) <= 1
+    -- Exclui o PRÓPRIO ogro: o gate corre ANTES de ele se registar, por isso
+    -- `<= 1` abria com um inimigo ainda vivo na serra. `except_kind` também
+    -- cobre um registo antigo do chefe (hot-reload/estado que sobreviveu).
+    return rules.alive_in_region(2, "boss") == 0
   end,
   awake_toast = "Um rugido ecoa dos Picos Gelados — o ogro despertou!",
 }

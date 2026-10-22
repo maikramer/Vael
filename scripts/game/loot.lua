@@ -53,10 +53,15 @@ function M.pay(kind, id, x, y, z)
     entry = { entry[1] * 3, entry[2] * 3, entry[3] + 1, entry[4] }
   end
   if x == nil then
-    local ok, ex, ey, ez = viber.entity_position(id)
-    if ok then
-      x, y, z = ex, ey, ez
-    else
+    -- Sem id, `entity_position()` cairia no controller do loot (origem do
+    -- mundo) e o número saía na praça. O fallback certo é o HERÓI.
+    if id then
+      local ok, ex, ey, ez = viber.entity_position(id)
+      if ok then
+        x, y, z = ex, ey, ez
+      end
+    end
+    if x == nil then
       local pok, px, py, pz = viber.player_position()
       if pok then
         x, y, z = px, py, pz
@@ -69,26 +74,37 @@ function M.pay(kind, id, x, y, z)
     x, y, z = x or 0, y or 0, z or 0
   end
   local gold = math.random(entry[1], entry[2])
-  rules.vault_add("gold", gold)
-  viber.damage_number("+" .. gold .. " ouro", { color = GOLD_COLOR, x = x, y = y + 1.6, z = z })
+  -- O número mostra o que ENTROU: com o cofre no tecto (ou um save
+  -- negativo que a `vault_add` corrige) "+N ouro" mentia.
+  local gold_in = rules.vault_add("gold", gold) or 0
+  if gold_in > 0 then
+    viber.damage_number("+" .. gold_in .. " ouro", { color = GOLD_COLOR, x = x, y = y + 1.6, z = z })
+  end
   viber.burst("sparkle", x, y + 0.8, z, 10)
   viber.sound("coin", { x = x, y = y, z = z })
   local potions, antidotes = roll_count(entry[3]), roll_count(entry[4])
   if potions > 0 then
-    rules.item_add("potion", potions)
-    viber.damage_number("+" .. potions .. " poção", { color = ITEM_COLOR, x = x, y = y + 2.2, z = z })
+    -- A mochila pára nas 99: "+2 poções" com o stack cheio era um número
+    -- sobre um item que não entrou.
+    local added = rules.item_add("potion", potions) or 0
+    if added > 0 then
+      local label = added == 1 and " poção" or " poções"
+      viber.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.2, z = z })
+    end
   end
   if elite then
     viber.toast("Elite derrotado!")
     viber.burst("sparkle", x, y + 1.0, z, 24)
-    if math.random() < 0.35 then
-      rules.item_add("bomb", 1)
+    if math.random() < 0.35 and (rules.item_add("bomb", 1) or 0) > 0 then
       viber.damage_number("+1 bomba", { color = ITEM_COLOR, x = x, y = y + 3.0, z = z })
     end
   end
   if antidotes > 0 then
-    rules.item_add("antidote", antidotes)
-    viber.damage_number("+" .. antidotes .. " antídoto", { color = ITEM_COLOR, x = x, y = y + 2.6, z = z })
+    local added = rules.item_add("antidote", antidotes) or 0
+    if added > 0 then
+      local label = added == 1 and " antídoto" or " antídotos"
+      viber.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.6, z = z })
+    end
   end
 end
 

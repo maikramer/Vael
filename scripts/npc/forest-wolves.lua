@@ -24,6 +24,7 @@ local function say_lines(lines, fallback, remaining)
   end
   text = text:gsub("{remaining}", tostring(remaining or 0))
   viber.say(text)
+  viber.ui.set("dialogue.until", viber.time() + 0.75)
 end
 
 function on_update(dt)
