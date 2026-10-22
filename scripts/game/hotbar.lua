@@ -25,6 +25,19 @@ end
 
 function on_update(dt)
   local st = viber.state()
+  -- Novo Jogo / save de outra partida: as recargas não vêm do jogo antigo.
+  local sid = tonumber(viber.game().session_id) or 0
+  if st.session ~= sid then
+    st.session = sid
+    st.cd = 0
+  end
+  -- Relógio para trás = load: as recargas da sessão anterior não valem no
+  -- jogo carregado (senão a poção ficava 1 s presa, ou mais com o dash).
+  local now = viber.time()
+  if st.clock and now < st.clock then
+    st.cd = 0
+  end
+  st.clock = now
   st.cd = math.max(0, (st.cd or 0) - dt)
   -- O profiler é `profiler-win`: `is_open("profiler")` era sempre falso e a
   -- poção saía com o painel aberto. Mapa e viagem entram no mesmo portão.
@@ -32,8 +45,11 @@ function on_update(dt)
     return
   end
   -- Balão de diálogo aberto: 1/2 são escolhas do grafo (townsfolk.lua).
+  -- Só conta um timestamp PRÓXIMO: `viber.time()` recomeça no load e um
+  -- valor gravado no bind antes do reset ficava "no futuro" durante minutos.
   local dialogue_until = tonumber(viber.ui.get("dialogue.until")) or 0
-  if viber.time() < dialogue_until then
+  local left = dialogue_until - viber.time()
+  if left > 0 and left <= 2.0 then
     return
   end
   local alive, hp = rules.player_hp()
@@ -69,6 +85,9 @@ function on_update(dt)
         st.cd = COOLDOWN
         rules.vault_take("antidote", 1)
         rules.status_clear("venom")
+        -- A poção confirma com "heal"; o antídoto calava-se e o jogador não
+        -- sabia se o veneno tinha saído.
+        sfx("heal")
         viber.toast("Veneno neutralizado.")
       end
     else
