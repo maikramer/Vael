@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- QA do batching estático: chão pequeno do acampamento + 40 plantas
+     .vinst no mesmo tile. Sem gameplay; serve para confirmar que os tiles
+     fundidos nascem, as fontes ficam escondidas e o cull as devolve. -->
+<world static="true" clear-color="#8fc2ef" title="QA Batch">
+  <SceneEntry name="entrada" translation="0 8.35 18" euler="0 180 0" />
+  <SpawnGate target-entity="player" y-fallback="40" />
+
+  <DayCycle minute-of-day="600" minutes-per-real-second="1.2" />
+  <Entity>
+    <DirectionalLight euler="-45 35.2644 15" />
+    <AmbientLight color="0xc8d8e8" brightness="110" />
+  </Entity>
+
+  <Terrain world-size="220" max-height="40" heightmap="scenes/menu.data/terrain.ahgt"
+           base-color="#8d9878" layers="grass vale_grass dirt dirt_trail forest_floor gravel mountain_stone"
+           render-distance="180" levels="4" resolution="64" collision-resolution="64"
+           lod-hysteresis="1.3" lod-distance-ratio="1.7" height-smoothing="1"
+           shore-width="4" />
+
+  <Group name="scene.qa.batch" translation="0 0 0">
+    <Vegetation meshes="/assets/meshes/vegetation/plant_flatTall.glb"
+                instances="scenes/qa-batch.vinst"
+                region-min="-30 0 -30" region-max="30 0 30"
+                scale-min="1.2" scale-max="2.4" max-distance="80"
+                max-instances="64" seed="9001" variation="foliage" />
+  </Group>
+</world>

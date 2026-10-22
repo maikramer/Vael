@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  QA do grip das armas: mundo mínimo para abrir no editor quando o `world.xml`
+  completo não cabe na GPU com outra engine a correr (OOM no wgpu).
+
+  Inclui o `world/gameplay.xml` partilhado, por isso o nó
+  `game-lua-equipment` (e as props `prop-espada-*`/`prop-tocha-*`) é o MESMO
+  que o mundo principal. Editar/salvar aqui grava em `world/gameplay.xml`.
+
+  O herói, a câmara e o HUD vêm dos autoloads do projeto (`config.yaml`).
+  Sem navmesh nem criaturas: o editor só precisa do herói e do osso da mão.
+-->
+<world clear-color="#8fc2ef" static="true" title="Grip QA">
+  <Sky />
+  <DayCycle minute-of-day="600" minutes-per-real-second="1" />
+  <AmbientLight brightness="0.7" />
+  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" euler="-69.4439 25.0873 17.5307" />
+  <Terrain world-size="256" max-height="14" seed="11" heightmap="qa-hud.data/terrain.ahgt" render-distance="200" levels="4" resolution="64" collision-resolution="64" />
+  <NavMesh enabled="0" />
+  <SpawnGate target-entity="player" y-fallback="150" />
+  <Include src="/world/gameplay.xml" />
+</world>
