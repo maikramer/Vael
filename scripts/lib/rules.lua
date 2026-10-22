@@ -8,6 +8,67 @@ local M = {}
 -- poderem tocar o som no herói e não na origem do controller.
 local sound_at_player
 
+-- Catálogo de conteúdo (data/*.json) — editável pelos plugins do editor.
+-- `pcall`: um JSON ausente não pode impedir o jogo de arrancar; o log diz o
+-- que falhou e os defaults abaixo mantêm o jogo jogável.
+local function load_data(path, fallback)
+  local ok, data = pcall(viber.load_json, path)
+  if ok and type(data) == "table" then
+    return data
+  end
+  viber.log("conteúdo: falha a ler " .. path .. (ok and "" or (" (" .. tostring(data) .. ")")))
+  return fallback or {}
+end
+
+local ITEMS_DATA = load_data("data/items.json", {})
+local PROGRESSION = load_data("data/progression.json", {})
+
+local STACK = tonumber(ITEMS_DATA.stack_max) or 99
+local RESOURCE_CAP = tonumber(ITEMS_DATA.resource_cap) or 1000000
+local STARTING = ITEMS_DATA.starting or { gold = 30, potion = 1 }
+local ITEM_ORDER = {}
+local ITEM_BY_ID = {}
+local RESOURCES = {}
+for _, item in ipairs(ITEMS_DATA.items or {}) do
+  if type(item) == "table" and type(item.id) == "string" and item.id ~= "" then
+    ITEM_BY_ID[item.id] = item
+    ITEM_ORDER[#ITEM_ORDER + 1] = item
+    if item.kind == "resource" then
+      RESOURCES[item.id] = true
+    end
+  end
+end
+table.sort(ITEM_ORDER, function(a, b)
+  return (tonumber(a.order) or 0) < (tonumber(b.order) or 0)
+end)
+
+local XP = PROGRESSION.xp or {}
+local XP_BASE = math.max(1, tonumber(XP.base) or 100)
+local XP_GROWTH = tonumber(XP.growth) or 1.5
+local SKILL_POINTS_PER_LEVEL = math.max(0, tonumber(XP.skill_points_per_level) or 1)
+-- Chefes iguais a `combat::kill_xp`. O resto usa o piso do melee; tabelas
+-- diferentes faziam a barra (regras) e os talentos (engine) subirem em
+-- níveis distintos.
+local KILL_XP = PROGRESSION.kill_xp or {}
+local KILL_XP_DEFAULT = math.max(0, tonumber(KILL_XP.default) or 15)
+-- Passivas do diário: os valores vivem em `data/progression.json`; a engine
+-- não tem árvore de talentos. O diário só gasta o ponto.
+local SKILL_ORDER = {}
+local SKILL_BY_ID = {}
+local SKILL_IDS = {}
+local SKILL_EFFECTS = {}
+for _, skill in ipairs(PROGRESSION.skills or {}) do
+  if type(skill) == "table" and type(skill.id) == "string" and skill.id ~= "" then
+    SKILL_BY_ID[skill.id] = skill
+    SKILL_ORDER[#SKILL_ORDER + 1] = skill
+    SKILL_IDS[#SKILL_IDS + 1] = skill.id
+    SKILL_EFFECTS[skill.id] = skill.effects or {}
+  end
+end
+local TALENT_EVERY = math.max(0, tonumber(PROGRESSION.song_seed_talent_every) or 5)
+
+-- Fallback para projetos sem `quests/index.json` (o ficheiro é a lista que
+-- o editor atualiza ao criar/apagar quests).
 local QUEST_FILES = {
   "quests/city_quests.json",
   "quests/dark_forest_quests.json",
@@ -17,25 +78,27 @@ local QUEST_FILES = {
   "quests/story_quests.json",
   "quests/swamp_quests.json",
 }
-
--- Chefes iguais a `combat::kill_xp`. O resto é 15, o mesmo piso do melee:
--- tabelas diferentes faziam a barra (regras) e os talentos (engine) subirem
--- em níveis distintos.
-local KILL_XP = {
-  boss = 300,
-  ["bog-warden"] = 180,
-  ["sand-worm"] = 160,
-  witch = 140,
-}
-local STACK = 99
-local RESOURCES = { gold = true, wood = true, stone = true }
--- Passivas do diário: os valores vivem aqui e em `SKILL_EFFECTS`; a engine
--- não tem árvore de talentos. O diário só gasta o ponto.
-local SKILL_IDS = {
-  "vitality1", "strength1", "agility1", "precision1",
-  "vitality2", "strength2", "agility2", "precision2",
-}
+local function quest_files()
+  local ok, data = pcall(viber.load_json, "quests/index.json")
+  if ok and type(data) == "table" and #data > 0 then
+    local out = {}
+    for _, name in ipairs(data) do
+      if type(name) == "string" and name ~= "" then
+        out[#out + 1] = "quests/" .. name
+      end
+    end
+    if #out > 0 then
+      return out
+    end
+  end
+  return QUEST_FILES
+end
 local REVEAL_SECS = 2.5
+-- `scan_visits` faz `viber.find` por cada marco das quests de visita. A
+-- 60 Hz eram dezenas de buscas por segundo para uma mudança que só pode
+-- acontecer quando o herói anda; 5 Hz chegam.
+local SCAN_PERIOD = 0.2
+local scan_acc = 0
 -- `vault_add` espelha na engine, e a engine devolve um evento `collect`.
 -- Sem este crédito o mesmo monte entrava outra vez no cofre do jogo.
 local echo = {}
@@ -61,7 +124,7 @@ end
 local function ensure_xp()
   local game = g()
   if not finite(game.xp) then game.xp = 0 end
-  if not finite(game.xp_next) or game.xp_next < 1 then game.xp_next = 100 end
+  if not finite(game.xp_next) or game.xp_next < 1 then game.xp_next = XP_BASE end
   if not finite(game.level) or game.level < 1 then game.level = 1 end
   if not finite(game.skill_points) then game.skill_points = 0 end
 end
@@ -85,26 +148,49 @@ local function ensure_hp()
   local game = g()
   if not finite(game.max_hp) or game.max_hp < 1 then game.max_hp = 100 end
   if not finite(game.hp) then game.hp = game.max_hp end
+  -- Negativo não é vida: um save corrompido deixava o herói "vivo" a -N
+  -- (barra a 0, criaturas a ignorarem-no como cadáver e sem ecrã de morte).
+  if game.hp < 0 then game.hp = 0 end
   if game.hp > game.max_hp then game.hp = game.max_hp end
-  if not stored_spawn(game) then
-    local has, x, y, z = viber.player_position()
-    if has and finite(x) and finite(y) and finite(z) then
-      game.spawn_x, game.spawn_y, game.spawn_z = x, y, z
-    end
+end
+
+-- Um ponto é "de chão" quando está ao nível do terreno. Sem isto o primeiro
+-- frame de um "Novo Jogo" gravava a pose que a cena anterior deixou no
+-- transform (o acampamento do título, y≈8, dentro de `main`, y≈39) como
+-- último descanso: o respawn caía a 30 m do sítio certo.
+local function grounded(x, y, z)
+  if not viber.ground_below then
+    return true
+  end
+  -- De muito acima para apanhar a superfície. Num mundo sem terreno (QA) é
+  -- nil e não há como validar — aceita-se.
+  local top = viber.ground_below(x, y + 1000.0, z)
+  if top == nil then
+    return true
+  end
+  return math.abs(y - top) <= 3.0
+end
+
+-- Ponto de renascimento inicial. Só `main` (ou um mundo avulso) o define: um
+-- save carregado dentro de uma casa não pode gravar as coordenadas LOCAIS do
+-- interior como spawn do mundo grande. Fora do `ensure_hp` (chamado pelo
+-- melee/hotbar): a consulta ao terreno corre no máximo uma vez por frame.
+local function capture_spawn(game)
+  if stored_spawn(game) then
+    return
+  end
+  local scene = viber.scene_name and viber.scene_name() or nil
+  if scene ~= nil and scene ~= "main" then
+    return
+  end
+  local has, x, y, z = viber.player_position()
+  if has and finite(x) and finite(y) and finite(z) and grounded(x, y, z) then
+    game.spawn_x, game.spawn_y, game.spawn_z = x, y, z
   end
 end
 
--- Passivas do diário (mesmos valores da antiga tabela da engine).
-local SKILL_EFFECTS = {
-  vitality1 = { max_hp = 20 },
-  strength1 = { damage = 6 },
-  agility1 = { speed = 0.10 },
-  precision1 = { crit = 0.08 },
-  vitality2 = { max_hp = 30 },
-  strength2 = { damage = 10 },
-  agility2 = { speed = 0.15 },
-  precision2 = { crit = 0.10 },
-}
+-- Passivas do diário: `SKILL_EFFECTS` é construída a partir de
+-- `data/progression.json` no topo deste módulo.
 
 local function learned_stats()
   local game = g()
@@ -140,17 +226,21 @@ function M.player_stats()
   return M.stats or learned_stats()
 end
 
-local defs
+local defs, defs_by_id
 local function load_defs()
   if defs then
     return defs
   end
-  defs = {}
-  for _, path in ipairs(QUEST_FILES) do
+  defs, defs_by_id = {}, {}
+  for _, path in ipairs(quest_files()) do
     local ok, data = pcall(viber.load_json, path)
     if ok and type(data) == "table" then
       for _, def in ipairs(data) do
-        if def.id then
+        -- Ids repetidos entre ficheiros: a primeira definição ganha. O
+        -- índice também torna `quest_state`/`publish` O(1) — eram varreduras
+        -- lineares de 28 defs por cada missão, todos os frames.
+        if def.id and not defs_by_id[def.id] then
+          defs_by_id[def.id] = def
           defs[#defs + 1] = def
         end
       end
@@ -161,12 +251,8 @@ local function load_defs()
 end
 
 local function find_def(id)
-  for _, def in ipairs(load_defs()) do
-    if def.id == id then
-      return def
-    end
-  end
-  return nil
+  load_defs()
+  return defs_by_id[id]
 end
 
 local function qkey(id)
@@ -179,6 +265,35 @@ end
 
 function M.quest_def(id)
   return find_def(id)
+end
+
+function M.items()
+  return ITEM_ORDER
+end
+
+function M.item_def(id)
+  return ITEM_BY_ID[id]
+end
+
+function M.item_label(id)
+  local def = ITEM_BY_ID[id]
+  return def and def.label or id
+end
+
+function M.stack_max()
+  return STACK
+end
+
+function M.skills()
+  return SKILL_ORDER
+end
+
+function M.skill(id)
+  return SKILL_BY_ID[id]
+end
+
+function M.talent_every()
+  return TALENT_EVERY
 end
 
 function M.quest_progress(id)
@@ -203,6 +318,12 @@ local function objective(def)
   return def.objective or {}
 end
 
+-- `count: 0`/ausente é uma quest de um passo, não uma divisão por zero nem
+-- um objetivo que nasce pronto (`progress >= 0`).
+local function count_of(obj)
+  return math.max(1, math.floor(tonumber((obj or {}).count) or 1))
+end
+
 local function progress_of(id)
   return num(qkey(id) .. ".n", 0)
 end
@@ -213,7 +334,7 @@ end
 
 local function mark_ready(def)
   local obj = objective(def)
-  local need = obj.count or 1
+  local need = count_of(obj)
   if progress_of(def.id) >= need and M.quest_state(def.id) == "active" then
     g()[qkey(def.id)] = "ready"
     viber.toast("Objetivo completo: " .. (def.title or def.id))
@@ -253,14 +374,22 @@ local function grant_rewards(def)
   if rewards.xp and rewards.xp > 0 then
     M.add_xp(rewards.xp)
   end
+  -- Devolve quantos itens NÃO couberam (tecto de 99 por stack): o toast de
+  -- entrega dizia "+5 poções" e a mochila só aceitava 2, em silêncio.
+  local missing = 0
   if type(rewards.items) == "table" then
     for _, item in ipairs(rewards.items) do
       local name, count = tostring(item):match("^([^:]+):?(%d*)$")
-      if name and name ~= "" then
-        M.item_add(name, tonumber(count) or 1)
+      local want = tonumber(count) or 1
+      if name and name ~= "" and want > 0 then
+        local added = M.item_add(name, want) or 0
+        if added < want then
+          missing = missing + (want - added)
+        end
       end
     end
   end
+  return missing
 end
 
 function M.quest_turn_in(id)
@@ -273,7 +402,7 @@ function M.quest_turn_in(id)
   end
   local obj = objective(def)
   if obj.type == "collect" then
-    local need = obj.count or 1
+    local need = count_of(obj)
     if not M.vault_take(obj.target or "", need) then
       g()[qkey(id)] = "active"
       viber.toast("Já não tens o que a missão pede.")
@@ -285,11 +414,23 @@ function M.quest_turn_in(id)
     set_progress(id, 0)
   else
     g()[qkey(id)] = "done"
+    -- O cartão do HUD e a bússola não podem continuar a "seguir" uma missão
+    -- fechada: o diário já não deixa voltar a escolhê-la (só aceita
+    -- active/ready), por isso a marca ficava no save para sempre.
+    if g().tracked_quest == id then
+      g().tracked_quest = nil
+    end
   end
-  grant_rewards(def)
+  local missing = grant_rewards(def)
   local gold = (def.rewards or {}).gold or 0
-  viber.toast("Quest entregue: " .. (def.title or id) .. (gold > 0 and (" (+" .. gold .. " ouro)") or ""))
+  local msg = "Quest entregue: " .. (def.title or id)
+    .. (gold > 0 and (" (+" .. gold .. " ouro)") or "")
+  if missing > 0 then
+    msg = msg .. " — " .. missing .. " item(ns) não coube(ram) na mochila."
+  end
+  viber.toast(msg)
   sound_at_player("quest_complete")
+  viber.save_slot(0)
   return true
 end
 
@@ -305,6 +446,10 @@ local function kill_matches(kind, target)
   return kind:sub(1, #target + 1) == target .. "-"
 end
 
+function M.kind_matches(kind, target)
+  return kill_matches(kind, target)
+end
+
 function M.report_kill(kind)
   if not kind or kind == "" then
     return
@@ -313,12 +458,32 @@ function M.report_kill(kind)
     if M.quest_state(def.id) == "active" then
       local obj = objective(def)
       if obj.type == "kill" and kill_matches(kind, obj.target or "") then
-        local need = obj.count or 1
+        local need = count_of(obj)
         set_progress(def.id, math.min(need, progress_of(def.id) + 1))
         mark_ready(def)
       end
     end
   end
+end
+
+-- Rótulo humano de um marco. O toast mostrava o id crú da entidade
+-- ("forest-crossroads-well"); o mapa já tem o nome autoral em
+-- `lib/landmarks.lua`, por isso a tabela é carregada uma vez, à primeira
+-- visita (sem acoplar o `rules` ao módulo no arranque).
+local place_labels
+local function place_label(place)
+  if not place_labels then
+    place_labels = {}
+    local ok, marks = pcall(viber.load, "lib/landmarks.lua")
+    if ok and type(marks) == "table" and type(marks.LIST) == "table" then
+      for _, mark in ipairs(marks.LIST) do
+        if mark.name and mark.label then
+          place_labels[mark.name] = mark.label
+        end
+      end
+    end
+  end
+  return place_labels[place] or place
 end
 
 function M.report_visit(place)
@@ -345,9 +510,9 @@ function M.report_visit(place)
               n = n + 1
             end
           end
-          set_progress(def.id, n)
+          set_progress(def.id, math.min(count_of(obj), n))
           mark_ready(def)
-          viber.toast("Marco visto: " .. place)
+          viber.toast("Marco visto: " .. place_label(place))
         end
       end
     end
@@ -394,7 +559,7 @@ function M.sync_collect()
     if state == "active" or state == "ready" then
       local obj = objective(def)
       if obj.type == "collect" then
-        local need = obj.count or 1
+        local need = count_of(obj)
         local have = M.vault_get(obj.target or "")
         set_progress(def.id, math.min(have, need))
         if have >= need then
@@ -407,11 +572,17 @@ function M.sync_collect()
   end
 end
 
+-- Contagem guardada no cofre, nunca negativa: um save com `item.wood = -3`
+-- aparecia na mochila a -3 e o `vault_add` devolvia mais do que somou.
+local function held(key)
+  return math.max(0, num(key, 0))
+end
+
 function M.vault_get(kind)
   if not kind or kind == "" then
     return 0
   end
-  return num("item." .. kind, 0)
+  return held("item." .. kind)
 end
 
 -- Compat: se a engine ainda expuser `viber.vault_*`, espelha-se. A fonte da
@@ -462,16 +633,19 @@ function M.pull_engine()
           end
         end
       end
-      return
+      -- Sem `return`: um cofre nativo vazio mas sem chaves no save ainda
+      -- precisa do kit de arranque (o `if` abaixo decide).
     end
   end
-  -- Sem leitura do cofre nativo. Kit de arranque (economy::STARTING_GOLD /
-  -- STARTING_POTIONS) quando o save ainda não gravou estas chaves — um 0
-  -- explícito (ouro gasto) não volta a encher.
-  if not vault_get and not item_count
-      and g()["item.gold"] == nil and g()["item.potion"] == nil then
-    g()["item.gold"] = 30
-    g()["item.potion"] = 1
+  -- Kit de arranque (`data/items.json`) quando o save ainda não gravou
+  -- NENHUMA destas chaves — um 0 explícito (ouro gasto) não volta a encher.
+  -- Vale também com cofre nativo vazio.
+  if g()["item.gold"] == nil and g()["item.potion"] == nil then
+    for id, count in pairs(STARTING) do
+      if type(id) == "string" and finite(count) and count > 0 then
+        g()["item." .. id] = count
+      end
+    end
   end
 end
 
@@ -481,8 +655,11 @@ function M.vault_add(kind, amount, mirror)
     return 0
   end
   local key = "item." .. kind
-  local have = num(key, 0)
-  local cap = RESOURCES[kind] and 1000000 or STACK
+  local have = held(key)
+  local def = ITEM_BY_ID[kind]
+  local cap = RESOURCES[kind] and RESOURCE_CAP
+    or (def and tonumber(def.stack))
+    or STACK
   local nextv = math.min(cap, have + amount)
   local added = nextv - have
   if added <= 0 then
@@ -502,7 +679,7 @@ function M.vault_take(kind, amount)
     return false
   end
   local key = "item." .. kind
-  local have = num(key, 0)
+  local have = held(key)
   if have < amount then
     return false
   end
@@ -536,15 +713,17 @@ function M.add_xp(gain, mirror)
   game.xp = game.xp + gain
   while game.xp >= game.xp_next do
     game.xp = game.xp - game.xp_next
-    game.xp_next = math.max(1, math.ceil(game.xp_next * 1.5))
+    game.xp_next = math.max(1, math.ceil(game.xp_next * XP_GROWTH))
     game.level = game.level + 1
-    game.skill_points = game.skill_points + 1
+    game.skill_points = game.skill_points + SKILL_POINTS_PER_LEVEL
   end
 end
 
 function M.add_skill_points(n)
   n = n or 0
-  if n <= 0 then
+  -- NaN/inf somavam-se a `skill_points` e o `ensure_xp` seguinte zerava a
+  -- carteira toda (incluindo os pontos já ganhos).
+  if not finite(n) or n <= 0 then
     return
   end
   ensure_xp()
@@ -614,6 +793,26 @@ function M.hostiles(range)
   return M.hostiles_near(px, pz, range)
 end
 
+-- Registro INTEIRO de hostis vivos (sem filtro de distância). O waypoint
+-- de uma quest de abate precisa de saber onde está a presa, não só a que
+-- está ao alcance do melee.
+function M.hostiles_all()
+  local now = viber.time()
+  local out = {}
+  for id, e in pairs(g().enemies or {}) do
+    if type(id) == "number" and (e.hp or 0) > 0
+        and e.t and e.t <= now and (now - e.t) < 1.0 then
+      out[#out + 1] = {
+        id = id,
+        kind = e.kind or "creature",
+        x = e.x, y = e.y, z = e.z,
+        hp = e.hp, max = e.max,
+      }
+    end
+  end
+  return out
+end
+
 function M.damage_enemy(id, amount)
   ensure_hp()
   local e = (g().enemies or {})[id]
@@ -659,11 +858,14 @@ end
 
 -- Gate de chefe: lê o REGISTO inteiro (sem o filtro de frescura de
 -- `hostiles`, que só via criaturas perto do herói e deixava o gate abrir
--- com os guardiões vivos longe do LOD).
-function M.alive_in_region(idx)
+-- com os guardiões vivos longe do LOD). `except_kind` exclui o próprio
+-- chefe: ele pode já ter registo de uma sessão anterior e não pode contar
+-- como "inimigo que falta matar".
+function M.alive_in_region(idx, except_kind)
   local n = 0
   for id, e in pairs(g().enemies or {}) do
     if type(id) == "number" and (e.hp or 0) > 0
+        and (except_kind == nil or e.kind ~= except_kind)
         and region_of(e.x or 0, e.z or 0) == idx then
       n = n + 1
     end
@@ -690,7 +892,7 @@ function M.poisoned()
 end
 
 function M.kill_xp(kind)
-  return KILL_XP[kind] or 15
+  return KILL_XP[kind] or KILL_XP_DEFAULT
 end
 
 function M.award_kill(kind, id)
@@ -699,6 +901,61 @@ function M.award_kill(kind, id)
   if M.on_kill then
     M.on_kill(kind, id)
   end
+  -- Chefe abatido = marco de progresso: autosave no slot 0. Num timer
+  -- curto: o `fsm` paga o loot DEPOIS de `award_kill`, e o save síncrono
+  -- gravava o estado sem a bolsa/poções do chefe (morrer ou Carregar
+  -- perdia-as).
+  if KILL_XP[kind] then
+    viber.after(0.05, function()
+      viber.save_slot(0)
+    end)
+  end
+end
+
+-- Direção do dano: quatro faixas no HUD. O atacante pode estar à frente,
+-- atrás, à esquerda ou à direita do FORWARD do herói; usa-se o produto
+-- interno (frente/trás) contra o produto externo (lados).
+local DMG_EDGES = { "dmg-front", "dmg-back", "dmg-left", "dmg-right" }
+local dmg_flash = 0
+
+local function clear_dmg_edges()
+  for _, id in ipairs(DMG_EDGES) do
+    viber.ui.set_visible(id, false)
+  end
+end
+
+local function flash_damage_direction(sx, sz)
+  if not sx or not sz then
+    return
+  end
+  local has, px, _, pz = viber.player_position()
+  if not has then
+    return
+  end
+  local fx, fz = viber.player_forward()
+  local dx, dz = sx - px, sz - pz
+  local len = math.sqrt(dx * dx + dz * dz)
+  if len < 0.25 then
+    return
+  end
+  dx, dz = dx / len, dz / len
+  local dot = fx * dx + fz * dz
+  local cross = fx * dz - fz * dx
+  local id
+  if math.abs(dot) >= math.abs(cross) then
+    id = dot > 0 and "dmg-front" or "dmg-back"
+  else
+    id = cross > 0 and "dmg-right" or "dmg-left"
+  end
+  dmg_flash = dmg_flash + 1
+  local token = dmg_flash
+  clear_dmg_edges()
+  viber.ui.set_visible(id, true)
+  viber.after(0.35, function()
+    if token == dmg_flash then
+      viber.ui.set_visible(id, false)
+    end
+  end)
 end
 
 -- Guarda/parry [L] — regra do jogo, em Lua. O dano dos inimigos passa
@@ -713,10 +970,14 @@ local guard_until, guard_start, guard_lock = 0, nil, 0
 
 function M.guard()
   local now = viber.time()
-  if now < guard_lock then
+  -- Não REABRE a guarda enquanto ela está activa: premir [L] em cadência
+  -- reiniciava `guard_start` todos os frames e a janela de parry (0,2 s)
+  -- ficava permanentemente aberta. Entre guardas há uma pequena folga.
+  if now < guard_lock or now < guard_until then
     return
   end
   guard_until, guard_start = now + GUARD_SECS, now
+  guard_lock = now + GUARD_SECS + 0.2
 end
 
 local function guarding()
@@ -747,7 +1008,7 @@ local function player_fx(text, color, sfx)
 end
 
 local function start_death(game)
-  if num("dying", 0) > 0 then
+  if num("dying", 0) > 0 or game.death_pending then
     return
   end
   game.dying = 2.2
@@ -760,8 +1021,14 @@ end
 
 -- Devolve true só quando o dano ENTROU: os `on_attack`/`on_hit` das
 -- criaturas (veneno) não podem disparar contra um parry/i-frame.
-function M.damage_player(amount)
-  if num("iframes", 0) > 0 or num("dying", 0) > 0 then
+function M.damage_player(amount, sx, sz)
+  -- Menu/diário/mapa abertos: o jogador parou para ler. As criaturas já
+  -- suspendem o golpe (lib/fsm.lua); sem este portão uma seta já no ar
+  -- continuava a tirar vida por baixo do menu.
+  if viber.menu_open() then
+    return false
+  end
+  if num("iframes", 0) > 0 or num("dying", 0) > 0 or g().death_pending then
     return false
   end
   ensure_hp()
@@ -789,6 +1056,7 @@ function M.damage_player(amount)
   end
   game.hp = math.max(0, game.hp - amount)
   player_fx("-" .. math.floor(amount), "#ff6b6b", "hurt")
+  flash_damage_direction(sx, sz)
   viber.shake(0.18)
   game.iframes = 0.35
   if game.hp <= 0 then
@@ -803,6 +1071,11 @@ function M.heal_player(amount)
     return
   end
   local game = g()
+  -- Cadáver/ecrã de morte: uma poção ou uma fogueira não ressuscitam o herói
+  -- no sítio onde caiu (o `tick` via `hp > 0` e fechava o ecrã de morte).
+  if num("dying", 0) > 0 or game.death_pending then
+    return
+  end
   game.hp = math.min(game.max_hp, game.hp + amount)
 end
 
@@ -821,22 +1094,86 @@ local function sync_passives()
     game.max_hp = new_max
     game.hp = math.max(0, math.min(new_max, (game.hp or new_max) + delta))
   end
-  if viber.set_player_speed then
+  if viber.set_player_speed and M._speed ~= stats.speed_mult then
+    M._speed = stats.speed_mult
     viber.set_player_speed(stats.speed_mult)
   end
 end
 
+-- Renasce no último descanso. O ecrã de morte chama isto em "Tentar de novo";
+-- mundos sem o modal (QA) usam o fallback de 5 s no `tick`.
+function M.respawn()
+  local game = g()
+  local s = stored_spawn(game) or { x = 0, y = 150, z = 0 }
+  game.hp = game.max_hp or 100
+  game.dying = 0
+  game.death_pending = false
+  game.death_wait = 0
+  game.venom = 0
+  game.venom_tick = 0
+  game.iframes = 2.0
+  viber.ui.open("death", false)
+  viber.ui.set_visible("hud", true)
+  viber.toast("Renasces no último descanso.")
+  sound_at_player("levelup")
+  -- Morrer dentro de uma casa e "Tentar de novo" teleportava para as
+  -- coordenadas do mundo grande DENTRO da cena do interior (fora das
+  -- paredes, a cair). O respawn troca primeiro para `main`; o teleporte
+  -- corre no `scene_loaded`, já com o mundo certo carregado.
+  local scene = viber.scene_name and viber.scene_name() or nil
+  if scene and scene ~= "main" and scene ~= "menu" and viber.change_scene then
+    game.pending_respawn = true
+    local ok = viber.change_scene("main")
+    if ok then
+      return
+    end
+    game.pending_respawn = false
+  end
+  viber.teleport_player(s.x, s.y, s.z)
+end
+
 function M.tick(dt)
+  -- `viber.time()` recomeça no load, mas os timers de sessão (guarda, flashes
+  -- do HUD) são locals do módulo e sobrevivem. Um `guard_lock` no "futuro"
+  -- do relógio novo trancava o [L] durante minutos; o mesmo para as janelas
+  -- de "recente". Relógio para trás = sessão de jogo nova.
+  local now = viber.time()
+  if M._last_time and now < M._last_time then
+    guard_until, guard_start, guard_lock = 0, nil, 0
+    M._xp_until, M._quest_until = nil, nil
+  end
+  M._last_time = now
+  -- Novo Jogo/save de outra partida: flashes, guarda e passivas recomeçam.
+  local sid = tonumber(g().session_id) or 0
+  if M._session ~= sid then
+    M._session = sid
+    M._xp_sig, M._quest_sig = nil, nil
+    M._xp_until, M._quest_until = nil, nil
+    M._speed = nil
+    guard_until, guard_start, guard_lock = 0, nil, 0
+  end
   M.pull_engine()
   sync_passives()
   ensure_hp()
+  -- `ensure_xp` antes dos metadados: o save gravado no meio do frame não
+  -- pode levar "nível nil/NaN" (a barra recuperava só no `publish`).
+  ensure_xp()
   local game = g()
+  capture_spawn(game)
+  -- Metadados do save: o menu de continuar lê `playtime_secs`/`save_title`
+  -- do world_kv sem abrir o resto do estado. Via `num`: um save editado à
+  -- mão com `playtime_secs` textual rebentava o `tick` TODOS os frames.
+  game.playtime_secs = num("playtime_secs", 0) + dt
+  game.save_title = "Vael — nível " .. (game.level or 1)
+  game.save_level = game.level or 1
+  game.save_gold = M.vault_get("gold") or 0
   game.iframes = math.max(0, num("iframes", 0) - dt)
 
   -- Veneno: 4 dps, tick de 1 s. Não corre durante a morte (o cadáver ficava
-  -- a 0 HP sem `dying` e nenhum caminho o curava/matava) e um frame longo
-  -- aplica TODOS os ticks devidos, não só um.
-  if num("venom", 0) > 0 then
+  -- a 0 HP sem `dying` e nenhum caminho o curava/matava), nem com um menu
+  -- aberto (ler o diário não pode matar), e um frame longo aplica TODOS os
+  -- ticks devidos, não só um.
+  if num("venom", 0) > 0 and not viber.menu_open() then
     game.venom = math.max(0, game.venom - dt)
     if num("dying", 0) <= 0 then
       game.venom_tick = (game.venom_tick or 0) + dt
@@ -855,39 +1192,63 @@ function M.tick(dt)
     game.venom_tick = 0
   end
 
-  -- Morte do herói: 2,2 s caído e renasce no último ponto seguro.
+  -- Um save carregado com o herói vivo não pode reabrir o ecrã de morte.
+  if game.death_pending and (game.hp or 0) > 0 then
+    game.death_pending = false
+    game.dying = 0
+    viber.ui.open("death", false)
+  end
+
+  -- 0 HP sem `dying` (save corrompido ou gravado a meio de uma morte): o
+  -- herói ficava invisível para as criaturas (`hero_hp <= 0`) e nunca morria.
+  if game.hp <= 0 and num("dying", 0) <= 0 and not game.death_pending then
+    start_death(game)
+  end
+
+  -- Morte do herói: 2,2 s caído e depois o ecrã de morte. O jogador escolhe
+  -- Tentar de novo / Carregar / Título; sem modal (mundos QA), renasce em 5 s.
   if num("dying", 0) > 0 then
     game.dying = math.max(0, game.dying - dt)
-    if game.dying <= 0 then
-      local s = stored_spawn(game) or { x = 0, y = 150, z = 0 }
-      viber.teleport_player(s.x, s.y, s.z)
-      game.hp = game.max_hp
-      game.venom = 0
-      game.venom_tick = 0
-      game.iframes = 2.0
-      viber.toast("Renasces no último descanso.")
-      sound_at_player("levelup")
+    if game.dying <= 0 and not game.death_pending then
+      game.death_pending = true
+      game.death_wait = 5.0
+      -- A morte fecha os menus abertos; o ecrã de morte é o topo.
+      viber.ui.open("menu", false)
+      viber.ui.open("region-map", false)
+      viber.ui.open("travel", false)
+      viber.ui.open("profiler-win", false)
+      viber.ui.open("death", true)
+    end
+  elseif game.death_pending then
+    if viber.ui.is_open("death") then
+      game.death_wait = 5.0
+    else
+      game.death_wait = math.max(0, (game.death_wait or 0) - dt)
+      if game.death_wait <= 0 then
+        M.respawn()
+      end
     end
   end
 
   for _, ev in ipairs(viber.events()) do
     if ev.type == "kill" and ev.name then
-      M.add_xp(M.kill_xp(ev.name))
-      M.report_kill(ev.name)
+      -- Mesmo caminho do abate do FSM: XP + quests + `on_kill` (as Notas da
+      -- story) + autosave de chefe. Duplicar aqui `add_xp`/`report_kill`
+      -- deixava um abate vindo da engine sem Nota e sem save.
+      M.award_kill(ev.name, ev.entity)
       sound_at_player("enemy_death")
     elseif ev.type == "hit" then
       if ev.faction == "player" and ev.entity then
-        local enemy = (g().enemies or {})[ev.entity]
-        if enemy and (enemy.hp or 0) > 0 then
-          enemy.hp = math.max(0, enemy.hp - (ev.amount or 0))
-        end
+        -- Um `amount` NaN/inf do projétil envenenava `entry.hp` (a criatura
+        -- desaparecia de `hostiles`); `damage_enemy` sanea o valor.
+        M.damage_enemy(ev.entity, ev.amount or 0)
         if ev.x then
           viber.damage_number("-" .. tostring(math.floor(ev.amount or 0)), {
             x = ev.x, y = (ev.y or 0) + 1.8, z = ev.z, color = "#8cd9ff",
           })
         end
       else
-        M.damage_player(ev.amount or 0)
+        M.damage_player(ev.amount or 0, ev.x, ev.z)
       end
     elseif ev.type == "collect" and ev.item then
       -- Compat: evento do cofre da engine (se ainda existir).
@@ -900,9 +1261,33 @@ function M.tick(dt)
         M.vault_add(ev.item, rest, false)
         M.add_xp(30)
       end
+    elseif ev.type == "scene_loaded" then
+      -- A cena recriou as criaturas com bits NOVOS. As entradas da instância
+      -- anterior ficavam órfãs no registo (mesma sessão ⇒ não "stale") e
+      -- `alive_in_region` contava-as para sempre: depois de uma ida à vila o
+      -- gate do ogro nunca abria. O registo é VIVO; os scripts da cena que
+      -- acabou de carregar voltam a registar-se.
+      game.enemies = {}
+      game.elites = {}
+      if game.pending_respawn then
+        -- Respawn pedido dentro de uma cena própria: agora que `main`
+        -- carregou, o spawn guardado volta a ser coordenadas válidas.
+        game.pending_respawn = false
+        local s = stored_spawn(game)
+        if s then
+          viber.teleport_player(s.x, s.y, s.z)
+          game.iframes = math.max(num("iframes", 0), 2.0)
+        end
+      end
     end
   end
-  M.scan_visits()
+  scan_acc = scan_acc + dt
+  if scan_acc >= SCAN_PERIOD then
+    scan_acc = 0
+    if not viber.menu_open() then
+      M.scan_visits()
+    end
+  end
   M.sync_collect()
   M.publish()
 end
@@ -942,13 +1327,28 @@ function M.publish()
   viber.ui.set("bomb.empty", M.vault_get("bomb") < 1)
   local title, progress, text = "", 0, ""
   local best, best_score
+  -- O diário permite SEGUIR uma missão (`tracked_quest`); o cartão do HUD
+  -- tem de mostrar essa, não apenas a de maior progresso. Sem isto o botão
+  -- de seguir só mudava a seta.
+  local tracked = game.tracked_quest
+  local tracked_def
+  if tracked then
+    local def = find_def(tracked)
+    local state = def and M.quest_state(tracked)
+    if def and (state == "active" or state == "ready") then
+      tracked_def = def
+    end
+  end
   for _, def in ipairs(load_defs()) do
     local state = M.quest_state(def.id)
     if state == "active" or state == "ready" then
       local obj = objective(def)
-      local need = obj.count or 1
+      local need = count_of(obj)
       local have = progress_of(def.id)
       local score = (state == "ready" and 2 or 0) + (need > 0 and have / need or 0)
+      if tracked_def and def.id == tracked_def.id then
+        score = 1e9 -- a missão seguida ganha sempre
+      end
       if not best_score or score > best_score then
         best, best_score = def, score
         title = def.title or def.id

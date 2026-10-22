@@ -1,38 +1,23 @@
 -- Marcos da Nota. Os nomes são entidades do mundo; a posição vem de
 -- `viber.find`. A engine não tem comportamento de marco.
+--
+-- A lista vive em `data/landmarks.json` para o editor poder editá-la como
+-- conteúdo (o plugin `content_landmarks.lua`).
 
 local M = {}
 
-M.CAMPFIRE_RANGE = 14
+local DATA = (function()
+  local ok, data = pcall(viber.load_json, "data/landmarks.json")
+  if ok and type(data) == "table" then
+    return data
+  end
+  viber.log("landmarks: falha a ler data/landmarks.json — sem marcos")
+  return {}
+end)()
 
-M.BIOME_LABEL = {
-  tower = "atalaia",
-  dark_forest = "bosque",
-  desert = "deserto",
-  swamp = "pântano",
-  frozen_peaks = "picos",
-}
-
--- name, biome, label, radius, survey (quest de visita; "" nas atalaias).
-M.LIST = {
-  { name = "atalaia-do-vale", biome = "tower", label = "Atalaia do Vale", radius = 8 },
-  { name = "atalaia-do-bosque", biome = "tower", label = "Atalaia do Bosque", radius = 8 },
-  { name = "atalaia-do-ermo", biome = "tower", label = "Atalaia do Ermo", radius = 8 },
-  { name = "atalaia-do-pantano", biome = "tower", label = "Atalaia do Pântano", radius = 8 },
-  { name = "atalaia-dos-picos", biome = "tower", label = "Atalaia dos Picos", radius = 8 },
-  { name = "forest-outpost-tower", biome = "dark_forest", label = "Torre do Posto Avançado", radius = 10, survey = "forest_survey" },
-  { name = "forest-crossroads-well", biome = "dark_forest", label = "Poço da Encruzilhada", radius = 10, survey = "forest_survey" },
-  { name = "forest-stone-circle", biome = "dark_forest", label = "Círculo de Menires", radius = 10, survey = "forest_survey" },
-  { name = "desert-arch", biome = "desert", label = "Arco do Deserto", radius = 12, survey = "desert_survey" },
-  { name = "desert-caravan-wreck", biome = "desert", label = "Caravana Encalhada", radius = 12, survey = "desert_survey" },
-  { name = "desert-sun-obelisk", biome = "desert", label = "Obelisco do Sol", radius = 12, survey = "desert_survey" },
-  { name = "swamp-wrecked-boat", biome = "swamp", label = "Barco Naufragado", radius = 11, survey = "swamp_survey" },
-  { name = "swamp-sunken-graves", biome = "swamp", label = "Covas Submersas", radius = 11, survey = "swamp_survey" },
-  { name = "swamp-bone-altar", biome = "swamp", label = "Altar de Ossos", radius = 11, survey = "swamp_survey" },
-  { name = "peaks-cairn-1", biome = "frozen_peaks", label = "Primeiro Mojão", radius = 9, survey = "peaks_survey" },
-  { name = "peaks-cairn-2", biome = "frozen_peaks", label = "Segundo Mojão", radius = 9, survey = "peaks_survey" },
-  { name = "peaks-cairn-3", biome = "frozen_peaks", label = "Terceiro Mojão", radius = 9, survey = "peaks_survey" },
-}
+M.CAMPFIRE_RANGE = tonumber(DATA.campfire_range) or 14
+M.BIOME_LABEL = DATA.biome_labels or {}
+M.LIST = DATA.landmarks or {}
 
 function M.marked_key(name)
   return "mark." .. name
@@ -42,8 +27,21 @@ function M.is_marked(name)
   return viber.game()[M.marked_key(name)] == true
 end
 
+-- Nome autoral de um marco. Os waypoints mostravam o id cru da entidade
+-- ("Visitar · forest-outpost-tower") em vez do nome que o mapa usa.
+function M.label(name)
+  for _, mark in ipairs(M.LIST) do
+    if mark.name == name then
+      return mark.label
+    end
+  end
+  return name
+end
+
 function M.available(mark, rules)
-  if mark.biome == "tower" then
+  -- O Alto de Vael não é um bioma cartografável: os marcos da peregrinação
+  -- estão sempre disponíveis.
+  if mark.biome == "tower" or mark.pilgrim then
     return true
   end
   return rules.biome_revealed(mark.biome)

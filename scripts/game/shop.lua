@@ -1,4 +1,16 @@
 local rules = viber.load("lib/rules.lua")
+
+-- A loja corre no mercador (controller no mundo) e no UiRoot (menu): sem
+-- posição explícita, `viber.sound` tocava na origem do controller/UI e o
+-- sino da compra ouvia-se na praça, não na banca.
+local function sfx(name)
+  local has, x, y, z = viber.player_position()
+  if has then
+    viber.sound(name, { x = x, y = y, z = z })
+  else
+    viber.sound(name)
+  end
+end
 -- game/shop.lua: a LOJA é do JOGO — catálogo, preços e negociação em Lua.
 --
 -- A engine só publica a ação: os botões da tab Loja fazem
@@ -17,24 +29,29 @@ local rules = viber.load("lib/rules.lua")
 
 -- Catálogo do mercador: buy = preço de compra (nil = não se vende ao herói),
 -- sell = preço de venda (nil = não se compra para si). Preços em ouro.
-local CATALOG = {
-  potion    = { label = "Comprar poção",       buy = 25 },
-  antidote  = { label = "Comprar antídoto",    buy = 20 },
-  bomb      = { label = "Comprar bomba",       buy = 40 },
-  wood      = { label = "Vender madeira",      sell = 3 },
-  stone     = { label = "Vender pedra",        sell = 5 },
-  berry     = { label = "Vender frutas",       sell = 4 },
-  -- Loot de quest sem consumidor: SÓ venda, preço por raridade acima do
-  -- feito bruto (madeira 3 g / pedra 5 g).
-  wolf_pelt      = { label = "Vender pele de lobo",        sell = 15 },
-  cactus_fiber   = { label = "Vender fibra de cacto",      sell = 15 },
-  silk_cloth     = { label = "Vender seda",                sell = 20 },
-  moss_potion    = { label = "Vender poção de musgo",      sell = 20 },
-  iron_axe       = { label = "Vender machado de ferro",    sell = 30 },
-  nature_amulet  = { label = "Vender amuleto da natureza", sell = 30 },
-  blessed_rod    = { label = "Vender vara abençoada",      sell = 40 },
-  ancient_relic  = { label = "Vender relíquia ancestral",  sell = 50 },
-}
+-- O teto de pilha é o mesmo de `lib/rules.lua` (STACK=99): comprar no limite
+-- tem de aparecer bloqueado, não como uma linha "buy" que só dá erro.
+local STACK_MAX = rules.stack_max()
+
+-- Catálogo do mercador: vem de `data/items.json` (`shop.buy`/`shop.sell`).
+-- Um item sem `shop` não entra na banca; os preços continuam a ser dados do
+-- jogo, não do código da loja.
+local function build_catalog()
+  local out = {}
+  for _, item in ipairs(rules.items()) do
+    local shop = item.shop
+    if type(shop) == "table" and (shop.buy or shop.sell) then
+      out[item.id] = {
+        label = shop.label or item.label,
+        buy = shop.buy,
+        sell = shop.sell,
+      }
+    end
+  end
+  return out
+end
+
+local CATALOG = build_catalog()
 
 local M = {}
 
@@ -50,6 +67,10 @@ local function rows()
     local status
     if selling then
       status = (stock or 0) > 0 and "sell" or "locked"
+    elseif (stock or 0) >= STACK_MAX then
+      -- Pilha cheia: o clique só produzia "Já tens o máximo". A linha passa
+      -- a nascer bloqueada, como as de venda sem stock.
+      status = "locked"
     else
       status = gold >= entry.buy and "buy" or "unaffordable"
     end
@@ -104,17 +125,17 @@ local function trade(action, id)
     local price = entry.buy
     if price == nil then
       viber.toast("Não vendo isso.")
-      viber.sound("error")
+      sfx("error")
       return
     end
     if rules.vault_get("gold") < price then
       viber.toast(entry.label .. " custa " .. price .. " de ouro — não chega.")
-      viber.sound("error")
+      sfx("error")
       return
     end
-    if rules.vault_get(id) >= 99 then
-      viber.toast("Já tens o máximo disso (99).")
-      viber.sound("error")
+    if rules.vault_get(id) >= STACK_MAX then
+      viber.toast("Já tens o máximo disso (" .. STACK_MAX .. ").")
+      sfx("error")
       return
     end
     rules.vault_take("gold", price)
@@ -122,25 +143,38 @@ local function trade(action, id)
     if not got or got < 1 then
       rules.vault_add("gold", price)
       viber.toast("Não coube na mochila.")
-      viber.sound("error")
+      sfx("error")
       return
     end
-    viber.sound("buy")
+    sfx("buy")
     viber.toast("Comprado " .. entry.label:gsub("^Comprar ", "") .. ".")
   elseif action == "sell" then
     local price = entry.sell
     if price == nil or rules.vault_get(id) == 0 then
       viber.toast("Sem isso para vender.")
-      viber.sound("error")
+      sfx("error")
       return
     end
-    rules.vault_take(id, 1)
+    -- A linha pode ter sido montada com stock de um frame anterior (ou o
+    -- item pode ter saído noutro caminho): sem esta guarda o ouro entrava
+    -- mesmo quando `vault_take` falhava.
+    if not rules.vault_take(id, 1) then
+      viber.toast("Sem isso para vender.")
+      sfx("error")
+      return
+    end
     rules.vault_add("gold", price)
-    viber.sound("coin")
+    sfx("coin")
     viber.toast("Vendido por " .. price .. " de ouro.")
   end
   refresh()
 end
+
+-- Compra/venda direta para a UI (ui/menu.lua). O caminho por
+-- `viber.ui.action` depende de quem carregou o módulo ser o dono da ação; em
+-- interiores sem mercador a fila nunca era drenada. A UI autoload chama
+-- isto e a negociação funciona em qualquer cena, no frame do clique.
+M.trade = trade
 
 function M.update(dt)
   -- Snapshot deste frame (já inclui as compras do frame anterior). Sem

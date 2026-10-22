@@ -1,0 +1,82 @@
+{
+  "version": 1,
+  "xp": {
+    "base": 100,
+    "growth": 1.5,
+    "skill_points_per_level": 1
+  },
+  "kill_xp": {
+    "boss": 300,
+    "bog-warden": 180,
+    "sand-worm": 160,
+    "witch": 140,
+    "default": 15
+  },
+  "song_seed_talent_every": 5,
+  "skills": [
+    {
+      "id": "vitality1",
+      "label": "Vitalidade I (+20 HP)",
+      "requires": "",
+      "effects": {
+        "max_hp": 20
+      }
+    },
+    {
+      "id": "strength1",
+      "label": "Força I (+6 dano)",
+      "requires": "",
+      "effects": {
+        "damage": 6
+      }
+    },
+    {
+      "id": "agility1",
+      "label": "Agilidade I (+10% velocidade)",
+      "requires": "",
+      "effects": {
+        "speed": 0.1
+      }
+    },
+    {
+      "id": "precision1",
+      "label": "Precisão I (+8% crítico)",
+      "requires": "",
+      "effects": {
+        "crit": 0.08
+      }
+    },
+    {
+      "id": "vitality2",
+      "label": "Vitalidade II (+30 HP)",
+      "requires": "vitality1",
+      "effects": {
+        "max_hp": 30
+      }
+    },
+    {
+      "id": "strength2",
+      "label": "Força II (+10 dano)",
+      "requires": "strength1",
+      "effects": {
+        "damage": 10
+      }
+    },
+    {
+      "id": "agility2",
+      "label": "Agilidade II (+15% velocidade)",
+      "requires": "agility1",
+      "effects": {
+        "speed": 0.15
+      }
+    },
+    {
+      "id": "precision2",
+      "label": "Precisão II (+10% crítico)",
+      "requires": "precision1",
+      "effects": {
+        "crit": 0.1
+      }
+    }
+  ]
+}
