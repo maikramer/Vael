@@ -52,12 +52,15 @@
   <Group name="city.townsfolk" translation="0 0 0">
     <Entity name="townsfolk_plaza" translation="5 0 10.5" script="townsfolk.lua" prop-banter="“Bom dia para uma caminhada, não achas?”|“A praça está animada hoje.”" groups="discordia" prop-notice="“Ei! Esse baú do salão era do chefe da aldeia…”" prop-notice_range="60">
       <GltfScene url="/assets/meshes/characters/npc_elder_lod0.glb" />
+      <NpcBody />
     </Entity>
     <Entity name="townsfolk_north" translation="0 0 -10" script="townsfolk.lua" prop-banter="“Cuidado com os lobos a norte.”|“A ponte norte range, mas aguenta.”" groups="discordia">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
+      <NpcBody />
     </Entity>
     <Entity name="townsfolk_market" translation="6 0 0" script="townsfolk.lua" prop-banter="“Dizem que há ferro novo no mercado.”|“O Bram faz bom preço a quem regateia.”" groups="discordia" prop-notice="“Ouro do salão? O Bram vai querer saber.”" prop-notice_range="60">
       <GltfScene url="/assets/meshes/characters/npc_blacksmith_lod0.glb" />
+      <NpcBody />
     </Entity>
   </Group>
 </world>

@@ -1,7 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
   <Group name="city.roads" translation="0 0 0">
-    <GroundDecal name="city.plaza.floor" at="0 0" radius="10.5" feather="3.5" noise="0.09" texture="/assets/textures/cobblestone_road/albedo.ktx2" texture-scale="9" base-color="#9d9891" roughness="0.9" />
+    <GroundDecal name="city.plaza.floor" at="0 0" size="34 34" feather="3.5" noise="0.11" seed="70" texture="/assets/textures/cobblestone_road/albedo.ktx2" texture-scale="3.5" base-color="#9d9891" roughness="0.9" />
+    <!-- Ruas interiores dos 4 portões até à praça: sem elas a praça era um
+         disco de calçada solto num relvado (a calçada exterior começa em ±48,
+         fora das muralhas). -->
+    <GroundDecal name="city.street.n" at="0 27.5" size="7 21" feather="2" noise="0.14" seed="73" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="6" base-color="#a08a6a" roughness="0.95" />
+    <GroundDecal name="city.street.s" at="0 -27.5" size="7 21" feather="2" noise="0.14" seed="74" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="6" base-color="#9c8666" roughness="0.95" />
+    <GroundDecal name="city.street.e" at="27.5 0" size="21 7" feather="2" noise="0.14" seed="79" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="6" base-color="#a28a6a" roughness="0.95" />
+    <GroundDecal name="city.street.w" at="-27.5 0" size="21 7" feather="2" noise="0.14" seed="80" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="6" base-color="#9e8a68" roughness="0.95" />
+    <!-- Covas de terra dos 4 carvalhos da praça: o tronco nasce da calçada
+         sem uma cova e o carvalho lê-se colado ao chão. -->
+    <GroundDecal name="oak.pit.ne" at="15 13" radius="2.8" feather="1.2" noise="0.2" seed="81" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="2" base-color="#8d745a" roughness="1" />
+    <GroundDecal name="oak.pit.nw" at="-13 11" radius="2.8" feather="1.2" noise="0.2" seed="82" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="2" base-color="#8d745a" roughness="1" />
+    <GroundDecal name="oak.pit.se" at="17 -7" radius="2.8" feather="1.2" noise="0.2" seed="83" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="2" base-color="#8d745a" roughness="1" />
+    <GroundDecal name="oak.pit.sw" at="-15 -11" radius="2.8" feather="1.2" noise="0.2" seed="84" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="2" base-color="#8d745a" roughness="1" />
     <GroundDecal name="city.gate.n.w" at="-7.5 48" size="8 18" feather="3" noise="0.16" seed="71" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="5" base-color="#a28a6a" roughness="0.95" />
     <GroundDecal name="city.gate.n.e" at="7.5 48" size="8 18" feather="3" noise="0.16" seed="72" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="5" base-color="#9c8666" roughness="0.95" />
     <GroundDecal name="city.gate.e.n" at="48 7.5" size="18 8" feather="3" noise="0.16" seed="75" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="5" base-color="#a08a6a" roughness="0.95" />
