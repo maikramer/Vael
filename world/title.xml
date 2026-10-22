@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Ecrã de título (autoload de UI): cobre o mundo vivo que corre atrás. -->
+<world static="true">
+  <!-- O modal de créditos usa `.overlay`/`.frame` do menu: cada UiRoot só
+       vê as folhas que carrega. -->
+  <UiStyle src="ui/menu.css" />
+  <UiStyle src="ui/title.css" />
+  <UiRoot id="title-layer" class="title-layer" script="ui/title.lua">
+    <UiModal id="title" class="title-overlay" escape-closes="false">
+      <UiColumn class="title-frame">
+        <UiText class="title-kicker">@title.kicker</UiText>
+        <UiText class="title-logo">VAEL</UiText>
+        <UiText class="title-sub">@title.sub</UiText>
+        <UiColumn class="title-menu">
+          <UiButton id="title-continue" class="title-btn primary">
+            <UiText>@title.continue</UiText>
+          </UiButton>
+          <UiText id="title-save-info" class="title-save-info">—</UiText>
+          <UiButton id="title-new" class="title-btn">
+            <UiText>@title.new</UiText>
+          </UiButton>
+          <UiButton id="title-settings" class="title-btn">
+            <UiText>@title.settings</UiText>
+          </UiButton>
+          <UiButton id="title-credits" class="title-btn">
+            <UiText>@title.credits</UiText>
+          </UiButton>
+          <UiButton id="title-quit" class="title-btn">
+            <UiText>@title.quit</UiText>
+          </UiButton>
+        </UiColumn>
+        <UiText class="title-hint">@title.hint</UiText>
+      </UiColumn>
+    </UiModal>
+    <UiModal id="credits" class="overlay">
+      <UiColumn class="frame credits-frame">
+        <UiText class="frame-title">@title.credits.title</UiText>
+        <UiText class="credits-line">VAEL — O Silêncio de Vael</UiText>
+        <UiText class="credits-line">Um RPG de mundo aberto feito com a engine Viber.</UiText>
+        <UiText class="credits-line">Mundo, quests e regras: scripts Luau do Vael.</UiText>
+        <UiText class="credits-line">Engine, ferramentas e editor: Viber.</UiText>
+        <UiText class="credits-line">Assets: pipeline AiGameKit.</UiText>
+        <UiSpacer />
+        <UiButton id="credits-close" class="title-btn">
+          <UiText>@title.back</UiText>
+        </UiButton>
+      </UiColumn>
+    </UiModal>
+  </UiRoot>
+</world>

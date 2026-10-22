@@ -1,0 +1,212 @@
+/* ============================================================
+   Vael — ecrã de título
+   ------------------------------------------------------------
+   A cena de menu (o acampamento) corre atrás. O véu é horizontal:
+   escuro à esquerda (o painel), transparente à direita (o lume e as
+   tendas). A navegação é por rato ou por gamepad (classe
+   `.focused`, posta por src/ui/gamepad.rs).
+   ============================================================ */
+
+.title-layer {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.title-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 40;
+  background: linear-gradient(90deg, #0c0a09f2 0%, #0c0a09e0 34%, #0c0a0990 58%, #0c0a0924 82%, #0c0a0900 100%);
+  align: center;
+  justify: start;
+  direction: row;
+  padding-left: 7vmin;
+}
+
+.title-frame {
+  width: 52vmin;
+  max-width: 82vw;
+  direction: column;
+  align: center;
+  gap: 1.1vmin;
+  padding: 4vmin 4.5vmin;
+  background: #0c0a09cc;
+  border: 1 #f59e0b33;
+  radius: 2.4vmin;
+  box-shadow: 0 2vmin 8vmin #000000cc, inset 0 0 6vmin #f59e0b0d;
+}
+
+.title-kicker {
+  font-size: 1.7vmin;
+  color: stone-400;
+}
+
+.title-logo {
+  font-size: 13vmin;
+  font-weight: bold;
+  color: amber-300;
+  text-shadow: 0.4vmin 0.5vmin #000000, 0 0 3vmin #f59e0b55;
+}
+
+.title-sub {
+  font-size: 2.3vmin;
+  color: stone-300;
+  margin-bottom: 2.2vmin;
+}
+
+.title-menu {
+  direction: column;
+  align: center;
+  gap: 0.9vmin;
+  width: 34vmin;
+}
+
+.title-btn {
+  width: 100%;
+  min-height: 5.2vmin;
+  justify: center;
+  align: center;
+  padding: 1vmin 2vmin;
+  background: #1c1917aa;
+  border: 1 #78716c55;
+  radius: 1.2vmin;
+  cursor: pointer;
+  /* `border` não é um campo animável do tween (só `border-color`): a
+     declaração era descartada em silêncio e o aro saltava a seco. */
+  transition: background 120ms, border-color 120ms;
+}
+
+.title-btn uitext {
+  font-size: 2.2vmin;
+  color: stone-200;
+}
+
+.title-btn:hover,
+.title-btn:focus,
+.title-btn.focused {
+  background: #f59e0b22;
+  border: 1 amber-400;
+}
+
+.title-btn:hover uitext,
+.title-btn:focus uitext,
+.title-btn.focused uitext {
+  color: amber-200;
+}
+
+.title-btn.primary {
+  background: #f59e0b1a;
+  border: 1 #f59e0b66;
+}
+
+.title-btn.primary uitext {
+  color: amber-200;
+}
+
+/* `.primary` vem depois do bloco de foco e, com a mesma especificidade,
+   apagava o realce do botão focado (o "Continuar" era o único sem aro). */
+.title-btn.primary:focus,
+.title-btn.primary.focused {
+  border-color: amber-300;
+  box-shadow: 0 0 1.2vmin amber-50088;
+}
+
+.title-btn:disabled {
+  background: #0c0a0955;
+  border: 1 #44403c33;
+  cursor: default;
+}
+
+.title-btn:disabled uitext {
+  color: stone-500;
+}
+
+.title-hint {
+  margin-top: 2vmin;
+  font-size: 1.6vmin;
+  color: stone-500;
+}
+
+/* Resumo do save mais recente, por baixo de "Continuar". */
+.title-save-info {
+  font-size: 1.4vmin;
+  color: stone-500;
+  text-align: center;
+  max-width: 34vmin;
+  margin-bottom: 0.6vmin;
+}
+
+.credits-frame {
+  width: 66vmin;
+  direction: column;
+  gap: 0.8vmin;
+  background: #0c0a09ee;
+}
+
+.credits-line {
+  font-size: 2vmin;
+  color: stone-300;
+}
+
+/* ── morte ─────────────────────────────────────────────────── */
+.death-overlay {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 60;
+  background: radial-gradient(circle at 50% 45%, #3b0a0ad8 0%, #0c0a09f2 70%);
+  align: center;
+  justify: center;
+  direction: column;
+}
+
+.death-frame {
+  width: 62vmin;
+  align: center;
+  gap: 1.2vmin;
+  background: #0c0a09ee;
+  border: 1 #7f1d1d88;
+}
+
+.death-kicker {
+  font-size: 1.6vmin;
+  color: #fca5a5;
+}
+
+.death-line {
+  font-size: 2vmin;
+  color: stone-300;
+  margin-bottom: 1.6vmin;
+}
+
+.death-save-info {
+  font-size: 1.5vmin;
+  color: stone-500;
+  margin-bottom: 1vmin;
+}
+
+.death-actions {
+  direction: row;
+  gap: 1vmin;
+  justify: center;
+  width: 100%;
+}
+
+/* Três botões de 20vmin não cabiam na largura útil de um frame de 62vmin
+   (3×20 + gaps > 62 − padding): o texto encolhia/comprimia. Cada um cresce
+   por igual e o frame decide a largura. */
+.death-actions .title-btn {
+  width: auto;
+  flex-grow: 1;
+  min-width: 0;
+  padding: 1vmin 1.4vmin;
+}
+

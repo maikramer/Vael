@@ -8,7 +8,7 @@ graphics: equilibrado
 
 # Post-FX por jogo (engine LÊ `postfx.disabled`; `VIBER_NO_*` ainda ganha).
 # Fica o que dá resultado barato: tonemapping, bloom, exposição automática,
-# perspetiva aérea, SSAO Medium (assenta os objetos), CAS e TAA.
+# SSAO Medium (assenta os objetos), CAS e TAA.
 postfx:
   disabled:
     - volumetrics          # god-rays: ~6 ms de raymarch; quase não se lê a jogar
@@ -19,6 +19,11 @@ postfx:
     - vignette             # idem
     - split-tone           # tinge os MIOLOS (poças) de azul: lê-se cinzento;
                            # a saturação do grading já separa o azul do quente
+    - aerial               # nos planaltos altos (bosque 72 m, pilgrim 81 m,
+                           # cidadela 189 m) o passe lia a distância errada e
+                           # pintava o CHÃO inteiro de branco — o campanário
+                           # e as ruínas pareciam flutuar num vazio. O fog de
+                           # distância do céu continua a dar a profundidade.
   ssao: medium             # High (18 spp) → Medium (8 spp); o TAA limpa o ruído
 
 # Reflexos de cena (SSR raster). `auto` segue o preset: `equilibrado` não paga
@@ -52,6 +57,7 @@ save:
 # (universos separados — os interiores das casas). Autoloads = o que atravessa as cenas.
 project:
   main-scene: world.xml
+  start-scene: scenes/menu.xml   # 1.ª cena do run: o acampamento atrás do título
   scenes: scenes
   autoload:
     - world/autoload/player.xml

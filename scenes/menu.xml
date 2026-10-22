@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Cena de menu — o acampamento do Capítulo I.
+
+  É a PRIMEIRA cena carregada pelo jogo (`project.start-scene` no
+  config.yaml): terreno pequeno (220 m), clareira plana e um acampamento
+  à volta da fogueira. O título é um autoload e cobre-a; o mundo grande
+  (`main`) só é carregado quando o jogador escolhe Continuar/Novo Jogo.
+
+  O céu é especializado pelo projeto a partir da cena principal
+  (`src/app.rs`); aqui só se declara o relógio e a luz. A cena não tem
+  jogabilidade: não há spawners, criaturas, colheita nem portais.
+-->
+<world static="true" clear-color="#12100d" title="Acampamento">
+  <SceneEntry name="entrada" translation="0 8.35 18" euler="0 180 0" />
+
+  <!-- Relógio, clima e mixer são do JOGO: só a primeira cena os declara
+       (`spawn::startup` first_load). Têm de casar com world/environment.xml,
+       senão o menu muda o amanhecer e o ciclo de chuva da partida toda. -->
+  <DayCycle minute-of-day="480" minutes-per-real-second="1.2" dawn-minute="330" dusk-minute="1170" sun-azimuth-base="205" max-sun-elevation="62" drive-ambient="1" ambient-day-intensity="0.26" ambient-night-intensity="0.32" day-speed-scale="0.5" night-speed-scale="2.0" night-cap-minute="1200" />
+  <Weather wind="0.7 0.25" wind-strength="1.5" clouds="0.25" rain="0" cycle="1" />
+  <AudioMixer master="1" music="0.7" sfx="0.8" voice="0.9" ambience="0.7" />
+  <MusicLayer layer="menu" sound="bgm-menu" base-volume="0.24" />
+
+  <Entity>
+    <DirectionalLight euler="-45 35.2644 15" />
+    <AmbientLight color="0xc8d8e8" brightness="110" />
+  </Entity>
+
+  <!-- Sem criaturas nem deslocação: a navmesh custava ~5 s de boot e a
+       validação do height mesh é desnecessária aqui. -->
+  <NavMesh enabled="0" />
+
+  <Terrain world-size="220" max-height="40" heightmap="scenes/menu.data/terrain.ahgt" base-color="#8d9878" layers="grass vale_grass dirt dirt_trail forest_floor gravel mountain_stone" render-distance="280" levels="4" resolution="64" collision-resolution="64" lod-hysteresis="1.3" lod-distance-ratio="1.7" height-smoothing="1" shore-width="4" />
+
+  <Group name="scene.menu.camp" translation="0 0 0">
+    <!-- Fogueira: o centro do enquadramento. -->
+    <Entity name="menu-campfire" translation="0 8.18 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.0 0.45 2.0">
+      <GltfScene url="/assets/meshes/village/campfire_pit_lod0.glb" lod1-url="/assets/meshes/village/campfire_pit_lod1.glb" lod2-url="/assets/meshes/village/campfire_pit_lod2.glb" lod-threshold-near="45" lod-threshold-mid="110" />
+    </Entity>
+    <Entity translation="0 8.18 0">
+      <ParticleSystem preset="fire" transform="pos: 0 0.42 0" particle-emitter="preset: fire; emission-rate: 46; shape-radius: 0.3; start-life-min: 0.5; start-life-max: 1.4; start-speed-min: 1.3; start-speed-max: 2.8; start-size-min: 0.32; start-size-max: 0.66; looping: 1; world-space: 1" />
+    </Entity>
+    <Entity translation="0 8.18 0">
+      <ParticleSystem preset="smoke" transform="pos: 0 1.6 0" particle-emitter="preset: smoke; emission-rate: 5; start-life-min: 2.6; start-life-max: 4.6; start-speed-min: 0.3; start-speed-max: 0.9; start-size-min: 0.4; start-size-max: 0.9; start-color: #9a9a9a; looping: 1; world-space: 1" />
+    </Entity>
+    <Group translation="0 8.18 0" body="none" collider="none">
+      <!-- Fogo sem sombras: cube shadow map = 6 vistas e pisca no chão. -->
+      <PointLight translation="0 0.75 0" color="0xff8a33" intensity="6400" radius="0.9" shadows="false" />
+      <PointLight translation="0 2.4 0" color="0xffb066" intensity="1100" radius="7.5" shadows="false" />
+    </Group>
+
+    <!-- Tendas: dois postos de mercado como abrigos, em V atrás do lume. -->
+    <Entity name="menu-tent-west" translation="-7 8.21 -5" transform="rotation: 0 25 0; scale: 1.25 1.25 1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/market_stall_lod0.glb" />
+    </Entity>
+    <Entity name="menu-tent-east" translation="7 8.18 -5" transform="rotation: 0 335 0; scale: 1.25 1.25 1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/market_stall_lod0.glb" />
+    </Entity>
+
+    <!-- Bancos e bancos baixos à volta do lume. -->
+    <Entity translation="-2.6 8.2 2.6" transform="rotation: 0 18 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.9 0.55">
+      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb" />
+    </Entity>
+    <Entity translation="2.6 8.2 2.6" transform="rotation: 0 -18 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.9 0.55">
+      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb" />
+    </Entity>
+    <Entity translation="-1.35 8.19 -1.5" transform="rotation: 0 70 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 0.5 0.55">
+      <GltfScene url="/assets/meshes/interiors/stool_wood_lod0.glb" />
+    </Entity>
+    <Entity translation="1.35 8.19 -1.5" transform="rotation: 0 -70 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 0.5 0.55">
+      <GltfScene url="/assets/meshes/interiors/stool_wood_lod0.glb" />
+    </Entity>
+
+    <!-- Caldeirão, pilha de lenha e tralha de acampamento. -->
+    <Entity translation="2.5 8.19 -3.1" transform="rotation: 0 -20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 0.9 0.9">
+      <GltfScene url="/assets/meshes/interiors/cauldron_iron_lod0.glb" />
+    </Entity>
+    <Entity translation="5.4 8.18 -1.7" transform="rotation: 0 32 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.8 0.8 0.9">
+      <GltfScene url="/assets/meshes/village/log_pile_lod0.glb" />
+    </Entity>
+    <Entity translation="-5.3 8.2 2.3" transform="rotation: 0 20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
+    </Entity>
+    <Entity translation="-4.55 8.2 3.15" transform="rotation: 0 -35 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
+    </Entity>
+    <Entity translation="-6.3 8.2 0.55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.75 0.95 0.75">
+      <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb" />
+    </Entity>
+    <Entity translation="5.8 8.2 1.5" transform="rotation: 0 15 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.75 0.95 0.75">
+      <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb" />
+    </Entity>
+    <Entity translation="-4.7 8.2 -3.9" transform="rotation: 0 22 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/weapon_rack_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/weapon_rack_lod0.glb" />
+    </Entity>
+
+    <!-- Dois postes de tocha ladeiam as tendas; outros dois a entrada. -->
+    <Entity translation="-4.3 8.2 -6.7" transform="rotation: 0 12 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-4.3 8.2 -6.7">
+      <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
+    </Entity>
+    <Group translation="-4.3 8.2 -6.7" body="none" collider="none">
+      <PointLight translation="0 2.2 0" color="0xffa83a" intensity="3600" radius="0.6" shadows="false" />
+    </Group>
+    <Entity translation="4.3 8.2 -6.7" transform="rotation: 0 -12 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="4.3 8.2 -6.7">
+      <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
+    </Entity>
+    <Group translation="4.3 8.2 -6.7" body="none" collider="none">
+      <PointLight translation="0 2.2 0" color="0xffa83a" intensity="3600" radius="0.6" shadows="false" />
+    </Group>
+    <Entity translation="-3.6 8.3 11.5" transform="rotation: 0 8 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-3.6 8.3 11.5">
+      <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" />
+    </Entity>
+    <Group translation="-3.6 8.3 11.5" body="none" collider="none">
+      <PointLight translation="0 2.2 0" color="0xffa83a" intensity="2800" radius="0.6" shadows="false" />
+    </Group>
+    <Entity translation="3.6 8.3 11.5" transform="rotation: 0 -8 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="3.6 8.3 11.5">
+      <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" />
+    </Entity>
+    <Group translation="3.6 8.3 11.5" body="none" collider="none">
+      <PointLight translation="0 2.2 0" color="0xffa83a" intensity="2800" radius="0.6" shadows="false" />
+    </Group>
+
+    <!-- Vaga-lumes na orla da clareira. -->
+    <Entity translation="-8.5 9.4 -1.5">
+      <ParticleSystem preset="fireflies" transform="pos: 0 0 0" particle-emitter="preset: fireflies; emission-rate: 3.5; start-life-min: 2.4; start-life-max: 4.8; start-speed-min: 0.05; start-speed-max: 0.28; start-size-min: 0.05; start-size-max: 0.11; shape-radius: 5.5; looping: 1; world-space: 1" />
+    </Entity>
+    <Entity translation="7.5 9.2 5.0">
+      <ParticleSystem preset="fireflies" transform="pos: 0 0 0" particle-emitter="preset: fireflies; emission-rate: 3; start-life-min: 2.2; start-life-max: 4.4; start-speed-min: 0.05; start-speed-max: 0.25; start-size-min: 0.05; start-size-max: 0.1; shape-radius: 4.5; looping: 1; world-space: 1" />
+    </Entity>
+  </Group>
+
+  <!-- Cinturão de árvores: fecha o enquadramento e esconde o fim do terreno. -->
+  <Group name="scene.menu.trees" translation="0 0 0">
+    <Entity name="menu-tree-w1" translation="-26 8.45 -14" transform="rotation: 0 34 0; scale: 1.25 1.25 1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Entity name="menu-tree-w2" translation="-34 6.66 -4" transform="rotation: 0 -20 0; scale: 1.35 1.35 1.35" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Entity name="menu-tree-w3" translation="-30 7.27 10" transform="rotation: 0 58 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_oak_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_oak_lod0.glb" lod1-url="/assets/meshes/forest/tree_oak_lod1.glb" lod2-url="/assets/meshes/forest/tree_oak_lod2.glb" lod-threshold-near="38" lod-threshold-mid="105" />
+    </Entity>
+    <Entity name="menu-tree-w4" translation="-40 8.11 -22" transform="rotation: 0 12 0; scale: 1.45 1.45 1.45" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Entity name="menu-tree-e1" translation="28 8.19 -12" transform="rotation: 0 -38 0; scale: 1.3 1.3 1.3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Entity name="menu-tree-e2" translation="36 9.02 -2" transform="rotation: 0 25 0; scale: 1.15 1.15 1.15" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Entity name="menu-tree-e3" translation="30 9.51 12" transform="rotation: 0 -62 0; scale: 1.05 1.05 1.05" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_oak_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_oak_lod0.glb" lod1-url="/assets/meshes/forest/tree_oak_lod1.glb" lod2-url="/assets/meshes/forest/tree_oak_lod2.glb" lod-threshold-near="38" lod-threshold-mid="105" />
+    </Entity>
+    <Entity name="menu-tree-e4" translation="42 7.74 -24" transform="rotation: 0 8 0; scale: 1.5 1.5 1.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Entity name="menu-tree-s1" translation="-22 6.46 30" transform="rotation: 0 15 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_oak_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_oak_lod0.glb" lod1-url="/assets/meshes/forest/tree_oak_lod1.glb" lod2-url="/assets/meshes/forest/tree_oak_lod2.glb" lod-threshold-near="38" lod-threshold-mid="105" />
+    </Entity>
+    <Entity name="menu-tree-s2" translation="22 9.43 31" transform="rotation: 0 -30 0; scale: 1.2 1.2 1.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+  </Group>
+
+  <!-- Crista a norte: a linha de pinheiros que fecha o horizonte. -->
+  <Group name="scene.menu.ridge" translation="0 0 0">
+    <Entity translation="-20 13.26 -48" transform="rotation: 0 40 0; scale: 1.55 1.55 1.55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+    <Entity translation="-8 13.55 -50" transform="rotation: 0 -18 0; scale: 1.65 1.65 1.65" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+    <Entity translation="8 14.95 -52" transform="rotation: 0 22 0; scale: 1.7 1.7 1.7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+    <Entity translation="24 12.03 -48" transform="rotation: 0 -44 0; scale: 1.5 1.5 1.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+    <Entity translation="-14 18.05 -60" transform="rotation: 0 55 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+    <Entity translation="0 19.2 -60" transform="rotation: 0 -10 0; scale: 1.9 1.9 1.9" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+    <Entity translation="14 17.82 -60" transform="rotation: 0 30 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
+      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
+    </Entity>
+  </Group>
+
+  <!-- Pedras soltas para quebrar a relva. -->
+  <Group name="scene.menu.rocks" translation="0 0 0">
+    <Entity translation="-12 8.2 6" transform="rotation: 0 28 0; scale: 1.1 1.1 1.1" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/rock_mossy_lod0.glb">
+      <GltfScene url="/assets/meshes/props/rock_mossy_lod0.glb" lod1-url="/assets/meshes/props/rock_mossy_lod1.glb" lod2-url="/assets/meshes/props/rock_mossy_lod2.glb" lod-threshold-near="35" lod-threshold-mid="100" />
+    </Entity>
+    <Entity translation="11.5 8.2 -8.5" transform="rotation: 0 -15 0; scale: 0.9 0.9 0.9" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/flint_rock_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/flint_rock_lod0.glb" lod1-url="/assets/meshes/farm/flint_rock_lod1.glb" lod2-url="/assets/meshes/farm/flint_rock_lod2.glb" lod-threshold-near="35" lod-threshold-mid="100" />
+    </Entity>
+    <Entity translation="9.5 8.2 8" transform="rotation: 0 65 0; scale: 0.7 0.7 0.7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb">
+      <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" lod1-url="/assets/meshes/props/rock_boulder_lod1.glb" lod2-url="/assets/meshes/props/rock_boulder_lod2.glb" lod-threshold-near="35" lod-threshold-mid="100" />
+    </Entity>
+  </Group>
+</world>

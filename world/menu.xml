@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
+  <!-- Cada UiRoot só vê as folhas que carrega (shadow-DOM-lite): sem o
+       theme aqui, os `.keycap` dos Controlos ficavam sem a base. -->
   <UiStyle src="ui/theme.css" />
   <UiStyle src="ui/menu.css" />
   <UiRoot id="menu-layer" script="ui/menu.lua" class="menu-layer">
@@ -55,7 +57,7 @@
         <UiColumn class="page" tab-group="menu" tab="quests">
           <UiList class="rows" bind="quests" scroll="y">
             <UiTemplate>
-              <UiRow id="quest-{id}" class="row quest {status}">
+              <UiButton id="track-{id}" class="row quest {status} {tracked}" tooltip="Seguir ou parar de seguir esta missão na bússola e no cartão do HUD">
                 <UiPanel class="row-flag" />
                 <UiColumn class="row-body">
                   <UiRow class="row-line">
@@ -69,7 +71,7 @@
                     <UiText class="row-count">{progress_text}</UiText>
                   </UiRow>
                 </UiColumn>
-              </UiRow>
+              </UiButton>
             </UiTemplate>
             <UiEmpty>
               <UiText class="empty">Nenhuma missão registada. Fala com os aldeões.</UiText>
@@ -91,6 +93,13 @@
           </UiList>
         </UiColumn>
         <UiColumn class="page" tab-group="menu" tab="skills">
+          <!-- O custo é 1 ponto por talento; sem esta linha o jogador tinha de
+               adivinhar se ainda tinha pontos (o + do HUD só diz que há). -->
+          <UiRow class="row keyline skills-points">
+            <UiText class="row-note">Pontos de talento por gastar</UiText>
+            <UiSpacer />
+            <UiText class="row-title" bind="talent.points">0</UiText>
+          </UiRow>
           <UiList class="rows" bind="skills" scroll="y">
             <UiTemplate>
               <UiButton id="skill-{id}" class="row skill {status}">
@@ -157,11 +166,26 @@
             </UiTemplate>
           </UiList>
           <UiRow class="actions">
-            <UiButton id="act-save" class="action">
-              <UiText>Guardar</UiText>
+            <UiButton id="act-save-1" class="action">
+              <UiText>Guardar 1</UiText>
             </UiButton>
-            <UiButton id="act-load" class="action">
-              <UiText>Carregar</UiText>
+            <UiButton id="act-save-2" class="action">
+              <UiText>Guardar 2</UiText>
+            </UiButton>
+            <UiButton id="act-save-3" class="action">
+              <UiText>Guardar 3</UiText>
+            </UiButton>
+            <UiButton id="act-load-1" class="action ghost">
+              <UiText>Carregar 1</UiText>
+            </UiButton>
+            <UiButton id="act-load-2" class="action ghost">
+              <UiText>Carregar 2</UiText>
+            </UiButton>
+            <UiButton id="act-load-3" class="action ghost">
+              <UiText>Carregar 3</UiText>
+            </UiButton>
+            <UiButton id="act-title" class="action ghost">
+              <UiText>Ecrã de título</UiText>
             </UiButton>
             <UiButton id="act-profiler" class="action ghost">
               <UiText>Profiler [P]</UiText>
@@ -169,7 +193,7 @@
           </UiRow>
         </UiColumn>
         <UiRow class="frame-foot">
-          <UiText class="foot-note">1-6 salta de separador · , . percorre · roda do rato desliza · Q ou ESC fecha</UiText>
+          <UiText class="foot-note">1-7 salta de separador · , . percorre · roda do rato desliza · Q ou ESC fecha</UiText>
         </UiRow>
       </UiColumn>
     </UiModal>

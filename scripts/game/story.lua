@@ -1,4 +1,5 @@
 local rules = viber.load("lib/rules.lua")
+local dev = viber.load("lib/dev.lua")
 -- game/story.lua: o fio do Capítulo I — O Silêncio de Vael (ver STORY.md).
 --
 --   * PRÓLOGO na primeira entrada no mundo (marca `story_prologo` no save);
@@ -19,6 +20,12 @@ local GUARDIANS = {
   boss = "Nota dos Picos",
 }
 local PROLOGUE_DELAY = 0.1 -- a cena começa em negro: o carregamento passa direto para ela
+-- A cena `nota` espera pelo frame seguinte: um abate na MESMA frame de uma
+-- troca de cena empurrava a cinemática (planos do mundo grande) para dentro
+-- da cena nova; e com o diário aberto tocava por cima dele.
+local NOTE_CINE_DELAY = 0.1
+local NOTE_CINE_TTL = 1.5
+local note_cine_at, note_cine_scene = 0, nil
 
 local function notes_found(g)
   local n = 0
@@ -45,7 +52,10 @@ rules.on_kill = function(kind)
     viber.ring(x, z, 4, "#9fd8ff")
   end
   viber.toast(GUARDIANS[kind] .. " recuperada (" .. n .. "/4)")
-  viber.cinematic("nota")
+  -- Toca no `on_update` seguinte (ver NOTE_CINE_DELAY): se a cena mudou
+  -- entretanto, este controller já não corre e a cena não aparece na sala.
+  note_cine_at = viber.time() + NOTE_CINE_DELAY
+  note_cine_scene = viber.scene_name and viber.scene_name() or nil
 end
 
 function on_update(dt)
@@ -53,7 +63,53 @@ function on_update(dt)
   local st = viber.state()
   st.clock = (st.clock or 0) + dt
 
-  if not g.story_prologo and st.clock > PROLOGUE_DELAY and not viber.cinematic_playing() then
+  -- Arranque de DEBUG (`viber run --scene main --entry dev`): o título não
+  -- abriu, por isso o prólogo também não pode disparar. A marca fica em
+  -- `viber.game()` (persiste no save) porque esta entidade RENASCE ao voltar
+  -- de um interior: com um latch só de `state`, a cena aparecia à primeira
+  -- saída da vila. Um "Novo Jogo" normal limpa a tabela e volta a vê-la.
+  if dev.skip_intro() then
+    g.story_prologo = true
+  end
+
+  -- O ecrã de título (autoload) marca `false` até o jogador escolher. Um
+  -- mundo AVULSO (QA, `run mundo.xml` sem projeto) não tem autoload de
+  -- título nem campanha: `title_done` fica nil e o prólogo disparava por
+  -- cima do cenário de teste. A janela de 1 s deixa o autoload marcar
+  -- `false` no arranque normal antes de decidir.
+  if g.title_done == nil then
+    if st.clock < 1.0 then
+      return
+    end
+    -- Save antigo (anterior ao ecrã de título) carregado em `main`: a
+    -- campanha já começou, o `nil` não pode calar o prólogo/epílogo para
+    -- sempre. Num mundo avulso `scene_name` é nil e a campanha fica fora.
+    local scene = viber.scene_name and viber.scene_name() or nil
+    if scene ~= "main" and scene ~= "menu" then
+      return
+    end
+    g.title_done = true
+  end
+  if g.title_done == false then
+    return
+  end
+
+  -- Nota pendente: um abate no mesmo frame de uma troca de cena ou com o
+  -- diário aberto só toca quando o jogo volta a estar livre (e na mesma
+  -- cena); fora da janela curta, perde-se a cena mas não a Nota.
+  if note_cine_at > 0 then
+    local scene = viber.scene_name and viber.scene_name() or nil
+    if viber.time() > note_cine_at + NOTE_CINE_TTL or scene ~= note_cine_scene then
+      note_cine_at = 0
+    elseif viber.time() >= note_cine_at
+        and not viber.cinematic_playing() and not viber.menu_open() then
+      note_cine_at = 0
+      viber.cinematic("nota")
+    end
+  end
+
+  if not g.story_prologo and st.clock > PROLOGUE_DELAY
+      and not viber.cinematic_playing() and not viber.menu_open() then
     g.story_prologo = true
     viber.cinematic("prologo")
   end
@@ -61,14 +117,14 @@ function on_update(dt)
   -- A entrega vive em Lua (`quest_turn_in`). A engine já não emite
   -- `quest_done` para estas missões, por isso o epílogo nunca arrancava.
   if rules.quest_state("story_notas") == "done" and not g.story_epilogo
-      and not viber.cinematic_playing() then
+      and not viber.cinematic_playing() and not viber.menu_open() then
     g.story_epilogo = true
     viber.cinematic("epilogo")
   end
 
   for _, ev in ipairs(viber.events()) do
     if ev.type == "cinematic_end" and ev.id == "prologo" then
-      viber.toast("Fala com o Ancião Edmar, no salão comunal.")
+      viber.toast("Fala com o Ancião Edmar, junto ao salão comunal.")
     end
   end
 end
