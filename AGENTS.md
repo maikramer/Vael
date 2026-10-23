@@ -41,9 +41,10 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `scenes/interiors/` | salas (cenas próprias, sem terreno) |
 | `quests/*.json` | 28 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
 | `dialogues/*.json` | grafos ambientais; lidos por `scripts/townsfolk.lua` |
-| `data/*.json` | itens/loja, marcos e progressão; lidos por `rules.lua`/`shop.lua`/`landmarks.lua` |
+| `data/*.json` | itens/loja, marcos, progressão, enigmas (`riddles.json`) e regras do juiz (`verdicts.json`); lidos por `rules.lua`/`shop.lua`/`landmarks.lua`/`riddle.lua`/`judge.lua` |
 | `editor/plugins/*.lua` | autoria do jogo no ViberEditor (quests, diálogos, itens, marcos, progressão, grip) |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
+| `assets/public/nlu/` | modelo NLU (GLiNER2 4-bit, LFS). `viber.nlu` na engine; relato de 1 palavra no fecho das quests |
 | `ui/*.css` | HUD e menu |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
 | `config.yaml` | `assets.roots: assets/public` |
@@ -69,10 +70,18 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 - Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag.
   `viber scene insert` não tem este problema. O `analyze` não apanha.
 - `shaders/*.wesl` são reescritos em cada `run`. Não editar à mão.
+- Uma boca de `<Cave>` em terreno plano é sempre um poço: o tubo começa
+  `radius` abaixo da cota. A engine aceita `mound-height`/`mound-radius` para
+  levantar um maciço de rocha com face vertical na boca; o túnel subtractivo
+  corta o arco na face. O monte é um mod voxel `Union` e tem de vir antes dos
+  tubos `Subtract`. Sem monte, uma boca horizontal só existe em encosta.
 - Luzes de fogo/partículas são `PointLight` SEM `shadows="true"`: o cube
   shadow map custa 6 vistas por luz e pisca no chão. A luz simples ilumina
   igual; o pool noturno fica em `WARM_FILL_NIGHT_GAIN` (×2), não no ×8 das
   tochas com sombra.
+- Com um `<UiInput>` focado (barra de fala do NLU), a engine bloqueia
+  `viber.input.*`, `viber.interacted` e o movimento: as letras são texto, não
+  acções. O `scripts/ui/say.lua` abre/fecha o foco.
 - Depois de editar: `viber analyze` (exit 1 em erro).
 
 ## Correr
