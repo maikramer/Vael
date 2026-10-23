@@ -19,6 +19,79 @@
 --@export notice_range: number(0..60) = 18         -- só reage com o player a menos disto (m)
 
 local rules = viber.load("lib/rules.lua")
+local talk = viber.load("ui/say.lua")
+local travel = viber.load("game/travel.lua")
+local marks = viber.load("lib/landmarks.lua")
+local parley = viber.load("lib/parley.lua")
+local decide = viber.load("lib/decide.lua")
+
+local function typing()
+  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+end
+
+-- "Perguntar por um lugar": o d1 resolve frases; os aliases autorais
+-- resolvem uma palavra solta ("poço", "atalaia") que o `choice` rejeita.
+local function alias_place(text)
+  local res = parley.resolve(text, nil)
+  local raw = tostring(res.raw or ""):lower()
+  local best, best_d, exact
+  local has, px, _, pz = viber.player_position()
+  for id in pairs(res["local"] or {}) do
+    local label = tostring(marks.label(id)):lower()
+    if raw ~= "" and label == raw and not exact then
+      exact = id
+    end
+    local x, _, z = marks.position(id)
+    if x and has then
+      local dx, dz = x - px, z - pz
+      local d = dx * dx + dz * dz
+      if not best_d or d < best_d then
+        best, best_d = id, d
+      end
+    elseif not best then
+      best = id
+    end
+  end
+  return exact or best
+end
+
+-- "Perguntar por um lugar": uma palavra resolve o marco e marca o waypoint.
+local function ask_place()
+  viber.say("Que lugar?")
+  local options = {}
+  for _, m in ipairs(marks.LIST or {}) do
+    options[#options + 1] = { key = m.name, description = m.label or m.name }
+  end
+  options[#options + 1] = { key = "none", description = "nenhum lugar conhecido" }
+  if decide.ready() then
+    talk.ask({
+      prompt = "Que lugar?",
+      example = "poço, atalaia, mojão",
+      state = { npc = "morador da vila" },
+      questions = { q = decide.choice("Qual lugar o jogador quer marcar no mapa?", options) },
+      on_result = function(answers, text)
+        local id = answers.q and answers.q.choice
+        if not id or id == "none" then
+          id = alias_place(text)
+        end
+        if not id then
+          viber.say("Não conheço esse lugar.")
+        else
+          travel.pin(id)
+          viber.say("Marquei no teu mapa.")
+        end
+      end,
+      on_cancel = function()
+        viber.say("Fica para outra vez.")
+      end,
+      on_unavailable = function()
+        viber.say("Não te ouvi.")
+      end,
+    })
+    return
+  end
+  viber.say("Não te ouvi.")
+end
 
 -- Alvo de sinais: `connect-opened="@discordia:notice"` num baú faz os
 -- moradores do grupo reagirem (vira-se para o player, abana a cabeça e,
@@ -62,6 +135,7 @@ local function node_body(graph, node_id)
   for i, choice in ipairs(node.choices or {}) do
     body = body .. "\n" .. i .. ". " .. viber.localize(choice.text or "")
   end
+  body = body .. "\n9. Perguntar por um lugar"
   return body, node
 end
 
@@ -104,6 +178,13 @@ local function choose(st, digit)
   end
   if choice.goto and st.graph.nodes[choice.goto] then
     viber.game()["dialogue." .. id] = choice.goto
+  elseif not choice.goto or choice.goto == "" then
+    -- O editor grava `goto` vazio como "(fim)". Sem isto o balão voltava a
+    -- abrir o MESMO nó no [E] seguinte e a conversa não tinha saída.
+    viber.game()["dialogue." .. id] = nil
+    st.talking = false
+    viber.ui.set("dialogue.until", 0)
+    return true
   end
   show_dialogue(st)
   return true
@@ -159,7 +240,7 @@ function on_update(dt)
     end
     if not viber.menu_open() then
       if st.dialogue_id ~= "" and st.graph then
-        if viber.interacted("e") then
+        if viber.interacted("e") and not typing() and not talk.active() then
           st.talking = true
           show_dialogue(st)
         end
@@ -172,13 +253,17 @@ function on_update(dt)
           st.talking = false
           viber.ui.set("dialogue.until", 0)
         end
-        if st.talking then
+        if st.talking and not typing() and not talk.active() then
           -- Renova o portão da hotbar/equipamento ENQUANTO o balão está no
           -- ecrã (o timestamp de 0,75 s expirava se o jogador lesse devagar).
           viber.ui.set("dialogue.until", viber.time() + 0.75)
           for digit = 1, 9 do
             if viber.input.pressed(tostring(digit)) then
-              choose(st, digit)
+              if digit == 9 then
+                ask_place()
+              else
+                choose(st, digit)
+              end
               break
             end
           end

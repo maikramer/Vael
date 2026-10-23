@@ -1,0 +1,65 @@
+{
+  "giver": "a sineira afogada",
+  "intro": [
+    "Uma mulher de vestes verdes conta moedas que não existem na proa de um barco podre.",
+    "«O rio leva um nome por cheia. Se queres passar, diz-me o que o rio guarda. Mas primeiro ouve.»"
+  ],
+  "ask": "O que perguntas à sineira?",
+  "example": "o som ao crepúsculo, o que está no fundo, o que a água reflete, a conta do barqueiro",
+  "clues": [
+    {
+      "key": "som",
+      "description": "perguntar sobre o som abafado que toca ao crepúsculo",
+      "reply": "«Um sino. Toca debaixo da água, onde a corda já não chega.»"
+    },
+    {
+      "key": "bronze",
+      "description": "perguntar o que está no fundo do rio",
+      "reply": "«Bronze verde e cordas podres. E nomes que ninguém escreveu.»",
+      "repeat": "Já te disse o que o fundo guarda: bronze verde e cordas."
+    },
+    {
+      "key": "reflexo",
+      "description": "perguntar o que a água reflete à noite",
+      "reply": "«Uma torre que já não está de pé. A água lembra-se do que o fogo levou.»"
+    },
+    {
+      "key": "tally",
+      "description": "perguntar sobre a contagem de nomes do barqueiro",
+      "reply": "«Um nome por cheia. O rio não perdoa dívidas.»"
+    }
+  ],
+  "required": 3,
+  "no_answer": "A sineira inclina a cabeça. «A água não guarda isso.»",
+  "more": "A sineira volta a contar as moedas. «Ainda não.»",
+  "reveal": "A sineira fecha a mão. «Agora diz o que o rio guarda.»",
+  "cancel": "A sineira volta a olhar para a água. «O rio espera.»",
+  "final_prompt": "O que guarda o rio?",
+  "final_example": "o sino afogado; a badalada debaixo da água",
+  "final_options": [
+    {
+      "key": "sino",
+      "description": "o sino afogado que toca debaixo da água"
+    },
+    {
+      "key": "torre",
+      "description": "a torre que a água reflete"
+    },
+    {
+      "key": "crianca",
+      "description": "a criança que o rio levou"
+    },
+    {
+      "key": "lua",
+      "description": "a lua na água"
+    }
+  ],
+  "final_answer": "sino",
+  "final_reply_ok": "A sineira sorri. «Então ainda ouves. O rio devolve-te o caminho.»",
+  "final_reply_bad": "«A água não guarda isso. Ouve outra vez.»",
+  "final_cancel": "A sineira espera. «O rio não tem pressa.»",
+  "hint": "O som, o bronze e a torre refletida apontam para o mesmo objeto debaixo da água.",
+  "after": [
+    "O sino toca uma vez debaixo da água — e cala-se."
+  ]
+}

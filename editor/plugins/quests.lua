@@ -5,7 +5,7 @@
 -- publica no painel Problems.
 
 local BIOMES = { "city", "dark_forest", "desert", "swamp", "frozen_peaks" }
-local OBJECTIVES = { "kill", "collect", "visit" }
+local OBJECTIVES = { "kill", "collect", "visit", "decision" }
 local LINE_FIELDS = { "lines_intro", "lines_progress", "lines_complete" }
 
 local state = {
@@ -259,6 +259,50 @@ local function validate_quest(ctx, quest, ignore_id)
   if count < 1 then
     problems[#problems + 1] = "objective.count tem de ser ≥ 1"
   end
+  -- Bloco `parley`: o fecho exige um relato de uma palavra que o modelo
+  -- resolve. Sem ele a quest fecha pelo caminho antigo.
+  local parley = type(quest.parley) == "table" and quest.parley or nil
+  if not parley then
+    if kind ~= "decision" then
+      problems[#problems + 1] = "sem parley (relato de 1 palavra)"
+    end
+  else
+    local rep = type(parley.report) == "table" and parley.report or nil
+    if not rep then
+      problems[#problems + 1] = "parley.report ausente"
+    else
+      if trim(rep.prompt) == "" then
+        problems[#problems + 1] = "parley.report.prompt vazio"
+      end
+      if trim(rep.example) == "" then
+        problems[#problems + 1] = "parley.report.example vazio"
+      end
+      local expect = type(rep.expect) == "table" and rep.expect or {}
+      if #expect == 0 then
+        problems[#problems + 1] = "parley.report.expect vazio"
+      end
+      for _, e in ipairs(expect) do
+        local okind, eid = trim(e.kind), trim(e.id)
+        if okind == "item" then
+          if state.items and not state.items[eid] then
+            problems[#problems + 1] = "parley: item desconhecido: " .. eid
+          end
+        elseif okind == "local" then
+          if state.landmarks and not state.landmarks[eid] then
+            problems[#problems + 1] = "parley: local fora de landmarks.json: " .. eid
+          end
+        elseif okind ~= "criatura" then
+          problems[#problems + 1] = "parley: kind inválido: " .. okind
+        end
+        if kind ~= "decision"
+          and ((kind == "kill" and okind ~= "criatura")
+            or (kind == "collect" and okind ~= "item")
+            or (kind == "visit" and okind ~= "local")) then
+          problems[#problems + 1] = "parley.expect não corresponde ao objective"
+        end
+      end
+    end
+  end
   local loot = type(quest.rewards) == "table" and quest.rewards.items or {}
   for index, entry in ipairs(loot) do
     local item, amount = tostring(entry):match("^([^:]+):?(%d*)$")
@@ -431,7 +475,7 @@ local function render_form(ctx, children)
     id = "objective_target",
     label = "target",
     value = obj.target or "",
-    placeholder = "kill/collect: id; visit: nomes separados por espaço",
+    placeholder = "kill/collect: id; visit: nomes; decision: etiqueta do desfecho",
   }
   children[#children + 1] = {
     type = "row",

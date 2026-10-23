@@ -1,0 +1,89 @@
+{
+  "giver": "a vidente cega do Círculo de Menires",
+  "intro": [
+    "No Círculo de Menires, a vidente espera junto ao altar de vidro. A luz azul mal toca os menires.",
+    "«O caçador jura que não matou o cervo. O vidro diz outra coisa — ou diz o que ele quer ouvir.»",
+    "«Pergunta. Eu vejo o que a água viu.»"
+  ],
+  "ask": "O que perguntas à vidente?",
+  "example": "como morreu o cervo, a corda do arco, a conta de vidro, o irmão",
+  "clues": [
+    {
+      "key": "wolf",
+      "description": "perguntar como o cervo morreu",
+      "reply": "«Marcas de lobo, não de flecha. O cervo foi caçado por dentes.»"
+    },
+    {
+      "key": "bow",
+      "description": "perguntar sobre a corda do arco do caçador",
+      "reply": "«Seca. Ele não atirou nesta lua.»",
+      "repeat": "A corda continua seca. Já te disse."
+    },
+    {
+      "key": "bead",
+      "description": "perguntar sobre a conta de vidro presa na armadilha",
+      "reply": "«É do irmão. O poçoeiro usa contas iguais nas redes.»"
+    },
+    {
+      "key": "brother",
+      "description": "perguntar quem estava com o caçador na noite",
+      "reply": "«O irmão mais novo. Saiu antes do amanhecer com uma rede e voltou sem ela.»"
+    }
+  ],
+  "required": 3,
+  "no_answer": "A vidente vira o vidro para ti. «Não vejo isso.»",
+  "more": "A vidente espera. «Ainda falta uma peça.»",
+  "reveal": "A vidente baixa o vidro. «Agora diz ao ancião o que fazes.»",
+  "cancel": "A vidente espera no Círculo. A água do altar não fala duas vezes.",
+  "final_prompt": "O que dizes ao ancião?",
+  "final_example": "defendo o caçador e exponho o irmão; acuso o caçador; fico calado",
+  "final_options": [
+    {
+      "key": "defender",
+      "description": "defender o caçador e expor o irmão poçoeiro"
+    },
+    {
+      "key": "acusar",
+      "description": "acusar o caçador do crime"
+    },
+    {
+      "key": "expor",
+      "description": "expor o irmão sem defender o caçador"
+    },
+    {
+      "key": "silenciar",
+      "description": "guardar silêncio e deixar o caçador pagar"
+    }
+  ],
+  "final_answer": "defender",
+  "final_reply_ok": "A vidente retira o vidro dos olhos. «O irmão confessou. O caçador deve-te a vida.»",
+  "final_reply_bad": "A vidente suspira. «A verdade não precisa de ti.»",
+  "final_cancel": "A água do altar espera. O Círculo não tem pressa.",
+  "hint": "O cervo tem marcas de lobo, a corda está seca e a conta é do irmão. Defende o caçador e expõe o poçoeiro.",
+  "endings": {
+    "defender": {
+      "text": "O ancião ouve. O irmão é preso; o caçador fica. A vidente dá-te uma poção.",
+      "items": [
+        "potion:1"
+      ]
+    },
+    "acusar": {
+      "text": "O caçador é condenado. O irmão desaparece antes do amanhecer.",
+      "items": []
+    },
+    "expor": {
+      "text": "O irmão é preso, mas o caçador nunca te perdoa por o teres exposto.",
+      "items": [
+        "wolf_pelt:1"
+      ]
+    },
+    "silenciar": {
+      "text": "O caçador paga sozinho. A vidente não volta a olhar para ti.",
+      "items": []
+    }
+  },
+  "after": [
+    "A vidente baixa o vidro. O Círculo de Menires volta a ficar em silêncio.",
+    "O caçador baixa o arco. O irmão não volta esta noite."
+  ]
+}

@@ -75,7 +75,15 @@ local function target_label(target)
   return TARGET_LABEL[target] or target
 end
 
-local function objective_line(def)
+local function objective_line(def, state)
+  -- Pronta: o que falta é o relato de uma palavra ao dador.
+  if state == "ready" and type(def.parley) == "table" then
+    local p = def.parley.report
+    local ex = p and p.example
+    if ex and ex ~= "" then
+      return "diz ao NPC: «" .. ex .. "»"
+    end
+  end
   local obj = def.objective or {}
   local kind = obj.type or ""
   local count = obj.count or 1
@@ -93,11 +101,13 @@ local function publish(name, rows)
   for i, row in ipairs(rows) do
     -- Todos os campos RENDERIZADOS: label/bioma/objetivo podem mudar (locale,
     -- progresso) sem id/status/count mudarem, e a lista ficava velha.
+    -- `requires` é o requisito mostrado nos talentos e `kind` decide a classe
+    -- da célula da mochila; nenhum dos dois estava na assinatura.
     parts[i] = table.concat({
       row.id or "", row.title or "", row.label or "", row.status or "",
       row.status_text or "", row.objective or "", row.biome_name or "",
       row.count or "", row.progress or "", row.progress_text or "",
-      row.tracked or "",
+      row.tracked or "", row.requires or "", row.kind or "",
     }, "\2")
   end
   local sig = table.concat(parts, "\1")
@@ -136,7 +146,7 @@ function M.refresh()
         title = def.title or def.id,
         status = class,
         status_text = text,
-        objective = objective_line(def),
+        objective = objective_line(def, state),
         biome_name = BIOME_LABEL[def.biome or ""] or (def.biome or ""),
         progress = string.format("%.2f", frac),
         progress_text = progress_text,

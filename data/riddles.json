@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "riddles": [
+    {
+      "id": "echo_wolf",
+      "site": "bosque-shrine",
+      "interact": "Ouvir o santuário",
+      "clue": { "kind": "audio", "sound": "growl", "period": 7.0, "radius": 12.0 },
+      "prompt": "Que criatura é esta?",
+      "example": "lobos",
+      "expect": [{ "kind": "criatura", "id": "wolf" }],
+      "all": false,
+      "hint": "O eco não é de um animal qualquer.",
+      "solved": "O eco cala-se. O bosque reconheceu-te.",
+      "reward": { "xp": 60, "items": ["wolf_pelt:1"] }
+    },
+    {
+      "id": "three_gifts",
+      "site": "vael-shrine",
+      "interact": "Examinar as oferendas",
+      "clue": { "kind": "props" },
+      "prompt": "Nomeia as três oferendas.",
+      "example": "pedra, madeira, fruta",
+      "expect": [
+        { "kind": "item", "id": "stone" },
+        { "kind": "item", "id": "wood" },
+        { "kind": "item", "id": "berry" }
+      ],
+      "all": true,
+      "hint": "Uma pesa, outra arde, a última alimenta.",
+      "solved": "As três oferendas assentam. O altar abre-se.",
+      "reward": { "xp": 80, "items": ["nature_amulet:1"] }
+    },
+    {
+      "id": "odd_statue",
+      "site": "crystal-shrine",
+      "interact": "Examinar as estátuas",
+      "clue": { "kind": "statues" },
+      "prompt": "Qual não pertence?",
+      "example": "sombra",
+      "expect": [{ "kind": "criatura", "id": "shade" }],
+      "all": false,
+      "hint": "Duas uivam; a terceira não tem sombra própria.",
+      "solved": "A estátua errada desfaz-se em fumo.",
+      "reward": { "xp": 50, "items": ["potion:1"] }
+    }
+  ]
+}

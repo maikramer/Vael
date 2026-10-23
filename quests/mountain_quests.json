@@ -10,8 +10,12 @@
       "Goblins desceram das cavernas geladas e saqueiam a trilha.",
       "Abata 5 deles e eu te recompenso com ouro."
     ],
-    "lines_progress": ["Ainda faltam {remaining} goblins nas encostas."],
-    "lines_complete": ["A trilha está mais segura. Toma sua recompensa."],
+    "lines_progress": [
+      "Ainda faltam {remaining} goblins nas encostas."
+    ],
+    "lines_complete": [
+      "A trilha está mais segura. Toma sua recompensa."
+    ],
     "objective": {
       "type": "kill",
       "target": "goblin",
@@ -20,7 +24,23 @@
     "rewards": {
       "gold": 220,
       "xp": 170,
-      "items": ["potion:2"]
+      "items": [
+        "potion:2"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "goblin",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "goblin"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -34,8 +54,12 @@
       "Slimes de gelo se multiplicam perto das fontes congeladas.",
       "Derreta 5 deles e eu te dou poções."
     ],
-    "lines_progress": ["Faltam {remaining} slimes de gelo."],
-    "lines_complete": ["Excelente. As fontes vão voltar a fluir. Toma isto."],
+    "lines_progress": [
+      "Faltam {remaining} slimes de gelo."
+    ],
+    "lines_complete": [
+      "Excelente. As fontes vão voltar a fluir. Toma isto."
+    ],
     "objective": {
       "type": "kill",
       "target": "slime",
@@ -44,7 +68,23 @@
     "rewards": {
       "gold": 260,
       "xp": 200,
-      "items": ["potion:3"]
+      "items": [
+        "potion:3"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "slime",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "slime"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -59,8 +99,12 @@
       "Limpe os Picos — goblins, lobos, tudo — e ele vem ao seu encontro. Derrube-o e a estrada do sul é nossa outra vez.",
       "Cuidado quando ele erguer os punhos: saia de perto antes que a terra rache."
     ],
-    "lines_progress": ["O ogro ainda respira. A serra precisa ficar quieta pra ele descer."],
-    "lines_complete": ["Você derrubou o ogro dos Picos! Os mojões vão contar isso por cem anos."],
+    "lines_progress": [
+      "O ogro ainda respira. A serra precisa ficar quieta pra ele descer."
+    ],
+    "lines_complete": [
+      "Você derrubou o ogro dos Picos! Os mojões vão contar isso por cem anos."
+    ],
     "objective": {
       "type": "kill",
       "target": "boss",
@@ -69,7 +113,24 @@
     "rewards": {
       "gold": 700,
       "xp": 500,
-      "items": ["ancient_relic:1", "potion:3"]
+      "items": [
+        "ancient_relic:1",
+        "potion:3"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "ogro",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "boss"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -83,8 +144,12 @@
       "Na neblina do corredor, só os mojões dizem pra onde ir.",
       "Toque nos três. Depois disso, você sabe o caminho da arena."
     ],
-    "lines_progress": ["Faltam {remaining} mojões."],
-    "lines_complete": ["Agora você conhece o corredor. Vai precisar."],
+    "lines_progress": [
+      "Faltam {remaining} mojões."
+    ],
+    "lines_complete": [
+      "Agora você conhece o corredor. Vai precisar."
+    ],
     "objective": {
       "type": "visit",
       "target": "peaks-cairn-1 peaks-cairn-2 peaks-cairn-3",
@@ -94,7 +159,31 @@
     "rewards": {
       "gold": 200,
       "xp": 210,
-      "items": ["potion:3"]
+      "items": [
+        "potion:3"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Onde estiveste?",
+        "example": "Primeiro Mojão",
+        "expect": [
+          {
+            "kind": "local",
+            "id": "peaks-cairn-1"
+          },
+          {
+            "kind": "local",
+            "id": "peaks-cairn-2"
+          },
+          {
+            "kind": "local",
+            "id": "peaks-cairn-3"
+          }
+        ],
+        "hint": "Diz-me o nome de um dos lugares."
+      },
+      "partial": false
     }
   }
 ]

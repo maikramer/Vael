@@ -10,8 +10,12 @@
       "Boglins devoram tudo que eu planto na margem.",
       "Mate 5 e eu te preparo poções de musgo."
     ],
-    "lines_progress": ["Ainda faltam {remaining} boglins."],
-    "lines_complete": ["A margem está em paz. Leva as poções."],
+    "lines_progress": [
+      "Ainda faltam {remaining} boglins."
+    ],
+    "lines_complete": [
+      "A margem está em paz. Leva as poções."
+    ],
     "objective": {
       "type": "kill",
       "target": "bogling",
@@ -20,7 +24,23 @@
     "rewards": {
       "gold": 220,
       "xp": 170,
-      "items": ["moss_potion:2"]
+      "items": [
+        "moss_potion:2"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "bogling",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "bogling"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -34,8 +54,12 @@
       "O lago leva. Barco, rede, gente — leva e nunca devolve nada.",
       "O que conta os afogados está no fundo, a oeste. Traz-me o silêncio dele e forjo-te uma vara abençoada."
     ],
-    "lines_progress": ["Ainda está lá em baixo. Falta {remaining}."],
-    "lines_complete": ["O lago devolveu uma coisa, então. Fica com a vara."],
+    "lines_progress": [
+      "Ainda está lá em baixo. Falta {remaining}."
+    ],
+    "lines_complete": [
+      "O lago devolveu uma coisa, então. Fica com a vara."
+    ],
     "objective": {
       "type": "kill",
       "target": "bog-warden",
@@ -44,7 +68,23 @@
     "rewards": {
       "gold": 500,
       "xp": 350,
-      "items": ["blessed_rod:1"]
+      "items": [
+        "blessed_rod:1"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "guardiao",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "bog-warden"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -58,8 +98,12 @@
       "O musgo-do-pântano cresce nas pedras úmidas.",
       "Colete 10 tufos e eu te entrego um amuleto da natureza."
     ],
-    "lines_progress": ["Faltam {remaining} tufos de musgo-do-pântano."],
-    "lines_complete": ["A natureza agradece. Use este amuleto."],
+    "lines_progress": [
+      "Faltam {remaining} tufos de musgo-do-pântano."
+    ],
+    "lines_complete": [
+      "A natureza agradece. Use este amuleto."
+    ],
     "objective": {
       "type": "collect",
       "target": "bog-moss",
@@ -68,7 +112,23 @@
     "rewards": {
       "gold": 280,
       "xp": 200,
-      "items": ["nature_amulet:1"]
+      "items": [
+        "nature_amulet:1"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "O que trazes?",
+        "example": "Musgo do pântano",
+        "expect": [
+          {
+            "kind": "item",
+            "id": "bog-moss"
+          }
+        ],
+        "hint": "Diz-me o nome do que trazes."
+      },
+      "partial": false
     }
   },
   {
@@ -82,8 +142,12 @@
       "O pântano leva tudo: barcos, mortos, gente.",
       "Vá à barca encalhada, ao cemitério afundado e ao altar de ossos."
     ],
-    "lines_progress": ["Faltam {remaining} lugares pra ver."],
-    "lines_complete": ["Você voltou. Poucos voltam. O ouro é seu."],
+    "lines_progress": [
+      "Faltam {remaining} lugares pra ver."
+    ],
+    "lines_complete": [
+      "Você voltou. Poucos voltam. O ouro é seu."
+    ],
     "objective": {
       "type": "visit",
       "target": "swamp-wrecked-boat swamp-sunken-graves swamp-bone-altar",
@@ -93,7 +157,31 @@
     "rewards": {
       "gold": 240,
       "xp": 190,
-      "items": ["antidote:2"]
+      "items": [
+        "antidote:2"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Onde estiveste?",
+        "example": "Barco Naufragado",
+        "expect": [
+          {
+            "kind": "local",
+            "id": "swamp-wrecked-boat"
+          },
+          {
+            "kind": "local",
+            "id": "swamp-sunken-graves"
+          },
+          {
+            "kind": "local",
+            "id": "swamp-bone-altar"
+          }
+        ],
+        "hint": "Diz-me o nome de um dos lugares."
+      },
+      "partial": false
     }
   }
 ]

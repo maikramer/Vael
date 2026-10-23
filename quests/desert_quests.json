@@ -10,8 +10,12 @@
       "Escorpiões guardam as areias perto do acampamento.",
       "Elimine 4 e eu te pago com ouro e fibra de cacto."
     ],
-    "lines_progress": ["Ainda faltam {remaining} escorpiões."],
-    "lines_complete": ["As areias estão mais seguras. Toma sua recompensa."],
+    "lines_progress": [
+      "Ainda faltam {remaining} escorpiões."
+    ],
+    "lines_complete": [
+      "As areias estão mais seguras. Toma sua recompensa."
+    ],
     "objective": {
       "type": "kill",
       "target": "scorpion",
@@ -20,7 +24,23 @@
     "rewards": {
       "gold": 200,
       "xp": 160,
-      "items": ["cactus_fiber:5"]
+      "items": [
+        "cactus_fiber:5"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "escorpiao",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "scorpion"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -34,8 +54,12 @@
       "Bandidos assaltam minhas caravanas na rota leste.",
       "Cuide de 3 deles e eu te dou seda fina."
     ],
-    "lines_progress": ["Ainda faltam {remaining} bandidos na rota."],
-    "lines_complete": ["A rota está livre. Esta seda é sua."],
+    "lines_progress": [
+      "Ainda faltam {remaining} bandidos na rota."
+    ],
+    "lines_complete": [
+      "A rota está livre. Esta seda é sua."
+    ],
     "objective": {
       "type": "kill",
       "target": "bandit",
@@ -44,7 +68,23 @@
     "rewards": {
       "gold": 300,
       "xp": 220,
-      "items": ["silk_cloth:1"]
+      "items": [
+        "silk_cloth:1"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "bandido",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "bandit"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -58,8 +98,12 @@
       "As ruínas guardam pedra rúnica sob os escombros.",
       "Extraia 6 pedras e eu te mostro um relicário."
     ],
-    "lines_progress": ["Faltam {remaining} pedras rúnicas."],
-    "lines_complete": ["Excelente. Leva esta relíquia antiga."],
+    "lines_progress": [
+      "Faltam {remaining} pedras rúnicas."
+    ],
+    "lines_complete": [
+      "Excelente. Leva esta relíquia antiga."
+    ],
     "objective": {
       "type": "collect",
       "target": "stone",
@@ -68,7 +112,23 @@
     "rewards": {
       "gold": 400,
       "xp": 280,
-      "items": ["ancient_relic:1"]
+      "items": [
+        "ancient_relic:1"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "O que trazes?",
+        "example": "Pedra",
+        "expect": [
+          {
+            "kind": "item",
+            "id": "stone"
+          }
+        ],
+        "hint": "Diz-me o nome do que trazes."
+      },
+      "partial": false
     }
   },
   {
@@ -82,8 +142,12 @@
       "As caravanas pararam de chegar e ninguém sabe onde ficaram.",
       "Siga a estrada: o arco, os destroços e o obelisco. Me diga o que sobrou."
     ],
-    "lines_progress": ["Ainda faltam {remaining} pontos da rota."],
-    "lines_complete": ["Então foi assim que acabou. Toma — você mereceu."],
+    "lines_progress": [
+      "Ainda faltam {remaining} pontos da rota."
+    ],
+    "lines_complete": [
+      "Então foi assim que acabou. Toma — você mereceu."
+    ],
     "objective": {
       "type": "visit",
       "target": "desert-arch desert-caravan-wreck desert-sun-obelisk",
@@ -93,7 +157,31 @@
     "rewards": {
       "gold": 220,
       "xp": 170,
-      "items": ["potion:2"]
+      "items": [
+        "potion:2"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Onde estiveste?",
+        "example": "Arco do Deserto",
+        "expect": [
+          {
+            "kind": "local",
+            "id": "desert-arch"
+          },
+          {
+            "kind": "local",
+            "id": "desert-caravan-wreck"
+          },
+          {
+            "kind": "local",
+            "id": "desert-sun-obelisk"
+          }
+        ],
+        "hint": "Diz-me o nome de um dos lugares."
+      },
+      "partial": false
     }
   },
   {
@@ -126,6 +214,20 @@
         "silk_cloth:2",
         "potion:2"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "verme",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "sand-worm"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   }
 ]

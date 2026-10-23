@@ -53,29 +53,50 @@ local function e_is_interaction()
   return viber.ui.get("prompt.key") == "E" and viber.ui.get("prompt.label") ~= ""
 end
 
+-- Balão de diálogo/NLU aberto: as teclas de habilidade não são da conversa.
+-- A hotbar e o equipamento já leem o mesmo bind `dialogue.until`; sem isto um
+-- [C]/[R]/[B] premido a ler o balão disparava por baixo (a bomba era gasta).
+-- O bind é um timestamp: um valor de outra sessão (no "futuro") não pode
+-- trancar as habilidades.
+local function dialogue_open()
+  local until_t = tonumber(viber.ui.get("dialogue.until")) or 0
+  local left = until_t - viber.time()
+  return left > 0 and left <= 2.0
+end
+
 function on_update(dt)
   local st = viber.state()
   st.cd = st.cd or { dash = 0, heal = 0, strike = 0 }
   -- Novo Jogo / save de outra partida: recargas limpas.
-  local sid = tonumber(viber.game().session_id) or 0
-  if st.session ~= sid then
+  -- Um LOAD na MESMA cena troca o `viber.game()` sem mudar `session_id` e o
+  -- relógio da engine (uptime) NÃO recua — o sinal é o tempo de jogo a
+  -- recuar. Sem isto as recargas da linha temporal abandonada (até 12 s de
+  -- cura) seguiam para o jogo carregado.
+  local game = viber.game()
+  local sid = tonumber(game.session_id) or 0
+  local playtime = tonumber(game.playtime_secs) or 0
+  local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
+  if st.session ~= sid or loaded then
     st.session = sid
     st.cd = { dash = 0, heal = 0, strike = 0 }
   end
-  -- Relógio para trás = load: recargas da sessão anterior não valem no jogo
-  -- carregado.
-  local now = viber.time()
-  if st.clock and now < st.clock then
-    st.cd = { dash = 0, heal = 0, strike = 0 }
-  end
-  st.clock = now
-  for k, v in pairs(st.cd) do
-    st.cd[k] = math.max(0, v - dt)
+  st.playtime = playtime
+  -- Diário, profiler (`profiler-win`, não "profiler"), mapa [M], viagem [G]
+  -- e cinemática. `menu_open()` cobre os cinco: o resto do mundo pára
+  -- (criaturas, rastilho da bomba, veneno), por isso as recargas também não
+  -- podem correr por baixo do modal — abrir o mapa 12 s devolvia a cura.
+  local paused = viber.menu_open()
+  if not paused then
+    for k, v in pairs(st.cd) do
+      st.cd[k] = math.max(0, v - dt)
+    end
   end
   publish_cooldowns(st.cd)
-  -- Diário, profiler (`profiler-win`, não "profiler"), mapa [M], viagem [G]
-  -- e cinemática. O id errado do profiler deixava [C]/[R]/[B] sair por baixo.
-  if viber.menu_open() then
+  if paused then
+    return
+  end
+  -- Balão de conversa (grafo/NLU) aberto: as habilidades ficam com a fala.
+  if dialogue_open() then
     return
   end
   local alive, hp = rules.player_hp()
@@ -124,10 +145,26 @@ function on_update(dt)
     end
   end
 
-  -- [R] golpe radial com juice completo (valores do nativo).
+  -- [R] golpe radial com juice completo (valores do nativo; o dano soma as
+  -- passivas de Força como o melee — o nativo lia `stats.bonus_damage`).
   if viber.input.pressed("r") and st.cd.strike <= 0 then
     st.cd.strike = CD_STRIKE
-    rules.radial_damage(px, pz, STRIKE_RADIUS, STRIKE_DAMAGE, STRIKE_KNOCKBACK)
+    local bonus = rules.player_stats().bonus_damage or 0
+    local hits = rules.radial_damage(px, pz, STRIKE_RADIUS, STRIKE_DAMAGE + bonus, STRIKE_KNOCKBACK)
+    -- Aggro-chain: o slam também acorda os aliados a 15 m do impacto (o
+    -- nativo emitia um `AttackAlert` no centro). A engine já não tem
+    -- produtor; o `lib/fsm.lua` lê esta tabela do `viber.game()`.
+    if (hits or 0) > 0 then
+      local g = viber.game()
+      local alert = g.attack_alert
+      if type(alert) ~= "table" then
+        alert = {}
+        g.attack_alert = alert
+      end
+      alert.x, alert.z = px, pz
+      alert.t = viber.time()
+      alert.seq = (alert.seq or 0) + 1
+    end
     viber.burst("sparks", px, py + 1.0, pz, 6)
     viber.ring(px, pz, STRIKE_RADIUS)
     viber.shake(0.22)

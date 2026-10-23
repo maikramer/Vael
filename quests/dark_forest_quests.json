@@ -10,8 +10,12 @@
       "Lobos mataram meu gado esta semana.",
       "Mate 5 deles e eu te pago bem."
     ],
-    "lines_progress": ["Ainda faltam {remaining} lobos pra abater."],
-    "lines_complete": ["Obrigado. Toma este ouro pela coragem."],
+    "lines_progress": [
+      "Ainda faltam {remaining} lobos pra abater."
+    ],
+    "lines_complete": [
+      "Obrigado. Toma este ouro pela coragem."
+    ],
     "objective": {
       "type": "kill",
       "target": "wolf",
@@ -20,7 +24,23 @@
     "rewards": {
       "gold": 200,
       "xp": 150,
-      "items": ["wolf_pelt:2"]
+      "items": [
+        "wolf_pelt:2"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "lobo",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "wolf"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -34,8 +54,12 @@
       "Sombras saem dos pinhais ao anoitecer.",
       "Disperse 3 delas e eu te dou poções de cura."
     ],
-    "lines_progress": ["Ainda faltam {remaining} sombras pra banir."],
-    "lines_complete": ["As sombras recuaram. Leva estas poções."],
+    "lines_progress": [
+      "Ainda faltam {remaining} sombras pra banir."
+    ],
+    "lines_complete": [
+      "As sombras recuaram. Leva estas poções."
+    ],
     "objective": {
       "type": "kill",
       "target": "shade",
@@ -44,7 +68,23 @@
     "rewards": {
       "gold": 250,
       "xp": 180,
-      "items": ["potion:3"]
+      "items": [
+        "potion:3"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "sombra",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "shade"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -58,8 +98,12 @@
       "Preciso de madeira-escura das árvores mortas.",
       "Colete 8 pedaços e eu te dou um machado de ferro."
     ],
-    "lines_progress": ["Faltam {remaining} pedaços de madeira-escura."],
-    "lines_complete": ["Boa colheita. Este machado é seu."],
+    "lines_progress": [
+      "Faltam {remaining} pedaços de madeira-escura."
+    ],
+    "lines_complete": [
+      "Boa colheita. Este machado é seu."
+    ],
     "objective": {
       "type": "collect",
       "target": "dark-wood",
@@ -68,7 +112,23 @@
     "rewards": {
       "gold": 150,
       "xp": 120,
-      "items": ["iron_axe:1"]
+      "items": [
+        "iron_axe:1"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "O que trazes?",
+        "example": "Madeira escura",
+        "expect": [
+          {
+            "kind": "item",
+            "id": "dark-wood"
+          }
+        ],
+        "hint": "Diz-me o nome do que trazes."
+      },
+      "partial": false
     }
   },
   {
@@ -82,7 +142,9 @@
       "Ninguém mapeou a floresta desde que o posto caiu.",
       "Chegue ao posto avançado, ao poço da encruzilhada e ao círculo de pedras — e volte vivo."
     ],
-    "lines_progress": ["Faltam {remaining} marcos pra registrar."],
+    "lines_progress": [
+      "Faltam {remaining} marcos pra registrar."
+    ],
     "lines_complete": [
       "Três marcos, um mapa. A floresta já não é um buraco branco."
     ],
@@ -95,7 +157,31 @@
     "rewards": {
       "gold": 180,
       "xp": 160,
-      "items": ["potion:2"]
+      "items": [
+        "potion:2"
+      ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Onde estiveste?",
+        "example": "Torre do Posto Avançado",
+        "expect": [
+          {
+            "kind": "local",
+            "id": "forest-outpost-tower"
+          },
+          {
+            "kind": "local",
+            "id": "forest-crossroads-well"
+          },
+          {
+            "kind": "local",
+            "id": "forest-stone-circle"
+          }
+        ],
+        "hint": "Diz-me o nome de um dos lugares."
+      },
+      "partial": false
     }
   },
   {
@@ -128,6 +214,20 @@
         "nature_amulet:1",
         "antidote:2"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "bruxa",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "witch"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   }
 ]

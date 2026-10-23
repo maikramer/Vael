@@ -198,6 +198,14 @@
         </UiColumn>
       </UiRow>
     </UiColumn>
+    <!-- Barra de fala (NLU): o NPC pergunta, o jogador responde uma palavra.
+         Visibilidade pelo bind `say.active`; o foco é do scripts/ui/say.lua. -->
+    <UiRow id="say" class="anchor-say" bind="say.active" fade="0.1 0.15">
+      <UiPanel class="hud-card say-card">
+        <UiText id="say-prompt" class="say-prompt" bind="say.prompt" />
+        <UiInput id="say-input" class="say-input" placeholder="uma palavra" max-length="48" />
+      </UiPanel>
+    </UiRow>
     <UiRow id="prompt" class="anchor-prompt" bind="prompt.active" fade="0.12 0.2">
       <UiPanel class="hud-card prompt-card">
         <UiPanel class="prompt-key">

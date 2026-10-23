@@ -1,0 +1,65 @@
+{
+  "giver": "o enviado da Cidadela",
+  "intro": [
+    "O enviado da Cidadela espera no salão, luvas de vidro pousadas na mesa.",
+    "«O poço da praça foi envenenado. A curandeira já devia estar presa. Ou vais perder o teu tempo a perguntar?»"
+  ],
+  "ask": "O que perguntas ao enviado?",
+  "example": "o cheiro do poço, a luva, o livro da curandeira, a guarda",
+  "clues": [
+    {
+      "key": "poco",
+      "description": "perguntar sobre o poço e o cheiro da água",
+      "reply": "«Amêndoa amarga. O vento trouxe o cheiro do poço. Coisa de quem conhece venenos, não achas?»"
+    },
+    {
+      "key": "luva",
+      "description": "perguntar sobre a luva esquecida na borda do poço",
+      "reply": "«Uma luva? O poço está cheio de lixo. Essa luva não prova nada — e não é minha.»",
+      "repeat": "Já te disse: a luva não é minha. Insistir não a torna minha."
+    },
+    {
+      "key": "livro",
+      "description": "perguntar sobre o livro de ervas da curandeira",
+      "reply": "«O livro dela só tem ervas e dívidas. Nada que mate um poço. Isso devia bastar-te.»"
+    },
+    {
+      "key": "guarda",
+      "description": "perguntar quem estava de guarda na noite do envenenamento",
+      "reply": "«O guarda dormia. Mas a lanterna dele foi vista junto ao poço. Ou foi a minha? Não me insultes.»"
+    }
+  ],
+  "required": 3,
+  "no_answer": "O enviado ergue uma sobrancelha. «Não sei do que falas.»",
+  "more": "O enviado cruza os braços. «Ainda não me convenceste.»",
+  "reveal": "O enviado fica muito quieto. «Chega. Diz o que pensas — e diz bem.»",
+  "cancel": "O enviado volta a ler os papéis. «Quando tiveres algo, bate à porta.»",
+  "final_prompt": "Quem envenenou o poço?",
+  "final_example": "foi o enviado; a luva tem o selo dele",
+  "final_options": [
+    {
+      "key": "enviado",
+      "description": "o enviado da Cidadela, que deixou a luva com o selo na borda"
+    },
+    {
+      "key": "curandeira",
+      "description": "a curandeira, que conhecia as ervas do poço"
+    },
+    {
+      "key": "guarda",
+      "description": "o guarda que dormia de serviço"
+    },
+    {
+      "key": "ninguem",
+      "description": "ninguém; o poço secou sozinho"
+    }
+  ],
+  "final_answer": "enviado",
+  "final_reply_ok": "O enviado endireita-se. «Talvez o veneno não fosse para o poço.» A Cidadela agradece.",
+  "final_reply_bad": "O enviado sorri. «Errado. E a curandeira paga por ti.»",
+  "final_cancel": "O enviado espera. «Não tenho o dia todo.»",
+  "hint": "O cheiro, a luva com selo e a lanterna contradizem o enviado. A curandeira só tem ervas.",
+  "after": [
+    "O enviado saiu escoltado. A praça volta a beber do poço."
+  ]
+}

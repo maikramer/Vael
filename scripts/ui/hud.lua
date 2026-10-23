@@ -1,4 +1,5 @@
 local rules = viber.load("lib/rules.lua")
+local say = viber.load("ui/say.lua")
 -- HUD v3: os toggles de estado (danger, ready, empty, venom, xp-pop,
 -- weather) são TODOS class-binds engine-driven no hud.xml — este script
 -- só trata do clique do diário, do soco visual do combo e do ciclo de
@@ -41,6 +42,9 @@ local function refresh_other_quests()
 end
 
 function on_update(dt)
+  -- Barra de fala do NLU: consome eventos do UiInput e resultados do worker.
+  say.tick(dt)
+
   st.others_t = (st.others_t or 0) - dt
   if st.others_t <= 0 then
     st.others_t = OTHERS_PERIOD

@@ -126,6 +126,38 @@ local function validate(ctx)
     elseif obj.type == "collect" and not items[target] then
       add("warning", "quest-collect", id .. ": item de objetivo desconhecido: " .. target)
     end
+    local parley = type(quest.parley) == "table" and quest.parley or nil
+    if not parley then
+      if obj.type ~= "decision" then
+        add("error", "quest-parley", id .. ": sem parley (relato de 1 palavra)")
+      end
+    else
+      local rep = type(parley.report) == "table" and parley.report or nil
+      if not rep then
+        add("error", "quest-parley", id .. ": parley.report ausente")
+      else
+        if tostring(rep.prompt or "") == "" then
+          add("warning", "quest-parley", id .. ": parley.report.prompt vazio")
+        end
+        if tostring(rep.example or "") == "" then
+          add("warning", "quest-parley", id .. ": parley.report.example vazio")
+        end
+        local expect = type(rep.expect) == "table" and rep.expect or {}
+        if #expect == 0 then
+          add("error", "quest-parley", id .. ": parley.report.expect vazio")
+        end
+        for _, e in ipairs(expect) do
+          local okind, eid = tostring(e.kind or ""), tostring(e.id or "")
+          if okind == "item" and not items[eid] then
+            add("error", "quest-parley", id .. ": item de parley desconhecido: " .. eid)
+          elseif okind == "local" and not landmarks[eid] then
+            add("warning", "quest-parley", id .. ": local de parley fora de landmarks.json: " .. eid)
+          elseif okind ~= "criatura" and okind ~= "item" and okind ~= "local" then
+            add("error", "quest-parley", id .. ": parley kind inválido: " .. okind)
+          end
+        end
+      end
+    end
     for _, entry_item in ipairs(type(quest.rewards) == "table" and quest.rewards.items or {}) do
       local item = tostring(entry_item):match("^([^:]+)")
       if item and not items[item] then

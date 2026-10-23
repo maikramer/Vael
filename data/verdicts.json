@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "hunter_oath",
+      "site": "judge-oath",
+      "intro": "Três marcas, na ordem. O altar pesa o que fizeste.",
+      "require": [
+        { "kind": "criatura", "id": "wolf", "verb": "matar" },
+        { "kind": "local", "id": "forest-crossroads-well", "verb": "visitar" },
+        { "kind": "item", "id": "torch", "verb": "equipar" }
+      ],
+      "order": ["matar", "visitar", "equipar"],
+      "forbid": [],
+      "window": 900,
+      "verdicts": {
+        "correct": "O altar aceita o juramento: a caça, o poço e a chama.",
+        "partial": "O altar reconhece parte do juramento. Falta o resto.",
+        "wrong": "O altar não reconhece nenhuma das marcas."
+      },
+      "reward": { "xp": 120, "items": ["blessed_rod:1"] }
+    }
+  ]
+}

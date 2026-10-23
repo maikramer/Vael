@@ -31,6 +31,36 @@
         "ancient_relic:1",
         "potion:2"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Onde estiveste?",
+        "example": "Pedra do Caminho I",
+        "expect": [
+          {
+            "kind": "local",
+            "id": "vael-way-1"
+          },
+          {
+            "kind": "local",
+            "id": "vael-way-4"
+          },
+          {
+            "kind": "local",
+            "id": "vael-choir-2"
+          },
+          {
+            "kind": "local",
+            "id": "vael-watch"
+          },
+          {
+            "kind": "local",
+            "id": "vael-rim-cairn"
+          }
+        ],
+        "hint": "Diz-me o nome de um dos lugares."
+      },
+      "partial": false
     }
   },
   {
@@ -62,6 +92,20 @@
         "blessed_rod:1",
         "potion:1"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "O que trazes?",
+        "example": "Pedra",
+        "expect": [
+          {
+            "kind": "item",
+            "id": "stone"
+          }
+        ],
+        "hint": "Diz-me o nome do que trazes."
+      },
+      "partial": true
     }
   },
   {
@@ -95,6 +139,20 @@
         "moss_potion:2",
         "iron_axe:1"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "sombra",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "shade"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   },
   {
@@ -128,6 +186,20 @@
         "silk_cloth:2",
         "antidote:2"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "Diz-me o que encontraste.",
+        "example": "bandido",
+        "expect": [
+          {
+            "kind": "criatura",
+            "id": "bandit"
+          }
+        ],
+        "hint": "Não te ouvi dizer o nome da criatura."
+      },
+      "partial": false
     }
   }
 ]

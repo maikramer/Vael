@@ -1,0 +1,96 @@
+[
+  {
+    "id": "story_glass_envoy",
+    "npc": "npc_envoy_glass",
+    "biome": "city",
+    "title": "O Enviado de Vidro",
+    "portrait": "",
+    "voice": "",
+    "lines_intro": [
+      "O enviado da Cidadela espera no salão, luvas de vidro pousadas na mesa.",
+      "«O poço da praça foi envenenado. A curandeira já devia estar presa. Ou vais perder o teu tempo a perguntar?»"
+    ],
+    "lines_progress": [
+      "O enviado tamborila na mesa. «Ainda não me convenceste. Pergunta pelo poço, pela luva, pelo livro da curandeira, pela guarda.»"
+    ],
+    "lines_complete": [
+      "O enviado sai escoltado. A Cidadela manda um novo enviado — e um pedido de desculpas.",
+      "A praça volta a beber do poço."
+    ],
+    "objective": {
+      "type": "decision",
+      "target": "enviado",
+      "count": 1
+    },
+    "rewards": {
+      "gold": 180,
+      "xp": 220,
+      "items": [
+        "potion:2"
+      ]
+    }
+  },
+  {
+    "id": "swamp_drowned_bell",
+    "npc": "npc_bell_drowned",
+    "biome": "swamp",
+    "title": "O Dízimo dos Afogados",
+    "portrait": "",
+    "voice": "",
+    "lines_intro": [
+      "Uma mulher de vestes verdes conta moedas que não existem na proa de um barco podre.",
+      "«O rio leva um nome por cheia. Se queres passar, diz-me o que o rio guarda. Mas primeiro ouve.»"
+    ],
+    "lines_progress": [
+      "A sineira espera. «O som, o bronze, a torre refletida, a conta do barqueiro. Pergunta.»"
+    ],
+    "lines_complete": [
+      "A sineira sorri. «Então ainda ouves. O rio devolve-te o caminho.»",
+      "O sino toca uma vez debaixo da água — e cala-se."
+    ],
+    "objective": {
+      "type": "decision",
+      "target": "sino",
+      "count": 1
+    },
+    "rewards": {
+      "gold": 260,
+      "xp": 240,
+      "items": [
+        "moss_potion:3"
+      ]
+    }
+  },
+  {
+    "id": "forest_glass_witness",
+    "npc": "npc_glass_witness",
+    "biome": "dark_forest",
+    "title": "A Testemunha de Vidro",
+    "portrait": "",
+    "voice": "",
+    "lines_intro": [
+      "No Círculo de Menires, a vidente espera junto ao altar de vidro.",
+      "O caçador jura que não matou o cervo. O vidro dela viu outra coisa.",
+      "O irmão, a corda seca, a conta de vidro. A verdade está nas pistas."
+    ],
+    "lines_progress": [
+      "A vidente espera no Círculo de Menires. «O cervo, a corda, a conta, o irmão. Pergunta.»"
+    ],
+    "lines_complete": [
+      "A vidente retira o vidro dos olhos. «A verdade não precisa de ti para doer — mas precisava de alguém que a dissesse.»",
+      "O Círculo de Menires volta a ficar em silêncio. O caçador baixa o arco."
+    ],
+    "objective": {
+      "type": "decision",
+      "target": "defender",
+      "count": 1
+    },
+    "rewards": {
+      "gold": 240,
+      "xp": 260,
+      "items": [
+        "wolf_pelt:2"
+      ]
+    }
+  }
+]

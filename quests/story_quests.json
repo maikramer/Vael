@@ -12,7 +12,7 @@
       "Mede a terra, cartógrafo, e traz-me as quatro. Enquanto não as tiver, o Vale continua calado."
     ],
     "lines_progress": [
-      "Ainda faltam {remaining}. O Alto continua mudo — mas eu ouço-te a chegar perto."
+      "Notas em falta: {remaining}. O Alto continua mudo — mas eu ouço-te a chegar perto."
     ],
     "lines_complete": [
       "As quatro… Põe-nas aqui, na mesa do conselho. Escuta."
@@ -29,6 +29,20 @@
         "potion:5",
         "bomb:3"
       ]
+    },
+    "parley": {
+      "report": {
+        "prompt": "O que trazes?",
+        "example": "Nota",
+        "expect": [
+          {
+            "kind": "item",
+            "id": "nota"
+          }
+        ],
+        "hint": "Diz-me o nome do que trazes."
+      },
+      "partial": false
     }
   }
 ]
