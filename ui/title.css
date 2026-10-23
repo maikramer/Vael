@@ -109,6 +109,14 @@
   color: amber-200;
 }
 
+/* `.primary` vem depois de `.title-btn:hover` e, com a mesma especificidade,
+   apagava o realce de rato do botão principal (só o Continuar não respondia
+   ao hover). A regra de estado mais específica repõe-no. */
+.title-btn.primary:hover {
+  background: #f59e0b22;
+  border-color: amber-400;
+}
+
 /* `.primary` vem depois do bloco de foco e, com a mesma especificidade,
    apagava o realce do botão focado (o "Continuar" era o único sem aro). */
 .title-btn.primary:focus,
@@ -141,6 +149,13 @@
   max-width: 34vmin;
   margin-bottom: 0.6vmin;
 }
+
+/* Créditos: vivem no MESMO pai que o véu do título. O `z-index` da engine
+   (`ZIndex` do Bevy) só ordena irmãos, por isso o 40 do `.title-overlay`
+   pintava-os por baixo — o clique em "Créditos" parecia não fazer nada e o
+   botão "Voltar" ficava tapado. 50 põe-nos acima do véu (e abaixo dos 60/70
+   que só existem noutras raízes). */
+#credits { z-index: 50 }
 
 .credits-frame {
   width: 66vmin;

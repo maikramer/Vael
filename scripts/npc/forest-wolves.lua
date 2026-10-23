@@ -1,4 +1,10 @@
 local rules = viber.load("lib/rules.lua")
+local talk = viber.load("ui/say.lua")
+local decide = viber.load("lib/decide.lua")
+
+local function typing()
+  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+end
 -- npc/forest-wolves.lua: diálogo 100% Lua de Hald, o do Gado (dador da
 -- quest `forest_wolves`). Prova do desacoplamento:
 --   * `viber.own_system("dialogue")` — a engine CEDE o [E] deste NPC (o
@@ -36,7 +42,7 @@ function on_update(dt)
   if def == nil then
     def = rules.quest_def(QUEST)
   end
-  if viber.menu_open() or not viber.interacted("e") then
+  if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
     return
   end
   viber.face_player()
@@ -50,10 +56,39 @@ function on_update(dt)
   elseif state == "active" then
     say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
   elseif state == "ready" then
-    if rules.quest_turn_in(QUEST) then
-      say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+    local p = rules.quest_parley(QUEST)
+    if p and p.report and decide.ready() then
+      viber.say(p.report.prompt or "Diz-me o que encontraste.")
+      talk.ask({
+        prompt = p.report.prompt,
+        example = p.report.example,
+        state = { npc = "Hald", quest = QUEST },
+        questions = decide.expect_questions(p.report.expect, p.report.prompt),
+        on_result = function(answers, text)
+          local ok, msg = rules.quest_turn_in_decision(QUEST, text, answers)
+          if ok then
+            say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+          else
+            viber.say(msg or p.report.hint or "Não te ouvi.")
+          end
+        end,
+        on_unavailable = function()
+          if rules.quest_turn_in(QUEST) then
+            say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+          else
+            say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
+          end
+        end,
+        on_cancel = function()
+          viber.say("“Conta-me quando os tiveres.”")
+        end,
+      })
     else
-      say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
+      if rules.quest_turn_in(QUEST) then
+        say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+      else
+        say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
+      end
     end
   else
     say_lines(def and def.lines_complete, "“Já cumpriste. O rebanho agradece.”")

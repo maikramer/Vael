@@ -120,6 +120,17 @@
   gap: 0.8vmin;
 }
 
+/* As listas de uma página precisam de um viewport com altura limitada para
+   rolar: o `scroll="y"` do XML só funciona com overflow — sem tecto o
+   conteúdo cresce até à altura total (a lista da loja tem 19 linhas e a das
+   missões chega às 28) e a página recortava as últimas, inalcançáveis.
+   O `48vh` deixa margem para o cabeçalho/abas e para as acções da aba
+   Sistema, que vivem fora da lista. */
+.page .rows,
+.page .grid {
+  max-height: 48vh;
+}
+
 /* ── listas de linhas (missões/talentos/loja/controlos) ────── */
 .rows {
   direction: column;

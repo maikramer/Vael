@@ -10,6 +10,14 @@
    Tudo em vmin para escalar com a janela.
    ============================================================ */
 
+/* O `z-index` do modal abaixo (`#profiler-win`) só ordena IRMÃOS: as UiRoots
+   são raízes separadas e o Bevy ordena-as pelo `ZIndex` da PRÓPRIA raiz (o
+   `GlobalZIndex` não é exposto pelo dialecto). Sem esta regra o profiler —
+   incluído antes do título e da morte no autoload — pintava por baixo dos
+   véus e o P no título abria um painel invisível. O `profiler.xml` está
+   sozinho na sua raiz, logo o z do modal não chega. */
+#profiler { z-index: 30 }
+
 /* O modal é o painel próprio: canto superior direito, sem véu
    escuro sobre o mundo — é um instrumento, não um menu que
    pausa a leitura. */
@@ -20,8 +28,9 @@
   width: 52vmin;
   max-width: 94vw;
   max-height: 86vh;
-  /* Instrumento de debug: por cima do véu do título (z 40) e do ecrã de
-     morte (z 60). Sem isto o P no título abria o modal ATRÁS do véu. */
+  /* Ordem DENTRO desta raiz (hoje só há este modal): quem põe o painel por
+     cima do título/morte é o `z-index` da raiz `#profiler` acima — o
+     `ZIndex` da engine não atravessa raízes. */
   z-index: 70;
   direction: column;
   gap: 1vmin;
@@ -164,11 +173,16 @@
   radius: 0.7vmin;
   border: 1 stone-70044;
   line-height: 1.25;
+  /* Só um viewport com altura limitada é que rola (o `scroll="y"` do XML
+     liga a roda nesta lista). Sem tecto, os 14 grupos (~24vmin) + os 21vmin
+     de sistemas + scripts empurravam o fundo do painel para fora dos 66vh
+     clipados e as últimas linhas ficavam inalcançáveis. */
+  max-height: 13vmin;
 }
 #profiler-win .lrow:hover { background: stone-80055 }
 /* As duas listas altas dominam a altura do painel; as curtas
    ajustam-se ao conteúdo. */
-#profiler-win .rows.tall { height: 21vmin }
+#profiler-win .rows.tall { height: 21vmin; max-height: 21vmin }
 #profiler-win .lrow { width: 100%; align: center; gap: 0.6vmin }
 #profiler-win .l-name {
   font-size: 1.3vmin;

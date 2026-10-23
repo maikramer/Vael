@@ -88,3 +88,10 @@
 .map-rows {
   max-height: 18vh;
 }
+
+/* A lista da viagem é a única filha do frame: sem um tecto próprio crescia
+   até à altura de todos os marcos assinados (~28 linhas) e o `overflow: clip`
+   do frame cortava as últimas sem a roda ter para onde rolar. */
+.travel-frame .rows {
+  max-height: 60vh;
+}

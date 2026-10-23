@@ -5,6 +5,7 @@
 -- Este script tem de correr SEMPRE (`tag="always-active"`): o LOD de 45 m
 -- engolia os cliques buy/sell e despejava-os todos ao regressar à banca.
 local shop = viber.load("game/shop.lua")
+local rules = viber.load("lib/rules.lua")
 
 --@export prompt: string = "Falar com Bram"     -- texto do prompt de interação
 --@export range: number(0.5..10) = 3.5          -- alcance do [E] (m)
@@ -27,6 +28,10 @@ function on_update(dt)
   -- drenava buy/sell, e a banca abre o menu no frame seguinte.
   shop.update(dt)
   if viber.menu_open() then return end
+  -- A fila da loja continua a ser drenada (é este host que a drena), mas o
+  -- herói caído não fala nem abre a banca: `menu_open` não cobre a morte.
+  local _, hp = rules.player_hp()
+  if hp <= 0 then return end
   if viber.interacted("e") then
     local lines = viber.prop("lines")
     st.i = ((st.i or 0) % math.max(#lines, 1)) + 1

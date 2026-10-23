@@ -151,6 +151,9 @@
 #hud .action-cell.ability.ready .action-slot { border-color: #c6ac74; background: #343b38 }
 #hud .action-cell.ability.ready .slot-icon { opacity: 1 }
 #hud .action-cell.ability.ready .slot-key { opacity: 1 }
+/* `opacity` não herda: sem esta linha a tecla (C/E/R) ficava a 55 % dentro
+   do selo já opaco e o slot "pronto" continuava com a letra apagada. */
+#hud .action-cell.ability.ready .slot-key .action-key { opacity: 1 }
 #hud .action-cell.ability.ready .action-name { color: #d1cfc3 }
 #hud .action-slot .veil { background: #060c13b8 }
 #hud .slot-key {
@@ -246,4 +249,25 @@
 .dmg-edge.right {
   right: 0; top: 0; width: 11vmin; height: 100%;
   background: linear-gradient(270deg, #dc2626cc 0%, #dc262600 100%);
+}
+
+/* ── barra de fala (NLU) ────────────────────────────────────────────
+   O NPC pergunta em cima; o UiInput fica focado por scripts/ui/say.lua.
+   Fica acima do prompt [E] (bottom 136) para não tapar a interacção. */
+#hud .anchor-say { position: absolute; bottom: 190; left: 0; right: 0; justify: center }
+#hud .say-card { width: 520; max-width: 72vw; gap: 7; padding: 10 14; border-color: #d6b979 }
+#hud .say-prompt { font-size: 13; color: #e5d2a5; text-align: center; width: 100% }
+#hud .say-input {
+  width: 100%; height: 30; padding: 4 10;
+  background: #10161a; border: 1 #63887f; radius: 6; cursor: text;
+}
+#hud .say-input.focused { border-color: #84bacb; box-shadow: 0 0 6 #84bacb55 }
+#hud .say-input .input-text { font-size: 15; color: #eee9dc }
+/* O `#hud` é preciso: sem o id, esta regra (0,3,0) perdia para a de cima
+   (1,2,0) e o placeholder saía com a cor do texto escrito. */
+#hud .say-input.placeholder .input-text { color: #6f7a7d }
+
+@media (max-width: 900) {
+  #hud .anchor-say { bottom: 172 }
+  #hud .say-card { width: 86vw; max-width: 86vw }
 }

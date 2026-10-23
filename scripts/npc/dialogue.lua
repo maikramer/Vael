@@ -4,6 +4,13 @@
 
 local rules = viber.load("lib/rules.lua")
 local marks = viber.load("lib/landmarks.lua")
+local talk = viber.load("ui/say.lua")
+local decide = viber.load("lib/decide.lua")
+
+-- O UiInput focado come as teclas: não disparar [E]/diálogo enquanto se escreve.
+local function typing()
+  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+end
 
 local function quest_id()
   return viber.prop("dialogue_id")
@@ -43,7 +50,7 @@ function on_update(_dt)
     st.label = label
     viber.set_interaction(label, "e", 3.5)
   end
-  if viber.menu_open() or not viber.interacted("e") then
+  if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
     return
   end
   viber.face_player()
@@ -79,10 +86,40 @@ function on_update(_dt)
     end
     say(def and def.lines_intro, "Aceite.", remaining)
   elseif state == "ready" then
-    if rules.quest_turn_in(id) then
-      say(def and def.lines_complete, "Entregue.", 0)
+    local p = rules.quest_parley(id)
+    local d1_ready = decide.ready()
+    if p and p.report and d1_ready then
+      viber.say(p.report.prompt or "Diz-me o que encontraste.")
+      talk.ask({
+        prompt = p.report.prompt,
+        example = p.report.example,
+        state = { npc = def and def.title or id, quest = id },
+        questions = decide.expect_questions(p.report.expect, p.report.prompt),
+        on_result = function(answers, text)
+          local ok, msg = rules.quest_turn_in_decision(id, text, answers)
+          if ok then
+            say(def and def.lines_complete, "Entregue.", 0)
+          else
+            viber.say(msg or p.report.hint or "Não te ouvi.")
+          end
+        end,
+        on_unavailable = function()
+          if rules.quest_turn_in(id) then
+            say(def and def.lines_complete, "Entregue.", 0)
+          else
+            say(def and def.lines_progress, "Ainda não tens o que a missão pede.", remaining)
+          end
+        end,
+        on_cancel = function()
+          viber.say("Quando quiseres contar, estou aqui.")
+        end,
+      })
     else
-      say(def and def.lines_progress, "Ainda não tens o que a missão pede.", remaining)
+      if rules.quest_turn_in(id) then
+        say(def and def.lines_complete, "Entregue.", 0)
+      else
+        say(def and def.lines_progress, "Ainda não tens o que a missão pede.", remaining)
+      end
     end
   elseif state == "active" then
     say(def and def.lines_progress, "Ainda não.", remaining)
