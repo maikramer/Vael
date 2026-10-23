@@ -114,22 +114,24 @@
     <Group translation="4.3 8.2 -6.7" body="none" collider="none">
       <PointLight translation="0 2.2 0" color="0xffa83a" intensity="3600" radius="0.6" shadows="false" />
     </Group>
-    <Entity translation="-3.6 8.3 11.5" transform="rotation: 0 8 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+    <!-- Os postes da entrada (z=11,5) seguem a cota do terreno: estavam a 8,3
+         e liam-se ~11 cm acima do chão. O lume e a luz acompanham-nos. -->
+    <Entity translation="-3.6 8.1886 11.5" transform="rotation: 0 8 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
     </Entity>
-    <Entity translation="-3.6 8.3 11.5">
+    <Entity translation="-3.6 8.1886 11.5">
       <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" />
     </Entity>
-    <Group translation="-3.6 8.3 11.5" body="none" collider="none">
+    <Group translation="-3.6 8.1886 11.5" body="none" collider="none">
       <PointLight translation="0 2.2 0" color="0xffa83a" intensity="2800" radius="0.6" shadows="false" />
     </Group>
-    <Entity translation="3.6 8.3 11.5" transform="rotation: 0 -8 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+    <Entity translation="3.6 8.1855 11.5" transform="rotation: 0 -8 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
     </Entity>
-    <Entity translation="3.6 8.3 11.5">
+    <Entity translation="3.6 8.1855 11.5">
       <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" />
     </Entity>
-    <Group translation="3.6 8.3 11.5" body="none" collider="none">
+    <Group translation="3.6 8.1855 11.5" body="none" collider="none">
       <PointLight translation="0 2.2 0" color="0xffa83a" intensity="2800" radius="0.6" shadows="false" />
     </Group>
 

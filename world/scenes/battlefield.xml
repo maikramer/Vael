@@ -4,8 +4,8 @@
     <SpawnExclusion at="-770 -265" radius="40" />
     <Composition name="battlefield-banner" translation="-770 0 -265" body="fixed" collider="auto">
       <Cylinder translation="0 2.6 0" half-height="2.6" radius="0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" normal-map="/assets/textures/wood_planks/normal.ktx2" />
-      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#7a1f1f" roughness="0.95" metallic="0.0" />
-      <Box translation="0.85 2.2 0" half-size="0.55 0.55 0.03" base-color="#7a1f1f" roughness="0.95" metallic="0.0" />
+      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#a83030" roughness="0.95" metallic="0.0" />
+      <Box translation="0.85 2.35 0" half-size="0.55 0.55 0.03" base-color="#a83030" roughness="0.95" metallic="0.0" />
       <Box translation="0 0.1 0" half-size="0.5 0.1 0.5" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" normal-map="/assets/textures/mountain_stone/normal.ktx2" />
       <PointLight translation="0 4.6 0" color="0xffd0a0" intensity="3400" radius="0.8" />
     </Composition>
@@ -59,7 +59,7 @@
       <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb"/>
     </Entity>
     <Entity translation="-770 0 -265">
-      <ParticleSystem preset="smoke" transform="pos: 0 0.9 0" particle-emitter="preset: smoke; emission-rate: 5; start-life-min: 5; start-life-max: 9; start-speed-min: 0.06; start-speed-max: 0.22; start-size-min: 2.0; start-size-max: 3.8; start-color: #8e8a84; looping: 1; world-space: 1" />
+      <ParticleSystem preset="smoke" transform="pos: 0 0.9 0" particle-emitter="preset: smoke; emission-rate: 2; start-life-min: 3; start-life-max: 6; start-speed-min: 0.06; start-speed-max: 0.22; start-size-min: 0.7; start-size-max: 1.6; start-color: #8e8a84; looping: 1; world-space: 1" />
     </Entity>
     <DynamicSpawner avoid-water="1" avoid-road="1" honor-exclusion="0" count="8" seed="6151" region-min="-810 0 -300" region-max="-730 0 -235" random-yaw="true" avoid-overlaps="false" max-slope-deg="24" max-distance="1420">
       <Creature role="enemy" script="enemies/shade.lua">
@@ -70,6 +70,50 @@
       <GltfScene url="/assets/meshes/characters/npc_guard_lod0.glb" />
       <NpcBody />
     </Entity>
-    <Entity name="trigger.campo-de-batalha" translation="-760 0 -280" script="cinematic-trigger.lua" prop-cinematic="campo-de-batalha" prop-radius="22" />
+    <Entity translation="-790 -1.43 -260" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 5.0 0.3">
+      <Box translation="0 2.6 0" half-size="0.09 2.6 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#8a2a2a" roughness="0.95" />
+      <Box translation="0 0.1 0" half-size="0.5 0.1 0.5" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-750 -0.77 -270" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 5.0 0.3">
+      <Box translation="0 2.6 0" half-size="0.09 2.6 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#8a2a2a" roughness="0.95" />
+      <Box translation="0 0.1 0" half-size="0.5 0.1 0.5" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-770 -0.07 -285" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 5.0 0.3">
+      <Box translation="0 2.6 0" half-size="0.09 2.6 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#8a2a2a" roughness="0.95" />
+      <Box translation="0 0.1 0" half-size="0.5 0.1 0.5" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-790 -1.1 -275" euler="0 10 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.4 1.2 0.8">
+      <Cylinder translation="0 0.35 0" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.65 0.18" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.95 -0.12" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-755 -0.58 -262" euler="0 5 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.4 1.2 0.8">
+      <Cylinder translation="0 0.35 0" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.65 0.18" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.95 -0.12" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-765 -0.36 -290" euler="0 35 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.4 1.2 0.8">
+      <Cylinder translation="0 0.35 0" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.65 0.18" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.95 -0.12" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-785 -0.65 -285" euler="0 15 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.4 1.2 0.8">
+      <Cylinder translation="0 0.35 0" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.65 0.18" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+      <Cylinder translation="0 0.95 -0.12" radius="0.11" half-height="1.2" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-760 -0.1 -268" euler="0 40 62" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15">
+      <GltfScene url="/assets/meshes/props/spear_lod0.glb" />
+    </Entity>
+    <Entity translation="-778 -0.33 -278" euler="0 22 62" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15">
+      <GltfScene url="/assets/meshes/props/spear_lod0.glb" />
+    </Entity>
+    <Entity translation="-752 -0.51 -275" euler="0 48 62" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15">
+      <GltfScene url="/assets/meshes/props/spear_lod0.glb" />
+    </Entity>
+
   </Group>
 </world>

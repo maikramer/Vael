@@ -106,13 +106,13 @@
       <GltfScene url="/assets/meshes/characters/npc_guard_lod0.glb"/>
       <NpcBody />
     </Entity>
-    <Entity translation="-12 38.7304 9" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" euler="180 65 180" scale="1">
+    <Entity translation="-2 38.7304 14" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" transform="rotation: 0 180 0" scale="1">
       <GltfScene url="/assets/meshes/village/market_stall_lod0.glb"/>
     </Entity>
     <Entity translation="-10.2 38.7304 11.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 0.7 0.55">
       <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb"/>
     </Entity>
-    <Group translation="-12 38.7304 9" body="fixed" collider="none">
+    <Group translation="-2 38.7304 14" body="fixed" collider="none">
       <PointLight translation="0 2.1 0" color="0xffb264" intensity="130000" radius="0.7" shadows="false" />
     </Group>
     <Entity translation="-1 38.7304 4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 0.7 0.55" euler="0 25 0" scale="1">
@@ -133,5 +133,88 @@
     <Entity translation="9.3 38.7304 9.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb"/>
     </Entity>
+      <Group name="village.cart" translation="28 38.7304 -4" euler="0 -20 0">
+      <Composition name="market-cart" body="fixed" collider="auto">
+        <Box translation="0 0.78 0" half-size="1.25 0.10 0.65" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" normal-map="/assets/textures/wood_planks/normal.ktx2" base-color="#8a6a48" roughness="0.9" />
+        <Box translation="0 0.98 0.65" half-size="1.25 0.18 0.05" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#7a5c3e" roughness="0.9" />
+        <Box translation="0 0.98 -0.65" half-size="1.25 0.18 0.05" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#7a5c3e" roughness="0.9" />
+        <Box translation="1.25 0.98 0" half-size="0.05 0.18 0.65" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#7a5c3e" roughness="0.9" />
+        <Box translation="-1.25 0.98 0" half-size="0.05 0.18 0.65" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#7a5c3e" roughness="0.9" />
+        <Cylinder translation="-1.0 0.42 0.72" radius="0.42" half-height="0.07" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#5e4630" roughness="0.9" />
+        <Cylinder translation="1.0 0.42 0.72" radius="0.42" half-height="0.07" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#5e4630" roughness="0.9" />
+        <Cylinder translation="-1.0 0.42 -0.72" radius="0.42" half-height="0.07" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#5e4630" roughness="0.9" />
+        <Cylinder translation="1.0 0.42 -0.72" radius="0.42" half-height="0.07" euler="0 0 90" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#5e4630" roughness="0.9" />
+        <Box translation="-1.85 0.55 0.35" half-size="0.60 0.05 0.05" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#6d5238" roughness="0.9" />
+        <Box translation="-1.85 0.55 -0.35" half-size="0.60 0.05 0.05" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#6d5238" roughness="0.9" />
+      </Composition>
+      <Entity translation="0 0.90 0" transform="rotation: 0 12 0">
+        <GltfScene url="/assets/meshes/farm/hay_bale_lod0.glb" scale="0.55" />
+      </Entity>
+    </Group>
+    <Entity translation="-30 38.7304 30" transform="rotation: 0 15 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.8 0.8">
+      <GltfScene url="/assets/meshes/farm/hay_bale_lod0.glb" scale="0.9" />
+    </Entity>
+    <Entity translation="-32 38.7304 32.2" transform="rotation: 0 -30 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.8 0.8">
+      <GltfScene url="/assets/meshes/farm/hay_bale_lod0.glb" scale="0.85" />
+    </Entity>
+    <Entity translation="-28.2 38.7304 33" transform="rotation: 0 40 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.8 0.8">
+      <GltfScene url="/assets/meshes/farm/hay_bale_lod0.glb" scale="0.8" />
+    </Entity>
+    <Entity translation="10.1 38.7304 -15.5" transform="rotation: 0 0 0" script="townsfolk.lua" prop-banter="“Maçãs frescas!”|“Duas por uma moeda.”" prop-speed="0.2" prop-radius="2.5">
+      <GltfScene url="/assets/meshes/characters/npc_merchant_lod0.glb" />
+      <NpcBody />
+    </Entity>
+    <Entity translation="18.9 38.7304 -16.2" transform="rotation: 0 200 0" script="townsfolk.lua" prop-banter="“Pão quente do forno.”|“Prove o mel da serra.”" prop-speed="0.2" prop-radius="2.5">
+      <GltfScene url="/assets/meshes/characters/npc_cook_lod0.glb" />
+      <NpcBody />
+    </Entity>
+    <Entity translation="18 38.7304 10" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.0 0.5 0.5">
+      <Box translation="0 0.22 0" half-size="0.5 0.22 0.22" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#6d5238" roughness="0.9" />
+      <Entity translation="0 0.45 0"><GltfScene url="/assets/meshes/vegetation/flower_purpleA.glb" scale="1.4" /></Entity>
+    </Entity>
+    <Entity translation="-18 38.7304 -6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.0 0.5 0.5">
+      <Box translation="0 0.22 0" half-size="0.5 0.22 0.22" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.1" base-color="#6d5238" roughness="0.9" />
+      <Entity translation="0 0.45 0"><GltfScene url="/assets/meshes/vegetation/flower_purpleA.glb" scale="1.4" /></Entity>
+    </Entity>
+
+      <Entity translation="-27 38.7304 -28" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 0.9 0.9">
+      <GltfScene url="/assets/meshes/village/anvil_lod0.glb" />
+    </Entity>
+    <Entity translation="-25 38.7304 -31" transform="rotation: 0 15 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.4 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/quench_trough_lod0.glb" />
+    </Entity>
+    <Entity translation="-26 38.7304 -34" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.7 0.5 0.7">
+      <GltfScene url="/assets/meshes/village/horseshoe_pile_lod0.glb" />
+    </Entity>
+    <Entity translation="-24 38.7304 -27" transform="rotation: 0 100 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/weapon_rack_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/weapon_rack_lod0.glb" />
+    </Entity>
+    <Entity translation="-36 38.7304 14" transform="rotation: 0 20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/berry_bush_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/berry_bush_lod0.glb" />
+    </Entity>
+    <Entity translation="-36 38.7304 -6" transform="rotation: 0 -35 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/berry_bush_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/berry_bush_lod0.glb" />
+    </Entity>
+    <Entity translation="36 38.7304 12" transform="rotation: 0 60 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/berry_bush_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/berry_bush_lod0.glb" />
+    </Entity>
+    <Entity translation="36 38.7304 -10" transform="rotation: 0 -10 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/berry_bush_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/berry_bush_lod0.glb" />
+    </Entity>
+    <Entity translation="-12 38.7304 2" transform="rotation: 0 -20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.9 0.55">
+      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb" />
+    </Entity>
+    <Entity translation="-2 38.7304 10" transform="rotation: 0 160 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.9 0.55">
+      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb" />
+    </Entity>
+    <Entity translation="24 38.7304 5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 5.0 0.3">
+      <Box translation="0 2.6 0" half-size="0.09 2.6 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#8a2a2a" roughness="0.95" />
+    </Entity>
+    <Entity translation="-28 38.7304 -24" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 5.0 0.3">
+      <Box translation="0 2.6 0" half-size="0.09 2.6 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.85 3.9 0" half-size="0.85 1.0 0.03" base-color="#8a2a2a" roughness="0.95" />
+    </Entity>
+
   </Group>
 </world>

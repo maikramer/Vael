@@ -66,5 +66,31 @@
       <GltfScene url="/assets/meshes/characters/npc_cook_lod0.glb" />
       <NpcBody />
     </Entity>
+      <GroundDecal name="outpost.platform" at="800 730" radius="12" feather="5" noise="0.2" seed="161" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-scale="4" base-color="#8a8274" roughness="0.95" />
+    <Entity translation="794 0.02 719" transform="rotation: 0 74 0" scale="1.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.2 0" color="0x8fd0ff" intensity="2200" radius="1.6" shadows="false" />
+    </Entity>
+    <Entity translation="806 -0.07 727" transform="rotation: 0 86 0" scale="1.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.2 0" color="0x8fd0ff" intensity="2200" radius="1.6" shadows="false" />
+    </Entity>
+    <Entity translation="800 0.05 736" transform="rotation: 0 80 0" scale="1.6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.2 0" color="0x8fd0ff" intensity="2200" radius="1.6" shadows="false" />
+    </Entity>
+    <Entity translation="808 -0.18 722" transform="rotation: 0 2 0" scale="1.1" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/ore_vein_lod0.glb" />
+    </Entity>
+    <Entity translation="790 0.14 734" transform="rotation: 0 14 0" scale="1.1" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb">
+      <GltfScene url="/assets/meshes/farm/ore_vein_lod0.glb" />
+    </Entity>
+    <Entity translation="804 0.01 736" transform="rotation: 0 84 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
+    </Entity>
+    <Entity translation="792 0.1 724" transform="rotation: 0 72 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
+    </Entity>
+
   </Group>
 </world>

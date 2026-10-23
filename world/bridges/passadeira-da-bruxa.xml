@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
   <Group name="bridge.passadeira-da-bruxa" translation="0 38.7304 0">
-    <Road path="-52 198 -60 184 -68 172" width="3" flatten="0" texture-scale="6" edge-feather="1.0" edge-noise="0.6" end-feather-start="1.5" end-feather-end="3" texture-url="/assets/textures/forest_floor/albedo.ktx2" normal-map-url="/assets/textures/forest_floor/normal.ktx2" />
-    <Road path="-34 248 -26 258 -20 270" width="3" flatten="0" texture-scale="6" edge-feather="1.0" edge-noise="0.6" end-feather-start="1.5" end-feather-end="3" texture-url="/assets/textures/forest_floor/albedo.ktx2" normal-map-url="/assets/textures/forest_floor/normal.ktx2" />
+    <!-- A passadeira tinha dois trilhos que morriam a 76 m um do outro, um
+         em cada margem, sem nada a cruzar o rio. O tabuleiro de madeira
+         fecha a travessia (18 m, eixo X do GLB → yaw 90 = norte-sul). -->
+    <Entity name="passadeira-bruxa-bridge" translation="-49 1.87 214.5" euler="0 90 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/infra/river_bridge_wood_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/infra/river_bridge_wood_lod0.glb" lod1-url="/assets/meshes/infra/river_bridge_wood_lod1.glb" lod2-url="/assets/meshes/infra/river_bridge_wood_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Road path="-50 207 -52 198 -60 184 -68 172" width="3" flatten="0" texture-scale="6" edge-feather="1.0" edge-noise="0.6" end-feather-start="1.5" end-feather-end="3" texture-url="/assets/textures/forest_floor/albedo.ktx2" normal-map-url="/assets/textures/forest_floor/normal.ktx2" />
+    <Road path="-48 221 -34 248 -26 258 -20 270" width="3" flatten="0" texture-scale="6" edge-feather="1.0" edge-noise="0.6" end-feather-start="1.5" end-feather-end="3" texture-url="/assets/textures/forest_floor/albedo.ktx2" normal-map-url="/assets/textures/forest_floor/normal.ktx2" />
   </Group>
 </world>

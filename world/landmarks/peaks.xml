@@ -69,7 +69,7 @@
       <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb"/>
     </Entity>
     <SpawnExclusion at="-60 -216" radius="22" />
-    <Lake at="68 -184" radius="22" depth="2.2" water-offset="0.4" color="#8fc7dd" opacity="0.62" ripple="0.25" water-level="79.44013" rocks="0" />
+    <Lake at="68 -184" radius="22" depth="2.2" water-offset="0.4" color="#7fb5cc" opacity="0.9" ripple="0.25" water-level="79.44013" rocks="0" />
     <Entity name="peaks-frost-cairn" translation="60 78.0202 -176" script="poi/frost-cairn.lua" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
     </Entity>
@@ -124,5 +124,98 @@
     <Entity name="mojao-esconderijo" translation="14.40 110.036 -241.60" euler="0 80 0" script="chest.lua" prop-gold="120" prop-xp="80" prop-item="potion" prop-item_count="3" prop-item_label="poções" prop-prompt="Abrir o esconderijo do mojão" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/treasure_chest_lod0.glb" />
     </Entity>
+      <Entity translation="60 77.92 -180" transform="rotation: 0 0 0" scale="2.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb">
+      <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" />
+    </Entity>
+    <Entity translation="76 77.98 -190" transform="rotation: 0 48 0" scale="2.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb">
+      <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" />
+    </Entity>
+    <Entity translation="64 77.91 -176" transform="rotation: 0 12 0" scale="1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb">
+      <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" />
+    </Entity>
+    <Entity translation="72 77.94 -192" transform="rotation: 0 36 0" scale="2.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb">
+      <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" />
+    </Entity>
+    <Entity translation="64 77.72 -181" transform="rotation: 0 88 0" scale="2.6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.4 0" color="0x9fdcff" intensity="2600" radius="2.0" shadows="false" />
+    </Entity>
+    <Entity translation="73 77.75 -187" transform="rotation: 0 151 0" scale="2.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.4 0" color="0x9fdcff" intensity="2600" radius="2.0" shadows="false" />
+    </Entity>
+    <Entity translation="60 77.99 -184" transform="rotation: 0 60 0" scale="1.6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.4 0" color="0x9fdcff" intensity="2600" radius="2.0" shadows="false" />
+    </Entity>
+    <Entity translation="-61.2 98.42 -216" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.4 3.2 0.4">
+      <Box translation="0 1.6 0" half-size="0.2 1.6 0.2" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.2" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-58.8 98.42 -216" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.4 3.2 0.4">
+      <Box translation="0 1.6 0" half-size="0.2 1.6 0.2" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.2" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-60 101.5 -216" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 3.0 0.45 0.45">
+      <Box translation="0 0.22 0" half-size="1.5 0.22 0.22" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.2" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-62 98.11 -216" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-62 98.11 -216"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-58 99.18 -216" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-58 99.18 -216"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-64 94.91 -212" transform="rotation: 0 20 0" scale="1.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb">
+      <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <PointLight translation="0 1.2 0" color="0x8fd0ff" intensity="2200" radius="1.6" shadows="false" />
+    </Entity>
+    <Entity translation="-44 67.5 -174" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/campfire_pit_lod0.glb" />
+    </Entity>
+    <Entity translation="-44 67.5 -174"><ParticleSystem preset="fire" transform="pos: 0 0.42 0" particle-emitter="preset: fire; emission-rate: 26; shape-radius: 0.26; start-life-min: 0.4; start-life-max: 1.1; start-speed-min: 1.0; start-speed-max: 2.2; start-size-min: 0.22; start-size-max: 0.46; looping: 1; world-space: 1" /></Entity>
+    <Group translation="-44 67.5 -174" body="fixed" collider="none"><PointLight translation="0 0.7 0" color="0xff8a33" intensity="50000" radius="0.7" shadows="false" /></Group>
+    <Entity translation="-46 65.87 -172" transform="rotation: 0 20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
+    </Entity>
+    <Entity translation="-42 70.94 -176" transform="rotation: 0 -30 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 0.7 0.55">
+      <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb" />
+    </Entity>
+
+      <Entity translation="-46 64.01 -170" euler="0 12 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.14; half-height: 1.3">
+      <Cylinder translation="0 1.3 0" radius="0.14" half-height="1.3" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.4" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-42 64.33 -170" euler="0 24 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.14; half-height: 1.3">
+      <Cylinder translation="0 1.3 0" radius="0.14" half-height="1.3" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.4" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-48 67.5 -174" euler="0 6 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.14; half-height: 1.3">
+      <Cylinder translation="0 1.3 0" radius="0.14" half-height="1.3" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.4" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-40 69.08 -174" euler="0 30 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.14; half-height: 1.3">
+      <Cylinder translation="0 1.3 0" radius="0.14" half-height="1.3" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.4" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-44 63.59 -168" euler="0 18 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.14; half-height: 1.3">
+      <Cylinder translation="0 1.3 0" radius="0.14" half-height="1.3" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.4" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-44 71.63 -178" euler="0 18 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.14; half-height: 1.3">
+      <Cylinder translation="0 1.3 0" radius="0.14" half-height="1.3" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.4" base-color="#6d5238" roughness="0.9" />
+    </Entity>
+    <Entity translation="-48 64.0 -170" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 4.2 0.3">
+      <Box translation="0 2.2 0" half-size="0.09 2.2 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.7 3.3 0" half-size="0.7 0.8 0.03" base-color="#7a1f1f" roughness="0.95" />
+    </Entity>
+    <Entity translation="-40 67.0 -172" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.3 4.2 0.3">
+      <Box translation="0 2.2 0" half-size="0.09 2.2 0.09" texture="/assets/textures/wood_planks/albedo.ktx2" texture-tile-size="1.5" base-color="#5e4630" roughness="0.9" />
+      <Box translation="0.7 3.3 0" half-size="0.7 0.8 0.03" base-color="#7a1f1f" roughness="0.95" />
+    </Entity>
+    <Entity translation="-47 65.56 -172" euler="0 8 55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15">
+      <GltfScene url="/assets/meshes/props/spear_lod0.glb" />
+    </Entity>
+    <Entity translation="-41 67.5 -173" euler="0 7 55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15">
+      <GltfScene url="/assets/meshes/props/spear_lod0.glb" />
+    </Entity>
+    <Entity translation="-44 65.0 -171" euler="0 9 55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15">
+      <GltfScene url="/assets/meshes/props/spear_lod0.glb" />
+    </Entity>
+
   </Group>
 </world>

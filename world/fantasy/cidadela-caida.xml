@@ -350,5 +350,181 @@
     <Entity translation="-860 188.574 -340">
       <ParticleSystem preset="smoke" transform="pos: 0 0.9 0" particle-emitter="preset: smoke; emission-rate: 4; start-life-min: 5; start-life-max: 9; start-speed-min: 0.06; start-speed-max: 0.22; start-size-min: 1.6; start-size-max: 3.2; start-color: #9aa8b4; looping: 1; world-space: 1" />
     </Entity>
+      <GroundDecal name="cid.path" at="-880 -330" size="7 60" feather="4" noise="0.25" seed="151" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="5" base-color="#8a7a60" roughness="0.98" />
+    <Entity translation="-880 188.57 -300" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/campfire_pit_lod0.glb" />
+    </Entity>
+    <Entity translation="-880 188.57 -300"><ParticleSystem preset="fire" transform="pos: 0 0.42 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.26; start-life-min: 0.4; start-life-max: 1.1; start-speed-min: 1.0; start-speed-max: 2.2; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" /></Entity>
+    <Group translation="-880 188.57 -300" body="fixed" collider="none"><PointLight translation="0 0.7 0" color="0xff8a33" intensity="60000" radius="0.8" shadows="false" /></Group>
+    <Entity translation="-870 188.57 -290" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-870 188.57 -290"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-890 188.57 -310" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-890 188.57 -310"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-900 189.47 -300" euler="0 0 -6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.8 1.08 1.35">
+      <Box translation="0 0 0" half-size="0.9 0.54 0.68" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-860 189.27 -300" euler="0 37 8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.4 0.84 1.0499999999999998">
+      <Box translation="0 0 0" half-size="0.7 0.42 0.52" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-880 189.67 -320" euler="0 74 -6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.2 1.32 1.6500000000000001">
+      <Box translation="0 0 0" half-size="1.1 0.66 0.83" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-880 189.37 -280" euler="0 111 8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.96 1.2000000000000002">
+      <Box translation="0 0 0" half-size="0.8 0.48 0.6" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-892 189.17 -288" euler="0 148 -6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.72 0.8999999999999999">
+      <Box translation="0 0 0" half-size="0.6 0.36 0.45" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-868 189.57 -312" euler="0 5 8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.0 1.2 1.5">
+      <Box translation="0 0 0" half-size="1.0 0.6 0.75" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-892 188.57 -292" transform="rotation: 0 0 0" scale="1.10" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/terrain/form_outcrop_5_lod0.glb">
+      <GltfScene url="/assets/meshes/terrain/form_outcrop_5_lod0.glb" />
+    </Entity>
+    <Entity translation="-868 188.57 -308" transform="rotation: 0 55 0" scale="1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/terrain/form_outcrop_5_lod0.glb">
+      <GltfScene url="/assets/meshes/terrain/form_outcrop_5_lod0.glb" />
+    </Entity>
+    <Entity translation="-900 188.57 -312" transform="rotation: 0 110 0" scale="1.40" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/terrain/form_outcrop_5_lod0.glb">
+      <GltfScene url="/assets/meshes/terrain/form_outcrop_5_lod0.glb" />
+    </Entity>
+    <Entity translation="-860 188.57 -288" transform="rotation: 0 165 0" scale="1.55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/terrain/form_outcrop_5_lod0.glb">
+      <GltfScene url="/assets/meshes/terrain/form_outcrop_5_lod0.glb" />
+    </Entity>
+
+      <Entity translation="-886 189.47 -354" euler="0 0 -5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.8 1.08 1.44">
+      <Box translation="0 0 0" half-size="0.9 0.54 0.72" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-874 189.77 -350" euler="0 41 7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.4 1.44 1.92">
+      <Box translation="0 0 0" half-size="1.2 0.72 0.96" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-886 189.27 -340" euler="0 82 -5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.4 0.84 1.12">
+      <Box translation="0 0 0" half-size="0.7 0.42 0.56" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-874 189.57 -336" euler="0 123 7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.0 1.2 1.6">
+      <Box translation="0 0 0" half-size="1.0 0.6 0.8" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-886 189.37 -326" euler="0 164 -5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.96 1.28">
+      <Box translation="0 0 0" half-size="0.8 0.48 0.64" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-874 189.67 -322" euler="0 25 7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.2 1.32 1.76">
+      <Box translation="0 0 0" half-size="1.1 0.66 0.88" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-886 189.17 -312" euler="0 66 -5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.72 0.96">
+      <Box translation="0 0 0" half-size="0.6 0.36 0.48" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-874 189.47 -308" euler="0 107 7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.8 1.08 1.44">
+      <Box translation="0 0 0" half-size="0.9 0.54 0.72" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-890 189.27 -334" euler="0 148 -5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.4 0.84 1.12">
+      <Box translation="0 0 0" half-size="0.7 0.42 0.56" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-870 189.57 -330" euler="0 9 7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.0 1.2 1.6">
+      <Box translation="0 0 0" half-size="1.0 0.6 0.8" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-886 188.57 -350" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-886 188.57 -350"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-874 188.57 -332" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-874 188.57 -332"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-886 188.57 -314" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-886 188.57 -314"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-874 188.57 -296" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-874 188.57 -296"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-892 188.57 -354" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-892 188.57 -354"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-868 188.57 -354" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-868 188.57 -354"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-880 188.57 -358" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-880 188.57 -358"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-880 188.57 -312" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-880 188.57 -312"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-890 188.57 -300" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/interiors/chapel_altar_collision.glb; mesh-anchor: base" scale="1.3">
+      <GltfScene url="/assets/meshes/interiors/chapel_altar_lod0.glb" />
+    </Entity>
+    <Entity translation="-868 188.57 -296" transform="rotation: 0 -25 0" scale="1.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/interiors/chapel_statue_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/interiors/chapel_statue_lod0.glb" />
+    </Entity>
+
+    <GroundDecal name="cid.mainstreet" at="-849 -300" size="62 8" feather="4" noise="0.24" seed="171" texture="/assets/textures/cobblestone_road/albedo.ktx2" texture-scale="4" base-color="#8a8074" roughness="0.95" />
+    <GroundDecal name="cid.approach" at="-806 -300" size="24 8" feather="3" noise="0.25" seed="172" texture="/assets/textures/dirt/albedo.ktx2" texture-scale="5" base-color="#8f7f66" roughness="0.98" />
+    <Entity translation="-824 189.37 -304" euler="0 0 -4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.96 1.28">
+      <Box translation="0 0 0" half-size="0.8 0.48 0.64" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-830 189.17 -296" euler="0 43 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.72 0.96">
+      <Box translation="0 0 0" half-size="0.6 0.36 0.48" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-836 189.57 -304" euler="0 86 -4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.0 1.2 1.6">
+      <Box translation="0 0 0" half-size="1.0 0.6 0.8" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-842 189.27 -296" euler="0 129 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.4 0.84 1.12">
+      <Box translation="0 0 0" half-size="0.7 0.42 0.56" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-848 189.67 -304" euler="0 172 -4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 2.2 1.32 1.76">
+      <Box translation="0 0 0" half-size="1.1 0.66 0.88" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-854 189.07 -296" euler="0 35 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.0 0.6 0.8">
+      <Box translation="0 0 0" half-size="0.5 0.3 0.4" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-860 189.47 -304" euler="0 78 -4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.8 1.08 1.44">
+      <Box translation="0 0 0" half-size="0.9 0.54 0.72" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-866 189.17 -296" euler="0 121 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 0.72 0.96">
+      <Box translation="0 0 0" half-size="0.6 0.36 0.48" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-872 189.37 -304" euler="0 164 -4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.96 1.28">
+      <Box translation="0 0 0" half-size="0.8 0.48 0.64" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.5" base-color="#8a8579" roughness="0.95" />
+    </Entity>
+    <Entity translation="-826 188.57 -296" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-826 188.57 -296"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-842 188.57 -304" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-842 188.57 -304"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-858 188.57 -296" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-858 188.57 -296"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-874 188.57 -304" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/iron_brazier_lod0.glb" />
+    </Entity>
+    <Entity translation="-874 188.57 -304"><ParticleSystem preset="fire" transform="pos: 0 1.05 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-838 188.85 -288" euler="4 180 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/village_house_collision.glb; mesh-anchor: base" scale="0.9">
+      <GltfScene url="/assets/meshes/village/village_house_lod0.glb" />
+    </Entity>
+    <Entity translation="-854 188.85 -314" euler="4 0 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/village_house_collision.glb; mesh-anchor: base" scale="0.9">
+      <GltfScene url="/assets/meshes/village/village_house_lod0.glb" />
+    </Entity>
+    <Entity translation="-866 188.85 -290" euler="4 150 6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/village_house_collision.glb; mesh-anchor: base" scale="0.9">
+      <GltfScene url="/assets/meshes/village/village_house_lod0.glb" />
+    </Entity>
+    <Entity translation="-812 188.57 -296" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-812 188.57 -296"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-812 188.57 -304" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-812 188.57 -304"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
   </Group>
 </world>

@@ -29,7 +29,7 @@
       <GltfScene url="/assets/meshes/characters/npc_healer_lod0.glb" />
       <NpcBody />
     </Entity>
-    <Entity name="npc_swamp_bogwarden" translation="-68 33.3498 16" script="npc/dialogue.lua" prop-dialogue_id="swamp_bogwarden">
+    <Entity name="npc_swamp_bogwarden" translation="-80 42.67 86" euler="0 180 0" script="npc/dialogue.lua" prop-dialogue_id="swamp_bogwarden">
       <GltfScene url="/assets/meshes/characters/npc_guard_lod0.glb" />
       <NpcBody />
     </Entity>
@@ -49,7 +49,7 @@
       <GltfScene url="/assets/meshes/characters/npc_blacksmith_lod0.glb" />
       <NpcBody />
     </Entity>
-    <Entity name="npc_forest_survey" translation="32 46.1898 80" script="npc/dialogue.lua" prop-dialogue_id="forest_survey">
+    <Entity name="npc_forest_survey" translation="32 46.2482 80" script="npc/dialogue.lua" prop-dialogue_id="forest_survey">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
       <NpcBody />
     </Entity>
@@ -57,11 +57,11 @@
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
       <NpcBody />
     </Entity>
-    <Entity name="npc_swamp_survey" translation="-80 32.6489 32" script="npc/dialogue.lua" prop-dialogue_id="swamp_survey">
+    <Entity name="npc_swamp_survey" translation="-80 32.5922 32" script="npc/dialogue.lua" prop-dialogue_id="swamp_survey">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
       <NpcBody />
     </Entity>
-    <Entity name="npc_peaks_survey" translation="-32 38.6761 -80" script="npc/dialogue.lua" prop-dialogue_id="peaks_survey">
+    <Entity name="npc_peaks_survey" translation="-32 38.7192 -80" script="npc/dialogue.lua" prop-dialogue_id="peaks_survey">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
       <NpcBody />
     </Entity>
@@ -71,6 +71,14 @@
     </Entity>
     <Entity name="npc_desert_worm" translation="96 41.1808 10" script="npc/dialogue.lua" prop-dialogue_id="desert_worm">
       <GltfScene url="/assets/meshes/characters/npc_scout_lod0.glb" />
+      <NpcBody />
+    </Entity>
+    <Entity name="npc_bell_drowned" translation="-78 42.5227 84" script="npc/decision-quest.lua" prop-quest_id="swamp_drowned_bell" euler="180 20 180" scale="1">
+      <GltfScene url="/assets/meshes/characters/npc_healer_lod0.glb" />
+      <NpcBody />
+    </Entity>
+    <Entity name="npc_glass_witness" translation="104 48.9 232.5" transform="rotation: 0 200 0" script="npc/decision-quest.lua" prop-quest_id="forest_glass_witness">
+      <GltfScene url="/assets/meshes/characters/npc_scholar_lod0.glb" />
       <NpcBody />
     </Entity>
   </Group>

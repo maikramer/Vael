@@ -69,4 +69,8 @@
     <Shot duration="6" from="104 66 136" to="70 60 96" look="0 44 0" look-to="4 46 -2" fov="48" ease="in-out" />
     <Title at="16.6" duration="4.6" sub="O Vale continua à tua espera">Fim do Capítulo I</Title>
   </Cinematic>
+  <!-- O gatilho vive aqui (e não em `world/scenes/battlefield.xml`) para
+       ficar só no mundo principal: os QA que incluem o cenário não têm a
+       biblioteca de cinemáticas e a entrada ficava muda. -->
+  <Entity name="trigger.campo-de-batalha" translation="-760 190.7264 -280" script="cinematic-trigger.lua" prop-cinematic="campo-de-batalha" prop-radius="22" />
 </world>

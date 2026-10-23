@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true">
   <Group name="biome.swamp.landmarks" translation="0 0 0">
-    <Lake at="-190 -16" radius="24" depth="2.6" water-offset="0.5" color="#2f5a4a" opacity="0.8" ripple="0.7" rocks="0" water-level="25.70439" />
-    <Lake at="-156 68" radius="14" depth="2.1" water-offset="0.5" color="#2f5a4a" opacity="0.8" ripple="0.7" water-level="29.236782" rocks="0" />
-    <Lake at="-236 -84" radius="18" depth="2.3" water-offset="0.5" color="#2f5a4a" opacity="0.8" ripple="0.7" water-level="34.62166" rocks="0" />
+    <Lake at="-190 -16" radius="24" depth="2.6" water-offset="0.5" color="#23463a" opacity="0.93" ripple="0.7" rocks="0" water-level="25.70439" />
+    <Lake at="-156 68" radius="14" depth="2.1" water-offset="0.5" color="#23463a" opacity="0.93" ripple="0.7" water-level="29.236782" rocks="0" />
+    <Lake at="-236 -84" radius="18" depth="2.3" water-offset="0.5" color="#23463a" opacity="0.93" ripple="0.7" water-level="34.62166" rocks="0" />
     <Entity name="swamp-wrecked-boat" translation="-187 25.55 -39" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/swamp/wrecked_boat_collision.glb; mesh-anchor: base" euler="180 66 180" scale="1">
       <GltfScene url="/assets/meshes/swamp/wrecked_boat_lod0.glb"/>
       <PointLight translation="0 1.5 0" color="0x7dff8a" intensity="65000" radius="0.7" shadows="false" />
@@ -37,7 +37,7 @@
     <Group translation="-264 32.6771 96" body="none" collider="none">
       <PointLight translation="0 1.8 0" color="0x66e878" intensity="1920" />
     </Group>
-    <Entity name="swamp-bog-idol" translation="-268 32.3667 88" script="poi/bog-idol.lua" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base">
+    <Entity name="swamp-bog-idol" translation="-268 32.9 88" script="poi/bog-idol.lua" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
     </Entity>
     <SpawnExclusion at="-264 96" radius="18" />
@@ -177,5 +177,49 @@
     <Entity name="altar-relicario" translation="-267.00 33.044 98.20" euler="0 300 0" script="chest.lua" prop-gold="90" prop-xp="60" prop-item="potion" prop-item_count="2" prop-item_label="poções" prop-prompt="Abrir o relicário do altar" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/treasure_chest_lod0.glb" />
     </Entity>
+      <Entity translation="-236 26.84 12" euler="0 12 3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 1.25 0.2">
+      <Box translation="0 0.62 0" half-size="0.45 0.62 0.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#7f8278" roughness="0.95" />
+    </Entity>
+    <Entity translation="-233 26.85 15" euler="0 -8 -2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 1.25 0.2">
+      <Box translation="0 0.62 0" half-size="0.45 0.62 0.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#7f8278" roughness="0.95" />
+    </Entity>
+    <Entity translation="-230 26.84 18" euler="0 20 4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 1.25 0.2">
+      <Box translation="0 0.62 0" half-size="0.45 0.62 0.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#7f8278" roughness="0.95" />
+    </Entity>
+    <Entity translation="-233 26.8 21" euler="0 -15 -3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 1.25 0.2">
+      <Box translation="0 0.62 0" half-size="0.45 0.62 0.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#7f8278" roughness="0.95" />
+    </Entity>
+    <Entity translation="-236 26.83 24" euler="0 6 2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 1.25 0.2">
+      <Box translation="0 0.62 0" half-size="0.45 0.62 0.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#7f8278" roughness="0.95" />
+    </Entity>
+    <Entity translation="-239 27.0 27" euler="0 -24 -1" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.9 1.25 0.2">
+      <Box translation="0 0.62 0" half-size="0.45 0.62 0.1" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#7f8278" roughness="0.95" />
+    </Entity>
+    <Entity translation="-268 32.63 92" euler="0 20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" scale="1.25">
+      <GltfScene url="/assets/meshes/props/stone_pillar_lod0.glb" />
+    </Entity>
+    <Entity translation="-260 32.09 92" euler="0 -15 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" scale="1.25">
+      <GltfScene url="/assets/meshes/props/stone_pillar_lod0.glb" />
+    </Entity>
+    <Entity translation="-268 33.26 100" euler="0 20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" scale="1.25">
+      <GltfScene url="/assets/meshes/props/stone_pillar_lod0.glb" />
+    </Entity>
+    <Entity translation="-260 32.78 100" euler="0 -15 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" scale="1.25">
+      <GltfScene url="/assets/meshes/props/stone_pillar_lod0.glb" />
+    </Entity>
+    <Entity translation="-268 32.37 88" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.5 0.5 1.5">
+      <Box translation="0 0.25 0" half-size="0.75 0.25 0.75" texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="2.0" base-color="#6f7568" roughness="0.95" />
+    </Entity>
+    <Entity translation="-256 28.54 -18" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
+    </Entity>
+    <Entity translation="-256 28.54 -18"><ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" /></Entity>
+    <Entity translation="-252 28.14 -24" transform="rotation: 0 25 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.8 0.8 0.9">
+      <GltfScene url="/assets/meshes/village/log_pile_lod0.glb" />
+    </Entity>
+    <Entity translation="-264 30.06 -22" transform="rotation: 0 -20 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 0.8 0.8">
+      <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb" />
+    </Entity>
+
   </Group>
 </world>

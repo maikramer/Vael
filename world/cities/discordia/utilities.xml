@@ -8,22 +8,22 @@
       <GltfScene url="/assets/meshes/village/campfire_pit_lod0.glb" />
     </Entity>
     <Entity translation="6.5 0 -6.6">
-      <ParticleSystem preset="fire" transform="pos: 0 0.42 0" particle-emitter="preset: fire; emission-rate: 48; shape-radius: 0.28; start-life-min: 0.5; start-life-max: 1.35; start-speed-min: 1.3; start-speed-max: 2.9; start-size-min: 0.34; start-size-max: 0.7; looping: 1; world-space: 1" />
+      <ParticleSystem preset="fire" transform="pos: 0 0.42 0" particle-emitter="preset: fire; emission-rate: 30; shape-radius: 0.26; start-life-min: 0.4; start-life-max: 1.1; start-speed-min: 1.0; start-speed-max: 2.2; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="6.5 0 -6.6" body="fixed" collider="none">
       <PointLight translation="0 0.7 0" color="0xff8a33" intensity="120000" radius="0.6" shadows="false" />
     </Group>
     <Entity transform="rotation: 0 35 0" translation="3.5 0 -3.6" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.9 0.55">
-      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb"/>
+      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb" />
     </Entity>
     <Entity transform="rotation: 0 -35 0" translation="8.7 0 -3.4" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.6 0.9 0.55">
-      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb"/>
+      <GltfScene url="/assets/meshes/village/wooden_bench_lod0.glb" />
     </Entity>
     <Entity name="notice_board" translation="5 0 -12.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/notice_board_collision.glb; mesh-anchor: base" script="notice-board.lua">
       <GltfScene url="/assets/meshes/village/notice_board_lod0.glb" />
     </Entity>
     <Entity translation="8.5 0 8.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
-      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb"/>
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
     </Entity>
     <Entity translation="8.5 0 8.5">
       <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
@@ -32,7 +32,7 @@
       <PointLight translation="0 2.2 0" color="0xffa83a" intensity="60000" radius="0.5" shadows="false" />
     </Group>
     <Entity translation="-8.5 0 -8.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base">
-      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb"/>
+      <GltfScene url="/assets/meshes/village/torch_post_lod0.glb" />
     </Entity>
     <Entity translation="-8.5 0 -8.5">
       <ParticleSystem preset="fire" transform="pos: 0 2.14 0" particle-emitter="preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" />
@@ -45,8 +45,17 @@
     <Entity name="rune-pillar" translation="-35 0 17" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" script="stone-pillar.lua">
       <GltfScene url="/assets/meshes/props/stone_pillar_lod0.glb" />
     </Entity>
-    <Entity name="crystal-shrine" translation="35 0 17" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" script="crystal-shrine.lua">
+    <Entity name="crystal-shrine" translation="35 0 17" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" script="crystal-shrine.lua" prop-riddle_id="odd_statue">
       <GltfScene url="/assets/meshes/props/crystal_blue_lod0.glb" />
+      <Entity name="riddle-statue-wolf-a" translation="-2.2 0 -2.4">
+        <GltfScene url="/assets/meshes/characters/wolf_lod0.glb" />
+      </Entity>
+      <Entity name="riddle-statue-wolf-b" translation="2.2 0 -2.4">
+        <GltfScene url="/assets/meshes/characters/wolf_lod0.glb" />
+      </Entity>
+      <Entity name="riddle-statue-shade" translation="0 0 -3.4">
+        <GltfScene url="/assets/meshes/characters/shade_lod0.glb" />
+      </Entity>
     </Entity>
   </Group>
   <Group name="city.townsfolk" translation="0 0 0">
