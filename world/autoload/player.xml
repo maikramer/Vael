@@ -10,12 +10,18 @@
        podia beber uma poção nem trocar de item. Autoload = uma vez, em todas
        as cenas. `rules_host` ignora a cena de menu (título). -->
   <Entity name="game-rules" tag="always-active" script="game/rules_host.lua" translation="0 38.7304 0" />
+  <!-- Ferramentas do arranque de debug (cena main, entrada dev): [F1]
+       voo livre (herói invisível + câmara de script) e [F2] invulnerável.
+       Num jogo normal o script não faz nada (`lib/dev.lua`). -->
+  <Entity name="game-dev" tag="always-active" script="game/devmode.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-controller" tag="always-active" script="game/abilities.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-combat" tag="always-active" script="game/combat.lua" translation="0 38.7304 0" />
   <Entity name="game-lua-hotbar" tag="always-active" script="game/hotbar.lua" translation="0 38.7304 0" />
   <!-- Em `main` quem corre o equipamento é o host de `world/gameplay.xml`
        (com as props do editor); este só acorda nas cenas próprias. O índice
        escolhido vive em `viber.game()`, por isso a arma na mão sobrevive à
-       troca de cena. -->
-  <Entity name="game-lua-equipment-interior" tag="always-active" script="game/equipment.lua" translation="0 38.7304 0" />
+       troca de cena. O grip afinado no editor (`prop-tocha-*` do host de
+       `main`) é repetido aqui: as props são POR ENTIDADE e, sem elas, a
+       tocha saltava para os defaults ao entrar numa casa. -->
+  <Entity name="game-lua-equipment-interior" tag="always-active" script="game/equipment.lua" translation="0 38.7304 0" prop-tocha-x="-0.002" prop-tocha-y="0.241" />
 </world>

@@ -19,6 +19,35 @@ O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 | Jogador em `(0, 150, 0)` | Igual: a entrada `dev` usa a mesma pose e assenta no chão |
 | Regras, quests, loja, saves | Normais — é o jogo a sério |
 
+## Ferramentas de debug ([F1]/[F2])
+
+Num run com `--entry dev`, `scripts/game/devmode.lua` (autoload
+`world/autoload/player.xml`) liga três ferramentas:
+
+| Tecla | Efeito |
+|-------|--------|
+| **F1** | Liga/desliga o **voo livre**. O herói fica invisível e anda com a câmara; é ele que mantém streaming, `player_nearby`, áudio e gatilhos de quest no sítio certo. Ao sair, o herói aterra onde a câmara estava |
+| **F2** | **Invulnerável** a pé (dano e veneno bloqueados em `lib/rules.lua`). O voo força-o e devolve o estado do F2 ao sair |
+| **Tab** (a voar) | **look-at**: aponta a vista ao prop nomeado/criatura mais alinhado com a direção atual, até 400 m. Repetir Tab passa ao seguinte |
+
+A voar: **WASD** move, **Space** sobe, **Ctrl** desce, **Shift** acelera ×3,
+**setas** olham (o runtime não lê o rato). O `player_movement` é reclamado
+(`own_system("locomotion")`) enquanto o voo dura e devolvido
+(`release_system`) ao sair.
+
+O latch é de SESSÃO (`viber.state()`), não vai para o save. Num arranque
+normal (`viber run`, Continuar, Novo Jogo) o `devmode.lua` não faz nada — as
+teclas não existem.
+
+QA pela bridge: o REPL não drena os comandos de script (um `change_scene` de
+lá é um no-op), mas partilha a VM dos scripts — `_G.viber_dev = true` liga as
+ferramentas na sessão viva, sem reiniciar a engine:
+
+```bash
+viber debug --world world.xml lua '_G.viber_dev = true return true'
+viber debug --world world.xml input key f1     # ou o MCP viber_input
+```
+
 Não há save carregado: o estado começa limpo, como no **Novo Jogo** (o kit
 inicial de `lib/rules.lua` é semeado). Para testar a partir de um save, usa o
 fluxo normal (Continuar) — o atalho é para arranques limpos.
@@ -89,6 +118,8 @@ build.
 | Ficheiro | Papel |
 |----------|-------|
 | `scripts/lib/dev.lua` | `dev.entry()` / `dev.skip_intro()` — o sinal |
+| `scripts/game/devmode.lua` | [F1] voo livre + [F2] invulnerável (autoload) |
+| `scripts/lib/rules.lua` | `set_god`/`M.god` — o único portão do dano ao herói |
 | `scripts/ui/title.lua` | Salta o véu e liga o HUD no primeiro tick |
 | `scripts/game/story.lua` | Trava o prólogo (marca persistente) |
 | `world.xml` | `spawn` (normal) e `dev` (debug), nesta ordem — a pose é a mesma |
