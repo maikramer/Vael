@@ -13,8 +13,10 @@
 <world clear-color="#8fc2ef" static="true" title="Grip QA">
   <Sky />
   <DayCycle minute-of-day="600" minutes-per-real-second="1" />
-  <AmbientLight brightness="0.7" />
-  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" euler="-69.4439 25.0873 17.5307" />
+  <!-- Lux (o jogo usa 110): 0,7 é o resto da escala antiga do three.js. -->
+  <AmbientLight color="0xc8d8e8" brightness="110" />
+  <!-- `direction` é a direcção que o spawn usa; `euler` era ignorado. -->
+  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" />
   <Terrain world-size="256" max-height="14" seed="11" heightmap="qa-hud.data/terrain.ahgt" render-distance="200" levels="4" resolution="64" collision-resolution="64" />
   <NavMesh enabled="0" />
   <SpawnGate target-entity="player" y-fallback="150" />

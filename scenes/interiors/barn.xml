@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <world static="true" clear-color="#15110d" title="Celeiro">
   <InteriorScene at="0 0" size="60 55" camera-distance="16" camera-pitch="58" camera-yaw="0" />
-  <SceneEntry name="from-town" translation="0 0.6 -5" />
+  <SceneEntry name="from-town" translation="0 0.6 -8.8" euler="0 0 0" />
+  <Entity>
+    <AmbientLight color="0xffe0b8" brightness="80" />
+  </Entity>
+  <!-- CEILING_LIGHT -->
+  <Group translation="0 0 0" body="none" collider="none"><PointLight translation="0 4.2 0" color="0xffd8b0" intensity="45000" radius="26" /></Group>
   <Composition name="interior.barn.shell" translation="0 0 0" body="fixed" collider="auto">
     <Box texture="/assets/textures/dirt_road/albedo.ktx2" texture-tile-size="3.0" translation="0.00 0.06 0.00" half-size="14.60 0.06 10.60" />
     <Box texture="/assets/textures/mountain_stone/albedo.ktx2" texture-tile-size="3.6" normal-map="/assets/textures/mountain_stone/normal.ktx2" translation="0.00 1.20 10.00" half-size="14.00 1.20 0.14" />

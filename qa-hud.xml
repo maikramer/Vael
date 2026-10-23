@@ -2,9 +2,14 @@
 <world clear-color="#1b2432" static="true">
   <Sky />
   <DayCycle minute-of-day="540" minutes-per-real-second="4" />
-  <AmbientLight brightness="0.7" />
+  <!-- O `brightness` é em lux (o mundo principal usa 110): 0,7 deixava o QA
+       ~150× mais escuro que o jogo e as sombras em preto puro. -->
+  <AmbientLight color="0xc8d8e8" brightness="110" />
   <Terrain world-size="256" max-height="14" seed="11" heightmap="qa-hud.data/terrain.ahgt" />
-  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" euler="-69.4439 25.0873 17.5307" />
+  <!-- Sem criaturas nem NPCs a mover: a navmesh só custava boot e memória. -->
+  <NavMesh enabled="0" />
+  <!-- `direction` é a direcção que o spawn usa; `euler` era ignorado. -->
+  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" />
   <!-- Herói, câmara e HUD vêm dos autoloads do projeto (config.yaml): os
        PlayerGLTF/ThirdPersonCamera/HudScreenLayer/HudRoot duplicados aqui
        criavam dois heróis, duas câmaras e dois UiRoot `hud`/`menu`. -->

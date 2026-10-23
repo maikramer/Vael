@@ -3,8 +3,9 @@
   <!-- QA do mapa regional [M] + fumo korok (peça p2-exploration r2).
        Esqueleto do qa-fantasia (MESMO world.data/terrain.ahgt) + os módulos
        da revelação: world/landmarks/*.xml (Nota + marcos de bioma),
-       towers.xml (5 atalaias) e koroks.xml (colunas de fumo). Save próprio
-       (`simple-rpg-qa-map.save.json`) — não toca no save do world.xml. -->
+       towers.xml (5 atalaias) e koroks.xml (colunas de fumo). O save é do
+       PROJETO (`project.main-scene`): este QA PARTILHA o save do world.xml —
+       não graves a partir daqui. -->
   <Include src="/world/environment.xml" />
   <SpawnGate target-entity="player" y-fallback="150" />
   <Group name="world-base" translation="0 38.7305 0">
@@ -19,5 +20,9 @@
   <Include src="/world/landmarks/village.xml" />
   <Include src="/world/towers.xml" />
   <Include src="/world/koroks.xml" />
+  <!-- O mapa regional [M], o [F] de assinar e o [G] de viajar são do
+       `game-lua-travel` (`game/travel.lua` via `travel_host.lua`), host de
+       `world/gameplay.xml`. Sem este include o mapa deste QA nunca abre. -->
+  <Include src="/world/gameplay.xml" />
   <!-- O HUD (`world/hud.xml`) já vem do autoload `world/autoload/ui.xml`. -->
 </world>

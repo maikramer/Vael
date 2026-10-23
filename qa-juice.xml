@@ -2,10 +2,13 @@
 <world clear-color="#1b2432" static="true">
   <Sky />
   <DayCycle minute-of-day="1380" minutes-per-real-second="1" />
-  <AmbientLight brightness="0.7" />
+  <!-- Lux (o jogo usa 110). A 0,7 a noite ficava ~150× mais escura do que a
+       do mundo principal: o QA deixava de representar o look real do jogo. -->
+  <AmbientLight color="0xc8d8e8" brightness="110" />
   <Weather wind="0.7 0.25" wind-strength="1.5" clouds="0.8" rain="1" cycle="1" />
   <Terrain world-size="256" max-height="14" seed="11" heightmap="qa-juice.data/terrain.ahgt" />
-  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" euler="-69.4439 25.0873 17.5307" />
+  <!-- `direction` é a direcção que o spawn usa; `euler` era ignorado. -->
+  <DirectionalLight illuminance="28000" shadows="1" direction="-0.4 -0.8 -0.3" />
   <BiomeRegion id="qa-vale" display-name="Vale do QA" polygon="[-160,-160;160,-160;160,160;-160,160]" fog-density="0.0020" />
   <!-- Herói, câmara e HUD vêm dos autoloads do projeto (config.yaml): os
        PlayerGLTF/ThirdPersonCamera/HudScreenLayer/HudRoot duplicados aqui
@@ -20,4 +23,9 @@
       <GltfScene url="/assets/meshes/characters/goblin_lod0.glb" />
     </Creature>
   </DynamicSpawner>
+  <!-- O equipamento (espada/tocha na mão, a troca com V), o loot dos abates
+       e a música de combate são hosts de `world/gameplay.xml`. O host de
+       equipamento do autoload só acorda em cenas com id — este mundo é
+       avulso (id nil), por isso sem este include o herói ficava sem arma. -->
+  <Include src="/world/gameplay.xml" />
 </world>
