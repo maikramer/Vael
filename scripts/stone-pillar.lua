@@ -19,6 +19,9 @@ function on_update(dt)
     set_prompt(taken)
   end
   if viber.menu_open() then return end
+  -- O `menu_open` não inclui o ecrã de morte: o herói caído ainda lia (XP).
+  local _, hp = rules.player_hp()
+  if hp <= 0 then return end
   if viber.interacted("e") and not st.done then
     st.done = true
     once.mark()

@@ -68,42 +68,69 @@ function M.pay(kind, id, x, y, z)
       end
     end
   end
-  -- Sem cadáver nem player (troca de cena) o pagamento continua; só não há
-  -- sítio para o número. `nil + 1.6` rebentava depois do ouro já creditado.
-  if x == nil or y == nil or z == nil then
-    x, y, z = x or 0, y or 0, z or 0
-  end
+  -- Sem cadáver nem player (troca de cena) o pagamento continua, mas não há
+  -- sítio para o efeito. `(0,0,0)` é a origem do MUNDO (debaixo do terreno e,
+  -- dentro de uma casa, o meio da sala): o número e o burst saíam lá. Só se
+  -- posiciona o que tem coordenadas; o som cai na origem do controller.
+  local has_pos = x ~= nil and y ~= nil and z ~= nil
   local gold = math.random(entry[1], entry[2])
   -- O número mostra o que ENTROU: com o cofre no tecto (ou um save
   -- negativo que a `vault_add` corrige) "+N ouro" mentia.
   local gold_in = rules.vault_add("gold", gold) or 0
-  if gold_in > 0 then
+  if gold_in > 0 and has_pos then
     viber.damage_number("+" .. gold_in .. " ouro", { color = GOLD_COLOR, x = x, y = y + 1.6, z = z })
   end
-  viber.burst("sparkle", x, y + 0.8, z, 10)
-  viber.sound("coin", { x = x, y = y, z = z })
+  if has_pos then
+    viber.burst("sparkle", x, y + 0.8, z, 10)
+    viber.sound("coin", { x = x, y = y, z = z })
+  else
+    -- Sem coordenadas, a origem do controller (a praça) é melhor que (0,0,0).
+    viber.sound("coin")
+  end
   local potions, antidotes = roll_count(entry[3]), roll_count(entry[4])
   if potions > 0 then
     -- A mochila pára nas 99: "+2 poções" com o stack cheio era um número
     -- sobre um item que não entrou.
     local added = rules.item_add("potion", potions) or 0
-    if added > 0 then
+    if added > 0 and has_pos then
       local label = added == 1 and " poção" or " poções"
       viber.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.2, z = z })
+    end
+    if added < potions then
+      -- O que não coube também não pode desaparecer em silêncio.
+      local missing = potions - added
+      local label = missing == 1 and " poção" or " poções"
+      local verb = missing == 1 and " não entrou." or " não entraram."
+      viber.toast("Mochila cheia: " .. missing .. label .. verb)
     end
   end
   if elite then
     viber.toast("Elite derrotado!")
-    viber.burst("sparkle", x, y + 1.0, z, 24)
-    if math.random() < 0.35 and (rules.item_add("bomb", 1) or 0) > 0 then
-      viber.damage_number("+1 bomba", { color = ITEM_COLOR, x = x, y = y + 3.0, z = z })
+    if has_pos then
+      viber.burst("sparkle", x, y + 1.0, z, 24)
+    end
+    if math.random() < 0.35 then
+      if (rules.item_add("bomb", 1) or 0) > 0 then
+        if has_pos then
+          viber.damage_number("+1 bomba", { color = ITEM_COLOR, x = x, y = y + 3.0, z = z })
+        end
+      else
+        -- A chance saiu e a bomba perdeu-se em silêncio: avisa que foi a bolsa.
+        viber.toast("A bomba do elite não coube na mochila (99).")
+      end
     end
   end
   if antidotes > 0 then
     local added = rules.item_add("antidote", antidotes) or 0
-    if added > 0 then
+    if added > 0 and has_pos then
       local label = added == 1 and " antídoto" or " antídotos"
       viber.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.6, z = z })
+    end
+    if added < antidotes then
+      local missing = antidotes - added
+      local label = missing == 1 and " antídoto" or " antídotos"
+      local verb = missing == 1 and " não entrou." or " não entraram."
+      viber.toast("Mochila cheia: " .. missing .. label .. verb)
     end
   end
 end

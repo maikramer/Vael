@@ -15,6 +15,10 @@ function on_update(dt)
     viber.set_interaction(st.read and "Tomo já lido" or "Ler o tomo", "e", 3.0)
   end
   if viber.menu_open() then return end
+  -- Herói caído: o modal de morte só abre ao fim de 2,2 s de `dying` e nessa
+  -- janela o [E] ainda chega aqui. Um POI não paga XP a um cadáver.
+  local alive, hp = rules.player_hp()
+  if alive and hp <= 0 then return end
   if viber.interacted("e") and not st.read then
     st.read = true
     once.mark()

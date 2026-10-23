@@ -32,7 +32,13 @@ end
 function M.label(name)
   for _, mark in ipairs(M.LIST) do
     if mark.name == name then
-      return mark.label
+      -- `label` é conteúdo editável: uma entrada gravada sem nome autoral
+      -- metia `nil` em toasts/UiText e o `..` rebentava. O id é o fallback.
+      local label = mark.label
+      if type(label) == "string" and label ~= "" then
+        return label
+      end
+      break
     end
   end
   return name
@@ -44,19 +50,33 @@ function M.available(mark, rules)
   if mark.biome == "tower" or mark.pilgrim then
     return true
   end
-  return rules.biome_revealed(mark.biome)
+  -- Marco editado sem bioma: concatenar em `biome.<nil>` dava erro a cada
+  -- publish (o mapa/travel deixava de atualizar). Um marco sem bioma fica
+  -- fechado até o conteúdo ser corrigido.
+  if type(mark.biome) ~= "string" or mark.biome == "" then
+    return false
+  end
+  return rules ~= nil and rules.biome_revealed(mark.biome) == true
 end
 
+-- Devolve `x, y, z, id` — o `id` é a entidade do marco; a viagem usa-o para
+-- a excluir do raio de aterragem (um poço/torre não é chão por cima de si).
 function M.position(name)
   local id = viber.find(name)
   if not id then
+    return nil
+  end
+  -- `viber.find` cai para SUBSTRING quando não há nome exato: um marco que
+  -- saia do mundo (o conteúdo é editável) resolvia para outro prop cujo nome
+  -- o contém e a bússola/viagem levavam ao sítio errado. Só vale o homónimo.
+  if viber.entity_name(id) ~= name then
     return nil
   end
   local ok, x, y, z = viber.entity_position(id)
   if not ok then
     return nil
   end
-  return x, y, z
+  return x, y, z, id
 end
 
 function M.near_campfire(px, py, pz)

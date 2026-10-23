@@ -119,7 +119,10 @@ local function start_swing(st)
   local delay = math.min(0.45, math.max(0.12, duration * fraction / ATTACK_SPEED))
   st.attack_t = occupy
   st.chain_timer = math.max(occupy + CHAIN_LINK, CHAIN_FLOOR)
-  st.swing = { t = delay, step = step }
+  -- A mira do golpe é a do PRESS (o corpo pode girar durante o windup, e um
+  -- piparote no rato/A-D não pode fazer o corte aterrar atrás do herói).
+  local fx, fz = viber.player_forward()
+  st.swing = { t = delay, step = step, fx = fx, fz = fz }
   local pid = viber.player_id()
   if pid then
     viber.play_clip(clip, { speed = ATTACK_SPEED, id = pid })
@@ -138,13 +141,19 @@ local function resolve_swing(st, sw)
   if not has then
     return
   end
-  local fx, fz = viber.player_forward()
+  -- A mira vem do PRESS (ver `start_swing`). Um `sw` de um estado antigo
+  -- (hot-reload a meio do golpe) não traz `fx/fz`: cai no forward atual.
+  local fx, fz = sw.fx, sw.fz
+  if not fx or not fz then
+    fx, fz = viber.player_forward()
+  end
   local step = sw.step or 0
   local finisher = step >= 2
   local range = finisher and FINISHER_RANGE or MELEE_RANGE
   local arc = finisher and FINISHER_ARC or ATTACK_ARC
   local bonus = stats()
   local hits, crit_any, kill_any = 0, false, false
+  local alert_x, alert_z
   for _, h in ipairs(rules.hostiles(range + 1.0) or {}) do
     local hp = h.hp or 0
     if hp > 0 then
@@ -209,6 +218,9 @@ local function resolve_swing(st, sw)
             })
           end
           hits = hits + 1
+          if alert_x == nil then
+            alert_x, alert_z = h.x or px, h.z or pz
+          end
           crit_any = crit_any or crit
           kill_any = kill_any or killed
         end
@@ -216,6 +228,22 @@ local function resolve_swing(st, sw)
     end
   end
   if hits > 0 then
+    -- Aggro-chain: a engine deixou de emitir `AttackAlert` (o melee nativo
+    -- foi apagado), por isso o hook `on_player_attack` dos scripts das
+    -- criaturas nunca corria — a matilha não acordava com o golpe no aliado.
+    -- O alerta vive numa TABELA do `viber.game()` (não viaja no save) e o
+    -- `lib/fsm.lua` acorda os aliados a 15 m do primeiro alvo batido.
+    if alert_x then
+      local g = viber.game()
+      local alert = g.attack_alert
+      if type(alert) ~= "table" then
+        alert = {}
+        g.attack_alert = alert
+      end
+      alert.x, alert.z = alert_x, alert_z
+      alert.t = viber.time()
+      alert.seq = (alert.seq or 0) + 1
+    end
     st.combo_hits = (st.combo_hits or 0) + hits
     st.combo_window = COMBO_WINDOW
     publish_combo(st)
@@ -234,8 +262,15 @@ function on_update(dt)
   local st = viber.state()
   -- Novo Jogo / save de outra partida: nada do combate anterior (golpe no
   -- ar, chain, combo, alvo) pode atravessar a fronteira.
-  local sid = tonumber(viber.game().session_id) or 0
-  if st.session ~= sid then
+  -- Um LOAD na MESMA cena troca o `viber.game()` sem mudar `session_id` nem
+  -- a cena, e o relógio da engine NÃO volta atrás (é o uptime): o sinal é o
+  -- tempo de jogo a recuar. Sem isto, um golpe pendurado no jogo abandonado
+  -- aterrava no sítio onde o herói carregou, com o combo/alvo antigos.
+  local game = viber.game()
+  local sid = tonumber(game.session_id) or 0
+  local playtime = tonumber(game.playtime_secs) or 0
+  local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
+  if st.session ~= sid or loaded then
     st.session = sid
     st.swing = nil
     st.attack_t = 0
@@ -248,9 +283,11 @@ function on_update(dt)
     st.target = nil
     st.last_hp = nil
     publish_combo(st)
+    viber.ui.set("target", 0)
     viber.ui.set("target.alive", false)
     viber.ui.set("target.name", "")
   end
+  st.playtime = playtime
 
   -- Troca de cena (portal/interior) NÃO muda a sessão: sem isto um golpe
   -- pendente aterrava já na cena nova, no sítio onde o herói entrou (o
@@ -337,7 +374,13 @@ function on_update(dt)
     local lock_pressed = viber.action ~= nil and viber.action("lock")
     if lock_pressed then
       if #ids == 0 then
+        -- Sem alvos, o cartão tem de sair JÁ: `st.target` nil impede o ramo
+        -- de limpeza abaixo (que só corre com um alvo pendente) e o nome/vida
+        -- do alvo que acabou de sair ficava preso no HUD.
         st.target = nil
+        viber.ui.set("target", 0)
+        viber.ui.set("target.alive", false)
+        viber.ui.set("target.name", "")
       else
         local at = 1
         for i, h in ipairs(ids) do

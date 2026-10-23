@@ -22,18 +22,31 @@ function on_update(dt)
     return
   end
   if viber.menu_open() then return end
+  -- O `menu_open` não inclui o ecrã de morte: o herói caído ainda colhia.
+  local _, hp = rules.player_hp()
+  if hp <= 0 then return end
   if viber.interacted("j") and not st.done then
-    -- A bolsa de recursos tem teto de 99: com a pilha cheia o `item_add`
-    -- devolvia 0 e o tufo era gasto na mesma (XP + despawn) sem dar o item.
-    -- Sem crédito, o musgo fica no mundo para depois de fazer espaço.
+    -- A bolsa de recursos tem tecto de `data/items.json` (`stack_max`) ou do
+    -- `stack` do próprio item (é o mesmo número que `rules.item_add` usa).
+    -- A mensagem tinha o 99 fixo: ao baixar o tecto no JSON dizia um limite
+    -- que já não era o real.
+    local def = rules.item_def and rules.item_def("bog-moss")
+    local cap = rules.stack_max()
+    if def and def.kind ~= "resource" then
+      local stack = tonumber(def.stack)
+      if stack and stack > 0 then
+        cap = math.floor(stack)
+      end
+    end
     local added = rules.item_add("bog-moss", 1) or 0
     if added < 1 then
-      viber.toast("A bolsa de musgo está cheia (99).")
+      viber.toast("A bolsa de musgo está cheia (" .. cap .. ").")
       return
     end
     st.done = true
     once.mark()
     rules.add_xp(8)
+    viber.sound("harvest")
     viber.toast("Musgo-do-pântano colhido (+8 XP, +1 bog-moss)")
     viber.topple()
     -- O prop tombado continuava a oferecer "Colher musgo" para sempre.

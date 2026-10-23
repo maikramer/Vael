@@ -1,4 +1,5 @@
 local rules = viber.load("lib/rules.lua")
+local actions = viber.load("lib/actions.lua")
 
 -- A loja corre no mercador (controller no mundo) e no UiRoot (menu): sem
 -- posição explícita, `viber.sound` tocava na origem do controller/UI e o
@@ -29,29 +30,68 @@ end
 
 -- Catálogo do mercador: buy = preço de compra (nil = não se vende ao herói),
 -- sell = preço de venda (nil = não se compra para si). Preços em ouro.
--- O teto de pilha é o mesmo de `lib/rules.lua` (STACK=99): comprar no limite
--- tem de aparecer bloqueado, não como uma linha "buy" que só dá erro.
+-- Teto de pilha por omissão (é o de `lib/rules.lua`: STACK=99); um item com
+-- `stack` próprio usa esse valor (`cap_of`). Comprar no limite tem de aparecer
+-- bloqueado, não como uma linha "buy" que só dá erro.
 local STACK_MAX = rules.stack_max()
 
 -- Catálogo do mercador: vem de `data/items.json` (`shop.buy`/`shop.sell`).
 -- Um item sem `shop` não entra na banca; os preços continuam a ser dados do
 -- jogo, não do código da loja.
+--
+-- Os preços vêm de um JSON editável: um valor que não seja um número finito
+-- não pode entrar no catálogo. `vault_take` rejeita um preço não finito e o
+-- retorno era ignorado — `buy: NaN` dava o item de graça — e vender a 0/negativo
+-- apagava o item sem pagar. `zero_ok` preserva uma linha de oferta a 0 ouro.
+local function price_of(value, zero_ok)
+  if type(value) ~= "number" or value ~= value or value < 0 or value == math.huge then
+    return nil
+  end
+  if value == 0 and not zero_ok then
+    return nil
+  end
+  return value
+end
+
 local function build_catalog()
   local out = {}
   for _, item in ipairs(rules.items()) do
     local shop = item.shop
-    if type(shop) == "table" and (shop.buy or shop.sell) then
-      out[item.id] = {
-        label = shop.label or item.label,
-        buy = shop.buy,
-        sell = shop.sell,
-      }
+    if type(shop) == "table" then
+      local buy, sell = price_of(shop.buy, true), price_of(shop.sell, false)
+      if buy or sell then
+        -- Um label que não seja texto rebentava a lista (`label .. " ×N"`).
+        local label = shop.label
+        if type(label) ~= "string" or label == "" then
+          label = item.label
+        end
+        if type(label) ~= "string" or label == "" then
+          label = item.id
+        end
+        out[item.id] = {
+          label = label,
+          buy = buy,
+          sell = sell,
+        }
+      end
     end
   end
   return out
 end
 
 local CATALOG = build_catalog()
+
+-- Teto REAL de cada pilha: `rules.item_add` respeita o `stack` do item; o
+-- catálogo tem de usar o mesmo número. Com STACK_MAX fixo, a linha nascia
+-- "buy" e o clique só descobria o limite depois de tirar o ouro.
+local function cap_of(id)
+  local def = rules.item_def and rules.item_def(id)
+  local stack = def and tonumber(def.stack)
+  if stack and stack > 0 then
+    return math.floor(stack)
+  end
+  return STACK_MAX
+end
 
 local M = {}
 
@@ -67,7 +107,7 @@ local function rows()
     local status
     if selling then
       status = (stock or 0) > 0 and "sell" or "locked"
-    elseif (stock or 0) >= STACK_MAX then
+    elseif (stock or 0) >= cap_of(id) then
       -- Pilha cheia: o clique só produzia "Já tens o máximo". A linha passa
       -- a nascer bloqueada, como as de venda sem stock.
       status = "locked"
@@ -118,6 +158,20 @@ viber.own_action("buy")
 viber.own_action("sell")
 refresh()
 
+-- Fora de uma cena com mercador nada chamava `update` (é o mercador quem
+-- drena a fila): depois de um Carregar dentro de uma casa a lista ficava com
+-- o ouro/stock do jogo anterior até ao primeiro clique. Um tick lento
+-- mantém-na atual em qualquer cena; a assinatura evita reescrever a UI. O
+-- estado guarda o handle para o hot-reload não acumular timers.
+local ok_state, st = pcall(viber.state)
+if ok_state and type(st) == "table" then
+  if st.refresh_timer then
+    pcall(viber.timer_cancel, st.refresh_timer)
+  end
+  local ok_timer, handle = pcall(viber.every, 0.5, refresh)
+  st.refresh_timer = ok_timer and handle or nil
+end
+
 local function trade(action, id)
   local entry = CATALOG[id]
   if entry == nil then return end
@@ -133,8 +187,8 @@ local function trade(action, id)
       sfx("error")
       return
     end
-    if rules.vault_get(id) >= STACK_MAX then
-      viber.toast("Já tens o máximo disso (" .. STACK_MAX .. ").")
+    if rules.vault_get(id) >= cap_of(id) then
+      viber.toast("Já tens o máximo disso (" .. cap_of(id) .. ").")
       sfx("error")
       return
     end
@@ -147,6 +201,7 @@ local function trade(action, id)
       return
     end
     sfx("buy")
+    actions.record("comprar", "item", id)
     viber.toast("Comprado " .. entry.label:gsub("^Comprar ", "") .. ".")
   elseif action == "sell" then
     local price = entry.sell
@@ -163,8 +218,22 @@ local function trade(action, id)
       sfx("error")
       return
     end
-    rules.vault_add("gold", price)
+    local paid = rules.vault_add("gold", price) or 0
+    if paid < price then
+      -- O ouro tem teto global (`rules.vault_add` clampa): sem caber, o
+      -- parcial volta a sair e o item regressa ao cofre — senão sobrava ouro
+      -- por cada venda recusada e o item ficava.
+      if paid > 0 then
+        rules.vault_take("gold", paid)
+      end
+      rules.vault_add(id, 1)
+      viber.toast("Não coube o ouro na bolsa.")
+      sfx("error")
+      refresh()
+      return
+    end
     sfx("coin")
+    actions.record("vender", "item", id)
     viber.toast("Vendido por " .. price .. " de ouro.")
   end
   refresh()

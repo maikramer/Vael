@@ -32,6 +32,29 @@ local rules = viber.load("lib/rules.lua")
 -- cristais paga UMA semente no fecho (3 anéis = 3 sementes, não 9).
 local TOTAL_REWARDS = 22
 
+-- Herói caído: os 2,2 s de `dying` antecedem o modal de morte, por isso o
+-- [E] ainda chega ao script nessa janela. `heal_player` recusa; a semente
+-- não pode ser colhida por um cadáver.
+local function hero_down()
+  local alive, hp = rules.player_hp()
+  return alive and (hp or 0) <= 0
+end
+
+-- Tecto da pilha é DADO (`data/items.json`): `rules.vault_add` usa o `stack`
+-- do próprio item quando existe, não o `stack_max` global. O guard tem de
+-- ler o mesmo número — senão um `stack` mais baixo deixa o teste passar e o
+-- `item_add` devolver 0 com a recompensa já marcada.
+local function seed_cap()
+  local def = rules.item_def and rules.item_def("korok-seed")
+  if def and def.kind ~= "resource" then
+    local stack = tonumber(def.stack)
+    if stack and stack > 0 then
+      return math.floor(stack)
+    end
+  end
+  return rules.stack_max() or 99
+end
+
 function on_update(dt)
   local st = viber.state()
 
@@ -78,18 +101,28 @@ function on_update(dt)
     -- gasta (item_add devolvia 0) e o anel fechava sem prémio possível.
     -- (Depois do teste de recompensa: uma semente já paga não fica no mundo
     -- só porque a bolsa encheu.)
-    if rules.vault_get("korok-seed") >= 99 then
-      viber.toast("A bolsa de sementes está cheia (99).")
+    local cap = seed_cap()
+    if rules.vault_get("korok-seed") >= cap then
+      viber.toast("A bolsa de sementes está cheia (" .. cap .. ").")
+      return
+    end
+    -- Crédito PRIMEIRO: a marca de recompensa é permanente e o `item_add`
+    -- podia recusar (tecto). Marcar antes de a semente entrar perdia-a para
+    -- sempre — o anel/cristal já não voltava a pagar.
+    local added = rules.item_add("korok-seed", 1) or 0
+    if added < 1 then
+      viber.toast("A bolsa de sementes está cheia (" .. cap .. ").")
       return
     end
     game[reward_key()] = 1
     game[st.key] = 1
-    local _, x, y, z = viber.entity_position()
+    local okp, x, y, z = viber.entity_position()
     viber.despawn_self()
-    viber.burst("sparkle", x, y + 0.6, z, 16)
+    if okp then
+      viber.burst("sparkle", x, y + 0.6, z, 16)
+    end
     viber.sound("loot")
-    local count = rules.vault_get("korok-seed") + 1
-    rules.item_add("korok-seed", 1)
+    local count = rules.vault_get("korok-seed")
     local every = rules.talent_every()
     if every > 0 and count % every == 0 then
       rules.add_skill_points(1)
@@ -114,14 +147,15 @@ function on_update(dt)
       viber.despawn_self()
       return
     end
-    if viber.menu_open() then return end
+    if viber.menu_open() or hero_down() then return end
     if viber.interacted("e") then
       if (game[st.key] or 0) > 0 then
         viber.despawn_self()
         return
       end
-      if rules.vault_get("korok-seed") >= 99 then
-        viber.toast("A bolsa de sementes está cheia (99).")
+      local cap = seed_cap()
+      if rules.vault_get("korok-seed") >= cap then
+        viber.toast("A bolsa de sementes está cheia (" .. cap .. ").")
         return
       end
       game[st.key] = 1
@@ -150,7 +184,7 @@ function on_update(dt)
     viber.despawn_self()
     return
   end
-  if viber.menu_open() then return end
+  if viber.menu_open() or hero_down() then return end
   if viber.interacted("e") and not st.taken then
     local phrase = ({
       rock = "A pedra ergue-se: uma semente de canção!",

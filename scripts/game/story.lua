@@ -25,7 +25,7 @@ local PROLOGUE_DELAY = 0.1 -- a cena começa em negro: o carregamento passa dire
 -- da cena nova; e com o diário aberto tocava por cima dele.
 local NOTE_CINE_DELAY = 0.1
 local NOTE_CINE_TTL = 1.5
-local note_cine_at, note_cine_scene = 0, nil
+local note_cine_at, note_cine_scene, note_cine_kind = 0, nil, nil
 
 local function notes_found(g)
   local n = 0
@@ -33,6 +33,15 @@ local function notes_found(g)
     if g["nota_" .. kind] then n = n + 1 end
   end
   return n
+end
+
+-- Cinemática não toca por cima da morte: `menu_open()` cobre menus e
+-- cinemáticas mas NÃO o ecrã de morte. Um guardião morto no mesmo golpe que
+-- derrubou o herói (bomba) arrancava a cena da Nota enquanto o `rules.tick`
+-- já contava o `dying` — a cena e o ecrã de morte disputavam o topo.
+local function hero_down()
+  local _, hp = rules.player_hp()
+  return (hp or 0) <= 0
 end
 
 -- O abate chega do FSM (regra do jogo) via `rules.award_kill`; não há
@@ -56,6 +65,7 @@ rules.on_kill = function(kind)
   -- entretanto, este controller já não corre e a cena não aparece na sala.
   note_cine_at = viber.time() + NOTE_CINE_DELAY
   note_cine_scene = viber.scene_name and viber.scene_name() or nil
+  note_cine_kind = kind
 end
 
 function on_update(dt)
@@ -68,7 +78,13 @@ function on_update(dt)
   -- `viber.game()` (persiste no save) porque esta entidade RENASCE ao voltar
   -- de um interior: com um latch só de `state`, a cena aparecia à primeira
   -- saída da vila. Um "Novo Jogo" normal limpa a tabela e volta a vê-la.
-  if dev.skip_intro() then
+  --
+  -- O latch de ENTIDADE impede o pior: um `load_slot` na MESMA cena repõe o
+  -- `viber.game()` do save (sem `story_prologo`) mas não recria este script;
+  -- sem o latch, o ramo voltava a marcar o prólogo como visto e poluía um
+  -- save normal carregado durante a sessão de debug.
+  if dev.skip_intro() and not st.dev_prologo then
+    st.dev_prologo = true
     g.story_prologo = true
   end
 
@@ -98,18 +114,25 @@ function on_update(dt)
   -- diário aberto só toca quando o jogo volta a estar livre (e na mesma
   -- cena); fora da janela curta, perde-se a cena mas não a Nota.
   if note_cine_at > 0 then
+    local now = viber.time()
     local scene = viber.scene_name and viber.scene_name() or nil
-    if viber.time() > note_cine_at + NOTE_CINE_TTL or scene ~= note_cine_scene then
-      note_cine_at = 0
-    elseif viber.time() >= note_cine_at
-        and not viber.cinematic_playing() and not viber.menu_open() then
-      note_cine_at = 0
+    -- Um load na MESMA cena repõe `viber.game()` do save (a marca da Nota
+    -- pode não estar lá) mas não recria este script: sem esta checagem a
+    -- cena tocava por uma Nota que o save carregado não tem.
+    local dropped = note_cine_kind ~= nil and not g["nota_" .. note_cine_kind]
+    if dropped or now > note_cine_at + NOTE_CINE_TTL
+        or scene ~= note_cine_scene then
+      note_cine_at, note_cine_kind = 0, nil
+    elseif now >= note_cine_at and not viber.cinematic_playing()
+        and not viber.menu_open() and not hero_down() then
+      note_cine_at, note_cine_kind = 0, nil
       viber.cinematic("nota")
     end
   end
 
   if not g.story_prologo and st.clock > PROLOGUE_DELAY
-      and not viber.cinematic_playing() and not viber.menu_open() then
+      and not viber.cinematic_playing() and not viber.menu_open()
+      and not hero_down() then
     g.story_prologo = true
     viber.cinematic("prologo")
   end
@@ -117,7 +140,8 @@ function on_update(dt)
   -- A entrega vive em Lua (`quest_turn_in`). A engine já não emite
   -- `quest_done` para estas missões, por isso o epílogo nunca arrancava.
   if rules.quest_state("story_notas") == "done" and not g.story_epilogo
-      and not viber.cinematic_playing() and not viber.menu_open() then
+      and not viber.cinematic_playing() and not viber.menu_open()
+      and not hero_down() then
     g.story_epilogo = true
     viber.cinematic("epilogo")
   end
@@ -125,6 +149,11 @@ function on_update(dt)
   for _, ev in ipairs(viber.events()) do
     if ev.type == "cinematic_end" and ev.id == "prologo" then
       viber.toast("Fala com o Ancião Edmar, junto ao salão comunal.")
+    elseif ev.type == "cinematic_end" and ev.id == "epilogo" then
+      -- A entrega grava o autosave ANTES de este controller marcar
+      -- `story_epilogo` (a ordem dos `on_update` não é garantida). Carregar
+      -- esse save repetia o epílogo; um autosave no fim fixa a marca.
+      viber.save_slot(0)
     end
   end
 end

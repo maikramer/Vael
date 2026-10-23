@@ -68,10 +68,20 @@ local M = {}
 
 local rules = viber.load("lib/rules.lua")
 
--- Marca da sessão da VM: `viber.game().enemies` não é persistido, mas um
--- registo pode sobreviver a um `load` dentro da mesma VM. Só um registo da
--- MESMA sessão conserva o HP através de uma pausa de menu/LOD.
-local SESSION = tostring(viber.time()) .. ":" .. tostring(math.random(100000, 999999))
+-- Marca da sessão do MUNDO: `viber.game().enemies` não é persistido, mas o
+-- `viber.game()` sobrevive ao hot-reload. A marca vive lá como TABELA (o save
+-- só guarda primitivos, por isso morre no `load`) — uma constante calculada no
+-- top-level deste módulo mudava a cada hot-reload de `lib/fsm.lua` e recriava
+-- TODOS os registos com vida cheia a meio de uma luta.
+local function session_tag()
+  local game = viber.game()
+  local tag = game.fsm_session
+  if type(tag) ~= "table" then
+    tag = {}
+    game.fsm_session = tag
+  end
+  return tag
+end
 
 -- Folga de alcance no impacto (m): o golpe apanha quem estava colado e deu
 -- meio passo; quem recua a sério ou dá dash sai.
@@ -90,6 +100,9 @@ local STAGGER_INTERRUPT = 0.5
 local STAGGER_BOSS = 0.7
 -- Cor do aviso de disparo dos atiradores.
 local SHOT_COLOR = "#ff6a3d"
+-- Aggro-chain: raio (m) em que o golpe do herói acorda os aliados do alvo
+-- batido. É o mesmo raio do `on_player_attack` nativo (15 m).
+local ALERT_RADIUS = 15.0
 -- Elites: vida ×, dano ×, escala e cor da aura.
 local ELITE_HP, ELITE_DAMAGE, ELITE_SCALE = 2.5, 1.4, 1.3
 local ELITE_COLOR = "#ffd35a"
@@ -264,6 +277,20 @@ function M.new(cfg)
     return cfg.damage * (st.elite and ELITE_DAMAGE or 1.0)
   end
 
+  -- Pedido de marcha + rumo do corpo. O rumo vem da DIREÇÃO PEDIDA (é para
+  -- onde o rig se vira), nunca do deslocamento observado: depois de um
+  -- stagger o knockback continua a arrastar a criatura para longe do herói
+  -- e essa deriva entrava no registo como "costas" — o golpe seguinte do
+  -- melee contava backstab (×2) sobre quem continuava de frente.
+  local function step(st, x, z, ax, az, speed)
+    local dx, dz = ax - x, az - z
+    local len = math.sqrt(dx * dx + dz * dz)
+    if len > 1e-3 then
+      st.hx, st.hz = dx / len, dz / len
+    end
+    viber.move_towards(ax, az, speed)
+  end
+
   -- Resolve o impacto do golpe em curso.
   local function land_attack(st)
     local has, px, py, pz = viber.player_position()
@@ -284,7 +311,7 @@ function M.new(cfg)
       viber.burst("ground-dust", st.ax, gy + 0.2, st.az, 6)
       viber.shake(0.16)
       viber.sound("hit")
-      if dist2(px, pz, st.ax, st.az) <= r and math.abs(py - y) <= REACH_VERTICAL + 1.0 then
+      if dist2(px, pz, st.ax, st.az) <= r and math.abs(py - gy) <= REACH_VERTICAL + 1.0 then
         -- `on_hit` só quando o dano ENTRA: um parry/i-frame não envenena.
         -- A origem para o flash de direção é a CRIATURA (x,z): no especial
         -- `at="player"` o centro da zona é o sítio onde o herói ESTAVA, e a
@@ -359,11 +386,38 @@ function M.new(cfg)
 
   function self.update(dt)
     local st = viber.state() -- POR ENTIDADE (no top-level partilhava entre instâncias)
+    local id = viber.self_id()
+    local g = viber.game()
+    local session = session_tag()
+    -- Marca se o portão abriu NESTE frame: o registo é criado logo a seguir
+    -- e o reset de "linha temporal nova" não pode apagar o `awake` que
+    -- acabou de ser ganho (o aviso de despertar repetia no frame seguinte).
+    local woke_now = false
+    -- Chefe já derrotado: a cena recriou a entidade ao voltar de um interior.
+    -- ANTES do gate (e do `awake_toast`): senão o aviso de despertar repetia
+    -- a cada reentrada numa cena onde o chefe já caiu, e sem pagar XP/loot
+    -- outra vez.
+    if cfg.boss and g["boss_dead." .. cfg.kind] then
+      if id then
+        viber.entity_despawn(id)
+      end
+      return
+    end
     if cfg.gate and not st.awake then
+      -- Registo limpo (load) ou primeiro frame da entidade: o próprio ainda
+      -- não está no registo, e os vizinhos também ainda não voltaram a
+      -- registar-se. `alive_in_region` via a banda VAZIA e o portão abria
+      -- por engano — espera um frame para o resto da cena registar-se.
+      local reg = id and g.enemies and g.enemies[id] or nil
+      if reg == nil and st.gate_session ~= session then
+        st.gate_session = session
+        return
+      end
       if not cfg.gate() then
         return
       end
       st.awake = true
+      woke_now = true
       if cfg.awake_toast then
         viber.toast(cfg.awake_toast)
       end
@@ -373,7 +427,6 @@ function M.new(cfg)
       cfg.on_first()
     end
     local has, px, _, pz = viber.player_position()
-    local id = viber.self_id()
     -- O registo vivo não pode envelhecer durante uma pausa (menu, cinemática,
     -- LOD): `M.hostiles` só lista entradas com `t` fresco e a recriação
     -- devolvia HP cheio a um inimigo já ferido.
@@ -416,30 +469,56 @@ function M.new(cfg)
       px, pz = x + 1e4, z + 1e4
     end
 
-    local g = viber.game()
+    -- Aggro-chain (`on_player_attack` do nativo): a engine deixou de emitir
+    -- `AttackAlert`; o `game/combat.lua`/`game/bomb-lua.lua` publicam o ponto
+    -- do golpe numa tabela do `viber.game()` e os aliados a 15 m dele passam
+    -- a perseguir durante 10 s (o ataque continua a medir a distância real).
+    local alert = g.attack_alert
+    local aseq = type(alert) == "table" and alert.seq or nil
+    -- O `seq` recomeça em 1 quando o `viber.game()` é limpo (load): o `t`
+    -- distingue um alerta novo de um `seq` repetido na linha temporal nova.
+    if aseq and (aseq ~= st.alert_seq or alert.t ~= st.alert_t) then
+      st.alert_seq, st.alert_t = aseq, alert.t
+      if alert.t and (viber.time() - alert.t) <= 0.25
+          and dist2(x, z, alert.x or 1e9, alert.z or 1e9) <= ALERT_RADIUS then
+        st.aggro_until = viber.time() + 10
+      end
+    end
+
     g.enemies = g.enemies or {}
     local now = viber.time()
-    -- Chefe já derrotado: a cena recriou a entidade ao voltar de um
-    -- interior. Sem isto pagava XP/loot outra vez e podia bloquear o gate.
-    if cfg.boss and g["boss_dead." .. cfg.kind] then
-      if id then
-        viber.entity_despawn(id)
-      end
-      return
-    end
     local entry = id and g.enemies[id] or nil
     -- Save/restart deixa registos de OUTRA sessão. Uma pausa longa da MESMA
     -- sessão (menu, LOD) conserva o HP em vez de recriar a criatura cheia.
     local stale = entry ~= nil
-      and (entry.t == nil or entry.t > now + 1.0 or entry.session ~= SESSION)
+      and (entry.t == nil or entry.t > now + 1.0 or entry.session ~= session)
     if entry == nil or stale then
       entry = {
         kind = cfg.kind, hp = cfg.hp, max = cfg.hp, boss = cfg.boss,
-        x = x, y = py, z = z, t = now, session = SESSION,
+        x = x, y = py, z = z, t = now, session = session,
       }
-      -- Registo recriado (load no mesmo VM — `game.enemies` é uma TABELA e
-      -- não viaja no save): um elite já promovido não pode renascer com a
-      -- vida base nem perder a marca que o loot paga a triplicar.
+      -- Registo recriado = criatura NOVA nesta linha temporal (load, reset do
+      -- registo pelas regras, spawn). O `viber.state()` sobrevive à recriação,
+      -- por isso os transientes do combate anterior têm de cair aqui: um
+      -- `dead` antigo tornava a criatura imortal (hp 0 sem prémio/despawn) e
+      -- um chefe enraivecido voltava com vida cheia E a fúria ligada.
+      st.dead, st.phase, st.pt, st.kind = nil, nil, 0, nil
+      st.t, st.pulse, st.swings = 0, 0, nil
+      st.enraged, st.poise_dmg = nil, 0
+      st.aggro_until, st.state, st.pstate = 0, nil, nil
+      st.rt, st.flee_t, st.stuck, st.last_td = nil, 0, 0, nil
+      st.flee_d = nil
+      -- O `awake`/`first_done` também são transientes de combate: um load na
+      -- mesma cena sobrevive à entidade, e sem isto o portão do chefe já não
+      -- era reavaliado (o ogro atacava com os guardiões ainda vivos). Não se
+      -- apagam no frame em que o portão abriu (`woke_now`): o `awake` foi
+      -- ganho agora e o `on_first` correu logo acima.
+      if not woke_now then
+        st.awake, st.first_done = nil, nil
+      end
+      st.hx, st.hz = nil, nil
+      -- Elite já promovido não pode renascer com a vida base nem perder a
+      -- marca que o loot paga a triplicar.
       if st.elite then
         entry.max = entry.max * ELITE_HP
         entry.hp = entry.max
@@ -515,15 +594,6 @@ function M.new(cfg)
       st.loco = true
       viber.set_locomotion(cfg.wander, cfg.chase, cfg.turn_rate)
     end
-    -- Rumo real do corpo. Antes isto só era calculado com `steering`: nas
-    -- outras criaturas `entry.fx/fz` ficava nil e a condição de backstab do
-    -- melee (que lê `forward_x/z`) NUNCA disparava.
-    if st.px then
-      local dx, dz = x - st.px, z - st.pz
-      local len = math.sqrt(dx * dx + dz * dz)
-      if len > 1e-3 then st.hx, st.hz = dx / len, dz / len end
-    end
-    st.px, st.pz = x, z
 
     if tick_phase(st, dt, px, pz, x, z) then
       -- `ok/hp/max` eram restos do antigo `viber.entity_hp()`: `ok` era nil
@@ -540,8 +610,11 @@ function M.new(cfg)
 
     -- Hook na TRANSIÇÃO wander → chase (não repete por tick).
     if st.state == "chase" and st.pstate ~= "chase" then
+      -- Engajamento NOVO: a cadência do arco e a fuga recomeçam. Sem isto um
+      -- alvo que saiu do raio e voltou (LOD/viagem rápida) encontrava o tiro
+      -- já "carregado" pelo engajamento anterior e levava a flecha no frame.
+      st.rt, st.flee_t, st.flee_d = nil, 0, nil
       if cfg.intro then
-        local g = viber.game()
         local key = "cine_" .. cfg.intro
         if not g[key] then
           g[key] = true
@@ -566,17 +639,27 @@ function M.new(cfg)
       -- A cadência do disparo também recomeça: um alvo que sai e volta não
       -- pode encontrar a flecha já "carregada" (st.rt a meio do cooldown).
       if not rg or dist > rg.range then
-        st.flee_t = 0
+        st.flee_t, st.flee_d = 0, nil
         -- `nil` (e não 0) para o 1.º tiro de um novo engajamento sair a meio
         -- da cadência, como no primeiro avistamento.
         st.rt = nil
       end
       if rg and dist <= rg.range then
-        -- Atirador: abaixo de `min` recua (a arma de perto só sai encurralado —
-        -- colado ao herói há mais de 1,5 s); entre `min` e `range` dispara.
+        -- Atirador: abaixo de `min` recua (a arma de perto só sai encurralado);
+        -- entre `min` e `range` dispara.
         if dist < (rg.min or 0) then
           st.flee_t = (st.flee_t or 0) + dt
-          if not (dist <= cfg.range and st.flee_t > 1.5) then
+          -- "Encurralado" = não conseguir ABRIR distância. A regra antiga
+          -- (colado ao herói ≤ cfg.range) deixava o arqueiro PARADO a
+          -- apanhar quando o recuo batia numa parede (sem flecha e sem
+          -- adaga) para sempre. Enquanto a distância sobe 0,5 m a fuga está
+          -- a resultar e o contador recomeça.
+          st.flee_d = st.flee_d or dist
+          if dist > st.flee_d + 0.5 then
+            st.flee_d = dist
+            st.flee_t = 0
+          end
+          if not (st.flee_t > 1.5) then
             -- Alvo espelhado pelo arqueiro. Com o herói exatamente em cima
             -- (dist≈0) o ponto era o PRÓPRIO arqueiro: `move_towards` não
             -- anda e ele ficava parado a apanhar. Recua contra o rumo.
@@ -584,11 +667,11 @@ function M.new(cfg)
             if math.abs(ax - x) < 1e-3 and math.abs(az - z) < 1e-3 then
               ax, az = x - (st.hx or 0) * 2, z - (st.hz or 1) * 2
             end
-            viber.move_towards(ax, az, chase_speed(st))
+            step(st, x, z, ax, az, chase_speed(st))
             return
           end
         else
-          st.flee_t = 0
+          st.flee_t, st.flee_d = 0, nil
           face_hero(st, px, pz, x, z)
           st.rt = (st.rt or (rg.cooldown or 2.4) * 0.5) + dt
           if st.rt >= (rg.cooldown or 2.4) then
@@ -599,10 +682,15 @@ function M.new(cfg)
         end
       end
       if dist > cfg.range then
-        viber.move_towards(px, pz, chase_speed(st))
+        step(st, x, z, px, pz, chase_speed(st))
         -- Ao chegar ao alcance, o 1.º golpe sai a meio da cadência (não
-        -- depois de uma cadência inteira parada a olhar).
-        st.t = cooldown(st) * 0.55
+        -- depois de uma cadência inteira parada a olhar). Só semeia a
+        -- cadência quando ela está VAZIA: reescrever 0.55 todos os frames
+        -- deixava o jogador a arrastar o golpe para sempre ao oscilar no
+        -- limite do alcance (a carga acumulada era deitada fora).
+        if (st.t or 0) <= 0 then
+          st.t = cooldown(st) * 0.55
+        end
       else
         face_hero(st, px, pz, x, z)
         st.t = (st.t or 0) + dt
@@ -630,14 +718,17 @@ function M.new(cfg)
             st.stuck, st.last_td = 0, nil
             -- `pick_target` deixa `target` nil se as 6 amostras falharem.
             if st.target == nil then return end
+            -- `td` era do alvo ANTIGO: comparar o alvo novo com ele sujava
+            -- o anti-stuck durante um frame (e podia adiar o próximo repick).
+            td = dist2(st.target[1], st.target[2], x, z)
           end
         else
           st.stuck = 0
         end
         st.last_td = td
-        viber.move_towards(st.target[1], st.target[2], cfg.wander)
+        step(st, x, z, st.target[1], st.target[2], cfg.wander)
       else
-        viber.move_towards(st.target[1], st.target[2], cfg.wander)
+        step(st, x, z, st.target[1], st.target[2], cfg.wander)
       end
     end
   end

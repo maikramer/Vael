@@ -130,13 +130,44 @@ local function prop_data(entity)
   if kind == "" and is_berry then
     kind = PICK_FALLBACK_KIND
   end
+  -- O `resource-yield` é texto autoral sem tipagem: 0/negativo/não finito
+  -- deixava o popup a mentir "(bolsa cheia)" e um valor fraccionário entrava
+  -- no cofre como 2,5. O template (`<ResourceNode yield>`) já usa inteiro >= 1.
   local amount = tonumber(props["resource-yield"])
-  if not amount then
+  if not amount or amount ~= amount or amount < 1 or amount == math.huge then
     amount = is_berry and PICK_FALLBACK_YIELD or 1
+  else
+    amount = math.floor(amount)
   end
+  -- `hits` não finito nunca parte o prop; 0/negativo partia ao primeiro golpe.
+  local hits = tonumber(c.hits)
+  if not hits or hits ~= hits or hits == math.huge then
+    hits = 3
+  else
+    hits = math.max(1, math.floor(hits))
+  end
+  -- O `parse_color` da engine aceita 3 ou 6 dígitos (não 7/8): uma cor
+  -- "válida" para o regex antigo mas inválida para o `viber.damage_number`
+  -- rebentava o `break_prop` DEPOIS de creditar loot/XP — o prop ficava no
+  -- mundo e podia ser colhido outra vez, para sempre.
   local popup_color = c["popup-color"]
-  if type(popup_color) ~= "string" or not popup_color:match("^#%x%x%x%x%x%x%x?%x?$") then
+  if type(popup_color) ~= "string"
+      or not (popup_color:match("^#%x%x%x$") or popup_color:match("^#%x%x%x%x%x%x$")) then
     popup_color = POPUP_COLOR
+  end
+  -- `viber.interact_range` REJEITA um raio negativo/não finito (erro em cada
+  -- frame, a colheita inteira morria) e 0 deixava o prop inalcançável.
+  local range = tonumber(c.range)
+  if not range or range ~= range or range <= 0 or range == math.huge then
+    range = RANGE_DEFAULT
+  end
+  -- `viber.set_scale` (no `on_spawned` do substituto) só aceita 0.05..20;
+  -- um `replace-scale` fora do intervalo rebentava a callback e o toco
+  -- ficava com a escala por omissão.
+  local replace_scale = tonumber(c["replace-scale"])
+  if not replace_scale or replace_scale ~= replace_scale
+      or replace_scale < 0.05 or replace_scale > 20 then
+    replace_scale = 1
   end
   return {
     id = entity.id,
@@ -145,18 +176,18 @@ local function prop_data(entity)
     y = entity.y,
     z = entity.z,
     distance = entity.distance or 0,
-    hits = tonumber(c.hits) or 3,
+    hits = hits,
     style = style,
     popup = c["popup-text"] or "",
     popup_color = popup_color,
-    range = tonumber(c.range) or RANGE_DEFAULT,
+    range = range,
     kind = kind,
     amount = amount,
     -- Troca visual opcional: a berry_bush com frutas vira a versão `bare`
     -- no mesmo sítio. `replace-scale` é a escala UNIFORME do prop original
     -- (as instâncias do Scatter têm escalas diferentes).
     replacement = c.replacement or "",
-    replace_scale = tonumber(c["replace-scale"]) or 1,
+    replace_scale = replace_scale,
   }
 end
 
@@ -238,22 +269,34 @@ local function break_prop(st, sw)
   -- A lista de substitutos é FECHADA: um `replacement` com gralha não pode
   -- chamar `spawn_prototype` (warn) nem ficar gravado no save como stump.
   local replacement = REPLACEMENTS[sw.replacement or ""] and (sw.replacement or "") or ""
-  viber.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
-  viber.sound(BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
   -- Loot e XP: regra do jogo, não da engine. `vault_add` já sincroniza os
-  -- objetivos `collect` das missões. O crédito vem ANTES do popup: a pilha
-  -- de frutas tem teto de 99, e mostrar "+3" quando só entrou 1 (ou nada)
-  -- era mentira — e o prop já foi consumido.
+  -- objetivos `collect` das missões. O crédito é TENTADO antes de partir o
+  -- prop: a pilha de frutas/madeira escura tem teto de 99 e o `vault_add`
+  -- aceita só a parte que cabe. Partir o prop e marcar "harvested" com a
+  -- pilha cheia perdia o resto para sempre (e pagava XP por nada); o
+  -- crédito parcial é devolvido e o prop fica no mundo para depois de
+  -- fazer espaço. O teste é o próprio `vault_add` para valer também nos
+  -- recursos, cujo tecto (`resource_cap`) não é o `stack_max`.
   local got = 0
   if sw.kind ~= "" and sw.amount > 0 then
     got = rules.vault_add(sw.kind, sw.amount) or 0
+    if got < sw.amount then
+      if got > 0 then
+        rules.vault_take(sw.kind, got)
+      end
+      viber.damage_number("Bolsa cheia", {
+        color = "#ffb347", x = sw.x, y = (sw.y or 0) + 1.4, z = sw.z,
+      })
+      viber.sound("error", { x = sw.x, y = sw.y, z = sw.z })
+      return
+    end
   end
+  viber.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
+  viber.sound(BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
   if sw.popup ~= "" then
     local text = sw.popup
     if got > 0 then
       text = "+" .. got .. " " .. text
-    elseif sw.kind ~= "" then
-      text = text .. " (bolsa cheia)"
     end
     viber.damage_number(text, {
       color = sw.popup_color or POPUP_COLOR, x = sw.x, y = (sw.y or 0) + 1.4, z = sw.z,

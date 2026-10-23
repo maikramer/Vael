@@ -29,11 +29,18 @@ function on_update(dt)
     return
   end
   if viber.menu_open() then return end
+  -- O `menu_open` não inclui o ecrã de morte: um herói caído continuava a
+  -- colher (XP) junto ao sítio onde caiu.
+  local _, hp = rules.player_hp()
+  if hp <= 0 then return end
   if viber.interacted(key) and not st.done then
     st.done = true
     once.mark()
     local xp = viber.prop("xp")
     rules.add_xp(xp)
+    -- A colheita de árvores/pedras confirma com som; o cogumelo desaparecia
+    -- em silêncio (só o toast).
+    viber.sound("harvest")
     viber.toast(viber.prop("label") .. " colhido (+" .. xp .. " XP)")
     viber.despawn_self() -- colhido: sai do mundo (o prompt desaparece com ele)
   end

@@ -4,9 +4,19 @@
 
 local M = {}
 
+-- Resolvedor do NLU: texto do jogador -> ids do jogo (lib/parley.lua).
+local parley = viber.load("lib/parley.lua")
+-- Registo de ações para o juiz (lib/judge.lua).
+local actions = viber.load("lib/actions.lua")
+
 -- Declarada cedo (a definição vem mais abaixo) para os handlers de quest
 -- poderem tocar o som no herói e não na origem do controller.
 local sound_at_player
+-- Autosave PENDENTE (segundos de uptime): ver `award_kill`/`quest_turn_in`.
+-- Vive no `tick` e não num `viber.after`: o timer pertence à entidade que
+-- chamou (a criatura, no caminho do FSM) e morre com ela, e um save a meio
+-- da morte gravava um cadáver no slot 0.
+local save_at
 
 -- Catálogo de conteúdo (data/*.json) — editável pelos plugins do editor.
 -- `pcall`: um JSON ausente não pode impedir o jogo de arrancar; o log diz o
@@ -123,10 +133,13 @@ end
 
 local function ensure_xp()
   local game = g()
-  if not finite(game.xp) then game.xp = 0 end
+  -- Negativo não é progresso: um save antigo/corrompido com `xp` ou
+  -- `skill_points` a menos deixava a barra a negativa e a carteira a "-N"
+  -- para sempre (o diário recusava gastar e o HUD mostrava o valor).
+  if not finite(game.xp) or game.xp < 0 then game.xp = 0 end
   if not finite(game.xp_next) or game.xp_next < 1 then game.xp_next = XP_BASE end
   if not finite(game.level) or game.level < 1 then game.level = 1 end
-  if not finite(game.skill_points) then game.skill_points = 0 end
+  if not finite(game.skill_points) or game.skill_points < 0 then game.skill_points = 0 end
 end
 
 -- O save é JSON PLANO: uma tabela `spawn_pos` era descartada em silêncio e o
@@ -239,7 +252,12 @@ local function load_defs()
         -- Ids repetidos entre ficheiros: a primeira definição ganha. O
         -- índice também torna `quest_state`/`publish` O(1) — eram varreduras
         -- lineares de 28 defs por cada missão, todos os frames.
-        if def.id and not defs_by_id[def.id] then
+        -- `type(def) == "table"`: um JSON com uma entrada primária (editor/
+        -- hand-edit) rebentava aqui e o erro subia pelo `tick` TODOS os
+        -- frames — vida, quests e morte ficavam congelados. As listas de
+        -- itens e talentos já têm a mesma guarda.
+        if type(def) == "table" and type(def.id) == "string" and def.id ~= ""
+            and not defs_by_id[def.id] then
           defs_by_id[def.id] = def
           defs[#defs + 1] = def
         end
@@ -297,6 +315,10 @@ function M.talent_every()
 end
 
 function M.quest_progress(id)
+  local override = tonumber(g()[qkey(id) .. ".need"])
+  if override and override >= 1 then
+    return num("q." .. id .. ".n", 0), math.floor(override)
+  end
   local def = find_def(id)
   local need = 1
   if def and def.objective and def.objective.count then
@@ -324,6 +346,24 @@ local function count_of(obj)
   return math.max(1, math.floor(tonumber((obj or {}).count) or 1))
 end
 
+-- Meta efetiva: `q.<id>.need` sobrepõe o `count` do JSON (entrega parcial
+-- de collect). Sem override, vale o objetivo original.
+local function need_of(def)
+  local override = tonumber(g()[qkey(def.id) .. ".need"])
+  if override and override >= 1 then
+    return math.floor(override)
+  end
+  return count_of(objective(def))
+end
+
+local function set_need(id, n)
+  if n and n >= 1 then
+    g()[qkey(id) .. ".need"] = math.floor(n)
+  else
+    g()[qkey(id) .. ".need"] = nil
+  end
+end
+
 local function progress_of(id)
   return num(qkey(id) .. ".n", 0)
 end
@@ -333,8 +373,7 @@ local function set_progress(id, n)
 end
 
 local function mark_ready(def)
-  local obj = objective(def)
-  local need = count_of(obj)
+  local need = need_of(def)
   if progress_of(def.id) >= need and M.quest_state(def.id) == "active" then
     g()[qkey(def.id)] = "ready"
     viber.toast("Objetivo completo: " .. (def.title or def.id))
@@ -342,13 +381,36 @@ local function mark_ready(def)
   end
 end
 
+-- Quests de decisão (`scripts/npc/decision-quest.lua`): o puzzle marca o
+-- objetivo quando o jogador resolve; `mark_ready` promove a "ready".
+function M.quest_set_progress(id, n)
+  local def = find_def(id)
+  if not def or M.quest_state(id) ~= "active" then
+    return false
+  end
+  set_progress(id, math.max(0, math.floor(tonumber(n) or 0)))
+  mark_ready(def)
+  return true
+end
+
 local function repeatable(def)
   return def.npc == "notice_board"
 end
 
 local function clear_visits(def)
-  for place in tostring((def.objective or {}).target or ""):gmatch("%S+") do
-    g()[qkey(def.id) .. ".v." .. place] = nil
+  -- Apaga TODOS os `q.<id>.v.*`, não só os locais do objectivo actual: um
+  -- save antigo (ou um objectivo editado no editor, que troca/renomeia
+  -- locais) guardava marcadores órfãos que nunca mais eram lidos. Recolhe
+  -- primeiro: escrever durante o `pairs` é comportamento indefinido.
+  local prefix = qkey(def.id) .. ".v."
+  local stale = {}
+  for key in pairs(g()) do
+    if type(key) == "string" and key:sub(1, #prefix) == prefix then
+      stale[#stale + 1] = key
+    end
+  end
+  for _, key in ipairs(stale) do
+    g()[key] = nil
   end
 end
 
@@ -359,6 +421,8 @@ function M.quest_accept(id)
   end
   g()[qkey(id)] = "active"
   set_progress(id, 0)
+  set_need(id, count_of(objective(def)))
+  g()[qkey(id) .. ".said"] = nil
   clear_visits(def)
   viber.toast("Quest aceite: " .. (def.title or id))
   sound_at_player("quest_accept")
@@ -402,7 +466,7 @@ function M.quest_turn_in(id)
   end
   local obj = objective(def)
   if obj.type == "collect" then
-    local need = count_of(obj)
+    local need = need_of(def)
     if not M.vault_take(obj.target or "", need) then
       g()[qkey(id)] = "active"
       viber.toast("Já não tens o que a missão pede.")
@@ -411,7 +475,6 @@ function M.quest_turn_in(id)
   end
   if repeatable(def) then
     g()[qkey(id)] = "not_taken"
-    set_progress(id, 0)
   else
     g()[qkey(id)] = "done"
     -- O cartão do HUD e a bússola não podem continuar a "seguir" uma missão
@@ -421,6 +484,15 @@ function M.quest_turn_in(id)
       g().tracked_quest = nil
     end
   end
+  -- Chaves de progresso não ficam no save depois da entrega: os marcadores
+  -- `q.<id>.v.<local>` de uma quest de visita acumulavam para sempre (um
+  -- `forest_survey` entregue guardava os 3 marcos até ao fim do jogo) e o
+  -- `.n`/`.need`/`.said` já não são lidos em `done`/`not_taken`. O `accept`
+  -- volta a criá-las.
+  clear_visits(def)
+  g()[qkey(id) .. ".n"] = nil
+  set_need(id, nil)
+  g()[qkey(id) .. ".said"] = nil
   local missing = grant_rewards(def)
   local gold = (def.rewards or {}).gold or 0
   local msg = "Quest entregue: " .. (def.title or id)
@@ -430,7 +502,129 @@ function M.quest_turn_in(id)
   end
   viber.toast(msg)
   sound_at_player("quest_complete")
-  viber.save_slot(0)
+  -- Save pelo `tick` (ver `save_at`): a entrega também acontece nos 2,2 s de
+  -- `dying` (o [E] ainda chega aos NPCs) e o save síncrono gravava hp 0 +
+  -- `dying` no slot 0 — o "Continuar" seguinte abria o ecrã de morte.
+  save_at = viber.time()
+  return true
+end
+
+-- Bloco `parley` de uma quest (prompt/expect/partial).
+function M.quest_parley(id)
+  local def = find_def(id)
+  return def and def.parley or nil
+end
+
+-- O relato casa com o alvo? (não muda estado; o quadro usa para filtrar)
+function M.parley_matches(id, text, parsed)
+  local def = find_def(id)
+  -- `parley.report` também tem de ser tabela: um JSON editado à mão com
+  -- `parley` mas sem `report` rebentava no `pick_for` do quadro de avisos
+  -- (o lint do editor só avisa, o jogo não pode indexar nil).
+  if not def or type(def.parley) ~= "table"
+      or type(def.parley.report) ~= "table" then
+    return false
+  end
+  return parley.match_expect(parley.resolve(text, parsed), def.parley.report.expect)
+end
+
+-- Entrega com relato de uma palavra. Em collect `partial`, um número menor
+-- que a meta consome o que existe e reduz o que falta.
+function M.quest_turn_in_parley(id, text, parsed)
+  local def = find_def(id)
+  if not def then
+    return false, "Missão desconhecida."
+  end
+  -- Só uma missão PRONTA entrega: a resposta do NLU chega uns frames depois
+  -- e a entrega parcial consome itens — um relato atrasado não pode gastar o
+  -- cofre de uma missão que entretanto fechou (ou que nunca foi aceite).
+  if M.quest_state(id) ~= "ready" then
+    return false, "Essa missão não está pronta a entregar."
+  end
+  if type(def.parley) ~= "table" or type(def.parley.report) ~= "table" then
+    -- Sem bloco de relato (quest antiga/conteúdo sem `report`), a entrega
+    -- normal decide — em vez de indexar `def.parley.report.expect` (nil).
+    return M.quest_turn_in(id), nil
+  end
+  local res = parley.resolve(text, parsed)
+  local ok = parley.match_expect(res, def.parley.report.expect)
+  if not ok then
+    return false, def.parley.report.hint or "Não te ouvi dizer o nome."
+  end
+  local obj = objective(def)
+  if def.parley.partial and obj.type == "collect" and res.quantidade then
+    local need = need_of(def)
+    local n = math.floor(res.quantidade)
+    if n > 0 and n < need then
+      local have = M.vault_get(obj.target or "")
+      if have < n then
+        return false, "Só tens " .. have .. "."
+      end
+      if not M.vault_take(obj.target or "", n) then
+        return false, "Não tens o que dizes."
+      end
+      set_need(id, need - n)
+      set_progress(id, 0)
+      g()[qkey(id) .. ".said"] = text
+      M.sync_collect()
+      local msg = "Entregaste " .. n .. " — faltam " .. math.max(0, need - n) .. "."
+      sound_at_player("notification")
+      -- `false` (e não `true, "partial"`): para TODOS os dadores actuais um
+      -- `ok` verdadeiro é entrega FINAL — o quadro de avisos dizia as falas
+      -- de conclusão ("a fogueira agradece") e o NPC "Entregue." com a
+      -- missão ainda em curso. O `msg` explica o progresso parcial.
+      return false, msg
+    end
+  end
+  g()[qkey(id) .. ".said"] = text
+  local turned = M.quest_turn_in(id)
+  if not turned then
+    return false, "Ainda não tens o que a missão pede."
+  end
+  return true, nil
+end
+
+-- Entrega com respostas do d1: cada expect tem uma pergunta "rN" (noul).
+function M.quest_turn_in_decision(id, text, answers)
+  local def = find_def(id)
+  if not def then
+    return false, "Missão desconhecida."
+  end
+  if M.quest_state(id) ~= "ready" then
+    return false, "Essa missão não está pronta a entregar."
+  end
+  local report = type(def.parley) == "table" and def.parley.report or nil
+  if type(report) ~= "table" then
+    return M.quest_turn_in(id), nil
+  end
+  for i = 1, #(report.expect or {}) do
+    local a = answers and answers["r" .. i]
+    if not a or (tonumber(a.noul) or 0) < 0.5 then
+      return false, report.hint or "Não te ouvi dizer o nome."
+    end
+  end
+  g()[qkey(id) .. ".said"] = text
+  local turned = M.quest_turn_in(id)
+  if not turned then
+    return false, "Ainda não tens o que a missão pede."
+  end
+  return true, nil
+end
+
+-- O relato casa com o alvo? (para o quadro de avisos, sem mudar estado)
+function M.parley_matches_decision(id, answers)
+  local def = find_def(id)
+  if not def or type(def.parley) ~= "table"
+      or type(def.parley.report) ~= "table" then
+    return false
+  end
+  local expect = def.parley.report.expect or {}
+  for i = 1, #expect do
+    local a = answers and answers["r" .. i]
+    if not a or (tonumber(a.noul) or 0) < 0.5 then
+      return false
+    end
+  end
   return true
 end
 
@@ -458,7 +652,7 @@ function M.report_kill(kind)
     if M.quest_state(def.id) == "active" then
       local obj = objective(def)
       if obj.type == "kill" and kill_matches(kind, obj.target or "") then
-        local need = count_of(obj)
+        local need = need_of(def)
         set_progress(def.id, math.min(need, progress_of(def.id) + 1))
         mark_ready(def)
       end
@@ -490,6 +684,9 @@ function M.report_visit(place)
   if not place or place == "" then
     return
   end
+  -- Regista a visita ANTES do filtro de quests: o juiz quer saber o que o
+  -- herói fez, não só o que contava para uma missão ativa.
+  actions.record("visitar", "local", place)
   for _, def in ipairs(load_defs()) do
     if M.quest_state(def.id) == "active" then
       local obj = objective(def)
@@ -510,7 +707,7 @@ function M.report_visit(place)
               n = n + 1
             end
           end
-          set_progress(def.id, math.min(count_of(obj), n))
+          set_progress(def.id, math.min(need_of(def), n))
           mark_ready(def)
           viber.toast("Marco visto: " .. place_label(place))
         end
@@ -559,7 +756,7 @@ function M.sync_collect()
     if state == "active" or state == "ready" then
       local obj = objective(def)
       if obj.type == "collect" then
-        local need = count_of(obj)
+        local need = need_of(def)
         local have = M.vault_get(obj.target or "")
         set_progress(def.id, math.min(have, need))
         if have >= need then
@@ -898,17 +1095,16 @@ end
 function M.award_kill(kind, id)
   M.add_xp(M.kill_xp(kind))
   M.report_kill(kind)
+  actions.record("matar", "criatura", kind)
   if M.on_kill then
     M.on_kill(kind, id)
   end
-  -- Chefe abatido = marco de progresso: autosave no slot 0. Num timer
-  -- curto: o `fsm` paga o loot DEPOIS de `award_kill`, e o save síncrono
-  -- gravava o estado sem a bolsa/poções do chefe (morrer ou Carregar
-  -- perdia-as).
+  -- Chefe abatido = marco de progresso: autosave no slot 0, gravado pelo
+  -- `tick` (`save_at`). Adiado: o `fsm` paga o loot DEPOIS de `award_kill`,
+  -- e o save síncrono gravava o estado sem a bolsa/poções do chefe (morrer
+  -- ou Carregar perdia-as). O flush só grava com o herói de pé.
   if KILL_XP[kind] then
-    viber.after(0.05, function()
-      viber.save_slot(0)
-    end)
+    save_at = viber.time() + 0.05
   end
 end
 
@@ -916,7 +1112,10 @@ end
 -- atrás, à esquerda ou à direita do FORWARD do herói; usa-se o produto
 -- interno (frente/trás) contra o produto externo (lados).
 local DMG_EDGES = { "dmg-front", "dmg-back", "dmg-left", "dmg-right" }
-local dmg_flash = 0
+-- Faixa acesa e instante de apagar. O apagar é do `tick`: um `viber.after`
+-- pertence ao DONO do golpe (a criatura) e morre com ele — um despawn ou
+-- uma troca de cena dentro dos 0,35 s deixava a seta de dano presa no HUD.
+local dmg_edge, dmg_until = nil, 0
 
 local function clear_dmg_edges()
   for _, id in ipairs(DMG_EDGES) do
@@ -947,15 +1146,9 @@ local function flash_damage_direction(sx, sz)
   else
     id = cross > 0 and "dmg-right" or "dmg-left"
   end
-  dmg_flash = dmg_flash + 1
-  local token = dmg_flash
   clear_dmg_edges()
   viber.ui.set_visible(id, true)
-  viber.after(0.35, function()
-    if token == dmg_flash then
-      viber.ui.set_visible(id, false)
-    end
-  end)
+  dmg_edge, dmg_until = id, viber.time() + 0.35
 end
 
 -- Guarda/parry [L] — regra do jogo, em Lua. O dano dos inimigos passa
@@ -1019,13 +1212,38 @@ local function start_death(game)
   sound_at_player("game_over")
 end
 
+-- Título (ou cena de menu) por cima: o mundo atrás é decoração. O
+-- `rules_host` não corre o `tick` nesses frames, mas os scripts das
+-- criaturas continuam a correr e o FSM só conhece `menu_open` — sem este
+-- portão um golpe tirava vida por baixo do véu e, como o `tick` não avança,
+-- o `dying` nunca chegava ao ecrã de morte (herói "morto" atrás do título).
+local function title_blocking()
+  if viber.scene_name and viber.scene_name() == "menu" then
+    return true
+  end
+  return viber.ui ~= nil and viber.ui.is_open ~= nil
+    and viber.ui.is_open("title") == true
+end
+
+-- MODO DEV (`scripts/game/devmode.lua`): invulnerabilidade do [F2] e do voo.
+-- Vive no MÓDULO, não em `viber.game()`, de propósito: um cheat ligado numa
+-- sessão de debug não pode ficar gravado no save.
+M.god = false
+
+function M.set_god(on)
+  M.god = on == true
+end
+
 -- Devolve true só quando o dano ENTROU: os `on_attack`/`on_hit` das
 -- criaturas (veneno) não podem disparar contra um parry/i-frame.
 function M.damage_player(amount, sx, sz)
   -- Menu/diário/mapa abertos: o jogador parou para ler. As criaturas já
   -- suspendem o golpe (lib/fsm.lua); sem este portão uma seta já no ar
   -- continuava a tirar vida por baixo do menu.
-  if viber.menu_open() then
+  if viber.menu_open() or title_blocking() then
+    return false
+  end
+  if M.god then
     return false
   end
   if num("iframes", 0) > 0 or num("dying", 0) > 0 or g().death_pending then
@@ -1103,6 +1321,10 @@ end
 -- Renasce no último descanso. O ecrã de morte chama isto em "Tentar de novo";
 -- mundos sem o modal (QA) usam o fallback de 5 s no `tick`.
 function M.respawn()
+  -- Um save parcial/corrompido pode não ter `max_hp`/`hp` numéricos: sem
+  -- isto o `respawn` deixava `hp` textual e o `publish` do mesmo frame
+  -- rebentava nos `%d`.
+  ensure_hp()
   local game = g()
   local s = stored_spawn(game) or { x = 0, y = 150, z = 0 }
   game.hp = game.max_hp or 100
@@ -1133,24 +1355,35 @@ function M.respawn()
 end
 
 function M.tick(dt)
-  -- `viber.time()` recomeça no load, mas os timers de sessão (guarda, flashes
-  -- do HUD) são locals do módulo e sobrevivem. Um `guard_lock` no "futuro"
-  -- do relógio novo trancava o [L] durante minutos; o mesmo para as janelas
-  -- de "recente". Relógio para trás = sessão de jogo nova.
+  -- Os timers de sessão (guarda, flashes do HUD, autosave pendente) são
+  -- locals do módulo e sobrevivem ao `viber.game()`. Um LOAD na MESMA cena
+  -- troca a tabela do jogo mas não muda `session_id` nem recua o relógio da
+  -- engine (é o uptime): o sinal — o mesmo que combat/abilities/hotbar
+  -- usam — é o tempo de jogo a recuar.
   local now = viber.time()
+  local playtime = num("playtime_secs", 0)
+  local loaded = M._playtime ~= nil and playtime < M._playtime - 1e-3
+  M._playtime = playtime
   if M._last_time and now < M._last_time then
-    guard_until, guard_start, guard_lock = 0, nil, 0
-    M._xp_until, M._quest_until = nil, nil
+    loaded = true
   end
   M._last_time = now
   -- Novo Jogo/save de outra partida: flashes, guarda e passivas recomeçam.
   local sid = tonumber(g().session_id) or 0
-  if M._session ~= sid then
+  if M._session ~= sid or loaded then
     M._session = sid
     M._xp_sig, M._quest_sig = nil, nil
     M._xp_until, M._quest_until = nil, nil
     M._speed = nil
     guard_until, guard_start, guard_lock = 0, nil, 0
+    -- Nada da linha temporal abandonada: um autosave de chefe pendente não
+    -- pode gravar por cima do save que acabámos de carregar, e a faixa de
+    -- dano acesa não fica no HUD da partida nova.
+    save_at = nil
+    if dmg_edge then
+      viber.ui.set_visible(dmg_edge, false)
+      dmg_edge, dmg_until = nil, 0
+    end
   end
   M.pull_engine()
   sync_passives()
@@ -1169,14 +1402,24 @@ function M.tick(dt)
   game.save_gold = M.vault_get("gold") or 0
   game.iframes = math.max(0, num("iframes", 0) - dt)
 
+  -- Apaga a faixa de dano no tick (ver `dmg_edge`): o `viber.after` antigo
+  -- era do atacante e um despawn dentro dos 0,35 s deixava-a acesa.
+  if dmg_edge and now >= dmg_until then
+    viber.ui.set_visible(dmg_edge, false)
+    dmg_edge, dmg_until = nil, 0
+  end
+
   -- Veneno: 4 dps, tick de 1 s. Não corre durante a morte (o cadáver ficava
   -- a 0 HP sem `dying` e nenhum caminho o curava/matava), nem com um menu
-  -- aberto (ler o diário não pode matar), e um frame longo aplica TODOS os
-  -- ticks devidos, não só um.
-  if num("venom", 0) > 0 and not viber.menu_open() then
+  -- aberto (ler o diário não pode matar), nem com o MODO DEV ligado (o
+  -- veneno não passa por `damage_player` — é o único dano com caminho
+  -- próprio), e um frame longo aplica TODOS os ticks devidos, não só um.
+  if num("venom", 0) > 0 and not viber.menu_open() and not M.god then
     game.venom = math.max(0, game.venom - dt)
     if num("dying", 0) <= 0 then
-      game.venom_tick = (game.venom_tick or 0) + dt
+      -- `num`: um `venom_tick` textual (save editado à mão) rebentava a
+      -- soma e o erro subia pelo `tick` em todos os frames.
+      game.venom_tick = num("venom_tick", 0) + dt
       local ticks = math.floor(game.venom_tick)
       if ticks > 0 then
         game.venom_tick = game.venom_tick - ticks
@@ -1223,7 +1466,8 @@ function M.tick(dt)
     if viber.ui.is_open("death") then
       game.death_wait = 5.0
     else
-      game.death_wait = math.max(0, (game.death_wait or 0) - dt)
+      -- `num`: idem para o contador do respawn automático.
+      game.death_wait = math.max(0, num("death_wait", 0) - dt)
       if game.death_wait <= 0 then
         M.respawn()
       end
@@ -1289,6 +1533,15 @@ function M.tick(dt)
     end
   end
   M.sync_collect()
+  -- Autosave de chefe pendente (ver `award_kill`): grava só com o herói de
+  -- pé. Um save a meio da morte substituía o slot 0 por um cadáver e o
+  -- "Continuar" seguinte abria o ecrã de morte — o menu já se recusa a
+  -- gravar em `dying`/`death_pending`, e o autosave tem de fazer o mesmo.
+  if save_at and now >= save_at
+      and (game.hp or 0) > 0 and num("dying", 0) <= 0 and not game.death_pending then
+    save_at = nil
+    viber.save_slot(0)
+  end
   M.publish()
 end
 
@@ -1343,7 +1596,7 @@ function M.publish()
     local state = M.quest_state(def.id)
     if state == "active" or state == "ready" then
       local obj = objective(def)
-      local need = count_of(obj)
+      local need = need_of(def)
       local have = progress_of(def.id)
       local score = (state == "ready" and 2 or 0) + (need > 0 and have / need or 0)
       if tracked_def and def.id == tracked_def.id then

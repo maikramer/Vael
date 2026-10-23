@@ -9,6 +9,11 @@ local M = {}
 -- Último waypoint publicado (o mapa [M] desenha-o sobre o hillshade).
 M.last_waypoint = nil
 
+-- O HUD esconde a seta do waypoint a menos de 4 m do destino
+-- (`hud/waypoint.rs`, ARRIVED_M). Chegar é o fim natural de um pin: o
+-- destino sai do save no mesmo instante em que a seta se cala.
+local PIN_ARRIVED_M = 4.0
+
 function M.waypoint()
   return M.last_waypoint
 end
@@ -52,7 +57,10 @@ function M.sign_nearest()
       local x, y, z = marks.position(mark.name)
       if x then
         local d = mark_distance(x, y, z, px, py, pz)
-        if d <= mark.radius then
+        -- `radius` é conteúdo editável: ausente/NaN fazia comparação com nil
+        -- e a varredura do [F] rebentava em todos os frames. 0 = não assina.
+        local radius = tonumber(mark.radius) or 0
+        if d <= radius then
           if marks.available(mark, rules) then
             if not best_d or d < best_d then
               best, best_d = mark, d
@@ -68,29 +76,36 @@ function M.sign_nearest()
   end
   if not best then
     if locked then
-      local label = marks.BIOME_LABEL[locked.biome] or locked.biome
+      -- `biome` é conteúdo editável; nil não pode rebentar a concatenação.
+      local label = marks.BIOME_LABEL[locked.biome] or locked.biome or "um bioma por cartografar"
       viber.toast("A terra aqui ainda não foi cartografada — procura a atalaia de " .. label .. ".")
     end
     return
   end
   viber.game()[marks.marked_key(best.name)] = true
-  viber.game().pin = best.name
-  if best.survey and best.survey ~= "" then
-    rules.report_visit(best.name)
-  end
-  local label = marks.BIOME_LABEL[best.biome] or best.biome
+  -- Assinar NÃO escreve `game.pin`: o pin é o DESTINO escolhido no mapa (ou
+  -- indicado por um NPC). Antes, medir um marco re-apontava a seta para os
+  -- pés de quem o mediu e apagava o destino que estava marcado.
+  --
+  -- Relata a visita SEMPRE: `report_visit` já filtra por quest ativa e pelos
+  -- tokens do objetivo. A guarda pelo campo `survey` perdia a visita dos dois
+  -- marcos da romaria que não o têm em `data/landmarks.json`
+  -- (`vael-watch` e `vael-rim-cairn`), ficando dependente do `scan_visits`.
+  rules.report_visit(best.name)
+  local best_label = marks.label(best.name)
+  local label = marks.BIOME_LABEL[best.biome] or best.biome or "sem bioma"
   if best.biome == "tower" then
     -- Atalaia não faz parte da Nota: não há "faltam N marcos de atalaia".
-    viber.toast("Atalaia cartografada: " .. best.label .. " — viaja com [G] na fogueira.")
+    viber.toast("Atalaia cartografada: " .. best_label .. " — viaja com [G] na fogueira.")
   else
     local left = remaining(best.biome)
     if left == 0 then
       -- Sem `string.upper`: o Luau é ASCII e "pântano" saía "PâNTANO".
-      viber.toast("Medido e assinado: " .. best.label .. " — " .. label .. " sem marcos por assinar!")
+      viber.toast("Medido e assinado: " .. best_label .. " — " .. label .. " sem marcos por assinar!")
     elseif left == 1 then
-      viber.toast("Medido e assinado: " .. best.label .. " (falta 1 marco: " .. label .. ")")
+      viber.toast("Medido e assinado: " .. best_label .. " (falta 1 marco: " .. label .. ")")
     else
-      viber.toast("Medido e assinado: " .. best.label .. " (faltam " .. left .. " marcos: " .. label .. ")")
+      viber.toast("Medido e assinado: " .. best_label .. " (faltam " .. left .. " marcos: " .. label .. ")")
     end
   end
   local has, hx, hy, hz = viber.player_position()
@@ -107,69 +122,94 @@ function M.rows(only_marked)
   for _, mark in ipairs(marks.LIST) do
     if marks.available(mark, rules) and (not only_marked or marks.is_marked(mark.name)) then
       local x, _, z = marks.position(mark.name)
-      local dist = ""
-      if x and px then
-        dist = tostring(math.floor(math.sqrt((x - px) ^ 2 + (z - pz) ^ 2))) .. " m"
+      -- Marco sem entidade no mundo (conteúdo editado/renomeado) não entra na
+      -- lista: a linha ficava clicável e a viagem só podia falhar no toast.
+      if x then
+        local dist = ""
+        if px then
+          dist = tostring(math.floor(math.sqrt((x - px) ^ 2 + (z - pz) ^ 2))) .. " m"
+        end
+        out[#out + 1] = {
+          id = mark.name,
+          label = marks.label(mark.name),
+          biome = marks.BIOME_LABEL[mark.biome] or mark.biome or "sem bioma",
+          distance = dist,
+          status = marks.is_marked(mark.name) and "done" or "ready",
+        }
       end
-      out[#out + 1] = {
-        id = mark.name,
-        label = mark.label,
-        biome = marks.BIOME_LABEL[mark.biome] or mark.biome,
-        distance = dist,
-        status = marks.is_marked(mark.name) and "done" or "ready",
-      }
     end
   end
   return out
 end
 
 function M.go(name)
-  local x, y, z = marks.position(name)
+  local x, y, z, id = marks.position(name)
   if not x then
     viber.toast("Esse marco ainda não está no mundo.")
     return
   end
+  -- O Y autorado é a pose FINAL do mundo estático: numa atalaia é a
+  -- plataforma (bem acima do terreno); num poço é a base. O `ground_below`
+  -- só conhece o terreno e serve de piso mínimo — conteúdo com uma cota
+  -- absurda não manda o herói para debaixo do chão.
   local ground = viber.ground_below(x, (y or 0) + 80, z)
-  -- `ground_below` só conhece o terreno: numa atalaia (entidade no TOPO da
-  -- plataforma) o teleporte caía na base e o jogador tinha de subir outra
-  -- vez. Se a cota do marco está claramente acima do chão, é a plataforma.
   local py
   if y == nil then
-    py = ground or 0
-  elseif ground and math.abs(y - ground) <= 2.0 then
-    py = ground
+    py = (ground or 0) + 1.0
   else
-    py = y
+    py = math.max(y, ground or y) + 1.0
   end
-  -- `teleport_player` assenta o character controller, mas a engine resolve o
-  -- Y contra o TERRAIN (`landing_position`): numa atalaia ele descarta a cota
-  -- da plataforma e larga o herói na base. Para marcos claramente elevados,
-  -- o `teleport_player` limpa a inércia/settle e o `set_pose` repõe a cota
-  -- exata da plataforma (o collider dela segura o herói).
-  local elevated = ground ~= nil and y ~= nil and (y - ground) > 2.0
-  viber.teleport_player(x, py + 0.2, z)
-  if elevated then
-    local pid = viber.player_id()
-    if pid then
-      viber.set_pose(x, py + 0.2, z, 0, pid)
-    end
-  end
-  viber.game().travel_open = false
+  -- A engine desce um raio de física de `py + 2` e assenta na primeira
+  -- superfície sólida (plataforma, ponte, telhado, terreno). O `id` do marco
+  -- fica FORA do raio: o próprio poço/torre não pode servir de chão. Sem o
+  -- `set_pose` de outrora — o collider da plataforma segura o herói.
+  viber.teleport_player(x, py, z, id)
+  -- Chave morta de versões anteriores (ninguém a lê — o estado do painel
+  -- vive na UI). Limpa-se no primeiro `go` para não ficar no save.
+  viber.game().travel_open = nil
   viber.ui.open("travel", false)
   viber.toast("A fogueira leva-te até lá.")
   viber.sound("travel", { x = x, y = py, z = z })
 end
 
-function M.pin(name)
-  viber.game().pin = name
-  local label = name
+-- O marco existe no CONTEÚDO? `marks.position` só vê a cena atual: dentro de
+-- uma casa (onde vivem os townsfolk que oferecem "Perguntar por um lugar")
+-- nenhum marco do mundo grande resolve, por isso o pedido era recusado — e
+-- ainda apagava o `pin` que o jogador já tinha. A validação da ENTIDADE fica
+-- para o `publish`, que corre no mundo e limpa um destino morto.
+local function content_mark(name)
+  if type(name) ~= "string" or name == "" then
+    return nil
+  end
   for _, mark in ipairs(marks.LIST) do
     if mark.name == name then
-      label = mark.label
-      break
+      return mark
     end
   end
-  viber.toast("Destino: " .. label)
+  return nil
+end
+
+function M.pin(name)
+  local mark = content_mark(name)
+  if not mark then
+    -- Nome desconhecido: não é um destino morto (não havia destino nenhum);
+    -- o pin atual fica como estava.
+    viber.toast("Não conheço esse lugar.")
+    return
+  end
+  -- No mundo principal a entidade pode ter sido apagada/renomeada no editor.
+  -- Nas cenas próprias (interiores) não existem marcos: aceita-se o nome do
+  -- conteúdo e o destino resolve quando o herói voltar ao mundo.
+  local scene = viber.scene_name and viber.scene_name() or nil
+  if (scene == nil or scene == "main") and not marks.position(name) then
+    if viber.game().pin == name then
+      viber.game().pin = nil
+    end
+    viber.toast("Esse destino já não existe.")
+    return
+  end
+  viber.game().pin = name
+  viber.toast("Destino: " .. marks.label(name))
 end
 
 local function near_fire()
@@ -334,8 +374,19 @@ local function objective_waypoint(def, px, pz)
   return nil
 end
 
+-- `viber.find` cai para SUBSTRING quando o nome exato não existe. Um NPC
+-- renomeado no conteúdo passaria a resolver para outra entidade cujo nome o
+-- contém — e a seta de "Entregar"/"Missão" apontava para o sítio errado.
+local function find_exact(name)
+  local id = name and viber.find(name)
+  if id and viber.entity_name(id) == name then
+    return id
+  end
+  return nil
+end
+
 local function npc_waypoint(def, state)
-  local id = def.npc and viber.find(def.npc)
+  local id = find_exact(def.npc)
   if not id then
     return nil
   end
@@ -351,13 +402,16 @@ local function quest_waypoint()
   local px, _, pz = player_xz()
   local tracked = viber.game().tracked_quest
   local tracked_target, ready, active
+  local new, new_d
   for _, def in ipairs(rules.quest_defs()) do
     local state = rules.quest_state(def.id)
     if state == "ready" or state == "active" then
-      -- Pronta a entregar: a seta aponta ao DADOR, não a mais recursos.
+      -- Pronta a entregar: a seta aponta ao DADOR. Cair para o objetivo
+      -- (os recursos já estão na mochila) escondia que o passo seguinte era
+      -- voltar a falar com quem a deu.
       local target
       if state == "ready" then
-        target = npc_waypoint(def, state) or objective_waypoint(def, px or 0, pz or 0)
+        target = npc_waypoint(def, state)
       else
         target = objective_waypoint(def, px or 0, pz or 0) or npc_waypoint(def, state)
       end
@@ -375,9 +429,21 @@ local function quest_waypoint()
           active = active or target
         end
       end
+    elseif state == "not_taken" then
+      -- Sem missão em curso, a seta aponta a um dador novo (README:
+      -- entregar → cumprir → missão nova). O mais próximo evita mandar o
+      -- jogador ao outro canto do vale sem razão.
+      local target = npc_waypoint(def, state)
+      if target then
+        local dx, dz = target.x - (px or 0), target.z - (pz or 0)
+        local d = dx * dx + dz * dz
+        if not new_d or d < new_d then
+          new, new_d = target, d
+        end
+      end
     end
   end
-  return tracked_target or ready or active
+  return tracked_target or ready or active or new
 end
 
 function M.track(id)
@@ -393,6 +459,10 @@ function M.track(id)
     viber.toast("Missão deixada de seguir.")
   else
     game.tracked_quest = id
+    -- Há UM waypoint: seguir uma missão é a escolha mais recente e tem de
+    -- ganhar ao pin do mapa. Sem isto, "Seguir" no diário mudava o cartão do
+    -- HUD mas a seta continuava a apontar para o pin antigo.
+    game.pin = nil
     viber.toast("A seguir: " .. ((def and def.title) or id))
   end
 end
@@ -408,7 +478,7 @@ local function publish()
   -- se explícito: 16 mais próximos, sem atalaias (as torres veem-se) e sem
   -- marcos já assinados.
   local candidates = {}
-  local px, _, pz = player_xz()
+  local px, py, pz = player_xz()
   for _, mark in ipairs(marks.LIST) do
     if marks.available(mark, rules) then
       local x, y, z = marks.position(mark.name)
@@ -432,15 +502,16 @@ local function publish()
   local waypoint
   if pin then
     local x, y, z = marks.position(pin)
-    if x then
-      local label = pin
-      for _, mark in ipairs(marks.LIST) do
-        if mark.name == pin then
-          label = mark.label
-          break
-        end
-      end
-      waypoint = { x = x, y = y, z = z, label = label }
+    if not x then
+      -- Destino morto (marco apagado/renomeado): sai do save em vez de ficar
+      -- a cair no waypoint da quest para sempre, sem se perceber porquê.
+      viber.game().pin = nil
+    elseif px and mark_distance(x, y, z, px, py, pz) <= PIN_ARRIVED_M then
+      -- Chegámos ao destino (o mesmo raio em que a seta do HUD se cala).
+      -- Sem isto o pin ficava no save e a bússola apontava para trás.
+      viber.game().pin = nil
+    else
+      waypoint = { x = x, y = y, z = z, label = marks.label(pin) }
     end
   end
   if not waypoint then
@@ -466,17 +537,24 @@ publish_sign_prompt = function()
     sign_near, sign_locked = nil, nil
     return
   end
-  local near, locked
+  local near, near_d, locked, locked_d
   for _, mark in ipairs(marks.LIST) do
     if not marks.is_marked(mark.name) then
       local x, y, z = marks.position(mark.name)
       if x then
-        if mark_distance(x, y, z, px, py, pz) <= mark.radius then
+        local d = mark_distance(x, y, z, px, py, pz)
+        local radius = tonumber(mark.radius) or 0
+        if d <= radius then
           if marks.available(mark, rules) then
-            near = mark
-            break
+            -- O MAIS PRÓXIMO, como em `sign_nearest`: o aviso tem de nomear
+            -- o marco que o [F] vai mesmo assinar. Antes ficava com o
+            -- primeiro da LIST e podia anunciar outro.
+            if not near_d or d < near_d then
+              near, near_d = mark, d
+            end
+          elseif not locked_d or d < locked_d then
+            locked, locked_d = mark, d
           end
-          locked = locked or mark
         end
       end
     end
@@ -494,7 +572,7 @@ sign_hint = function()
       return
     end
     sign_hinted[mark.name] = true
-    viber.toast("[F] Assinar " .. mark.label)
+    viber.toast("[F] Assinar " .. marks.label(mark.name))
     return
   end
   local mark = sign_locked
@@ -519,6 +597,19 @@ function M.update(dt)
     resource_cache = {}
     M.last_waypoint = nil
   end
+  -- Um LOAD repõe `viber.game()` e o `playtime_secs` do save volta atrás, mas
+  -- o `session_id` gravado pode ser o mesmo: os avisos de [F] já mostrados e o
+  -- recurso em cache ficavam do jogo anterior (o do save podia estar ainda
+  -- por colher). O relógio da engine NÃO recomeça no load, por isso o sinal é
+  -- o tempo de jogo a diminuir.
+  local playtime = tonumber(viber.game().playtime_secs) or 0
+  if st.playtime and playtime < st.playtime then
+    sign_hinted = {}
+    locked_hinted = {}
+    resource_cache = {}
+    M.last_waypoint = nil
+  end
+  st.playtime = playtime
   -- `tracked_quest` é uma chave do save: entregar (ou uma bounty repetível
   -- voltar a "por aceitar") deixava-a apontada a uma missão que já não
   -- está em curso. O HUD já a ignorava, mas a seta perdia o fallback.
@@ -530,33 +621,41 @@ function M.update(dt)
     end
   end
   st.acc = (st.acc or 0) + dt
+  -- Herói caído: o modal de morte só abre ao fim dos 2,2 s de `dying`, por
+  -- isso `menu_open` ainda é falso e o [F]/[G]/[M] continuavam a valer (dava
+  -- para assinar um marco ou abrir a viagem já morto).
+  local alive, hp = rules.player_hp()
+  local downed = alive and (hp or 0) <= 0
   if viber.menu_open() and not viber.ui.is_open("travel") and not viber.ui.is_open("region-map") then
     -- outro menu: não assinar nem viajar
   else
-    if viber.input.pressed("f") and not viber.ui.is_open("travel") and not viber.ui.is_open("region-map") then
+    if not downed and viber.input.pressed("f") and not viber.ui.is_open("travel") and not viber.ui.is_open("region-map") then
       M.sign_nearest()
     end
     if viber.input.pressed("g") then
       local open = viber.ui.is_open("travel")
       -- Abrir por cima do mapa regional empilhava dois modais.
-      if open or (near_fire() and not viber.menu_open()) then
+      if open or (not downed and near_fire() and not viber.menu_open()) then
         viber.ui.open("travel", not open)
       end
     end
     if viber.input.pressed("m") then
       local open = viber.ui.is_open("region-map")
-      if open or not viber.menu_open() then
+      if open or (not downed and not viber.menu_open()) then
         viber.ui.open("region-map", not open)
       end
     end
-    if viber.ui.is_open("travel") and not near_fire() then
+    if viber.ui.is_open("travel") and (downed or not near_fire()) then
       viber.ui.open("travel", false)
     end
   end
   local go = viber.game().travel_go
   if go then
     viber.game().travel_go = nil
-    M.go(go)
+    -- Um clique no painel no frame da morte não pode teleportar o cadáver.
+    if not downed then
+      M.go(go)
+    end
   end
   local pin = viber.game().pin_request
   if pin then

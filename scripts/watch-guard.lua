@@ -18,6 +18,10 @@ function on_update(dt)
   end
   if viber.menu_open() then return end
   if viber.interacted("e") then
+    -- Herói caído (a caminho do ecrã de morte): o cumprimento não paga XP nem
+    -- gasta a marca de "uma vez" — o mesmo portão do poço e da fonte.
+    local alive, hp = rules.player_hp()
+    if alive and hp <= 0 then return end
     viber.face_player()
     -- "salute" 1.º; rigs sem o clip caem para "yes"/"talk" (fuzzy do gesto)
     viber.gesture("salute,yes,talk")
