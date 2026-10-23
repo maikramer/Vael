@@ -78,6 +78,7 @@
 -- A morte bloqueia o V (o herói caído não troca de arma enquanto o ecrã de
 -- morte não abre). É a mesma fonte de HP que o hotbar/combate usam.
 local rules = viber.load("lib/rules.lua")
+local actions = viber.load("lib/actions.lua")
 
 local ITEMS = {
   { name = "Espada", kind = "sword", prefix = "espada" },
@@ -127,6 +128,10 @@ local function ui_locked()
   if viber.menu_open() then
     return true
   end
+  -- O título também é uma UI: o V não troca de item por baixo dele.
+  if viber.ui.is_open and viber.ui.is_open("title") then
+    return true
+  end
   local dialogue_until = tonumber(viber.ui.get("dialogue.until")) or 0
   local left = dialogue_until - viber.time()
   -- Um timestamp muito à frente é resto de outra sessão (`viber.time()`
@@ -145,8 +150,22 @@ function on_update(dt)
   end
   if st.role == "interior" then
     local scene = viber.scene_name and viber.scene_name() or nil
-    if scene == nil or scene == "main" or scene == "menu" then
+    -- Mundo avulso (QA) e `main` são do host de `gameplay.xml`.
+    if scene == nil or scene == "main" then
+      -- Fora da cena própria, o estado visual em cache é do outro host: a
+      -- próxima entrada é uma cena NOVA para este controller.
+      st.scene = nil
       return
+    end
+    if st.scene ~= scene then
+      -- Entrar numa casa/menu depois de `main` (ou da casa anterior): o outro
+      -- host pode ter posto a FERRAMENTA de colheita na mão e apagado a
+      -- tocha. O `grip_key`/`lantern_kind`/`arm` em cache não valem — reaplica
+      -- o item guardado no jogo, senão o machado (ou uma tocha sem luz)
+      -- ficava na mão dentro da casa/título.
+      st.scene = scene
+      st.grip_key, st.kind, st.lantern_kind, st.arm = nil, nil, nil, nil
+      st.tries, st.attach_t = 0, 0
     end
   end
   local pid = viber.player_id()
@@ -195,6 +214,7 @@ function on_update(dt)
     index = index % #ITEMS + 1
     st.index = index
     viber.game().equip_index = index
+    actions.record("equipar", "item", ITEMS[index].kind)
     -- Reanexa no mesmo frame: o slot substitui o GLB anterior.
     st.tries = 0
     st.attach_t = 0

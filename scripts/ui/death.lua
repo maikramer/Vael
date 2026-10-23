@@ -49,7 +49,11 @@ local function slot_summary(slot)
   end
   local level = tonumber(slot.level) or 0
   local where = level > 0 and ("Nível " .. level) or "Jogo guardado"
-  return "Último save: " .. where .. " · " .. fmt_playtime(slot.playtime)
+  -- Sem `playtime` (save antigo): não acrescentar um "—" solto.
+  if tonumber(slot.playtime) then
+    return "Último save: " .. where .. " · " .. fmt_playtime(slot.playtime)
+  end
+  return "Último save: " .. where
 end
 
 local function load_game()
@@ -79,11 +83,52 @@ end
 
 function on_update(dt)
   local st = viber.state()
+  local game = viber.game()
+  -- Morte "real": o `rules.tick` só abre este ecrã com HP a 0 e
+  -- `death_pending`. A tecla nativa do modal (`key="f7"`) acciona-o fora do
+  -- jogo; sem estes guardas fechava a morte a meio (o fallback de 5 s
+  -- renascia o herói sozinho) ou abria o ecrã num herói vivo.
+  local pending = game.death_pending == true
+      and (tonumber(game.hp) or 0) <= 0
+  local open_now = viber.ui.is_open("death")
+  if not open_now and pending then
+    viber.ui.open("death", true)
+    open_now = true
+  elseif open_now and not pending then
+    viber.ui.open("death", false)
+    open_now = false
+  end
+  -- O título/morte escondem o HUD INTEIRO: o `#hud` declarativo e também o
+  -- minimapa/bússola nativos (`HudHidden`), que de outro modo ficavam por
+  -- cima do véu. Ao fechar, o HUD volta — excepto quando se sai para o título,
+  -- que o mantém escondido de propósito.
+  -- `was_open` compara com `true` (e não com nil): no 1.º frame de jogo o
+  -- `st.death_open` ainda não existe e `false ~= nil` mostrava o HUD por cima
+  -- do véu do título.
+  local was_open = st.death_open == true
+  if open_now ~= was_open then
+    st.death_open = open_now
+    if open_now then
+      -- Um save criado depois da última morte (ou um slot novo) tem de
+      -- aparecer já no 1.º frame: o `slots_t` que sobrava mantinha o
+      -- "Carregar" desactivado (e o resumo velho) até 1 s.
+      st.slots_loaded = false
+      -- O mapa e a viagem são modais do JOGO: ficavam abertos por baixo do
+      -- véu (e reapareciam no "Tentar de novo", a bloquear o movimento com um
+      -- painel que o jogador já tinha esquecido). A morte fecha-os — aqui,
+      -- na transição, para cobrir também a abertura pela tecla nativa (f7).
+      viber.ui.open("region-map", false)
+      viber.ui.open("travel", false)
+      viber.ui.set_visible("hud", false)
+    elseif not viber.ui.is_open("title") then
+      viber.ui.set_visible("hud", true)
+    end
+  end
   if resume_pending then
     resume_pending = false
-    viber.game().title_done = true
+    game.title_done = true
   end
-  if viber.ui.is_open("death") then
+  if open_now then
     st.slot_t = (st.slot_t or 0) - dt
     if not st.slots_loaded or st.slot_t <= 0 then
       st.slots_loaded = true
@@ -113,7 +158,6 @@ function on_update(dt)
     viber.ui.set_visible("hud", false)
     -- Cancelar a morte pendente: o título é o topo, não pode ficar um
     -- respawn agendado (5 s) à espera do próximo tick de `main`.
-    local game = viber.game()
     game.dying = 0
     game.death_pending = false
     game.death_wait = 0

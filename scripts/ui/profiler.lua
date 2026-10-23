@@ -13,6 +13,7 @@
 local CADENCE = 0.2
 local ACC = 1.0 -- >CADENCE: preenche no primeiro frame com o modal aberto
 local LAST_STATUS = nil -- só reescreve o rodapé quando muda
+local LAST_OPEN = false -- deteta a reabertura (o rodapé volta ao "—" do XML)
 local LAST_UI_TAB = nil -- detetor de mudança de aba (UI → engine)
 -- Aba ativa lida do widget nativo. Antes era uma local de `on_update` e
 -- `fill_active` lia um GLOBAL nil (caía sempre no `state.tab_name` atrasado).
@@ -353,7 +354,16 @@ function on_update(dt)
   local snap = viber.profiler()
   if snap == nil then
     ACC = 1.0 -- modal fechado: primeiro frame após abrir já preenche
+    LAST_OPEN = false
     return
+  end
+  if not LAST_OPEN then
+    -- Reabriu. O XML repõe o rodapé em "—", mas `LAST_STATUS` (local do
+    -- módulo) sobrevive ao fecho: sem isto o `status` da sessão anterior era
+    -- dado como igual e o rodapé ficava em branco até um comando novo.
+    LAST_OPEN = true
+    LAST_STATUS = nil
+    ACC = 1.0
   end
   -- O comando sai do id REAL da linha do snapshot (a ordem é da engine).
   for i, e in ipairs(snap.extras or {}) do

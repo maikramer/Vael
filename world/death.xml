@@ -5,7 +5,10 @@
   <UiStyle src="ui/menu.css" />
   <UiStyle src="ui/title.css" />
   <UiRoot id="death-layer" script="ui/death.lua">
-    <UiModal id="death" class="death-overlay" escape-closes="false">
+    <!-- Chave própria (o default da engine é F1, partilhado pelos outros
+         modais autoload). O `death.lua` neutraliza-a: fecha-a se abrir num
+         jogo vivo e reabre-a se fechar a morte a meio. -->
+    <UiModal id="death" key="f7" class="death-overlay" escape-closes="false">
       <UiColumn class="frame death-frame">
         <UiText class="death-kicker">O VALE FICA À ESPERA</UiText>
         <UiText class="frame-title">@death.title</UiText>

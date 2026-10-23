@@ -101,6 +101,16 @@ function on_update(dt)
       viber.log("hero-name mudou -> " .. tostring(ev.text))
     elseif ev.type == "value_changed" then
       viber.log("volume -> " .. tostring(ev.value))
+      -- O `<UiText class="slider-readout">` é autoral e estático: sem um
+      -- consumidor ficava sempre no "70" enquanto o handle deslizava. O id é
+      -- descoberto pelo seletor (a vitrina não pode declarar ids novos sem
+      -- editar o XML).
+      if ev.id == "volume" then
+        local readout = viber.ui.query(".slider-readout")
+        if readout[1] then
+          viber.ui.set_text(readout[1], string.format("%.0f", ev.value))
+        end
+      end
     elseif ev.type == "checked_changed" then
       -- O check-sfx não tinha consumidor: o prefixo "check-" não estava na
       -- lista e o toggle não fazia (nem registava) nada.

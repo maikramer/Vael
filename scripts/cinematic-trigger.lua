@@ -33,7 +33,13 @@ function on_update(dt)
   if not entering then return end
   local g = viber.game()
   local key = "cine_" .. id
-  if viber.prop("once") and g[key] then return end
-  g[key] = true
+  -- A marca só existe quando `once` é verdadeiro: um gatilho `once="false"`
+  -- gravava-a na mesma e desligava para sempre outro gatilho (once=true) do
+  -- mesmo filme.
+  local once = viber.prop("once")
+  if once and g[key] then return end
+  if once then
+    g[key] = true
+  end
   viber.cinematic(id)
 end

@@ -48,6 +48,82 @@ local function current_lang()
   return "pt"
 end
 
+-- A acessibilidade da engine (tremor/hitstop/legendas/[E] hold) é um recurso
+-- de SESSÃO: não entra no save. Sem esta ponte as escolhas voltavam ao
+-- default em cada arranque e um "Carregar" não as repunha. `game` é o KV que
+-- viaja no save — `ui_scale`/`lang` já seguiam por lá.
+local A11Y_SYNC = { "shake", "hitstop", "interact_hold", "subtitle_scale" }
+local a11y_sig
+
+local function a11y_saved(key)
+  return viber.game()["a11y." .. key]
+end
+
+-- Repõe a a11y guardada quando os valores gravados mudam (load/Novo Jogo
+-- com o KV já semeado). A assinatura evita ler `viber.a11y()` todos os
+-- frames; no primeiro frame de cada módulo a assinatura é nil.
+local function a11y_restore()
+  if not (viber.a11y and viber.a11y_set) then
+    return
+  end
+  local parts, any = {}, false
+  for i, key in ipairs(A11Y_SYNC) do
+    local value = a11y_saved(key)
+    if value ~= nil then
+      any = true
+    end
+    parts[i] = tostring(value)
+  end
+  if not any then
+    return
+  end
+  local sig = table.concat(parts, "|")
+  if sig == a11y_sig then
+    return
+  end
+  a11y_sig = sig
+  local a = viber.a11y()
+  if not a then
+    return
+  end
+  local patch, dirty = {}, false
+  for _, key in ipairs(A11Y_SYNC) do
+    local value = a11y_saved(key)
+    if value ~= nil and value ~= a[key] then
+      patch[key] = value
+      dirty = true
+    end
+  end
+  if dirty then
+    viber.a11y_set(patch)
+  end
+end
+
+-- O idioma ESCOLHIDO viaja no save (`game.lang`). A engine repõe a tabela do
+-- locale no load, mas o `viber.locale.get()` de cada host Lua é semeado uma
+-- só vez: a linha "Idioma" continuava a mostrar o idioma do arranque e a
+-- a11y/UI ficavam a discordar do save. Reemitir o `set` (no-op para a
+-- engine, resincroniza o host) resolve; a assinatura evita repeti-lo a cada
+-- frame.
+local lang_applied
+
+local function lang_restore()
+  if not (viber.locale and viber.locale.get and viber.locale.set) then
+    return
+  end
+  local want = viber.game().lang
+  if want ~= "pt" and want ~= "en" then
+    return
+  end
+  if lang_applied == want then
+    return
+  end
+  if viber.locale.get() ~= want then
+    viber.locale.set(want)
+  end
+  lang_applied = want
+end
+
 local function a11y_refresh()
   if not viber.a11y then
     return
@@ -113,6 +189,7 @@ local function a11y_clicks()
         a11y_last = nil
       else
         local a = viber.a11y() or a11y_default()
+        local game = viber.game()
         if row.id == "subtitle" then
           local at = 1
           for i, scale in ipairs(A11Y_SCALES) do
@@ -121,9 +198,13 @@ local function a11y_clicks()
               break
             end
           end
-          viber.a11y_set({ subtitle_scale = A11Y_SCALES[at] })
+          local next_scale = A11Y_SCALES[at]
+          viber.a11y_set({ subtitle_scale = next_scale })
+          game["a11y.subtitle_scale"] = next_scale
         else
-          viber.a11y_set({ [row.id] = not a[row.id] })
+          local next_value = not a[row.id]
+          viber.a11y_set({ [row.id] = next_value })
+          game["a11y." .. row.id] = next_value
         end
       end
       a11y_last = nil
@@ -155,18 +236,19 @@ local function shop_clicks()
   end
 end
 
-local function slot_exists(slot)
+-- Entrada de metadados do slot. `has_meta` é falso só quando a engine não
+-- tem `save_slots` (aí deixa-se o load decidir).
+local function slot_entry(slot)
   local ok, list = pcall(viber.save_slots)
   if not ok or type(list) ~= "table" then
-    -- Engine sem metadados: deixa o load decidir (não bloqueia o botão).
-    return true
+    return nil, false
   end
   for _, entry in ipairs(list) do
-    if entry.slot == slot and entry.exists then
-      return true
+    if entry.slot == slot then
+      return entry, true
     end
   end
-  return false
+  return nil, true
 end
 
 -- A aba Sistema era alimentada pela engine com `UiData`, que só conhece o
@@ -230,6 +312,9 @@ end
 -- na cena de menu (Definições do título) os Guardar existiam mas o guarda
 -- recusava — um botão morto. O estado é refrescado ao abrir e 1×/s.
 local slots_force = true
+-- Últimos rótulos publicados nos botões Carregar (evita reescrever texto
+-- igual a cada segundo).
+local slots_labels = ""
 -- Depois de Guardar, a metadata só existe no disco no fim do frame; adiar
 -- meio segundo evita re-ler o estado antigo e deixar o Carregar desactivado.
 local slots_delay = 0
@@ -238,26 +323,68 @@ local slots_delay = 0
 -- título" gravaram false e deixavam a história muda).
 local resume_pending = false
 
+-- Os metadados vêm de `viber.save_slots()` (`src/save.rs`): `level` é o
+-- nível no momento da gravação e `playtime` o tempo de jogo em segundos
+-- (`game.playtime_secs`, publicado por `lib/rules.lua`).
+local function slot_label(slot, entry)
+  local base = "Carregar " .. slot
+  if not entry or not entry.exists then
+    return base
+  end
+  if entry.scene == "menu" then
+    return base .. " · sem jogo"
+  end
+  local level = tonumber(entry.level) or 0
+  local where = level > 0 and ("Nv " .. level) or "guardado"
+  -- Save antigo sem `playtime`: não acrescentar "· —" ao botão.
+  if tonumber(entry.playtime) then
+    return base .. " · " .. where .. " · " .. fmt_playtime(entry.playtime)
+  end
+  return base .. " · " .. where
+end
+
+-- Guardar a meio da queda escrevia `dying`/`death_pending` no world_kv: um
+-- "Carregar" desse slot voltava a matar o herói, e o autosave do "Ecrã de
+-- título" substituía o último save bom por um cadáver.
+local function dying_now()
+  local game = viber.game()
+  return game.death_pending == true or (tonumber(game.dying) or 0) > 0
+end
+
 local function refresh_slots()
   local menu_scene = in_menu_scene()
+  local dead = dying_now()
   if viber.ui.set_disabled then
     for i = 1, 3 do
-      viber.ui.set_disabled("act-save-" .. i, menu_scene)
+      viber.ui.set_disabled("act-save-" .. i, menu_scene or dead)
     end
   end
   local ok, list = pcall(viber.save_slots)
   if not ok or type(list) ~= "table" then
     return
   end
-  local exists = {}
+  local by_slot = {}
   for _, entry in ipairs(list) do
-    if entry.exists and entry.slot and entry.slot >= 1 and entry.slot <= 3 then
-      exists[entry.slot] = true
+    if entry.slot and entry.slot >= 1 and entry.slot <= 3 then
+      by_slot[entry.slot] = entry
     end
   end
-  if viber.ui.set_disabled then
+  local labels = {}
+  for i = 1, 3 do
+    local entry = by_slot[i]
+    -- Um save da cena de menu não é um jogo (o título e a morte já o
+    -- ignoravam): carregá-lo deixava o jogador no acampamento sem jogo.
+    local loadable = entry ~= nil and entry.exists and entry.scene ~= "menu"
+    if viber.ui.set_disabled then
+      viber.ui.set_disabled("act-load-" .. i, not loadable)
+    end
+    labels[i] = slot_label(i, entry)
+  end
+  local sig = table.concat(labels, "\1")
+  if sig ~= slots_labels then
+    slots_labels = sig
     for i = 1, 3 do
-      viber.ui.set_disabled("act-load-" .. i, not exists[i])
+      viber.ui.set_text("act-load-" .. i .. "-label", labels[i])
     end
   end
 end
@@ -298,10 +425,18 @@ local function gate_game_actions(disabled)
 end
 
 local function load_slot(slot)
-  if not slot_exists(slot) then
-    viber.toast("O slot " .. slot .. " está vazio.")
-    ui_sfx("error")
-    return
+  local entry, has_meta = slot_entry(slot)
+  if has_meta then
+    if entry == nil or not entry.exists then
+      viber.toast("O slot " .. slot .. " está vazio.")
+      ui_sfx("error")
+      return
+    end
+    if entry.scene == "menu" then
+      viber.toast("O slot " .. slot .. " não tem um jogo guardado.")
+      ui_sfx("error")
+      return
+    end
   end
   viber.load_slot(slot)
   resume_pending = true
@@ -315,6 +450,7 @@ local function load_slot(slot)
 end
 
 function on_update(dt)
+  local st = viber.state()
   -- O título e o ecrã de morte são modais "por cima de tudo": o [Q] abria o
   -- diário por baixo do véu (e a loja deixava comprar num jogo que não
   -- começou / num herói morto). Fecha-o assim que apareça.
@@ -322,9 +458,39 @@ function on_update(dt)
       and viber.ui.is_open("menu") then
     viber.ui.open("menu", false)
   end
-  -- Escala carregada de um save diferente da sessão — mesmo com o menu
-  -- fechado, para o HUD não ficar no tamanho antigo.
-  local st = viber.state()
+  -- O foco do gamepad percorre TODOS os botões visíveis — inclusive os das
+  -- camadas por baixo do modal. O "DIÁRIO" do HUD fica a y≈18 px (acima de
+  -- qualquer botão do menu): com o diário/mapa abertos o anel de foco nascia
+  -- invisível atrás do véu e o A accionava o botão do HUD. O profiler é um
+  -- modal da mesma camada (não tem véu): sem o incluir aqui o foco inicial
+  -- caía no DIÁRIO do HUD, por cima do painel. Desactivar o botão tira-o dos
+  -- candidatos; volta a ficar activo quando o véu fecha.
+  local overlay_up = viber.ui.is_open("menu") or viber.ui.is_open("region-map")
+      or viber.ui.is_open("travel") or viber.ui.is_open("title")
+      or viber.ui.is_open("death") or viber.ui.is_open("profiler-win")
+  if st.overlay_up ~= overlay_up then
+    st.overlay_up = overlay_up
+    if viber.ui.set_disabled
+        and (not viber.ui.exists or viber.ui.exists("open-journal")) then
+      viber.ui.set_disabled("open-journal", overlay_up)
+    end
+  end
+  -- O mapa e a viagem são raízes posteriores ao menu: com os dois abertos o
+  -- mapa pintava POR CIMA do diário. O Q (tecla nativa do modal) abria o
+  -- menu sem fechar o que estava por baixo.
+  if viber.ui.is_open("menu") then
+    if viber.ui.is_open("region-map") then
+      viber.ui.open("region-map", false)
+    end
+    if viber.ui.is_open("travel") then
+      viber.ui.open("travel", false)
+    end
+  end
+  -- Repõe a a11y e o idioma guardados: a a11y é um recurso de sessão e o
+  -- `viber.locale.get()` de cada host não se atualiza sozinho depois de um
+  -- load (ver `lang_restore`).
+  a11y_restore()
+  lang_restore()
   if resume_pending then
     resume_pending = false
     viber.game().title_done = true
@@ -344,12 +510,21 @@ function on_update(dt)
   -- jogo a decorrer: comprar/vender, gastar talentos ou seguir missões mexia
   -- no estado da partida anterior e o load/Novo Jogo deitava tudo fora.
   local on_title = in_menu_scene()
+  -- Escala carregada de um save diferente da sessão — mesmo com o menu
+  -- fechado, para o HUD não ficar no tamanho antigo.
   local want = tonumber(viber.game().ui_scale) or 1.0
   if st.applied_scale ~= want and viber.ui.scale then
     st.applied_scale = want
     viber.ui.scale(want)
   end
   if viber.ui.is_open("menu") then
+    -- Na cena de menu (Definições do título) `lib/rules.lua` não corre e os
+    -- binds do cabeçalho ficavam com os valores autorais — VIDA/NÍVEL/OURO
+    -- mentiam sobre o save. A aba Sistema mostra os valores reais.
+    if st.stats_hidden ~= on_title then
+      st.stats_hidden = on_title
+      viber.ui.set_visible("head-stats", not on_title)
+    end
     journal.refresh()
     a11y_refresh()
     a11y_clicks()
@@ -392,9 +567,11 @@ function on_update(dt)
     end
   end
 
-  if viber.ui.clicked("act-save-1") and not on_title then save_slot(1) end
-  if viber.ui.clicked("act-save-2") and not on_title then save_slot(2) end
-  if viber.ui.clicked("act-save-3") and not on_title then save_slot(3) end
+  -- Guardar com o herói a cair gravaria `dying`/`death_pending` no save.
+  local dead = dying_now()
+  if viber.ui.clicked("act-save-1") and not on_title and not dead then save_slot(1) end
+  if viber.ui.clicked("act-save-2") and not on_title and not dead then save_slot(2) end
+  if viber.ui.clicked("act-save-3") and not on_title and not dead then save_slot(3) end
   if viber.ui.clicked("act-load-1") then load_slot(1) end
   if viber.ui.clicked("act-load-2") then load_slot(2) end
   if viber.ui.clicked("act-load-3") then load_slot(3) end
@@ -402,8 +579,20 @@ function on_update(dt)
     local from_title = on_title
     -- Autosave antes de sair: o Continuar do título carrega este estado.
     -- A partir do próprio menu não se grava (não há jogo para continuar).
-    if not from_title then
+    -- A meio da morte também não: o autosave ficaria com `dying`/HP 0 e o
+    -- "Continuar" seguinte matava o herói outra vez.
+    if not from_title and not dead then
       viber.save_slot(0)
+    end
+    -- A morte pendente não pode sobreviver à saída para o título: `death.lua`
+    -- vê `death_pending`/HP 0 na cena do acampamento e abria o ecrã de morte
+    -- por cima do título. O botão homónimo do ecrã de morte já cancela estes
+    -- campos; aqui é a única saída que faltava.
+    if not from_title and dead then
+      local game = viber.game()
+      game.dying = 0
+      game.death_pending = false
+      game.death_wait = 0
     end
     -- NÃO pôr `title_done=false` aqui: o save é aplicado no pós-frame e
     -- apanhava o valor já mudado. O autosave seguinte virava o "Continuar"

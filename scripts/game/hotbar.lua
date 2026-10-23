@@ -1,4 +1,5 @@
 local rules = viber.load("lib/rules.lua")
+local actions = viber.load("lib/actions.lua")
 -- game/hotbar.lua: a HOTBAR é do jogo (Lua). Poção e antídoto nos slots 1/2.
 
 local POTION_HEAL = 50
@@ -39,6 +40,12 @@ function on_update(dt)
   end
   st.clock = now
   st.cd = math.max(0, (st.cd or 0) - dt)
+  -- Título/menu aberto: 1/2 são da UI e o herói está parado atrás do véu.
+  -- Sem isto, [1] gastava uma poção do jogo anterior por cima do título.
+  if (viber.scene_name and viber.scene_name() == "menu")
+      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+    return
+  end
   -- O profiler é `profiler-win`: `is_open("profiler")` era sempre falso e a
   -- poção saía com o painel aberto. Mapa e viagem entram no mesmo portão.
   if viber.menu_open() or st.cd > 0 or modifier_held() then
@@ -66,6 +73,7 @@ function on_update(dt)
       st.cd = COOLDOWN
       rules.vault_take("potion", 1)
       rules.heal_player(healed)
+      actions.record("usar", "item", "potion")
       -- O número nasce SOBRE O HERÓI (sem x/y/z saía sobre o controller).
       local _, px, py, pz = viber.player_position()
       viber.damage_number("+" .. math.floor(healed) .. " HP", { color = "#7ef29d", x = px, y = py + 2.0, z = pz })
@@ -85,6 +93,7 @@ function on_update(dt)
         st.cd = COOLDOWN
         rules.vault_take("antidote", 1)
         rules.status_clear("venom")
+        actions.record("usar", "item", "antidote")
         -- A poção confirma com "heal"; o antídoto calava-se e o jogador não
         -- sabia se o veneno tinha saído.
         sfx("heal")

@@ -17,8 +17,20 @@ function on_update(_dt)
   end
   current_scene = scene
 
+  -- A cauda de 8 s do combate é renovada por `game/audio.lua`, que só é
+  -- carregado em `main`: ao entrar num interior/menu ela seguia para a cena
+  -- nova (a engine não reinicia o `CombatMusicState` no load da cena). Um
+  -- clear por troca de cena chega e não briga com o host — o hold só se
+  -- renova onde há hostis.
+  if viber.music and viber.music.combat then
+    viber.music.combat(false, false)
+  end
+
   local menu = scene == "menu"
-  local interior = scene ~= nil and scene ~= "main" and not menu
+  -- Interiores são `scenes/interiors/*` (id `interiors/<sala>`). A regra
+  -- antiga ("tudo o que não é main nem menu") punha reverb de sala numa cena
+  -- própria ao ar livre (ex.: `qa-batch`).
+  local interior = scene ~= nil and scene:find("^interiors/") ~= nil
   local reverb = interior and "room" or "off"
   if reverb ~= current_reverb and viber.audio and viber.audio.reverb then
     current_reverb = reverb

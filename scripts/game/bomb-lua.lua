@@ -14,6 +14,16 @@ local RADIUS, DAMAGE, KNOCKBACK = 6.0, 90, 9
 
 function on_update(dt)
   local st = viber.state()
+  -- Load na MESMA cena: a bomba é um spawn de RUNTIME (não está no save) mas a
+  -- entidade sobrevive à troca do `viber.game()`. Sem isto o rastilho da linha
+  -- temporal abandonada continuava e explodia no mundo carregado. O relógio
+  -- da engine é o uptime e não recua; `playtime_secs` (regras) recua no load.
+  local playtime = tonumber(viber.game().playtime_secs) or 0
+  if st.playtime ~= nil and playtime < st.playtime - 1e-3 then
+    viber.despawn_self()
+    return
+  end
+  st.playtime = playtime
   -- Menu/diário aberto: o rastilho congela com o resto do combate. Antes a
   -- bomba largada antes do menu explodia enquanto o jogador lia o diário.
   if viber.menu_open() then
@@ -37,6 +47,18 @@ function on_update(dt)
   st.boom = true
   local x, y, z = viber.position()
   rules.radial_damage(x, z, RADIUS, DAMAGE, KNOCKBACK)
+  -- Aggro-chain: a explosão acorda os aliados a 15 m (o nativo emitia um
+  -- `AttackAlert` no centro; a engine já não tem produtor e o `lib/fsm.lua`
+  -- lê esta tabela do jogo).
+  local g = viber.game()
+  local alert = g.attack_alert
+  if type(alert) ~= "table" then
+    alert = {}
+    g.attack_alert = alert
+  end
+  alert.x, alert.z = x, z
+  alert.t = viber.time()
+  alert.seq = (alert.seq or 0) + 1
   viber.burst("ground-dust", x, y + 0.2, z, 6)
   viber.burst("magic", x, y + 0.6, z, 4)
   viber.ring(x, z, RADIUS * 0.9)

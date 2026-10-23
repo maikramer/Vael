@@ -3,7 +3,12 @@
   <UiStyle src="ui/menu.css" />
   <UiStyle src="ui/map.css" />
   <UiRoot id="explore" script="ui/map.lua">
-    <UiModal id="region-map" class="overlay map-overlay">
+    <!-- Chaves explícitas: um modal sem `key` cai em F1 (default da engine)
+         e F1 passava a abrir o mapa, a viagem, o título, os créditos e a
+         morte de uma só vez. O M/G continua a ser o toggle do jogo
+         (`game/travel.lua`); estas teclas são só a rede de segurança do
+         widget. -->
+    <UiModal id="region-map" key="f9" class="overlay map-overlay">
       <UiColumn class="frame map-frame">
         <UiRow class="frame-head">
           <UiColumn class="title-block">
@@ -44,8 +49,8 @@
         </UiList>
       </UiColumn>
     </UiModal>
-    <UiModal id="travel" class="overlay">
-      <UiColumn class="frame">
+    <UiModal id="travel" key="f10" class="overlay">
+      <UiColumn class="frame travel-frame">
         <UiRow class="frame-head">
           <UiColumn class="title-block">
             <UiText class="frame-title">VIAGEM</UiText>

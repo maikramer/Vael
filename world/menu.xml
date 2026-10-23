@@ -13,7 +13,11 @@
             <UiText class="frame-sub" bind="clock">06:00</UiText>
           </UiColumn>
           <UiSpacer />
-          <UiRow class="head-stats">
+          <!-- As três fichas de estado são bindings do JOGO (`lib/rules.lua`).
+               Na cena de menu as regras não correm: os binds ficavam com os
+               valores autorais (Nível 1, 100/100, 0 de ouro) e mentiam sobre
+               o save. `menu.lua` esconde a linha inteira onde não há jogo. -->
+          <UiRow id="head-stats" class="head-stats">
             <UiPanel class="head-stat">
               <UiText class="head-stat-key">VIDA</UiText>
               <UiText class="head-stat-value" bind="health.text">100/100</UiText>
@@ -167,22 +171,26 @@
           </UiList>
           <UiRow class="actions">
             <UiButton id="act-save-1" class="action">
-              <UiText>Guardar 1</UiText>
+              <UiText id="act-save-1-label">Guardar 1</UiText>
             </UiButton>
             <UiButton id="act-save-2" class="action">
-              <UiText>Guardar 2</UiText>
+              <UiText id="act-save-2-label">Guardar 2</UiText>
             </UiButton>
             <UiButton id="act-save-3" class="action">
-              <UiText>Guardar 3</UiText>
+              <UiText id="act-save-3-label">Guardar 3</UiText>
             </UiButton>
+            <!-- Os rótulos têm id próprio: `viber.ui.set_text` só escreve num
+                 UiText (um UiButton não tem componente de texto). O menu
+                 passa a dizer o nível/tempo de jogo de cada slot em vez de um
+                 "Carregar N" mudo. -->
             <UiButton id="act-load-1" class="action ghost">
-              <UiText>Carregar 1</UiText>
+              <UiText id="act-load-1-label">Carregar 1</UiText>
             </UiButton>
             <UiButton id="act-load-2" class="action ghost">
-              <UiText>Carregar 2</UiText>
+              <UiText id="act-load-2-label">Carregar 2</UiText>
             </UiButton>
             <UiButton id="act-load-3" class="action ghost">
-              <UiText>Carregar 3</UiText>
+              <UiText id="act-load-3-label">Carregar 3</UiText>
             </UiButton>
             <UiButton id="act-title" class="action ghost">
               <UiText>Ecrã de título</UiText>

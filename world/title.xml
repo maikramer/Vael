@@ -6,7 +6,12 @@
   <UiStyle src="ui/menu.css" />
   <UiStyle src="ui/title.css" />
   <UiRoot id="title-layer" class="title-layer" script="ui/title.lua">
-    <UiModal id="title" class="title-overlay" escape-closes="false">
+    <!-- A engine cai em F1 quando o modal não declara `key`: sem esta chave
+         explícita, F1 abria o título E os créditos E a morte E o mapa E a
+         viagem ao mesmo tempo (todos os modais são autoload). O `title.lua`
+         trata deste F8 como um no-op: fecha-o se abrir no meio de um jogo e
+         reabre-o se fechar o ecrã de título. -->
+    <UiModal id="title" key="f8" class="title-overlay" escape-closes="false">
       <UiColumn class="title-frame">
         <UiText class="title-kicker">@title.kicker</UiText>
         <UiText class="title-logo">VAEL</UiText>
@@ -32,7 +37,9 @@
         <UiText class="title-hint">@title.hint</UiText>
       </UiColumn>
     </UiModal>
-    <UiModal id="credits" class="overlay">
+    <!-- Chave própria, distinta do título: dois modais com a mesma chave
+         (o antigo default F1) abriam/fechavam juntos. -->
+    <UiModal id="credits" key="f6" class="overlay">
       <UiColumn class="frame credits-frame">
         <UiText class="frame-title">@title.credits.title</UiText>
         <UiText class="credits-line">VAEL — O Silêncio de Vael</UiText>
