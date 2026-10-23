@@ -79,6 +79,8 @@ class GlbInfo:
     skins: int
     animations: int
     images: int
+    joints: int
+    animated_joints: int
 
     @property
     def rigged(self) -> bool:
@@ -115,11 +117,32 @@ def glb_info(path: Path) -> GlbInfo:
             if position is not None:
                 faces += int(accessors[position].get("count", 0)) // 3
 
+    skins = doc.get("skins") or []
+    joints = set(skins[0].get("joints") or []) if skins else set()
+    # Pior clipe: quantos OSSOS do rig ele anima. Um LOD com clipes copiados
+    # de outro rig (ou truncados) anima só parte dos ossos e o resto fica em
+    # bind pose — a "T-pose a andar" que só aparece a média distância.
+    animated_joints = min(
+        (
+            len(
+                {
+                    channel["target"]["node"]
+                    for channel in animation.get("channels") or []
+                    if (channel.get("target") or {}).get("node") in joints
+                }
+            )
+            for animation in doc.get("animations") or []
+        ),
+        default=0,
+    )
+
     return GlbInfo(
         faces=faces,
         skins=len(doc.get("skins") or []),
         animations=len(doc.get("animations") or []),
         images=len(doc.get("images") or []),
+        joints=len(joints),
+        animated_joints=animated_joints,
     )
 
 
@@ -251,6 +274,16 @@ def generate(
                 raise RuntimeError(f"LOD{level} perdeu o skin do base")
             if base_info.animated and level <= rig_max_level and not info.animated:
                 raise RuntimeError(f"LOD{level} perdeu as animações do base")
+            # Clipes de outro rig (ou truncados) animam só parte dos ossos e
+            # o resto fica em bind pose — a T-pose que só se vê a média
+            # distância, onde o LOD1/LOD2 entra. O rig pode ter 1–2 pontas
+            # sem track; abaixo disso é corrupção, não simplificação.
+            if (base_info.rigged and info.animations > 0
+                    and info.animated_joints < info.joints - 2):
+                raise RuntimeError(
+                    f"LOD{level} anima só {info.animated_joints} de "
+                    f"{info.joints} ossos"
+                )
 
         install(generated[1], job.lod1)
         install(generated[2], job.lod2)

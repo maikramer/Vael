@@ -67,9 +67,15 @@ assets:
       height_m: 0.55
       footprint_m: 0.35
   - id: witch_hut
+    # Refeito na review visual de 2026-10-23. A versão de colmo dava sempre o
+    # telhado a tapar as paredes (3 seeds); a referência nova é uma casa alta
+    # de enxaimel com telhado curto em chapéu de bruxa (text2d seed 7002).
+    seed: 40424
     idea:
-      crooked cartoon witch hut with angled leaning walls, thatched roof, small
-      glowing window, wooden door, dark fantasy forest dwelling
+      tall narrow two-storey crooked witch house, timber frame and mauve plaster walls
+      clearly visible on every side, tall witch-hat shaped pointed roof of dark purple
+      shingles with tiny overhang, glowing yellow windows, wooden door with iron hinges,
+      chimney, mossy stone base, cartoon dark fantasy forest building
     kind: environment
     category: building
     pipeline:
@@ -80,13 +86,13 @@ assets:
     omni:
       control_type: bbox
       bbox:
+        - 0.75
         - 1.0
-        - 0.9
-        - 1.0
+        - 0.75
       size_m:
-        - 5.0
         - 4.5
-        - 5.0
+        - 6.0
+        - 4.5
   - id: tree_oak
     idea:
       cartoon oak tree with big round puffy green canopy on thick brown trunk, stylized
