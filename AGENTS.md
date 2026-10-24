@@ -16,7 +16,8 @@ Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 | `../AiGameKit` | Gerar ou corrigir uma tool. Não abras o monorepo no workspace por defeito |
 | `../CelerAI` | Modelos `models/{nlu,d1}` (LFS) e crates de inferência. Sem ele a engine não compila nem os scripts carregam IA |
 
-Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta + `../Viber`).
+Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta + `../Viber` +
+`../CelerAI`).
 
 ## Só estático
 
