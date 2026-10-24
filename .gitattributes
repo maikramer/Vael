@@ -10,13 +10,5 @@
 *.wasm filter=lfs diff=lfs merge=lfs -text
 *.glb filter=lfs diff=lfs merge=lfs -text
 
-# NLU (GLiNER2) — artefacto de runtime. Modelo e tensores vão em LFS; o
-# tokenizer e a config são pequenos e ficam em git normal.
-assets/public/nlu/*.onnx filter=lfs diff=lfs merge=lfs -text
-assets/public/nlu/*.data filter=lfs diff=lfs merge=lfs -text
-assets/public/nlu/*.bin filter=lfs diff=lfs merge=lfs -text
-
-# d1-omni (decisão) — mesmo tratamento: motor ONNX e embedding int8 em LFS.
-assets/public/d1/*.onnx filter=lfs diff=lfs merge=lfs -text
-assets/public/d1/*.data filter=lfs diff=lfs merge=lfs -text
-assets/public/d1/*.bin filter=lfs diff=lfs merge=lfs -text
+# Os modelos NLU/d1 (ONNX + tensores) vivem no CelerAI, em LFS lá
+# (CelerAI/models/{nlu,d1}); aqui entram como symlinks (tools/fetch_models.sh).

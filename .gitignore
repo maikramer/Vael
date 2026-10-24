@@ -9,9 +9,10 @@ shaders/
 logs/
 __pycache__/
 
-# Tooling de treino/quantização: multi-GB e regenerável a partir dos
-# checkpoints base. O artefacto de RUNTIME (assets/public/nlu, /d1) vai em LFS.
-tools/nlu/
+# Modelos NLU/d1 e o laboratório de treino vivem no checkout irmão CelerAI
+# (models/ + tools/); aqui ficam só os symlinks de consumo (fetch_models.sh).
+assets/public/nlu
+assets/public/d1
 
 # Pool: só o modelo BASE vai para o LFS. LOD1/LOD2 são derivados e
 # reconstruídos com `tools/make_lods.py` (mesmo binário + mesmos parâmetros

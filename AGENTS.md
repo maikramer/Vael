@@ -2,7 +2,8 @@
 
 Jogo. A engine é o checkout irmão `../Viber` (editor em `../Viber/editor`).
 As ferramentas de geração são o checkout irmão `../AiGameKit` (CLIs no PATH).
-Este ficheiro é curto de propósito. O contrato da engine está em
+Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
+`../CelerAI`. Este ficheiro é curto de propósito. O contrato da engine está em
 `../Viber/AGENTS.md`; lê a secção que a tarefa pede, não o ficheiro inteiro.
 
 ## Irmãos
@@ -13,6 +14,7 @@ Este ficheiro é curto de propósito. O contrato da engine está em
 | `../Viber` | Bug ou API em falta na engine. `cargo test` lá. `viber run` a partir desse checkout reconstrói |
 | `../Viber/editor` | `cargo run --manifest-path ../Viber/editor/Cargo.toml -- .` |
 | `../AiGameKit` | Gerar ou corrigir uma tool. Não abras o monorepo no workspace por defeito |
+| `../CelerAI` | Modelos `models/{nlu,d1}` (LFS) e crates de inferência. Sem ele a engine não compila nem os scripts carregam IA |
 
 Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta + `../Viber`).
 
@@ -44,7 +46,7 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `data/*.json` | itens/loja, marcos, progressão, enigmas (`riddles.json`) e regras do juiz (`verdicts.json`); lidos por `rules.lua`/`shop.lua`/`landmarks.lua`/`riddle.lua`/`judge.lua` |
 | `editor/plugins/*.lua` | autoria do jogo no ViberEditor (quests, diálogos, itens, marcos, progressão, grip) |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
-| `assets/public/nlu/` | modelo NLU (GLiNER2 4-bit, LFS). `viber.nlu` na engine; relato de 1 palavra no fecho das quests |
+| `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `viber.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`viber.decision`) |
 | `ui/*.css` | HUD e menu |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
 | `config.yaml` | `assets.roots: assets/public` |
@@ -110,13 +112,17 @@ hitches, RSS). Detalhe: `../Viber/docs/PERFORMANCE.md`.
 
 ## Fluxo depois da separação
 
-Três checkouts irmãos, cada um com o seu remoto:
+Quatro checkouts irmãos, cada um com o seu remoto:
 
 | Repo | Papel |
 |------|--------|
 | `Vael` | Mundo, quests, scripts, pool `assets/`. Binários versionados vão em Git LFS |
 | `Viber` | Engine e editor (`editor/`). `~/.local/bin/viber` é um wrapper que segue o checkout |
 | `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
+| `CelerAI` | Modelos NLU/d1 (`models/`, LFS) e crates de inferência. O Viber compila-as por path-dep `../CelerAI/crates/*` |
+
+Clone novo de qualquer um precisa dos quatro irmãos lado a lado; no Vael,
+correr `tools/fetch_models.sh` uma vez (cria os symlinks `assets/public/{nlu,d1}`).
 
 `~/.local/bin/viber` é o `../Viber/scripts/viber-latest.sh`: tira um
 fingerprint das fontes da engine e só chama `cargo build --release` quando
