@@ -66,6 +66,25 @@ def parse_vec(text):
     return [float(v) for v in text.split()]
 
 
+def has_rotation(rot):
+    """`euler="0 28 0"` / `transform="rotation: 0 90 0"` / `rotation="quat"`.
+
+    O teste antigo procurava a SUBSTRING "rotation" no VALOR do atributo —
+    `euler="0 28 0"` nunca a contém, por isso os grupos rodados do mundo
+    (cave.minecart, village.cart) passavam em silêncio e a composição, que só
+    soma translações, auditava os filhos no sítio errado."""
+    if not rot:
+        return False
+    text = rot.split("rotation:")[-1].split(";")[0].strip()
+    try:
+        vals = [float(v) for v in text.split()]
+    except ValueError:
+        return True  # formato desconhecido: avisar na mesma
+    if len(vals) == 4:  # quaternion: identidade é 0 0 0 1
+        return any(abs(v) > 1e-6 for v in vals[:3]) or abs(vals[3] - 1.0) > 1e-6
+    return any(abs(v) > 1e-6 for v in vals)
+
+
 def has_descendant(el, tag):
     for child in el.iter(tag):
         return True
@@ -91,9 +110,9 @@ def walk_element(el, off, path, groups_out, ents_out, seen, depth):
             continue
         tr = child.get("translation")
         dx, dy, dz = parse_vec(tr) if tr else (0.0, 0.0, 0.0)
-        rot = child.get("transform") or child.get("euler") or ""
+        rot = child.get("transform") or child.get("euler") or child.get("rotation") or ""
         if tag == "Group":
-            if "rotation" in rot:
+            if has_rotation(rot):
                 print(f"AVISO: grupo com rotação em {path}: {child.attrib}", file=sys.stderr)
             ngo = (gx + dx, gy + dy, gz + dz)
             groups_out.append((path, child.get("name") or "", ngo))

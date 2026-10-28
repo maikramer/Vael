@@ -77,11 +77,13 @@ def hypsometric(norm: np.ndarray, slope: np.ndarray) -> np.ndarray:
     return out * (1.0 - rock) + stone * rock
 
 
-def hillshade(grid: np.ndarray, max_height: float) -> np.ndarray:
+def hillshade(grid: np.ndarray) -> np.ndarray:
     gy, gx = np.gradient(grid)
-    # Normais aproximadas (a grelha é regular em metros).
-    nx = -gx / max(max_height, 1.0)
-    ny = -gy / max(max_height, 1.0)
+    # Normais aproximadas: a grelha é regular em metros (célula ≈ 1 m), por
+    # isso o gradiente do heightmap JÁ É m/m. Dividir por `max_height` achava
+    # as normais (≤3,6° de inclinação no mundo inteiro) e o hillshade ficava
+    # quase constante — o relevo não aparecia no mapa.
+    nx, ny = -gx, -gy
     nz = np.ones_like(grid)
     length = np.sqrt(nx * nx + ny * ny + nz * nz)
     nx, ny, nz = nx / length, ny / length, nz / length
@@ -101,9 +103,12 @@ def main() -> None:
     grid, width, depth, max_height = load_ahgt(AHGT)
     norm = np.clip(grid / max(max_height, 1.0), 0.0, 1.0)
     gy, gx = np.gradient(grid)
-    slope = np.sqrt(gx * gx + gy * gy) / max(max_height, 1.0)
+    # m/m (célula ≈ 1 m): o `/max_height` antigo mantinha o fator de pedra
+    # abaixo de 0,15 mesmo nos falésios e "encostas íngremes puxam para
+    # pedra" nunca pintava.
+    slope = np.sqrt(gx * gx + gy * gy)
 
-    rgb = hypsometric(norm, slope) * hillshade(grid, max_height)[..., None]
+    rgb = hypsometric(norm, slope) * hillshade(grid)[..., None]
     rgb = np.clip(rgb, 0.0, 1.0)
     image = Image.fromarray((rgb * 255).astype(np.uint8), "RGB")
     image = image.resize((args.size, args.size), Image.Resampling.LANCZOS)
