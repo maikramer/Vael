@@ -42,17 +42,29 @@ function M.score(instructions, levels)
 end
 
 -- Rótulo humano de uma entidade, para as descrições das opções.
+-- `torch`/`sword` são kinds de equipamento (game/equipment.lua) e não vivem em
+-- `data/items.json`: sem o fallback para o primeiro alias o juiz perguntava
+-- "o herói equipou torch?" sobre uma ação registada como "equipou tocha".
+local function alias_table()
+  if not aliases then
+    local ok, data = pcall(viber.load_json, "data/nlu_aliases.json")
+    aliases = ok and type(data) == "table" and data or {}
+  end
+  return aliases
+end
+
 function M.label(kind, id)
   if kind == "item" then
-    return rules.item_label(id)
+    local label = rules.item_label(id)
+    if label ~= id then
+      return label
+    end
+    local list = alias_table().items and alias_table().items[id]
+    return (list and list[1]) or id
   elseif kind == "local" then
     return marks.label(id)
   elseif kind == "criatura" then
-    if not aliases then
-      local ok, data = pcall(viber.load_json, "data/nlu_aliases.json")
-      aliases = ok and type(data) == "table" and data or {}
-    end
-    local list = aliases.creatures and aliases.creatures[id]
+    local list = alias_table().creatures and alias_table().creatures[id]
     return (list and list[1]) or id
   end
   return id

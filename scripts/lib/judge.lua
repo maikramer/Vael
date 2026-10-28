@@ -28,9 +28,44 @@ local function load()
   end
   defs = {}
   local ok, data = pcall(viber.load_json, "data/verdicts.json")
-  if ok and type(data) == "table" then
-    for _, r in ipairs(data.rules or {}) do
-      defs[r.id] = r
+  if not ok or type(data) ~= "table" then
+    viber.log("juiz: falha a ler data/verdicts.json — sem veredictos"
+      .. (ok and "" or (" (" .. tostring(data) .. ")")))
+    return
+  end
+  for _, r in ipairs(type(data.rules) == "table" and data.rules or {}) do
+    -- `defs[r.id]` com r não-tabela (ou sem id) era "table index is nil" e
+    -- rebentava o primeiro [E] no altar, não só esta regra. Cada `require`
+    -- tem de ter kind/id strings: um requisito malformado rebentava o
+    -- `e.res[req.kind][req.id]` do `evaluate` (e o `forbid` no `evaluate_log`).
+    if type(r) == "table" and type(r.id) == "string" and r.id ~= "" then
+      local ok_rule = true
+      if type(r.require) ~= "table" and r.require ~= nil then
+        viber.log("juiz: regra '" .. r.id .. "' com require malformado — regra ignorada")
+        ok_rule = false
+      end
+      if ok_rule and type(r.forbid) ~= "table" and r.forbid ~= nil then
+        viber.log("juiz: regra '" .. r.id .. "' com forbid malformado — regra ignorada")
+        ok_rule = false
+      end
+      for _, req in ipairs(type(r.require) == "table" and r.require or {}) do
+        if type(req) ~= "table" or type(req.kind) ~= "string"
+            or type(req.id) ~= "string" then
+          viber.log("juiz: regra '" .. r.id .. "' com requisito malformado — regra ignorada")
+          ok_rule = false
+          break
+        end
+      end
+      for _, f in ipairs(type(r.forbid) == "table" and r.forbid or {}) do
+        if type(f) ~= "table" or type(f.kind) ~= "string" or type(f.id) ~= "string" then
+          viber.log("juiz: regra '" .. r.id .. "' com proibição malformada — regra ignorada")
+          ok_rule = false
+          break
+        end
+      end
+      if ok_rule then
+        defs[r.id] = r
+      end
     end
   end
 end
@@ -188,7 +223,11 @@ function M.evaluate(id)
           e.res = e.res or {}
           e.res[req.kind] = e.res[req.kind] or {}
           e.res[req.kind][req.id] = true
-          e.verb = req.verb
+          -- O verb do registo é a verdade (cada ação é gravada com o seu):
+          -- um falso positivo do d1 num requisito de OUTRO verb não pode
+          -- reescrevê-lo, senão `evaluate_log` casa o requisito errado e a
+          -- ordem (`order`) valida com uma marca que nunca aconteceu.
+          e.verb = e.verb or req.verb
         end
       end
       -- O registo já sabe o id/verb da ação: é a verdade determinística e
