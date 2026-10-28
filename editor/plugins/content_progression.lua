@@ -131,6 +131,18 @@ local function save_data(ctx)
       return
     end
   end
+  -- `rules.lua` aceita texto via `tonumber`, mas XP negativo (JSON à mão)
+  -- roubava XP a cada abate e passava sem aviso nenhum.
+  for kind, xp in pairs(state.data.kill_xp or {}) do
+    if type(xp) ~= "number" then
+      state.error = "kill_xp `" .. tostring(kind) .. "`: valor tem de ser um número"
+      return
+    end
+    if xp < 0 then
+      state.error = "kill_xp `" .. tostring(kind) .. "`: XP negativo"
+      return
+    end
+  end
   local data = copy(state.data)
   data.skills = ctx.editor.fs.json.array(data.skills)
   local ok, err = write_json(ctx, "data/progression.json", data)
@@ -382,6 +394,13 @@ local function lint(ctx)
     seen[id] = true
     if skill.requires and skill.requires ~= "" and not find_skill(skill.requires) then
       findings[#findings + 1] = { severity = "warning", kind = "progression", message = id .. ": requires inexistente: " .. tostring(skill.requires) }
+    end
+  end
+  for kind, xp in pairs(state.data.kill_xp or {}) do
+    if type(xp) ~= "number" then
+      findings[#findings + 1] = { severity = "warning", kind = "progression", message = "kill_xp " .. tostring(kind) .. ": valor não é um número" }
+    elseif xp < 0 then
+      findings[#findings + 1] = { severity = "error", kind = "progression", message = "kill_xp " .. tostring(kind) .. ": XP negativo" }
     end
   end
   return findings

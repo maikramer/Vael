@@ -114,6 +114,15 @@ local function save_data(ctx)
         state.error = "item `" .. id .. "`: preço negativo"
         return
       end
+    end
+  end
+  -- Préços 0/0 sem label tiram o item da banca — só DEPOIS de validar tudo:
+  -- dentro da validação, um item seguinte que falhasse deixava a memória
+  -- (loja já limpa) divergida do disco (nada gravado).
+  for _, item in ipairs(state.data.items) do
+    if type(item.shop) == "table" then
+      local buy = tonumber(item.shop.buy) or 0
+      local sell = tonumber(item.shop.sell) or 0
       if buy == 0 and sell == 0 and tostring(item.shop.label or "") == "" then
         item.shop = nil
       end
@@ -282,6 +291,13 @@ local function on_event(ctx, event)
       item.kind = event.value
       if event.value == "resource" then
         item.stack = tonumber(state.data.resource_cap) or 1000000
+      else
+        -- Voltar a item normal: o stack do recurso (1.000.000) ficava no
+        -- item e `rules.vault_add` usa `def.stack` como teto real.
+        local stack_max = tonumber(state.data.stack_max) or 99
+        if (tonumber(item.stack) or 0) > stack_max then
+          item.stack = stack_max
+        end
       end
     elseif event.id == "stack" then
       item.stack = tonumber(event.value) or 1

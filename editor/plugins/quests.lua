@@ -211,6 +211,17 @@ local function validate_quest(ctx, quest, ignore_id)
   if trim(quest.title) == "" then
     problems[#problems + 1] = "title vazio"
   end
+  -- Um campo de falas a texto (edição à mão) fazia `fs.json.array` rebentar
+  -- no save (erro do Luau no callback, sem mensagem no painel).
+  for _, field in ipairs(LINE_FIELDS) do
+    if quest[field] ~= nil and type(quest[field]) ~= "table" then
+      problems[#problems + 1] = field .. " tem de ser uma lista de falas"
+    end
+  end
+  if type(quest.rewards) == "table" and quest.rewards.items ~= nil
+    and type(quest.rewards.items) ~= "table" then
+    problems[#problems + 1] = "rewards.items tem de ser uma lista"
+  end
   local biome = trim(quest.biome)
   local biome_ok = false
   for _, known in ipairs(BIOMES) do
@@ -317,19 +328,63 @@ local function validate_quest(ctx, quest, ignore_id)
   return problems
 end
 
+-- O jogo só carrega o que está em `quests/index.json` (`rules.lua`);
+-- README e engine prometem que é o editor quem mantém a lista. Sem isto,
+-- um ficheiro novo (ou retirado do índice à mão) era editável aqui mas
+-- invisível ao jogo.
+local function ensure_index(ctx, file_name)
+  local index = read_json(ctx, "quests/index.json")
+  if type(index) ~= "table" then
+    index = {}
+  end
+  for _ in pairs(index) do
+    if index[1] == nil then
+      return false, "quests/index.json não é uma lista; não toquei nele"
+    end
+    break
+  end
+  for _, name in ipairs(index) do
+    if name == file_name then
+      return true
+    end
+  end
+  index[#index + 1] = file_name
+  table.sort(index)
+  local text, err = ctx.editor.fs.json.encode(ctx.editor.fs.json.array(index), true)
+  if not text then
+    return false, err
+  end
+  return ctx.editor.fs.write("quests/index.json", text)
+end
+
 local function save_file(ctx, file)
   local quests = {}
   for _, quest in ipairs(file.quests) do
     local out = copy(quest)
     for _, field in ipairs(LINE_FIELDS) do
-      out[field] = ctx.editor.fs.json.array(out[field] or {})
+      if type(out[field]) ~= "table" then
+        out[field] = {}
+      end
+      out[field] = ctx.editor.fs.json.array(out[field])
     end
     if type(out.rewards) == "table" then
-      out.rewards.items = ctx.editor.fs.json.array(out.rewards.items or {})
+      if type(out.rewards.items) ~= "table" then
+        out.rewards.items = {}
+      end
+      out.rewards.items = ctx.editor.fs.json.array(out.rewards.items)
     end
     quests[#quests + 1] = out
   end
-  return write_json(ctx, file.path, ctx.editor.fs.json.array(quests))
+  local ok, err = write_json(ctx, file.path, ctx.editor.fs.json.array(quests))
+  if not ok then
+    return false, err
+  end
+  local indexed, index_err = ensure_index(ctx, file.name)
+  if not indexed then
+    -- A quest gravou; sem o índice o jogo não a vê — avisa em vez de calar.
+    return true, "gravado, mas " .. tostring(index_err or "falhou o quests/index.json")
+  end
+  return true
 end
 
 local function save_draft(ctx)
@@ -363,7 +418,11 @@ local function save_draft(ctx)
   state.error = nil
   ctx.editor.prefs.set("quests.file", file.name)
   ctx.editor.prefs.set("quests.id", draft.id)
-  ctx.editor.toast("success", "Quest gravada: " .. draft.id)
+  if err then
+    ctx.editor.toast("warn", err)
+  else
+    ctx.editor.toast("success", "Quest gravada: " .. draft.id)
+  end
 end
 
 local function delete_draft(ctx)
@@ -375,17 +434,29 @@ local function delete_draft(ctx)
     state.pending_delete = state.selected
     return
   end
-  for index, quest in ipairs(file.quests) do
+  local index = nil
+  for i, quest in ipairs(file.quests) do
     if quest.id == state.selected then
-      table.remove(file.quests, index)
+      index = i
       break
     end
   end
-  save_file(ctx, file)
+  local removed = index and table.remove(file.quests, index) or nil
+  local ok, err = save_file(ctx, file)
+  if not ok then
+    -- A gravação falhou: repor a quest em memória. Sem isto a lista já a
+    -- tinha perdido e a PRÓXIMA gravação do ficheiro apagava-a do disco.
+    if removed then
+      table.insert(file.quests, index, removed)
+    end
+    state.error = err or "falha a gravar"
+    state.pending_delete = nil
+    return
+  end
   state.draft = nil
   state.selected = nil
   state.pending_delete = nil
-  state.error = nil
+  state.error = err
   ctx.editor.toast("success", "Quest apagada.")
 end
 
@@ -553,10 +624,24 @@ local function render(ctx)
   }
 
   local items = {}
-  for _, quest in ipairs(filtered_quests()) do
+  local used = {}
+  for index, quest in ipairs(filtered_quests()) do
+    -- Quests sem id (ou repetidas) não podem rebentar o painel inteiro
+    -- (`ui: falta id` / "id interativo duplicado" virava um card de erro):
+    -- ids sintéticos únicos deixam ver e selecionar as restantes.
+    local id = tostring(quest.id or "")
+    if id == "" then
+      id = "sem_id"
+    end
+    local base, n = id, index
+    while used[id] do
+      id = base .. "_" .. n
+      n = n + 1
+    end
+    used[id] = true
     items[#items + 1] = {
-      id = quest.id,
-      label = (quest.title or "") .. "  ·  " .. tostring(quest.id),
+      id = id,
+      label = (quest.title or "") .. "  ·  " .. tostring(quest.id or "(sem id)"),
     }
   end
   children[#children + 1] = {

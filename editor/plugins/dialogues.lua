@@ -168,6 +168,32 @@ local function save_graph(ctx)
     state.error = "`start` vazio"
     return
   end
+  -- Portões duros antes de escrever: gravava grafos com `start` caído,
+  -- nós sem id e `goto` pendurados (o delete de nó não reescrevia os
+  -- `goto` que apontavam para ele) — o jogo apanhava o grafo partido.
+  local nodes = type(state.graph.nodes) == "table" and state.graph.nodes or {}
+  if not nodes[state.graph.start] then
+    state.error = "`start` aponta para um nó inexistente: " .. tostring(state.graph.start)
+    return
+  end
+  for id, node in pairs(nodes) do
+    if trim(tostring(id)) == "" then
+      state.error = "há um nó com id vazio"
+      return
+    end
+    local choices = type(node) == "table" and node.choices or nil
+    if choices ~= nil and type(choices) ~= "table" then
+      state.error = "nó `" .. tostring(id) .. "`: choices tem de ser uma lista"
+      return
+    end
+    for _, choice in ipairs(choices or {}) do
+      local goto = trim(tostring(type(choice) == "table" and choice.goto or ""))
+      if goto ~= "" and not nodes[goto] then
+        state.error = "nó `" .. tostring(id) .. "`: goto inexistente: " .. goto
+        return
+      end
+    end
+  end
   if state.original_node_id and state.selected_node ~= state.original_node_id then
     local old = state.original_node_id
     local new = state.selected_node
@@ -196,7 +222,10 @@ local function save_graph(ctx)
   out.nodes = {}
   for id, node in pairs(state.graph.nodes) do
     local clean = copy(node)
-    clean.choices = ctx.editor.fs.json.array(clean.choices or {})
+    if type(clean.choices) ~= "table" then
+      clean.choices = {}
+    end
+    clean.choices = ctx.editor.fs.json.array(clean.choices)
     out.nodes[id] = clean
   end
   local ok, err = write_json(ctx, file.path, out)
@@ -222,6 +251,12 @@ local function validate_graph(ctx, graph, dialogue_id)
     if type(node) ~= "table" then
       problems[#problems + 1] = id .. ": nó não é uma tabela"
     else
+      if trim(tostring(id)) == "" then
+        problems[#problems + 1] = "nó com id vazio"
+      end
+      if node.choices ~= nil and type(node.choices) ~= "table" then
+        problems[#problems + 1] = id .. ": choices tem de ser uma lista"
+      end
       local text = tostring(node.text or "")
       if text == "" then
         problems[#problems + 1] = id .. ": texto vazio"
@@ -410,6 +445,7 @@ local function on_event(ctx, event)
     state.selected_node = nil
     state.original_node_id = nil
     state.choice_index = nil
+    state.pending_delete = nil
     state.error = nil
     ctx.editor.prefs.set("dialogues.file", event.value)
     return

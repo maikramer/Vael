@@ -44,8 +44,10 @@ end
 local function load_quests(ctx)
   local files = {}
   local quests = {}
+  local indexed = {}
   local index = read_json(ctx, "quests/index.json") or {}
   for _, name in ipairs(index) do
+    indexed[name] = true
     local list = read_json(ctx, "quests/" .. name)
     files[#files + 1] = { name = name, quests = list or {} }
     for _, quest in ipairs(list or {}) do
@@ -54,7 +56,7 @@ local function load_quests(ctx)
       end
     end
   end
-  return files, quests
+  return files, quests, indexed
 end
 
 local function load_dialogues(ctx)
@@ -91,7 +93,17 @@ local function validate(ctx)
 
   local items = load_items(ctx)
   local landmarks = load_landmarks(ctx)
-  local files, quests = load_quests(ctx)
+  local files, quests, indexed = load_quests(ctx)
+  -- Um ficheiro na pasta mas fora do índice é editável nos plugins mas o
+  -- jogo NUNCA o carrega (`rules.lua` lê quests/index.json): tudo o que
+  -- lá estava passava em silêncio.
+  for _, entry in ipairs(ctx.editor.fs.list("quests") or {}) do
+    if not entry.dir and entry.name:match("%.json$")
+      and entry.name ~= "index.json" and not indexed[entry.name] then
+      add("error", "quest-index",
+        entry.name .. " não está em quests/index.json (o jogo não carrega estas quests)")
+    end
+  end
   local quest_ids = {}
   for _, entry in ipairs(quests) do
     local quest = entry.quest
