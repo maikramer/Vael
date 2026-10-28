@@ -64,11 +64,16 @@ end
 
 local TARGET_LABEL = {
   wolf = "lobos", bandit = "bandidos", goblin = "goblins", shade = "sombras",
-  slime = "limos", scorpion = "escorpiões", bogling = "boglings",
+  -- "slimes": o nome que os JSONs de quests e os aliases do NLU usam
+  -- ("Slimes de gelo"); "limos" não existe em mais nenhum sítio do jogo.
+  slime = "slimes", scorpion = "escorpiões", bogling = "boglings",
   witch = "a Bruxa do Bosque", ["sand-worm"] = "o Verme da Areia",
   ["bog-warden"] = "o Guardião do Lodo", boss = "o Ogro dos Picos",
   stone = "pedras", wood = "madeira", ["dark-wood"] = "madeira escura",
   ["bog-moss"] = "musgo do pântano", nota = "Notas",
+  -- Alvos das quests de decisão (decision_quests.json, `type: "decision"`).
+  enviado = "o Enviado de Vidro", sino = "a Sineira Afogada",
+  defender = "a Testemunha de Vidro",
 }
 
 local function target_label(target)
@@ -91,6 +96,9 @@ local function objective_line(def, state)
   if kind == "kill" then return "derrotar " .. count .. "× " .. target end
   if kind == "collect" then return "reunir " .. count .. "× " .. target end
   if kind == "visit" then return "visitar " .. count .. " locais" end
+  -- Quests de decisão (decision-quest.lua): sem esta linha o diário
+  -- mostrava o kind cru em inglês ("decision · Discórdia").
+  if kind == "decision" then return "convencer " .. target end
   return kind
 end
 
