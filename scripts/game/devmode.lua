@@ -194,7 +194,10 @@ local function update_fly(dt)
     - (viber.input.down("left") and 1 or 0)
   local look_y = (viber.input.down("up") and 1 or 0)
     - (viber.input.down("down") and 1 or 0)
-  fly.yaw = fly.yaw + look_x * YAW_SPEED * dt
+  -- Virar à DIREITA diminui o yaw: forward = (sin yaw, cos yaw) e o steering
+  -- nativo também subtrai (`cam.yaw_deg -= move_x * …` em player.rs). Com
+  -- `+` a seta direita virava a vista para a ESQUERDA do ecrã.
+  fly.yaw = fly.yaw - look_x * YAW_SPEED * dt
   fly.pitch = clamp(fly.pitch + look_y * PITCH_SPEED * dt, -MAX_PITCH, MAX_PITCH)
 
   local move_x = (viber.input.down("d") and 1 or 0)
@@ -205,12 +208,14 @@ local function update_fly(dt)
     - ((viber.input.down("lctrl") or viber.input.down("rctrl")) and 1 or 0)
 
   local fx, fy, fz = view_forward(fly)
-  -- Direita do ecrã no plano: up × forward = (cos yaw, 0, -sin yaw).
+  -- Direita do ecrã no plano: forward × up = (-cos yaw, 0, sin yaw) — a mão
+  -- que o strafe nativo usa (`process_input` com strafe positivo). up ×
+  -- forward dava o lado ESQUERDO e D/A andavam ao contrário do ecrã.
   local cy = math.cos(math.rad(fly.yaw))
   local sy = math.sin(math.rad(fly.yaw))
-  local dx = fx * move_z + cy * move_x
+  local dx = fx * move_z - cy * move_x
   local dy = fy * move_z + move_y
-  local dz = fz * move_z - sy * move_x
+  local dz = fz * move_z + sy * move_x
   local len = math.sqrt(dx * dx + dy * dy + dz * dz)
   if len > 1e-6 then
     dx, dy, dz = dx / len, dy / len, dz / len
