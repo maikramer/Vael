@@ -81,6 +81,16 @@ function on_update(dt)
     st.cd = { dash = 0, heal = 0, strike = 0 }
   end
   st.playtime = playtime
+  -- Título aberto ou cena de menu (acampamento atrás do véu): C/E/R/B/L são
+  -- da UI. O `viber.menu_open()` não cobre o título — o hotbar e o
+  -- equipamento já tinham o portão (o [1] gastava uma poção por cima do
+  -- título), mas as habilidades ficaram de fora: o [B] gastava uma bomba do
+  -- jogo anterior e o [R] matava criaturas atrás do véu.
+  if (viber.scene_name and viber.scene_name() == "menu")
+      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+    publish_cooldowns(st.cd)
+    return
+  end
   -- Diário, profiler (`profiler-win`, não "profiler"), mapa [M], viagem [G]
   -- e cinemática. `menu_open()` cobre os cinco: o resto do mundo pára
   -- (criaturas, rastilho da bomba, veneno), por isso as recargas também não

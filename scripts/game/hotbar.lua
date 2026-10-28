@@ -27,18 +27,20 @@ end
 function on_update(dt)
   local st = viber.state()
   -- Novo Jogo / save de outra partida: as recargas não vêm do jogo antigo.
-  local sid = tonumber(viber.game().session_id) or 0
-  if st.session ~= sid then
+  local game = viber.game()
+  local sid = tonumber(game.session_id) or 0
+  -- Um LOAD na MESMA cena mantém o `session_id` e o relógio da engine é o
+  -- uptime (NUNCA recua — o teste `st.clock` abaixo nunca disparava e a
+  -- recarga da linha temporal abandonada seguia para o jogo carregado). O
+  -- sinal certo, o mesmo de rules/abilities/bomb-lua, é o tempo de JOGO a
+  -- recuar (`playtime_secs`).
+  local playtime = tonumber(game.playtime_secs) or 0
+  local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
+  if st.session ~= sid or loaded then
     st.session = sid
     st.cd = 0
   end
-  -- Relógio para trás = load: as recargas da sessão anterior não valem no
-  -- jogo carregado (senão a poção ficava 1 s presa, ou mais com o dash).
-  local now = viber.time()
-  if st.clock and now < st.clock then
-    st.cd = 0
-  end
-  st.clock = now
+  st.playtime = playtime
   st.cd = math.max(0, (st.cd or 0) - dt)
   -- Título/menu aberto: 1/2 são da UI e o herói está parado atrás do véu.
   -- Sem isto, [1] gastava uma poção do jogo anterior por cima do título.

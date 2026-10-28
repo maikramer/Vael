@@ -434,6 +434,17 @@ function on_update(dt)
     reap_saved(st)
   end
   st.cooldown = math.max(0, (st.cooldown or 0) - dt)
+  -- Título aberto (vive sobre `main` no arranque directo): [J] é da UI e o
+  -- herói está parado atrás do véu. Sem o portão, machado/picareta batiam
+  -- por baixo do título — XP e itens para uma partida que nem começou.
+  -- (`viber.menu_open()` já cobre diário/mapa/cinemática; o título não.)
+  if (viber.scene_name and viber.scene_name() == "menu")
+      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+    st.swing = nil
+    publish_tool(st, nil)
+    publish(st, nil)
+    return
+  end
   -- Menu aberto ou herói caído: o golpe que estava armado não aterra por
   -- baixo (antes o `impact` corria primeiro e a árvore caía com o diário
   -- aberto ou depois da morte).

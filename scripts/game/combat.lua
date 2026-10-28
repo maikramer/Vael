@@ -7,9 +7,9 @@
 -- Aqui vive a regra: passos 0→1→2→0, janela da chain, buffer curto, dano,
 -- crítico, costas, combo, execução e o feedback do impacto.
 --
--- Corre num controller `tag="always-active"` (`world/gameplay.xml`), por
--- isso `viber.play_clip`/`entity_*` levam o id do HERÓI — o controller não
--- tem rig.
+-- Corre num controller `tag="always-active"` (`world/autoload/player.xml`),
+-- por isso `viber.play_clip`/`entity_*` levam o id do HERÓI — o controller
+-- não tem rig.
 
 local rules = viber.load("lib/rules.lua")
 
@@ -328,6 +328,19 @@ function on_update(dt)
     st.buffer_queued = false
   end
 
+  -- Título aberto (vive sobre `main` no arranque directo) ou cena de menu:
+  -- o [J]/rato são da UI e o herói está parado atrás do véu. Sem o portão,
+  -- a espada golpeia e mata por baixo do título — XP/loot para uma partida
+  -- que nem começou. (`viber.menu_open()` cobre diário/mapa/cinemática; o
+  -- título e a cena de menu não.) O hotbar, o equipamento, a bomba, as
+  -- habilidades e a colheita têm o mesmo portão.
+  if (viber.scene_name and viber.scene_name() == "menu")
+      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+    st.swing = nil
+    st.buffer_queued = false
+    st.buffer_t = 0
+    return
+  end
   if viber.menu_open() then
     -- Um golpe pendente não pode aterrar depois de fechar o menu, muito
     -- depois da animação/posição que o originou.
@@ -405,8 +418,11 @@ function on_update(dt)
     end
     if shown then
       show_target(TARGET_NAME[shown.kind or ""] or shown.kind, shown.hp, shown.max)
-    elseif st.target ~= nil then
-      st.target = nil
+    else
+      -- O alvo morreu/saiu do raio sem um lock novo: o cartão tem de sair.
+      -- O antigo `elseif st.target ~= nil` era código morto — `st.target` já
+      -- tinha sido posto a nil no `if not shown` acima e a limpeza nunca
+      -- corria (o cartão ficava preso no HUD com o nome/vida do morto).
       viber.ui.set("target", 0)
       viber.ui.set("target.alive", false)
       viber.ui.set("target.name", "")

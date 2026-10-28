@@ -119,6 +119,10 @@ function on_update(dt)
       -- na transição, para cobrir também a abertura pela tecla nativa (f7).
       viber.ui.open("region-map", false)
       viber.ui.open("travel", false)
+      -- O profiler vive na mesma situação (herói pode morrer a profilá-lo):
+      -- escondido pelo véu, sobrevivia à saída para o título e bloqueava as
+      -- Definições (o título espera que ele feche antes de voltar).
+      viber.ui.open("profiler-win", false)
       viber.ui.set_visible("hud", false)
     elseif not viber.ui.is_open("title") then
       viber.ui.set_visible("hud", true)
