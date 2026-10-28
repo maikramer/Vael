@@ -29,15 +29,33 @@ local function typing()
   return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
 end
 
+-- O mesmo fold do `parley.strip` (minúsculas, acentos, pontuação, espaços).
+-- O `raw` do parley chega SEM acentos e o label autoral mantém-nos, por isso
+-- o caminho `exact` ("Atalaia do Pântano" == "atalaia do pântano") quase nunca
+-- disparava e o pin ficava com o marco mais PRÓXIMO do conjunto em vez do nome.
+local function fold(s)
+  s = tostring(s or ""):lower()
+  s = s:gsub("á", "a"):gsub("à", "a"):gsub("â", "a"):gsub("ã", "a"):gsub("ä", "a")
+  s = s:gsub("é", "e"):gsub("è", "e"):gsub("ê", "e"):gsub("ë", "e")
+  s = s:gsub("í", "i"):gsub("ì", "i"):gsub("î", "i"):gsub("ï", "i")
+  s = s:gsub("ó", "o"):gsub("ò", "o"):gsub("ô", "o"):gsub("õ", "o"):gsub("ö", "o")
+  s = s:gsub("ú", "u"):gsub("ù", "u"):gsub("û", "u"):gsub("ü", "u")
+  s = s:gsub("ç", "c")
+  s = s:gsub("%p", " ")
+  s = s:gsub("[-_]", " ")
+  s = s:gsub("%s+", " ")
+  return (s:gsub("^%s+", ""):gsub("%s+$", ""))
+end
+
 -- "Perguntar por um lugar": o d1 resolve frases; os aliases autorais
 -- resolvem uma palavra solta ("poço", "atalaia") que o `choice` rejeita.
 local function alias_place(text)
   local res = parley.resolve(text, nil)
-  local raw = tostring(res.raw or ""):lower()
+  local raw = fold(res.raw)
   local best, best_d, exact
   local has, px, _, pz = viber.player_position()
   for id in pairs(res["local"] or {}) do
-    local label = tostring(marks.label(id)):lower()
+    local label = fold(marks.label(id))
     if raw ~= "" and label == raw and not exact then
       exact = id
     end
@@ -151,9 +169,16 @@ end
 local BALLOON_SECS = 4.0 -- `hud::BALLOON_DURATION`: o balão nativo dura 4 s
 
 local function show_dialogue(st)
-  local body = node_body(st.graph, cursor(st))
+  local body, node = node_body(st.graph, cursor(st))
   if body then
     viber.say(body)
+    -- `voice` é campo documentado no README de dialogues/ (clip de SFX
+    -- opcional por nó); nenhum leitor o tocava — a doc era inerte. Um clip
+    -- desconhecido é erro de script com warn 1× (a conversa sobrevive).
+    local voice = node and node.voice
+    if type(voice) == "string" and voice ~= "" then
+      viber.sound(voice)
+    end
     viber.gesture("talk")
     -- A hotbar também lê 1/2: enquanto o BALÃO está no ecrã, os dígitos são
     -- escolhas e não poção/antídoto. Depois de 4 s a conversa expira (antes
