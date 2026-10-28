@@ -613,7 +613,13 @@ function M.new(cfg)
       -- Engajamento NOVO: a cadência do arco e a fuga recomeçam. Sem isto um
       -- alvo que saiu do raio e voltou (LOD/viagem rápida) encontrava o tiro
       -- já "carregado" pelo engajamento anterior e levava a flecha no frame.
-      st.rt, st.flee_t, st.flee_d = nil, 0, nil
+      -- A cadência CORPO A CORPO (`st.t`) tem o mesmo problema e era a única
+      -- que atravessava o engajamento: quem voltava ao alcance com `st.t`
+      -- quase no cooldown levava o golpe logo no primeiro frame de contacto
+      -- (o flinch do stagger e o cancel do windup zeravam, mas uma SAÍDA
+      -- limpa deixava a carga). `nil`, e não 0, para o 1.º golpe sair a meio
+      -- da cadência, como no primeiro avistamento.
+      st.rt, st.flee_t, st.flee_d, st.t = nil, 0, nil, nil
       if cfg.intro then
         local key = "cine_" .. cfg.intro
         if not g[key] then
