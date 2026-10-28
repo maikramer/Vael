@@ -75,27 +75,39 @@ local function build()
 
   local ok_alias, alias = pcall(viber.load_json, "data/nlu_aliases.json")
   if not ok_alias or type(alias) ~= "table" then
+    -- Sem aliases o resolver degrada para os labels autorais em silêncio:
+    -- o relato de 1 palavra das quests deixava de funcionar sem explicação.
+    viber.log("parley: falha a ler data/nlu_aliases.json — só labels autorais"
+      .. (ok_alias and "" or (" (" .. tostring(alias) .. ")")))
     alias = {}
   end
   for word, value in pairs(alias.numbers or {}) do
     numbers[strip(word)] = tonumber(value)
   end
+  -- `type(list) == "table"`: um alias com valor escalar (edição à mão)
+  -- rebentava o `ipairs` aqui e o erro subia pelo `resolve` para sempre.
   for id, list in pairs(alias.creatures or {}) do
-    add("criatura", id, id)
-    for _, a in ipairs(list) do
-      add("criatura", id, a)
+    if type(list) == "table" then
+      add("criatura", id, id)
+      for _, a in ipairs(list) do
+        add("criatura", id, a)
+      end
     end
   end
   for id, list in pairs(alias.items or {}) do
-    add("item", id, id)
-    for _, a in ipairs(list) do
-      add("item", id, a)
+    if type(list) == "table" then
+      add("item", id, id)
+      for _, a in ipairs(list) do
+        add("item", id, a)
+      end
     end
   end
   for id, list in pairs(alias.places or {}) do
-    add("local", id, id)
-    for _, a in ipairs(list) do
-      add("local", id, a)
+    if type(list) == "table" then
+      add("local", id, id)
+      for _, a in ipairs(list) do
+        add("local", id, a)
+      end
     end
   end
 

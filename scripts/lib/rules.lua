@@ -140,6 +140,11 @@ local function ensure_xp()
   if not finite(game.xp_next) or game.xp_next < 1 then game.xp_next = XP_BASE end
   if not finite(game.level) or game.level < 1 then game.level = 1 end
   if not finite(game.skill_points) or game.skill_points < 0 then game.skill_points = 0 end
+  -- Um save editado à mão com 3.5 níveis (ou 1.5 pontos) entrava assim no
+  -- `save_title` ("nível 3.5") e na carteira do HUD; o nível fracionário
+  -- arrastava-se para sempre porque as subidas somam 1 inteiro.
+  game.level = math.floor(game.level)
+  game.skill_points = math.floor(game.skill_points)
 end
 
 -- O save é JSON PLANO: uma tabela `spawn_pos` era descartada em silêncio e o
@@ -432,18 +437,26 @@ end
 
 local function grant_rewards(def)
   local rewards = def.rewards or {}
-  if rewards.gold and rewards.gold > 0 then
-    M.vault_add("gold", rewards.gold)
+  -- `tonumber`: o resto deste módulo tolera JSON editado à mão (`.need`,
+  -- `playtime_secs`, `venom_tick`…); um `gold: "50"` textual comparava
+  -- string com número, rebentava a entrega APÓS o estado `done` e o
+  -- jogador perdia o ouro, o XP e o toast.
+  local gold = tonumber(rewards.gold) or 0
+  if gold > 0 then
+    M.vault_add("gold", gold)
   end
-  if rewards.xp and rewards.xp > 0 then
-    M.add_xp(rewards.xp)
+  local xp = tonumber(rewards.xp) or 0
+  if xp > 0 then
+    M.add_xp(xp)
   end
   -- Devolve quantos itens NÃO couberam (tecto de 99 por stack): o toast de
   -- entrega dizia "+5 poções" e a mochila só aceitava 2, em silêncio.
   local missing = 0
   if type(rewards.items) == "table" then
     for _, item in ipairs(rewards.items) do
-      local name, count = tostring(item):match("^([^:]+):?(%d*)$")
+      -- Espaços tolerados ("potion: 3"): a âncora `$` falhava e a
+      -- recompensa caía fora em silêncio (item perdido sem aviso nenhum).
+      local name, count = tostring(item):match("^%s*([^:]-)%s*:?%s*(%d*)%s*$")
       local want = tonumber(count) or 1
       if name and name ~= "" and want > 0 then
         local added = M.item_add(name, want) or 0
@@ -725,7 +738,14 @@ function M.scan_visits()
     if M.quest_state(def.id) == "active" then
       local obj = objective(def)
       if obj.type == "visit" then
-        local radius = obj.radius or 12
+        -- `tonumber`: um `radius` textual/não finito num JSON editado à mão
+        -- rebentava (`"12" * "12"` até ia, mas `true`/tabela não) e o erro
+        -- subia pelo `tick` TODOS os frames — vida, quests e autosave
+        -- congelados. O `count` do objetivo já é convertido em `count_of`.
+        local radius = tonumber(obj.radius) or 12
+        if not finite(radius) or radius <= 0 then
+          radius = 12
+        end
         for token in tostring(obj.target or ""):gmatch("%S+") do
           if g()[qkey(def.id) .. ".v." .. token] ~= true then
             local id = viber.find(token)
@@ -1089,7 +1109,10 @@ function M.poisoned()
 end
 
 function M.kill_xp(kind)
-  return KILL_XP[kind] or KILL_XP_DEFAULT
+  -- `tonumber`: um `kill_xp.wolf: "20"` textual (JSON editado à mão) passava
+  -- pelo `finite` do `add_xp` como não-numérico e o abate deixava de dar XP,
+  -- em silêncio. O `default` já era convertido assim no arranque do módulo.
+  return tonumber(KILL_XP[kind]) or KILL_XP_DEFAULT
 end
 
 function M.award_kill(kind, id)

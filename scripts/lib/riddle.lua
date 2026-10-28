@@ -25,13 +25,18 @@ local function load()
   defs, by_site = {}, {}
   local ok, data = pcall(viber.load_json, "data/riddles.json")
   if not ok or type(data) ~= "table" then
-    viber.log("enigmas: falha a ler data/riddles.json")
+    viber.log("enigmas: falha a ler data/riddles.json"
+      .. (ok and "" or (" (" .. tostring(data) .. ")")))
     return
   end
   for _, r in ipairs(data.riddles or {}) do
-    defs[r.id] = r
-    if r.site and r.site ~= "" then
-      by_site[r.site] = r
+    -- Entrada primária (edição à mão): `defs[r.id]` com r não-tabela era
+    -- "table index is nil" e rebentava o primeiro [E] em qualquer santuário.
+    if type(r) == "table" and type(r.id) == "string" and r.id ~= "" then
+      defs[r.id] = r
+      if type(r.site) == "string" and r.site ~= "" then
+        by_site[r.site] = r
+      end
     end
   end
 end

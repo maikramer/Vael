@@ -16,8 +16,10 @@ local DATA = (function()
 end)()
 
 M.CAMPFIRE_RANGE = tonumber(DATA.campfire_range) or 14
-M.BIOME_LABEL = DATA.biome_labels or {}
-M.LIST = DATA.landmarks or {}
+-- `type(...) == "table"`: um campo escalar (edição à mão) fazia o `ipairs`
+-- dos consumidores (`label`, travel, mapa) rebentar a cada frame.
+M.BIOME_LABEL = type(DATA.biome_labels) == "table" and DATA.biome_labels or {}
+M.LIST = type(DATA.landmarks) == "table" and DATA.landmarks or {}
 
 function M.marked_key(name)
   return "mark." .. name

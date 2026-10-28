@@ -47,8 +47,13 @@ local function known_count(id, puzzle)
   return n
 end
 
+-- `required` maior do que as pistas existentes era um soft-lock: o jogador
+-- nunca chegava a `all_known` e o NPC nunca abria o desfecho. Clamp ao nº de
+-- pistas; 0 pistas mantém o mínimo de 1 (conteúdo partido fica visível).
 local function required(puzzle)
-  return math.max(1, tonumber(puzzle.required) or #(puzzle.clues or {}))
+  local clues = #(puzzle.clues or {})
+  local n = tonumber(puzzle.required) or clues
+  return math.max(1, math.min(math.floor(n), math.max(1, clues)))
 end
 
 local function all_known(id, puzzle)
@@ -192,6 +197,10 @@ function on_update(_dt)
   if not puzzle then
     local ok, data = pcall(viber.load_json, "data/quest_puzzles/" .. id .. ".json")
     if not ok or type(data) ~= "table" then
+      -- Sem aviso o NPC ficava mudo (sem prompt de interação) e parecia bug
+      -- de engine; o log diz o ficheiro e o motivo.
+      viber.log("puzzle: falha a ler data/quest_puzzles/" .. id .. ".json — NPC sem diálogo"
+        .. (ok and "" or (" (" .. tostring(data) .. ")")))
       return
     end
     puzzle = data
