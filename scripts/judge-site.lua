@@ -7,6 +7,7 @@
 --@export verdict_id: string = ""
 
 local judge = viber.load("lib/judge.lua")
+local rules = viber.load("lib/rules.lua")
 
 local function set_prompt(done)
   viber.set_interaction(done and "O altar está satisfeito" or "Prestar contas ao altar", "e", 3.0)
@@ -23,6 +24,13 @@ function on_update(dt)
     end
   end
   if st.id == "" or viber.menu_open() then
+    return
+  end
+  -- Herói caído: o modal de morte só abre ao fim dos 2,2 s de `dying`, e
+  -- nessa janela o [E] ainda chega aqui. O altar não julga (nem paga o XP/
+  -- itens do veredicto) a um cadáver — o mesmo portão do baú e dos POIs.
+  local alive, hp = rules.player_hp()
+  if alive and hp <= 0 then
     return
   end
   local done = judge.solved(st.id)

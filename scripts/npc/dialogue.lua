@@ -53,6 +53,13 @@ function on_update(_dt)
   if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
     return
   end
+  -- Herói caído: o modal de morte só abre ao fim dos 2,2 s de `dying`, e
+  -- nessa janela o [E] ainda chega aqui. O dador não aceita/entrega missão
+  -- (ouro, XP, itens) a um cadáver — o mesmo portão do quadro de avisos.
+  local alive, hp = rules.player_hp()
+  if alive and hp <= 0 then
+    return
+  end
   viber.face_player()
   viber.gesture("talk")
   local have, need = 0, 1
