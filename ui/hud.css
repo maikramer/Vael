@@ -215,7 +215,11 @@
   #hud .resource .resource-label { font-size: 8 }
   #hud .resource uitext { font-size: 10 }
   #hud #hp-text { font-size: 17 }
-  #hud .xp-pop { display: none }
+  /* O `.shown` também: `#hud .xp-pop` (1,1,0) perdia para
+     `#hud .xp-pop.shown` (1,2,0) e o pop continuava a nascer em janelas
+     estreitas apesar desta regra. */
+  #hud .xp-pop,
+  #hud .xp-pop.shown { display: none }
   #hud .quest-fresh.fresh .quest-card { border-color: #b7a47770 }
   #hud #quest-title { font-size: 12 }
   #hud #quest-count { font-size: 10 }
