@@ -28,9 +28,15 @@ text2d:
   width: 768
   height: 768
 text2sound:
-  quality: high
+  # highest = 24 steps + OGG 0.85 + mastering -14 LUFS. O regen_audio.py baixa
+  # os one-shots para -16 LUFS/-1 dBTP por conta própria.
+  quality: highest
   audio_format: ogg
 text3d:
+  # hq = 50 steps + octree base 384 (o bbox_tune por size_m continua a mandar
+  # no octree final). Sem preset, o optimizer do batch cortava os steps para
+  # 30 por target — shapes com metade do sampling dos originais.
+  preset: hq
   export_origin: feet
   bounds_mode: auto
   mc_level: auto
@@ -47,8 +53,12 @@ animator3d:
 lod:
   rig_max_level: 2
   # Pós-lod automático: text3d patch-pbr garante normal+AO em todos os níveis
-  # (idempotente; derivados do albedo via Materialize). 0 desliga.
-  patch_pbr: true
+  # (derivados do albedo via Materialize). DESLIGADO: cada bordo de ilha UV do
+  # atlas vira uma aresta normal/AO falsa — as costuras visíveis nos modelos.
+  patch_pbr: false
 paint3d:
   preserve_origin: true
   texture_size: 2048
+  # Normal+AO via Materialize sobre o albedo do atlas: mesma causa das
+  # costuras (bordos das ilhas UV). O albedo/MR do paint ficam.
+  pbr_enrich: false
