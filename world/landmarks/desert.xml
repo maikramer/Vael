@@ -27,6 +27,14 @@
     <Entity translation="218 43.9584 -40" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.35 0.9 0.15" euler="0 -50 0" scale="1">
       <GltfScene url="/assets/meshes/props/axe_lod0.glb" />
     </Entity>
+    <!-- Cargas da caravana: o cofre ao lado já dá 2 bombas; estas duas contam
+         a mesma história à vista (uma no caixote, outra caída na areia). -->
+    <Entity name="caravana-bomba-caixote" translation="211 44.306 -32" euler="0 35 0">
+      <GltfScene url="/assets/meshes/props/bomb_lod0.glb" />
+    </Entity>
+    <Entity name="caravana-bomba-areia" translation="214.2 43.58 -38.5" euler="0 -20 0">
+      <GltfScene url="/assets/meshes/props/bomb_lod0.glb" />
+    </Entity>
     <SpawnExclusion at="216 -36" radius="18" translation="0 38.7304 0" />
     <Entity name="desert-sun-obelisk" translation="240 50.6763 80" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/desert/desert_obelisk_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/desert/desert_obelisk_lod0.glb" />
@@ -60,6 +68,17 @@
     <Entity translation="304 50.1311 134" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" euler="0 -8 0" scale="0.9">
       <GltfScene url="/assets/meshes/desert/ruin_pillar_lod0.glb" />
     </Entity>
+    <!-- Travessia de pedra do velho caminho do ermo: 18 m de eixo X no GLB,
+         perpendicular à corrente (yaw 81,57 = +X para 0,146,-0,989). Os pés
+         em 50,19 casam com as duas margens (50,22 a sul, 50,17 a norte) e
+         deixam o tabuleiro ~3 m acima da água. Os dois lanços de areia são o
+         que resta da estrada de ambos os lados. `settle="keep"`: a base paira
+         sobre o rio — o `tool settle` não pode afundá-la até ao leito. -->
+    <Entity name="desert-ruin-bridge" translation="302.99 50.19 123.15" euler="0 81.57 0" settle="keep" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/infra/river_bridge_stone_collision.glb; mesh-anchor: base" scale="1">
+      <GltfScene url="/assets/meshes/infra/river_bridge_stone_lod0.glb" lod1-url="/assets/meshes/infra/river_bridge_stone_lod1.glb" lod2-url="/assets/meshes/infra/river_bridge_stone_lod2.glb" lod-threshold-near="55" lod-threshold-mid="130" />
+    </Entity>
+    <Road path="304.3 114 300 106 294 98 288 92" width="3.4" flatten="0" texture-scale="6" edge-feather="1.0" edge-noise="0.7" end-feather-start="1.5" end-feather-end="4" texture-url="/assets/textures/desert_sand/albedo.ktx2" normal-map-url="/assets/textures/desert_sand/normal.ktx2" />
+    <Road path="301.5 133.5 299 141 296 149" width="3.4" flatten="0" texture-scale="6" edge-feather="1.0" edge-noise="0.7" end-feather-start="1.5" end-feather-end="4" texture-url="/assets/textures/desert_sand/albedo.ktx2" normal-map-url="/assets/textures/desert_sand/normal.ktx2" />
     <SpawnExclusion at="300 122" radius="22" translation="0 38.7304 0" />
     <Lake at="140 92" radius="14" depth="2.4" water-offset="0.45" color="#2b7e94" opacity="0.9" water-level="48.82192" rocks="0" translation="0 38.7304 0" />
     <Scatter profile="tree" count="24" seed="7201" region-min="120 0 72" region-max="160 0 112" near-water="1" avoid-water="0" align-to-terrain="1" ground-align="auto" max-slope-deg="55" max-slope-attempts="96" scale-min="0.9" scale-max="1.9" avoid-overlaps="1" pick-strategy="random" footprint-radius="2.2" max-distance="208" random-yaw="true" variation="rock" id="grp-51" translation="0 38.7304 0">

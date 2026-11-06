@@ -143,6 +143,16 @@
     <Use prototype="cerca" pos="-8.2 8.2704 118.5" euler="0 90 0" name="cerca-w-s8" />
     <Use prototype="cerca" pos="-28.8 8.2704 94.2" euler="0 0 0" name="cerca-w-w1" />
     <Use prototype="cerca" pos="-25.3 8.2704 94.2" euler="0 0 0" name="cerca-w-w2" />
+    <Use prototype="cerca" pos="-21.8 8.2704 94.2" euler="0 0 0" name="cerca-w-s9" />
+    <Use prototype="cerca" pos="-18.3 8.2704 94.2" euler="0 0 0" name="cerca-w-s10" />
+    <Use prototype="cerca" pos="-14.8 8.2704 94.2" euler="0 0 0" name="cerca-w-s11" />
+    <!-- Portão do socalco oeste: fecha o lado virado à estrada (z=94,2), que
+         era um vão de 15 m. O portão é 2,6 m e assenta entre dois lanços de
+         cerca; a entrada do campo continua pelo lado norte, aberto. -->
+    <Entity name="portao-socalco" translation="-11.7 8.2404 94.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/farm/fence_gate_collision.glb; mesh-anchor: base" euler="0 0 0" scale="1">
+      <GltfScene url="/assets/meshes/farm/fence_gate_lod0.glb" lod1-url="/assets/meshes/farm/fence_gate_lod1.glb" lod2-url="/assets/meshes/farm/fence_gate_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+    </Entity>
+    <Use prototype="cerca" pos="-8.9 8.2704 94.2" euler="0 0 0" name="cerca-w-s12" />
     <Use prototype="cerca" pos="-28.8 8.2704 119.8" euler="0 0 0" name="cerca-w-w3" />
     <Use prototype="cerca" pos="-25.3 8.2704 119.8" euler="0 0 0" name="cerca-w-w4" />
     <Use prototype="cerca" pos="8.2 8.7709 97" euler="0 -90 0" name="cerca-e-w1" />

@@ -30,6 +30,10 @@
     <Entity translation="806 0 729" transform="rotation: 0 30 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/wooden_crate_lod0.glb"/>
     </Entity>
+    <!-- Carga de desmonte da equipa do veio, em cima do caixote do material. -->
+    <Entity name="outpost-bomba" translation="806 0.8 729" transform="rotation: 0 50 0">
+      <GltfScene url="/assets/meshes/props/bomb_lod0.glb"/>
+    </Entity>
     <Entity translation="809 0 719" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base">
       <GltfScene url="/assets/meshes/village/wooden_barrel_lod0.glb"/>
     </Entity>

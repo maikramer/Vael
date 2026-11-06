@@ -92,8 +92,16 @@
       <PointLight translation="0 2.15 0" color="0xffb060" intensity="1120" />
     </Group>
     <SpawnExclusion at="28 192" radius="12" translation="0 38.7304 0" />
-    <Entity name="witch-hut" translation="-20 48.5093 270" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/swamp/swamp_shack_collision.glb; mesh-anchor: base">
-      <GltfScene url="/assets/meshes/swamp/swamp_shack_lod0.glb" />
+    <!-- A cabana da bruxa substitui o barraco do pântano que esteve aqui
+         enquanto o modelo novo (review visual de 2026-10-23) não existia. Os
+         degraus estão no +Z: yaw 160 vira a porta ao carreiro e ao caldeirão.
+         Edifício: o `viber tool settle` desce a base até o ponto MAIS BAIXO
+         da pegada tocar (min 47,88 − 0,03 = 47,85) — o lado da encosta
+         enterra-se e nenhum canto flutua. O fumo sai da chaminé local
+         (0.82, 5.52, -0.72). -->
+    <Entity name="witch-hut" translation="-20 47.8503 270" euler="0 160 0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: trimesh; mesh-url: /assets/meshes/forest/witch_hut_collision.glb; mesh-anchor: base">
+      <GltfScene url="/assets/meshes/forest/witch_hut_lod0.glb" lod1-url="/assets/meshes/forest/witch_hut_lod1.glb" lod2-url="/assets/meshes/forest/witch_hut_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
+      <ParticleSystem preset="smoke" transform="pos: 0.82 5.52 -0.72" particle-emitter="preset: smoke; emission-rate: 3; start-life-min: 2.6; start-life-max: 4.6; start-speed-min: 0.25; start-speed-max: 0.65; start-size-min: 0.3; start-size-max: 0.7; start-color: #8a8a92; looping: 1; world-space: 1" />
     </Entity>
     <Group translation="-8 47.2529 260" body="none" collider="none">
       <PointLight translation="0 1.1 0" color="0x55e055" intensity="1760" />
