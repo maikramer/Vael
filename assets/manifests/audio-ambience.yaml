@@ -1,0 +1,112 @@
+# Pack audio-ambience — loops contínuos de ambiente (Stable Audio 3 Small
+# Music, kind ambient_loop via category environment). Sem música, sem melodia:
+# água, chuva, fogo e camas de bioma. O volume é do jogo (distância/mixer).
+#
+# Caminhos fixos consumidos pela engine: world/water_{lake,flow,waterfall} e
+# ambient/rain_loop (Viber/src/ambient.rs::AMBIENT_LOOP_FILES). Os restantes
+# são pedidos por scripts com `viber.sound_loop(..., { bus = "ambience" })`.
+# Regenerar: cd assets && python3 regen_audio.py --only sfx/ambient,sfx/world/water --force
+output_dir: ../public/assets
+meshes_subdir: meshes/audio
+images_subdir: images/audio
+assets:
+  - id: sfx/world/water_lake
+    idea: Quiet lake water lapping on a sandy shore, small soft waves, calm slow ripples, serene nature ambience, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 610
+  - id: sfx/world/water_flow
+    idea: Calm forest river flowing over smooth rocks, clear stream babbling gently, soft continuous water ripples, peaceful nature ambience, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 611
+  - id: sfx/world/water_waterfall
+    idea: Powerful waterfall plunging into a misty plunge pool, thundering falling water with deep rumble and white spray, continuous roar from start to end, steady energy through the loop point, no outro, no fade, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 7000
+  - id: sfx/ambient/rain_loop
+    idea: Steady rain falling on leaves and stone, soft continuous rainfall with a distant thunder rumble, steady from start to end, no outro, no fade, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 4613
+  - id: sfx/ambient/fire_loop
+    idea: Close campfire crackling, warm wood popping and hissing, gentle flames, cozy night ambience, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 614
+  - id: sfx/ambient/forest_loop
+    idea: Daytime enchanted forest ambience, distant songbirds, leaves rustling in a gentle breeze, faint crystal chime resonance far away, steady from start to end, no sudden bird call, no outro, no fade, no music
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 8000
+  - id: sfx/ambient/swamp_loop
+    idea: Swamp at dusk, frogs and crickets, slow water drips and wet bubbles, distant low birds, humid oppressive ambience, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 616
+  - id: sfx/ambient/peaks_loop
+    idea: High altitude blizzard wind gusting over snow and rock, steady continuous wind from start to end, thin whistling air, distant ice cracking, no sudden gust, no outro, no fade, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 7000
+  - id: sfx/ambient/desert_loop
+    idea: Dry desert wind crossing sand and stone, soft steady gusts, sparse insects, vast empty ambience, continuous wind from start to end, no sudden gust, no outro, no fade, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 8000
+  - id: sfx/ambient/village_loop
+    idea: Medieval village market ambience, distant crowd murmur without words, birds, carts and a far blacksmith hammer, steady from start to end, no sudden shout, no outro, no fade, no music, no melody
+    kind: environment
+    category: environment
+    pipeline:
+      - audio
+    audio:
+      duration: 16
+      profile: music
+    seed: 8000

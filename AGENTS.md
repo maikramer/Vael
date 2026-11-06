@@ -50,6 +50,7 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `viber.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`viber.decision`) |
 | `ui/*.css` | HUD e menu |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
+| `docs/AUDIO.md` | direção sonora (Coro de Vael), layers por bioma, manifests e gate de costura; regen com `assets/regen_audio.py` |
 | `config.yaml` | `assets.roots: assets/public` |
 | `qa-*.xml` | mundos QA. Incluem `world/**` — editar o módulo muda o mundo |
 

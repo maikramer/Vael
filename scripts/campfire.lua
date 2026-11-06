@@ -8,6 +8,15 @@ function on_update(dt)
     -- de raio: com o alcance autorado de 2,5 (1,25 efetivo) o [E] só aparecia
     -- de pé EM CIMA da fogueira. 5 m = 2,5 efetivo, na borda da área.
     viber.set_interaction("Descansar", "e", 5.0)
+    -- Crepitar contínuo do fogo no bus de ambiente (o `fire_crackle` é um
+    -- one-shot). Atenuado por distância (40 m) como qualquer loop.
+    local ok, x, y, z = viber.entity_position()
+    if ok then
+      viber.sound_loop("campfire", "ambient/fire_loop.ogg", {
+        x = x, y = y + 0.6, z = z, bus = "ambience", volume = 0.55,
+      })
+      viber.log("fogueira: loop de fogo")
+    end
   end
   if viber.menu_open() or not viber.interacted("e") then
     return

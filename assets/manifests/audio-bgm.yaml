@@ -1,46 +1,132 @@
 # Pack audio-bgm — músicas em loop (BGM) partilhadas entre jogos.
+# Identidade do Vale: "Coro de Vael" — coro sem palavras + harmónica de vidro +
+# cordas, sobre um motivo de quatro notas (quarta ascendente, segundo grau,
+# terça menor descendente). Ver docs/AUDIO.md.
+#
 # Stable Audio 3 Small Music; kind music_loop via category humanoid → pipeline
 # seamless exacto (crossfade equal-power, edge trim adaptativo, loop final =
-# duration pedido, alinhado a compassos @120 BPM).
+# duration pedido, alinhado a compassos ao BPM do prompt).
 # Canónico em assets/ (manifests + binários em public/assets).
-# Exemplos consomem o pool diretamente por URL — sem cópias nem symlinks.
-# Regenerar: cd assets && gameassets resume --profile game.yaml --manifest manifests/audio-bgm
-# (BGM curado com gate de costura: regen_audio.py re-rola seeds até cauda ≥70%.)
+# Regenerar: cd assets && python3 regen_audio.py --only bgm --force
+# (gate de costura: re-rola a seed +1000 até cauda ≥70% do corpo.)
 output_dir: ../public/assets
 meshes_subdir: meshes/audio
 images_subdir: images/audio
 assets:
-  - id: bgm/battle
-    idea: Intense fantasy battle music, driving orchestral combat theme, dramatic action rhythm, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 32
-      profile: music
-    seed: 1220
-  - id: bgm/explore
-    idea: Peaceful fantasy village exploration music, gentle acoustic guitar and flute, warm ambient adventure melody, calm countryside, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 40
-      profile: music
-    seed: 300
   - id: bgm/menu
-    idea: Cheerful arcade racing menu music, light synth pop, playful and relaxed, retro racing game lobby, warm synth pads, 120 BPM
+    idea: Warm fantasy title theme, wordless mixed choir humming a four-note motif (rising fourth, second degree, falling minor third) over harp and crystal glass harmonica, gentle strings, hopeful and inviting, dawn over a mountain valley, 80 BPM
     kind: environment
     category: humanoid
     pipeline:
       - audio
     audio:
-      duration: 24
+      duration: 48
       profile: music
     seed: 320
+  - id: bgm/explore
+    idea: Open-world fantasy exploration theme, wordless choir and solo viola carrying the four-note motif, flowing strings, wooden flute, distant crystal chimes, sense of wonder and distance, wide mountain valley, 80 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 60
+      profile: music
+    seed: 500
+  - id: bgm/village
+    idea: Lively medieval village market theme, fiddle and hand claps, warm wordless choir singing the four-note motif, plucked lute and small frame drum, sunny and communal, 100 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 321
+  - id: bgm/dark-forest
+    idea: Dark enchanted forest theme, low wordless male choir droning the four-note motif, bowed cello, bass flute, sparse crystal chimes and a distant frame drum, watchful and unsettling, no sudden hits, 60 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 1330
+  - id: bgm/desert
+    idea: Sun-scorched desert theme, dry bowed strings, wooden flute, wordless choir with a narrow harmonic-minor colour, hand drums and distant crystal shimmer, vast and relentless, steady energy through the loop point, no outro, no fade out, 80 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 4331
+  - id: bgm/swamp
+    idea: Murky swamp theme, low bowed strings and bassoon, slow wordless choir, wet wooden percussion and crystal chimes half-submerged, oppressive and patient, steady quiet energy through the loop point, no outro, no fade out, no melody in the bass, 60 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 7332
+  - id: bgm/frozen-peaks
+    idea: High frozen mountain theme, soaring wordless female choir and crystal glass harmonica, high strings, wind-like low drone, sparse frame drum, majestic and lonely, 60 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 56
+      profile: music
+    seed: 1323
+  - id: bgm/dungeon
+    idea: Ancient buried dungeon theme, hollow low male choir, distant dripping crystal resonance, sparse cello harmonics, slow heartbeat frame drum, sacred and claustrophobic, no percussion groove, 60 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 322
+  - id: bgm/battle
+    idea: Intense fantasy battle theme, driving string ostinato, wordless choir marching the four-note motif, heavy frame drums and low brass, urgent and heroic, 120 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 1220
+  - id: bgm/boss
+    idea: Terrifying boss battle theme, massed low choir, pounding drums, distorted strings and contrabassoon, the four-note motif stretched and broken, overwhelming and relentless, 90 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 48
+      profile: music
+    seed: 5221
+  - id: bgm/credits
+    idea: Warm closing credits theme, full wordless choir resolving the four-note motif, harp, cello and crystal chimes, grateful and hopeful, slow waltz feel, 72 BPM
+    kind: environment
+    category: humanoid
+    pipeline:
+      - audio
+    audio:
+      duration: 60
+      profile: music
+    seed: 8324
+  # Legado do exemplo de corrida (Viber/examples/racer) — não faz parte da
+  # direção do Vale e não é regenerado por omissão.
   - id: bgm/race
+    legacy: true
     idea: Upbeat arcade kart racing music, energetic synth rock, fast driving tempo, pumping bass line, catchy electric guitar melody, exciting race atmosphere, 120 BPM
     kind: environment
     category: humanoid
@@ -50,53 +136,3 @@ assets:
       duration: 32
       profile: music
     seed: 1310
-  - id: bgm/boss
-    idea: Dark relentless boss battle music, menacing orchestral piece with heavy percussion and ominous choir, constant driving intensity from start to end, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 32
-      profile: music
-    seed: 5221
-  - id: bgm/village
-    idea: Cheerful fantasy village theme, lively market square music with fiddle and hand claps, sunny afternoon atmosphere, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 32
-      profile: music
-    seed: 321
-  - id: bgm/dungeon
-    idea: Eerie dungeon music, steady hypnotic pulse with low ominous drones and sparse echoing notes, consistent quiet tension throughout, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 32
-      profile: music
-    seed: 322
-  - id: bgm/mountain
-    idea: Majestic snowy mountain exploration theme, soaring strings with wind chimes, adventurous high peaks atmosphere, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 32
-      profile: music
-    seed: 1323
-  - id: bgm/credits
-    idea: Warm gentle credits theme, soft piano and harp melody, grateful reflective mood, slow waltz, 120 BPM
-    kind: environment
-    category: humanoid
-    pipeline:
-      - audio
-    audio:
-      duration: 24
-      profile: music
-    seed: 324

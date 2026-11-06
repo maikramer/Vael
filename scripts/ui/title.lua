@@ -273,6 +273,11 @@ function on_update(dt)
   -- accionar Continuar/Novo Jogo.
   if st.credits_ui ~= credits_open then
     st.credits_ui = credits_open
+    -- Os créditos têm tema próprio; ao fechar, `nil` devolve a zona
+    -- automática (na cena de menu, a layer `menu` via `scene_zone`).
+    if viber.music and viber.music.layer then
+      viber.music.layer(credits_open and "credits" or nil)
+    end
     if viber.ui.set_disabled then
       for _, id in ipairs({ "title-new", "title-settings", "title-credits", "title-quit" }) do
         viber.ui.set_disabled(id, credits_open)

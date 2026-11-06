@@ -1,23 +1,23 @@
 # Pack audio-sfx-combat — impactos/armas/colheita (Stable Audio 3 Small SFX).
-# Canónico em assets/; exemplos consomem o pool por URL.
-# Regenerar:
-#   cd assets && gameassets resume --profile game.yaml --manifest manifests/audio-sfx-combat
+# Direção: transiente na frente, cauda curta; combate repetido não pode empilhar
+# anéis longos. Canónico em assets/; exemplos consomem o pool por URL.
+# Regenerar: cd assets && python3 regen_audio.py --only sfx/combat --force
 output_dir: ../public/assets
 meshes_subdir: meshes/audio
 images_subdir: images/audio
 assets:
   - id: sfx/combat/hit
-    idea: Sharp metal sword clash, bright metallic ring, short combat hit impact
+    idea: Sharp metal sword clash on steel, bright ringing impact, short combat hit, tight decay
     kind: prop
     category: weapon
     pipeline:
       - audio
     audio:
-      duration: 2
+      duration: 0.6
       profile: effects
     seed: 201
   - id: sfx/combat/swing
-    idea: Whoosh sword swing through air, quick blade swish, fast weapon swing
+    idea: Quick sword swing through air, fast blade swish with a short low whoosh, no tone
     kind: prop
     category: weapon
     pipeline:
@@ -27,72 +27,72 @@ assets:
       profile: effects
     seed: 401
   - id: sfx/combat/chop_hit
-    idea: Sharp axe chop into wood tree trunk, heavy blade impact on timber
+    idea: Axe blade biting into a tree trunk, heavy woody impact with a short sharp crack, close
     kind: prop
     category: weapon
     pipeline:
       - audio
     audio:
-      duration: 1
+      duration: 0.5
       profile: effects
     seed: 302
   - id: sfx/combat/chop_break
-    idea: Large tree falling crashing down, timber cracking and splintering
+    idea: Large tree cracking and crashing down, splintering timber and branches, heavy fall, close
     kind: prop
     category: weapon
     pipeline:
       - audio
     audio:
-      duration: 2
+      duration: 1.6
       profile: effects
     seed: 303
   - id: sfx/combat/mine_hit
-    idea: Pickaxe striking stone rock, hard mineral impact, mining chisel hit on ore, sharp crack with resonant ring out
+    idea: Pickaxe striking stone, sharp mineral crack with a short resonant ring, close and dry
     kind: prop
     category: weapon
     pipeline:
       - audio
     audio:
-      duration: 1.5
+      duration: 0.5
       profile: effects
     seed: 301
   - id: sfx/combat/mine_break
-    idea: Rock crumbling apart, stone debris falling, boulder breaking into fragments
-    kind: prop
-    category: weapon
-    pipeline:
-      - audio
-    audio:
-      duration: 1.5
-      profile: effects
-    seed: 304
-  - id: sfx/combat/bow_shot
-    idea: Arrow release with bowstring twang, swift arrow flight whoosh, archery shot
-    kind: prop
-    category: weapon
-    pipeline:
-      - audio
-    audio:
-      duration: 1
-      profile: effects
-    seed: 402
-  - id: sfx/combat/arrow_hit
-    idea: Arrow striking wooden target, sharp thunk impact, archery hit with quiver
-    kind: prop
-    category: weapon
-    pipeline:
-      - audio
-    audio:
-      duration: 1
-      profile: effects
-    seed: 403
-  - id: sfx/combat/shield_block
-    idea: Heavy shield block impact, metal on wood thud with brief ring, defensive guard
+    idea: Rock face crumbling apart, stone debris tumbling and settling, boulder breaking, close
     kind: prop
     category: weapon
     pipeline:
       - audio
     audio:
       duration: 1.2
+      profile: effects
+    seed: 304
+  - id: sfx/combat/bow_shot
+    idea: Bowstring release with a taut twang, arrow flight whoosh, short and dry, archery shot
+    kind: prop
+    category: weapon
+    pipeline:
+      - audio
+    audio:
+      duration: 0.5
+      profile: effects
+    seed: 402
+  - id: sfx/combat/arrow_hit
+    idea: Arrow striking a wooden target, sharp thunk with a brief shaft quiver, close
+    kind: prop
+    category: weapon
+    pipeline:
+      - audio
+    audio:
+      duration: 0.5
+      profile: effects
+    seed: 403
+  - id: sfx/combat/shield_block
+    idea: Heavy shield blocking a blow, metal rim on wood, dull thud with a brief ring, close
+    kind: prop
+    category: weapon
+    pipeline:
+      - audio
+    audio:
+      duration: 0.7
       profile: effects
     seed: 404

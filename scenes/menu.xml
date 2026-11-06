@@ -21,6 +21,8 @@
   <Weather wind="0.7 0.25" wind-strength="1.5" clouds="0.25" rain="0" cycle="1" />
   <AudioMixer master="1" music="0.7" sfx="0.8" voice="0.9" ambience="0.7" />
   <MusicLayer layer="menu" sound="bgm-menu" base-volume="0.24" />
+  <!-- Créditos: o `title.lua` força esta layer enquanto o modal está aberto. -->
+  <MusicLayer layer="credits" sound="bgm-credits" base-volume="0.22" />
 
   <Entity>
     <DirectionalLight euler="-45 35.2644 15" />

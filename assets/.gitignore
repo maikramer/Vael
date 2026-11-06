@@ -9,5 +9,6 @@ public/assets/meshes/**
 public/assets/meshes/**/_intermediate/
 public/assets/sky/
 
-# SFX vivem no exemplo (assets/ do simple-rpg); espelhos no pool ficam de fora.
-public/assets/audio/sfx/
+# SFX: o pool do Vael é canónico — a engine resolve `assets/audio/sfx` por
+# `assets.roots` e um clone limpo tem de trazer os efeitos. Entram no LFS
+# (`*.ogg`) como o BGM; os `.json` de proveniência vão no git normal.

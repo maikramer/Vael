@@ -14,8 +14,14 @@
     <MusicLayer layer="battle" sound="bgm-battle" base-volume="0.22" />
     <MusicLayer layer="boss" sound="bgm-boss" base-volume="0.24" />
     <MusicLayer layer="dungeon" sound="bgm-dungeon" base-volume="0.2" />
-    <MusicLayer layer="mountain" sound="bgm-mountain" base-volume="0.2" />
     <MusicLayer layer="village" sound="bgm-village" base-volume="0.18" />
+    <!-- Biomas: a layer homónima do BiomeRegion.id acende por posição
+         (`music::auto_zone`), sem o script forçar a layer — forçar ganharia
+         ao combate. -->
+    <MusicLayer layer="dark-forest" sound="bgm-dark-forest" base-volume="0.18" />
+    <MusicLayer layer="desert" sound="bgm-desert" base-volume="0.18" />
+    <MusicLayer layer="swamp" sound="bgm-swamp" base-volume="0.17" />
+    <MusicLayer layer="frozen-peaks" sound="bgm-frozen-peaks" base-volume="0.2" />
     <Weather wind="0.7 0.25" wind-strength="1.5" clouds="0.25" rain="0" cycle="1" />
     <BiomeRegion id="dark-forest" display-name="Floresta Sombria" polygon="[-56,56;56,56;4040,4040;-4040,4040]" tint="#1a3320" fog-density="0.0008" pp-exposure="0.78" />
     <BiomeRegion id="desert" display-name="Ermo Rubro" polygon="[56,-56;56,56;4040,4040;4040,-4040]" tint="#c2a878" fog-density="0.0006" pp-exposure="0.74" pp-bloom-strength="0.18" rain-scale="0.1" />

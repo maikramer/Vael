@@ -1,17 +1,24 @@
 {
-  "prompt": "Warm gentle credits theme, soft piano and harp melody, grateful reflective mood, slow waltz, 120 BPM",
-  "duration": 24.0,
+  "prompt": "Warm closing credits theme, full wordless choir resolving the four-note motif, harp, cello and crystal chimes, grateful and hopeful, slow waltz feel, 72 BPM",
+  "duration": 60.0,
   "model_id": "stabilityai/stable-audio-3-small-music",
   "seamless_loop": true,
-  "crossfade_ms": 600.0,
-  "loop_edge_trim_s": 3.5,
+  "crossfade_ms": 800.0,
+  "loop_edge_trim_s": 4.5,
   "mastering": {
-    "lufs_target": -15.0,
+    "lufs_target": -14.0,
     "high_pass_hz": 25.0,
     "compressor_preset": "master_glue",
     "compressor_enabled": true,
-    "true_peak_db": -0.5,
+    "true_peak_db": -0.1,
     "headroom_db": 0.3
   },
-  "ogg_quality": 0.8
+  "ogg_quality": 0.85,
+  "profile": "music",
+  "quality": "highest",
+  "steps": 24,
+  "category": "humanoid",
+  "audio_kind": "music_loop",
+  "manifest": "audio-bgm",
+  "seed_effective": 8324
 }

@@ -1,63 +1,43 @@
 # Pack audio-sfx-world — interações com o mundo (portas/baús/fogo/passos) e
 # física de itens (Stable Audio 3 Small SFX). Canónico em assets/.
-# Regenerar: gameassets resume --profile game.yaml --manifest manifests/audio-sfx-world
+# `vocal` → sfx_vocal (grunhido do herói); `prop` → sfx_interact.
+# Regenerar: cd assets && python3 regen_audio.py --only sfx/world --force
 output_dir: ../public/assets
 meshes_subdir: meshes/audio
 images_subdir: images/audio
 assets:
   - id: sfx/player/hurt
-    idea: Painful grunt, male warrior taking damage, sharp exhale of pain, short hurt vocalization
+    idea: Painful male warrior grunt taking damage, sharp exhale of pain, short hurt vocalization, close, no words
     kind: character
-    # SEM category: "humanoid" mapeia para music_loop (modelo música) — o
-    # perfil effects chega sozinho ao modelo SFX.
+    category: vocal
     pipeline:
       - audio
     audio:
-      duration: 1
+      duration: 0.6
       profile: effects
     seed: 501
   - id: sfx/player/heal
-    idea: Warm healing magic spell, gentle restoration chime, soft glowing energy swell, soothing recovery aura
+    idea: Warm healing spell, soft rising crystal chime and a gentle wordless choir swell, soothing restoration
     kind: character
     category: effects
     pipeline:
       - audio
     audio:
-      duration: 2
+      duration: 1.4
       profile: effects
     seed: 505
   - id: sfx/world/item_drop
-    idea: Item dropping on ground, object landing on stone floor, dull thud with bounce, inventory item fall
+    idea: Small item landing on a stone floor, dull thud with a light bounce, close
     kind: prop
-    category: weapon
+    category: prop
     pipeline:
       - audio
     audio:
-      duration: 1
+      duration: 0.5
       profile: effects
     seed: 510
   - id: sfx/world/bomb_drop
-    idea: Bomb fuse igniting, sizzling explosive timer, crackling fuse burn, tense countdown hiss
-    kind: prop
-    category: prop
-    pipeline:
-      - audio
-    audio:
-      duration: 1
-      profile: effects
-    seed: 511
-  - id: sfx/world/door_open
-    idea: Old wooden door opening with creak, slow hinge squeak, dungeon entrance
-    kind: prop
-    category: prop
-    pipeline:
-      - audio
-    audio:
-      duration: 1.5
-      profile: effects
-    seed: 521
-  - id: sfx/world/door_close
-    idea: Heavy wooden door slamming shut, solid thud with latch click
+    idea: Bomb fuse igniting with a sharp sizzle, crackling burn, tense countdown hiss, close
     kind: prop
     category: prop
     pipeline:
@@ -65,21 +45,41 @@ assets:
     audio:
       duration: 1.2
       profile: effects
-    seed: 522
-  - id: sfx/world/chest_open
-    idea: Treasure chest opening, wooden lid creak with golden sparkle reveal, rewarding discovery
+    seed: 511
+  - id: sfx/world/door_open
+    idea: Old wooden door creaking open, slow hinge groan with a latch click, close
     kind: prop
-    category: prop
+    category: door
     pipeline:
       - audio
     audio:
-      duration: 1.5
+      duration: 1.2
+      profile: effects
+    seed: 521
+  - id: sfx/world/door_close
+    idea: Heavy wooden door slamming shut, solid thud with a latch snap, close
+    kind: prop
+    category: door
+    pipeline:
+      - audio
+    audio:
+      duration: 0.9
+      profile: effects
+    seed: 522
+  - id: sfx/world/chest_open
+    idea: Treasure chest lid creaking open, wooden hinge and a bright coin shimmer, rewarding discovery, close
+    kind: prop
+    category: chest
+    pipeline:
+      - audio
+    audio:
+      duration: 1.2
       profile: effects
     seed: 523
   - id: sfx/world/fire_crackle
-    idea: Campfire crackling, warm wood fire popping and hissing, cozy flames
-    kind: environment
-    category: effects
+    idea: Campfire crackling, warm wood popping and hissing, cozy flames, close, no music
+    kind: prop
+    category: prop
     pipeline:
       - audio
     audio:
@@ -87,12 +87,12 @@ assets:
       profile: effects
     seed: 524
   - id: sfx/world/footsteps_grass
-    idea: Footsteps walking on grass, soft rhythmic steps on meadow ground, steady pace
+    idea: A few slow footsteps walking on soft grass, rhythmic crunch, daylight meadow, close
     kind: character
-    category: vegetation
+    category: movement
     pipeline:
       - audio
     audio:
-      duration: 3
+      duration: 2
       profile: effects
     seed: 525

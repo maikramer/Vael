@@ -1,34 +1,36 @@
 # Pack audio-sfx-player — movimentos do herói (Stable Audio 3 Small SFX).
-# Canónico em assets/. Regenerar:
-#   cd assets && gameassets resume --profile game.yaml --manifest manifests/audio-sfx-player
+# `movement` → sfx_movement (antes a categoria `sfx_movement` era ignorada e o
+# clip saía sem hints). Passos são UM passo, não uma sequência: a engine toca
+# o clip a cada passo e sequências de 3 s sobrepunham-se.
+# Regenerar: cd assets && python3 regen_audio.py --only sfx/player,sfx/ambient/footstep --force
 output_dir: ../public/assets
 meshes_subdir: meshes/audio
 images_subdir: images/audio
 assets:
   - id: sfx/player/jump
-    idea: Light agile jump, quick soft hop spring with brief whoosh, short character leap
+    idea: Light armored character jump, soft push-off with cloth rustle, short leap, close
     kind: prop
-    category: sfx_movement
+    category: movement
     pipeline:
       - audio
     audio:
-      duration: 0.6
+      duration: 0.5
       profile: effects
     seed: 440
   - id: sfx/player/dash
-    idea: Fast dash burst, airy swoosh of sudden momentum, short wind rushing past the player
+    idea: Fast dash burst, airy swoosh of sudden movement with a cloth flap, short, close
     kind: prop
-    category: sfx_movement
+    category: movement
     pipeline:
       - audio
     audio:
-      duration: 0.6
+      duration: 0.5
       profile: effects
     seed: 441
   - id: sfx/ambient/footstep
-    idea: Soft footstep on dry grass and dirt, single short walking step crunch, light footfall
+    idea: Single boot step on dry grass and dirt, soft crunch, close, one step only
     kind: prop
-    category: sfx_movement
+    category: movement
     pipeline:
       - audio
     audio:
@@ -36,9 +38,9 @@ assets:
       profile: effects
     seed: 442
   - id: sfx/ambient/footstep_water
-    idea: Footstep splashing in shallow water, short wet splash step, light wading sound
+    idea: Single boot splashing in shallow water, short wet splash, close, one step only
     kind: prop
-    category: sfx_movement
+    category: movement
     pipeline:
       - audio
     audio:

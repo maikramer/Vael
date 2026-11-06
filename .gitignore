@@ -26,7 +26,8 @@ assets/public/assets/meshes/**
 assets/public/assets/meshes/**/_intermediate/
 assets/public/assets/images/
 assets/public/assets/sky/
-assets/public/assets/audio/sfx/
+# `assets/public/assets/audio/sfx/` NÃO é ignorado: é o pool canónico que a
+# engine carrega (`assets.roots`), e um clone limpo tem de trazer os efeitos.
 assets/__pycache__/
 **/__pycache__/
 **/.gameassets_work/
