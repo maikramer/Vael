@@ -28,6 +28,17 @@ assets:
     # melhor o detalhe. O debris a 1% (clean) remove as tiras soltas.
     text3d:
       octree_resolution: 512
+    # Árvore de ramos finos: o unwrap xatlas passa dos 300 s no default de
+    # 269k faces do atlas (bounded; a linha falha). A 20k o paint fecha em
+    # ~34k faces e a textura cobre o resto do detalhe. O LOD0 continua nos
+    # 12k da categoria — o cap do paint não mexe no orçamento do LOD.
+    paint3d:
+      to_paint_faces: 20000
+    # Sem Hi3D neste asset: o refine re-sintetiza os ramos finos como centenas
+    # de ilhas e o atlas do paint fragmenta-se — o LOD0 não descia ao orçamento
+    # de 12k da categoria (saía a 33-45k, v/tri > 1,8). Do clean o ladder
+    # fecha no alvo (12k, v/tri 1,4).
+    refine: false
   - id: lily_pad
     idea:
       cartoon large green lily pad with small pink lily flower, floating on dark
