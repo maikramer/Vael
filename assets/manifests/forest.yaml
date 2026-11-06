@@ -93,6 +93,16 @@ assets:
         - 4.5
         - 6.0
         - 4.5
+    # O xatlas abre um chart por aresta viva desta casa de enxaimel: a 262k
+    # faces passa dos 180 s (bounded). A 60k o unwrap fecha em ~88 s e o LOD0
+    # final (~29k) não perde detalhe útil (a textura carrega-o).
+    paint3d:
+      to_paint_faces: 60000
+      # Bake com mais cobertura: 6 vistas @512 deixavam 24% de trust (o atlas
+      # do edifício cobre muito interior) e o inpaint fazia mosaico. 8 vistas
+      # @640 + bake_exp 6 (perfil) aproximam o trust dos outros edifícios.
+      max_views: 8
+      view_resolution: 640
   - id: tree_oak
     idea:
       cartoon oak tree with big round puffy green canopy on thick brown trunk, stylized

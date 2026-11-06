@@ -373,6 +373,11 @@ assets:
         - 1.5
         - 0.5
         - 1.5
+    # O Omni abre vãos entre as pedras (a imagem mostra o anel fechado). Um
+    # fecho de 1,5 cm no clean sela os contactos sem derreter as pedras; com o
+    # refine a 512 o anel sai watertight (1 componente, 0 bordos, 270k faces).
+    text3d:
+      morph_close: 0.015
   - id: notice_board
     idea:
       wooden cartoon notice board on two posts with pinned parchment papers and

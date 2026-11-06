@@ -6,6 +6,9 @@ meshes_subdir: meshes/characters
 images_subdir: images/characters
 assets:
   - id: hero
+    # Seed novo (2026-10-29): o anterior (69607440) saía com a cara/mãos que o
+    # utilizador não gostou. Aplica-se a text2d + text3d.
+    seed: 42424242
     text3d:
       steps: 40
       octree_resolution: 384
@@ -14,7 +17,7 @@ assets:
       young cartoon fantasy adventurer wearing leather tunic with rolled-up sleeves,
       cloth bandana, simple belt with pouch, cheerful determined expression, short boots,
       no helmet no armor, standing upright in relaxed A-pose with arms angled down at
-      45 degrees away from the body, open hands with spread fingers, hands empty, no
+      45 degrees away from the body, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no
       weapons, no props, full body visible, front-facing, RPG hero boy
     kind: character
     category: humanoid
@@ -45,7 +48,7 @@ assets:
       friendly cartoon merchant NPC wearing brown apron over green tunic, round
       belly, warm smile, short chubby proportions, standing upright in relaxed A-pose
       with arms angled down at 45 degrees away from the body, visible gap between arms
-      and torso, open hands with spread fingers, hands empty, no weapons, no props,
+      and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props,
       full body visible, front-facing, fantasy shopkeeper
     kind: character
     category: humanoid
@@ -73,7 +76,7 @@ assets:
       lean cartoon scout NPC wearing hooded green cloak over leather jerkin, map
       case on belt, short boots, alert friendly expression, standing upright in relaxed
       A-pose with arms angled down at 45 degrees away from the body, visible gap between
-      arms and torso, open hands with spread fingers, hands empty, no weapons, no props,
+      arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props,
       full body visible, front-facing, fantasy ranger cartographer
     kind: character
     category: humanoid
@@ -101,7 +104,7 @@ assets:
       burly cartoon blacksmith NPC wearing thick leather apron over sleeveless tunic,
       broad shoulders, bushy beard, soot smudges, sturdy boots, standing upright in
       relaxed A-pose with arms angled down at 45 degrees away from the body, visible
-      gap between arms and torso, open hands with spread fingers, hands empty, no weapons,
+      gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons,
       no props, full body visible, front-facing, fantasy village smith
     kind: character
     category: humanoid
@@ -137,8 +140,7 @@ assets:
       visible lower legs and simple boots, white sash at the waist, short sleeves ending
       at the elbows with visible forearms, simple headscarf, gentle smile, standing
       upright in relaxed A-pose with straight legs slightly apart and arms angled down
-      at 45 degrees away from the body, wide gap between arms and torso, open hands with
-      spread fingers, hands empty, no weapons, no props, no cape, full body visible,
+      at 45 degrees away from the body, wide gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, no cape, full body visible,
       front-facing, fantasy temple cleric
     kind: character
     category: humanoid
@@ -166,7 +168,7 @@ assets:
       cartoon town guard NPC wearing padded gambeson with chainmail collar and blue
       tabard, no helmet, short cropped hair, stern friendly face, boots with greaves,
       standing upright in relaxed A-pose with arms angled down at 45 degrees away from
-      the body, visible gap between arms and torso, open hands with spread fingers,
+      the body, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs,
       hands empty, no weapons, no props, full body visible, front-facing, fantasy city
       watchman
     kind: character
@@ -195,7 +197,7 @@ assets:
       old cartoon village elder NPC wearing long brown robe with fur collar, long
       white beard, slight stoop, wooden sandals, warm wise expression, standing upright
       in relaxed A-pose with arms angled down at 45 degrees away from the body, visible
-      gap between arms and torso, open hands with spread fingers, hands empty, no weapons,
+      gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons,
       no props, full body visible, front-facing, fantasy village elder
     kind: character
     category: humanoid
@@ -222,7 +224,7 @@ assets:
     idea:
       small wiry cartoon goblin with big pointy ears, crooked teeth, tattered loincloth,
       green skin, standing upright in relaxed A-pose with arms angled down at 45 degrees
-      away from the body, open hands with spread fingers, hands empty, no weapons, no
+      away from the body, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
       props, full body visible, front-facing, fantasy enemy creature
     kind: character
     category: creature
@@ -250,7 +252,7 @@ assets:
     idea:
       cute blue jelly slime dwarf humanoid standing upright in relaxed A-pose,
       short stout gelatin body, stubby arms angled down at 45 degrees away from the body,
-      open blobby hands with spread fingers, short thick legs and feet planted on the
+      relaxed open blobby hands with fingers held together and palms facing the thighs, short thick legs and feet planted on the
       ground, two sparkly eyes and smile on the front, glossy translucent blue slime
       skin, no weapons no props, full body visible, front-facing, white background
     kind: character
@@ -305,8 +307,7 @@ assets:
     idea:
       cartoon shadow shade creature, floating dark ghostly wraith with glowing purple
       eyes, tattered cloak, ethereal smoky body, standing upright in relaxed A-pose
-      with arms angled down at 45 degrees away from the body, open hands with spread
-      fingers, hands empty, no weapons, no props, full body visible, front-facing, fantasy
+      with arms angled down at 45 degrees away from the body, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing, fantasy
       undead spirit
     kind: character
     category: creature
@@ -333,8 +334,7 @@ assets:
     idea:
       menacing cartoon witch boss with long hooked nose, pointed black hat, tattered
       dark purple robe, glowing green hands, sinister grin, standing upright in relaxed
-      A-pose with arms angled down at 45 degrees away from the body, open hands with
-      spread fingers, hands empty, no weapons, no props, full body visible, front-facing,
+      A-pose with arms angled down at 45 degrees away from the body, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing,
       dark fantasy forest witch, game asset
     kind: character
     category: creature
@@ -391,7 +391,7 @@ assets:
     idea:
       cartoon desert bandit with tan hood and face mask, leather armor scraps, dark
       eyes visible, standing upright in relaxed A-pose with arms angled down at 45 degrees
-      away from the body, open hands with spread fingers, hands empty, no weapons, no
+      away from the body, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no
       props, full body visible, front-facing, fantasy rogue enemy
     kind: character
     category: creature
@@ -452,7 +452,7 @@ assets:
     idea:
       small cartoon swamp bogling creature with round green-brown body, big yellow
       eyes, webbed feet, dripping moss on back, standing upright in relaxed A-pose with
-      arms angled down at 45 degrees away from the body, open hands with spread fingers,
+      arms angled down at 45 degrees away from the body, relaxed open hands with fingers held together and palms facing the thighs,
       hands empty, no weapons, no props, full body visible, front-facing, mischievous
       fantasy amphibian monster
     kind: character
@@ -480,8 +480,7 @@ assets:
     idea:
       large cartoon bog warden elemental boss made of swamp mud, vines, and glowing
       green eyes, mossy stone core, dripping water, standing upright in relaxed A-pose
-      with arms angled down at 45 degrees away from the body, open hands with spread
-      fingers, hands empty, no weapons, no props, full body visible, front-facing, intimidating
+      with arms angled down at 45 degrees away from the body, relaxed open hands with fingers held together and palms facing the thighs, hands empty, no weapons, no props, full body visible, front-facing, intimidating
       fantasy swamp boss, game asset
     kind: character
     category: creature
@@ -513,7 +512,7 @@ assets:
       menacing large fantasy RPG boss monster, muscular green ogre troll with sharp
       teeth and small tusks, hunched powerful build, thick dark armor scraps, standing
       upright in relaxed A-pose with massive arms angled down at 45 degrees away from
-      the body, visible gap between arms and torso, open hands with spread fingers,
+      the body, visible gap between arms and torso, relaxed open hands with fingers held together and palms facing the thighs,
       hands empty, no weapons, no props, full body visible, front-facing, cartoon stylized
       but bigger and scarier than a goblin, game asset
     kind: character
@@ -526,7 +525,9 @@ assets:
       - lod
       - collision
     lod_levels: 2
-    generation: fast
+    # Sem ``generation: fast``: o ratio 0.25 desse tier cortava o orçamento do
+    # boss para 6k faces (lod0 7.2k) — o antigo tinha 30.5k. Herda o medium do
+    # game.yaml (ratio 1.0 → target 24k, lod0 28.8k).
     animate:
       preset: humanoid
       force_preset: true
