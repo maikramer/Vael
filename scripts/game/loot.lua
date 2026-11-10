@@ -21,11 +21,30 @@ local TABLE = {
   shade      = { 4, 7, 0.10, 0.00 },
   bandit     = { 5, 9, 0.10, 0.05 },
   ["bandit-archer"] = { 6, 10, 0.12, 0.05 },
+  -- Arquétipos (mais vida, mais bolsa) e as sombras da noite.
+  ["goblin-brute"]  = { 9, 15, 0.18, 0.00 },
+  ["bandit-shield"] = { 8, 14, 0.15, 0.05 },
+  ["bogling-hexer"] = { 6, 11, 0.10, 0.25 },
+  ["shade-night"]   = { 7, 12, 0.14, 0.00 },
   -- Chefes: bolsa + 2 poções garantidas (p > 1 = garantido, parte inteira).
   witch        = { 60, 90, 2.0, 1.0 },
   ["sand-worm"]  = { 70, 100, 2.0, 1.0 },
   ["bog-warden"] = { 80, 110, 2.0, 2.0 },
   boss         = { 150, 200, 3.0, 1.0 },
+}
+
+-- MATERIAIS de forja (data/recipes.json): kind → { item, chance }. Antes só
+-- vinham de recompensas de quest; caçar passa a alimentar a bigorna.
+local MATERIALS = {
+  wolf = { "wolf_pelt", 0.30 },
+  scorpion = { "cactus_fiber", 0.30 },
+  bandit = { "silk_cloth", 0.14 },
+  ["bandit-archer"] = { "silk_cloth", 0.14 },
+  ["bandit-shield"] = { "silk_cloth", 0.25 },
+  bogling = { "bog-moss", 0.20 },
+  ["bogling-hexer"] = { "bog-moss", 0.45 },
+  ["goblin-brute"] = { "stone", 0.50 },
+  ["shade-night"] = { "dark-wood", 0.30 },
 }
 
 local M = {}
@@ -102,6 +121,12 @@ function M.pay(kind, id, x, y, z)
       local label = missing == 1 and " poção" or " poções"
       local verb = missing == 1 and " não entrou." or " não entraram."
       viber.toast("Mochila cheia: " .. missing .. label .. verb)
+    end
+  end
+  local mat = MATERIALS[kind]
+  if mat and math.random() < mat[2] * (elite and 2 or 1) then
+    if (rules.item_add(mat[1], 1) or 0) > 0 and has_pos then
+      viber.damage_number("+1 " .. rules.item_label(mat[1]), { color = ITEM_COLOR, x = x, y = y + 3.4, z = z })
     end
   end
   if elite then

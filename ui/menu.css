@@ -180,6 +180,15 @@ uibutton.row.focused {
    `class="row trade …"`): sem regra, as duas listas perdiam o acento. */
 .row.skill .row-title { color: sky-400 }
 .row.trade .row-title { color: amber-400 }
+/* Forja: receita possível / sem material / mochila cheia. */
+.row.craft .row-title { color: amber-200 }
+.row.ok .row-flag { background: emerald-400 }
+.row.missing .row-flag { background: stone-700 }
+.row.missing .row-title { color: stone-400 }
+.row.full .row-flag { background: rose-500 }
+/* Talento trancado por uma escolha exclusiva já feita. */
+.row.excluded .row-flag { background: rose-900 }
+.row.excluded .row-title { color: stone-500 }
 
 /* Missão seguida: o clique alterna `tracked_quest`, por isso a linha tem de
    mostrar qual está a guiar a bússola/HUD (antes só um toast de 2 s). */
@@ -247,6 +256,16 @@ uibutton.row.focused {
 .cell.item .cell-icon { background: emerald-800 }
 .cell-label { font-size: 1.5vmin; color: stone-300; text-align: center }
 .cell-count { font-size: 1.9vmin; color: amber-200; font-weight: bold }
+/* Células clicáveis: equipar (arma/armadura/amuleto) ou usar. A equipada
+   ganha o aro âmbar; `cell-tag` diz o que o clique faz. */
+.cell-tag { font-size: 1.3vmin; color: stone-400; text-align: center }
+uibutton.cell { cursor: pointer }
+uibutton.cell:hover { background: stone-700cc; border-color: stone-50088 }
+uibutton.cell:focus,
+uibutton.cell.focused { border-color: amber-300; box-shadow: 0 0 0.9vmin amber-50055 }
+.cell.equipped { border-color: amber-400; box-shadow: 0 0 0.8vmin amber-50066 }
+.cell.equipped .cell-tag { color: amber-300 }
+.cell.equippable .cell-tag { color: sky-300 }
 
 /* ── sistema: chave → valor ────────────────────────────────── */
 .row.keyline .row-title { color: amber-200 }

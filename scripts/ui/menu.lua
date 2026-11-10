@@ -7,10 +7,13 @@ local journal = viber.load("ui/journal.lua")
 local travel = viber.load("game/travel.lua")
 local rules = viber.load("lib/rules.lua")
 
-local SKILLS = {
-  "vitality1", "strength1", "agility1", "precision1",
-  "vitality2", "strength2", "agility2", "precision2",
-}
+-- Os talentos vêm de `data/progression.json` (via `rules.skills()`): a lista
+-- fixa de 8 ids deixava os talentos novos sem clique.
+local SKILLS = {}
+for _, def in ipairs(rules.skills()) do
+  SKILLS[#SKILLS + 1] = def.id
+end
+local craft = viber.load("lib/craft.lua")
 
 -- Acessibilidade: a engine expõe `viber.a11y`/`a11y_set`; o menu só desenha
 -- as linhas e manda a alteração. `interact_hold` é lido pelo diálogo nativo.
@@ -21,7 +24,40 @@ local A11Y_ROWS = {
   { id = "subtitle", label = "Tamanho das legendas" },
   { id = "ui_scale", label = "Escala do HUD" },
   { id = "language", label = "Idioma" },
+  { id = "vol-master", label = "Volume geral", bus = "master" },
+  { id = "vol-music", label = "Volume da música", bus = "music" },
+  { id = "vol-sfx", label = "Volume dos efeitos", bus = "sfx" },
+  { id = "vol-ambience", label = "Volume do ambiente", bus = "ambience" },
 }
+-- VOLUME: a engine não tem um setter de volume por bus, mas tem
+-- `viber.audio.duck(bus, ganho, segundos)` (expira sozinho). O volume
+-- escolhido vive no save (`vol.<bus>`, 0..1) e é reaplicado de segundo a
+-- segundo com um duck de 2,5 s — abaixo de 100 % o bus nunca chega a subir.
+local VOLUMES = { 1.0, 0.75, 0.5, 0.25, 0.0 }
+local VOLUME_BUSES = { "master", "music", "sfx", "ambience" }
+local volume_t = 0
+
+local function volume_of(bus)
+  local v = tonumber(viber.game()["vol." .. bus])
+  if not v or v ~= v then
+    return 1.0
+  end
+  return math.max(0, math.min(1, v))
+end
+
+local function apply_volumes(dt)
+  volume_t = volume_t - dt
+  if volume_t > 0 or not (viber.audio and viber.audio.duck) then
+    return
+  end
+  volume_t = 1.0
+  for _, bus in ipairs(VOLUME_BUSES) do
+    local v = volume_of(bus)
+    if v < 0.999 then
+      pcall(viber.audio.duck, bus, v, 2.5)
+    end
+  end
+end
 local A11Y_SCALES = { 1.0, 1.25, 1.5, 2.0 }
 local UI_SCALES = { 1.0, 1.25, 1.5 }
 local LANGS = { "pt", "en" }
@@ -135,6 +171,7 @@ local function a11y_refresh()
     tostring(a.subtitle_scale), tostring(a.shake),
     tostring(a.hitstop), tostring(a.interact_hold),
     tostring(ui_scale), lang,
+    volume_of("master"), volume_of("music"), volume_of("sfx"), volume_of("ambience"),
   }, "|")
   if sig == a11y_last then
     return
@@ -149,6 +186,8 @@ local function a11y_refresh()
       value = string.format("%.2f×", ui_scale)
     elseif row.id == "language" then
       value = lang
+    elseif row.bus then
+      value = string.format("%d%%", math.floor(volume_of(row.bus) * 100 + 0.5))
     else
       value = a[row.id] and "ligado" or "desligado"
     end
@@ -160,7 +199,23 @@ end
 local function a11y_clicks()
   for _, row in ipairs(A11Y_ROWS) do
     if viber.ui.clicked("a11y-" .. row.id) then
-      if row.id == "ui_scale" then
+      if row.bus then
+        local current = volume_of(row.bus)
+        local at = 1
+        for i, v in ipairs(VOLUMES) do
+          if math.abs(current - v) < 0.01 then
+            at = i % #VOLUMES + 1
+            break
+          end
+        end
+        viber.game()["vol." .. row.bus] = VOLUMES[at]
+        volume_t = 0
+        -- Subir o volume: o duck anterior ainda dura; um duck curto ao valor
+        -- novo substitui-o já.
+        if viber.audio and viber.audio.duck then
+          pcall(viber.audio.duck, row.bus, VOLUMES[at], VOLUMES[at] >= 0.999 and 0.05 or 2.5)
+        end
+      elseif row.id == "ui_scale" then
         local current = tonumber(viber.game().ui_scale) or 1.0
         local at = 1
         for i, scale in ipairs(UI_SCALES) do
@@ -491,6 +546,7 @@ function on_update(dt)
   -- load (ver `lang_restore`).
   a11y_restore()
   lang_restore()
+  apply_volumes(dt)
   if resume_pending then
     resume_pending = false
     viber.game().title_done = true
@@ -526,6 +582,7 @@ function on_update(dt)
       viber.ui.set_visible("head-stats", not on_title)
     end
     journal.refresh()
+    craft.refresh()
     a11y_refresh()
     a11y_clicks()
     refresh_system()
@@ -555,6 +612,20 @@ function on_update(dt)
     end
 
     shop_clicks()
+
+    if viber.ui.is_open("menu") then
+      -- Mochila: equipar/tirar. Forja: fabricar a receita da linha.
+      for _, row in ipairs(viber.ui.rows("bag")) do
+        if row.id and viber.ui.clicked("bag-" .. row.id) then
+          journal.bag_click(row.id)
+        end
+      end
+      for _, row in ipairs(viber.ui.rows("forge")) do
+        if row.id and viber.ui.clicked("forge-" .. row.id) then
+          craft.make(row.id)
+        end
+      end
+    end
 
     -- Seguir/parar de seguir uma missão. O cartão do HUD e a seta leem
     -- `tracked_quest`; o diário é o único sítio para o escolher.

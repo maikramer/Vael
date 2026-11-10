@@ -1,6 +1,7 @@
 local rules = viber.load("lib/rules.lua")
 local actions = viber.load("lib/actions.lua")
--- game/hotbar.lua: a HOTBAR é do jogo (Lua). Poção e antídoto nos slots 1/2.
+-- game/hotbar.lua: a HOTBAR é do jogo (Lua). Poção [1], antídoto [2] e
+-- poção de musgo [3].
 
 local POTION_HEAL = 50
 local COOLDOWN = 1.0
@@ -104,6 +105,36 @@ function on_update(dt)
     else
       viber.toast("Sem antídotos.")
       sfx("error")
+    end
+  elseif viber.input.pressed("3") then
+    -- Poção de musgo: os números vêm do item (`use` em data/items.json) —
+    -- cura um pouco e limpa veneno, queimadura e gelo de uma vez.
+    local def = rules.item_def("moss_potion")
+    local use = def and def.use or {}
+    local _, hp, max_hp = rules.player_hp()
+    local healed = math.min(tonumber(use.heal) or 0, math.max(0, (max_hp or 0) - (hp or 0)))
+    local cures = use.cure == true and rules.afflicted()
+    if rules.item_count("moss_potion") < 1 then
+      viber.toast("Sem poções de musgo.")
+      sfx("error")
+    elseif healed < 1 and not cures then
+      viber.toast("Nada para tratar.")
+    else
+      st.cd = COOLDOWN
+      rules.vault_take("moss_potion", 1)
+      if healed >= 1 then
+        rules.heal_player(healed)
+      end
+      if cures then
+        rules.status_clear()
+      end
+      actions.record("usar", "item", "moss_potion")
+      local _, px, py, pz = viber.player_position()
+      if healed >= 1 then
+        viber.damage_number("+" .. math.floor(healed) .. " HP", { color = "#7ef29d", x = px, y = py + 2.0, z = pz })
+      end
+      sfx("heal")
+      viber.toast(cures and "Poção de musgo: estados limpos." or "Poção de musgo usada.")
     end
   end
 end

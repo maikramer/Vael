@@ -35,6 +35,9 @@ function on_update(dt)
     -- cura do mundo sem confirmação audível.
     viber.sound("heal")
   end
+  -- Descansar repõe o cantil de cura [E] e limpa os estados.
+  rules.flask_refill()
+  rules.status_clear()
   local has, px, py, pz = viber.player_position()
   if has then
     rules.set_spawn(px, py, pz)
@@ -47,8 +50,8 @@ function on_update(dt)
     end
   end
   if healed < 1 then
-    viber.toast("O calor não tem mais o que restaurar. Ponto de descanso marcado.")
+    viber.toast("Cantil cheio. Ponto de descanso marcado.")
     return
   end
-  viber.toast("O calor da fogueira restaura " .. math.floor(healed) .. " de vida.")
+  viber.toast("O calor da fogueira restaura " .. math.floor(healed) .. " de vida. Cantil cheio.")
 end

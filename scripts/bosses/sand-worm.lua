@@ -19,6 +19,16 @@ local fsm = viber.load("lib/fsm.lua").new{
   },
   enrage = { at = 0.35, speed = 1.2, cooldown = 0.7,
              toast = "O Verme enfurece-se — a areia ferve!" },
+  -- FASES: aos 65 % passa a ENTERRAR-SE (invisível e intocável) e rebenta a
+  -- areia debaixo do herói — a zona laranja avisa 1 s antes; aos 30 % fá-lo
+  -- mais vezes e mais depressa.
+  phases = {
+    { at = 0.65, toast = "O Verme mergulha na areia!", color = "#ff8a2a",
+      burrow = { every = 9, under = 1.6, windup = 1.0, radius = 4.5, mult = 1.5,
+                 label = "A areia abre-se debaixo de ti!" } },
+    { at = 0.3, toast = "A duna inteira mexe-se!", color = "#ff8a2a", speed = 1.1,
+      burrow = { every = 6, under = 1.2, windup = 0.85, radius = 5.0, mult = 1.7 } },
+  },
   on_chase = function() viber.sound("roar") end,
 }
 

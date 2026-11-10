@@ -317,7 +317,8 @@ end
 -- visit → marco por visitar; collect → recurso mais próximo (ou guardião,
 -- no caso das Notas). Devolve nil quando não há alvo conhecido.
 local function objective_waypoint(def, px, pz)
-  local obj = def.objective or {}
+  -- A etapa EM CURSO (quests com `stages`), não o `objective` do JSON.
+  local obj = rules.quest_objective(def.id)
   local kind = obj.type or ""
   if kind == "kill" then
     local list = {}
@@ -429,7 +430,7 @@ local function quest_waypoint()
           active = active or target
         end
       end
-    elseif state == "not_taken" then
+    elseif state == "not_taken" and rules.quest_available(def.id) then
       -- Sem missão em curso, a seta aponta a um dador novo (README:
       -- entregar → cumprir → missão nova). O mais próximo evita mandar o
       -- jogador ao outro canto do vale sem razão.

@@ -44,6 +44,14 @@ function M.learn(id)
     sfx("error")
     return
   end
+  -- Escolha exclusiva: aprender um ramo fecha o outro para sempre.
+  local excludes = def.excludes or ""
+  if excludes ~= "" and learned(excludes) then
+    local other = rules.skill(excludes)
+    viber.toast("Já escolheste " .. (other and other.label or excludes) .. ".")
+    sfx("error")
+    return
+  end
   if (viber.game().skill_points or 0) < 1 then
     viber.toast("Sem pontos de talento.")
     sfx("error")
@@ -74,11 +82,37 @@ local TARGET_LABEL = {
   -- Alvos das quests de decisão (decision_quests.json, `type: "decision"`).
   enviado = "o Enviado de Vidro", sino = "a Sineira Afogada",
   defender = "a Testemunha de Vidro",
+  ["goblin-brute"] = "goblins brutos", ["bandit-shield"] = "bandidos de escudo",
+  ["bogling-hexer"] = "boglings feiticeiros", ["shade-night"] = "sombras da noite",
+  elite = "elites", wolf_pelt = "peles de lobo",
 }
 
 local function target_label(target)
   return TARGET_LABEL[target] or target
 end
+
+-- Clique numa célula da mochila: equipa/tira o que tem `slot`; o resto diz
+-- como se usa (a hotbar é que gasta consumíveis).
+function M.bag_click(id)
+  local def = rules.item_def(id)
+  if not def then
+    return
+  end
+  local result = rules.equip_toggle(id)
+  if result == "on" then
+    sfx("item_drop")
+    viber.toast("Equipado: " .. (def.label or id))
+  elseif result == "off" then
+    sfx("ui")
+    viber.toast("Guardado: " .. (def.label or id))
+  elseif def.desc and def.desc ~= "" then
+    viber.toast(def.desc)
+  end
+end
+
+local STAGE_VERB = {
+  kill = "derrotar", collect = "reunir", craft = "forjar",
+}
 
 local function objective_line(def, state)
   -- Pronta: o que falta é o relato de uma palavra ao dador.
@@ -89,13 +123,18 @@ local function objective_line(def, state)
       return "diz ao NPC: «" .. ex .. "»"
     end
   end
-  local obj = def.objective or {}
+  -- Objetivo EM CURSO: numa quest por etapas é a etapa actual.
+  local obj, at, total = rules.quest_objective(def.id)
   local kind = obj.type or ""
   local count = obj.count or 1
   local target = target_label(obj.target or "")
-  if kind == "kill" then return "derrotar " .. count .. "× " .. target end
-  if kind == "collect" then return "reunir " .. count .. "× " .. target end
-  if kind == "visit" then return "visitar " .. count .. " locais" end
+  local prefix = total > 1 and ("etapa " .. at .. "/" .. total .. ": ") or ""
+  if obj.title and obj.title ~= "" then return prefix .. obj.title end
+  if kind == "craft" then
+    return prefix .. "forjar " .. count .. "× " .. rules.item_label(obj.target or "")
+  end
+  if STAGE_VERB[kind] then return prefix .. STAGE_VERB[kind] .. " " .. count .. "× " .. target end
+  if kind == "visit" then return prefix .. "visitar " .. count .. " locais" end
   -- Quests de decisão (decision-quest.lua): sem esta linha o diário
   -- mostrava o kind cru em inglês ("decision · Discórdia").
   if kind == "decision" then return "convencer " .. target end
@@ -116,6 +155,7 @@ local function publish(name, rows)
       row.status_text or "", row.objective or "", row.biome_name or "",
       row.count or "", row.progress or "", row.progress_text or "",
       row.tracked or "", row.requires or "", row.kind or "",
+      row.equip or "", row.tag or "", row.tip or "",
     }, "\2")
   end
   local sig = table.concat(parts, "\1")
@@ -169,12 +209,31 @@ function M.refresh()
     local id = item.id
     local count = rules.vault_get(id)
     if count > 0 or item.kind == "resource" then
+      local gear = rules.gear()
+      local slot = gear.slot_of(id)
+      local equip, tag = "", ""
+      if slot and count > 0 then
+        if gear.is_equipped(id) then
+          equip, tag = "equipped", "equipado"
+        else
+          equip, tag = "equippable", "equipar"
+        end
+      elseif item.use and count > 0 then
+        tag = "[3]"
+      end
+      local tip = (item.label or id) .. " ×" .. count
+      if item.desc and item.desc ~= "" then
+        tip = tip .. " — " .. item.desc
+      end
       bag[#bag + 1] = {
         id = id,
         label = item.label or id,
         count = tostring(count),
         kind = item.kind == "resource" and "resource" or "item",
         status = count == 0 and "empty" or "",
+        equip = equip,
+        tag = tag,
+        tip = tip,
       }
     end
   end
@@ -183,11 +242,14 @@ function M.refresh()
   local skills = {}
   for _, def in ipairs(rules.skills()) do
     local requires = def.requires or ""
+    local excludes = def.excludes or ""
     local status, text = "locked", "bloqueada"
     if learned(def.id) then
       status, text = "done", "aprendida"
+    elseif excludes ~= "" and learned(excludes) then
+      status, text = "excluded", "ramo fechado"
     elseif requires == "" or learned(requires) then
-      status, text = "ready", "disponível"
+      status, text = "ready", excludes ~= "" and "escolha" or "disponível"
     end
     local required = rules.skill(requires)
     skills[#skills + 1] = {
@@ -195,8 +257,9 @@ function M.refresh()
       label = def.label,
       status = status,
       status_text = text,
-      requires = requires == "" and "sem requisitos"
-        or (required and required.label or requires),
+      requires = (requires == "" and "sem requisitos"
+        or (required and required.label or requires))
+        .. (excludes ~= "" and (" · exclui " .. ((rules.skill(excludes) or {}).label or excludes)) or ""),
     }
   end
   publish("skills", skills)

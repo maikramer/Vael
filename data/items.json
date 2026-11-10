@@ -47,13 +47,15 @@
       "id": "dark-wood",
       "label": "Madeira escura",
       "kind": "item",
-      "order": 4
+      "order": 4,
+      "desc": "Material de forja."
     },
     {
       "id": "bog-moss",
       "label": "Musgo do pântano",
       "kind": "item",
-      "order": 5
+      "order": 5,
+      "desc": "Material de forja."
     },
     {
       "id": "potion",
@@ -105,7 +107,8 @@
       "shop": {
         "sell": 15,
         "label": "Vender pele de lobo"
-      }
+      },
+      "desc": "Material de forja."
     },
     {
       "id": "cactus_fiber",
@@ -115,7 +118,8 @@
       "shop": {
         "sell": 15,
         "label": "Vender fibra de cacto"
-      }
+      },
+      "desc": "Material de forja."
     },
     {
       "id": "silk_cloth",
@@ -125,7 +129,8 @@
       "shop": {
         "sell": 20,
         "label": "Vender seda"
-      }
+      },
+      "desc": "Material de forja."
     },
     {
       "id": "moss_potion",
@@ -135,7 +140,12 @@
       "shop": {
         "sell": 20,
         "label": "Vender poção de musgo"
-      }
+      },
+      "use": {
+        "heal": 35,
+        "cure": true
+      },
+      "desc": "Cura 35 e limpa veneno, queimadura e gelo. [3]"
     },
     {
       "id": "iron_axe",
@@ -145,7 +155,15 @@
       "shop": {
         "sell": 30,
         "label": "Vender machado de ferro"
-      }
+      },
+      "slot": "weapon",
+      "weapon": {
+        "damage": 38,
+        "speed": 1.05,
+        "range": 3.2,
+        "grip": "machado"
+      },
+      "desc": "Arma: golpes lentos e pesados (38 de dano)."
     },
     {
       "id": "nature_amulet",
@@ -155,7 +173,13 @@
       "shop": {
         "sell": 30,
         "label": "Vender amuleto da natureza"
-      }
+      },
+      "slot": "charm",
+      "effects": {
+        "max_hp": 25,
+        "venom_resist": 0.5
+      },
+      "desc": "Amuleto: +25 de vida, veneno dura metade."
     },
     {
       "id": "blessed_rod",
@@ -165,7 +189,13 @@
       "shop": {
         "sell": 40,
         "label": "Vender vara abençoada"
-      }
+      },
+      "slot": "charm",
+      "effects": {
+        "crit": 0.06,
+        "shock_chance": 0.25
+      },
+      "desc": "Amuleto: +6% crítico, 25% de dar choque no golpe."
     },
     {
       "id": "ancient_relic",
@@ -175,7 +205,67 @@
       "shop": {
         "sell": 50,
         "label": "Vender relíquia ancestral"
-      }
+      },
+      "slot": "charm",
+      "effects": {
+        "damage": 8,
+        "lifesteal": 0.04
+      },
+      "desc": "Amuleto: +8 de dano, 4% de roubo de vida."
+    },
+    {
+      "id": "steel_sword",
+      "label": "Espada de aço",
+      "kind": "item",
+      "slot": "weapon",
+      "weapon": {
+        "damage": 34,
+        "speed": 1.4,
+        "range": 3.0,
+        "grip": "espada"
+      },
+      "effects": {
+        "crit": 0.05
+      },
+      "desc": "Arma: 34 de dano, +5% crítico.",
+      "shop": {
+        "sell": 90,
+        "label": "Vender espada de aço"
+      },
+      "order": 19
+    },
+    {
+      "id": "hunter_cloak",
+      "label": "Manto do caçador",
+      "kind": "item",
+      "slot": "armor",
+      "effects": {
+        "defense": 0.15,
+        "max_hp": 15
+      },
+      "desc": "Armadura: −15% de dano recebido, +15 de vida.",
+      "shop": {
+        "sell": 60,
+        "label": "Vender manto do caçador"
+      },
+      "order": 20
+    },
+    {
+      "id": "nomad_wraps",
+      "label": "Faixas do nómada",
+      "kind": "item",
+      "slot": "armor",
+      "effects": {
+        "defense": 0.08,
+        "speed": 0.08,
+        "burn_resist": 0.5
+      },
+      "desc": "Armadura: −8% de dano, +8% velocidade, queimadura dura metade.",
+      "shop": {
+        "sell": 60,
+        "label": "Vender faixas do nómada"
+      },
+      "order": 21
     }
   ]
 }

@@ -8,6 +8,17 @@ local M = {}
 local parley = viber.load("lib/parley.lua")
 -- Registo de ações para o juiz (lib/judge.lua).
 local actions = viber.load("lib/actions.lua")
+-- Equipamento (lib/gear.lua): efeitos dos itens equipados e a arma na mão.
+local gear = viber.load("lib/gear.lua")
+local clock = viber.load("lib/clock.lua")
+-- Tradução das frases dos scripts (toasts, prompts, balões): instala uma
+-- vez os embrulhos de saída. Em PT não faz nada.
+do
+  local ok, i18n = pcall(viber.load, "lib/i18n.lua")
+  if ok and type(i18n) == "table" and i18n.install then
+    pcall(i18n.install)
+  end
+end
 
 -- Declarada cedo (a definição vem mais abaixo) para os handlers de quest
 -- poderem tocar o som no herói e não na origem do controller.
@@ -210,20 +221,43 @@ end
 -- Passivas do diário: `SKILL_EFFECTS` é construída a partir de
 -- `data/progression.json` no topo deste módulo.
 
-local function learned_stats()
-  local game = g()
-  local stats = { bonus_damage = 0, crit_bonus = 0, speed_mult = 1.0, max_hp_bonus = 0 }
-  for _, id in ipairs(SKILL_IDS) do
-    if game["skill." .. id] == true then
-      local eff = SKILL_EFFECTS[id]
-      if eff then
-        stats.bonus_damage = stats.bonus_damage + (eff.damage or 0)
-        stats.crit_bonus = stats.crit_bonus + (eff.crit or 0)
-        stats.speed_mult = stats.speed_mult + (eff.speed or 0)
-        stats.max_hp_bonus = stats.max_hp_bonus + (eff.max_hp or 0)
+-- As quatro chaves clássicas têm campo próprio (o melee e o HUD leem-nas);
+-- qualquer OUTRA chave numérica de `effects` (defense, lifesteal, dash_cd,
+-- strike_burn…) soma em `stats.fx` e lê-se com `M.stat(chave)`. Um talento ou
+-- item novo só precisa do JSON e de quem consome a chave.
+local function add_effects(stats, eff)
+  if type(eff) ~= "table" then
+    return
+  end
+  for key, value in pairs(eff) do
+    if finite(value) then
+      if key == "damage" then
+        stats.bonus_damage = stats.bonus_damage + value
+      elseif key == "crit" then
+        stats.crit_bonus = stats.crit_bonus + value
+      elseif key == "speed" then
+        stats.speed_mult = stats.speed_mult + value
+      elseif key == "max_hp" then
+        stats.max_hp_bonus = stats.max_hp_bonus + value
+      else
+        stats.fx[key] = (stats.fx[key] or 0) + value
       end
     end
   end
+end
+
+local function learned_stats()
+  local game = g()
+  local stats = {
+    bonus_damage = 0, crit_bonus = 0, speed_mult = 1.0, max_hp_bonus = 0, fx = {},
+  }
+  for _, id in ipairs(SKILL_IDS) do
+    if game["skill." .. id] == true then
+      add_effects(stats, SKILL_EFFECTS[id])
+    end
+  end
+  -- Itens equipados (arma/armadura/amuleto) somam como talentos.
+  add_effects(stats, gear.effects())
   return stats
 end
 
@@ -242,6 +276,60 @@ end
 function M.player_stats()
   ensure_hp()
   return M.stats or learned_stats()
+end
+
+-- Efeito genérico somado (talentos + equipamento); 0 quando ninguém o dá.
+function M.stat(key)
+  local stats = M.stats or learned_stats()
+  return (stats.fx and stats.fx[key]) or 0
+end
+
+-- Arma na mão (números do melee) e equipamento: ver lib/gear.lua.
+function M.weapon()
+  return gear.weapon()
+end
+
+function M.gear()
+  return gear
+end
+
+-- Equipa/tira um item da mochila. Devolve "on" | "off" | nil.
+function M.equip_toggle(id)
+  local result = gear.toggle(id)
+  if result then
+    actions.record("equipar", "item", id)
+  end
+  return result
+end
+
+-- Cantil de cura [E]: cargas que só voltam no descanso (fogueira, curandeiro,
+-- renascer). A cura deixou de ser grátis de 12 em 12 s.
+local FLASK_BASE = 2
+
+function M.flask_max()
+  return math.max(1, FLASK_BASE + math.floor(M.stat("flasks")))
+end
+
+function M.flasks()
+  local n = g().flasks
+  local max = M.flask_max()
+  if not finite(n) then
+    return max
+  end
+  return math.max(0, math.min(max, math.floor(n)))
+end
+
+function M.flask_use()
+  local n = M.flasks()
+  if n < 1 then
+    return false
+  end
+  g().flasks = n - 1
+  return true
+end
+
+function M.flask_refill()
+  g().flasks = M.flask_max()
 end
 
 local defs, defs_by_id
@@ -319,6 +407,27 @@ function M.talent_every()
   return TALENT_EVERY
 end
 
+-- ETAPAS: uma quest com `stages: [ {type,target,count,title?}, … ]` cumpre
+-- os objetivos por ordem; `q.<id>.stage` guarda a etapa actual (1-based). Sem
+-- `stages`, vale o `objective` único de sempre.
+local function stage_index(def)
+  local stages = def.stages
+  if type(stages) ~= "table" or #stages == 0 then
+    return nil
+  end
+  local at = math.floor(num(qkey(def.id) .. ".stage", 1))
+  return math.max(1, math.min(#stages, at))
+end
+
+local function objective(def)
+  local at = stage_index(def)
+  if at then
+    local stage = def.stages[at]
+    return type(stage) == "table" and stage or {}
+  end
+  return def.objective or {}
+end
+
 function M.quest_progress(id)
   local override = tonumber(g()[qkey(id) .. ".need"])
   if override and override >= 1 then
@@ -326,11 +435,59 @@ function M.quest_progress(id)
   end
   local def = find_def(id)
   local need = 1
-  if def and def.objective and def.objective.count then
+  if def then
     -- `count: 0`/ausente não pode dividir por zero no HUD.
-    need = math.max(1, math.floor(tonumber(def.objective.count) or 1))
+    need = math.max(1, math.floor(tonumber(objective(def).count) or 1))
   end
   return num("q." .. id .. ".n", 0), need
+end
+
+-- Objetivo EM CURSO (a etapa actual numa quest com `stages`) e a posição
+-- dela: `obj, etapa, total`. O diário, a seta e os dadores leem daqui.
+function M.quest_objective(id)
+  local def = find_def(id)
+  if not def then
+    return {}, 1, 1
+  end
+  local at = stage_index(def)
+  return objective(def), at or 1, at and #def.stages or 1
+end
+
+-- `requires`: id (ou lista de ids) de quests que têm de estar ENTREGUES antes
+-- de esta poder ser aceite — cadeias e conteúdo de pós-jogo.
+function M.quest_available(id)
+  local def = find_def(id)
+  if not def then
+    return false
+  end
+  local req = def.requires
+  if type(req) == "string" and req ~= "" then
+    req = { req }
+  end
+  if type(req) == "table" then
+    for _, other in ipairs(req) do
+      if g()[qkey(other)] ~= "done" then
+        return false
+      end
+    end
+  end
+  return true
+end
+
+-- Cadeia de um dador: enquanto a quest estiver entregue e tiver `next`, o
+-- NPC passa a oferecer a seguinte.
+function M.quest_chain(id)
+  local seen = 0
+  while seen < 16 do
+    local def = find_def(id)
+    if not def or type(def.next) ~= "string" or def.next == ""
+        or g()[qkey(id)] ~= "done" or not find_def(def.next) then
+      break
+    end
+    id = def.next
+    seen = seen + 1
+  end
+  return id
 end
 
 function M.quest_state(id)
@@ -339,10 +496,6 @@ function M.quest_state(id)
     return state
   end
   return find_def(id) and "not_taken" or "unknown"
-end
-
-local function objective(def)
-  return def.objective or {}
 end
 
 -- `count: 0`/ausente é uma quest de um passo, não uma divisão por zero nem
@@ -377,9 +530,25 @@ local function set_progress(id, n)
   g()[qkey(id) .. ".n"] = n
 end
 
+local clear_visits
+
 local function mark_ready(def)
   local need = need_of(def)
   if progress_of(def.id) >= need and M.quest_state(def.id) == "active" then
+    -- Etapa intermédia: avança para a seguinte em vez de ficar pronta.
+    local at = stage_index(def)
+    if at and at < #def.stages then
+      g()[qkey(def.id) .. ".stage"] = at + 1
+      set_progress(def.id, 0)
+      clear_visits(def)
+      local nxt = objective(def)
+      g()[qkey(def.id) .. ".need"] = count_of(nxt)
+      viber.toast("Etapa " .. at .. "/" .. #def.stages .. " cumprida: " .. (def.title or def.id))
+      sound_at_player("notification")
+      -- A etapa nova pode já estar satisfeita (o item está na mochila).
+      M.sync_collect()
+      return
+    end
     g()[qkey(def.id)] = "ready"
     viber.toast("Objetivo completo: " .. (def.title or def.id))
     sound_at_player("notification")
@@ -402,7 +571,7 @@ local function repeatable(def)
   return def.npc == "notice_board"
 end
 
-local function clear_visits(def)
+function clear_visits(def)
   -- Apaga TODOS os `q.<id>.v.*`, não só os locais do objectivo actual: um
   -- save antigo (ou um objectivo editado no editor, que troca/renomeia
   -- locais) guardava marcadores órfãos que nunca mais eram lidos. Recolhe
@@ -421,10 +590,11 @@ end
 
 function M.quest_accept(id)
   local def = find_def(id)
-  if not def or M.quest_state(id) ~= "not_taken" then
+  if not def or M.quest_state(id) ~= "not_taken" or not M.quest_available(id) then
     return false
   end
   g()[qkey(id)] = "active"
+  g()[qkey(id) .. ".stage"] = nil
   set_progress(id, 0)
   set_need(id, count_of(objective(def)))
   g()[qkey(id) .. ".said"] = nil
@@ -504,6 +674,7 @@ function M.quest_turn_in(id)
   -- volta a criá-las.
   clear_visits(def)
   g()[qkey(id) .. ".n"] = nil
+  g()[qkey(id) .. ".stage"] = nil
   set_need(id, nil)
   g()[qkey(id) .. ".said"] = nil
   local missing = grant_rewards(def)
@@ -657,14 +828,17 @@ function M.kind_matches(kind, target)
   return kill_matches(kind, target)
 end
 
-function M.report_kill(kind)
+-- `elite` = a criatura abatida era elite: conta também para objetivos com
+-- `target: "elite"` (caçadas de pós-jogo), seja qual for a espécie.
+function M.report_kill(kind, elite)
   if not kind or kind == "" then
     return
   end
   for _, def in ipairs(load_defs()) do
     if M.quest_state(def.id) == "active" then
       local obj = objective(def)
-      if obj.type == "kill" and kill_matches(kind, obj.target or "") then
+      if obj.type == "kill" and (kill_matches(kind, obj.target or "")
+          or (elite and obj.target == "elite")) then
         local need = need_of(def)
         set_progress(def.id, math.min(need, progress_of(def.id) + 1))
         mark_ready(def)
@@ -760,6 +934,23 @@ function M.scan_visits()
             end
           end
         end
+      end
+    end
+  end
+end
+
+-- Objetivos `type: "craft"`: contam o que o herói forjou (lib/craft.lua).
+function M.report_craft(item, amount)
+  if not item or item == "" then
+    return
+  end
+  for _, def in ipairs(load_defs()) do
+    if M.quest_state(def.id) == "active" then
+      local obj = objective(def)
+      if obj.type == "craft" and obj.target == item then
+        local need = need_of(def)
+        set_progress(def.id, math.min(need, progress_of(def.id) + (amount or 1)))
+        mark_ready(def)
       end
     end
   end
@@ -993,6 +1184,8 @@ function M.hostiles_near(cx, cz, range)
           hp = e.hp, max = e.max,
           distance = dist,
           forward_x = e.fx, forward_z = e.fz,
+          -- Escudo erguido (lib/fsm.lua `shield`): o melee decide o bloqueio.
+          shield = e.guard and e.shield or nil,
         }
       end
     end
@@ -1034,6 +1227,10 @@ function M.damage_enemy(id, amount)
   ensure_hp()
   local e = (g().enemies or {})[id]
   if not e or (e.hp or 0) <= 0 then
+    return false, e
+  end
+  -- Invulnerável (chefe enterrado, transição de fase): o golpe não entra.
+  if e.invuln then
     return false, e
   end
   if not finite(amount) or amount < 0 then
@@ -1090,22 +1287,65 @@ function M.alive_in_region(idx, except_kind)
   return n
 end
 
+-- ESTADOS do herói, guiados por tabela. `dps` = dano por segundo (tick de
+-- 1 s); `slow` = multiplicador da velocidade enquanto dura. O tempo vive em
+-- `viber.game()[kind]` (viaja no save); `<kind>_resist` (talentos/itens)
+-- encurta a duração.
+local STATUS = {
+  venom = { dps = 4, color = "#7ed957" },
+  burn = { dps = 6, color = "#ff8c47" },
+  frost = { slow = 0.6 },
+}
+local STATUS_ORDER = { "venom", "burn", "frost" }
+
 function M.apply_status(kind, secs)
-  if kind == "venom" then
-    local dur = math.max(num("venom", 0), secs or 0)
-    g().venom = dur
+  if not STATUS[kind] or not finite(secs) or secs <= 0 then
+    return
   end
+  local resist = math.max(0, math.min(0.9, M.stat(kind .. "_resist")))
+  g()[kind] = math.max(num(kind, 0), secs * (1 - resist))
 end
 
 function M.status_clear(kind)
-  if kind == nil or kind == "venom" then
-    g().venom = 0
-    g().venom_tick = 0
+  for _, name in ipairs(STATUS_ORDER) do
+    if kind == nil or kind == name then
+      g()[name] = 0
+      g()[name .. "_tick"] = 0
+    end
   end
+end
+
+function M.status_active(kind)
+  return STATUS[kind] ~= nil and num(kind, 0) > 0
 end
 
 function M.poisoned()
   return num("venom", 0) > 0
+end
+
+-- Algum estado que um remédio limpa (a poção de musgo trata todos).
+function M.afflicted()
+  for _, name in ipairs(STATUS_ORDER) do
+    if num(name, 0) > 0 then
+      return true
+    end
+  end
+  return false
+end
+
+-- ESTADOS nas criaturas: o registo vivo guarda os segundos que faltam
+-- (`burn`, `frost`, `shock`); o `lib/fsm.lua` aplica o efeito no update da
+-- própria criatura (dano por segundo, lentidão, atordoamento).
+function M.enemy_status(id, kind, secs)
+  local e = (g().enemies or {})[id]
+  if not e or (e.hp or 0) <= 0 or not finite(secs) or secs <= 0 then
+    return false
+  end
+  if kind ~= "burn" and kind ~= "frost" and kind ~= "shock" then
+    return false
+  end
+  e[kind] = math.max(e[kind] or 0, secs)
+  return true
 end
 
 function M.kill_xp(kind)
@@ -1117,7 +1357,8 @@ end
 
 function M.award_kill(kind, id)
   M.add_xp(M.kill_xp(kind))
-  M.report_kill(kind)
+  local elites = g().elites
+  M.report_kill(kind, id ~= nil and type(elites) == "table" and elites[id] == true)
   actions.record("matar", "criatura", kind)
   if M.on_kill then
     M.on_kill(kind, id)
@@ -1223,11 +1464,81 @@ local function player_fx(text, color, sfx)
   end
 end
 
+-- Morrer custa: um quarto do ouro fica numa bolsa no sítio da queda e
+-- espera lá pelo herói (uma só — a bolsa de uma morte anterior perde-se).
+-- Só no mundo grande: as coordenadas de um interior não valem em `main`.
+local DEATH_GOLD_FRAC = 0.25
+local PURSE_RADIUS = 2.5
+
+local function drop_purse(game)
+  local scene = viber.scene_name and viber.scene_name() or nil
+  if scene ~= nil and scene ~= "main" then
+    return
+  end
+  local has, x, y, z = viber.player_position()
+  if not has or not finite(x) or not finite(y) or not finite(z) then
+    return
+  end
+  local lost = math.floor(M.vault_get("gold") * DEATH_GOLD_FRAC)
+  if lost < 1 or not M.vault_take("gold", lost) then
+    return
+  end
+  game.lost_gold = lost
+  game.lost_x, game.lost_y, game.lost_z = x, y, z
+end
+
+local purse_fx_t = 0
+
+local function tick_purse(game, dt)
+  local lost = num("lost_gold", 0)
+  if lost < 1 then
+    return
+  end
+  local scene = viber.scene_name and viber.scene_name() or nil
+  if (scene ~= nil and scene ~= "main") or (game.hp or 0) <= 0 then
+    return
+  end
+  local has, px, _, pz = viber.player_position()
+  local x, y, z = game.lost_x, game.lost_y, game.lost_z
+  if not has or not finite(x) or not finite(y) or not finite(z) then
+    return
+  end
+  local dx, dz = px - x, pz - z
+  local d2 = dx * dx + dz * dz
+  if d2 <= PURSE_RADIUS * PURSE_RADIUS then
+    game.lost_gold = 0
+    local back = M.vault_add("gold", lost) or 0
+    viber.damage_number("+" .. back .. " ouro", { color = "#ffd35a", x = x, y = y + 1.6, z = z })
+    viber.burst("sparkle", x, y + 0.8, z, 16)
+    viber.sound("coin", { x = x, y = y, z = z })
+    viber.toast("Recuperaste a bolsa: +" .. back .. " de ouro.")
+    return
+  end
+  -- Brilho periódico: a bolsa lê-se de longe (a 70 m já se vê o anel).
+  purse_fx_t = purse_fx_t - dt
+  if purse_fx_t <= 0 and d2 <= 70 * 70 then
+    purse_fx_t = 1.6
+    viber.burst("sparkle", x, y + 0.6, z, 8)
+    viber.ring(x, z, 1.2, "#ffd35a")
+  end
+end
+
+-- Onde está a bolsa perdida (a seta/mapa podem apontá-la): x, y, z, ouro.
+function M.lost_purse()
+  local lost = num("lost_gold", 0)
+  local game = g()
+  if lost < 1 or not finite(game.lost_x) or not finite(game.lost_z) then
+    return nil
+  end
+  return game.lost_x, game.lost_y or 0, game.lost_z, lost
+end
+
 local function start_death(game)
   if num("dying", 0) > 0 or game.death_pending then
     return
   end
   game.dying = 2.2
+  drop_purse(game)
   local id = viber.player_id()
   if id then
     viber.play_clip("death", { id = id })
@@ -1295,6 +1606,9 @@ function M.damage_player(amount, sx, sz)
     viber.toast("Bloqueaste")
     sound_at_player("block")
   end
+  -- Defesa (armadura + talentos): corta uma fração do dano, até 60 %.
+  local defense = math.max(0, math.min(0.6, M.stat("defense")))
+  amount = amount * (1 - defense)
   game.hp = math.max(0, game.hp - amount)
   player_fx("-" .. math.floor(amount), "#ff6b6b", "hurt")
   flash_damage_direction(sx, sz)
@@ -1335,9 +1649,11 @@ local function sync_passives()
     game.max_hp = new_max
     game.hp = math.max(0, math.min(new_max, (game.hp or new_max) + delta))
   end
-  if viber.set_player_speed and M._speed ~= stats.speed_mult then
-    M._speed = stats.speed_mult
-    viber.set_player_speed(stats.speed_mult)
+  -- O gelo abranda o herói enquanto dura (multiplica as passivas).
+  local speed = stats.speed_mult * ((num("frost", 0) > 0) and STATUS.frost.slow or 1.0)
+  if viber.set_player_speed and M._speed ~= speed then
+    M._speed = speed
+    viber.set_player_speed(speed)
   end
 end
 
@@ -1354,12 +1670,17 @@ function M.respawn()
   game.dying = 0
   game.death_pending = false
   game.death_wait = 0
-  game.venom = 0
-  game.venom_tick = 0
+  M.status_clear()
+  M.flask_refill()
   game.iframes = 2.0
   viber.ui.open("death", false)
   viber.ui.set_visible("hud", true)
-  viber.toast("Renasces no último descanso.")
+  if num("lost_gold", 0) >= 1 then
+    viber.toast("Renasces no último descanso. A tua bolsa ("
+      .. math.floor(num("lost_gold", 0)) .. " de ouro) ficou onde caíste.")
+  else
+    viber.toast("Renasces no último descanso.")
+  end
   sound_at_player("levelup")
   -- Morrer dentro de uma casa e "Tentar de novo" teleportava para as
   -- coordenadas do mundo grande DENTRO da cena do interior (fora das
@@ -1432,31 +1753,39 @@ function M.tick(dt)
     dmg_edge, dmg_until = nil, 0
   end
 
-  -- Veneno: 4 dps, tick de 1 s. Não corre durante a morte (o cadáver ficava
-  -- a 0 HP sem `dying` e nenhum caminho o curava/matava), nem com um menu
-  -- aberto (ler o diário não pode matar), nem com o MODO DEV ligado (o
-  -- veneno não passa por `damage_player` — é o único dano com caminho
-  -- próprio), e um frame longo aplica TODOS os ticks devidos, não só um.
-  if num("venom", 0) > 0 and not viber.menu_open() and not M.god then
-    game.venom = math.max(0, game.venom - dt)
-    if num("dying", 0) <= 0 then
-      -- `num`: um `venom_tick` textual (save editado à mão) rebentava a
-      -- soma e o erro subia pelo `tick` em todos os frames.
-      game.venom_tick = num("venom_tick", 0) + dt
-      local ticks = math.floor(game.venom_tick)
-      if ticks > 0 then
-        game.venom_tick = game.venom_tick - ticks
-        local dmg = ticks * 4
-        game.hp = math.max(0, game.hp - dmg)
-        player_fx("-" .. dmg, "#7ed957")
-        if game.hp <= 0 then
-          start_death(game)
+  -- Estados com dano por segundo (veneno, queimadura), tick de 1 s. Não
+  -- correm durante a morte (o cadáver ficava a 0 HP sem `dying` e nenhum
+  -- caminho o curava/matava), nem com um menu aberto (ler o diário não pode
+  -- matar), nem com o MODO DEV ligado (este dano não passa por
+  -- `damage_player`), e um frame longo aplica TODOS os ticks devidos.
+  -- `num`: um timer textual (save editado à mão) rebentava a soma e o erro
+  -- subia pelo `tick` em todos os frames.
+  local frozen = viber.menu_open() or M.god
+  for _, kind in ipairs(STATUS_ORDER) do
+    local spec = STATUS[kind]
+    local tick_key = kind .. "_tick"
+    if num(kind, 0) > 0 and not frozen then
+      -- À chuva a queimadura apaga-se ao dobro da velocidade.
+      local rate = (kind == "burn" and clock.raining()) and 2 or 1
+      game[kind] = math.max(0, num(kind, 0) - dt * rate)
+      if spec.dps and num("dying", 0) <= 0 then
+        game[tick_key] = num(tick_key, 0) + dt
+        local ticks = math.floor(game[tick_key])
+        if ticks > 0 then
+          game[tick_key] = game[tick_key] - ticks
+          local dmg = ticks * spec.dps
+          game.hp = math.max(0, game.hp - dmg)
+          player_fx("-" .. dmg, spec.color)
+          if game.hp <= 0 then
+            start_death(game)
+          end
         end
       end
+    elseif num(kind, 0) <= 0 then
+      game[tick_key] = 0
     end
-  else
-    game.venom_tick = 0
   end
+  tick_purse(game, dt)
 
   -- Um save carregado com o herói vivo não pode reabrir o ecrã de morte.
   if game.death_pending and (game.hp or 0) > 0 then
@@ -1579,6 +1908,12 @@ function M.publish()
   viber.ui.set("health.value", hp)
   viber.ui.set("health.low", frac <= 0.3)
   viber.ui.set("status.venom", num("venom", 0) > 0)
+  viber.ui.set("status.burn", num("burn", 0) > 0)
+  viber.ui.set("status.frost", num("frost", 0) > 0)
+  viber.ui.set("flask", tostring(M.flasks()))
+  viber.ui.set("flask.empty", M.flasks() < 1)
+  viber.ui.set("moss", M.vault_get("moss_potion"))
+  viber.ui.set("moss.empty", M.vault_get("moss_potion") < 1)
   viber.ui.set("xp", game.xp / game.xp_next)
   viber.ui.set("xp.text", string.format("%d/%d", math.floor(game.xp), math.floor(game.xp_next)))
   viber.ui.set("level", game.level)

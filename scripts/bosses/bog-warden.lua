@@ -20,6 +20,19 @@ local fsm = viber.load("lib/fsm.lua").new{
   },
   enrage = { at = 0.4, speed = 1.2, cooldown = 0.75,
              toast = "O Guardião ruge — o lodo sobe-lhe pelos braços!" },
+  -- FASES: aos 60 % chama três boglings do lodo; aos 30 % chama um
+  -- feiticeiro e o golpe de lodo passa a cair onde o herói está.
+  phases = {
+    { at = 0.6, toast = "O lodo mexe-se — os afogados respondem ao Guardião!",
+      color = "#6fdc5a", summon = { proto = "mob-bogling", count = 3 } },
+    { at = 0.3, toast = "O Guardião conta mais um afogado: tu.", color = "#6fdc5a",
+      summon = { proto = "mob-bogling-hexer", count = 1 },
+      special = {
+        every = 2, windup = 1.0, radius = 4.0, mult = 1.4,
+        at = "player", clip = "swordheavy,attack", color = "#6fdc5a",
+        on_hit = function() rules.apply_status("venom", 7) end,
+      } },
+  },
   on_chase = function() viber.sound("roar") end,
 }
 

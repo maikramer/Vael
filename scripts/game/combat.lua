@@ -48,6 +48,8 @@ local TARGET_NAME = {
   bogling = "Bogling", shade = "Sombra", witch = "Bruxa do Bosque",
   ["sand-worm"] = "Verme das Areias", ["bog-warden"] = "Guardião do Lodo",
   boss = "Ogro dos Picos",
+  ["goblin-brute"] = "Goblin Bruto", ["bandit-shield"] = "Bandido de Escudo",
+  ["bogling-hexer"] = "Bogling Feiticeiro", ["shade-night"] = "Sombra da Noite",
 }
 
 local function stats()
@@ -114,9 +116,12 @@ local function start_swing(st)
   if not duration or duration <= 0 then
     duration = 0.5
   end
-  local occupy = duration / ATTACK_SPEED
+  -- A cadência é da ARMA (lib/gear.lua): o machado demora, a espada não.
+  local weapon = rules.weapon()
+  local speed = math.max(0.5, weapon.speed or ATTACK_SPEED)
+  local occupy = duration / speed
   local fraction = IMPACT_FRACTION[clip] or 0.35
-  local delay = math.min(0.45, math.max(0.12, duration * fraction / ATTACK_SPEED))
+  local delay = math.min(0.6, math.max(0.12, duration * fraction / speed))
   st.attack_t = occupy
   st.chain_timer = math.max(occupy + CHAIN_LINK, CHAIN_FLOOR)
   -- A mira do golpe é a do PRESS (o corpo pode girar durante o windup, e um
@@ -125,7 +130,7 @@ local function start_swing(st)
   st.swing = { t = delay, step = step, fx = fx, fz = fz }
   local pid = viber.player_id()
   if pid then
-    viber.play_clip(clip, { speed = ATTACK_SPEED, id = pid })
+    viber.play_clip(clip, { speed = speed, id = pid })
   end
   -- O controller vive na origem: sem posição o whoosh tocava a 40+ m.
   local has, px, py, pz = viber.player_position()
@@ -149,9 +154,18 @@ local function resolve_swing(st, sw)
   end
   local step = sw.step or 0
   local finisher = step >= 2
-  local range = finisher and FINISHER_RANGE or MELEE_RANGE
+  -- Alcance e dano base vêm da arma equipada; o remate alcança +0,5 m.
+  local weapon = rules.weapon()
+  local reach = weapon.range or MELEE_RANGE
+  local range = finisher and (reach + (FINISHER_RANGE - MELEE_RANGE)) or reach
   local arc = finisher and FINISHER_ARC or ATTACK_ARC
   local bonus = stats()
+  local base_damage = weapon.damage or BASE_DAMAGE
+  local crit_mult = CRIT_MULT + rules.stat("crit_mult")
+  local execute_frac = EXECUTE_FRAC + rules.stat("execute")
+  local shock_chance = rules.stat("shock_chance")
+  local lifesteal = rules.stat("lifesteal")
+  local dealt = 0
   local hits, crit_any, kill_any = 0, false, false
   local alert_x, alert_z
   for _, h in ipairs(rules.hostiles(range + 1.0) or {}) do
@@ -170,7 +184,7 @@ local function resolve_swing(st, sw)
           ux, uz = fx, fz
         end
         if (fx * ux + fz * uz) >= arc then
-          local dmg = (BASE_DAMAGE + (bonus.bonus_damage or 0))
+          local dmg = (base_damage + (bonus.bonus_damage or 0))
             * chain_mult(step) * combo_mult(st.combo_hits or 0)
           local backstab = false
           if h.forward_x and h.forward_z then
@@ -181,25 +195,50 @@ local function resolve_swing(st, sw)
           end
           local crit = math.random() < (CRIT_CHANCE + (bonus.crit_bonus or 0))
           if crit then
-            dmg = dmg * CRIT_MULT
+            dmg = dmg * crit_mult
           end
           -- Execução: alvo abaixo de 15 % cai na hora. O HP do snapshot é
           -- o do início do frame; o dano garante a morte mesmo assim.
-          local execute = (h.max or 0) > 0 and hp < (h.max or 0) * EXECUTE_FRAC
+          local execute = (h.max or 0) > 0 and hp < (h.max or 0) * execute_frac
           if execute then
             dmg = math.max(dmg, hp + 1)
           end
+          -- ESCUDO: de frente, o golpe normal ressalta (20 % do dano). O
+          -- remate da chain PARTE a guarda (dano inteiro + atordoa); pelas
+          -- costas o escudo não conta. A execução ignora-o.
+          local blocked = false
+          if h.shield and not backstab and not execute then
+            local facing = (h.forward_x or 0) * -ux + (h.forward_z or 0) * -uz
+            if facing > (h.shield.arc or 0.3) then
+              if finisher then
+                rules.enemy_status(h.id, "shock", 1.2)
+                viber.damage_number("GUARDA PARTIDA", {
+                  color = "#ffd35a", x = h.x, y = (h.y or py) + 2.4, z = h.z,
+                })
+              else
+                blocked = true
+                dmg = dmg * (1 - (h.shield.reduce or 0.8))
+              end
+            end
+          end
           local killed = rules.damage_enemy(h.id, dmg)
+          dealt = dealt + dmg
+          if blocked then
+            viber.sound("block", { x = h.x, y = h.y, z = h.z })
+          elseif shock_chance > 0 and math.random() < shock_chance then
+            -- Vara abençoada: o golpe pode dar choque (atordoa 0,8 s).
+            rules.enemy_status(h.id, "shock", 0.8)
+          end
           if viber.hit_flash then
             viber.hit_flash(h.id)
           end
           viber.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
-          if viber.entity_knockback and not BOSSES[h.kind or ""] then
+          if viber.entity_knockback and not blocked and not BOSSES[h.kind or ""] then
             local meters = crit and 0.65 or (finisher and 0.55 or 0.45)
             viber.entity_knockback(h.id, ux, uz, meters * 6.0)
           end
-          viber.damage_number("-" .. math.floor(dmg), {
-            color = (crit or execute) and "#ff8c47" or "#f5efe0",
+          viber.damage_number((blocked and "BLOQUEIO -" or "-") .. math.floor(dmg), {
+            color = blocked and "#9aa3ad" or ((crit or execute) and "#ff8c47" or "#f5efe0"),
             x = h.x, y = (h.y or py) + 1.8, z = h.z,
           })
           viber.burst("sparks", h.x or px, (h.y or py) + 1.1, h.z or pz,
@@ -244,6 +283,17 @@ local function resolve_swing(st, sw)
       alert.t = viber.time()
       alert.seq = (alert.seq or 0) + 1
     end
+    -- Roubo de vida (talento/relíquia): uma fração do dano volta como vida.
+    if lifesteal > 0 and dealt > 0 then
+      local _, cur, max_hp = rules.player_hp()
+      local back = math.min(dealt * lifesteal, math.max(0, (max_hp or 0) - (cur or 0)))
+      if back >= 1 then
+        rules.heal_player(back)
+        viber.damage_number("+" .. math.floor(back), {
+          color = "#7ef29d", x = px, y = py + 2.0, z = pz,
+        })
+      end
+    end
     st.combo_hits = (st.combo_hits or 0) + hits
     st.combo_window = COMBO_WINDOW
     publish_combo(st)
@@ -252,7 +302,7 @@ local function resolve_swing(st, sw)
     viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))
     viber.punch(crit_any and 0.09 or 0.06, 0.02)
     if finisher then
-      viber.ring(px, pz, FINISHER_RANGE)
+      viber.ring(px, pz, range)
       viber.burst("ground-dust", px, py + 0.15, pz, 8)
     end
   end

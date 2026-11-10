@@ -21,6 +21,22 @@ local fsm = viber.load("lib/fsm.lua").new{
   },
   enrage = { at = 0.4, speed = 1.2, cooldown = 0.7,
              toast = "O Ogro entra em FÚRIA!" },
+  -- FASES: aos 66 % ganha a INVESTIDA (corredor vermelho: sai da linha); aos
+  -- 33 % o sismo alarga e gela quem apanha.
+  phases = {
+    { at = 0.66, toast = "O Ogro baixa a cabeça — vai investir!",
+      charge = { min = 5, max = 14, cooldown = 7, windup = 1.0, speed = 11,
+                 mult = 1.8, recover = 1.6 } },
+    { at = 0.33, toast = "O gelo dos Picos sobe-lhe pelos punhos!", color = "#8cd9ff",
+      charge = { min = 5, max = 14, cooldown = 5, windup = 0.9, speed = 12,
+                 mult = 1.9, recover = 1.5 },
+      special = {
+        every = 3, windup = 1.2, radius = 6.5, mult = 1.7,
+        at = "self", clip = "swordheavy,punch,attack", color = "#8cd9ff",
+        label = "O Ogro ergue os punhos — o chão gela!",
+        on_hit = function() rules.apply_status("frost", 4) end,
+      } },
+  },
   gate = function()
     -- Exclui o PRÓPRIO ogro: o gate corre ANTES de ele se registar, por isso
     -- `<= 1` abria com um inimigo ainda vivo na serra. `except_kind` também

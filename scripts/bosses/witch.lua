@@ -20,6 +20,21 @@ local fsm = viber.load("lib/fsm.lua").new{
   },
   enrage = { at = 0.4, speed = 1.15, cooldown = 0.75,
              toast = "A Bruxa grita — o bosque inteiro escurece!" },
+  -- FASES: aos 60 % desfaz-se em fumo e passa a saltar de sítio, com duas
+  -- sombras a cobri-la; aos 30 % salta mais vezes e a maldição alarga.
+  phases = {
+    { at = 0.6, toast = "A Bruxa desfaz-se em fumo — e o bosque responde!",
+      color = "#b04cff",
+      blink = { every = 6.5, dist = 8 },
+      summon = { proto = "mob-shade", count = 2 } },
+    { at = 0.3, toast = "A maldição alastra pela clareira!", color = "#b04cff",
+      blink = { every = 4.5, dist = 9 }, cooldown = 0.85,
+      special = {
+        every = 2, windup = 1.0, radius = 4.4, mult = 1.6,
+        at = "player", clip = "attack", color = "#b04cff",
+        on_hit = function() rules.apply_status("venom", 6) end,
+      } },
+  },
   on_chase = function() viber.sound("roar") end,
 }
 

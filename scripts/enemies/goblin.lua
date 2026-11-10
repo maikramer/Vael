@@ -2,6 +2,7 @@
 -- Toda a máquina vive em lib/fsm.lua (viber.load).
 local fsm = viber.load("lib/fsm.lua").new{
   kind = "goblin",
+  proto = "mob-goblin",
   wander = 1.6, chase = 3.2,
   aggro = 10, deaggro = 15,
   range = 1.6, damage = 10, cooldown = 1.4,

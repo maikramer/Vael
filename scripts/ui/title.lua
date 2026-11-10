@@ -306,7 +306,8 @@ function on_update(dt)
       -- jogador pedir.
       local keep = {}
       for key, value in pairs(game) do
-        if key == "ui_scale" or key == "lang" or key:sub(1, 5) == "a11y." then
+        if key == "ui_scale" or key == "lang" or key:sub(1, 5) == "a11y."
+            or key:sub(1, 4) == "vol." then
           keep[key] = value
         end
       end

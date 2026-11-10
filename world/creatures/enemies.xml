@@ -51,5 +51,20 @@
         <GLTFLoader role="visual" url="/assets/meshes/characters/wolf_lod0.glb" lod1-url="/assets/meshes/characters/wolf_lod1.glb" lod2-url="/assets/meshes/characters/wolf_lod2.glb" lod-threshold-near="18" lod-threshold-mid="55" />
       </Creature>
     </DynamicSpawner>
+    <DynamicSpawner avoid-water="1" count="7" seed="414" region-min="150 0 -150" region-max="330 0 150" random-yaw="true" avoid-overlaps="false" max-slope-deg="40" max-distance="379">
+      <Creature role="enemy" script="enemies/bandit-shield.lua">
+        <GLTFLoader role="visual" url="/assets/meshes/characters/bandit_lod0.glb" lod1-url="/assets/meshes/characters/bandit_lod1.glb" lod2-url="/assets/meshes/characters/bandit_lod2.glb" lod-threshold-near="18" lod-threshold-mid="55" />
+      </Creature>
+    </DynamicSpawner>
+    <DynamicSpawner avoid-water="1" count="8" seed="525" region-min="-340 0 -160" region-max="-150 0 160" random-yaw="true" avoid-overlaps="false" max-slope-deg="40" max-distance="393">
+      <Creature role="enemy" script="enemies/bogling-hexer.lua">
+        <GLTFLoader role="visual" url="/assets/meshes/characters/bogling_lod0.glb" lod1-url="/assets/meshes/characters/bogling_lod1.glb" lod2-url="/assets/meshes/characters/bogling_lod2.glb" lod-threshold-near="18" lod-threshold-mid="55" />
+      </Creature>
+    </DynamicSpawner>
+    <DynamicSpawner avoid-water="1" count="6" seed="717" region-min="-100 0 -320" region-max="100 0 -150" random-yaw="true" avoid-overlaps="false" max-slope-deg="40" max-distance="360">
+      <Creature role="enemy" script="enemies/goblin-brute.lua">
+        <GLTFLoader role="visual" url="/assets/meshes/characters/goblin_lod0.glb" lod1-url="/assets/meshes/characters/goblin_lod1.glb" lod2-url="/assets/meshes/characters/goblin_lod2.glb" lod-threshold-near="18" lod-threshold-mid="55" />
+      </Creature>
+    </DynamicSpawner>
   </Group>
 </world>

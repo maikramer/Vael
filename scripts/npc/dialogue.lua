@@ -12,8 +12,14 @@ local function typing()
   return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
 end
 
+-- CADEIAS: uma quest entregue com `next` passa o dador para a seguinte
+-- (`rules.quest_chain`). O prop continua a apontar a primeira.
 local function quest_id()
-  return viber.prop("dialogue_id")
+  local id = viber.prop("dialogue_id")
+  if id and id ~= "" and rules.quest_chain then
+    return rules.quest_chain(id)
+  end
+  return id
 end
 
 -- Quests de chefe: se o guardião já caiu antes de aceitar, a entidade foi
@@ -68,13 +74,20 @@ function on_update(_dt)
   end
   -- Coletáveis: o progresso gravado fica stale se o jogador vender o item;
   -- o que conta é o cofre AGORA.
-  local obj = def and def.objective
+  -- Etapa EM CURSO (quests com `stages`).
+  local obj = def and rules.quest_objective(id)
   if obj and obj.type == "collect" then
     have = rules.vault_get(obj.target or "")
   end
   local remaining = math.max(0, (need or 1) - (have or 0))
-  if state == "not_taken" then
+  if state == "not_taken" and not rules.quest_available(id) then
+    -- `requires` por cumprir: o dador ainda não confia a missão.
+    say(def and def.lines_locked, "Ainda não é altura. Volta quando o Vale te conhecer melhor.", remaining)
+  elseif state == "not_taken" then
     rules.quest_accept(id)
+    -- Aceitar pode mudar a meta (etapas): relê o que falta para a fala.
+    have, need = rules.quest_progress(id)
+    remaining = math.max(0, (need or 1) - (have or 0))
     local kind = BOSS_QUEST[id]
     if kind and viber.game()["nota_" .. kind] then
       for _ = 1, math.max(1, need or 1) do

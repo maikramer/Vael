@@ -69,6 +69,11 @@
 #hud .venom.shown { display: flex }
 #hud .venom .venom-label { font-size: 11; color: #a9d9ad }
 #hud .venom .venom-hint { font-size: 9; color: #7fa886 }
+/* Queimadura e gelo: o mesmo chip, outra tinta. */
+#hud .venom.burn .venom-label { color: #ffb98a }
+#hud .venom.burn .venom-hint { color: #c98a63 }
+#hud .venom.frost .venom-label { color: #a9d4ff }
+#hud .venom.frost .venom-hint { color: #7f9fc4 }
 
 /* ── purse: painel FIXO do vault — ouro/madeira/pedra sempre visíveis ──
    Vive dentro de .anchor-vitals (abaixo do chip de veneno); o card dá a

@@ -2,6 +2,8 @@
 -- aggro-chain — wander curto). Toda a máquina vive em lib/fsm.lua.
 local fsm = viber.load("lib/fsm.lua").new{
   kind = "bogling",
+  proto = "mob-bogling",
+  weak = { burn = 2.0 }, -- lodo seco arde bem
   wander = 1.0, chase = 2.8,
   aggro = 8, deaggro = 13,
   range = 1.5, damage = 8, cooldown = 1.5,

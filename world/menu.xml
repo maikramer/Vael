@@ -9,7 +9,7 @@
       <UiColumn class="frame">
         <UiRow class="frame-head">
           <UiColumn class="title-block">
-            <UiText class="frame-title">DIÁRIO</UiText>
+            <UiText class="frame-title">@menu.title</UiText>
             <UiText class="frame-sub" bind="clock">06:00</UiText>
           </UiColumn>
           <UiSpacer />
@@ -19,15 +19,15 @@
                o save. `menu.lua` esconde a linha inteira onde não há jogo. -->
           <UiRow id="head-stats" class="head-stats">
             <UiPanel class="head-stat">
-              <UiText class="head-stat-key">VIDA</UiText>
+              <UiText class="head-stat-key">@menu.health</UiText>
               <UiText class="head-stat-value" bind="health.text">100/100</UiText>
             </UiPanel>
             <UiPanel class="head-stat">
-              <UiText class="head-stat-key">NÍVEL</UiText>
+              <UiText class="head-stat-key">@menu.level</UiText>
               <UiText class="head-stat-value" bind="level.text">1</UiText>
             </UiPanel>
             <UiPanel class="head-stat">
-              <UiText class="head-stat-key">OURO</UiText>
+              <UiText class="head-stat-key">@menu.gold</UiText>
               <UiText class="head-stat-value" bind="gold">0</UiText>
             </UiPanel>
           </UiRow>
@@ -37,25 +37,28 @@
         </UiRow>
         <UiRow class="tabbar">
           <UiButton class="tab" tab-group="menu" tab="quests">
-            <UiText>Missões</UiText>
+            <UiText>@menu.tab.quests</UiText>
           </UiButton>
           <UiButton class="tab" tab-group="menu" tab="bag">
-            <UiText>Mochila</UiText>
+            <UiText>@menu.tab.bag</UiText>
           </UiButton>
           <UiButton class="tab" tab-group="menu" tab="skills">
-            <UiText>Talentos</UiText>
+            <UiText>@menu.tab.skills</UiText>
           </UiButton>
           <UiButton class="tab" tab-group="menu" tab="shop">
-            <UiText>Loja</UiText>
+            <UiText>@menu.tab.shop</UiText>
+          </UiButton>
+          <UiButton class="tab" tab-group="menu" tab="forge">
+            <UiText>@menu.tab.forge</UiText>
           </UiButton>
           <UiButton class="tab" tab-group="menu" tab="controls">
-            <UiText>Controlos</UiText>
+            <UiText>@menu.tab.controls</UiText>
           </UiButton>
           <UiButton class="tab" tab-group="menu" tab="a11y">
-            <UiText>Acessibilidade</UiText>
+            <UiText>@menu.tab.a11y</UiText>
           </UiButton>
           <UiButton class="tab" tab-group="menu" tab="system">
-            <UiText>Sistema</UiText>
+            <UiText>@menu.tab.system</UiText>
           </UiButton>
         </UiRow>
         <UiColumn class="page" tab-group="menu" tab="quests">
@@ -78,21 +81,22 @@
               </UiButton>
             </UiTemplate>
             <UiEmpty>
-              <UiText class="empty">Nenhuma missão registada. Fala com os aldeões.</UiText>
+              <UiText class="empty">@menu.quests.empty</UiText>
             </UiEmpty>
           </UiList>
         </UiColumn>
         <UiColumn class="page" tab-group="menu" tab="bag">
           <UiList class="grid" bind="bag" scroll="y">
             <UiTemplate>
-              <UiColumn id="bag-{id}" class="cell {kind} {status}" tooltip="{label} ×{count}">
+              <UiButton id="bag-{id}" class="cell {kind} {status} {equip}" tooltip="{tip}">
                 <UiPanel class="cell-icon {id}" />
                 <UiText class="cell-label">{label}</UiText>
                 <UiText class="cell-count">{count}</UiText>
-              </UiColumn>
+                <UiText class="cell-tag">{tag}</UiText>
+              </UiButton>
             </UiTemplate>
             <UiEmpty>
-              <UiText class="empty">Mochila vazia.</UiText>
+              <UiText class="empty">@menu.bag.empty</UiText>
             </UiEmpty>
           </UiList>
         </UiColumn>
@@ -100,7 +104,7 @@
           <!-- O custo é 1 ponto por talento; sem esta linha o jogador tinha de
                adivinhar se ainda tinha pontos (o + do HUD só diz que há). -->
           <UiRow class="row keyline skills-points">
-            <UiText class="row-note">Pontos de talento por gastar</UiText>
+            <UiText class="row-note">@menu.skills.points</UiText>
             <UiSpacer />
             <UiText class="row-title" bind="talent.points">0</UiText>
           </UiRow>
@@ -131,6 +135,27 @@
                     <UiSpacer />
                     <UiText class="row-price">{price}</UiText>
                   </UiRow>
+                </UiColumn>
+              </UiButton>
+            </UiTemplate>
+          </UiList>
+        </UiColumn>
+        <UiColumn class="page" tab-group="menu" tab="forge">
+          <UiRow class="row keyline skills-points">
+            <UiText class="row-note">@menu.forge.hint</UiText>
+          </UiRow>
+          <UiList class="rows" bind="forge" scroll="y">
+            <UiTemplate>
+              <UiButton id="forge-{id}" class="row craft {status}">
+                <UiPanel class="row-flag" />
+                <UiColumn class="row-body">
+                  <UiRow class="row-line">
+                    <UiText class="row-title">{label}</UiText>
+                    <UiSpacer />
+                    <UiText class="row-tag">{status_text}</UiText>
+                  </UiRow>
+                  <UiText class="row-note">{cost}</UiText>
+                  <UiText class="row-note">{note}</UiText>
                 </UiColumn>
               </UiButton>
             </UiTemplate>
@@ -171,13 +196,13 @@
           </UiList>
           <UiRow class="actions">
             <UiButton id="act-save-1" class="action">
-              <UiText id="act-save-1-label">Guardar 1</UiText>
+              <UiText id="act-save-1-label">@menu.save1</UiText>
             </UiButton>
             <UiButton id="act-save-2" class="action">
-              <UiText id="act-save-2-label">Guardar 2</UiText>
+              <UiText id="act-save-2-label">@menu.save2</UiText>
             </UiButton>
             <UiButton id="act-save-3" class="action">
-              <UiText id="act-save-3-label">Guardar 3</UiText>
+              <UiText id="act-save-3-label">@menu.save3</UiText>
             </UiButton>
             <!-- Os rótulos têm id próprio: `viber.ui.set_text` só escreve num
                  UiText (um UiButton não tem componente de texto). O menu
@@ -193,15 +218,15 @@
               <UiText id="act-load-3-label">Carregar 3</UiText>
             </UiButton>
             <UiButton id="act-title" class="action ghost">
-              <UiText>Ecrã de título</UiText>
+              <UiText>@menu.to_title</UiText>
             </UiButton>
             <UiButton id="act-profiler" class="action ghost">
-              <UiText>Profiler [P]</UiText>
+              <UiText>@menu.profiler</UiText>
             </UiButton>
           </UiRow>
         </UiColumn>
         <UiRow class="frame-foot">
-          <UiText class="foot-note">1-7 salta de separador · , . percorre · roda do rato desliza · Q ou ESC fecha</UiText>
+          <UiText class="foot-note">@menu.foot</UiText>
         </UiRow>
       </UiColumn>
     </UiModal>

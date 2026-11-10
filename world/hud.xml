@@ -14,7 +14,7 @@
           </UiPanel>
           <UiColumn class="vitals-lines">
             <UiRow class="hp-line">
-              <UiText class="health-label">VIDA</UiText>
+              <UiText class="health-label">@hud.health</UiText>
               <UiSpacer />
               <UiText id="hp-text" bind="health.text">100/100</UiText>
             </UiRow>
@@ -27,41 +27,51 @@
             </UiRow>
           </UiColumn>
         </UiRow>
-        <UiText id="health-warning" class="health-warning">VIDA BAIXA</UiText>
+        <UiText id="health-warning" class="health-warning">@hud.low</UiText>
       </UiPanel>
       <UiPanel id="venom-chip" class="chip venom" bind="status.venom:shown">
-        <UiText class="venom-label">ENVENENADO</UiText>
+        <UiText class="venom-label">@hud.venom</UiText>
         <UiSpacer />
-        <UiText class="venom-hint">antídoto [2]</UiText>
+        <UiText class="venom-hint">@hud.venom.hint</UiText>
+      </UiPanel>
+      <UiPanel id="burn-chip" class="chip venom burn" bind="status.burn:shown">
+        <UiText class="venom-label">@hud.burn</UiText>
+        <UiSpacer />
+        <UiText class="venom-hint">@hud.moss.hint</UiText>
+      </UiPanel>
+      <UiPanel id="frost-chip" class="chip venom frost" bind="status.frost:shown">
+        <UiText class="venom-label">@hud.frost</UiText>
+        <UiSpacer />
+        <UiText class="venom-hint">@hud.moss.hint</UiText>
       </UiPanel>
       <UiPanel id="purse" class="hud-card purse">
         <UiRow class="resource" tooltip="Ouro">
           <UiIcon class="resource-icon" src="/assets/icons/hud_gold.png" />
-          <UiText class="resource-label">OURO</UiText>
+          <UiText class="resource-label">@hud.gold</UiText>
           <UiSpacer />
           <UiText bind="gold">0</UiText>
         </UiRow>
         <UiRow class="resource" tooltip="Madeira">
           <UiIcon class="resource-icon" src="/assets/icons/hud_wood.png" />
-          <UiText class="resource-label">MAD.</UiText>
+          <UiText class="resource-label">@hud.wood</UiText>
           <UiSpacer />
           <UiText bind="wood">0</UiText>
         </UiRow>
         <UiRow class="resource" tooltip="Pedra">
           <UiIcon class="resource-icon" src="/assets/icons/hud_stone.png" />
-          <UiText class="resource-label">PEDRA</UiText>
+          <UiText class="resource-label">@hud.stone</UiText>
           <UiSpacer />
           <UiText bind="stone">0</UiText>
         </UiRow>
         <UiRow class="resource" tooltip="Frutas — colhidas nas árvores de bagas">
           <UiIcon class="resource-icon" src="/assets/icons/berry.png" />
-          <UiText class="resource-label">FRUTAS</UiText>
+          <UiText class="resource-label">@hud.berry</UiText>
           <UiSpacer />
           <UiText bind="berry">0</UiText>
         </UiRow>
         <UiRow class="resource" tooltip="Sementes de canção — a cada 5, um ponto de talento">
           <UiIcon class="resource-icon" src="/assets/icons/crystal_blue.png" />
-          <UiText class="resource-label">SEMENTES</UiText>
+          <UiText class="resource-label">@hud.seeds</UiText>
           <UiSpacer />
           <UiText bind="korok-seed">0</UiText>
         </UiRow>
@@ -70,11 +80,11 @@
     <UiColumn class="anchor-journal">
       <UiButton id="open-journal" class="journal-button" tooltip="Abrir missões, mochila e opções">
         <UiText class="journal-key">Q</UiText>
-        <UiText>DIÁRIO</UiText>
+        <UiText>@hud.journal</UiText>
       </UiButton>
       <UiPanel class="quest-fresh" bind="quest.recent:fresh">
         <UiPanel id="quest" class="hud-card quest-card" bind="quest.active" fade="0.2 0.3">
-          <UiText class="hud-label">MISSÃO ATIVA</UiText>
+          <UiText class="hud-label">@hud.quest</UiText>
           <UiText id="quest-title" bind="quest.title" />
           <UiBar id="quest-bar" class="track quest" bind="quest" value="0" />
           <UiText id="quest-count" bind="quest.text" />
@@ -96,9 +106,9 @@
     <UiColumn id="bossbar" class="anchor-boss" bind="boss.active" fade="0.25 0.6">
       <UiPanel class="hud-card boss-card" bind="boss.enraged:enraged">
         <UiRow class="boss-head">
-          <UiText class="boss-tag">CHEFE</UiText>
+          <UiText class="boss-tag">@hud.boss</UiText>
           <UiText id="boss-name" bind="boss.name">—</UiText>
-          <UiText class="boss-rage">FÚRIA</UiText>
+          <UiText class="boss-rage">@hud.rage</UiText>
         </UiRow>
         <UiBar id="boss-bar" class="track boss" bind="boss" value="1" />
       </UiPanel>
@@ -108,21 +118,21 @@
     </UiColumn>
     <UiColumn class="anchor-clock">
       <UiPanel id="clock-card" class="hud-card clock-card">
-        <UiText class="clock-zone" bind="zone.name">O Vale</UiText>
+        <UiText class="clock-zone" bind="zone.name">@hud.zone</UiText>
         <UiRow class="clock-line">
-          <UiText class="hud-label">HORA LOCAL</UiText>
+          <UiText class="hud-label">@hud.clock</UiText>
           <UiSpacer />
           <UiText class="clock-time" bind="clock">06:00</UiText>
         </UiRow>
         <UiBar id="day-bar" class="track day" bind="day" value="0" />
         <UiRow class="weather-row net-row" bind="net.on:on" fade="0.2 0.2">
-          <UiText class="hud-label">REDE</UiText>
+          <UiText class="hud-label">@hud.net</UiText>
           <UiSpacer />
           <UiText class="clock-time" bind="net.label">HOST</UiText>
         </UiRow>
         <UiRow class="weather-row" bind="weather.wet:wet">
           <UiIcon class="weather-icon" src="/assets/icons/icon_rain.png" />
-          <UiText class="hud-label">CHUVA</UiText>
+          <UiText class="hud-label">@hud.rain</UiText>
           <UiSpacer />
           <UiBar class="track rain" bind="weather.rain" value="0" />
         </UiRow>
@@ -130,9 +140,9 @@
     </UiColumn>
     <UiColumn id="dock-anchor" class="anchor-dock">
       <UiRow class="dock-caption">
-        <UiText>J  ATACAR</UiText>
+        <UiText>@hud.attack</UiText>
         <UiSpacer />
-        <UiText>L  DEFENDER</UiText>
+        <UiText>@hud.guard</UiText>
       </UiRow>
       <UiRow id="dock" class="hud-card dock">
         <UiColumn class="action-cell ability" bind="ab.dash.ready:ready">
@@ -143,17 +153,18 @@
             </UiPanel>
             <UiBar class="cooldown-track" bind="ab.dash" />
           </UiCooldown>
-          <UiText class="action-name">Esquiva</UiText>
+          <UiText class="action-name">@hud.dash</UiText>
         </UiColumn>
         <UiColumn class="action-cell ability" bind="ab.heal.ready:ready">
-          <UiCooldown id="cd-heal" class="action-slot" bind="ab.heal" value="0" tooltip="Curar [E], longe de personagens e interações">
+          <UiCooldown id="cd-heal" class="action-slot" bind="ab.heal" value="0" tooltip="Cantil [E]: cura 50 e gasta uma carga; as cargas voltam ao descansar">
             <UiIcon class="slot-icon" src="/assets/icons/ability_heal.png" />
             <UiPanel class="slot-key">
               <UiText class="action-key">E</UiText>
             </UiPanel>
+            <UiText class="item-count" bind="flask">2</UiText>
             <UiBar class="cooldown-track" bind="ab.heal" />
           </UiCooldown>
-          <UiText class="action-name">Cura</UiText>
+          <UiText class="action-name">@hud.flask</UiText>
         </UiColumn>
         <UiColumn class="action-cell ability" bind="ab.strike.ready:ready">
           <UiCooldown id="cd-strike" class="action-slot" bind="ab.strike" value="0" tooltip="Golpe radial [R]">
@@ -163,7 +174,7 @@
             </UiPanel>
             <UiBar class="cooldown-track" bind="ab.strike" />
           </UiCooldown>
-          <UiText class="action-name">Impacto</UiText>
+          <UiText class="action-name">@hud.strike</UiText>
         </UiColumn>
         <UiPanel class="dock-divider" />
         <UiColumn class="action-cell">
@@ -174,7 +185,7 @@
             </UiPanel>
             <UiText class="item-count" bind="potion">0</UiText>
           </UiPanel>
-          <UiText class="action-name">Poção</UiText>
+          <UiText class="action-name">@hud.potion</UiText>
         </UiColumn>
         <UiColumn class="action-cell">
           <UiPanel id="vial-antidote" class="action-slot consumable" bind="antidote.empty:depleted" tooltip="Antídoto [2]: remove o veneno">
@@ -184,7 +195,17 @@
             </UiPanel>
             <UiText class="item-count" bind="antidote">0</UiText>
           </UiPanel>
-          <UiText class="action-name">Antídoto</UiText>
+          <UiText class="action-name">@hud.antidote</UiText>
+        </UiColumn>
+        <UiColumn class="action-cell">
+          <UiPanel id="vial-moss" class="action-slot consumable" bind="moss.empty:depleted" tooltip="Poção de musgo [3]: cura 35 e limpa veneno, queimadura e gelo">
+            <UiIcon class="slot-icon" src="/assets/icons/moss_potion.png" />
+            <UiPanel class="slot-key">
+              <UiText class="action-key">3</UiText>
+            </UiPanel>
+            <UiText class="item-count" bind="moss">0</UiText>
+          </UiPanel>
+          <UiText class="action-name">@hud.moss</UiText>
         </UiColumn>
         <UiColumn class="action-cell">
           <UiPanel id="vial-bomb" class="action-slot consumable" bind="bomb.empty:depleted" tooltip="Bomba [B]: rebenta em área">
@@ -194,7 +215,7 @@
             </UiPanel>
             <UiText class="item-count" bind="bomb">0</UiText>
           </UiPanel>
-          <UiText class="action-name">Bomba</UiText>
+          <UiText class="action-name">@hud.bomb</UiText>
         </UiColumn>
       </UiRow>
     </UiColumn>
@@ -215,7 +236,7 @@
       </UiPanel>
     </UiRow>
     <UiColumn id="zone" class="anchor-zone" bind="zone.active" fade="0.4 0.8">
-      <UiText class="zone-label">EXPLORAR</UiText>
+      <UiText class="zone-label">@hud.explore</UiText>
       <UiText id="zone-name" bind="zone.name" />
     </UiColumn>
     <UiColumn id="notification" class="anchor-notification" bind="toast.active" fade="0.12 0.25">

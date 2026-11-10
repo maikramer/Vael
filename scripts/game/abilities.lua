@@ -16,7 +16,11 @@ local rules = viber.load("lib/rules.lua")
 -- controller corre onde o herói andar; sem o tag o LOD de 45 m congelava-o).
 -- Autoload para dash/cura/impacto funcionarem também dentro das casas.
 
-local CD_DASH, CD_HEAL, CD_STRIKE = 6.0, 12.0, 8.0
+-- Esquiva curta (3 s): é a resposta principal aos golpes telegrafados. A
+-- cura [E] deixou de ser uma recarga grátis: gasta uma carga do CANTIL
+-- (`rules.flask_*`), que só volta no descanso; a recarga de 2 s só evita o
+-- duplo toque.
+local CD_DASH, CD_HEAL, CD_STRIKE = 3.0, 2.0, 8.0
 local DASH_DISTANCE = 5.0 -- o controller perde ~15 % no atrito: anda ~4,2 m
 local DASH_IFRAMES = 0.35
 local HEAL_AMOUNT = 50
@@ -125,13 +129,15 @@ function on_update(dt)
 
   -- [C] dash: reto no forward do herói; o teleport assenta o Y.
   if viber.input.pressed("c") and st.cd.dash <= 0 then
-    st.cd.dash = CD_DASH
+    -- Talento "Passo de vento": `dash_cd` é a variação da recarga (−0,4).
+    st.cd.dash = CD_DASH * math.max(0.3, 1 + rules.stat("dash_cd"))
+    PERIOD.dash = st.cd.dash
     local fx, fz = viber.player_forward()
     -- Sem `face_player()`: o controller roda-se a si próprio, não o herói.
     -- Pelo character controller: colide com muros (o teleporte atravessava
     -- a muralha) e dá i-frames durante a rajada.
     viber.push_player(fx * DASH_DISTANCE, fz * DASH_DISTANCE)
-    rules.grant_iframes(DASH_IFRAMES)
+    rules.grant_iframes(DASH_IFRAMES + rules.stat("dash_iframes"))
     viber.fov_kick(8)
     viber.sound("dash", { x = px, y = py, z = pz })
     viber.burst("ground-dust", px, py + 0.2, pz, 10)
@@ -146,6 +152,9 @@ function on_update(dt)
     local healed = math.min(HEAL_AMOUNT, math.max(0, (max_hp or 0) - (hp or 0)))
     if healed < 1 then
       viber.toast("Vida já está cheia.")
+    elseif not rules.flask_use() then
+      viber.toast("Cantil vazio — descansa numa fogueira.")
+      viber.sound("error", { x = px, y = py, z = pz })
     else
       st.cd.heal = CD_HEAL
       rules.heal_player(healed)
@@ -160,7 +169,17 @@ function on_update(dt)
   if viber.input.pressed("r") and st.cd.strike <= 0 then
     st.cd.strike = CD_STRIKE
     local bonus = rules.player_stats().bonus_damage or 0
-    local hits = rules.radial_damage(px, pz, STRIKE_RADIUS, STRIKE_DAMAGE + bonus, STRIKE_KNOCKBACK)
+    -- Talentos do Impacto: "Abalo" alarga e reforça; "Brasas" queima.
+    local radius = STRIKE_RADIUS + rules.stat("strike_radius")
+    local burn = rules.stat("strike_burn")
+    if burn > 0 then
+      for _, h in ipairs(rules.hostiles_near(px, pz, radius)) do
+        rules.enemy_status(h.id, "burn", burn)
+      end
+      viber.burst("fire", px, py + 0.4, pz, 10)
+    end
+    local hits = rules.radial_damage(px, pz, radius,
+      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK)
     -- Aggro-chain: o slam também acorda os aliados a 15 m do impacto (o
     -- nativo emitia um `AttackAlert` no centro). A engine já não tem
     -- produtor; o `lib/fsm.lua` lê esta tabela do `viber.game()`.
@@ -176,7 +195,7 @@ function on_update(dt)
       alert.seq = (alert.seq or 0) + 1
     end
     viber.burst("sparks", px, py + 1.0, pz, 6)
-    viber.ring(px, pz, STRIKE_RADIUS)
+    viber.ring(px, pz, radius, burn > 0 and "#ff8c47" or nil)
     viber.shake(0.22)
     viber.kick(0, 0.35, 0)
     viber.hit_stop(0.07)

@@ -41,6 +41,8 @@ function on_update(dt)
     return
   end
   viber.gesture("yes")
+  rules.flask_refill()
+  rules.status_clear()
   rules.heal_player(999)
   viber.sound("heal")
   viber.toast("“Que as graças te acompanhem.” — cura completa")

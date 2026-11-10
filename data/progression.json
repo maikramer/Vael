@@ -77,6 +77,87 @@
       "effects": {
         "crit": 0.1
       }
+    },
+    {
+      "id": "flask3",
+      "label": "Cantil fundo (+1 carga de cura)",
+      "requires": "vitality1",
+      "effects": {
+        "flasks": 1
+      }
+    },
+    {
+      "id": "bulwark",
+      "label": "Baluarte (−15% dano recebido)",
+      "requires": "vitality2",
+      "effects": {
+        "defense": 0.15
+      },
+      "excludes": "bloodthirst"
+    },
+    {
+      "id": "bloodthirst",
+      "label": "Sede de sangue (6% roubo de vida)",
+      "requires": "vitality2",
+      "effects": {
+        "lifesteal": 0.06
+      },
+      "excludes": "bulwark"
+    },
+    {
+      "id": "embers",
+      "label": "Brasas (o Impacto queima 4 s)",
+      "requires": "strength2",
+      "effects": {
+        "strike_burn": 4
+      },
+      "excludes": "tremor"
+    },
+    {
+      "id": "tremor",
+      "label": "Abalo (Impacto +1,5 m e +20 dano)",
+      "requires": "strength2",
+      "effects": {
+        "strike_radius": 1.5,
+        "strike_damage": 20
+      },
+      "excludes": "embers"
+    },
+    {
+      "id": "windstep",
+      "label": "Passo de vento (Esquiva recarrega 40% mais depressa)",
+      "requires": "agility2",
+      "effects": {
+        "dash_cd": -0.4
+      },
+      "excludes": "ghost"
+    },
+    {
+      "id": "ghost",
+      "label": "Espectro (Esquiva: +0,3 s invulnerável)",
+      "requires": "agility2",
+      "effects": {
+        "dash_iframes": 0.3
+      },
+      "excludes": "windstep"
+    },
+    {
+      "id": "executioner",
+      "label": "Carrasco (executa abaixo de 25% de vida)",
+      "requires": "precision2",
+      "effects": {
+        "execute": 0.1
+      },
+      "excludes": "duelist"
+    },
+    {
+      "id": "duelist",
+      "label": "Duelista (críticos ×2,5)",
+      "requires": "precision2",
+      "effects": {
+        "crit_mult": 0.5
+      },
+      "excludes": "executioner"
     }
   ]
 }

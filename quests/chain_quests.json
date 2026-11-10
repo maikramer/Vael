@@ -1,0 +1,240 @@
+[
+  {
+    "id": "city_forge",
+    "npc": "npc_blacksmith",
+    "biome": "city",
+    "title": "Bram: a primeira têmpera",
+    "portrait": "",
+    "voice": "",
+    "requires": "city_stone",
+    "lines_intro": [
+      "A bigorna está quente e tu tens mãos. Vamos ver se servem.",
+      "Traz-me três peles de lobo e cose um manto de caçador na minha forja. [E] na bigorna."
+    ],
+    "lines_progress": [
+      "Ainda falta: {remaining}. As peles caem dos lobos do norte; o manto faz-se na bigorna."
+    ],
+    "lines_complete": [
+      "Costura torta, mas aguenta uma dentada. Fica com ele — e com isto, para o caminho."
+    ],
+    "lines_locked": [
+      "Primeiro as dobradiças do portão. Depois falamos de forja."
+    ],
+    "stages": [
+      {
+        "type": "collect",
+        "target": "wolf_pelt",
+        "count": 3,
+        "title": "reunir 3 peles de lobo"
+      },
+      {
+        "type": "craft",
+        "target": "hunter_cloak",
+        "count": 1,
+        "title": "forjar um manto do caçador na bigorna"
+      }
+    ],
+    "objective": {
+      "type": "craft",
+      "target": "hunter_cloak",
+      "count": 1,
+      "title": "forjar um manto do caçador na bigorna"
+    },
+    "rewards": {
+      "gold": 150,
+      "xp": 140,
+      "items": [
+        "moss_potion:2"
+      ]
+    }
+  },
+  {
+    "id": "forest_nightwatch",
+    "npc": "npc_forest_witch",
+    "biome": "dark_forest",
+    "title": "Irmã Vessa: a vigília",
+    "portrait": "",
+    "voice": "",
+    "requires": "forest_witch",
+    "lines_intro": [
+      "A Bruxa calou-se, mas os pinhais não. Depois do pôr do sol saem sombras novas.",
+      "Fica uma noite lá fora, longe da vila, e desfaz quatro delas. Só existem entre o anoitecer e a aurora."
+    ],
+    "lines_progress": [
+      "Faltam {remaining} sombras da noite. Espera pela escuridão — de dia não as encontras."
+    ],
+    "lines_complete": [
+      "Quatro a menos. Esta noite acendo a lanterna sem medo. Toma."
+    ],
+    "lines_locked": [
+      "Enquanto a Bruxa cantar, não há vigília que valha."
+    ],
+    "objective": {
+      "type": "kill",
+      "target": "shade-night",
+      "count": 4
+    },
+    "rewards": {
+      "gold": 320,
+      "xp": 300,
+      "items": [
+        "dark-wood:4",
+        "potion:2"
+      ]
+    }
+  },
+  {
+    "id": "desert_shields",
+    "npc": "npc_desert_bandits",
+    "biome": "desert",
+    "title": "Ilba: os do escudo",
+    "portrait": "",
+    "voice": "",
+    "requires": "desert_bandits",
+    "lines_intro": [
+      "Os bandidos aprenderam. Agora vêm de escudo e as minhas escoltas batem em madeira.",
+      "Derruba três. De frente não entra nada — acaba a sequência de golpes, ou dá-lhes a volta."
+    ],
+    "lines_progress": [
+      "Faltam {remaining} bandidos de escudo. O terceiro golpe seguido parte-lhes a guarda."
+    ],
+    "lines_complete": [
+      "A rota respira. Seda da boa, como prometido — dá um belo forro."
+    ],
+    "lines_locked": [
+      "Limpa primeiro a rota dos bandidos comuns."
+    ],
+    "objective": {
+      "type": "kill",
+      "target": "bandit-shield",
+      "count": 3
+    },
+    "rewards": {
+      "gold": 340,
+      "xp": 280,
+      "items": [
+        "silk_cloth:2",
+        "potion:2"
+      ]
+    }
+  },
+  {
+    "id": "peaks_brutes",
+    "npc": "npc_peaks_goblins",
+    "biome": "frozen_peaks",
+    "title": "Os brutos da serra",
+    "portrait": "",
+    "voice": "",
+    "requires": "peaks_goblins",
+    "lines_intro": [
+      "Há goblins novos na serra. Grandes. Baixam a cabeça e correm contra tudo.",
+      "Mata dois. Quando marcarem o chão a vermelho, sai da linha — depois ficam tontos."
+    ],
+    "lines_progress": [
+      "Faltam {remaining} brutos. Não lhes fiques à frente quando arrancam."
+    ],
+    "lines_complete": [
+      "Dois a menos a abrir caminho ao Ogro. Leva isto."
+    ],
+    "lines_locked": [
+      "Trata primeiro dos goblins pequenos."
+    ],
+    "objective": {
+      "type": "kill",
+      "target": "goblin-brute",
+      "count": 2
+    },
+    "rewards": {
+      "gold": 300,
+      "xp": 260,
+      "items": [
+        "potion:3",
+        "bomb:2"
+      ]
+    }
+  },
+  {
+    "id": "swamp_hexers",
+    "npc": "npc_swamp_boglings",
+    "biome": "swamp",
+    "title": "Os que marcam o lodo",
+    "portrait": "",
+    "voice": "",
+    "requires": "swamp_boglings",
+    "lines_intro": [
+      "Há boglings que não mordem: marcam o chão a verde e o chão rebenta.",
+      "Cala três feiticeiros e depois ferve uma poção de musgo na bigorna do Bram. Vais precisar dela."
+    ],
+    "lines_progress": [
+      "Ainda falta: {remaining}. Os feiticeiros fogem de perto — corre para cima deles."
+    ],
+    "lines_complete": [
+      "O pântano ficou mais calado. Fica com os antídotos; eu fico com o sossego."
+    ],
+    "lines_locked": [
+      "Os boglings comuns primeiro."
+    ],
+    "stages": [
+      {
+        "type": "kill",
+        "target": "bogling-hexer",
+        "count": 3,
+        "title": "derrotar 3 boglings feiticeiros"
+      },
+      {
+        "type": "craft",
+        "target": "moss_potion",
+        "count": 1,
+        "title": "forjar uma poção de musgo na bigorna"
+      }
+    ],
+    "objective": {
+      "type": "craft",
+      "target": "moss_potion",
+      "count": 1,
+      "title": "forjar uma poção de musgo na bigorna"
+    },
+    "rewards": {
+      "gold": 300,
+      "xp": 270,
+      "items": [
+        "antidote:3"
+      ]
+    }
+  },
+  {
+    "id": "story_echoes",
+    "npc": "npc_elder",
+    "biome": "city",
+    "title": "Os Ecos do Coro",
+    "portrait": "",
+    "voice": "",
+    "requires": "story_notas",
+    "lines_intro": [
+      "O Coro canta, e o canto acorda coisas. Há criaturas maiores, douradas — ecos das Notas.",
+      "Abate cinco desses elites, onde os encontrares. O Vale ainda precisa de quem o meça."
+    ],
+    "lines_progress": [
+      "Faltam {remaining} elites. Reconheces-os pelo tamanho e pela aura dourada."
+    ],
+    "lines_complete": [
+      "Cinco ecos calados. O Coro agradece — e eu também, Cartógrafo."
+    ],
+    "lines_locked": [
+      "Primeiro as Quatro Notas. O resto vem depois."
+    ],
+    "objective": {
+      "type": "kill",
+      "target": "elite",
+      "count": 5
+    },
+    "rewards": {
+      "gold": 800,
+      "xp": 900,
+      "items": [
+        "ancient_relic:1",
+        "potion:5"
+      ]
+    }
+  }
+]

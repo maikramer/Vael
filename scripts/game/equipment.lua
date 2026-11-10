@@ -218,13 +218,29 @@ function on_update(dt)
     -- Reanexa no mesmo frame: o slot substitui o GLB anterior.
     st.tries = 0
     st.attach_t = 0
-    viber.toast("Equipado: " .. ITEMS[index].name)
+    local name = ITEMS[index].name
+    if ITEMS[index].kind == "sword" then
+      name = rules.weapon().label or name
+    end
+    viber.toast("Equipado: " .. name)
   end
   -- O grip pedido mudou (item, ferramenta ou offset editado ao vivo): reanexa
   -- já. A assinatura detecta também a chegada/partida do alvo de colheita e
   -- edições às props sem reanexar por frame.
-  local grip = harvest_grip or grip_for(ITEMS[index].prefix)
-  local grip_key = (harvest_grip and ("tool:" .. tool) or ("item:" .. index))
+  -- A ARMA do slot "espada" é a equipada no diário (lib/gear.lua): o grip
+  -- (`espada`/`machado`) vem do item, por isso forjar e equipar o machado de
+  -- ferro troca o GLB na mão sem tocar nesta tabela.
+  local prefix = ITEMS[index].prefix
+  local weapon_id = ""
+  if ITEMS[index].kind == "sword" then
+    local weapon = rules.weapon()
+    weapon_id = weapon.id or ""
+    if weapon.grip == "espada" or weapon.grip == "machado" then
+      prefix = weapon.grip
+    end
+  end
+  local grip = harvest_grip or grip_for(prefix)
+  local grip_key = (harvest_grip and ("tool:" .. tool) or ("item:" .. index .. ":" .. weapon_id))
     .. "|" .. grip_signature(grip)
   if st.grip_key ~= grip_key then
     st.grip_key = grip_key
