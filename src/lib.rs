@@ -10,6 +10,10 @@
 //! espelha o `viber.game()`, [`VaelRulesShadowPlugin`] simula as regras vitais
 //! ao lado do Lua e [`VaelHudPlugin`] publica os binds do HUD ao lado do Lua,
 //! só a ler. A tabela Lua continua a ser a fonte de verdade.
+//!
+//! Com `VAEL_RULES_RUST=1`, o [`VaelRulesAuthorityPlugin`] passa a ser o dono
+//! do tick de vitais/status/morte: lê o `viber.game()` depois do Luau, simula
+//! com o mesmo `shadow_tick` e escreve de volta as chaves que possui.
 
 use std::path::PathBuf;
 
@@ -19,6 +23,7 @@ pub mod attach;
 pub mod components;
 pub mod content;
 pub mod hud;
+pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
 pub mod state_sync;
@@ -28,6 +33,7 @@ pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
 pub use hud::{VaelHudConfig, VaelHudPlugin};
+pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
 pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
 pub use state_sync::VaelStateSyncPlugin;
@@ -56,6 +62,9 @@ impl Plugin for VaelPlugin {
                 VaelStateSyncPlugin,
                 // Simulação paralela das regras vitais do `rules.lua`.
                 VaelRulesShadowPlugin,
+                // Autoridade (opt-in `VAEL_RULES_RUST=1`): o tick de
+                // vitais/status/morte passa para Rust.
+                VaelRulesAuthorityPlugin,
                 VaelHudPlugin,
                 VaelAttachPlugin,
             ));

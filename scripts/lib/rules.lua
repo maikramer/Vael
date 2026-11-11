@@ -142,6 +142,13 @@ local function num(key, default)
   return v
 end
 
+-- A autoridade Rust (`VAEL_RULES_RUST=1`, `src/rules_authority.rs`) possui o
+-- tick de vitais/status/morte. A flag é escrita em `viber.game()` pelo Rust
+-- antes do primeiro frame; o `M.tick` salta só as secções portadas.
+local function rust_vitals()
+  return g().vael_rust_vitals == true
+end
+
 local function ensure_xp()
   local game = g()
   -- Negativo não é progresso: um save antigo/corrompido com `xp` ou
@@ -1566,6 +1573,11 @@ M.god = false
 
 function M.set_god(on)
   M.god = on == true
+  -- A autoridade Rust (`VAEL_RULES_RUST=1`) faz o DoT e precisa de ver o god.
+  -- Fora dela fica só no módulo (um cheat não viaja para o save).
+  if rust_vitals() then
+    g().vael_god = M.god
+  end
 end
 
 -- Devolve true só quando o dano ENTROU: os `on_attack`/`on_hit` das
@@ -1744,7 +1756,11 @@ function M.tick(dt)
   game.save_title = "Vael — nível " .. (game.level or 1)
   game.save_level = game.level or 1
   game.save_gold = M.vault_get("gold") or 0
-  game.iframes = math.max(0, num("iframes", 0) - dt)
+  -- Com a autoridade Rust os i-frames descem no `rules_authority.rs`; o
+  -- resto do `tick` (metadados, eventos, visitas, save) continua aqui.
+  if not rust_vitals() then
+    game.iframes = math.max(0, num("iframes", 0) - dt)
+  end
 
   -- Apaga a faixa de dano no tick (ver `dmg_edge`): o `viber.after` antigo
   -- era do atacante e um despawn dentro dos 0,35 s deixava-a acesa.
@@ -1760,68 +1776,78 @@ function M.tick(dt)
   -- `damage_player`), e um frame longo aplica TODOS os ticks devidos.
   -- `num`: um timer textual (save editado à mão) rebentava a soma e o erro
   -- subia pelo `tick` em todos os frames.
-  local frozen = viber.menu_open() or M.god
-  for _, kind in ipairs(STATUS_ORDER) do
-    local spec = STATUS[kind]
-    local tick_key = kind .. "_tick"
-    if num(kind, 0) > 0 and not frozen then
-      -- À chuva a queimadura apaga-se ao dobro da velocidade.
-      local rate = (kind == "burn" and clock.raining()) and 2 or 1
-      game[kind] = math.max(0, num(kind, 0) - dt * rate)
-      if spec.dps and num("dying", 0) <= 0 then
-        game[tick_key] = num(tick_key, 0) + dt
-        local ticks = math.floor(game[tick_key])
-        if ticks > 0 then
-          game[tick_key] = game[tick_key] - ticks
-          local dmg = ticks * spec.dps
-          game.hp = math.max(0, game.hp - dmg)
-          player_fx("-" .. dmg, spec.color)
-          if game.hp <= 0 then
-            start_death(game)
+  -- Com `VAEL_RULES_RUST=1` este bloco passa para `src/rules_authority.rs`.
+  if not rust_vitals() then
+    local frozen = viber.menu_open() or M.god
+    for _, kind in ipairs(STATUS_ORDER) do
+      local spec = STATUS[kind]
+      local tick_key = kind .. "_tick"
+      if num(kind, 0) > 0 and not frozen then
+        -- À chuva a queimadura apaga-se ao dobro da velocidade.
+        local rate = (kind == "burn" and clock.raining()) and 2 or 1
+        game[kind] = math.max(0, num(kind, 0) - dt * rate)
+        if spec.dps and num("dying", 0) <= 0 then
+          game[tick_key] = num(tick_key, 0) + dt
+          local ticks = math.floor(game[tick_key])
+          if ticks > 0 then
+            game[tick_key] = game[tick_key] - ticks
+            local dmg = ticks * spec.dps
+            game.hp = math.max(0, game.hp - dmg)
+            player_fx("-" .. dmg, spec.color)
+            if game.hp <= 0 then
+              start_death(game)
+            end
           end
         end
+      elseif num(kind, 0) <= 0 then
+        game[tick_key] = 0
       end
-    elseif num(kind, 0) <= 0 then
-      game[tick_key] = 0
     end
   end
   tick_purse(game, dt)
 
-  -- Um save carregado com o herói vivo não pode reabrir o ecrã de morte.
-  if game.death_pending and (game.hp or 0) > 0 then
-    game.death_pending = false
-    game.dying = 0
-    viber.ui.open("death", false)
-  end
-
-  -- 0 HP sem `dying` (save corrompido ou gravado a meio de uma morte): o
-  -- herói ficava invisível para as criaturas (`hero_hp <= 0`) e nunca morria.
-  if game.hp <= 0 and num("dying", 0) <= 0 and not game.death_pending then
-    start_death(game)
-  end
-
-  -- Morte do herói: 2,2 s caído e depois o ecrã de morte. O jogador escolhe
-  -- Tentar de novo / Carregar / Título; sem modal (mundos QA), renasce em 5 s.
-  if num("dying", 0) > 0 then
-    game.dying = math.max(0, game.dying - dt)
-    if game.dying <= 0 and not game.death_pending then
-      game.death_pending = true
-      game.death_wait = 5.0
-      -- A morte fecha os menus abertos; o ecrã de morte é o topo.
-      viber.ui.open("menu", false)
-      viber.ui.open("region-map", false)
-      viber.ui.open("travel", false)
-      viber.ui.open("profiler-win", false)
-      viber.ui.open("death", true)
+  -- Morte: com `VAEL_RULES_RUST=1` os contadores (`dying`, `death_pending`,
+  -- `death_wait`) e o respawn de fallback são do `src/rules_authority.rs`; a
+  -- UI de morte observa as mesmas chaves em `ui/death.lua`. O `M.respawn`
+  -- manual (botão "Tentar de novo") e o `M.start_death` do dano direto ficam
+  -- no Lua.
+  if not rust_vitals() then
+    -- Um save carregado com o herói vivo não pode reabrir o ecrã de morte.
+    if game.death_pending and (game.hp or 0) > 0 then
+      game.death_pending = false
+      game.dying = 0
+      viber.ui.open("death", false)
     end
-  elseif game.death_pending then
-    if viber.ui.is_open("death") then
-      game.death_wait = 5.0
-    else
-      -- `num`: idem para o contador do respawn automático.
-      game.death_wait = math.max(0, num("death_wait", 0) - dt)
-      if game.death_wait <= 0 then
-        M.respawn()
+
+    -- 0 HP sem `dying` (save corrompido ou gravado a meio de uma morte): o
+    -- herói ficava invisível para as criaturas (`hero_hp <= 0`) e nunca morria.
+    if game.hp <= 0 and num("dying", 0) <= 0 and not game.death_pending then
+      start_death(game)
+    end
+
+    -- Morte do herói: 2,2 s caído e depois o ecrã de morte. O jogador escolhe
+    -- Tentar de novo / Carregar / Título; sem modal (mundos QA), renasce em 5 s.
+    if num("dying", 0) > 0 then
+      game.dying = math.max(0, game.dying - dt)
+      if game.dying <= 0 and not game.death_pending then
+        game.death_pending = true
+        game.death_wait = 5.0
+        -- A morte fecha os menus abertos; o ecrã de morte é o topo.
+        viber.ui.open("menu", false)
+        viber.ui.open("region-map", false)
+        viber.ui.open("travel", false)
+        viber.ui.open("profiler-win", false)
+        viber.ui.open("death", true)
+      end
+    elseif game.death_pending then
+      if viber.ui.is_open("death") then
+        game.death_wait = 5.0
+      else
+        -- `num`: idem para o contador do respawn automático.
+        game.death_wait = math.max(0, num("death_wait", 0) - dt)
+        if game.death_wait <= 0 then
+          M.respawn()
+        end
       end
     end
   end

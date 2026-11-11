@@ -18,6 +18,8 @@
 //!
 //! `VAEL_RULES_SHADOW=1` liga o sistema; por omissão não corre (é QA).
 
+use std::collections::BTreeMap;
+
 use bevy::prelude::*;
 use serde_json::Value;
 use viber::menus::MenusOpen;
@@ -28,7 +30,7 @@ use crate::components::PlayerVitals;
 use crate::save::VaelSave;
 
 /// A partir daqui `clock.raining()` diz que chove (`clock.RAIN_HEAVY`).
-const RAIN_HEAVY: f32 = 0.3;
+pub const RAIN_HEAVY: f32 = 0.3;
 
 /// DPS dos estados (tabela `STATUS` do Lua).
 const VENOM_DPS: f32 = 4.0;
@@ -413,6 +415,34 @@ fn respawn(state: &mut VaelRulesShadow) {
     state.death_wait = 0.0;
     state.status_clear();
     state.iframes = RESPAWN_IFRAMES;
+}
+
+/// Semeia o estado a partir do KV plano do `viber.game()`.
+///
+/// É a leitura da autoridade Rust: corre DEPOIS do Lua no frame, por isso vê
+/// o dano/cura (`M.damage_player`/`M.heal_player`), os itens, o `respawn`
+/// manual e as passivas (`max_hp`) do mesmo frame. Sanea como o `ensure_hp`.
+/// Ao contrário de [`LuaSnapshot::from_state`], lê `hp`/`max_hp` do KV.
+pub fn seed_from_kv(state: &mut VaelRulesShadow, kv: &BTreeMap<String, Value>) {
+    let max_hp = match kv.get("max_hp").and_then(Value::as_f64) {
+        Some(value) if value.is_finite() && value >= 1.0 => value as f32,
+        _ => 100.0,
+    };
+    let hp = match kv.get("hp").and_then(Value::as_f64) {
+        Some(value) if value.is_finite() => (value as f32).clamp(0.0, max_hp),
+        _ => max_hp,
+    };
+    state.max_hp = max_hp;
+    state.hp = hp;
+    state.iframes = legacy_num(kv, "iframes");
+    state.venom = legacy_num(kv, "venom");
+    state.burn = legacy_num(kv, "burn");
+    state.frost = legacy_num(kv, "frost");
+    state.venom_tick = legacy_num(kv, "venom_tick");
+    state.burn_tick = legacy_num(kv, "burn_tick");
+    state.dying = legacy_num(kv, "dying");
+    state.death_pending = legacy_flag(kv, "death_pending");
+    state.death_wait = legacy_num(kv, "death_wait");
 }
 
 /// Guardas do `ensure_hp`: `max_hp` inválido vale 100, `hp` não finito vale
