@@ -222,7 +222,9 @@ impl Plugin for VaelXpPlugin {
 }
 
 /// Arranque: acrescenta as funções de XP à tabela `viber.vael`.
-fn install_xp_api(host: Option<Res<LuaScriptHost>>, content: Option<Res<VaelContent>>) {
+///
+/// Público dentro do crate para o plugin do equipamento ordenar depois dele.
+pub(crate) fn install_xp_api(host: Option<Res<LuaScriptHost>>, content: Option<Res<VaelContent>>) {
     let Some(host) = host else {
         warn!("vael: XP sem host Luau — `viber.vael` não estendido");
         return;

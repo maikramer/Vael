@@ -26,6 +26,7 @@ use bevy::prelude::*;
 pub mod attach;
 pub mod components;
 pub mod content;
+pub mod gear;
 pub mod hud;
 pub mod hud_ui;
 pub mod rules_authority;
@@ -39,6 +40,7 @@ pub mod xp;
 pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
+pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
 pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
@@ -73,6 +75,9 @@ impl Plugin for VaelPlugin {
                 // XP/nível/pontos de talento: acrescenta funções à mesma
                 // tabela `viber.vael`, depois do cofre.
                 VaelXpPlugin,
+                // Equipamento/passivas: `viber.vael.gear_*` e `player_stats`,
+                // depois do cofre e do XP.
+                VaelGearPlugin,
                 VaelUiPlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,

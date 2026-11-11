@@ -6,8 +6,10 @@
 -- id do item; um item que saiu da mochila (vendido, entregue) deixa de contar
 -- no mesmo frame — a mochila é a fonte da verdade.
 --
--- Módulo PURO: não carrega `lib/rules.lua` (é o `rules` que o carrega), por
--- isso lê `viber.game()` directamente.
+-- O estado e as somas vivem em `src/gear.rs` (`viber.vael.gear_*`). Este
+-- módulo guarda os metadados para a UI e os embrulhos finos.
+--
+-- Módulo PURO: não carrega `lib/rules.lua` (é o `rules` que o carrega).
 
 local M = {}
 
@@ -31,93 +33,38 @@ do
   end
 end
 
-local function held(id)
-  local n = viber.game()["item." .. id]
-  return type(n) == "number" and n == n and n > 0
-end
-
 function M.def(id)
   return ITEMS[id]
 end
 
+-- Slot equipável (`weapon | armor | charm`), ou nil.
 function M.slot_of(id)
-  local def = ITEMS[id]
-  local slot = def and def.slot
-  if slot == "weapon" or slot == "armor" or slot == "charm" then
-    return slot
-  end
-  return nil
+  return viber.vael.gear_slot_of(id)
 end
 
 -- Id equipado no slot, ou nil. Um item que já não está na mochila não conta
--- (e a marca é limpa, para o diário não mostrar um equipado fantasma).
+-- (a marca órfã é limpa do save).
 function M.equipped(slot)
-  local key = "gear." .. slot
-  local id = viber.game()[key]
-  if type(id) ~= "string" or id == "" then
-    return nil
-  end
-  if M.slot_of(id) ~= slot or not held(id) then
-    viber.game()[key] = nil
-    return nil
-  end
-  return id
+  return viber.vael.gear_equipped(slot)
 end
 
 function M.is_equipped(id)
-  local slot = M.slot_of(id)
-  return slot ~= nil and M.equipped(slot) == id
+  return viber.vael.gear_is_equipped(id)
 end
 
 -- Equipa (ou tira, se já estava). Devolve "on" | "off" | nil (não equipável).
 function M.toggle(id)
-  local slot = M.slot_of(id)
-  if not slot or not held(id) then
-    return nil
-  end
-  local key = "gear." .. slot
-  if viber.game()[key] == id then
-    viber.game()[key] = nil
-    return "off"
-  end
-  viber.game()[key] = id
-  return "on"
+  return viber.vael.gear_toggle(id)
 end
 
 -- Soma dos `effects` de tudo o que está equipado: { chave = total }.
 function M.effects()
-  local out = {}
-  for _, slot in ipairs(M.SLOTS) do
-    local id = M.equipped(slot)
-    local eff = id and ITEMS[id].effects
-    if type(eff) == "table" then
-      for key, value in pairs(eff) do
-        if type(value) == "number" and value == value then
-          out[key] = (out[key] or 0) + value
-        end
-      end
-    end
-  end
-  return out
+  return viber.vael.gear_effects()
 end
 
 -- Números do melee da arma equipada (ou da espada base).
 function M.weapon()
-  local id = M.equipped("weapon")
-  local def = id and ITEMS[id]
-  local w = def and def.weapon
-  if type(w) ~= "table" then
-    return M.DEFAULT_WEAPON
-  end
-  local base = M.DEFAULT_WEAPON
-  return {
-    id = id,
-    label = def.label or id,
-    damage = tonumber(w.damage) or base.damage,
-    speed = tonumber(w.speed) or base.speed,
-    range = tonumber(w.range) or base.range,
-    grip = type(w.grip) == "string" and w.grip or base.grip,
-  }
+  return viber.vael.gear_weapon()
 end
 
 return M

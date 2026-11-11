@@ -73,14 +73,10 @@ local KILL_XP_DEFAULT = math.max(0, tonumber(KILL_XP.default) or 15)
 -- não tem árvore de talentos. O diário só gasta o ponto.
 local SKILL_ORDER = {}
 local SKILL_BY_ID = {}
-local SKILL_IDS = {}
-local SKILL_EFFECTS = {}
 for _, skill in ipairs(PROGRESSION.skills or {}) do
   if type(skill) == "table" and type(skill.id) == "string" and skill.id ~= "" then
     SKILL_BY_ID[skill.id] = skill
     SKILL_ORDER[#SKILL_ORDER + 1] = skill
-    SKILL_IDS[#SKILL_IDS + 1] = skill.id
-    SKILL_EFFECTS[skill.id] = skill.effects or {}
   end
 end
 local TALENT_EVERY = math.max(0, tonumber(PROGRESSION.song_seed_talent_every) or 5)
@@ -212,47 +208,9 @@ local function capture_spawn(game)
   end
 end
 
--- Passivas do diário: `SKILL_EFFECTS` é construída a partir de
--- `data/progression.json` no topo deste módulo.
-
--- As quatro chaves clássicas têm campo próprio (o melee e o HUD leem-nas);
--- qualquer OUTRA chave numérica de `effects` (defense, lifesteal, dash_cd,
--- strike_burn…) soma em `stats.fx` e lê-se com `M.stat(chave)`. Um talento ou
--- item novo só precisa do JSON e de quem consome a chave.
-local function add_effects(stats, eff)
-  if type(eff) ~= "table" then
-    return
-  end
-  for key, value in pairs(eff) do
-    if finite(value) then
-      if key == "damage" then
-        stats.bonus_damage = stats.bonus_damage + value
-      elseif key == "crit" then
-        stats.crit_bonus = stats.crit_bonus + value
-      elseif key == "speed" then
-        stats.speed_mult = stats.speed_mult + value
-      elseif key == "max_hp" then
-        stats.max_hp_bonus = stats.max_hp_bonus + value
-      else
-        stats.fx[key] = (stats.fx[key] or 0) + value
-      end
-    end
-  end
-end
-
+-- Passivas do diário (talentos + equipamento) em Rust (`src/gear.rs`).
 local function learned_stats()
-  local game = g()
-  local stats = {
-    bonus_damage = 0, crit_bonus = 0, speed_mult = 1.0, max_hp_bonus = 0, fx = {},
-  }
-  for _, id in ipairs(SKILL_IDS) do
-    if game["skill." .. id] == true then
-      add_effects(stats, SKILL_EFFECTS[id])
-    end
-  end
-  -- Itens equipados (arma/armadura/amuleto) somam como talentos.
-  add_effects(stats, gear.effects())
-  return stats
+  return viber.vael.player_stats()
 end
 
 function M.set_spawn(x, y, z)
@@ -269,13 +227,12 @@ end
 
 function M.player_stats()
   ensure_hp()
-  return M.stats or learned_stats()
+  return learned_stats()
 end
 
 -- Efeito genérico somado (talentos + equipamento); 0 quando ninguém o dá.
 function M.stat(key)
-  local stats = M.stats or learned_stats()
-  return (stats.fx and stats.fx[key]) or 0
+  return viber.vael.stat(key)
 end
 
 -- Arma na mão (números do melee) e equipamento: ver lib/gear.lua.
@@ -1558,8 +1515,7 @@ end
 local function sync_passives()
   ensure_hp()
   local game = g()
-  local stats = learned_stats()
-  M.stats = stats
+  local stats = M.player_stats()
   local new_max = 100 + stats.max_hp_bonus
   if game.max_hp ~= new_max then
     local delta = new_max - (game.max_hp or 100)
