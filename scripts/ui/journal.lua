@@ -158,7 +158,8 @@ local function publish(name, rows)
       row.equip or "", row.tag or "", row.tip or "",
     }, "\2")
   end
-  local sig = table.concat(parts, "\1")
+  -- O idioma entra na assinatura: trocar PT↔EN refaz a lista traduzida.
+  local sig = tostring(viber.game().lang) .. "\1" .. table.concat(parts, "\1")
   if last[name] == sig then
     return
   end
@@ -257,7 +258,8 @@ function M.refresh()
       label = def.label,
       status = status,
       status_text = text,
-      requires = (requires == "" and "sem requisitos"
+      -- O prefixo vem daqui (não do template): a linha inteira é traduzível.
+      requires = "requisitos: " .. (requires == "" and "sem requisitos"
         or (required and required.label or requires))
         .. (excludes ~= "" and (" · exclui " .. ((rules.skill(excludes) or {}).label or excludes)) or ""),
     }

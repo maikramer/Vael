@@ -76,6 +76,11 @@ local function tr_line(t, line)
   return line
 end
 
+-- Idioma activo (as listas com assinatura juntam-no para se refazerem).
+function M.lang()
+  return lang()
+end
+
 function M.tr(text)
   if type(text) ~= "string" or text == "" then
     return text
@@ -118,6 +123,7 @@ end
 -- um hot-reload deste módulo substitui — nunca se embrulha duas vezes.
 function M.install()
   viber.__i18n_tr = M.tr
+  viber.__i18n_lang = lang
   if viber.__i18n_installed then
     return
   end
@@ -135,6 +141,29 @@ function M.install()
   wrap_first("say")
   wrap_first("set_interaction")
   wrap_first("damage_number")
+  -- Listas da UI (`viber.ui.list`): diário, forja, opções, loja. Cada campo
+  -- de texto de cada linha passa pela tradução; ids e números ficam.
+  local list = viber.ui and viber.ui.list
+  if type(list) == "function" then
+    viber.ui.list = function(name, rows, ...)
+      if type(rows) == "table" and viber.__i18n_lang() ~= "pt" then
+        local out = {}
+        for i, row in ipairs(rows) do
+          local copy = {}
+          for key, value in pairs(row) do
+            if type(value) == "string" and key ~= "id" then
+              copy[key] = viber.__i18n_tr(value)
+            else
+              copy[key] = value
+            end
+          end
+          out[i] = copy
+        end
+        rows = out
+      end
+      return list(name, rows, ...)
+    end
+  end
   local prompt = viber.prompt
   if type(prompt) == "function" then
     viber.prompt = function(key, label, ...)

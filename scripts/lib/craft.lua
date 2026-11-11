@@ -150,7 +150,7 @@ function M.refresh()
     }
     parts[i] = r.id .. "\2" .. status .. "\2" .. rows[i].cost
   end
-  local sig = table.concat(parts, "\1")
+  local sig = tostring(viber.game().lang) .. "\1" .. table.concat(parts, "\1")
   if sig == last_sig then
     return
   end

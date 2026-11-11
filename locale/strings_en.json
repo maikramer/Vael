@@ -159,9 +159,90 @@
   "O Ogro ergue os punhos…": "The Ogre raises his fists…",
   "O Ogro ergue os punhos — o chão gela!": "The Ogre raises his fists — the ground freezes!",
   "O Ogro entra em FÚRIA!": "The Ogre flies into a RAGE!",
-  "Um rugido ecoa dos Picos Gelados — o ogro despertou!": "A roar echoes from the Frozen Peaks — the ogre has awoken!"
+  "Um rugido ecoa dos Picos Gelados — o ogro despertou!": "A roar echoes from the Frozen Peaks — the ogre has awoken!",
+  "Tremor da câmara": "Camera shake",
+  "Hit-stop no impacto": "Hit-stop on impact",
+  "[E] por hold (0,35 s)": "Hold [E] to interact (0.35 s)",
+  "Tamanho das legendas": "Subtitle size",
+  "Escala do HUD": "HUD scale",
+  "Idioma": "Language",
+  "Volume geral": "Master volume",
+  "Volume da música": "Music volume",
+  "Volume dos efeitos": "Effects volume",
+  "Volume do ambiente": "Ambience volume",
+  "ligado": "on",
+  "desligado": "off",
+  "pronta a entregar": "ready to hand in",
+  "em curso": "in progress",
+  "concluída": "done",
+  "por aceitar": "not taken",
+  "aprendida": "learned",
+  "bloqueada": "locked",
+  "disponível": "available",
+  "escolha": "choice",
+  "ramo fechado": "branch closed",
+  "sem requisitos": "no requirements",
+  "equipado": "equipped",
+  "equipar": "equip",
+  "forjar": "forge",
+  "falta material": "missing materials",
+  "mochila cheia": "pack full",
+  "Discórdia": "Discordia",
+  "Floresta Sombria": "Dark Forest",
+  "Ermo": "Wastes",
+  "Pântano": "Swamp",
+  "Picos Gelados": "Frozen Peaks",
+  "Ouro": "Gold",
+  "Frutas": "Fruit",
+  "Semente de canção": "Song seed",
+  "Nota": "Note",
+  "Motor": "Engine",
+  "Cena": "Scene",
+  "Hora": "Time",
+  "Nível": "Level",
+  "Vida": "Health",
+  "Zona": "Zone",
+  "Sessão": "Session",
+  "O Vale": "The Vale",
+  "Material de forja.": "Forging material.",
+  "Cura 35 e limpa veneno, queimadura e gelo. [3]": "Heals 35 and clears poison, burn and frost. [3]",
+  "Arma: golpes lentos e pesados (38 de dano).": "Weapon: slow, heavy blows (38 damage).",
+  "Arma: 34 de dano, +5% crítico.": "Weapon: 34 damage, +5% crit.",
+  "Armadura: −15% de dano recebido, +15 de vida.": "Armour: −15% damage taken, +15 health.",
+  "Armadura: −8% de dano, +8% velocidade, queimadura dura metade.": "Armour: −8% damage, +8% speed, burn lasts half as long.",
+  "Amuleto: +25 de vida, veneno dura metade.": "Charm: +25 health, poison lasts half as long.",
+  "Amuleto: +6% crítico, 25% de dar choque no golpe.": "Charm: +6% crit, 25% chance to shock on hit.",
+  "Amuleto: +8 de dano, 4% de roubo de vida.": "Charm: +8 damage, 4% lifesteal.",
+  "Vitalidade I (+20 HP)": "Vitality I (+20 HP)",
+  "Força I (+6 dano)": "Strength I (+6 damage)",
+  "Agilidade I (+10% velocidade)": "Agility I (+10% speed)",
+  "Precisão I (+8% crítico)": "Precision I (+8% crit)",
+  "Vitalidade II (+30 HP)": "Vitality II (+30 HP)",
+  "Força II (+10 dano)": "Strength II (+10 damage)",
+  "Agilidade II (+15% velocidade)": "Agility II (+15% speed)",
+  "Precisão II (+10% crítico)": "Precision II (+10% crit)",
+  "Cantil fundo (+1 carga de cura)": "Deep flask (+1 healing charge)",
+  "Baluarte (−15% dano recebido)": "Bulwark (−15% damage taken)",
+  "Sede de sangue (6% roubo de vida)": "Bloodthirst (6% lifesteal)",
+  "Brasas (o Impacto queima 4 s)": "Embers (Impact burns for 4 s)",
+  "Abalo (Impacto +1,5 m e +20 dano)": "Tremor (Impact +1.5 m and +20 damage)",
+  "Passo de vento (Esquiva recarrega 40% mais depressa)": "Windstep (Dodge recharges 40% faster)",
+  "Espectro (Esquiva: +0,3 s invulnerável)": "Ghost (Dodge: +0.3 s invulnerable)",
+  "Carrasco (executa abaixo de 25% de vida)": "Executioner (executes below 25% health)",
+  "Duelista (críticos ×2,5)": "Duelist (crits ×2.5)",
+  "Comprar poção": "Buy potion",
+  "Comprar antídoto": "Buy antidote",
+  "Comprar bomba": "Buy bomb"
  },
  "patterns": [
+  [
+   "^requisitos: (.+) · exclui (.+)$",
+   "requires: %1 · excludes %2"
+  ],
+  [
+   "^requisitos: (.+)$",
+   "requires: %1"
+  ],
   [
    "^A bolsa de musgo está cheia %((%d+)%)",
    "The moss pouch is full (%1)"
@@ -349,6 +430,42 @@
   [
    "^(.+) · pronta$",
    "%1 · ready"
+  ],
+  [
+   "^Vender (.+) ×(%d+)$",
+   "Sell %1 ×%2"
+  ],
+  [
+   "^(.+) · exclui (.+)$",
+   "%1 · excludes %2"
+  ],
+  [
+   "^derrotar (%d+)× (.+)$",
+   "defeat %1× %2"
+  ],
+  [
+   "^reunir (%d+)× (.+)$",
+   "gather %1× %2"
+  ],
+  [
+   "^forjar (%d+)× (.+)$",
+   "forge %1× %2"
+  ],
+  [
+   "^visitar (%d+) locais$",
+   "visit %1 places"
+  ],
+  [
+   "^convencer (.+)$",
+   "persuade %1"
+  ],
+  [
+   "^diz ao NPC: (.+)$",
+   "tell the NPC: %1"
+  ],
+  [
+   "^(.+) ×(%d+) — (.+)$",
+   "%1 ×%2 — %3"
   ]
  ]
 }
