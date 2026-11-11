@@ -33,6 +33,7 @@ pub mod rules_shadow;
 pub mod save;
 pub mod state_sync;
 pub mod ui_bind;
+pub mod vault;
 
 pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
@@ -44,6 +45,7 @@ pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
 pub use state_sync::VaelStateSyncPlugin;
 pub use ui_bind::{VaelHud, VaelUiPlugin};
+pub use vault::VaelVaultPlugin;
 
 /// Raiz do projeto Vael: a pasta com `config.yaml`, `data/`, `quests/`,
 /// `locale/` e o `world.xml`. Resolvida no arranque; todos os loaders leem
@@ -63,6 +65,9 @@ impl Plugin for VaelPlugin {
             .add_plugins((
                 VaelContentPlugin,
                 VaelSavePlugin,
+                // Cofre em Rust: `viber.vael` instalado no `Startup` (o
+                // `rules.lua` fica só com os embrulhos finos).
+                VaelVaultPlugin,
                 VaelUiPlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,

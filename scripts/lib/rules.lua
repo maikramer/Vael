@@ -44,9 +44,9 @@ end
 local ITEMS_DATA = load_data("data/items.json", {})
 local PROGRESSION = load_data("data/progression.json", {})
 
+-- O tecto das pilhas e o kit de arranque vivem em `src/vault.rs`; aqui fica
+-- só o `stack_max` global que `M.stack_max` publica.
 local STACK = tonumber(ITEMS_DATA.stack_max) or 99
-local RESOURCE_CAP = tonumber(ITEMS_DATA.resource_cap) or 1000000
-local STARTING = ITEMS_DATA.starting or { gold = 30, potion = 1 }
 local ITEM_ORDER = {}
 local ITEM_BY_ID = {}
 local RESOURCES = {}
@@ -987,17 +987,13 @@ function M.sync_collect()
   end
 end
 
--- Contagem guardada no cofre, nunca negativa: um save com `item.wood = -3`
--- aparecia na mochila a -3 e o `vault_add` devolvia mais do que somou.
-local function held(key)
-  return math.max(0, num(key, 0))
-end
+-- Cofre em Rust (`src/vault.rs`, `viber.vael`): contagem nunca negativa,
+-- recursos em `resource_cap` e os outros itens no `stack`/`stack_max`.
+-- Aqui ficam só os embrulhos: espelho na API antiga da engine (quando
+-- existe) e `sync_collect` (objetivos de recolha).
 
 function M.vault_get(kind)
-  if not kind or kind == "" then
-    return 0
-  end
-  return held("item." .. kind)
+  return viber.vael.vault_get(kind)
 end
 
 -- Compat: se a engine ainda expuser `viber.vault_*`, espelha-se. A fonte da
@@ -1030,58 +1026,15 @@ local function mirror_take(kind, amount)
 end
 
 function M.pull_engine()
-  local tracked = {
-    "gold", "wood", "stone", "dark-wood", "bog-moss", "nota",
-    "potion", "antidote", "bomb", "korok-seed", "berry",
-  }
-  local vault_get = engine_fn("vault_get")
-  local item_count = engine_fn("item_count")
-  if g().eco_pulled ~= true then
-    g().eco_pulled = true
-    if vault_get or item_count then
-      for _, kind in ipairs(tracked) do
-        local fn = RESOURCES[kind] and vault_get or item_count
-        if fn then
-          local n = fn(kind) or 0
-          if n > 0 then
-            g()["item." .. kind] = n
-          end
-        end
-      end
-      -- Sem `return`: um cofre nativo vazio mas sem chaves no save ainda
-      -- precisa do kit de arranque (o `if` abaixo decide).
-    end
-  end
-  -- Kit de arranque (`data/items.json`) quando o save ainda não gravou
-  -- NENHUMA destas chaves — um 0 explícito (ouro gasto) não volta a encher.
-  -- Vale também com cofre nativo vazio.
-  if g()["item.gold"] == nil and g()["item.potion"] == nil then
-    for id, count in pairs(STARTING) do
-      if type(id) == "string" and finite(count) and count > 0 then
-        g()["item." .. id] = count
-      end
-    end
-  end
+  -- Kit de arranque (`data/items.json`) só quando o save ainda não gravou
+  -- `item.gold` nem `item.potion`; um 0 explícito (ouro gasto) não enche.
+  viber.vael.seed_starting()
+  g().eco_pulled = true
 end
 
 function M.vault_add(kind, amount, mirror)
-  amount = amount or 1
-  if not finite(amount) or amount <= 0 or not kind or kind == "" then
-    return 0
-  end
-  local key = "item." .. kind
-  local have = held(key)
-  local def = ITEM_BY_ID[kind]
-  local cap = RESOURCES[kind] and RESOURCE_CAP
-    or (def and tonumber(def.stack))
-    or STACK
-  local nextv = math.min(cap, have + amount)
-  local added = nextv - have
-  if added <= 0 then
-    return 0
-  end
-  g()[key] = nextv
-  if mirror ~= false then
+  local added = viber.vael.vault_add(kind, amount)
+  if added > 0 and mirror ~= false then
     mirror_add(kind, added)
   end
   M.sync_collect()
@@ -1089,19 +1042,13 @@ function M.vault_add(kind, amount, mirror)
 end
 
 function M.vault_take(kind, amount)
-  amount = amount or 1
-  if not kind or kind == "" or not finite(amount) or amount <= 0 then
-    return false
+  local ok = viber.vael.vault_take(kind, amount)
+  if ok then
+    -- `amount or 1` como no `vault_add`/`vault_take` antigos.
+    mirror_take(kind, amount or 1)
+    M.sync_collect()
   end
-  local key = "item." .. kind
-  local have = held(key)
-  if have < amount then
-    return false
-  end
-  g()[key] = have - amount
-  mirror_take(kind, amount)
-  M.sync_collect()
-  return true
+  return ok
 end
 
 function M.item_add(id, amount)

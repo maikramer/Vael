@@ -35,6 +35,8 @@ pub struct ItemDef {
     pub desc: String,
     /// `weapon | armor | charm`.
     pub slot: String,
+    /// Teto da pilha próprio do item (`def.stack` do Lua); ausente = `stack_max`.
+    pub stack: Option<i64>,
     pub shop: Option<ItemShop>,
     /// O JSON chama-lhe `use` (palavra reservada em Rust).
     #[serde(rename = "use")]

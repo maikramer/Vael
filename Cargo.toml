@@ -7,6 +7,9 @@ rust-version = "1.97.1"
 [dependencies]
 anyhow = "1"
 bevy = "=0.20.1"
+# Mesma versão/features do Viber (o Cargo unifica): a bridge do cofre mexe
+# diretamente na tabela `viber_game` da VM partilhada.
+mlua = { version = "0.12", features = ["luau", "vendored", "send"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 viber = { path = "../Viber" }
