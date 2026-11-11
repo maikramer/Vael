@@ -43,6 +43,20 @@ text3d:
   split_at_height: true
   sdnq_preset: sdnq-int4
   memory_efficient: true
+# Hi3D refine (pós-shape, antes do paint). Multiview = vistas Text2D
+# encadeadas (uma imagem por vista, um passe Hi3D por vista). O Hi3D v1.0 é
+# mono-imagem por passe: isto é orquestração local, não o multiview oficial.
+# A/B no watchtower: 4 vistas (front/back/left/right) preservam escada,
+# bandeira e ameias e acrescentam detalhe na base; top/bottom re-sintetizam o
+# coroamento e podem perder detalhes finos. Default recomendado: views: 4;
+# usar 6 em props/rochas simples. Personagens/criaturas ficam de fora (pose).
+# Ver assets/README.md.
+refine:
+  enabled: true
+  resolution: auto
+  steps: 25
+  max_faces_scale: 4.0
+  views: 4
 # Personagens: retarget encadeado villager + UAL1+UAL2 — trabalhos kevdev
 # (mining/hammer/pesca por-ficheiro) com a UAL por cima em idle/gather/combos.
 animator3d:

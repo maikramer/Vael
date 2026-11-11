@@ -58,6 +58,20 @@ só gera o que falta — com os binários já presentes, o batch valida e faz sk
 > correto é `../public/assets`; com `public/assets` o resume aponta para
 > `manifests/public/assets`, não encontra nada e marca tudo como `need_image`.
 
+### Refine multiview (Hi3D)
+
+O bloco `refine:` do `game.yaml` liga o refinamento multiview encadeado: uma
+imagem Text2D por vista (a frontal é a referência; as outras são edições com
+`--ref`) e um passe Hi3D por vista, encadeando a saída de cada um como coarse
+do seguinte. O Hi3D v1.0 continua mono-imagem por passe — é uma orquestração
+local, não o multiview oficial.
+
+A/B no watchtower: **4 vistas** (`front, back, left, right`) preservam escada,
+bandeira e ameias e acrescentam detalhe na base; **top/bottom** re-sintetizam
+o coroamento e podem perder detalhes finos. O `game.yaml` está ligado com
+`views: 4`; usar `views: 6` por asset em props/rochas simples. Personagens/
+criaturas ficam de fora (pose). `refine: {views: 1}` volta a mono-vista.
+
 ## Como o Vael consome isto
 
 O `config.yaml` do jogo declara `assets.roots: assets/public`. A pasta do

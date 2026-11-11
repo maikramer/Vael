@@ -86,6 +86,13 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 - Com um `<UiInput>` focado (barra de fala do NLU), a engine bloqueia
   `viber.input.*`, `viber.interacted` e o movimento: as letras são texto, não
   acções. O `scripts/ui/say.lua` abre/fecha o foco.
+- Refine multiview (`refine.views` no `assets/game.yaml`): imagens Text2D
+  (`<id>_<view>.png`) + um passe Hi3D por vista, encadeados; invalidação pelos
+  sidecars em `_intermediate/` e painted/LOD/collision antigos. A/B no
+  watchtower: 4 vistas (front/back/left/right) preservam detalhes finos;
+  top/bottom podem perder escada/bandeira. Ligado no `game.yaml` com
+  `views: 4`; `views: 6` por asset em props/rochas simples. Personagens/
+  criaturas não entram (o Hi3D muda a pose).
 - Depois de editar: `viber analyze` (exit 1 em erro).
 
 ## Correr
