@@ -75,7 +75,7 @@ Definições/Créditos/Sair), **morte** com Tentar de novo/Carregar/Título,
 **player** com combate melee ([J]/clique, alvo [V]
 ou ação `lock` — [Z]/gamepad, dash [C], golpe radial [R], bomba [B], guard
 [L], talentos com [Q]→Talentos),
-**28 quests** (JSON em `quests/`, diálogo [E] com os NPCs, tracker no HUD,
+**37 quests** (JSON em `quests/`, com etapas e cadeias por dador, diálogo [E] com os NPCs, tracker no HUD,
 bounties no notice-board; os NPCs ambientais usam grafos em
 `dialogues/*.json`), **economia** (vault gold/wood/stone, colheita de
 árvores/pedras, loja no diário [Q]→Loja — falar com o Bram [E] abre-a —,
@@ -121,6 +121,39 @@ missão nova. Minimapa e bússola só mostram NPC que valem a pena.
 
 **Exploração:** baús escondidos junto a seis marcos (caravana, barco, menires,
 altar, obelisco, mojão) com loot próprio (`prop-*`).
+
+### Progressão, forja e mundo vivo (2026-11)
+
+- **Equipamento** (`lib/gear.lua`, `data/items.json`): itens com `slot`
+  (`weapon`/`armor`/`charm`), `effects` (somam aos talentos; lê-se com
+  `rules.stat("chave")`) e `weapon` (dano/cadência/alcance do melee). Clicar
+  numa célula da Mochila equipa ou guarda.
+- **Forja** (`lib/craft.lua`, `data/recipes.json`): [E] na bigorna abre o
+  separador Forja. Os materiais caem dos abates (`game/loot.lua`).
+- **Talentos com escolha**: `excludes` em `data/progression.json` fecha o ramo
+  irmão (Baluarte ↔ Sede de sangue, Brasas ↔ Abalo, …).
+- **Cantil** [E]: a cura gasta cargas (2 + talento) que só voltam na fogueira,
+  no curandeiro ou ao renascer. Esquiva [C] recarrega em 3 s.
+- **Morte**: 25 % do ouro fica numa bolsa onde o herói caiu (brilha; passar por
+  cima recupera). Morrer outra vez antes perde-a.
+- **Estados**: veneno, queimadura e gelo no herói (`rules.apply_status`);
+  queimadura, gelo e choque nas criaturas (`rules.enemy_status`). A poção de
+  musgo [3] limpa os do herói. `weak = { burn = 2 }` no script da criatura.
+- **Arquétipos** (`lib/fsm.lua`): `charge` (goblin bruto), `shield` (bandido
+  de escudo — o remate da chain parte a guarda), `caster` (bogling
+  feiticeiro), e `phases` nos chefes (invocar, enterrar, saltar, investir).
+- **Renascer e noite** (`game/spawns.lua`): criaturas voltam ao covil 4 min
+  depois, longe da vista (os Picos só depois do Ogro cair); entre as 20h e as
+  5h nascem sombras da noite fora da vila e os aldeões da rua recolhem. À
+  chuva o fogo apaga-se depressa e as criaturas veem pior (`lib/clock.lua`).
+- **Quests**: `stages` (etapas), `requires`, `next` (cadeia do mesmo dador),
+  objetivo `craft` e alvo `elite`. Ver `quests/chain_quests.json`.
+- **Idioma**: `lib/i18n.lua` traduz toasts, prompts, balões e listas a partir
+  de `locale/strings_en.json` (a frase PT é a chave); a UI estática usa
+  `@chave` em `locale/{pt,en}.json`. `tools/i18n_extract.py` lista o que falta.
+- **Opções**: volume por bus (geral, música, efeitos, ambiente).
+- **Gate local**: `tools/check.sh` (lint de conteúdo, sintaxe Lua, `analyze`,
+  `scene lint`).
 
 ## Fronteira engine/jogo
 
@@ -171,7 +204,7 @@ descomprime meshopt/KTX2 à leitura.
 - `scenes/menu.xml` + `scenes/menu.data/terrain.ahgt` — cena de arranque
   (`project.start-scene`): acampamento pequeno atrás do título. As salas
   continuam em `scenes/interiors/`
-- `quests/*.json` + `quests/index.json` — definições das 28 quests (lidas por
+- `quests/*.json` + `quests/index.json` — definições das 37 quests (lidas por
   `scripts/lib/rules.lua`; campos: `id, npc, biome, title, lines_*, objective, rewards`)
 - `dialogues/*.json` — grafos de diálogo ambientais (lidos por `scripts/townsfolk.lua`)
 - `data/items.json`, `data/landmarks.json`, `data/progression.json` — itens/loja,

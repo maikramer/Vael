@@ -7,7 +7,7 @@ O mundo que valida a engine de ponta a ponta: port do exemplo original
 
 **Jogável de ponta a ponta** — ecrã de título (Continuar/Novo Jogo/
 Definições/Créditos/Sair), morte com Tentar de novo/Carregar/Título,
-combate melee + skills + talentos, 28 quests com diálogo, economia (vault,
+combate melee + skills + talentos, 37 quests com diálogo, economia (vault,
 colheita, loja, hotbar), travel (A Nota, 12 marcos, viagem rápida), save em
 slots 0–3 + autosave, mundo vivo (céu procedural, dia/noite, clima, BGM por
 zona, partículas) e física (knockback, destrutíveis).
