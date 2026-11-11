@@ -1901,41 +1901,13 @@ function M.publish()
   ensure_xp()
   ensure_hp()
   local game = g()
-  local hp, max_hp = game.hp, game.max_hp
-  local frac = max_hp > 0 and math.max(0, math.min(1, hp / max_hp)) or 0
-  viber.ui.set("health", frac)
-  viber.ui.set("health.text", string.format("%d/%d", math.floor(hp + 0.5), math.floor(max_hp + 0.5)))
-  viber.ui.set("health.value", hp)
-  viber.ui.set("health.low", frac <= 0.3)
-  viber.ui.set("status.venom", num("venom", 0) > 0)
-  viber.ui.set("status.burn", num("burn", 0) > 0)
-  viber.ui.set("status.frost", num("frost", 0) > 0)
-  viber.ui.set("flask", tostring(M.flasks()))
-  viber.ui.set("flask.empty", M.flasks() < 1)
-  viber.ui.set("moss", M.vault_get("moss_potion"))
-  viber.ui.set("moss.empty", M.vault_get("moss_potion") < 1)
-  viber.ui.set("xp", game.xp / game.xp_next)
-  viber.ui.set("xp.text", string.format("%d/%d", math.floor(game.xp), math.floor(game.xp_next)))
-  viber.ui.set("level", game.level)
-  viber.ui.set("level.text", tostring(game.level))
-  viber.ui.set("talent.points", game.skill_points)
-  viber.ui.set("talent.ready", game.skill_points > 0)
-  viber.ui.set("gold", M.vault_get("gold"))
-  viber.ui.set("wood", M.vault_get("wood"))
-  viber.ui.set("stone", M.vault_get("stone"))
-  viber.ui.set("berry", M.vault_get("berry"))
-  viber.ui.set("korok-seed", M.vault_get("korok-seed"))
-  viber.ui.set("potion", M.vault_get("potion"))
-  viber.ui.set("antidote", M.vault_get("antidote"))
-  viber.ui.set("bomb", M.vault_get("bomb"))
-  viber.ui.set("potion.empty", M.vault_get("potion") < 1)
-  viber.ui.set("antidote.empty", M.vault_get("antidote") < 1)
-  -- Netplay: o estado vem do `VIBER_NET` da engine; o jogo só mostra.
+  -- Vida, status, XP, talentos e economia são publicados pelo `VaelHudPlugin`
+  -- (Rust). O Lua só publica o que ainda não tem dono em Rust: netplay, alvo,
+  -- chefe, recargas e quests.others.
   local net_role = (viber.net_role and viber.net_role()) or "off"
   viber.ui.set("net.on", net_role ~= "off")
   viber.ui.set("net.label", net_role == "host" and "HOST"
     or (net_role == "join" and "CLIENTE" or ""))
-  viber.ui.set("bomb.empty", M.vault_get("bomb") < 1)
   local title, progress, text = "", 0, ""
   local best, best_score
   -- O diário permite SEGUIR uma missão (`tracked_quest`); o cartão do HUD

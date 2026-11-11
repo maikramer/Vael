@@ -5,6 +5,10 @@
 //! comportamento de jogo da engine DESLIGADO (`gameplay: false`) e o host
 //! Luau em `Compat`: as regras passam para Rust onda a onda, sem deixar o
 //! jogo sem comportamento enquanto a transição decorre.
+//!
+//! Nesta passagem o estado corre em **shadow mode**: [`VaelStateSyncPlugin`]
+//! espelha o `viber.game()` e [`VaelHudPlugin`] publica os binds do HUD ao
+//! lado do Lua, só a ler. A tabela Lua continua a ser a fonte de verdade.
 
 use std::path::PathBuf;
 
@@ -13,13 +17,17 @@ use bevy::prelude::*;
 pub mod attach;
 pub mod components;
 pub mod content;
+pub mod hud;
 pub mod save;
+pub mod state_sync;
 pub mod ui_bind;
 
 pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
+pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
+pub use state_sync::VaelStateSyncPlugin;
 pub use ui_bind::{VaelHud, VaelUiPlugin};
 
 /// Raiz do projeto Vael: a pasta com `config.yaml`, `data/`, `quests/`,
@@ -41,6 +49,9 @@ impl Plugin for VaelPlugin {
                 VaelContentPlugin,
                 VaelSavePlugin,
                 VaelUiPlugin,
+                // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
+                VaelStateSyncPlugin,
+                VaelHudPlugin,
                 VaelAttachPlugin,
             ));
     }
