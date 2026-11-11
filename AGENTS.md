@@ -19,6 +19,23 @@ Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta + `../Viber` +
 `../CelerAI`).
 
+## Crate Rust (migração)
+
+Este checkout é o worktree da migração para Rust/Bevy (`refactor/bevy-native`).
+O jogo arranca pelo crate `vael`:
+
+```bash
+CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
+  world.xml --scene main --entry dev --bridge 15706
+```
+
+`gameplay:false` desliga IA/vitais/projéteis da engine; `player_camera:true`
+mantém o movimento/câmara da engine enquanto o Vael não os substitui. O
+`viber.game()` ainda é a fonte de verdade; `VaelStateSync` espelha-o e
+`VaelHud` publica o HUD. O estado, gates e dívidas estão em
+[`docs/MIGRATION.md`](docs/MIGRATION.md). O checkout principal pode ter
+trabalho em curso (regen/assets); não o tocar por arrasto.
+
 ## Só estático
 
 `world.xml` (`<world static="true">`) + `world/**` + `world.data/` são o mundo.
