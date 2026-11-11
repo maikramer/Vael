@@ -379,74 +379,36 @@ local function objective(def)
   return def.objective or {}
 end
 
+-- Estado/progresso/objetivo/disponibilidade/cadeia vivem em `src/quest.rs`
+-- (`viber.vael.quest_*`); estes embrulhos só mantêm a assinatura das regras.
+-- `find_def`/`objective`/`load_defs`/`quest_def(s)` continuam em Lua: a UI, o
+-- `report_kill` e o `scan_visits` leem as tabelas do JSON.
 function M.quest_progress(id)
-  local override = tonumber(g()[qkey(id) .. ".need"])
-  if override and override >= 1 then
-    return num("q." .. id .. ".n", 0), math.floor(override)
-  end
-  local def = find_def(id)
-  local need = 1
-  if def then
-    -- `count: 0`/ausente não pode dividir por zero no HUD.
-    need = math.max(1, math.floor(tonumber(objective(def).count) or 1))
-  end
-  return num("q." .. id .. ".n", 0), need
+  local r = viber.vael.quest_progress(id)
+  return r.have, r.need
 end
 
 -- Objetivo EM CURSO (a etapa actual numa quest com `stages`) e a posição
 -- dela: `obj, etapa, total`. O diário, a seta e os dadores leem daqui.
 function M.quest_objective(id)
-  local def = find_def(id)
-  if not def then
-    return {}, 1, 1
-  end
-  local at = stage_index(def)
-  return objective(def), at or 1, at and #def.stages or 1
+  local r = viber.vael.quest_objective(id)
+  return r.obj, r.at, r.total
 end
 
 -- `requires`: id (ou lista de ids) de quests que têm de estar ENTREGUES antes
 -- de esta poder ser aceite — cadeias e conteúdo de pós-jogo.
 function M.quest_available(id)
-  local def = find_def(id)
-  if not def then
-    return false
-  end
-  local req = def.requires
-  if type(req) == "string" and req ~= "" then
-    req = { req }
-  end
-  if type(req) == "table" then
-    for _, other in ipairs(req) do
-      if g()[qkey(other)] ~= "done" then
-        return false
-      end
-    end
-  end
-  return true
+  return viber.vael.quest_available(id)
 end
 
 -- Cadeia de um dador: enquanto a quest estiver entregue e tiver `next`, o
 -- NPC passa a oferecer a seguinte.
 function M.quest_chain(id)
-  local seen = 0
-  while seen < 16 do
-    local def = find_def(id)
-    if not def or type(def.next) ~= "string" or def.next == ""
-        or g()[qkey(id)] ~= "done" or not find_def(def.next) then
-      break
-    end
-    id = def.next
-    seen = seen + 1
-  end
-  return id
+  return viber.vael.quest_chain(id)
 end
 
 function M.quest_state(id)
-  local state = g()[qkey(id)]
-  if state == "active" or state == "ready" or state == "done" or state == "not_taken" then
-    return state
-  end
-  return find_def(id) and "not_taken" or "unknown"
+  return viber.vael.quest_state(id)
 end
 
 -- `count: 0`/ausente é uma quest de um passo, não uma divisão por zero nem
@@ -507,19 +469,23 @@ local function mark_ready(def)
 end
 
 -- Quests de decisão (`scripts/npc/decision-quest.lua`): o puzzle marca o
--- objetivo quando o jogador resolve; `mark_ready` promove a "ready".
+-- objetivo quando o jogador resolve; o Rust grava o progresso e promove a
+-- etapa seguinte ou a "ready". O toast e o som ficam aqui.
 function M.quest_set_progress(id, n)
-  local def = find_def(id)
-  if not def or M.quest_state(id) ~= "active" then
+  local r = viber.vael.quest_set_progress(id, n)
+  if not r.ok then
     return false
   end
-  set_progress(id, math.max(0, math.floor(tonumber(n) or 0)))
-  mark_ready(def)
+  if r.stage_advanced then
+    viber.toast("Etapa " .. r.stage .. "/" .. r.total .. " cumprida: " .. r.title)
+    sound_at_player("notification")
+  end
+  if r.ready then
+    viber.toast("Objetivo completo: " .. r.title)
+    sound_at_player("notification")
+  end
+  M.sync_collect()
   return true
-end
-
-local function repeatable(def)
-  return def.npc == "notice_board"
 end
 
 function clear_visits(def)
@@ -539,101 +505,32 @@ function clear_visits(def)
   end
 end
 
+-- `accept`/`turn_in` correm em `src/quest.rs`; o embrulho só faz os efeitos
+-- locais (toast, som, `sync_collect`, `save_at`).
 function M.quest_accept(id)
-  local def = find_def(id)
-  if not def or M.quest_state(id) ~= "not_taken" or not M.quest_available(id) then
+  if not viber.vael.quest_accept(id) then
     return false
   end
-  g()[qkey(id)] = "active"
-  g()[qkey(id) .. ".stage"] = nil
-  set_progress(id, 0)
-  set_need(id, count_of(objective(def)))
-  g()[qkey(id) .. ".said"] = nil
-  clear_visits(def)
-  viber.toast("Quest aceite: " .. (def.title or id))
+  local def = find_def(id)
+  viber.toast("Quest aceite: " .. (def and def.title or id))
   sound_at_player("quest_accept")
   M.sync_collect()
   return true
 end
 
-local function grant_rewards(def)
-  local rewards = def.rewards or {}
-  -- `tonumber`: o resto deste módulo tolera JSON editado à mão (`.need`,
-  -- `playtime_secs`, `venom_tick`…); um `gold: "50"` textual comparava
-  -- string com número, rebentava a entrega APÓS o estado `done` e o
-  -- jogador perdia o ouro, o XP e o toast.
-  local gold = tonumber(rewards.gold) or 0
-  if gold > 0 then
-    M.vault_add("gold", gold)
-  end
-  local xp = tonumber(rewards.xp) or 0
-  if xp > 0 then
-    M.add_xp(xp)
-  end
-  -- Devolve quantos itens NÃO couberam (tecto de 99 por stack): o toast de
-  -- entrega dizia "+5 poções" e a mochila só aceitava 2, em silêncio.
-  local missing = 0
-  if type(rewards.items) == "table" then
-    for _, item in ipairs(rewards.items) do
-      -- Espaços tolerados ("potion: 3"): a âncora `$` falhava e a
-      -- recompensa caía fora em silêncio (item perdido sem aviso nenhum).
-      local name, count = tostring(item):match("^%s*([^:]-)%s*:?%s*(%d*)%s*$")
-      local want = tonumber(count) or 1
-      if name and name ~= "" and want > 0 then
-        local added = M.item_add(name, want) or 0
-        if added < want then
-          missing = missing + (want - added)
-        end
-      end
-    end
-  end
-  return missing
-end
-
 function M.quest_turn_in(id)
-  if M.quest_state(id) ~= "ready" then
+  local r = viber.vael.quest_turn_in(id)
+  if r.reason == "missing_items" then
+    viber.toast("Já não tens o que a missão pede.")
     return false
   end
-  local def = find_def(id)
-  if not def then
+  if not r.ok then
     return false
   end
-  local obj = objective(def)
-  if obj.type == "collect" then
-    local need = need_of(def)
-    if not M.vault_take(obj.target or "", need) then
-      g()[qkey(id)] = "active"
-      viber.toast("Já não tens o que a missão pede.")
-      return false
-    end
-  end
-  if repeatable(def) then
-    g()[qkey(id)] = "not_taken"
-  else
-    g()[qkey(id)] = "done"
-    -- O cartão do HUD e a bússola não podem continuar a "seguir" uma missão
-    -- fechada: o diário já não deixa voltar a escolhê-la (só aceita
-    -- active/ready), por isso a marca ficava no save para sempre.
-    if g().tracked_quest == id then
-      g().tracked_quest = nil
-    end
-  end
-  -- Chaves de progresso não ficam no save depois da entrega: os marcadores
-  -- `q.<id>.v.<local>` de uma quest de visita acumulavam para sempre (um
-  -- `forest_survey` entregue guardava os 3 marcos até ao fim do jogo) e o
-  -- `.n`/`.need`/`.said` já não são lidos em `done`/`not_taken`. O `accept`
-  -- volta a criá-las.
-  clear_visits(def)
-  g()[qkey(id) .. ".n"] = nil
-  g()[qkey(id) .. ".stage"] = nil
-  set_need(id, nil)
-  g()[qkey(id) .. ".said"] = nil
-  local missing = grant_rewards(def)
-  local gold = (def.rewards or {}).gold or 0
-  local msg = "Quest entregue: " .. (def.title or id)
-    .. (gold > 0 and (" (+" .. gold .. " ouro)") or "")
-  if missing > 0 then
-    msg = msg .. " — " .. missing .. " item(ns) não coube(ram) na mochila."
+  local msg = "Quest entregue: " .. r.title
+    .. (r.gold > 0 and (" (+" .. r.gold .. " ouro)") or "")
+  if r.missing_items > 0 then
+    msg = msg .. " — " .. r.missing_items .. " item(ns) não coube(ram) na mochila."
   end
   viber.toast(msg)
   sound_at_player("quest_complete")
@@ -641,6 +538,7 @@ function M.quest_turn_in(id)
   -- `dying` (o [E] ainda chega aos NPCs) e o save síncrono gravava hp 0 +
   -- `dying` no slot 0 — o "Continuar" seguinte abria o ecrã de morte.
   save_at = viber.time()
+  M.sync_collect()
   return true
 end
 

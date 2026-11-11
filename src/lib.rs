@@ -29,6 +29,7 @@ pub mod content;
 pub mod gear;
 pub mod hud;
 pub mod hud_ui;
+pub mod quest;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
@@ -43,6 +44,7 @@ pub use content::{VaelContent, VaelContentPlugin};
 pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
+pub use quest::{QuestRules, VaelQuestPlugin};
 pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
 pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
@@ -78,6 +80,9 @@ impl Plugin for VaelPlugin {
                 // Equipamento/passivas: `viber.vael.gear_*` e `player_stats`,
                 // depois do cofre e do XP.
                 VaelGearPlugin,
+                // Ciclo da quest (estado/progresso/aceitar/entregar/
+                // recompensas): `viber.vael.quest_*`, depois do equipamento.
+                VaelQuestPlugin,
                 VaelUiPlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,

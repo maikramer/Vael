@@ -377,7 +377,12 @@ impl Plugin for VaelGearPlugin {
 }
 
 /// Arranque: acrescenta as funções de equipamento à tabela `viber.vael`.
-fn install_gear_api(host: Option<Res<LuaScriptHost>>, content: Option<Res<VaelContent>>) {
+///
+/// Público dentro do crate para as quests ordenarem depois dele.
+pub(crate) fn install_gear_api(
+    host: Option<Res<LuaScriptHost>>,
+    content: Option<Res<VaelContent>>,
+) {
     let Some(host) = host else {
         warn!("vael: equipamento sem host Luau — `viber.vael` não estendido");
         return;
