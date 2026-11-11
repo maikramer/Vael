@@ -80,11 +80,12 @@ continuam em Luau.
   DIÁRIO, TTL da barra de chefe, shake do combo) passou a sistemas Bevy com
   `UiWriter`; o `hud.lua` ficou só com `say.tick`.
 - `src/vault.rs`, `src/xp.rs`, `src/gear.rs`, `src/quest.rs`,
-  `src/combat.rs`, `src/clock.rs`: cofre/caps e kit inicial, XP/níveis/
-  talentos, equipamento/stats, ciclo de quests, guarda/dano/cura/i-frames e
-  relógio (DayCycle/Weather) vivem em Rust. Uma ponte `viber.vael` instalada
-  no `Startup` expõe as funções aos chamadores Lua; os wrappers guardam
-  toasts, sons, `sync_collect`, `start_death` e o resto da apresentação.
+  `src/combat.rs`, `src/clock.rs`, `src/economy.rs`: cofre/caps e kit inicial,
+  XP/níveis/talentos, equipamento/stats, ciclo de quests, guarda/dano/cura/
+  i-frames, relógio (DayCycle/Weather) e transações/preços de loja/forja
+  vivem em Rust. Uma ponte `viber.vael` instalada no `Startup` expõe as
+  funções aos chamadores Lua; os wrappers guardam toasts, sons,
+  `sync_collect`, `start_death`, `report_craft` e o resto da apresentação/UI.
 - O jogo passa a **exigir** o crate `vael` em runtime: `viber.vael` tem de
   existir antes de `lib/rules.lua`/`lib/gear.lua`/`lib/clock.lua` correrem.
 
@@ -100,7 +101,7 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 - O bridge fica em `127.0.0.1:15706`; `curl` com `viber.lua`, `world.query`,
   `world.get_resources`, `viber.ecs`.
 - `VIBER_NO_BUILD=1 ./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
-- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: **147 testes**.
+- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: **175 testes**.
 - `cargo test` no Viber: 1646 passam; a falha
   `luau::decision::tests::lua_api_intent_pt_multi_question` é modelo/ambiente.
 
@@ -113,8 +114,8 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 | Fase 2 — crate Vael, conteúdo, save, attach, arranque | feito |
 | Onda 2a — state sync + HUD Rust | feito |
 | Onda 2b — vitais/status/morte autoritativos em Rust | autoridade opt-in validada ao vivo; default off |
-| Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio | feito em Rust com ponte `viber.vael` |
-| Restante do jogo — FSM/inimigos/bosses, report/scan/collect de quests, viagem/marcos, colheita, loja/forja, diálogo/NLU, UI/story/áudio | pendente |
+| Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio, loja/forja | feito em Rust com ponte `viber.vael` |
+| Restante do jogo — FSM/inimigos/bosses, report/scan/collect de quests, viagem/marcos, colheita, diálogo/NLU, UI/story/áudio | pendente |
 | Fase 4 — mover player/câmera/AI/vitais para o Vael; recipe extensions; docs | pendente |
 
 ## Dívidas conhecidas
@@ -139,7 +140,8 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
   teleporte/refill para Rust é uma decisão da próxima onda.
 - `rules.lua` ainda tem `report_kill`, `scan_visits`, `sync_collect`,
   parley/decisão e o `award_kill`; `fsm.lua`/combate/inimigos, viagem,
-  colheita, loja/forja, diálogo/NLU e UI continuam Lua.
+  colheita, diálogo/NLU e UI continuam Lua. A loja/forja já tem transações
+  Rust, mas as listas/formatação continuam no Lua (`viber.ui.list`).
 - `rules.publish` ainda publica netplay/alvo/combo/`abilities.active`/
   `vitals.active`/`xp.recent`/`quest.recent`; os binds de vida/XP/economia/
   status/quest/chefe/quests.others já são do `VaelHud`/`HudUiPlugin`.
