@@ -1,0 +1,32 @@
+[package]
+name = "vael"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+
+[dependencies]
+anyhow = "1"
+bevy = "=0.20.1"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+viber = { path = "../Viber" }
+
+# Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
+# em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o
+# alvo em disco e as dependências otimizadas.
+[profile.dev]
+opt-level = 1
+split-debuginfo = "unpacked"
+debug = "line-tables-only"
+
+[profile.dev.package."*"]
+opt-level = 3
+debug = false
+
+# O `[patch]` do Viber NÃO atravessa a fronteira do workspace: sem esta
+# linha o `viber` (path-dep) resolvia o `rerecast` do crates.io (bevy_reflect
+# 0.19/glam 0.32) contra o `bevy_rerecast_core` vendorizado (bevy 0.20/glam
+# 0.33) e o crate não compilava. É o mesmo patch da engine; não altera o
+# código do sibling.
+[patch.crates-io]
+rerecast = { path = "../Viber/vendor/rerecast" }
