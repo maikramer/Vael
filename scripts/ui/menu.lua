@@ -328,6 +328,37 @@ end
 
 local last_system = ""
 
+-- Controlos: conteúdo do JOGO. A engine deixou de publicar esta lista (só
+-- conhece o sistema); o diário publica-a uma vez por abertura.
+local CONTROLS = {
+  { key = "W A S D", action = "mover" },
+  { key = "SHIFT", action = "correr" },
+  { key = "ESPAÇO", action = "saltar" },
+  { key = "RATO/J", action = "atacar" },
+  { key = "C", action = "esquiva (dash)" },
+  { key = "E", action = "curar" },
+  { key = "R", action = "golpe forte" },
+  { key = "L", action = "guarda / aparar" },
+  { key = "B", action = "bomba" },
+  { key = "V", action = "trocar de alvo" },
+  { key = "1 / 2", action = "poção / antídoto" },
+  { key = "E", action = "interagir e falar" },
+  { key = "F", action = "assinar marco da Nota" },
+  { key = "G", action = "viagem rápida (junto a uma fogueira)" },
+  { key = "Q / ESC", action = "abrir e fechar este diário" },
+  { key = "1 - 6", action = "separador do diário (com ele aberto)" },
+  { key = "P", action = "profiler" },
+}
+local controls_published = false
+
+local function refresh_controls()
+  if controls_published then
+    return
+  end
+  controls_published = true
+  viber.ui.list("controls", CONTROLS)
+end
+
 local function refresh_system()
   local game = viber.game()
   local level = tonumber(game.level)
@@ -585,6 +616,7 @@ function on_update(dt)
     craft.refresh()
     a11y_refresh()
     a11y_clicks()
+    refresh_controls()
     refresh_system()
     st.slots_t = (st.slots_t or 0) - dt
     slots_delay = math.max(0, slots_delay - dt)
