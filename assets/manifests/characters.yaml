@@ -9,9 +9,9 @@ assets:
     # Seed novo (2026-10-29): o anterior (69607440) saía com a cara/mãos que o
     # utilizador não gostou. Aplica-se a text2d + text3d.
     seed: 42424242
+    # Sem override de steps: o preset hq do game.yaml dá 50 passos (o antigo
+    # override de 40 era um downgrade) e o piso humanoid fixa o octree em 384.
     text3d:
-      steps: 40
-      octree_resolution: 384
       mc_level: 0
     idea:
       young cartoon fantasy adventurer wearing leather tunic with rolled-up sleeves,

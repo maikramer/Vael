@@ -43,20 +43,19 @@ text3d:
   split_at_height: true
   sdnq_preset: sdnq-int4
   memory_efficient: true
-# Hi3D refine (pós-shape, antes do paint). Multiview = vistas Text2D
-# encadeadas (uma imagem por vista, um passe Hi3D por vista). O Hi3D v1.0 é
-# mono-imagem por passe: isto é orquestração local, não o multiview oficial.
-# A/B no watchtower: 4 vistas (front/back/left/right) preservam escada,
-# bandeira e ameias e acrescentam detalhe na base; top/bottom re-sintetizam o
-# coroamento e podem perder detalhes finos. Default recomendado: views: 4;
-# usar 6 em props/rochas simples. Personagens/criaturas ficam de fora (pose).
-# Ver assets/README.md.
+# Hi3D refine (pós-shape, antes do paint). MONO-VISTA: o FLUX.3 Klein é um
+# modelo de edição e copia a imagem de referência — as vistas "back/left/right"
+# saíam ~99% idênticas à frontal (diff médio 2/255, medido a 2026-11-11), por
+# isso o encadeamento multiview não acrescentava informação e só custava 4-6
+# passes por asset. Fica views: 1 (refine provado) até haver vistas reais
+# (render do mesh ou modelo view-conditioned). Personagens/criaturas já ficavam
+# de fora (o Hi3D muda a pose). Ver assets/README.md.
 refine:
   enabled: true
   resolution: auto
   steps: 25
   max_faces_scale: 4.0
-  views: 4
+  views: 1
 # Personagens: retarget encadeado villager + UAL1+UAL2 — trabalhos kevdev
 # (mining/hammer/pesca por-ficheiro) com a UAL por cima em idle/gather/combos.
 animator3d:
@@ -73,6 +72,11 @@ lod:
 paint3d:
   preserve_origin: true
   texture_size: 2048
+  # O _to_paint segue a fórmula do paint_budget (~270k faces a 2048): o xatlas
+  # a 265k fica em ~160 s agora que o refine é refixado com morph-close antes
+  # do simplify (ver pipeline.py). Sem esse refix, decimar o _refined
+  # estilhaçava a malha e o unwrap passava dos 600 s (medido a 2026-11-11).
+  # Personagens têm cap próprio de 100k em pipeline.py.
   # Normal+AO via Materialize sobre o albedo do atlas: mesma causa das
   # costuras (bordos das ilhas UV). O albedo/MR do paint ficam.
   pbr_enrich: false

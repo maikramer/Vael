@@ -58,19 +58,32 @@ só gera o que falta — com os binários já presentes, o batch valida e faz sk
 > correto é `../public/assets`; com `public/assets` o resume aponta para
 > `manifests/public/assets`, não encontra nada e marca tudo como `need_image`.
 
-### Refine multiview (Hi3D)
+### Refine (Hi3D)
 
-O bloco `refine:` do `game.yaml` liga o refinamento multiview encadeado: uma
-imagem Text2D por vista (a frontal é a referência; as outras são edições com
-`--ref`) e um passe Hi3D por vista, encadeando a saída de cada um como coarse
-do seguinte. O Hi3D v1.0 continua mono-imagem por passe — é uma orquestração
-local, não o multiview oficial.
+O bloco `refine:` do `game.yaml` corre o Hi3D entre o topology-fix e o paint,
+com uma imagem por passe. Está em **mono-vista** (`views: 1`).
 
-A/B no watchtower: **4 vistas** (`front, back, left, right`) preservam escada,
-bandeira e ameias e acrescentam detalhe na base; **top/bottom** re-sintetizam
-o coroamento e podem perder detalhes finos. O `game.yaml` está ligado com
-`views: 4`; usar `views: 6` por asset em props/rochas simples. Personagens/
-criaturas ficam de fora (pose). `refine: {views: 1}` volta a mono-vista.
+**Multiview por Text2D está desligado** (2026-11-11): o FLUX.3 Klein é um
+modelo de edição e copia a imagem de referência. As vistas `back/left/right`
+saíam ~99% idênticas à frontal (diff médio 2/255; `watchtower_back.png` é a
+mesma imagem da frente), por isso a cadeia não acrescentava informação e
+custava 4-6 passes por asset. Para religar, as vistas têm de ser reais — render
+do mesh nos ângulos pedidos ou um modelo view-conditioned — e depois
+`refine: {views: 4}`; o sidecar em `_intermediate/<id>_refined.glb.multiview.json`
+invalida painted/LOD/collision quando as vistas mudam. Personagens/criaturas
+ficam sempre de fora (o Hi3D muda a pose).
+
+### Paint / xatlas
+
+O `_to_paint` segue a fórmula do `Shared/paint_budget.py` (~270k faces a 2048).
+O `_refined` do Hi3D **não** pode ser simplificado directamente: tem arestas
+não-manifold (4 faces por aresta) e o Decimate estilhaça-o (longhouse: 5.186
+componentes/86k bordos a 150k). O xatlas é superlinear com as ilhas — 40k ~3 s,
+150k >200 s, 265k >600 s — e o bake trust cai a ~29% (mosaico em jogo). O
+pipeline refixa o `_refined` **antes** do simplify com
+`text3d topology-fix --morph-close <0,5 mm/m> --keep-internal-shells`; a 265k o
+unwrap fica em ~160 s e o atlas em ilhas grandes (medido a 2026-11-11). Não
+baixar o orçamento para 150k: menos faces por ilha = mosaico.
 
 ## Como o Vael consome isto
 

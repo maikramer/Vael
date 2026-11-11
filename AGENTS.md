@@ -42,7 +42,7 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `world/**.xml` | cidades, criaturas, landmarks, `spawn/…`, HUD |
 | `scenes/menu.xml` | cena de arranque: acampamento pequeno atrás do título |
 | `scenes/interiors/` | salas (cenas próprias, sem terreno) |
-| `quests/*.json` | 28 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
+| `quests/*.json` | 37 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
 | `dialogues/*.json` | grafos ambientais; lidos por `scripts/townsfolk.lua` |
 | `data/*.json` | itens/loja, marcos, progressão, enigmas (`riddles.json`) e regras do juiz (`verdicts.json`); lidos por `rules.lua`/`shop.lua`/`landmarks.lua`/`riddle.lua`/`judge.lua` |
 | `editor/plugins/*.lua` | autoria do jogo no ViberEditor (quests, diálogos, itens, marcos, progressão, grip) |
@@ -86,13 +86,20 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 - Com um `<UiInput>` focado (barra de fala do NLU), a engine bloqueia
   `viber.input.*`, `viber.interacted` e o movimento: as letras são texto, não
   acções. O `scripts/ui/say.lua` abre/fecha o foco.
-- Refine multiview (`refine.views` no `assets/game.yaml`): imagens Text2D
-  (`<id>_<view>.png`) + um passe Hi3D por vista, encadeados; invalidação pelos
-  sidecars em `_intermediate/` e painted/LOD/collision antigos. A/B no
-  watchtower: 4 vistas (front/back/left/right) preservam detalhes finos;
-  top/bottom podem perder escada/bandeira. Ligado no `game.yaml` com
-  `views: 4`; `views: 6` por asset em props/rochas simples. Personagens/
-  criaturas não entram (o Hi3D muda a pose).
+- Refine (`refine.views` no `assets/game.yaml`) está em **mono-vista**
+  (`views: 1`). O multiview por Text2D não funciona com o FLUX.3 Klein: é um
+  modelo de edição e copia a referência — as vistas `back/left/right` saíam
+  ~99% idênticas à frontal (diff médio 2/255, medido a 2026-11-11), sem
+  informação nova e a 4-6 passes por asset. Para o religar, as vistas têm de
+  ser reais: render do mesh (front/back/left/right) ou modelo
+  view-conditioned. Personagens/criaturas nunca entram (o Hi3D muda a pose).
+- Paint/xatlas: o `_refined` do Hi3D tem arestas non-manifold; simplificá-lo
+  directamente estilhaça a malha (5k componentes/86k bordos) e o xatlas passa
+  dos 600 s (watchdog do vramd) com bake trust ~29% = mosaico. O pipeline
+  refixa o `_refined` com `--morph-close` (~0,5 mm/m) + `--keep-internal-shells`
+  **antes** do simplify; a 265k o unwrap fica ~160 s e o atlas limpo. O
+  `to_paint` segue a fórmula (~270k a 2048); não baixar para 150k (ilhas
+  minúsculas).
 - Depois de editar: `viber analyze` (exit 1 em erro).
 
 ## Correr
