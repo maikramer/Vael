@@ -14,6 +14,7 @@
 --@export prompt: string = "Falar"                  -- texto do prompt de interação
 --@export dialogue_id: string = ""                  -- grafo em dialogues/; não vazio = conversa por grafo
 --@export banter: string[] = "“Bom dia para uma caminhada, não achas?”" | "“Dizem que há ferro novo no mercado.”" | "“Cuidado com os lobos a norte.”"
+--@export banter_night: string[] = "“A esta hora só andam cá fora os tolos e as sombras.”" | "“Recolhe-te, forasteiro. A noite já não é o que era.”" | "“Ouviste? …Não. Deve ter sido o vento.”"   -- falas entre as 20h e as 5h (na rua)
 --@export gestures: string[] = wave | talk | yes | no   -- gestos ao acaso enquanto o player está perto
 --@export notice: string = ""                      -- fala quando reage a um sinal (`notice`); "" = só se vira
 --@export notice_range: number(0..60) = 18         -- só reage com o player a menos disto (m)
@@ -24,6 +25,15 @@ local travel = viber.load("game/travel.lua")
 local marks = viber.load("lib/landmarks.lua")
 local parley = viber.load("lib/parley.lua")
 local decide = viber.load("lib/decide.lua")
+local clock = viber.load("lib/clock.lua")
+
+-- HORÁRIO: de noite, quem vive NA RUA (cena `main`) recolhe — volta ao ponto
+-- de casa, deixa de passear e muda a conversa. Dentro das casas (cenas
+-- próprias) a vida continua igual: é lá que a vila passa a noite.
+local function night_outdoors()
+  local scene = viber.scene_name and viber.scene_name() or nil
+  return (scene == nil or scene == "main") and clock.is_night()
+end
 
 local function typing()
   return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
@@ -296,6 +306,12 @@ function on_update(dt)
       elseif (st.dialogue_id == "" or not st.graph) and viber.interacted("e") then
         -- Grafo em falta não pode matar a conversa: cai para a banter.
         local banter = viber.prop("banter")
+        if night_outdoors() then
+          local night = viber.prop("banter_night")
+          if #night > 0 then
+            banter = night
+          end
+        end
         if #banter > 0 then
           st.i = ((st.i or 0) % #banter) + 1
           viber.toast(banter[st.i])
@@ -311,6 +327,15 @@ function on_update(dt)
   end
   local radius = viber.prop("radius")
   if radius <= 0 then return end -- balcão: não passeia
+  if night_outdoors() then
+    -- Recolher: de volta ao ponto de casa, e fica lá até amanhecer.
+    local hx, hz = viber.home()
+    st.target = nil
+    if hx and hz and math.sqrt((hx - x) ^ 2 + (hz - z) ^ 2) > 0.8 then
+      viber.move_towards(hx, hz, viber.prop("speed"))
+    end
+    return
+  end
   if st.target == nil then
     local tx, tz = viber.wander_target(radius)
     st.target = { tx, tz }
