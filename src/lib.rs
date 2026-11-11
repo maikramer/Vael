@@ -24,6 +24,7 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod attach;
+pub mod combat;
 pub mod components;
 pub mod content;
 pub mod gear;
@@ -39,6 +40,7 @@ pub mod vault;
 pub mod xp;
 
 pub use attach::{VaelAttachPlugin, VaelScriptTags};
+pub use combat::{CombatKv, CombatRules, DamageResult, VaelCombatPlugin};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
 pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
@@ -83,6 +85,10 @@ impl Plugin for VaelPlugin {
                 // Ciclo da quest (estado/progresso/aceitar/entregar/
                 // recompensas): `viber.vael.quest_*`, depois do equipamento.
                 VaelQuestPlugin,
+                // Combate (guarda/parry, dano, cura, i-frames):
+                // `viber.vael.guard`/`damage_player`/`heal_player`/
+                // `grant_iframes`, depois das quests.
+                VaelCombatPlugin,
                 VaelUiPlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,

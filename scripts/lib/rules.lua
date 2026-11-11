@@ -1182,30 +1182,11 @@ local function flash_damage_direction(sx, sz)
   dmg_edge, dmg_until = id, viber.time() + 0.35
 end
 
--- Guarda/parry [L] — regra do jogo, em Lua. O dano dos inimigos passa
--- TODO por `damage_player`; a janela de parry é curta e o bloqueio reduz.
-local GUARD_SECS = 0.5
-local PARRY_WINDOW = 0.2
-local GUARD_REDUCTION = 0.25
--- Timers de SESSÃO, não de save: `viber.time()` recomeça em 0 e um
--- `guard_until` gravado deixava o herói invencível (parry eterno) até o
--- relógio novo alcançar o timestamp antigo.
-local guard_until, guard_start, guard_lock = 0, nil, 0
-
+-- Guarda/parry [L]: a janela, o bloqueio e o lock vivem em `src/combat.rs`
+-- (`viber.vael`). O estado da guarda é de SESSÃO (memória do Rust): não entra
+-- no save, como os timers locais antigos.
 function M.guard()
-  local now = viber.time()
-  -- Não REABRE a guarda enquanto ela está activa: premir [L] em cadência
-  -- reiniciava `guard_start` todos os frames e a janela de parry (0,2 s)
-  -- ficava permanentemente aberta. Entre guardas há uma pequena folga.
-  if now < guard_lock or now < guard_until then
-    return
-  end
-  guard_until, guard_start = now + GUARD_SECS, now
-  guard_lock = now + GUARD_SECS + 0.2
-end
-
-local function guarding()
-  return viber.time() < guard_until
+  viber.vael.guard(viber.time())
 end
 
 -- Números/SFX sobre o HERÓI. O host das regras vive em (0, 38.73, 0):
@@ -1342,6 +1323,8 @@ end
 
 -- Devolve true só quando o dano ENTROU: os `on_attack`/`on_hit` das
 -- criaturas (veneno) não podem disparar contra um parry/i-frame.
+-- O portão de menu/título, o `god`, o `ensure_hp` e os efeitos ficam aqui; a
+-- aritmética (guarda/parry/defesa/vida) é do `src/combat.rs`.
 function M.damage_player(amount, sx, sz)
   -- Menu/diário/mapa abertos: o jogador parou para ler. As criaturas já
   -- suspendem o golpe (lib/fsm.lua); sem este portão uma seta já no ar
@@ -1352,62 +1335,35 @@ function M.damage_player(amount, sx, sz)
   if M.god then
     return false
   end
-  if num("iframes", 0) > 0 or num("dying", 0) > 0 or g().death_pending then
-    return false
-  end
   ensure_hp()
-  local game = g()
-  amount = math.max(0, amount or 0)
-  if not finite(amount) or amount <= 0 then
+  local r = viber.vael.damage_player(amount or 0, viber.time())
+  if r.parried then
+    viber.toast("ESQUIVA")
+    player_fx("ESQUIVA", "#9fd8ff", "block")
     return false
   end
-  local now = viber.time()
-  if guarding() then
-    local parried = guard_start and (now - guard_start) <= PARRY_WINDOW
-    if parried then
-      -- Aparo: o golpe não entra. Larga a guarda e trava o [L] por
-      -- GUARD_SECS — bater L em cadência anulava todo o dano para sempre.
-      guard_until, guard_start = 0, nil
-      guard_lock = now + GUARD_SECS
-      game.iframes = math.max(num("iframes", 0), 0.25)
-      viber.toast("ESQUIVA")
-      player_fx("ESQUIVA", "#9fd8ff", "block")
-      return false
-    end
-    amount = amount * GUARD_REDUCTION
+  if not r.entered then
+    return false
+  end
+  if r.blocked then
     viber.toast("Bloqueaste")
     sound_at_player("block")
   end
-  -- Defesa (armadura + talentos): corta uma fração do dano, até 60 %.
-  local defense = math.max(0, math.min(0.6, M.stat("defense")))
-  amount = amount * (1 - defense)
-  game.hp = math.max(0, game.hp - amount)
-  player_fx("-" .. math.floor(amount), "#ff6b6b", "hurt")
+  player_fx("-" .. math.floor(r.amount), "#ff6b6b", "hurt")
   flash_damage_direction(sx, sz)
   viber.shake(0.18)
-  game.iframes = 0.35
-  if game.hp <= 0 then
-    start_death(game)
+  if r.died then
+    start_death(g())
   end
   return true
 end
 
 function M.heal_player(amount)
-  ensure_hp()
-  if not finite(amount) or amount <= 0 then
-    return
-  end
-  local game = g()
-  -- Cadáver/ecrã de morte: uma poção ou uma fogueira não ressuscitam o herói
-  -- no sítio onde caiu (o `tick` via `hp > 0` e fechava o ecrã de morte).
-  if num("dying", 0) > 0 or game.death_pending then
-    return
-  end
-  game.hp = math.min(game.max_hp, game.hp + amount)
+  viber.vael.heal_player(amount)
 end
 
 function M.grant_iframes(secs)
-  g().iframes = math.max(num("iframes", 0), secs or 0)
+  viber.vael.grant_iframes(secs)
 end
 
 local function sync_passives()
@@ -1470,11 +1426,12 @@ function M.respawn()
 end
 
 function M.tick(dt)
-  -- Os timers de sessão (guarda, flashes do HUD, autosave pendente) são
-  -- locals do módulo e sobrevivem ao `viber.game()`. Um LOAD na MESMA cena
-  -- troca a tabela do jogo mas não muda `session_id` nem recua o relógio da
-  -- engine (é o uptime): o sinal — o mesmo que combat/abilities/hotbar
-  -- usam — é o tempo de jogo a recuar.
+  -- Os flashes do HUD e o autosave pendente são locals do módulo e
+  -- sobrevivem ao `viber.game()`; a guarda vive na memória do Rust e reinicia
+  -- sozinha quando o `session_id` muda. Um LOAD na MESMA cena troca a tabela
+  -- do jogo mas não muda `session_id` nem recua o relógio da engine (é o
+  -- uptime): o sinal — o mesmo que combat/abilities/hotbar usam — é o tempo
+  -- de jogo a recuar.
   local now = viber.time()
   local playtime = num("playtime_secs", 0)
   local loaded = M._playtime ~= nil and playtime < M._playtime - 1e-3
@@ -1483,14 +1440,14 @@ function M.tick(dt)
     loaded = true
   end
   M._last_time = now
-  -- Novo Jogo/save de outra partida: flashes, guarda e passivas recomeçam.
+  -- Novo Jogo/save de outra partida: flashes e passivas recomeçam (a guarda
+  -- é da sessão, em Rust).
   local sid = tonumber(g().session_id) or 0
   if M._session ~= sid or loaded then
     M._session = sid
     M._xp_sig, M._quest_sig = nil, nil
     M._xp_until, M._quest_until = nil, nil
     M._speed = nil
-    guard_until, guard_start, guard_lock = 0, nil, 0
     -- Nada da linha temporal abandonada: um autosave de chefe pendente não
     -- pode gravar por cima do save que acabámos de carregar, e a faixa de
     -- dano acesa não fica no HUD da partida nova.
