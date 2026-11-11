@@ -7,8 +7,9 @@
 //! jogo sem comportamento enquanto a transição decorre.
 //!
 //! Nesta passagem o estado corre em **shadow mode**: [`VaelStateSyncPlugin`]
-//! espelha o `viber.game()` e [`VaelHudPlugin`] publica os binds do HUD ao
-//! lado do Lua, só a ler. A tabela Lua continua a ser a fonte de verdade.
+//! espelha o `viber.game()`, [`VaelRulesShadowPlugin`] simula as regras vitais
+//! ao lado do Lua e [`VaelHudPlugin`] publica os binds do HUD ao lado do Lua,
+//! só a ler. A tabela Lua continua a ser a fonte de verdade.
 
 use std::path::PathBuf;
 
@@ -18,6 +19,7 @@ pub mod attach;
 pub mod components;
 pub mod content;
 pub mod hud;
+pub mod rules_shadow;
 pub mod save;
 pub mod state_sync;
 pub mod ui_bind;
@@ -26,6 +28,7 @@ pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
 pub use hud::{VaelHudConfig, VaelHudPlugin};
+pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
 pub use state_sync::VaelStateSyncPlugin;
 pub use ui_bind::{VaelHud, VaelUiPlugin};
@@ -51,6 +54,8 @@ impl Plugin for VaelPlugin {
                 VaelUiPlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,
+                // Simulação paralela das regras vitais do `rules.lua`.
+                VaelRulesShadowPlugin,
                 VaelHudPlugin,
                 VaelAttachPlugin,
             ));

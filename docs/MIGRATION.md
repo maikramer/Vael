@@ -54,6 +54,11 @@ continuam em Luau.
   `UiSet::Bind`. O `rules.publish` deixou de escrever esses binds; ainda
   escreve netplay/alvo/chefe/recargas/quests.others. `VAEL_HUD_RUST=0` desliga
   o HUD Rust. O primeiro publish é corrigido com `is_some_and`.
+- `src/rules_shadow.rs`: simulador shadow de vitais/status/morte (veneno
+  4 dps, queimadura 6 dps, chuva ×2, i-frames, `dying` 2,2 s, `death_wait`
+  5 s, respawn). É opt-in (`VAEL_RULES_SHADOW=1`) e não escreve no jogo.
+  Paridade ao vivo: veneno 100→92 nos dois; morte `death_pending`/`wait=5`;
+  respawn `hp=100`.
 
 ## Correr e validar
 
@@ -79,7 +84,7 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 | Fase 1 — reflection, ECS, AppOptions, widgets, culling, save | feito (profiler/atmosfera adiados) |
 | Fase 2 — crate Vael, conteúdo, save, attach, arranque | feito |
 | Onda 2a — state sync + HUD Rust | feito |
-| Onda 2b — vitais/status/morte autoritativos em Rust | próximo |
+| Onda 2b — vitais/status/morte autoritativos em Rust | shadow feito (26 testes, paridade veneno/morte); autoridade pendente |
 | Ondas 3+ — combate, FSM/inimigos, quests/diálogo, viagem/economia, UI/story | pendente |
 | Fase 4 — mover player/câmera/AI/vitais para o Vael; recipe extensions; docs | pendente |
 
@@ -94,6 +99,9 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
   principal.
 - A câmara/player ainda são da engine (`player_camera:true`). O Vael só os
   desliga quando tiver o seu controller/câmara; sem isso o render vai a OOM.
+- O shadow de regras não vê o `M.god` do Lua nem dano/cura entre snapshots de
+  10 Hz; para virar autoridade é preciso um evento/hook de dano/cura e uma
+  decisão sobre o god do dev mode.
 - O `rules.publish` ainda publica netplay/alvo/chefe/recargas/quests.others;
   esses binds migram com os donos (combate/FSM/UI).
 - `own_system("abilities"/"hotbar"/"guard"/"bomb")` do Lua gera warnings de
