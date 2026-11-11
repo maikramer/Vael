@@ -140,7 +140,7 @@ impl Plugin for VaelClockPlugin {
 }
 
 /// Arranque: acrescenta as funções do relógio à tabela `viber.vael`.
-fn install_clock_api(host: Option<Res<LuaScriptHost>>, clock: Res<VaelClock>) {
+pub(crate) fn install_clock_api(host: Option<Res<LuaScriptHost>>, clock: Res<VaelClock>) {
     let Some(host) = host else {
         warn!("vael: relógio sem host Luau — `viber.vael` não estendido");
         return;

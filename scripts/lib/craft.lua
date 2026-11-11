@@ -1,31 +1,19 @@
--- lib/craft.lua: a FORJA — receitas em `data/recipes.json`, regra em Lua.
+-- lib/craft.lua: a FORJA — a regra vive em `src/economy.rs`; aqui fica a UI.
 --
 -- Uma receita é `{ id, out, count, cost = { item = n, … } }`; o ouro entra no
--- custo como qualquer outro recurso. `craft.make(id)` verifica o custo e o
--- espaço na mochila ANTES de tirar o que quer que seja, e devolve o que tirou
--- se o produto não couber. A bigorna (`scripts/anvil.lua`) abre o separador
--- Forja do diário; a lista `forge` é montada aqui.
+-- custo como qualquer outro recurso. O Rust (`viber.vael.craft_status`/
+-- `craft_make`) verifica o custo e o espaço na mochila ANTES de tirar o que
+-- quer que seja, e devolve o que tirou se o produto não couber. A bigorna
+-- (`scripts/anvil.lua`) abre o separador Forja do diário; a lista `forge` é
+-- montada aqui.
 
 local rules = viber.load("lib/rules.lua")
 local actions = viber.load("lib/actions.lua")
 
 local M = {}
 
-local RECIPES, BY_ID = {}, {}
-do
-  local ok, data = pcall(viber.load_json, "data/recipes.json")
-  if ok and type(data) == "table" then
-    for _, r in ipairs(data.recipes or {}) do
-      if type(r) == "table" and type(r.id) == "string" and r.id ~= ""
-          and type(r.out) == "string" and type(r.cost) == "table" and not BY_ID[r.id] then
-        BY_ID[r.id] = r
-        RECIPES[#RECIPES + 1] = r
-      end
-    end
-  else
-    viber.log("forja: falha a ler data/recipes.json")
-  end
-end
+-- Receitas normalizadas em Rust (ids únicos, custos positivos ordenados).
+local RECIPES = viber.vael.craft_recipes()
 
 local function sfx(name)
   local has, x, y, z = viber.player_position()
@@ -39,7 +27,7 @@ end
 -- Custo ordenado (texto estável: a lista não pisca entre frames).
 local function cost_list(r)
   local out = {}
-  for item, n in pairs(r.cost) do
+  for item, n in pairs(r.cost or {}) do
     n = tonumber(n)
     if type(item) == "string" and n and n > 0 then
       out[#out + 1] = { item = item, n = math.floor(n) }
@@ -49,80 +37,44 @@ local function cost_list(r)
   return out
 end
 
-local function cap_of(id)
-  local def = rules.item_def(id)
-  local stack = def and tonumber(def.stack)
-  if stack and stack > 0 then
-    return math.floor(stack)
-  end
-  return rules.stack_max()
-end
-
 function M.recipes()
   return RECIPES
 end
 
 -- "ok" | "missing" (falta material) | "full" (não cabe na mochila).
 function M.status(r)
-  for _, c in ipairs(cost_list(r)) do
-    if rules.vault_get(c.item) < c.n then
-      return "missing"
-    end
+  if type(r) ~= "table" or type(r.id) ~= "string" or r.id == "" then
+    return "missing"
   end
-  local count = math.max(1, math.floor(tonumber(r.count) or 1))
-  if rules.vault_get(r.out) + count > cap_of(r.out) then
-    return "full"
-  end
-  return "ok"
+  return viber.vael.craft_status(r.id) or "missing"
 end
 
 function M.make(id)
-  local r = BY_ID[id]
-  if not r then
+  local result = viber.vael.craft_make(id)
+  if type(result) ~= "table" then
     return false
   end
-  local status = M.status(r)
-  if status == "missing" then
-    viber.toast("Falta material para forjar isso.")
-    sfx("error")
-    return false
-  elseif status == "full" then
-    viber.toast("Já não cabe mais disso na mochila.")
-    sfx("error")
-    return false
-  end
-  local costs = cost_list(r)
-  local taken = {}
-  for _, c in ipairs(costs) do
-    if not rules.vault_take(c.item, c.n) then
-      -- Não devia acontecer (o `status` acabou de confirmar); devolve tudo.
-      for _, t in ipairs(taken) do
-        rules.vault_add(t.item, t.n)
-      end
+  if not result.ok then
+    if result.reason == "missing" then
       viber.toast("Falta material para forjar isso.")
-      sfx("error")
+    elseif result.reason == "full" then
+      viber.toast("Já não cabe mais disso na mochila.")
+    else
+      -- Receita desconhecida: o Lua antigo saía em silêncio.
       return false
     end
-    taken[#taken + 1] = c
-  end
-  local count = math.max(1, math.floor(tonumber(r.count) or 1))
-  local got = rules.item_add(r.out, count) or 0
-  if got < count then
-    if got > 0 then
-      rules.vault_take(r.out, got)
-    end
-    for _, t in ipairs(taken) do
-      rules.vault_add(t.item, t.n)
-    end
-    viber.toast("Já não cabe mais disso na mochila.")
     sfx("error")
     return false
   end
-  actions.record("forjar", "item", r.out)
-  rules.report_craft(r.out, count)
+  local out, count = result.output, result.count
+  -- O cofre mudou diretamente em Rust: as quests de recolha têm de rever o
+  -- progresso (o antigo `rules.vault_take/item_add` fazia-o em cada passo).
+  rules.sync_collect()
+  actions.record("forjar", "item", out)
+  rules.report_craft(out, count)
   rules.add_xp(10)
   sfx("mine_hit")
-  viber.toast("Forjado: " .. rules.item_label(r.out) .. (count > 1 and (" ×" .. count) or "") .. ".")
+  viber.toast("Forjado: " .. rules.item_label(out) .. (count > 1 and (" ×" .. count) or "") .. ".")
   return true
 end
 

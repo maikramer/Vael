@@ -28,6 +28,7 @@ pub mod clock;
 pub mod combat;
 pub mod components;
 pub mod content;
+pub mod economy;
 pub mod gear;
 pub mod hud;
 pub mod hud_ui;
@@ -45,6 +46,9 @@ pub use clock::{ClockSnapshot, VaelClock, VaelClockPlugin};
 pub use combat::{CombatKv, CombatRules, DamageResult, VaelCombatPlugin};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
+pub use economy::{
+    CraftRules, CraftStatus, ShopRules, ShopStatus, TradeAction, TradeReason, VaelEconomyPlugin,
+};
 pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
@@ -107,5 +111,8 @@ impl Plugin for VaelPlugin {
                 VaelHudUiPlugin,
                 VaelAttachPlugin,
             ));
+        // Loja/forja (preços, tetos e negociação): `shop_*`/`craft_*`, depois
+        // do relógio. Em chamada à parte: a tupla do Bevy pára nos 15.
+        app.add_plugins(VaelEconomyPlugin);
     }
 }
