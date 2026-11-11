@@ -63,10 +63,7 @@ table.sort(ITEM_ORDER, function(a, b)
   return (tonumber(a.order) or 0) < (tonumber(b.order) or 0)
 end)
 
-local XP = PROGRESSION.xp or {}
-local XP_BASE = math.max(1, tonumber(XP.base) or 100)
-local XP_GROWTH = tonumber(XP.growth) or 1.5
-local SKILL_POINTS_PER_LEVEL = math.max(0, tonumber(XP.skill_points_per_level) or 1)
+-- A curva de XP (base/growth/pontos por nível) vive em `src/xp.rs`.
 -- Chefes iguais a `combat::kill_xp`. O resto usa o piso do melee; tabelas
 -- diferentes faziam a barra (regras) e os talentos (engine) subirem em
 -- níveis distintos.
@@ -149,20 +146,10 @@ local function rust_vitals()
   return g().vael_rust_vitals == true
 end
 
+-- Progressão em Rust (`src/xp.rs`, `viber.vael`): saneamento de saves
+-- antigos/corrompidos e a aritmética de níveis.
 local function ensure_xp()
-  local game = g()
-  -- Negativo não é progresso: um save antigo/corrompido com `xp` ou
-  -- `skill_points` a menos deixava a barra a negativa e a carteira a "-N"
-  -- para sempre (o diário recusava gastar e o HUD mostrava o valor).
-  if not finite(game.xp) or game.xp < 0 then game.xp = 0 end
-  if not finite(game.xp_next) or game.xp_next < 1 then game.xp_next = XP_BASE end
-  if not finite(game.level) or game.level < 1 then game.level = 1 end
-  if not finite(game.skill_points) or game.skill_points < 0 then game.skill_points = 0 end
-  -- Um save editado à mão com 3.5 níveis (ou 1.5 pontos) entrava assim no
-  -- `save_title` ("nível 3.5") e na carteira do HUD; o nível fracionário
-  -- arrastava-se para sempre porque as subidas somam 1 inteiro.
-  game.level = math.floor(game.level)
-  game.skill_points = math.floor(game.skill_points)
+  viber.vael.ensure_xp()
 end
 
 -- O save é JSON PLANO: uma tabela `spawn_pos` era descartada em silêncio e o
@@ -1060,42 +1047,13 @@ function M.item_count(id)
 end
 
 function M.add_xp(gain, mirror)
-  gain = gain or 0
-  if not finite(gain) or gain <= 0 then
-    return
-  end
-  -- `false` = a engine já creditou este ganho (abate do melee). O resto
-  -- (baú, marco, colheita) também sobe o XP que dá pontos de talento.
-  local add_xp = engine_fn("add_xp")
-  if mirror ~= false and add_xp then
-    add_xp(math.floor(gain))
-  end
-  ensure_xp()
-  local game = g()
-  game.xp = game.xp + gain
-  while game.xp >= game.xp_next do
-    game.xp = game.xp - game.xp_next
-    game.xp_next = math.max(1, math.ceil(game.xp_next * XP_GROWTH))
-    game.level = game.level + 1
-    game.skill_points = game.skill_points + SKILL_POINTS_PER_LEVEL
-  end
+  -- `mirror` mantém-se na assinatura por compatibilidade; o espelho na
+  -- engine antiga morreu (o saneamento e a aritmética são do Rust).
+  viber.vael.add_xp(gain)
 end
 
 function M.add_skill_points(n)
-  n = n or 0
-  -- NaN/inf somavam-se a `skill_points` e o `ensure_xp` seguinte zerava a
-  -- carteira toda (incluindo os pontos já ganhos).
-  if not finite(n) or n <= 0 then
-    return
-  end
-  ensure_xp()
-  g().skill_points = num("skill_points", 0) + n
-  -- O HUD e o diário gastam `viber.game().skill_points`. O espelho nativo
-  -- só existe se a engine ainda expuser a função.
-  local add_points = engine_fn("add_skill_points")
-  if add_points then
-    add_points(math.floor(n))
-  end
+  viber.vael.add_skill_points(n)
 end
 
 function M.reveal_biome(name)

@@ -212,7 +212,12 @@ impl Plugin for VaelVaultPlugin {
 }
 
 /// Arranque: instala `viber.vael` na VM partilhada.
-fn install_vault_api(host: Option<Res<LuaScriptHost>>, content: Option<Res<VaelContent>>) {
+///
+/// Público dentro do crate para o plugin do XP ordenar depois dele.
+pub(crate) fn install_vault_api(
+    host: Option<Res<LuaScriptHost>>,
+    content: Option<Res<VaelContent>>,
+) {
     let Some(host) = host else {
         warn!("vael: cofre sem host Luau — `viber.vael` não instalado");
         return;
