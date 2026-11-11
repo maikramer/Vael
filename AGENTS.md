@@ -119,6 +119,12 @@ execução (não grava modo nenhum); o autosave seguinte fica com
 
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
 
+GPU remota (opcional): `source ~/.config/vramd/remote.env` aponta o `vramd` ao
+servidor (`VRAMD_REMOTE=192.168.0.100:8790`); o `gameassets resume` passa a
+correr as fases GPU lá e as CPU aqui, com upload/download automático dos
+ficheiros. Atalho: `tools/regen_remote.sh <pack>`. O `rigging3d` continua na GPU
+local. Detalhe: `docs/REMOTE_GPU.md`.
+
 Profiling sem screenshots (engine com `--bridge`): `viber debug prof --tab
 frames` (frame/p95/topo/hitches), `--hitches` (picos com atribuição),
 `--record 30 --hz 2 -o perf.jsonl` (série + resumo), `viber debug trace 10
