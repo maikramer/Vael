@@ -30,13 +30,16 @@ pub mod components;
 pub mod content;
 pub mod economy;
 pub mod gear;
+pub mod harvest;
 pub mod hud;
 pub mod hud_ui;
 pub mod quest;
+pub mod quest_events;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
 pub mod state_sync;
+pub mod travel;
 pub mod ui_bind;
 pub mod vault;
 pub mod xp;
@@ -50,13 +53,16 @@ pub use economy::{
     CraftRules, CraftStatus, ShopRules, ShopStatus, TradeAction, TradeReason, VaelEconomyPlugin,
 };
 pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
+pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
+pub use quest_events::VaelQuestEventsPlugin;
 pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
 pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
 pub use state_sync::VaelStateSyncPlugin;
+pub use travel::VaelTravelPlugin;
 pub use ui_bind::{VaelHud, VaelUiPlugin};
 pub use vault::VaelVaultPlugin;
 pub use xp::{VaelXpPlugin, XpGain, XpRules};
@@ -113,6 +119,13 @@ impl Plugin for VaelPlugin {
             ));
         // Loja/forja (preços, tetos e negociação): `shop_*`/`craft_*`, depois
         // do relógio. Em chamada à parte: a tupla do Bevy pára nos 15.
-        app.add_plugins(VaelEconomyPlugin);
+        app.add_plugins((
+            VaelEconomyPlugin,
+            // Colheita/interação, viagem/marcos e eventos de quest: cada
+            // módulo instala o seu plugin sem tocar no `lib.rs`.
+            VaelHarvestPlugin,
+            VaelTravelPlugin,
+            VaelQuestEventsPlugin,
+        ));
     }
 }

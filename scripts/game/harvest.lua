@@ -425,6 +425,12 @@ local function reap_saved(st)
 end
 
 function on_update(dt)
+  -- Portão da migração: com `VAEL_HARVEST_RUST=1` a colheita corre em Rust
+  -- (`src/harvest.rs`) e este controller cala-se por inteiro. Sem o flag o
+  -- caminho é o de sempre (nada abaixo mudou).
+  if viber.game().vael_harvest_rust == true then
+    return
+  end
   local st = viber.state()
   st.hits = st.hits or {}
   st.broken = st.broken or {}

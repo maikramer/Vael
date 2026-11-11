@@ -142,6 +142,12 @@ local function rust_vitals()
   return g().vael_rust_vitals == true
 end
 
+-- Eventos de quest em Rust (`VAEL_QUEST_EVENTS_RUST=1`,
+-- `src/quest_events.rs`): abates, recolha e visitas passam por `viber.vael`.
+local function rust_quest_events()
+  return g().vael_quest_events_rust == true
+end
+
 -- Progressão em Rust (`src/xp.rs`, `viber.vael`): saneamento de saves
 -- antigos/corrompidos e a aritmética de níveis.
 local function ensure_xp()
@@ -683,6 +689,10 @@ function M.report_kill(kind, elite)
   if not kind or kind == "" then
     return
   end
+  if rust_quest_events() then
+    viber.vael.quest_report_kill(kind, elite and true or false)
+    return
+  end
   for _, def in ipairs(load_defs()) do
     if M.quest_state(def.id) == "active" then
       local obj = objective(def)
@@ -752,7 +762,7 @@ function M.report_visit(place)
   end
 end
 
-function M.scan_visits()
+local function scan_visits_lua()
   local has, px, _, pz = viber.player_position()
   if not has then
     return
@@ -788,6 +798,18 @@ function M.scan_visits()
   end
 end
 
+function M.scan_visits()
+  if rust_quest_events() then
+    viber.vael.quest_scan_visits()
+    return
+  end
+  scan_visits_lua()
+end
+
+-- Fallback do sistema Rust (`src/quest_events.rs`): quando nenhum marco tem
+-- posição no mundo, a varredura volta ao Lua sem passar pelo gate.
+M.scan_visits_lua = scan_visits_lua
+
 -- Objetivos `type: "craft"`: contam o que o herói forjou (lib/craft.lua).
 function M.report_craft(item, amount)
   if not item or item == "" then
@@ -811,6 +833,10 @@ function M.report_collect(item, amount)
 end
 
 function M.sync_collect()
+  if rust_quest_events() then
+    viber.vael.quest_sync_collect()
+    return
+  end
   for _, def in ipairs(load_defs()) do
     local state = M.quest_state(def.id)
     if state == "active" or state == "ready" then

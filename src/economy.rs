@@ -601,7 +601,12 @@ impl Plugin for VaelEconomyPlugin {
 }
 
 /// Arranque: acrescenta as funções da loja/forja à tabela `viber.vael`.
-fn install_economy_api(host: Option<Res<LuaScriptHost>>, content: Option<Res<VaelContent>>) {
+///
+/// Público dentro do crate para a viagem/marcos ordenar depois dele.
+pub(crate) fn install_economy_api(
+    host: Option<Res<LuaScriptHost>>,
+    content: Option<Res<VaelContent>>,
+) {
     let Some(host) = host else {
         warn!("vael: economia sem host Luau — `viber.vael` não estendido");
         return;
