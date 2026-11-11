@@ -251,6 +251,22 @@ pub fn publish_binds(save: &VaelSave, content: &VaelContent) -> Vec<(String, Scr
         "quest.active",
         ScriptBindValue::Flag(!title.is_empty()),
     );
+    // Outras missões (a coluna do `hud.xml`): o `quests.others` que o
+    // `hud.lua` recalculava a cada 0.5 s. Verdadeiro quando há pelo menos
+    // uma missão fora do cartão.
+    push(
+        &mut out,
+        "quests.others",
+        ScriptBindValue::Flag(!other_quest_rows(save, content, &title).is_empty()),
+    );
+
+    // Defaults do chefe: existem sem o Lua (o `lib/fsm.lua` escreve por cima
+    // enquanto há chefe; a TTL em `hud_ui` põe `boss.active` a falso quando o
+    // sinal pára). Constantes — só entram no primeiro publish.
+    push(&mut out, "boss.active", ScriptBindValue::Flag(false));
+    push(&mut out, "boss.name", ScriptBindValue::Text(String::new()));
+    push(&mut out, "boss", ScriptBindValue::Number(1.0));
+    push(&mut out, "boss.enraged", ScriptBindValue::Flag(false));
 
     out
 }
@@ -322,7 +338,7 @@ fn quest_progress(save: &VaelSave, id: &str) -> f64 {
 
 /// O cartão do HUD: a missão seguida (`tracked_quest`) ganha; sem ela, a de
 /// maior progresso (pronta > em curso > mais avançada), como `rules.publish`.
-fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64, String) {
+pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64, String) {
     let tracked = save.quests.tracked.as_deref();
     let mut best_title = String::new();
     let mut best_progress = 0.0;
@@ -369,6 +385,75 @@ fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64, String) {
     }
 
     (best_title, best_progress, best_text)
+}
+
+/// Linhas visíveis de "outras missões" por baixo do cartão (`OTHER_ROWS` do
+/// `scripts/ui/hud.lua`).
+pub const OTHER_ROWS: usize = 3;
+
+/// Uma linha de "outras missões" (título já resolvido, sem a do cartão).
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct OtherQuestRow {
+    pub title: String,
+    pub ready: bool,
+}
+
+impl OtherQuestRow {
+    /// Texto da linha: `"<título>  · pronta"` quando está pronta.
+    pub fn text(&self) -> String {
+        if self.ready {
+            format!("{}  · pronta", self.title)
+        } else {
+            self.title.clone()
+        }
+    }
+}
+
+/// Missões em curso/prontas por baixo do cartão, sem a que está no cartão.
+///
+/// Mesma ordem do `refresh_other_quests` do Lua: prontas primeiro (são as que
+/// pedem uma ação — voltar ao dador) e depois por título.
+pub fn other_quest_rows(save: &VaelSave, content: &VaelContent, shown: &str) -> Vec<OtherQuestRow> {
+    let mut rows: Vec<OtherQuestRow> = content
+        .quests
+        .iter()
+        .filter_map(|(id, def)| {
+            // `quest_state`: um estado desconhecido conta como `not_taken`.
+            let state = save
+                .quests
+                .states
+                .get(id)
+                .map(String::as_str)
+                .unwrap_or("not_taken");
+            if state != "active" && state != "ready" {
+                return None;
+            }
+            let title = if def.title.is_empty() {
+                id.clone()
+            } else {
+                def.title.clone()
+            };
+            if title == shown {
+                return None;
+            }
+            Some(OtherQuestRow {
+                title,
+                ready: state == "ready",
+            })
+        })
+        .collect();
+    // `b.ready.cmp(&a.ready)`: `true` fica à frente.
+    rows.sort_by(|a, b| b.ready.cmp(&a.ready).then_with(|| a.title.cmp(&b.title)));
+    rows
+}
+
+/// `"+N no diário [Q]"` (vazio quando não sobra nenhuma).
+pub fn others_more_text(extra: usize) -> String {
+    if extra == 0 {
+        String::new()
+    } else {
+        format!("+{extra} no diário [Q]")
+    }
 }
 
 /// Compara um valor Rust com o do Lua: texto exato para rótulos e número com
@@ -521,6 +606,11 @@ mod tests {
             "quest.text",
             "quest.title",
             "quest.active",
+            "quests.others",
+            "boss.active",
+            "boss.name",
+            "boss",
+            "boss.enraged",
         ] {
             assert!(
                 binds.iter().any(|(n, _)| n == name),
@@ -571,6 +661,79 @@ mod tests {
             &ScriptBindValue::Text("pronta".into()),
             &ScriptBindValue::Number(1.0)
         ));
+    }
+
+    #[test]
+    fn outras_quests_prontas_primeiro_sem_o_cartao() {
+        // 4 em curso + 1 pronta; a seguida (a do cartão) fica de fora.
+        let mut quests = BTreeMap::new();
+        for (id, title) in [
+            ("a", "Alfa"),
+            ("b", "Beta"),
+            ("c", "Gama"),
+            ("d", "Delta"),
+            ("e", "Épsilon"),
+        ] {
+            quests.insert(
+                id.to_string(),
+                QuestDef {
+                    id: id.into(),
+                    title: title.into(),
+                    ..Default::default()
+                },
+            );
+        }
+        let content = VaelContent {
+            quests,
+            ..Default::default()
+        };
+
+        let mut kv = BTreeMap::new();
+        for id in ["a", "b", "c", "d"] {
+            kv.insert(format!("q.{id}"), json!("active"));
+        }
+        kv.insert("q.e".into(), json!("ready"));
+        kv.insert("tracked_quest".into(), json!("a"));
+        let save = VaelSave::from_world_kv(&kv);
+
+        // O cartão é a missão seguida, como no `publish_binds`.
+        let card = best_quest(&save, &content).0;
+        assert_eq!(card, "Alfa");
+
+        let rows = other_quest_rows(&save, &content, &card);
+        // A do cartão sai; as outras quatro ficam, com a pronta à frente.
+        assert_eq!(rows.len(), 4);
+        assert_eq!(
+            rows[0],
+            OtherQuestRow {
+                title: "Épsilon".into(),
+                ready: true
+            }
+        );
+        assert_eq!(rows[0].text(), "Épsilon  · pronta");
+        assert!(rows.iter().all(|row| row.title != "Alfa"));
+        // Sem prontas, o desempate é o título (bytes, como o `<` do Lua).
+        let ativos: Vec<&str> = rows[1..].iter().map(|row| row.title.as_str()).collect();
+        assert_eq!(ativos, ["Beta", "Delta", "Gama"]);
+        // Só três cabem por baixo do cartão; a quarta vira o "+1".
+        assert_eq!(
+            others_more_text(rows.len().saturating_sub(OTHER_ROWS)),
+            "+1 no diário [Q]"
+        );
+        assert_eq!(others_more_text(0), "");
+    }
+
+    #[test]
+    fn publica_quests_others_e_defaults_do_chefe() {
+        let save = VaelSave::from_world_kv(&kv_base());
+        let binds = publish_binds(&save, &conteudo());
+
+        // O cartão ("O Lobo") é a única missão em curso: não há outras.
+        assert!(!flag(&binds, "quests.others"));
+        assert!(!flag(&binds, "boss.active"));
+        assert_eq!(texto(&binds, "boss.name"), "");
+        assert_eq!(numero(&binds, "boss"), 1.0);
+        assert!(!flag(&binds, "boss.enraged"));
     }
 
     #[test]

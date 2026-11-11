@@ -11,6 +11,10 @@
 //! ao lado do Lua e [`VaelHudPlugin`] publica os binds do HUD ao lado do Lua,
 //! só a ler. A tabela Lua continua a ser a fonte de verdade.
 //!
+//! O comportamento de HUD que não é diálogo (`scripts/ui/hud.lua`) já é do
+//! [`VaelHudUiPlugin`]: linhas de "outras missões", clique do diário, TTL da
+//! barra de chefe e soco do combo.
+//!
 //! Com `VAEL_RULES_RUST=1`, o [`VaelRulesAuthorityPlugin`] passa a ser o dono
 //! do tick de vitais/status/morte: lê o `viber.game()` depois do Luau, simula
 //! com o mesmo `shadow_tick` e escreve de volta as chaves que possui.
@@ -23,6 +27,7 @@ pub mod attach;
 pub mod components;
 pub mod content;
 pub mod hud;
+pub mod hud_ui;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
@@ -33,6 +38,7 @@ pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
 pub use hud::{VaelHudConfig, VaelHudPlugin};
+pub use hud_ui::VaelHudUiPlugin;
 pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
 pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
@@ -66,6 +72,8 @@ impl Plugin for VaelPlugin {
                 // vitais/status/morte passa para Rust.
                 VaelRulesAuthorityPlugin,
                 VaelHudPlugin,
+                // HUD comportamental que o `scripts/ui/hud.lua` deixou.
+                VaelHudUiPlugin,
                 VaelAttachPlugin,
             ));
     }
