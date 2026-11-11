@@ -24,6 +24,7 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod attach;
+pub mod clock;
 pub mod combat;
 pub mod components;
 pub mod content;
@@ -40,6 +41,7 @@ pub mod vault;
 pub mod xp;
 
 pub use attach::{VaelAttachPlugin, VaelScriptTags};
+pub use clock::{ClockSnapshot, VaelClock, VaelClockPlugin};
 pub use combat::{CombatKv, CombatRules, DamageResult, VaelCombatPlugin};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
 pub use content::{VaelContent, VaelContentPlugin};
@@ -89,6 +91,9 @@ impl Plugin for VaelPlugin {
                 // `viber.vael.guard`/`damage_player`/`heal_player`/
                 // `grant_iframes`, depois das quests.
                 VaelCombatPlugin,
+                // Relógio/chuva lidos do `DayCycleState`/`WeatherState`:
+                // `viber.vael.clock_*`, depois do combate.
+                VaelClockPlugin,
                 VaelUiPlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,

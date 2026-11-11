@@ -288,7 +288,9 @@ impl Plugin for VaelCombatPlugin {
 }
 
 /// Arranque: acrescenta as primitivas de combate à tabela `viber.vael`.
-fn install_combat_api(host: Option<Res<LuaScriptHost>>) {
+///
+/// Público dentro do crate para o plugin do relógio ordenar depois dele.
+pub(crate) fn install_combat_api(host: Option<Res<LuaScriptHost>>) {
     let Some(host) = host else {
         warn!("vael: combate sem host Luau — `viber.vael` não estendido");
         return;
