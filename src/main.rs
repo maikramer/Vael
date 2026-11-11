@@ -1,8 +1,9 @@
 //! Arranque do Vael: `vael [world.xml] [--entry <nome>]`.
 //!
 //! A engine monta o mundo; o crate do jogo entra por cima com
-//! [`viber::app::AppOptions::gameplay`] desligado e os scripts Luau em
-//! `Compat`. O `--entry` continua a ser a entrada de cena do `viber run`.
+//! [`viber::app::AppOptions::gameplay`] desligado, a IA em
+//! [`viber::app::AiMode::Service`] e os scripts Luau em `Compat`. O `--entry`
+//! continua a ser a entrada de cena do `viber run`.
 
 use std::path::{Path, PathBuf};
 
@@ -72,6 +73,10 @@ fn main() -> Result<()> {
         &world,
         viber::app::AppOptions {
             gameplay: false,
+            // A FSM simples da engine fica desligada, mas o serviço de IA
+            // (sentidos + `AiLocomotion`) mantém-se para os scripts Luau
+            // moverem as criaturas via `viber.move_towards`.
+            ai: viber::app::AiMode::Service,
             // O crate do jogo ainda não tem controller/câmara; usa os da
             // engine enquanto as regras migram para Rust.
             player_camera: true,
