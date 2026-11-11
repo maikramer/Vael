@@ -12,9 +12,12 @@ continuam em Luau.
   checkouts principais, que continuam a ter trabalho em curso).
 - Branch: `refactor/bevy-native` nos dois.
 - Checkpoint do Vael: `59a57ff`, tag `pre-bevy-migration`.
-- Commits: Viber `92c1f42` (reflection/ECS/UI/save) e `e79c4fc`
-  (`player_camera`); Vael `528149c` (controlos no Lua), `f462a23` (crate
-  Rust), `1eabf60` (sync de estado + HUD Rust).
+- Commits: Viber `92c1f42` (reflection/ECS/UI/save), `e79c4fc`
+  (`player_camera`), `f259627` (AiMode), `5cf9d8f` (apply_patch),
+  `5ec7b9d` (UiWriter); Vael `528149c` (controlos no Lua), `f462a23` (crate
+  Rust), `1eabf60` (sync + HUD), `3b19050` (autoridade), `0808883` (HUD
+  comportamental), `798a1f8`/`b59c924`/`2c2811c`/`fc586cd`/`6291c37`/
+  `209f078` (cofre/XP/equipamento/quests/combate/relógio).
 - Os checkouts principais **não** foram tocados. O principal do Vael tem uma
   regen de personagens e uma engine vivas; não mexer.
 
@@ -29,6 +32,12 @@ continuam em Luau.
 - `AppOptions` ganhou `gameplay`, `player_camera`, `scripts: ScriptsMode`, `ui`
   e `profiler`; `build_app_with_world` permite ao jogo compor a App. O default
   preserva o comportamento do CLI/editor.
+- `AiMode { Off, Service, Full }`: `AiServicePlugin` (sentidos, vitais de
+  criaturas, `apply_ai_locomotion`) separa-se de `SimpleAiPlugin` (`sense_ai`
+  para criaturas sem script). Em `Service`, `drain_sense_bus` evita o
+  `SenseBus` a crescer. O Vael usa `Service`.
+- `apply_patch` (host Luau) e `UiWriter` (fila de `UiCommand` para o jogo
+  dirigir a UI declarativa em Rust) são as duas pontas que o crate usa.
 - Widgets/modal/foco/gamepad usam `bevy_ui_widgets`/`bevy_input_focus`; o XML e
   o CSS declarativos mantêm-se.
 - `CullDistance` passou a `VisibilityRange`; o save tem um envelope genérico
@@ -67,6 +76,17 @@ continuam em Luau.
   duplicar, respawn manual `hp=100`/iframes 2→0, `damage_player(10)` lido
   como `hp=90`, HUD `0.9/90/100`. Default **off** até QA de combate,
   interiores e save/load.
+- `src/hud_ui.rs`: o comportamento do `hud.lua` (outras missões, clique do
+  DIÁRIO, TTL da barra de chefe, shake do combo) passou a sistemas Bevy com
+  `UiWriter`; o `hud.lua` ficou só com `say.tick`.
+- `src/vault.rs`, `src/xp.rs`, `src/gear.rs`, `src/quest.rs`,
+  `src/combat.rs`, `src/clock.rs`: cofre/caps e kit inicial, XP/níveis/
+  talentos, equipamento/stats, ciclo de quests, guarda/dano/cura/i-frames e
+  relógio (DayCycle/Weather) vivem em Rust. Uma ponte `viber.vael` instalada
+  no `Startup` expõe as funções aos chamadores Lua; os wrappers guardam
+  toasts, sons, `sync_collect`, `start_death` e o resto da apresentação.
+- O jogo passa a **exigir** o crate `vael` em runtime: `viber.vael` tem de
+  existir antes de `lib/rules.lua`/`lib/gear.lua`/`lib/clock.lua` correrem.
 
 ## Correr e validar
 
@@ -80,7 +100,7 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 - O bridge fica em `127.0.0.1:15706`; `curl` com `viber.lua`, `world.query`,
   `world.get_resources`, `viber.ecs`.
 - `VIBER_NO_BUILD=1 ./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
-- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: 16 testes.
+- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: **147 testes**.
 - `cargo test` no Viber: 1646 passam; a falha
   `luau::decision::tests::lua_api_intent_pt_multi_question` é modelo/ambiente.
 
@@ -93,7 +113,8 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 | Fase 2 — crate Vael, conteúdo, save, attach, arranque | feito |
 | Onda 2a — state sync + HUD Rust | feito |
 | Onda 2b — vitais/status/morte autoritativos em Rust | autoridade opt-in validada ao vivo; default off |
-| Ondas 3+ — combate, FSM/inimigos, quests/diálogo, viagem/economia, UI/story | pendente |
+| Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio | feito em Rust com ponte `viber.vael` |
+| Restante do jogo — FSM/inimigos/bosses, report/scan/collect de quests, viagem/marcos, colheita, loja/forja, diálogo/NLU, UI/story/áudio | pendente |
 | Fase 4 — mover player/câmera/AI/vitais para o Vael; recipe extensions; docs | pendente |
 
 ## Dívidas conhecidas
@@ -107,16 +128,25 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
   principal.
 - A câmara/player ainda são da engine (`player_camera:true`). O Vael só os
   desliga quando tiver o seu controller/câmara; sem isso o render vai a OOM.
-- O shadow/autoridade não veem dano/cura entre snapshots de 10 Hz — a
-  autoridade lê o KV no mesmo frame depois de `luau_update`, mas dano e cura
-  continuam a ser mutações do Lua; migrá-los para Rust é a onda seguinte.
+- O dano/cura já são Rust (`src/combat.rs`), mas os portões de menu/título/
+  god, os FX/toasts/shake e o `start_death` continuam no wrapper Lua. A
+  autoridade das vitais lê/escreve as mesmas chaves depois do `luau_update`.
   O `M.god` do dev mode é espelhado em `vael_god` pela autoridade (o F2
   repõe o valor todos os frames via `devmode.lua`; o teste tem de segurar a
   tecla, não chamar `set_god` uma vez).
 - O respawn de fallback da autoridade repõe as vitais mas não teleporta nem
   reabastece frascos; isso é o `M.respawn` manual do ecrã de morte. Levar o
   teleporte/refill para Rust é uma decisão da próxima onda.
-- O `rules.publish` ainda publica netplay/alvo/chefe/recargas/quests.others;
-  esses binds migram com os donos (combate/FSM/UI).
+- `rules.lua` ainda tem `report_kill`, `scan_visits`, `sync_collect`,
+  parley/decisão e o `award_kill`; `fsm.lua`/combate/inimigos, viagem,
+  colheita, loja/forja, diálogo/NLU e UI continuam Lua.
+- `rules.publish` ainda publica netplay/alvo/combo/`abilities.active`/
+  `vitals.active`/`xp.recent`/`quest.recent`; os binds de vida/XP/economia/
+  status/quest/chefe/quests.others já são do `VaelHud`/`HudUiPlugin`.
+- O jogo passa a exigir o crate `vael` em runtime (`viber.vael`); `viber run`
+  direto do checkout da engine já não serve para o mundo do Vael.
+- `VAEL_RULES_RUST` continua opt-in; o QA de combate/interiores/save ficou
+  pendente porque o Paint3D ocupa a GPU. O shadow (`VAEL_RULES_SHADOW=1`)
+  fica como ferramenta de paridade.
 - `own_system("abilities"/"hotbar"/"guard"/"bomb")` do Lua gera warnings de
   no-op desde a limpeza do Viber; desaparecem quando esses scripts migrarem.
