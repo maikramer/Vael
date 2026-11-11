@@ -120,10 +120,16 @@ execução (não grava modo nenhum); o autosave seguinte fica com
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
 
 GPU remota (opcional): `source ~/.config/vramd/remote.env` aponta o `vramd` ao
-servidor (`VRAMD_REMOTE=192.168.0.100:8790`); o `gameassets resume` passa a
+servidor (`VRAMD_REMOTE=192.168.0.201:8790`); o `gameassets resume` passa a
 correr as fases GPU lá e as CPU aqui, com upload/download automático dos
-ficheiros. Atalho: `tools/regen_remote.sh <pack>`. O `rigging3d` continua na GPU
-local. Detalhe: `docs/REMOTE_GPU.md`.
+ficheiros. O servidor tem **só** `vramd` (systemd, sem Docker/AiGameKit): o
+código viaja num bundle de sessão por backend/wave e as envs são cacheadas
+por lock; os modelos ficam em `~/.cache/huggingface`. Atalho:
+`tools/regen_remote.sh <pack>`. Cada asset aceita `gpu: remote|local|auto` no
+manifesto, e as tools/`resume`/`batch` aceitam `--gpu` (ou `VRAMD_GPU_MODE`);
+`auto` usa o servidor se `VRAMD_REMOTE` estiver definido. O `rigging3d`
+continua na GPU local; o **Hi3D refine** também (torch 2.5+cu124, única
+exceção cu12; não entra nas sessões). Detalhe: `docs/REMOTE_GPU.md`.
 
 Profiling sem screenshots (engine com `--bridge`): `viber debug prof --tab
 frames` (frame/p95/topo/hitches), `--hitches` (picos com atribuição),
