@@ -145,8 +145,10 @@ por lock; os modelos ficam em `~/.cache/huggingface`. Atalho:
 `tools/regen_remote.sh <pack>`. Cada asset aceita `gpu: remote|local|auto` no
 manifesto, e as tools/`resume`/`batch` aceitam `--gpu` (ou `VRAMD_GPU_MODE`);
 `auto` usa o servidor se `VRAMD_REMOTE` estiver definido. O `rigging3d`
-continua na GPU local; o **Hi3D refine** também (torch 2.5+cu124, única
-exceção cu12; não entra nas sessões). Detalhe: `docs/REMOTE_GPU.md`.
+também aceita `--gpu remote` (SkinTokens no servidor; o `gpu: remote` do
+manifesto propaga-se ao pipeline). O **Hi3D refine** fica na GPU local (torch
+2.5+cu124, única exceção cu12; não entra nas sessões). Detalhe:
+`docs/REMOTE_GPU.md`.
 
 Profiling sem screenshots (engine com `--bridge`): `viber debug prof --tab
 frames` (frame/p95/topo/hitches), `--hitches` (picos com atribuição),

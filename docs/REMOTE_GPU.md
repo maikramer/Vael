@@ -189,11 +189,14 @@ gastar CPU com base64 e não reenviar blobs que o servidor já tem.
 | `text3d topology-fix` / `patch-pbr` | laptop (CPU) |
 | `text3d lod` / `finish` (`tools/make_lods.py`) | laptop (CPU) |
 | `animator3d game-pack` (bpy) | laptop (CPU) |
-| `rigging3d pipeline` (SkinTokens) | **laptop (GPU 6 GB)** — ainda não fala com o vramd |
+| `rigging3d pipeline` (SkinTokens) | servidor (GPU) com `--gpu remote` / `gpu: remote`; sem flag corre no laptop |
 | colisão/validação/LOD/collision do `resume` | laptop (CPU) |
 
 Todo o pipeline remoto é **CUDA 13** (`torch 2.13.0+cu130`,
-`nvidia-*-cu13`); os locks de sessão descartam pacotes cu12. O **Hi3D** é a
+`nvidia-*-cu13`); os locks de sessão descartam pacotes cu12. O `rigging3d`
+remoto instala `bpy` e o lock deixa de fora `spconv-cu121`/`cumm-cu121`
+(restos do UniRig, sem uso no SkinTokens), `pyrender`/`pyopengl` e
+`torch-cluster`/`torch-scatter` (wheels `+pt211` locais). O **Hi3D** é a
 única exceção: torch 2.5.0+**cu124** (Python 3.10, spconv-cu120/flash-attn),
 sem build cu13; fica local e o `resume` força `--gpu local` no refine.
 
