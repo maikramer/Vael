@@ -1,0 +1,66 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  vael:
+    runs-on: ubuntu-latest
+    steps:
+      # O Vael compila `../Viber` por path, que por sua vez usa
+      # `../bevy_extensions` e `../CelerAI`. Os quatro checkouts têm de ser
+      # irmãos dentro de $GITHUB_WORKSPACE.
+      - uses: actions/checkout@v4
+        with:
+          path: Vael
+      - uses: actions/checkout@v4
+        with:
+          repository: maikramer/Viber
+          path: Viber
+      - uses: actions/checkout@v4
+        with:
+          repository: maikramer/bevy_extensions
+          path: bevy_extensions
+      - uses: actions/checkout@v4
+        with:
+          repository: Celer-Brasil/CelerAI
+          path: CelerAI
+      - name: system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libasound2-dev libudev-dev pkg-config \
+            libx11-dev libxi-dev libxrandr-dev \
+            libwayland-dev libxkbcommon-dev \
+            cmake g++
+      - uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt, clippy
+      - uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: |
+            Vael
+            Viber
+      - name: fmt
+        run: cargo fmt -p vael -p vael-content -p vael-editor -- --check
+        working-directory: Vael
+      - name: clippy
+        run: cargo clippy --workspace --all-targets -- -D warnings
+        working-directory: Vael
+      - name: content schemas
+        run: cargo test -p vael-content
+        working-directory: Vael
+      - name: game tests (headless, pool tests skip sem VAEL_ROOT)
+        run: cargo test -p vael --lib
+        working-directory: Vael
+      - name: legacy editor compiles
+        run: cargo check -p vael-editor
+        working-directory: Vael
+      - name: content lint (Python)
+        run: python3 tools/lint_content.py
+        working-directory: Vael
