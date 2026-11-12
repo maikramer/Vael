@@ -771,4 +771,20 @@ mod tests {
         }
         assert_eq!(app.world().resource::<VaelSave>(), &VaelSave::default());
     }
+
+    /// O cartão de quest tem UM dono: o `VaelHudPlugin`. O `rules.lua` ainda
+    /// publica `quests.others`, mas não pode reescrever `quest.*` no fim do
+    /// frame (dois donos = valor do Lua a ganhar sobre o snapshot Rust).
+    #[test]
+    fn rules_lua_nao_disputa_os_binds_do_cartao_de_quest() {
+        let path = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("scripts/lib/rules.lua");
+        let source = std::fs::read_to_string(&path)
+            .unwrap_or_else(|err| panic!("{}: {err}", path.display()));
+        for bind in ["quest.title", "quest", "quest.text", "quest.active"] {
+            assert!(
+                !source.contains(&format!("viber.ui.set(\"{bind}\"")),
+                "`{bind}` tem dois donos (rules.lua e VaelHud)"
+            );
+        }
+    }
 }

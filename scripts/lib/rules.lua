@@ -1698,14 +1698,14 @@ function M.publish()
   ensure_xp()
   ensure_hp()
   local game = g()
-  -- Vida, status, XP, talentos e economia são publicados pelo `VaelHudPlugin`
-  -- (Rust). O Lua só publica o que ainda não tem dono em Rust: netplay, alvo,
-  -- chefe, recargas e quests.others.
+  -- Vida, status, XP, talentos, economia e o cartão de quest são publicados
+  -- pelo `VaelHudPlugin` (Rust). O Lua só publica o que ainda não tem dono em
+  -- Rust: netplay, alvo, chefe, recargas e quests.others.
   local net_role = (viber.net_role and viber.net_role()) or "off"
   viber.ui.set("net.on", net_role ~= "off")
   viber.ui.set("net.label", net_role == "host" and "HOST"
     or (net_role == "join" and "CLIENTE" or ""))
-  local title, progress, text = "", 0, ""
+  local title, text = "", ""
   local best, best_score
   -- O diário permite SEGUIR uma missão (`tracked_quest`); o cartão do HUD
   -- tem de mostrar essa, não apenas a de maior progresso. Sem isto o botão
@@ -1732,19 +1732,15 @@ function M.publish()
       if not best_score or score > best_score then
         best, best_score = def, score
         title = def.title or def.id
-        progress = need > 0 and math.min(1, have / need) or 0
         text = string.format("%d/%d", have, need)
         if state == "ready" then
           text = "pronta"
-          progress = 1
         end
       end
     end
   end
-  viber.ui.set("quest.title", title)
-  viber.ui.set("quest", progress)
-  viber.ui.set("quest.text", text)
-  viber.ui.set("quest.active", title ~= "")
+  -- `quest.title`/`quest`/`quest.text`/`quest.active` são do `VaelHudPlugin`;
+  -- escrevê-los aqui dava dois donos e o Lua ganhava no fim do frame.
   viber.ui.set("abilities.active", true)
   viber.ui.set("vitals.active", true)
   -- Uma vez: o analyze avisa "unknown binding" se ninguém escreveu o nome.
