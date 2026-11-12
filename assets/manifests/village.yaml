@@ -70,8 +70,15 @@ assets:
       - lod
       - collision
   - id: market_stall
+    # Toldo LISO (era listrado): o refine não cabe no decode do VAE em 6 GiB
+    # (~5 GiB de ativação; nem group offload, 30k de estrutura ou 50k de input
+    # o reduzem) e o paint clean parte o padrão listrado nas ilhas UV — o
+    # toldo virava mosaico azul/ouro. Cor única elimina o contraste que
+    # denuncia as costuras; o resto do booth fica igual. `refine: false`
+    # evita a tentativa de Hi3D que só gasta ~10 min para falhar no decode.
+    refine: false
     idea:
-      bustling medieval market stall with striped canvas awning, wooden counter,
+      bustling medieval market stall with solid blue canvas awning, wooden counter,
       hanging fruits and vegetables, sacks of grain, cheerful merchant booth
     kind: environment
     category: building
