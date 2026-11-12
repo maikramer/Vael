@@ -1,0 +1,14 @@
+[package]
+name = "vael-content"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+# Esquemas e validação do conteúdo do jogo, sem Bevy. O jogo (`vael`) e o
+# editor (`vael-editor`) partilham estes tipos; não é publicado.
+publish = false
+description = "Esquemas e validação do conteúdo do Vael (JSON de quests, itens, marcos e diálogos)"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
