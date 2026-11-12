@@ -86,6 +86,17 @@ continuam em Luau.
   vivem em Rust. Uma ponte `viber.vael` instalada no `Startup` expõe as
   funções aos chamadores Lua; os wrappers guardam toasts, sons,
   `sync_collect`, `start_death`, `report_craft` e o resto da apresentação/UI.
+- `src/harvest.rs`: `Harvestable` a partir de `ScriptProps`, foco com
+  `ScriptInteraction`, golpe J, durabilidade, loot/XP e persistência por chave
+  estável. `VAEL_HARVEST_RUST=1`; o `harvest.lua` faz early-return e fica como
+  fallback.
+- `src/travel.rs`: catálogo/nearest/label/reveal dos 22 marcos; bridge
+  `viber.vael.travel_*`. `VAEL_TRAVEL_RUST=1`; `landmarks.lua` delega com
+  fallback. Teleporte, marcadores no mundo e mapa continuam Lua.
+- `src/quest_events.rs`: `report_kill`/`scan_visits`/`sync_collect` com fila
+  de eventos e sistema Bevy depois de `luau_update`, patch no `viber_game` e
+  espelho `QuestLog`. `VAEL_QUEST_EVENTS_RUST=1`; `rules.lua` mantém o caminho
+  Lua como fallback.
 - O jogo passa a **exigir** o crate `vael` em runtime: `viber.vael` tem de
   existir antes de `lib/rules.lua`/`lib/gear.lua`/`lib/clock.lua` correrem.
 
@@ -101,7 +112,7 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 - O bridge fica em `127.0.0.1:15706`; `curl` com `viber.lua`, `world.query`,
   `world.get_resources`, `viber.ecs`.
 - `VIBER_NO_BUILD=1 ./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
-- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: **175 testes**.
+- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: **236 testes**.
 - `cargo test` no Viber: 1646 passam; a falha
   `luau::decision::tests::lua_api_intent_pt_multi_question` é modelo/ambiente.
 
@@ -115,8 +126,31 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 | Onda 2a — state sync + HUD Rust | feito |
 | Onda 2b — vitais/status/morte autoritativos em Rust | autoridade opt-in validada ao vivo; default off |
 | Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio, loja/forja | feito em Rust com ponte `viber.vael` |
-| Restante do jogo — FSM/inimigos/bosses, report/scan/collect de quests, viagem/marcos, colheita, diálogo/NLU, UI/story/áudio | pendente |
+| Colheita, marcos e eventos de quest | feito em Rust (opt-in), validado live no pool antigo |
+| Restante do jogo — FSM/inimigos/bosses, viagem/mapa (teleporte/marcadores), diálogo/NLU, UI/story/áudio | pendente |
 | Fase 4 — mover player/câmera/AI/vitais para o Vael; recipe extensions; docs | pendente |
+
+## Pool de assets no QA
+
+O worktree `refactor/Vael` foi criado no checkpoint `59a57ff` e traz o **pool
+LFS desse snapshot** (hero antigo de 14,9 MB, 10 Nov). O pool atual está no
+checkout principal `/home/maikeu/GitClones/Vael/assets/public` (hero de
+8,7 MB, 11 Nov), que está a ser regenerado por `gameassets resume`. O QA live
+das ondas de lógica correu no pool antigo; os números (pedra 4, quest 3/3,
+collect 4/10, 22 marcos, veneno 92) são válidos, mas o **visual não é o
+atual**.
+
+Para QA visual com o pool atual, só **depois** de a regen terminar:
+```
+ln -s /home/maikeu/GitClones/Vael/assets/public \
+  /home/maikeu/GitClones/refactor/Vael/assets/live-pool
+# config.yaml assets.roots, por ordem:
+#   - assets/live-pool
+#   - assets/public
+```
+Apontar para o pool a meio da regen rebentou com stack overflow no loader
+(GLBs parciais/profundos) e 404s de LODs; não usar o pool em fluxo. A solução
+final é fundir o código na `main` do Vael, que já tem o pool atual.
 
 ## Dívidas conhecidas
 
@@ -138,17 +172,26 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 - O respawn de fallback da autoridade repõe as vitais mas não teleporta nem
   reabastece frascos; isso é o `M.respawn` manual do ecrã de morte. Levar o
   teleporte/refill para Rust é uma decisão da próxima onda.
-- `rules.lua` ainda tem `report_kill`, `scan_visits`, `sync_collect`,
-  parley/decisão e o `award_kill`; `fsm.lua`/combate/inimigos, viagem,
-  colheita, diálogo/NLU e UI continuam Lua. A loja/forja já tem transações
-  Rust, mas as listas/formatação continuam no Lua (`viber.ui.list`).
+- `rules.lua` ainda tem `report_kill`/`scan_visits`/`sync_collect` como
+  fallback, parley/decisão e o `award_kill`; `fsm.lua`/combate/inimigos,
+  viagem (teleporte/marcadores/mapa), diálogo/NLU e UI/story/áudio continuam
+  Lua. Colheita, marcos e eventos de quest já têm caminho Rust opt-in. A
+  loja/forja tem transações Rust, mas as listas/formatação continuam Lua.
+- O `crystal-outpost` tem `destructible`/`resource-kind` num `<Entity>` com
+  `<GltfScene>` filho; esses props não chegam a `ScriptProps`/`Harvestable`
+  (o `player_nearby` também os não vê). O QA de colheita usou os nós de pedra
+  do `spawn/ring.xml`. Investigar o parser de recipes ou autorar os props no
+  filho.
+- `VAEL_HARVEST_RUST`, `VAEL_TRAVEL_RUST` e `VAEL_QUEST_EVENTS_RUST` são
+  opt-in; o fallback Lua mantém-se. Ligar por default depois de QA com o pool
+  atual.
 - `rules.publish` ainda publica netplay/alvo/combo/`abilities.active`/
   `vitals.active`/`xp.recent`/`quest.recent`; os binds de vida/XP/economia/
   status/quest/chefe/quests.others já são do `VaelHud`/`HudUiPlugin`.
 - O jogo passa a exigir o crate `vael` em runtime (`viber.vael`); `viber run`
   direto do checkout da engine já não serve para o mundo do Vael.
 - `VAEL_RULES_RUST` continua opt-in; o QA de combate/interiores/save ficou
-  pendente porque o Paint3D ocupa a GPU. O shadow (`VAEL_RULES_SHADOW=1`)
+  pendente porque a regen ocupa o pool/GPU. O shadow (`VAEL_RULES_SHADOW=1`)
   fica como ferramenta de paridade.
 - `own_system("abilities"/"hotbar"/"guard"/"bomb")` do Lua gera warnings de
   no-op desde a limpeza do Viber; desaparecem quando esses scripts migrarem.
