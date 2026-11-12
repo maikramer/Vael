@@ -8,18 +8,18 @@ continuam em Luau.
 
 ## Onde vive
 
-- Worktrees isolados: `../refactor/Vael` e `../refactor/Viber` (a partir dos
-  checkouts principais, que continuam a ter trabalho em curso).
-- Branch: `refactor/bevy-native` nos dois.
+- O código e o jogo vivem no checkout principal do Vael, na `main` (o crate e
+  as ondas de migração estão fundidos; topo `2da39e0`).
+- O worktree `../refactor/Vael` fica como backup do pool LFS do checkpoint;
+  o `refactor/Viber` foi integrado na `main` do Viber.
 - Checkpoint do Vael: `59a57ff`, tag `pre-bevy-migration`.
 - Commits: Viber `92c1f42` (reflection/ECS/UI/save), `e79c4fc`
   (`player_camera`), `f259627` (AiMode), `5cf9d8f` (apply_patch),
-  `5ec7b9d` (UiWriter); Vael `528149c` (controlos no Lua), `f462a23` (crate
-  Rust), `1eabf60` (sync + HUD), `3b19050` (autoridade), `0808883` (HUD
-  comportamental), `798a1f8`/`b59c924`/`2c2811c`/`fc586cd`/`6291c37`/
-  `209f078` (cofre/XP/equipamento/quests/combate/relógio).
-- Os checkouts principais **não** foram tocados. O principal do Vael tem uma
-  regen de personagens e uma engine vivas; não mexer.
+  `5ec7b9d` (UiWriter), `5dc6b64` (IO stack); Vael `528149c` (controlos no
+  Lua), `f462a23` (crate Rust), `1eabf60` (sync + HUD), `3b19050`
+  (autoridade), `0808883` (HUD comportamental),
+  `798a1f8`/`b59c924`/`2c2811c`/`fc586cd`/`6291c37`/`209f078`
+  (cofre/XP/equipamento/quests/combate/relógio).
 
 ## O que mudou no Viber
 
@@ -103,7 +103,7 @@ continuam em Luau.
 ## Correr e validar
 
 ```bash
-# a partir de ../refactor/Vael
+# a partir da raiz do Vael (checkout principal, com o pool atual)
 CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
   world.xml --scene main --entry dev --bridge 15706
 ```
@@ -126,31 +126,26 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 | Onda 2a — state sync + HUD Rust | feito |
 | Onda 2b — vitais/status/morte autoritativos em Rust | autoridade opt-in validada ao vivo; default off |
 | Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio, loja/forja | feito em Rust com ponte `viber.vael` |
-| Colheita, marcos e eventos de quest | feito em Rust (opt-in), validado live no pool antigo |
+| Colheita, marcos e eventos de quest | feito em Rust (opt-in), validado live (colheita no pool atual; quests/marcos no pool anterior) |
 | Restante do jogo — FSM/inimigos/bosses, viagem/mapa (teleporte/marcadores), diálogo/NLU, UI/story/áudio | pendente |
 | Fase 4 — mover player/câmera/AI/vitais para o Vael; recipe extensions; docs | pendente |
 
-## Pool de assets no QA
+## QA no checkout principal
 
-O worktree `refactor/Vael` foi criado no checkpoint `59a57ff` e traz o **pool
-LFS desse snapshot** (hero antigo de 14,9 MB, 10 Nov). O pool atual está no
-checkout principal `/home/maikeu/GitClones/Vael/assets/public` (hero de
-8,7 MB, 11 Nov), que está a ser regenerado por `gameassets resume`. O QA live
-das ondas de lógica correu no pool antigo; os números (pedra 4, quest 3/3,
-collect 4/10, 22 marcos, veneno 92) são válidos, mas o **visual não é o
-atual**.
+O código migrado está na `main` do Vael e o jogo corre daqui, com o **pool
+atual** (`assets/public`, hero novo de 8,7 MB). O worktree `refactor/Vael`
+fica como backup do pool do checkpoint (hero antigo de 14,9 MB) e **não**
+serve para QA visual.
 
-Para QA visual com o pool atual, só **depois** de a regen terminar:
-```
-ln -s /home/maikeu/GitClones/Vael/assets/public \
-  /home/maikeu/GitClones/refactor/Vael/assets/live-pool
-# config.yaml assets.roots, por ordem:
-#   - assets/live-pool
-#   - assets/public
-```
-Apontar para o pool a meio da regen rebentou com stack overflow no loader
-(GLBs parciais/profundos) e 404s de LODs; não usar o pool em fluxo. A solução
-final é fundir o código na `main` do Vael, que já tem o pool atual.
+O Viber `main` (`5dc6b64`) inicializa o `IoTaskPool` com **32 MiB** antes do
+`TaskPoolPlugin`: os GLBs novos do text3d têm hierarquias mais fundas e o
+stack default de 2 MiB estourava no loader. Já não é preciso `RUST_MIN_STACK`;
+o jogo arranca com o pool atual (screenshot do hero novo, `item.stone=4` na
+colheita, gates `VAEL_*` ligados, 22 marcos).
+
+O pool atual está **commitado** em LFS (`1057171`, personagens na A-pose
+nova; hero de 8,7 MB). A `main` está um commit à frente da `origin/main`
+(este doc); nada do pool ficou por commitar.
 
 ## Dívidas conhecidas
 
@@ -158,9 +153,8 @@ final é fundir o código na `main` do Vael, que já tem o pool atual.
   `game.vael` enquanto isto não for um merge (perde campos só do Rust).
 - `VaelSave` não serializa no BRP por `BTreeSet` sem `ReflectSerialize`;
   usar `Vec` ou registar o type data antes de expor o save no bridge.
-- O worktree Vael não tem LOD1/LOD2 (derivados, fora do git): os 404 de assets
-  no smoke são esperados. Correr `tools/make_lods.py` ou copiar do checkout
-  principal.
+- O worktree `refactor/Vael` (backup) não tem LOD1/LOD2; o checkout principal
+  tem o pool atual. Os 404 de LODs no backup são esperados.
 - A câmara/player ainda são da engine (`player_camera:true`). O Vael só os
   desliga quando tiver o seu controller/câmara; sem isso o render vai a OOM.
 - O dano/cura já são Rust (`src/combat.rs`), mas os portões de menu/título/
