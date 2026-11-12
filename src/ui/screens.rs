@@ -351,7 +351,7 @@ fn requirement_met(
     if item.requires.trim().is_empty() {
         return true;
     }
-    let mut engine = StatEngine::new(rules.attributes.clone());
+    let mut engine = StatEngine::new(rules.attributes);
     let _ = engine.snapshot(&rules.gear, state, learned);
     engine.requirement_met(&item.requires)
 }
@@ -529,7 +529,7 @@ fn handle_action(world: &mut World, id: &str) {
 
 fn request_save(world: &mut World, slot: u32) {
     let save = world.resource::<VaelSave>();
-    if in_menu_scene(world.get_resource::<CurrentScene>().as_deref()) || !player_alive(save) {
+    if in_menu_scene(world.get_resource::<CurrentScene>()) || !player_alive(save) {
         return;
     }
     if let Some(mut request) = world.get_resource_mut::<SaveRequest>() {
@@ -857,7 +857,6 @@ fn a11y_click(world: &mut World, id: &str) {
                     a11y.interact_hold
                 }
             };
-            drop(a11y);
             let mut patch = BTreeMap::new();
             patch.insert(format!("a11y.{id}"), json!(value));
             patch_game(world, patch);
@@ -872,7 +871,6 @@ fn a11y_click(world: &mut World, id: &str) {
                 .unwrap_or(0);
             a11y.subtitle_scale = values[at];
             let next = a11y.subtitle_scale;
-            drop(a11y);
             let mut patch = BTreeMap::new();
             patch.insert("a11y.subtitle_scale".to_string(), json!(next));
             patch_game(world, patch);
@@ -924,7 +922,6 @@ fn a11y_click(world: &mut World, id: &str) {
                 "sfx" => mixer.sfx = values[at],
                 _ => mixer.ambience = values[at],
             }
-            drop(mixer);
             let mut patch = BTreeMap::new();
             patch.insert(format!("vol.{bus_name}"), json!(values[at]));
             patch_game(world, patch);
@@ -938,12 +935,13 @@ fn menu_to_title(world: &mut World) {
     let scene = world.get_resource::<CurrentScene>().cloned();
     let on_title = in_menu_scene(scene.as_ref());
     let alive = player_alive(world.resource::<VaelSave>());
-    if !on_title && alive {
-        if let Some(mut request) = world.get_resource_mut::<SaveRequest>() {
-            request.save = true;
-            request.load = false;
-            request.slot = Some(0);
-        }
+    if !on_title
+        && alive
+        && let Some(mut request) = world.get_resource_mut::<SaveRequest>()
+    {
+        request.save = true;
+        request.load = false;
+        request.slot = Some(0);
     }
     let mut patch = BTreeMap::new();
     if !on_title && !alive {
@@ -1338,7 +1336,7 @@ fn quest_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
 fn stat_lines(save: &VaelSave, rules: &VaelUiRules, lang: &str) -> (String, String) {
     let learned = learned_set(save);
     let mut state = gear_state(save);
-    let mut engine = StatEngine::new(rules.attributes.clone());
+    let mut engine = StatEngine::new(rules.attributes);
     let snapshot = engine.snapshot(&rules.gear, &mut state, &learned);
     let round = |value: f64| value.round() as i64;
     let (keys, damage, health, speed, crit) = if lang == "en" {
@@ -1390,7 +1388,7 @@ fn bag_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules)
     let mut state = gear_state(save);
     // Um único motor de atributos para a lista inteira: `StatEngine::new`
     // cria um `World` e o interner global, não pode nascer por item/frame.
-    let mut engine = StatEngine::new(rules.attributes.clone());
+    let mut engine = StatEngine::new(rules.attributes);
     let _ = engine.snapshot(&rules.gear, &mut state, &learned);
     let mut items: Vec<&ItemDef> = content
         .items

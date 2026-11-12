@@ -1278,8 +1278,8 @@ mod tests {
             .expect("shop_rows");
         assert!(rows.raw_len() > 0, "lista vazia");
         let first: Table = rows.get(1).expect("primeira linha");
-        assert!(first.get::<String>("id").expect("id").len() > 0);
-        assert!(first.get::<String>("status").expect("status").len() > 0);
+        assert!(!first.get::<String>("id").expect("id").is_empty());
+        assert!(!first.get::<String>("status").expect("status").is_empty());
         assert!(first.get::<i64>("price").expect("price") >= 0);
         // O ouro do `viber_game` chega à linha da poção (preço 2 > 1).
         let pocao = rows

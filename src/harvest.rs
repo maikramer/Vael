@@ -101,7 +101,7 @@ pub const BUCK_RANGE: f32 = 3.0;
 pub const BUCK_COOLDOWN: f32 = 0.5;
 
 /// Estilo de quebra autorado (`break-style`).
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Reflect)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Reflect, Default)]
 pub enum BreakStyle {
     /// A árvore tomba (`break-style: fall`).
     Fall,
@@ -110,6 +110,7 @@ pub enum BreakStyle {
     /// Pedra/tronco que estilhaça.
     Shatter,
     /// Qualquer outro valor (o default do Lua).
+    #[default]
     Burst,
 }
 
@@ -122,12 +123,6 @@ impl BreakStyle {
             "shatter" => Self::Shatter,
             _ => Self::Burst,
         }
-    }
-}
-
-impl Default for BreakStyle {
-    fn default() -> Self {
-        Self::Burst
     }
 }
 
@@ -281,12 +276,14 @@ impl Harvestable {
 #[derive(Component, Debug, Clone)]
 struct FloraFellKey(String);
 
-/// Na **estação**: a árvore tombada que saiu dela. O `bevy_flora` corta em
-/// espaço local (`Transform`), por isso a árvore que tomba tem de ser uma
-/// entidade RAIZ com a pose global — a estação é filha do grupo da vegetação
-/// (offset de +38,73 m) e um `Transform` local punha o toco debaixo do chão.
+/// Na **estação**: marca que a árvore tombada já é uma entidade RAIZ. O
+/// `bevy_flora` corta em espaço local (`Transform`), por isso a árvore que
+/// tomba tem de ser uma entidade RAIZ com a pose global — a estação é filha do
+/// grupo da vegetação (offset de +38,73 m) e um `Transform` local punha o toco
+/// debaixo do chão. A limpeza por troca de cena encontra a raiz por
+/// `FellTree`/`Felled`; guardar a `Entity` aqui só duplicava essa posse.
 #[derive(Component, Debug, Clone, Copy)]
-struct FloraFellTree(Entity);
+struct FloraFellTree;
 
 /// Foco da interação "Cortar em toros" numa árvore já deitada.
 #[derive(Debug, Clone, Default, Resource)]
@@ -398,17 +395,8 @@ fn process_pending_fell(
                 false,
             );
             if let Some(key) = key.as_deref() {
-                commands
-                    .entity(tree)
-                    .insert(FloraFellKey(key.to_string()));
-                store_flora_fell(
-                    lua,
-                    save.as_deref_mut(),
-                    key,
-                    direction,
-                    cut_height,
-                    false,
-                );
+                commands.entity(tree).insert(FloraFellKey(key.to_string()));
+                store_flora_fell(lua, save.as_deref_mut(), key, direction, cut_height, false);
             }
             commands
                 .entity(entity)
@@ -418,7 +406,7 @@ fn process_pending_fell(
                     viber::luau::components::LuaScriptRef,
                 )>()
                 .remove::<PooledTree>()
-                .insert(FloraFellTree(tree));
+                .insert(FloraFellTree);
             viber::physics::replace_with_stump_collider(
                 &mut commands,
                 entity,
@@ -526,10 +514,7 @@ impl Plugin for VaelHarvestPlugin {
             // `Harvestable` e o reap correm SEMPRE: o caminho Lua (default)
             // também precisa deles para o restauro das árvores tombadas
             // (`flora-fell.*`). O foco/golpe Rust continuam atrás do gate.
-            .add_systems(
-                PostStartup,
-                (attach_harvestables, reap_on_load).chain(),
-            )
+            .add_systems(PostStartup, (attach_harvestables, reap_on_load).chain())
             .add_systems(
                 viber::scene_loader::SceneLoad,
                 (attach_harvestables, reap_on_load)
@@ -1424,7 +1409,7 @@ fn harvest_input(
                     viber::luau::components::LuaScriptRef,
                 )>()
                 .remove::<PooledTree>()
-                .insert(FloraFellTree(tree));
+                .insert(FloraFellTree);
             viber::physics::replace_with_stump_collider(
                 &mut commands,
                 entity,
@@ -1432,9 +1417,7 @@ fn harvest_input(
                 STUMP_HALF_HEIGHT,
             );
             if let Some(key) = key.as_deref() {
-                commands
-                    .entity(tree)
-                    .insert(FloraFellKey(key.to_string()));
+                commands.entity(tree).insert(FloraFellKey(key.to_string()));
                 store_flora_fell(lua, save.as_deref_mut(), key, direction, cut_height, false);
             }
         } else {
@@ -1627,9 +1610,7 @@ fn reap_saved(
                 fell.cut_height,
                 true,
             );
-            commands
-                .entity(tree)
-                .insert(FloraFellKey(matched.clone()));
+            commands.entity(tree).insert(FloraFellKey(matched.clone()));
             if fell.bucked {
                 commands.entity(tree).try_insert(BuckTree {
                     log_length: LOG_LENGTH,
@@ -1640,7 +1621,7 @@ fn reap_saved(
                 .entity(entity)
                 .try_remove::<(Harvestable, ScriptInteraction)>()
                 .remove::<PooledTree>()
-                .insert(FloraFellTree(tree));
+                .insert(FloraFellTree);
             viber::physics::replace_with_stump_collider(
                 commands,
                 entity,
@@ -2390,10 +2371,7 @@ mod tests {
         let parsed = Harvestable::from_props(&sem, "tree", None).expect("colhível");
         assert!((parsed.cut_height - 0.5).abs() < 1e-5);
 
-        let lixo = props(&[(
-            "destructible",
-            "hits: 2; break-style: fall; cut-height: -3",
-        )]);
+        let lixo = props(&[("destructible", "hits: 2; break-style: fall; cut-height: -3")]);
         let parsed = Harvestable::from_props(&lixo, "tree", None).expect("colhível");
         assert!((parsed.cut_height - 0.5).abs() < 1e-5);
     }
@@ -2410,8 +2388,8 @@ mod tests {
             0.7,
             true,
         );
-        let fell = flora_fell_from_kv(&save.legacy, "arvore@world/forest.xml#1")
-            .expect("estado guardado");
+        let fell =
+            flora_fell_from_kv(&save.legacy, "arvore@world/forest.xml#1").expect("estado guardado");
         assert!((fell.dx - 0.6).abs() < 1e-5);
         assert!((fell.dz + 0.8).abs() < 1e-5);
         assert!((fell.cut_height - 0.7).abs() < 1e-5);
@@ -2431,12 +2409,10 @@ mod tests {
         h.style = BreakStyle::Fall;
         h.cut_height = 0.7;
         let prop = spawn_prop(&mut app, h);
-        app.world_mut()
-            .entity_mut(prop)
-            .insert(PooledTree {
-                pool: Handle::default(),
-                variant: 0,
-            });
+        app.world_mut().entity_mut(prop).insert(PooledTree {
+            pool: Handle::default(),
+            variant: 0,
+        });
 
         app.world_mut()
             .resource_mut::<ButtonInput<KeyCode>>()
@@ -2451,11 +2427,11 @@ mod tests {
             app.world().get::<PooledTree>(prop).is_none(),
             "a árvore sai da estação (o corte é em espaço global)"
         );
-        let tree = app
-            .world()
-            .get::<FloraFellTree>(prop)
-            .expect("a estação aponta para a árvore tombada")
-            .0;
+        let tree = {
+            let mut q = app.world_mut().query_filtered::<Entity, With<FellTree>>();
+            q.single(app.world())
+                .expect("a árvore tombada é uma raiz com FellTree")
+        };
         assert!(
             app.world().get::<FellTree>(tree).is_some(),
             "o bevy_flora recebe o FellTree na árvore-raiz"
@@ -2507,11 +2483,11 @@ mod tests {
             app.world().get_entity(prop).is_ok(),
             "a estação tombada não é despawnada pelo reap"
         );
-        let tree = app
-            .world()
-            .get::<FloraFellTree>(prop)
-            .expect("a estação aponta para a árvore reposta")
-            .0;
+        let tree = {
+            let mut q = app.world_mut().query_filtered::<Entity, With<FellTree>>();
+            q.single(app.world())
+                .expect("a árvore reposta é uma raiz com FellTree")
+        };
         let fell = app
             .world()
             .get::<FellTree>(tree)

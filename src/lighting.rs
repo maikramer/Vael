@@ -195,7 +195,7 @@ fn drive_shadow_refresh(
         return;
     }
 
-    refresh.render = refresh_due(active, hz, time.delta_secs(), &mut *accumulator);
+    refresh.render = refresh_due(active, hz, time.delta_secs(), &mut accumulator);
 }
 
 /// Deve este frame re-renderizar as sombras?

@@ -224,10 +224,7 @@ struct VaelSkinFonts {
 
 /// Regista as fontes da skin (Noto Serif Display, OFL) em `Assets<Font>` de
 /// forma síncrona — sem loader assíncrono — e segura os handles.
-fn load_skin_fonts(
-    mut commands: Commands,
-    fonts: Option<ResMut<Assets<bevy::text::Font>>>,
-) {
+fn load_skin_fonts(mut commands: Commands, fonts: Option<ResMut<Assets<bevy::text::Font>>>) {
     let Some(mut fonts) = fonts else {
         return;
     };
@@ -276,7 +273,7 @@ fn bind_text(binds: Option<&UiScriptBinds>, name: &str) -> String {
 fn bind_number(binds: Option<&UiScriptBinds>, name: &str) -> f64 {
     binds
         .and_then(|b| b.get(name))
-        .map(|v| v.number() as f64)
+        .map(|v| v.number())
         .unwrap_or(0.0)
 }
 

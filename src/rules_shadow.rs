@@ -562,29 +562,29 @@ fn log_summary(shadow: &VaelRulesShadow) {
         ticks = shadow.ticks,
         "vael: shadow das regras vitais"
     );
-    if shadow.divergent_since_log {
-        if let Some(divergence) = &shadow.last_divergence {
-            info!(
-                fields = ?divergence.fields,
-                hp_lua = divergence.hp_lua,
-                hp_shadow = divergence.hp_shadow,
-                max_hp_lua = divergence.max_hp_lua,
-                max_hp_shadow = divergence.max_hp_shadow,
-                venom_lua = divergence.venom_lua,
-                venom_shadow = divergence.venom_shadow,
-                burn_lua = divergence.burn_lua,
-                burn_shadow = divergence.burn_shadow,
-                frost_lua = divergence.frost_lua,
-                frost_shadow = divergence.frost_shadow,
-                dying_lua = divergence.dying_lua,
-                dying_shadow = divergence.dying_shadow,
-                death_pending_lua = divergence.death_pending_lua,
-                death_pending_shadow = divergence.death_pending_shadow,
-                death_wait_lua = divergence.death_wait_lua,
-                death_wait_shadow = divergence.death_wait_shadow,
-                "vael: shadow divergiu do Lua"
-            );
-        }
+    if shadow.divergent_since_log
+        && let Some(divergence) = &shadow.last_divergence
+    {
+        info!(
+            fields = ?divergence.fields,
+            hp_lua = divergence.hp_lua,
+            hp_shadow = divergence.hp_shadow,
+            max_hp_lua = divergence.max_hp_lua,
+            max_hp_shadow = divergence.max_hp_shadow,
+            venom_lua = divergence.venom_lua,
+            venom_shadow = divergence.venom_shadow,
+            burn_lua = divergence.burn_lua,
+            burn_shadow = divergence.burn_shadow,
+            frost_lua = divergence.frost_lua,
+            frost_shadow = divergence.frost_shadow,
+            dying_lua = divergence.dying_lua,
+            dying_shadow = divergence.dying_shadow,
+            death_pending_lua = divergence.death_pending_lua,
+            death_pending_shadow = divergence.death_pending_shadow,
+            death_wait_lua = divergence.death_wait_lua,
+            death_wait_shadow = divergence.death_wait_shadow,
+            "vael: shadow divergiu do Lua"
+        );
     }
 }
 

@@ -169,9 +169,7 @@ fn sign_nearest(world: &mut World) {
                 .unwrap_or("um bioma por cartografar");
             toast(
                 world,
-                format!(
-                    "A terra aqui ainda não foi cartografada — procura a atalaia de {label}."
-                ),
+                format!("A terra aqui ainda não foi cartografada — procura a atalaia de {label}."),
             );
         }
         return;
@@ -195,9 +193,7 @@ fn sign_nearest(world: &mut World) {
     let label = mark
         .map(|mark| mark.label.clone())
         .unwrap_or_else(|| name.clone());
-    let biome = mark
-        .map(|mark| mark.biome.clone())
-        .unwrap_or_default();
+    let biome = mark.map(|mark| mark.biome.clone()).unwrap_or_default();
     if biome == "tower" {
         toast(
             world,
@@ -472,8 +468,8 @@ pub fn sync_map(
                 progress: 0.0,
                 has_progress: false,
                 clickable: true,
-            icon: String::new(),
-            has_icon: false,
+                icon: String::new(),
+                has_icon: false,
             });
             if surveyed {
                 travel_rows.push(RowVm {
@@ -484,8 +480,8 @@ pub fn sync_map(
                     progress: 0.0,
                     has_progress: false,
                     clickable: true,
-            icon: String::new(),
-            has_icon: false,
+                    icon: String::new(),
+                    has_icon: false,
                 });
             }
         }
@@ -497,7 +493,12 @@ pub fn sync_map(
     let waypoint = markers
         .as_deref()
         .and_then(|markers| markers.waypoint.as_ref())
-        .map(|point| (project(point.position.to_array(), world_size), point.label.clone()));
+        .map(|point| {
+            (
+                project(point.position.to_array(), world_size),
+                point.label.clone(),
+            )
+        });
 
     vm.0.update(|m: &mut MapVm| {
         m.map_open = state.map_open;
@@ -510,12 +511,7 @@ pub fn sync_map(
             "map.hint",
             "Clica num marco para fixar o destino.",
         );
-        m.map_empty_text = label(
-            content,
-            lang,
-            "map.empty",
-            "Nenhum marco cartografado.",
-        );
+        m.map_empty_text = label(content, lang, "map.empty", "Nenhum marco cartografado.");
         m.travel_title = label(content, lang, "map.travel.title", "VIAGEM");
         m.travel_sub = label(content, lang, "map.travel.sub", "Fogueiras assinadas");
         m.travel_empty_text = label(

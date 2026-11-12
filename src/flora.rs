@@ -65,13 +65,34 @@ struct TreeKind {
 }
 
 const KINDS: &[TreeKind] = &[
-    TreeKind { prop: "pine_dark", pool: "pine_dark" },
-    TreeKind { prop: "tree_pine", pool: "tree_pine" },
-    TreeKind { prop: "tree_oak", pool: "tree_oak" },
-    TreeKind { prop: "tree_birch", pool: "tree_birch" },
-    TreeKind { prop: "dead_tree", pool: "dead_tree" },
-    TreeKind { prop: "dead_willow", pool: "dead_willow" },
-    TreeKind { prop: "palm_tree", pool: "palm_tree" },
+    TreeKind {
+        prop: "pine_dark",
+        pool: "pine_dark",
+    },
+    TreeKind {
+        prop: "tree_pine",
+        pool: "tree_pine",
+    },
+    TreeKind {
+        prop: "tree_oak",
+        pool: "tree_oak",
+    },
+    TreeKind {
+        prop: "tree_birch",
+        pool: "tree_birch",
+    },
+    TreeKind {
+        prop: "dead_tree",
+        pool: "dead_tree",
+    },
+    TreeKind {
+        prop: "dead_willow",
+        pool: "dead_willow",
+    },
+    TreeKind {
+        prop: "palm_tree",
+        pool: "palm_tree",
+    },
 ];
 
 /// Um pool por espécie: preset, nº de variantes, tom e o fator de altura que
@@ -167,14 +188,62 @@ struct GroveTree {
 }
 
 const GROVE: &[GroveTree] = &[
-    GroveTree { kind: "tree_oak", x: -12.2, dz: 3.0, scale: 1.35, yaw_deg: 24.0 },
-    GroveTree { kind: "tree_birch", x: -16.4, dz: 5.3, scale: 1.15, yaw_deg: -38.0 },
-    GroveTree { kind: "tree_oak", x: -20.8, dz: 2.8, scale: 1.28, yaw_deg: 152.0 },
-    GroveTree { kind: "pine_dark", x: -25.6, dz: 5.7, scale: 1.0, yaw_deg: 66.0 },
-    GroveTree { kind: "tree_oak", x: 12.4, dz: 3.3, scale: 1.32, yaw_deg: -12.0 },
-    GroveTree { kind: "tree_birch", x: 16.8, dz: 5.4, scale: 1.12, yaw_deg: 88.0 },
-    GroveTree { kind: "tree_oak", x: 21.2, dz: 2.9, scale: 1.3, yaw_deg: 205.0 },
-    GroveTree { kind: "pine_dark", x: 26.0, dz: 5.8, scale: 1.05, yaw_deg: -74.0 },
+    GroveTree {
+        kind: "tree_oak",
+        x: -12.2,
+        dz: 3.0,
+        scale: 1.35,
+        yaw_deg: 24.0,
+    },
+    GroveTree {
+        kind: "tree_birch",
+        x: -16.4,
+        dz: 5.3,
+        scale: 1.15,
+        yaw_deg: -38.0,
+    },
+    GroveTree {
+        kind: "tree_oak",
+        x: -20.8,
+        dz: 2.8,
+        scale: 1.28,
+        yaw_deg: 152.0,
+    },
+    GroveTree {
+        kind: "pine_dark",
+        x: -25.6,
+        dz: 5.7,
+        scale: 1.0,
+        yaw_deg: 66.0,
+    },
+    GroveTree {
+        kind: "tree_oak",
+        x: 12.4,
+        dz: 3.3,
+        scale: 1.32,
+        yaw_deg: -12.0,
+    },
+    GroveTree {
+        kind: "tree_birch",
+        x: 16.8,
+        dz: 5.4,
+        scale: 1.12,
+        yaw_deg: 88.0,
+    },
+    GroveTree {
+        kind: "tree_oak",
+        x: 21.2,
+        dz: 2.9,
+        scale: 1.3,
+        yaw_deg: 205.0,
+    },
+    GroveTree {
+        kind: "pine_dark",
+        x: 26.0,
+        dz: 5.8,
+        scale: 1.05,
+        yaw_deg: -74.0,
+    },
 ];
 
 /// Cota do chão do portão norte (sanidade da cena `main`).
@@ -392,10 +461,7 @@ fn plant_on_entity(
 /// Lê as estações do mundo (`prop-flora`) e planta as árvores que faltam.
 fn plant_stations(
     mut commands: Commands,
-    stations: Query<
-        (Entity, &ScriptProps, Option<&Name>, &Transform),
-        Without<FloraPlanted>,
-    >,
+    stations: Query<(Entity, &ScriptProps, Option<&Name>, &Transform), Without<FloraPlanted>>,
     mut state: ResMut<FloraPools>,
 ) {
     if !env_on("VAEL_FLORA") {
@@ -486,7 +552,10 @@ fn plant_grove(
     };
     let probe = terrain.sample(GATE_ANCHOR.x, GATE_ANCHOR.y + 3.0);
     if (probe - GATE_FLOOR_Y).abs() > 3.0 {
-        warn!(probe, "flora: chão do portão fora do esperado; mata não plantada");
+        warn!(
+            probe,
+            "flora: chão do portão fora do esperado; mata não plantada"
+        );
         return;
     }
     let root = commands
@@ -519,7 +588,14 @@ fn plant_grove(
                 ChildOf(root),
             ))
             .id();
-        if plant_on_entity(&mut commands, &state, entity, kind.pool, index as u32, false) {
+        if plant_on_entity(
+            &mut commands,
+            &state,
+            entity,
+            kind.pool,
+            index as u32,
+            false,
+        ) {
             state.planted += 1;
         }
     }
@@ -596,10 +672,7 @@ fn drop_leaves_on_gust(
 /// bake de impostores são `RenderTarget::Image`).
 fn see_through_trees(
     mut commands: Commands,
-    cameras: Query<
-        (Entity, &Camera, &RenderTarget, Option<&SeeThroughTrees>),
-        With<Camera3d>,
-    >,
+    cameras: Query<(Entity, &Camera, &RenderTarget, Option<&SeeThroughTrees>), With<Camera3d>>,
     player: Query<&GlobalTransform, With<VaelPlayer>>,
 ) {
     let Some(chest) = player

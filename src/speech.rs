@@ -65,8 +65,9 @@ struct SpeechFace {
     material: Handle<StandardMaterial>,
     image: Option<Handle<Image>>,
     expires_at: f32,
-    /// Texto que o balão mostra (linhas do mesmo frame já juntadas) — útil
-    /// para QA pela bridge e para o teste de agrupamento.
+    /// Texto que o balão mostra (linhas do mesmo frame já juntadas). Só o
+    /// teste de agrupamento o lê; o runtime não precisa de o manter.
+    #[cfg(test)]
     text: String,
 }
 
@@ -233,6 +234,7 @@ fn present_spoken_lines(
                 material: rendered.material.clone(),
                 image,
                 expires_at: time.elapsed_secs() + bubble_seconds(&text, seconds),
+                #[cfg(test)]
                 text: text.clone(),
             },
             Mesh3d(assets.quad.clone()),
@@ -401,8 +403,7 @@ mod tests {
         let bubble = only_bubble(&mut app);
         let face = app.world().get::<SpeechFace>(bubble).unwrap();
         assert!(
-            face.text.contains("A pista é o sino.")
-                && face.text.contains("Já tens o suficiente."),
+            face.text.contains("A pista é o sino.") && face.text.contains("Já tens o suficiente."),
             "as duas linhas no mesmo balão: {:?}",
             face.text
         );

@@ -75,7 +75,7 @@ impl Default for VaelRulesConfig {
 }
 
 /// Estado autoritativo + o último patch escrito no Lua.
-#[derive(Resource, Debug, Clone)]
+#[derive(Resource, Debug, Clone, Default)]
 pub struct VaelRulesAuthority {
     /// O estado simulado. Reutiliza o tipo do shadow para não duplicar o
     /// [`shadow_tick`].
@@ -84,16 +84,6 @@ pub struct VaelRulesAuthority {
     pub seeded: bool,
     /// Último patch aplicado (não se reescreve o KV sem mudanças).
     last_patch: Option<BTreeMap<String, Value>>,
-}
-
-impl Default for VaelRulesAuthority {
-    fn default() -> Self {
-        Self {
-            state: VaelRulesShadow::default(),
-            seeded: false,
-            last_patch: None,
-        }
-    }
 }
 
 impl VaelRulesAuthority {

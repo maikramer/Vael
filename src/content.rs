@@ -15,8 +15,8 @@ pub use vael_content::{
     DialogueChoice, DialogueFile, DialogueNode, Expect, ItemDef, ItemShop, ItemUse, ItemsFile,
     LandmarkDef, LandmarksFile, Objective, Parley, ProgressionFile, PuzzleClue, PuzzleDef,
     PuzzleEnding, PuzzleOption, QuestDef, QuestIndex, RecipeDef, RecipesFile, Report, Reward,
-    RiddleClue, RiddleDef, RiddlesFile, SkillDef, VerdictDef, VerdictText, VerdictsFile,
-    WeaponDef, XpCurve,
+    RiddleClue, RiddleDef, RiddlesFile, SkillDef, VerdictDef, VerdictText, VerdictsFile, WeaponDef,
+    XpCurve,
 };
 
 // ── catálogo carregado ──────────────────────────────────────────────────

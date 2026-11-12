@@ -1230,11 +1230,11 @@ mod tests {
         assert_eq!(quest_state(&rules, &kv, "pelt"), STATE_ACTIVE);
         assert_eq!(kv.get("q.pelt.n"), Some(&json_int(0)));
         assert_eq!(kv.get("q.pelt.need"), Some(&json_int(3)));
-        assert!(kv.get("q.pelt.stage").is_none());
-        assert!(kv.get("q.pelt.said").is_none());
-        assert!(kv.get("q.pelt.v.serra").is_none());
+        assert!(!kv.contains_key("q.pelt.stage"));
+        assert!(!kv.contains_key("q.pelt.said"));
+        assert!(!kv.contains_key("q.pelt.v.serra"));
         // A visita de OUTRA quest não é tocada.
-        assert!(kv.get("q.outra.v.serra").is_some());
+        assert!(kv.contains_key("q.outra.v.serra"));
         // Uma segunda aceitação falha.
         assert!(!quest_accept(&rules, &mut kv, "pelt"));
     }
@@ -1256,7 +1256,7 @@ mod tests {
         assert_eq!(kv.get("q.staged.stage"), Some(&json_int(2)));
         assert_eq!(kv.get("q.staged.n"), Some(&json_int(0)));
         assert_eq!(kv.get("q.staged.need"), Some(&json_int(1)));
-        assert!(kv.get("q.staged.v.serra").is_none());
+        assert!(!kv.contains_key("q.staged.v.serra"));
 
         let out = quest_set_progress(&rules, &mut kv, "staged", 1.0);
         assert!(out.ok);
@@ -1313,12 +1313,12 @@ mod tests {
         assert_eq!(kv.get("xp"), Some(&json_int(50)));
         assert_eq!(kv.get("xp_next"), Some(&json_int(100)));
         assert_eq!(kv.get("level"), Some(&json_int(1)));
-        assert!(kv.get("q.wolves.n").is_none());
-        assert!(kv.get("q.wolves.stage").is_none());
-        assert!(kv.get("q.wolves.need").is_none());
-        assert!(kv.get("q.wolves.said").is_none());
-        assert!(kv.get("q.wolves.v.serra").is_none());
-        assert!(kv.get("tracked_quest").is_none());
+        assert!(!kv.contains_key("q.wolves.n"));
+        assert!(!kv.contains_key("q.wolves.stage"));
+        assert!(!kv.contains_key("q.wolves.need"));
+        assert!(!kv.contains_key("q.wolves.said"));
+        assert!(!kv.contains_key("q.wolves.v.serra"));
+        assert!(!kv.contains_key("tracked_quest"));
     }
 
     #[test]

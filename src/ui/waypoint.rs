@@ -33,18 +33,23 @@ pub struct VaelWaypointPlugin;
 
 impl Plugin for VaelWaypointPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<HudMarkers>().add_systems(
-            Update,
-            publish_markers.after(viber::luau::luau_update),
-        );
+        app.init_resource::<HudMarkers>()
+            .add_systems(Update, publish_markers.after(viber::luau::luau_update));
     }
 }
 
-fn player_position(player: &Query<&GlobalTransform, With<Player>>, travel: Option<&TravelState>) -> Option<[f32; 3]> {
-    player.iter().next().map(|transform| {
-        let p = transform.translation();
-        [p.x, p.y, p.z]
-    }).or_else(|| travel.and_then(|state| state.get().player))
+fn player_position(
+    player: &Query<&GlobalTransform, With<Player>>,
+    travel: Option<&TravelState>,
+) -> Option<[f32; 3]> {
+    player
+        .iter()
+        .next()
+        .map(|transform| {
+            let p = transform.translation();
+            [p.x, p.y, p.z]
+        })
+        .or_else(|| travel.and_then(|state| state.get().player))
 }
 
 fn script_kind(path: &str) -> &str {
@@ -79,14 +84,25 @@ fn quest_waypoint(
         let position = *npcs.get(&def.npc)?;
         Some(HudPoint {
             position,
-            label: format!("{prefix} · {}", if def.title.is_empty() { &def.id } else { &def.title }),
+            label: format!(
+                "{prefix} · {}",
+                if def.title.is_empty() {
+                    &def.id
+                } else {
+                    &def.title
+                }
+            ),
         })
     };
 
     let objective_point = |id: &str| -> Option<HudPoint> {
         let def = content.quests.get(id)?;
         let view = quest_objective(&rules.quests, &kv, id);
-        let title = if def.title.is_empty() { &def.id } else { &def.title };
+        let title = if def.title.is_empty() {
+            &def.id
+        } else {
+            &def.title
+        };
         match view.objective_type.as_str() {
             "kill" => {
                 let mut best: Option<(HudPoint, f32)> = None;
@@ -100,7 +116,13 @@ fn quest_waypoint(
                     let position = transform.translation();
                     let distance = distance3(position.to_array(), player);
                     if best.as_ref().is_none_or(|(_, best_d)| distance < *best_d) {
-                        best = Some((HudPoint { position, label: format!("Caçar · {title}") }, distance));
+                        best = Some((
+                            HudPoint {
+                                position,
+                                label: format!("Caçar · {title}"),
+                            },
+                            distance,
+                        ));
                     }
                 }
                 best.map(|(point, _)| point)
@@ -149,13 +171,22 @@ fn quest_waypoint(
                         if !matches!(kind, "witch" | "sand-worm" | "bog-warden" | "boss") {
                             continue;
                         }
-                        if matches!(save.legacy.get(format!("nota_{kind}").as_str()), Some(Value::Bool(true))) {
+                        if matches!(
+                            save.legacy.get(format!("nota_{kind}").as_str()),
+                            Some(Value::Bool(true))
+                        ) {
                             continue;
                         }
                         let position = transform.translation();
                         let distance = distance3(position.to_array(), player);
                         if best.as_ref().is_none_or(|(_, best_d)| distance < *best_d) {
-                            best = Some((HudPoint { position, label: format!("Guardião · {title}") }, distance));
+                            best = Some((
+                                HudPoint {
+                                    position,
+                                    label: format!("Guardião · {title}"),
+                                },
+                                distance,
+                            ));
                         }
                     }
                     return best.map(|(point, _)| point);
@@ -168,15 +199,27 @@ fn quest_waypoint(
                     let name = harvestable.name.as_str();
                     if !name.is_empty()
                         && (save.harvested.contains(name)
-                            || matches!(save.legacy.get(format!("harvested.{name}").as_str()), Some(Value::Bool(true)))
-                            || matches!(save.legacy.get(format!("once:{name}").as_str()), Some(Value::Bool(true))))
+                            || matches!(
+                                save.legacy.get(format!("harvested.{name}").as_str()),
+                                Some(Value::Bool(true))
+                            )
+                            || matches!(
+                                save.legacy.get(format!("once:{name}").as_str()),
+                                Some(Value::Bool(true))
+                            ))
                     {
                         continue;
                     }
                     let position = transform.translation();
                     let distance = distance3(position.to_array(), player);
                     if best.as_ref().is_none_or(|(_, best_d)| distance < *best_d) {
-                        best = Some((HudPoint { position, label: format!("Recolher · {title}") }, distance));
+                        best = Some((
+                            HudPoint {
+                                position,
+                                label: format!("Recolher · {title}"),
+                            },
+                            distance,
+                        ));
                     }
                 }
                 best.map(|(point, _)| point)
@@ -220,13 +263,18 @@ fn quest_waypoint(
             // para a onda das quests; aqui o fallback é o cartão do HUD.
             if let Some(point) = npc_point(def, "Missão") {
                 let distance = distance3(point.position.to_array(), player);
-                if new_best.as_ref().is_none_or(|(_, best_d)| distance < *best_d) {
+                if new_best
+                    .as_ref()
+                    .is_none_or(|(_, best_d)| distance < *best_d)
+                {
                     new_best = Some((point, distance));
                 }
             }
         }
     }
-    ready.or(active).or_else(|| new_best.map(|(point, _)| point))
+    ready
+        .or(active)
+        .or_else(|| new_best.map(|(point, _)| point))
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -297,7 +345,9 @@ fn publish_markers(
     if let Some(pin) = save.legacy.get("pin").and_then(Value::as_str) {
         if let Some(position) = positions.get(pin) {
             let position = Vec3::from_array(*position);
-            if player_pos.is_some_and(|player| distance3(position.to_array(), player) <= PIN_ARRIVED_M) {
+            if player_pos
+                .is_some_and(|player| distance3(position.to_array(), player) <= PIN_ARRIVED_M)
+            {
                 pin_patch = Some(("pin".to_string(), Value::Null));
             } else {
                 waypoint = Some(HudPoint {

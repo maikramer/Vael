@@ -434,8 +434,8 @@ pub fn effects_summary(def: &SkillDef, lang: &str) -> String {
         let text = match key.as_str() {
             "strength" => format!("{} {}", if en { "STR" } else { "FOR" }, signed(*value)),
             "agility" => format!("{} {}", if en { "AGI" } else { "DES" }, signed(*value)),
-            "vitality" => format!("{} {}", if en { "VIT" } else { "VIT" }, signed(*value)),
-            "precision" => format!("{} {}", if en { "PRE" } else { "PRE" }, signed(*value)),
+            "vitality" => format!("VIT {}", signed(*value)),
+            "precision" => format!("PRE {}", signed(*value)),
             "spirit" => format!("{} {}", if en { "SPI" } else { "ESP" }, signed(*value)),
             "damage" => format!("{} {}", if en { "damage" } else { "dano" }, signed(*value)),
             "max_hp" => format!("{} {}", if en { "health" } else { "vida" }, signed(*value)),
@@ -777,7 +777,7 @@ mod tests {
             .iter()
             .filter_map(|node| {
                 let other = node.excludes.as_deref()?;
-                Some(if node.id < other.to_string() {
+                Some(if node.id.as_str() < other {
                     (node.id.clone(), other.to_string())
                 } else {
                     (other.to_string(), node.id.clone())

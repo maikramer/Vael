@@ -263,16 +263,16 @@ impl VaelSave {
             if let Some(rest) = key.strip_prefix("q.") {
                 // `q.<id>` é o estado; `q.<id>.n`/`.stage`/`.v.*` são
                 // progresso e ficam em legacy.
-                if !rest.contains('.') {
-                    if let Some(state) = value.as_str() {
-                        if state == "done" {
-                            save.quests.done.push(rest.to_string());
-                        }
-                        save.quests
-                            .states
-                            .insert(rest.to_string(), state.to_string());
-                        continue;
+                if !rest.contains('.')
+                    && let Some(state) = value.as_str()
+                {
+                    if state == "done" {
+                        save.quests.done.push(rest.to_string());
                     }
+                    save.quests
+                        .states
+                        .insert(rest.to_string(), state.to_string());
+                    continue;
                 }
                 save.legacy.insert(key.to_string(), value.clone());
                 continue;
@@ -523,10 +523,10 @@ fn parse_skill_list(value: &Value) -> Option<Vec<String>> {
                 .collect(),
         ),
         Value::String(text) => {
-            if let Ok(parsed) = serde_json::from_str::<Value>(text) {
-                if !parsed.is_string() {
-                    return parse_skill_list(&parsed);
-                }
+            if let Ok(parsed) = serde_json::from_str::<Value>(text)
+                && !parsed.is_string()
+            {
+                return parse_skill_list(&parsed);
             }
             Some(
                 text.split(',')

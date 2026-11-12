@@ -19,6 +19,14 @@
 //! do tick de vitais/status/morte: lê o `viber.game()` depois do Luau, simula
 //! com o mesmo `shadow_tick` e escreve de volta as chaves que possui.
 
+// Sistemas Bevy exprimem queries grandes e as VMs da UI são construídas campo
+// a campo; estes três lints são ruído de estilo neste código, não contratos.
+#![allow(
+    clippy::field_reassign_with_default,
+    clippy::too_many_arguments,
+    clippy::type_complexity
+)]
+
 use std::path::PathBuf;
 
 use bevy::prelude::*;

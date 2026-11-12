@@ -230,7 +230,7 @@ impl StatSnapshot {
     /// Valor de uma stat. Identidades (`attack_speed`, `knockback`,
     /// `heal_power`) valem 1.0 quando o grafo não as criou; o resto vale 0.
     pub fn stat(&self, key: &str) -> f64 {
-        self.stats.get(key).copied().unwrap_or_else(|| match key {
+        self.stats.get(key).copied().unwrap_or(match key {
             "attack_speed" | "knockback" | "heal_power" => 1.0,
             _ => 0.0,
         })

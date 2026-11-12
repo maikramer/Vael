@@ -342,7 +342,7 @@ pub fn report_visit(rules: &QuestRules, kv: &mut QuestKv, place: &str) -> Vec<St
             continue;
         }
         let tokens: Vec<&str> = view.target.split_whitespace().collect();
-        if !tokens.iter().any(|token| *token == place) {
+        if !tokens.contains(&place) {
             continue;
         }
         let marker = visit_marker(id, place);

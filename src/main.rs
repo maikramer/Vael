@@ -170,9 +170,7 @@ fn main() -> Result<()> {
 /// Grupo `DefaultPlugins` do jogo, passado ao `build_app` com o wrapper do
 /// PIE: o `maybe_windowless` só altera o grupo quando o editor pede uma
 /// sessão sem janela (`JACKDAW_PIE_WINDOWLESS`); sem PIE é o grupo da engine.
-fn jackdaw_plugins(
-    plugins: bevy::app::PluginGroupBuilder,
-) -> bevy::app::PluginGroupBuilder {
+fn jackdaw_plugins(plugins: bevy::app::PluginGroupBuilder) -> bevy::app::PluginGroupBuilder {
     jackdaw_runtime::maybe_windowless(plugins)
 }
 
