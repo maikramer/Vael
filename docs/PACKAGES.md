@@ -1,7 +1,9 @@
-# PACKAGES.md — do Viber monolítico aos pacotes `bevy_*`
+# PACKAGES.md — do Viber monolítico aos pacotes `bevy_ext_*`
 
-Estado: Fase 0 em execução (2026-11-11). Este documento é o canónico das
-fases; o `docs/MIGRATION.md` descreve a migração do jogo e o
+Estado: Wave 1 concluída (2026-11-12). O roadmap canónico do monorepo é
+[`../../bevy_extensions/docs/PACKAGES.md`](../../bevy_extensions/docs/PACKAGES.md);
+este documento fica com o contexto do Vael e a sequência de fecho do Viber.
+O `docs/MIGRATION.md` descreve a migração do jogo e o
 `../Viber/docs/CRATES.md` a adoção de dependências da engine.
 
 ## 1. Contexto

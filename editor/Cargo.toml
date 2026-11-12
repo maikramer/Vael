@@ -1,0 +1,37 @@
+[package]
+name = "vael-editor"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+# Editor de autoria do Vael sobre Jackdaw. Não é publicado: é uma App Bevy
+# própria que regista a extensão do jogo e lê/escreve os JSON de conteúdo.
+publish = false
+description = "Editor de conteúdo do Vael sobre Jackdaw"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+anyhow = "1"
+bevy = { version = "=0.20.1", features = ["basis-universal"] }
+# Editor core sem as features de multiplayer/camera-rig/embed-recipe (não
+# usamos a launcher nem o project build). A versão acompanha o Bevy do Vael.
+jackdaw_editor_core = { version = "=0.20.2", default-features = false }
+# O macro `#[operator]` expande para caminhos `jackdaw_api::…`; a dependência
+# direta é obrigatória mesmo com o prelude do editor.
+jackdaw_api = "=0.20.2"
+# Widgets de painel (text_edit, botões com operadores, combobox).
+jackdaw_feathers = "=0.20.2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+# Componentes `WorldNode`/`WorldProp` do formato `.bsn` e o loader que
+# reconstrói os `XmlNode` (o mesmo do jogo).
+bevy_world_xml = { package = "bevy_ext_world", version = "0.1.0", path = "../../bevy_extensions/crates/bevy_ext_world" }
+# Decoder de assets do monorepo: descodifica meshopt e normaliza KTX2/quantização
+# para o viewport do Jackdaw conseguir abrir o pool actual.
+bevy_ext_gltf = { version = "0.1.0", path = "../../bevy_extensions/crates/bevy_ext_gltf" }
+vael-content = { path = "../content" }
+
+[dev-dependencies]
+# Registar a extensão no app de teste sem duplicar o `ExtensionPlugin`.
+jackdaw_api_internal = "=0.20.2"
+jackdaw_panels = "=0.20.2"
+tempfile = "3"
