@@ -33,6 +33,8 @@ assets/__pycache__/
 **/.gameassets_work/
 # Estado local das sessões do agente.
 .zcode/
+# Lock do `gameassets batch|resume` (PID/host/comando; efémero).
+.gameassets_batch.lock
 
 # Build do crate Rust (o Cargo.lock FICA versionado).
 target/
