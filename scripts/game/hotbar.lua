@@ -6,8 +6,17 @@ local actions = viber.load("lib/actions.lua")
 local POTION_HEAL = 50
 local COOLDOWN = 1.0
 
--- A hotbar nativa gastava a poção no mesmo [1] que este script.
-viber.own_system("hotbar")
+-- Espírito/cura do equipamento: multiplica toda a cura de consumíveis.
+local function heal_power()
+  local value = rules.stat("heal_power")
+  if not value or value <= 0 then
+    return 1.0
+  end
+  return value
+end
+
+-- A hotbar nativa (que gastava a poção no mesmo [1]) saiu da engine; o
+-- `viber.own_system("hotbar")` era um no-op que só avisava no arranque.
 
 -- Ctrl/Alt+dígito são atalhos (o `<PostFxDebugToggle>` vive em Ctrl+1..6).
 local function modifier_held()
@@ -68,7 +77,7 @@ function on_update(dt)
   end
   if viber.input.pressed("1") then
     local _, hp, max_hp = rules.player_hp()
-    local healed = math.min(POTION_HEAL, math.max(0, (max_hp or 0) - (hp or 0)))
+    local healed = math.min(POTION_HEAL * heal_power(), math.max(0, (max_hp or 0) - (hp or 0)))
     if rules.item_count("potion") > 0 and healed < 1 then
       -- Vida cheia: a poção fica no cinto e o [2] não fica bloqueado 1 s.
       viber.toast("Vida já está cheia.")
@@ -112,7 +121,7 @@ function on_update(dt)
     local def = rules.item_def("moss_potion")
     local use = def and def.use or {}
     local _, hp, max_hp = rules.player_hp()
-    local healed = math.min(tonumber(use.heal) or 0, math.max(0, (max_hp or 0) - (hp or 0)))
+    local healed = math.min((tonumber(use.heal) or 0) * heal_power(), math.max(0, (max_hp or 0) - (hp or 0)))
     local cures = use.cure == true and rules.afflicted()
     if rules.item_count("moss_potion") < 1 then
       viber.toast("Sem poções de musgo.")

@@ -5,24 +5,26 @@ description: Usar quando a tarefa precisa da engine Viber — API Luau em falta,
 
 # Engine Viber
 
-Checkout: `../Viber`. O editor é `../Viber/editor`. A lei é
+Checkout: `../Viber`. O editor de conteúdo é `editor/` do Vael (Jackdaw); o
+Viber não traz editor. A lei é
 `../Viber/AGENTS.md` e `../Viber/docs/` (`LUA_API.md`, `ASSETS.md`, `BRIDGE.md`,
 `UI.md`). Lê a secção da tarefa. Não copies o AGENTS inteiro para o jogo.
 
 ## Quando editar a engine
 
 Falta uma primitiva que o Lua não alcança, o `analyze` mente, ou o runtime
-não faz o que o XML pede. O conteúdo do Vael (falas, poses, quests) fica neste
-repo.
+não faz o que o `.bsn` pede. O conteúdo do Vael (falas, poses, quests) fica
+neste repo.
 
 ```bash
 cd ../Viber && cargo test
-cd ../Viber && cargo run -- run ../Vael/world.xml
-cd ../Viber && cargo run -- analyze ../Vael/world.xml
+cd ../Viber && cargo run -- run ../Vael/world.bsn
+cd ../Viber && cargo run -- analyze ../Vael/world.bsn
 ```
 
 `viber run` dentro do checkout reconstrói a engine. Mundos estáticos só.
-`viber scene` / `viber tool` / `viber terrain` são a mesma API do editor.
+`viber scene` / `viber tool` / `viber terrain` são a mesma API do editor e
+continuam XML-only; o mundo do Vael é editado no Jackdaw (`editor/` do Vael).
 
 ## QA vivo
 

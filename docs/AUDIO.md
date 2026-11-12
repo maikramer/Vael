@@ -40,9 +40,6 @@ BPM do tema.
 | boss | 90 | 48 s | 18 |
 | credits | 72 | 60 s | 18 |
 
-`bgm/race` é legado do exemplo de corrida; fica no pool mas não faz parte da
-direção do Vale e não é regenerado por omissão.
-
 ## Zonas
 
 A zona de música segue o jogador: cena (menu/interior) > combate > **bioma**
@@ -102,5 +99,5 @@ ambiência ficam no tier. Entradas `legacy: true` (corrida) ficam fora do lote.
 As layers novas exigem `world/environment.xml` com `<MusicLayer>` homónima do
 `BiomeRegion.id`. Os loops de bioma correm em `scripts/game/ambience.lua`.
 
-Verificação: `viber analyze world.xml` e, com a engine viva,
+Verificação: `viber analyze world.bsn` e, com a engine viva,
 `viber debug prof --tab audio` para confirmar quantos loops estão a tocar.

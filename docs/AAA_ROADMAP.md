@@ -37,7 +37,8 @@ fonte despawna. A medição A/B fica pendente de uma sessão limpa.
 ## O que a engine já tem (não reescrever)
 
 Bevy 0.20, forward PBR, terreno voxel com LOD, Luau com hot-reload, Rapier,
-kira, UI declarativa, cenas, bridge, profiler, editor, save v2, IBL/probes,
+kira, UI declarativa, cenas, bridge, profiler, editor de conteúdo (Jackdaw),
+save v2, IBL/probes,
 SSAO, bloom, TAA/DLSS, motion blur, DOF, color grading, volumétrico global,
 SSR de água, partículas CPU, LOD de malha e streaming por anéis.
 

@@ -7,7 +7,7 @@
 --
 -- `--scene main` começa no mundo em vez da cena de menu; `--entry dev` chega
 -- pela entrada `<SceneEntry name="dev">` de `world.xml`. O nome da entrada é
--- visível em `viber.scene_entry()`, por isso o título (`ui/title.lua`) e o
+-- visível em `viber.scene_entry()`, por isso o título (`src/ui/screens.rs`) e o
 -- prólogo (`game/story.lua`) — que vivem em controladores diferentes — leem
 -- o MESMO sinal sem passar nada entre si.
 --
@@ -23,12 +23,16 @@ local M = {}
 
 local DEBUG_ENTRY = "dev"
 
---- Nome da entrada de arranque, só quando a cena é `main`.
+--- Nome da entrada de arranque em `main` ou na sua cópia de QA.
+--/
+-- `qa-elements.bsn` é uma cópia do mundo para QA do ambiente; a cena chama-se
+-- `qa-elements`, mas o `--entry dev` deve saltar o prólogo da mesma forma.
 function M.entry()
   if not (viber.scene_name and viber.scene_entry) then
     return nil
   end
-  if viber.scene_name() ~= "main" then
+  local scene = viber.scene_name()
+  if scene ~= "main" and scene ~= "qa-elements" then
     return nil
   end
   return viber.scene_entry()

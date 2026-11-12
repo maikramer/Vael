@@ -241,6 +241,21 @@ function M.stat(key)
   return viber.vael.stat(key)
 end
 
+-- Atributos do herói e stats derivadas (grafo do bevy_gauge em `src/stats.rs`).
+-- `attribute("strength")` devolve o valor atual; `stat_sheet()` traz
+-- `{ attributes = {...}, stats = {...}, speed_mult = ... }` para o diário.
+function M.attribute(key)
+  return viber.vael.attribute(key)
+end
+
+function M.attributes()
+  return viber.vael.attributes()
+end
+
+function M.stat_sheet()
+  return viber.vael.stat_sheet()
+end
+
 -- Arma na mão (números do melee) e equipamento: ver lib/gear.lua.
 function M.weapon()
   return gear.weapon()
@@ -250,10 +265,10 @@ function M.gear()
   return gear
 end
 
--- Equipa/tira um item da mochila. Devolve "on" | "off" | nil.
+-- Equipa/tira um item da mochila. Devolve "on" | "off" | "blocked" | nil.
 function M.equip_toggle(id)
   local result = gear.toggle(id)
-  if result then
+  if result == "on" or result == "off" then
     actions.record("equipar", "item", id)
   end
   return result
@@ -1206,6 +1221,10 @@ local function flash_damage_direction(sx, sz)
   clear_dmg_edges()
   viber.ui.set_visible(id, true)
   dmg_edge, dmg_until = id, viber.time() + 0.35
+  -- O HUD visual é bevy_pf (`ui/hud.xaml`): publica a faixa acesa no KV.
+  local game = g()
+  game.dmg_edge = id
+  game.dmg_until = dmg_until
 end
 
 -- Guarda/parry [L]: a janela, o bloqueio e o lock vivem em `src/combat.rs`
@@ -1480,6 +1499,9 @@ function M.tick(dt)
     save_at = nil
     if dmg_edge then
       viber.ui.set_visible(dmg_edge, false)
+      local game = g()
+      game.dmg_edge = nil
+      game.dmg_until = nil
       dmg_edge, dmg_until = nil, 0
     end
   end
@@ -1508,6 +1530,9 @@ function M.tick(dt)
   -- era do atacante e um despawn dentro dos 0,35 s deixava-a acesa.
   if dmg_edge and now >= dmg_until then
     viber.ui.set_visible(dmg_edge, false)
+    local game = g()
+    game.dmg_edge = nil
+    game.dmg_until = nil
     dmg_edge, dmg_until = nil, 0
   end
 
@@ -1533,7 +1558,11 @@ function M.tick(dt)
           local ticks = math.floor(game[tick_key])
           if ticks > 0 then
             game[tick_key] = game[tick_key] - ticks
-            local dmg = ticks * spec.dps
+            -- Resistências do equipamento (`venom_resist`, `burn_resist`):
+            -- efeitos que antes ficavam só no `fx`. O teto de 80% evita
+            -- imunidade total por empilhamento de itens.
+            local resist = math.max(0, math.min(0.8, M.stat(kind .. "_resist") or 0))
+            local dmg = math.floor(ticks * spec.dps * (1 - resist) + 0.5)
             game.hp = math.max(0, game.hp - dmg)
             player_fx("-" .. dmg, spec.color)
             if game.hp <= 0 then
@@ -1550,7 +1579,7 @@ function M.tick(dt)
 
   -- Morte: com `VAEL_RULES_RUST=1` os contadores (`dying`, `death_pending`,
   -- `death_wait`) e o respawn de fallback são do `src/rules_authority.rs`; a
-  -- UI de morte observa as mesmas chaves em `ui/death.lua`. O `M.respawn`
+  -- UI de morte observa as mesmas chaves em `src/ui/screens.rs`. O `M.respawn`
   -- manual (botão "Tentar de novo") e o `M.start_death` do dano direto ficam
   -- no Lua.
   if not rust_vitals() then

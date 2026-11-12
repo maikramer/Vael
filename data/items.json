@@ -163,7 +163,9 @@
         "range": 3.2,
         "grip": "machado"
       },
-      "desc": "Arma: golpes lentos e pesados (38 de dano)."
+      "requires": "Strength >= 7",
+      "requires_text": "Força 7",
+      "desc": "Arma: golpes lentos e pesados (38 de dano). Requer Força 7."
     },
     {
       "id": "nature_amulet",
@@ -192,10 +194,10 @@
       },
       "slot": "charm",
       "effects": {
-        "crit": 0.06,
+        "precision": 3,
         "shock_chance": 0.25
       },
-      "desc": "Amuleto: +6% crítico, 25% de dar choque no golpe."
+      "desc": "Amuleto: +3 Precisão (+6% crítico), 25% de dar choque no golpe."
     },
     {
       "id": "ancient_relic",
@@ -227,7 +229,9 @@
       "effects": {
         "crit": 0.05
       },
-      "desc": "Arma: 34 de dano, +5% crítico.",
+      "requires": "Precision >= 7",
+      "requires_text": "Precisão 7",
+      "desc": "Arma: 34 de dano, +5% crítico. Requer Precisão 7.",
       "shop": {
         "sell": 90,
         "label": "Vender espada de aço"
@@ -241,9 +245,9 @@
       "slot": "armor",
       "effects": {
         "defense": 0.15,
-        "max_hp": 15
+        "vitality": 2
       },
-      "desc": "Armadura: −15% de dano recebido, +15 de vida.",
+      "desc": "Armadura: −15% de dano recebido, +2 Vitalidade (+20 vida).",
       "shop": {
         "sell": 60,
         "label": "Vender manto do caçador"
@@ -257,10 +261,10 @@
       "slot": "armor",
       "effects": {
         "defense": 0.08,
-        "speed": 0.08,
+        "agility": 3,
         "burn_resist": 0.5
       },
-      "desc": "Armadura: −8% de dano, +8% velocidade, queimadura dura metade.",
+      "desc": "Armadura: −8% de dano, +3 Agilidade (velocidade e ataque), queimadura dura metade.",
       "shop": {
         "sell": 60,
         "label": "Vender faixas do nómada"

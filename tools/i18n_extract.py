@@ -35,7 +35,11 @@ def phrases():
             args = call_args(src, m.end())
             lits = [l for l in LIT.findall(args) if re.search(r'[A-Za-zÀ-ÿ]{3}', l)]
             # cores e nomes de clip não são texto para o jogador
-            lits = [l for l in lits if not l.startswith('#') and ' ' in l or len(l) > 12]
+            # (nem identificadores: `viber.prop("interact_range")` dentro da chamada)
+            lits = [l for l in lits
+                    if not l.startswith('#')
+                    and not re.fullmatch(r'[a-z_][a-z0-9_.\-]*', l)
+                    and (' ' in l or len(l) > 12)]
             if not lits:
                 continue
             key = lits[0] if ('..' not in args and len(lits) == 1) else None

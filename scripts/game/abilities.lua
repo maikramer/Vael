@@ -1,7 +1,6 @@
 local rules = viber.load("lib/rules.lua")
--- game/abilities.lua: as HABILIDADES do herói são do JOGO (Lua). O script
--- reclama os sistemas nativos [C]/[E]/[R] e [B] (`viber.own_system`) — os
--- handlers da engine calam — e reimplementa-os sobre a API genérica:
+-- game/abilities.lua: as HABILIDADES do herói são do JOGO (Lua), sobre a API
+-- genérica da engine (que já não tem handlers nativos para estas teclas):
 --
 --   [C] dash     → player_forward + push_player (colide) + grant_iframes + FOV kick
 --   [E] cura     → heal_player + número flutuante
@@ -29,19 +28,16 @@ local BOMB_LAUNCH_DISTANCE = 2.6
 
 local PERIOD = { dash = CD_DASH, heal = CD_HEAL, strike = CD_STRIKE }
 
--- Sem isto o handler nativo (se o plugin voltar ao App) dispara por cima
--- e o [C]/[R]/[B] saem duas vezes.
-viber.own_system("abilities")
-viber.own_system("bomb")
--- A guarda [L] também é do jogo: `rules.guard` abre a janela de parry e o
--- dano dos inimigos passa todo por `rules.damage_player`.
-viber.own_system("guard")
+-- A engine já não tem handlers nativos de [C]/[R]/[B] nem da guarda [L]
+-- (`rules.guard` abre a janela de parry e o dano dos inimigos passa todo por
+-- `rules.damage_player`): o `viber.own_system("abilities"/"bomb"/"guard")`
+-- era um no-op que só avisava no arranque.
 
 -- O dock do HUD lê `ab.<nome>` (fração em recarga) e `ab.<nome>.ready`
 -- (class-bind que acende o slot) — os `cd.*` nativos ficam a zero com o
 -- sistema reclamado, e sem isto o dock mostrava tudo sempre pronto.
 -- (Nomes literais: o teste `test_shipped_worlds_bind_only_to_known_names`
--- lê os `viber.ui.set("…")` dos scripts para validar os binds do hud.xml.)
+-- lê os `viber.ui.set("…")` dos scripts para validar os binds do HUD.)
 local function publish_cooldowns(cd)
   viber.ui.set("ab.dash", cd.dash / PERIOD.dash)
   viber.ui.set("ab.dash.ready", cd.dash <= 0)
@@ -149,7 +145,12 @@ function on_update(dt)
   -- nasce sobre o herói — sem x/y/z saía sobre a entidade controller).
   if viber.input.pressed("e") and st.cd.heal <= 0 and not e_is_interaction() then
     local _, hp, max_hp = rules.player_hp()
-    local healed = math.min(HEAL_AMOUNT, math.max(0, (max_hp or 0) - (hp or 0)))
+    -- Espírito aumenta a cura (`Stat.heal_power`, 1.0 = base).
+    local heal_power = rules.stat("heal_power")
+    if not heal_power or heal_power <= 0 then
+      heal_power = 1.0
+    end
+    local healed = math.min(HEAL_AMOUNT * heal_power, math.max(0, (max_hp or 0) - (hp or 0)))
     if healed < 1 then
       viber.toast("Vida já está cheia.")
     elseif not rules.flask_use() then
@@ -172,6 +173,10 @@ function on_update(dt)
     -- Talentos do Impacto: "Abalo" alarga e reforça; "Brasas" queima.
     local radius = STRIKE_RADIUS + rules.stat("strike_radius")
     local burn = rules.stat("strike_burn")
+    local knockback = rules.stat("knockback")
+    if not knockback or knockback <= 0 then
+      knockback = 1.0
+    end
     if burn > 0 then
       for _, h in ipairs(rules.hostiles_near(px, pz, radius)) do
         rules.enemy_status(h.id, "burn", burn)
@@ -179,7 +184,7 @@ function on_update(dt)
       viber.burst("fire", px, py + 0.4, pz, 10)
     end
     local hits = rules.radial_damage(px, pz, radius,
-      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK)
+      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK * knockback)
     -- Aggro-chain: o slam também acorda os aliados a 15 m do impacto (o
     -- nativo emitia um `AttackAlert` no centro). A engine já não tem
     -- produtor; o `lib/fsm.lua` lê esta tabela do `viber.game()`.

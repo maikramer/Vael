@@ -4,7 +4,7 @@ O `vramd` pode correr num servidor e ser usado pela rede: o laptop envia
 **código + dados**, o servidor gera nas GPUs e devolve as saídas. O
 orquestrador e as fases CPU ficam no laptop.
 
-Servidor: `root@192.168.0.201` (2× RTX 3060 12 GB). A máquina tem **só**:
+Servidor: `root@192.168.0.100` (2× RTX 3060 12 GB). A máquina tem **só**:
 
 - driver NVIDIA + CUDA runtime;
 - `vramd` (pip) e o `uv` (para construir envs);
@@ -79,7 +79,7 @@ vramd env list
 
 ```bash
 # ~/.config/vramd/remote.env (0600)
-export VRAMD_REMOTE=192.168.0.201:8790
+export VRAMD_REMOTE=192.168.0.100:8790
 export VRAMD_REMOTE_TOKEN=…        # cat /etc/vramd/token no servidor
 export VRAMD_AUTO_START=0
 ```
@@ -153,6 +153,22 @@ O primeiro setup move o cache antigo `/srv/vramd-cache/models/hf`; não há
 re-download dos
 ~60 GB. Um modelo gated (`stable-audio-3`) precisa de `HF_TOKEN`: o wizard
 escreve `/etc/vramd/hf-token` (0600) ou exporta `HF_TOKEN`.
+
+### text2svg (SVG)
+
+O backend `text2svg` usa o mesmo tool/venv do `text2d` e o checkpoint
+`starvector/starvector-1b-im2svg` (Apache-2.0, ~5,1 GB; ~4–5 GB fp16 na GPU).
+O `bigcode/starcoderbase-1b` é **gated** e não é descarregado: o checkpoint
+já traz o LLM fine-tuned e o tokenizer. O vramd descarrega o FLUX do `text2d`
+antes de carregar o StarVector (os dois não cabem em 6 GB). O primeiro job
+remoto descarrega o checkpoint para o cache do servidor.
+
+```bash
+source ~/.config/vramd/remote.env
+text2d vectorize ability_dash.png --engine starvector --gpu remote
+```
+
+O `vtracer` (CPU) corre no cliente e não precisa de GPU nem de staging.
 
 ## Ambientes (deps)
 

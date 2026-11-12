@@ -12,6 +12,9 @@
 --            on_unavailable=fn(), on_cancel=fn(), timeout= }
 --   say.tick(dt)                -- por frame (hud.lua)
 --   say.active()                -- true enquanto a barra está aberta
+--   say.say(text, secs)         -- fala do NPC que abriu a barra (orador
+--                               -- guardado em `ask`; os callbacks correm no
+--                               -- HUD e não herdam o `ctx.entity` do NPC)
 --   say.cancel()
 local M = {}
 
@@ -29,12 +32,20 @@ local st = {
   opts = nil,
   said = "",
   typed = "",
+  speaker = nil,           -- bits da entidade que abriu a barra (NPC)
   init = false,
   load_error = nil,
 }
 
 function M.active()
   return st.phase ~= "idle"
+end
+
+-- Fala atribuída ao NPC que abriu a barra. Usar nos callbacks: o `M.tick`
+-- corre no `on_update` do HUD, por isso o `viber.say` sem orador punha a
+-- linha em cima do HUD (sem Transform) e caía no toast.
+function M.say(text, secs)
+  viber.say(text, secs, st.speaker)
 end
 
 local function blur()
@@ -49,6 +60,7 @@ local function hide()
   st.opts = nil
   st.said = ""
   st.typed = ""
+  st.speaker = nil
   st.timer = 0
   viber.ui.set("say.active", false)
   viber.ui.set_text(INPUT, "")
@@ -60,9 +72,12 @@ end
 
 function M.cancel()
   local opts = st.opts
-  hide()
+  -- Como no `finish`: o callback de cancelamento ainda fala pelo NPC.
   if opts and opts.on_cancel then
     opts.on_cancel()
+  end
+  if st.opts == opts then
+    hide()
   end
 end
 
@@ -82,18 +97,29 @@ end
 
 function M.ask(opts)
   M.init()
+  -- Capturado AQUI (o `ask` corre no on_update do NPC); os callbacks correm
+  -- depois no HUD, onde `ctx.entity` já não é o NPC.
+  local speaker = opts.speaker or (viber.entity_id and viber.entity_id())
+  local function unavailable(err)
+    -- O callback fala pelo NPC mesmo quando a barra não abre.
+    local previous = st.speaker
+    st.speaker = speaker
+    if opts.on_unavailable then
+      opts.on_unavailable(err)
+    end
+    -- Só repõe se o callback não abriu já outra barra (com o seu orador).
+    if st.speaker == speaker then
+      st.speaker = previous
+    end
+  end
   local use_decision = opts.questions ~= nil
   if use_decision then
     if not (viber.decision and viber.decision.ready and viber.decision.ready()) then
-      if opts.on_unavailable then
-        opts.on_unavailable(st.load_error)
-      end
+      unavailable(st.load_error)
       return false
     end
   elseif not (viber.nlu and viber.nlu.ready and viber.nlu.ready()) then
-    if opts.on_unavailable then
-      opts.on_unavailable(st.load_error)
-    end
+    unavailable(st.load_error)
     return false
   end
   if st.phase ~= "idle" then
@@ -109,6 +135,7 @@ function M.ask(opts)
   st.phase = "input"
   st.id = nil
   st.typed = ""
+  st.speaker = speaker
   st.timer = opts.timeout or DEFAULT_TIMEOUT
   local prompt = opts.prompt or "Diz uma palavra."
   if opts.example and opts.example ~= "" then
@@ -128,9 +155,14 @@ end
 local function finish(result)
   local opts = st.opts
   local said = st.said
-  hide()
+  -- O callback corre ANTES do `hide`: ainda tem `st.speaker` (o NPC), porque
+  -- `M.say`/`talk.say` dentro dele é atribuído a quem falou. Se o próprio
+  -- callback abrir outra barra, `st.opts` já não é este e não a fechamos.
   if opts and opts.on_result then
     opts.on_result(result, said)
+  end
+  if st.opts == opts then
+    hide()
   end
 end
 
@@ -171,9 +203,14 @@ local function submit(text)
   if not id then
     st.phase = "idle"
     local opts = st.opts
+    local speaker = st.speaker
     hide()
     if opts and opts.on_unavailable then
+      st.speaker = speaker
       opts.on_unavailable(err)
+      if st.speaker == speaker then
+        st.speaker = nil
+      end
     end
     return
   end
@@ -252,9 +289,14 @@ function M.tick(dt)
       return
     elseif r.kind == "error" and st.phase == "waiting" and r.id == st.id then
       local opts = st.opts
+      local speaker = st.speaker
       hide()
       if opts and opts.on_unavailable then
+        st.speaker = speaker
         opts.on_unavailable(r.error)
+        if st.speaker == speaker then
+          st.speaker = nil
+        end
       end
       return
     end
@@ -268,7 +310,7 @@ function M.tick(dt)
     st.timer = st.timer - (dt or 0)
     if st.timer <= 0 then
       if st.phase == "waiting" then
-        viber.say("Não percebi. Tenta outra vez.")
+        M.say("Não percebi. Tenta outra vez.")
       end
       M.cancel()
     end

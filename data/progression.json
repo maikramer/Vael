@@ -16,66 +16,82 @@
   "skills": [
     {
       "id": "vitality1",
-      "label": "Vitalidade I (+20 HP)",
+      "label": "Vitalidade I (+2 Vitalidade)",
       "requires": "",
       "effects": {
-        "max_hp": 20
+        "vitality": 2
       }
     },
     {
       "id": "strength1",
-      "label": "Força I (+6 dano)",
+      "label": "Força I (+2 Força)",
       "requires": "",
       "effects": {
-        "damage": 6
+        "strength": 2
       }
     },
     {
       "id": "agility1",
-      "label": "Agilidade I (+10% velocidade)",
+      "label": "Agilidade I (+4 Agilidade)",
       "requires": "",
       "effects": {
-        "speed": 0.1
+        "agility": 4
       }
     },
     {
       "id": "precision1",
-      "label": "Precisão I (+8% crítico)",
+      "label": "Precisão I (+4 Precisão)",
       "requires": "",
       "effects": {
-        "crit": 0.08
+        "precision": 4
       }
     },
     {
       "id": "vitality2",
-      "label": "Vitalidade II (+30 HP)",
+      "label": "Vitalidade II (+3 Vitalidade)",
       "requires": "vitality1",
       "effects": {
-        "max_hp": 30
+        "vitality": 3
       }
     },
     {
       "id": "strength2",
-      "label": "Força II (+10 dano)",
+      "label": "Força II (+3 Força)",
       "requires": "strength1",
       "effects": {
-        "damage": 10
+        "strength": 3
       }
     },
     {
       "id": "agility2",
-      "label": "Agilidade II (+15% velocidade)",
+      "label": "Agilidade II (+6 Agilidade)",
       "requires": "agility1",
       "effects": {
-        "speed": 0.15
+        "agility": 6
       }
     },
     {
       "id": "precision2",
-      "label": "Precisão II (+10% crítico)",
+      "label": "Precisão II (+5 Precisão)",
       "requires": "precision1",
       "effects": {
-        "crit": 0.1
+        "precision": 5
+      }
+    },
+    {
+      "id": "spirit1",
+      "label": "Espírito I (+3 Espírito: roubo de vida)",
+      "requires": "vitality1",
+      "effects": {
+        "spirit": 3
+      }
+    },
+    {
+      "id": "spirit2",
+      "label": "Espírito II (+4 Espírito: execução e cantil)",
+      "requires": "spirit1",
+      "effects": {
+        "spirit": 4
       }
     },
     {

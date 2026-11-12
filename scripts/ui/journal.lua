@@ -105,6 +105,11 @@ function M.bag_click(id)
   elseif result == "off" then
     sfx("ui")
     viber.toast("Guardado: " .. (def.label or id))
+  elseif result == "blocked" then
+    -- Requisito de atributo do `data/items.json` (ex.: machado exige Força 7).
+    -- Sem esta mensagem o clique não fazia nada e o jogador não sabia porquê.
+    sfx("error")
+    viber.toast("Falta: " .. (def.requires_text or def.requires or "atributo"))
   elseif def.desc and def.desc ~= "" then
     viber.toast(def.desc)
   end
@@ -142,6 +147,43 @@ local function objective_line(def, state)
 end
 
 local last = {}
+local last_attributes
+
+-- Linha de atributos/derivadas no topo da aba Talentos. O `bevy_gauge`
+-- (`src/stats.rs`) é a fonte: trocar um talento de Força mexe no dano, no
+-- empurrão e no crítico sem esta função recalcular nada.
+local function publish_attributes()
+  if type(rules.stat_sheet) ~= "function" then
+    return
+  end
+  local sheet = rules.stat_sheet()
+  if type(sheet) ~= "table" then
+    return
+  end
+  local attrs = sheet.attributes or {}
+  local stats = sheet.stats or {}
+  local function round(value)
+    return math.floor((tonumber(value) or 0) + 0.5)
+  end
+  local attributes = string.format(
+    "FOR %d · DES %d · VIT %d · PRE %d · ESP %d",
+    round(attrs.strength), round(attrs.agility), round(attrs.vitality),
+    round(attrs.precision), round(attrs.spirit))
+  local derived = string.format(
+    "Dano +%d · Vida +%d · Vel +%d%% · Crít +%d%%",
+    round(stats.damage), round(stats.max_hp),
+    round((tonumber(stats.speed) or 0) * 100),
+    round((tonumber(stats.crit) or 0) * 100))
+  -- O refresh corre a cada frame com o menu aberto; só mexe na UI quando o
+  -- texto muda (o `stat_sheet` em si é uma leitura barata do snapshot).
+  local signature = attributes .. "\1" .. derived
+  if last_attributes == signature then
+    return
+  end
+  last_attributes = signature
+  viber.ui.set("talent.attributes", attributes)
+  viber.ui.set("talent.derived", derived)
+end
 
 local function publish(name, rows)
   local parts = {}
@@ -213,9 +255,15 @@ function M.refresh()
       local gear = rules.gear()
       local slot = gear.slot_of(id)
       local equip, tag = "", ""
+      local needs = slot and gear.requirement_text(id) or nil
+      local met = not needs or gear.requirement_met(id)
       if slot and count > 0 then
         if gear.is_equipped(id) then
           equip, tag = "equipped", "equipado"
+        elseif not met then
+          -- Requisito de atributo (ex.: machado exige Força 7). A célula
+          -- mostra o que falta em vez de prometer "equipar" e falhar.
+          equip, tag = "locked", "requer " .. needs
         else
           equip, tag = "equippable", "equipar"
         end
@@ -225,6 +273,9 @@ function M.refresh()
       local tip = (item.label or id) .. " ×" .. count
       if item.desc and item.desc ~= "" then
         tip = tip .. " — " .. item.desc
+      end
+      if slot and not met then
+        tip = tip .. " · Requer " .. needs
       end
       bag[#bag + 1] = {
         id = id,
@@ -265,6 +316,7 @@ function M.refresh()
     }
   end
   publish("skills", skills)
+  publish_attributes()
 end
 
 return M

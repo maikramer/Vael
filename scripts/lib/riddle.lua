@@ -158,10 +158,10 @@ function M.ask(id, on_solved)
   end
   local say = viber.load("ui/say.lua")
   if not decide.ready() then
-    viber.say("O santuário espera uma voz, mas o vento leva-a.")
+    say.say("O santuário espera uma voz, mas o vento leva-a.")
     return false
   end
-  viber.say(r.prompt)
+  say.say(r.prompt)
   return say.ask({
     prompt = r.prompt,
     example = r.example,
@@ -173,16 +173,16 @@ function M.ask(id, on_solved)
       if ok then
         M.mark_solved(id)
         M.reward(id)
-        viber.say(r.solved or "O santuário aquieta-se.")
+        say.say(r.solved or "O santuário aquieta-se.")
         if on_solved then
           on_solved()
         end
       else
-        viber.say(hint or r.hint or "Não te ouvi.")
+        say.say(hint or r.hint or "Não te ouvi.")
       end
     end,
     on_cancel = function()
-      viber.say("O santuário continua à espera.")
+      say.say("O santuário continua à espera.")
     end,
   })
 end

@@ -123,7 +123,7 @@ O registo vive em módulo (sessão), com cap de 32 entradas. O juiz filtra por
 
 ## QA
 
-- `viber analyze world.xml` — exit 0.
+- `viber analyze world.bsn` — exit 0.
 - `judge.self_test()` — `true` (ordem certa, trocada, falta uma, proibido,
   nada feito).
 - No bridge, com o modelo no loop: `correct got=3/3 order=true model=true`;

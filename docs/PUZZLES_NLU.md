@@ -96,7 +96,7 @@ reais com [F]. No fim, o jogador diz o nome de **um** dos lugares. O bloco
 
 ## QA
 
-- `viber analyze world.xml` — exit 0.
+- `viber analyze world.bsn` — exit 0.
 - `riddle.self_test()` — `true` (lobos vs sombra, três oferendas completas e
   incompletas, ordem trocada).
 - Teste ao vivo dos três santuários requer a cena `main`; ficou pendente por

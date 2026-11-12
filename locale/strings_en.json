@@ -206,21 +206,23 @@
   "O Vale": "The Vale",
   "Material de forja.": "Forging material.",
   "Cura 35 e limpa veneno, queimadura e gelo. [3]": "Heals 35 and clears poison, burn and frost. [3]",
-  "Arma: golpes lentos e pesados (38 de dano).": "Weapon: slow, heavy blows (38 damage).",
-  "Arma: 34 de dano, +5% crítico.": "Weapon: 34 damage, +5% crit.",
-  "Armadura: −15% de dano recebido, +15 de vida.": "Armour: −15% damage taken, +15 health.",
-  "Armadura: −8% de dano, +8% velocidade, queimadura dura metade.": "Armour: −8% damage, +8% speed, burn lasts half as long.",
+  "Arma: golpes lentos e pesados (38 de dano). Requer Força 7.": "Weapon: slow, heavy blows (38 damage). Requires Strength 7.",
+  "Arma: 34 de dano, +5% crítico. Requer Precisão 7.": "Weapon: 34 damage, +5% crit. Requires Precision 7.",
+  "Armadura: −15% de dano recebido, +2 Vitalidade (+20 vida).": "Armour: −15% damage taken, +2 Vitality (+20 health).",
+  "Armadura: −8% de dano, +3 Agilidade (velocidade e ataque), queimadura dura metade.": "Armour: −8% damage, +3 Agility (speed and attack), burn lasts half as long.",
   "Amuleto: +25 de vida, veneno dura metade.": "Charm: +25 health, poison lasts half as long.",
-  "Amuleto: +6% crítico, 25% de dar choque no golpe.": "Charm: +6% crit, 25% chance to shock on hit.",
+  "Amuleto: +3 Precisão (+6% crítico), 25% de dar choque no golpe.": "Charm: +3 Precision (+6% crit), 25% chance to shock on hit.",
   "Amuleto: +8 de dano, 4% de roubo de vida.": "Charm: +8 damage, 4% lifesteal.",
-  "Vitalidade I (+20 HP)": "Vitality I (+20 HP)",
-  "Força I (+6 dano)": "Strength I (+6 damage)",
-  "Agilidade I (+10% velocidade)": "Agility I (+10% speed)",
-  "Precisão I (+8% crítico)": "Precision I (+8% crit)",
-  "Vitalidade II (+30 HP)": "Vitality II (+30 HP)",
-  "Força II (+10 dano)": "Strength II (+10 damage)",
-  "Agilidade II (+15% velocidade)": "Agility II (+15% speed)",
-  "Precisão II (+10% crítico)": "Precision II (+10% crit)",
+  "Vitalidade I (+2 Vitalidade)": "Vitality I (+2 Vitality)",
+  "Força I (+2 Força)": "Strength I (+2 Strength)",
+  "Agilidade I (+4 Agilidade)": "Agility I (+4 Agility)",
+  "Precisão I (+4 Precisão)": "Precision I (+4 Precision)",
+  "Vitalidade II (+3 Vitalidade)": "Vitality II (+3 Vitality)",
+  "Força II (+3 Força)": "Strength II (+3 Strength)",
+  "Agilidade II (+6 Agilidade)": "Agility II (+6 Agility)",
+  "Precisão II (+5 Precisão)": "Precision II (+5 Precision)",
+  "Espírito I (+3 Espírito: roubo de vida)": "Spirit I (+3 Spirit: life steal)",
+  "Espírito II (+4 Espírito: execução e cantil)": "Spirit II (+4 Spirit: execute and flask)",
   "Cantil fundo (+1 carga de cura)": "Deep flask (+1 healing charge)",
   "Baluarte (−15% dano recebido)": "Bulwark (−15% damage taken)",
   "Sede de sangue (6% roubo de vida)": "Bloodthirst (6% lifesteal)",
@@ -232,7 +234,12 @@
   "Duelista (críticos ×2,5)": "Duelist (crits ×2.5)",
   "Comprar poção": "Buy potion",
   "Comprar antídoto": "Buy antidote",
-  "Comprar bomba": "Buy bomb"
+  "Comprar bomba": "Buy bomb",
+  "A pedra ergue-se: uma semente de canção!": "The stone rises: a song seed!",
+  "A pedra que canta guarda uma semente!": "The singing stone holds a seed!",
+  "Escondida onde ninguém olha: uma semente de canção!": "Hidden where no one looks: a song seed!",
+  "Uma semente de canção!": "A song seed!",
+  "O anel ressoa inteiro: semente de canção!": "The whole ring resonates: a song seed!"
  },
  "patterns": [
   [
@@ -270,6 +277,10 @@
   [
    "^Guardado: (.+)$",
    "Stowed: %1"
+  ],
+  [
+   "^Falta: (.+)$",
+   "Requires: %1"
   ],
   [
    "^Poção usada %(%+(%d+) HP%)$",
@@ -466,6 +477,22 @@
   [
    "^(.+) ×(%d+) — (.+)$",
    "%1 ×%2 — %3"
+  ],
+  [
+   "^(.+) — semente (%d+)/(%d+): %+1 PONTO DE TALENTO!$",
+   "%1 — seed %2/%3: +1 TALENT POINT!"
+  ],
+  [
+   "^(.+) %((%d+) na bolsa%)$",
+   "%1 (%2 in the pouch)"
+  ],
+  [
+   "^(%d+) HITS$",
+   "%1 HITS"
+  ],
+  [
+   "^%[dev%] (.+)$",
+   "[dev] %1"
   ]
  ]
 }

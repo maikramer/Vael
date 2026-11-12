@@ -37,7 +37,7 @@ local function say(lines, fallback, remaining)
     text = fallback
   end
   text = text:gsub("{remaining}", tostring(remaining or 0))
-  viber.say(text)
+  talk.say(text)
   -- Balão aberto: 1/2/V são da conversa, não da hotbar/equipamento.
   viber.ui.set("dialogue.until", viber.time() + 0.75)
 end
@@ -109,7 +109,7 @@ function on_update(_dt)
     local p = rules.quest_parley(id)
     local d1_ready = decide.ready()
     if p and p.report and d1_ready then
-      viber.say(p.report.prompt or "Diz-me o que encontraste.")
+      talk.say(p.report.prompt or "Diz-me o que encontraste.")
       talk.ask({
         prompt = p.report.prompt,
         example = p.report.example,
@@ -120,7 +120,7 @@ function on_update(_dt)
           if ok then
             say(def and def.lines_complete, "Entregue.", 0)
           else
-            viber.say(msg or p.report.hint or "Não te ouvi.")
+            talk.say(msg or p.report.hint or "Não te ouvi.")
           end
         end,
         on_unavailable = function()
@@ -131,7 +131,7 @@ function on_update(_dt)
           end
         end,
         on_cancel = function()
-          viber.say("Quando quiseres contar, estou aqui.")
+          talk.say("Quando quiseres contar, estou aqui.")
         end,
       })
     else
@@ -144,6 +144,6 @@ function on_update(_dt)
   elseif state == "active" then
     say(def and def.lines_progress, "Ainda não.", remaining)
   else
-    viber.say("Já tratámos disso.")
+    talk.say("Já tratámos disso.")
   end
 end

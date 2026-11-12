@@ -34,7 +34,7 @@ local M = {}
 
 -- Linhas do Rust (`shop_rows`: id/label/price/stock/status/selling) já vêm
 -- ordenadas; aqui só se formata o texto da UI. O stock só aparece nas linhas
--- de venda e o prefixo "+" é o que o ui/menu.lua usa para distinguir venda
+-- de venda e o prefixo "+" é o que a UI bevy_pf usa para distinguir venda
 -- de compra.
 local function rows()
   local out = {}
@@ -146,7 +146,7 @@ local function trade(action, id)
   refresh()
 end
 
--- Compra/venda direta para a UI (ui/menu.lua). O caminho por
+-- Compra/venda direta para a UI (UI bevy_pf). O caminho por
 -- `viber.ui.action` depende de quem carregou o módulo ser o dono da ação; em
 -- interiores sem mercador a fila nunca era drenada. A UI autoload chama
 -- isto e a negociação funciona em qualquer cena, no frame do clique.
@@ -157,7 +157,7 @@ function M.update(dt)
   -- isto a linha ficava "pronta" depois de o ouro acabar, até ao clique
   -- seguinte — e o ouro de um abate nunca destrancava uma compra.
   refresh()
-  -- Os CLIQUES das linhas são roteados pelo ui/menu.lua
+  -- Os CLIQUES das linhas são roteados pela UI bevy_pf
   -- (`shop-{id}` → `viber.ui.action`). Várias entidades `merchant.lua` na
   -- mesma cena partilham ESTA fila (uma por path): a primeira drena, a
   -- segunda vê-a vazia — uma compra não cobra duas vezes.

@@ -85,6 +85,28 @@ pipeline refixa o `_refined` **antes** do simplify com
 unwrap fica em ~160 s e o atlas em ilhas grandes (medido a 2026-11-11). Não
 baixar o orçamento para 150k: menos faces por ilha = mosaico.
 
+## Ícones de talento (text2d)
+
+A árvore de talentos do menu lê `public/assets/icons/talent_<id>.png` (19
+nós). O manifesto `talent-icons.json` (nesta pasta) é a proveniência:
+prompt de iluminura/gravura, seed e tamanho por nó. Não usa o bloco `icons:`
+do `gameassets` (que prefixa “flat design” e perde as seeds); corre-se com:
+
+```bash
+source ~/.config/vramd/remote.env
+cd assets
+text2d generate-batch talent-icons.json --transparent \
+  --no-group-offload --gpu remote --vramd-priority batch
+```
+
+O `--no-group-offload` é necessário enquanto o worker remoto tiver o
+`Flux3Transformer2DModel` a rebentar no group offload (`does not support
+len()`); o modelo int4 cabe na GPU do servidor sem offload.
+
+Cada item fixa `width/height = 512` e `steps = 4`; sem `--force`, um PNG já
+existente é skipped. Para re-rolar um ícone, muda a seed desse item e apaga o
+PNG. Os PNGs entram por Git LFS.
+
 ## Como o Vael consome isto
 
 O `config.yaml` do jogo declara `assets.roots: assets/public`. A pasta do

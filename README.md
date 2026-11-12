@@ -10,13 +10,14 @@ mundo original já têm runtime, incluindo as tags `EngineConfig`
 
 ## Só estático
 
-`world.xml` + `world/**` + `world.data/` **são o mundo** — estático
+`world.bsn` + `world/**/*.bsn` + `world.data/` **são o mundo** — estático
 (`static="true"`), a fonte da verdade: terreno final pré-gerado
 (`world.data/terrain.ahgt`), geradores resolvidos em grupos `spawn/…`
 editáveis (receita `<Scatter>` ao lado), vegetação em `.vinst`. É o que corre
-e o que se edita (agentes e ViberEditor, com paridade total via
-`viber::scene`). Não há fonte procedural: foi convertida no sítio e apagada
-(2026-10-14; fica no histórico do git).
+e o que se edita no Jackdaw; `viber analyze`/`viber scene lint` e `viber bsn`
+leem `.bsn`. O `world.xml` e os módulos `.xml` ficam como legado da CLI de
+cena (`viber scene`/`tool`/`terrain`). Não há fonte procedural:
+foi convertida no sítio e apagada (2026-10-14; fica no histórico do git).
 
 Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
 `../Viber/AGENTS.md`, secção "Mundos estáticos + edição por agentes".
@@ -25,11 +26,11 @@ Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
 
 ```bash
 install -m 755 ../Viber/scripts/viber-latest.sh ~/.local/bin/viber   # uma vez
-cd ../Viber && cargo run -- run ../Vael/world.xml
-cd ../Viber && cargo run -- analyze ../Vael/world.xml   # headless + cobertura
+cd ../Viber && cargo run -- run ../Vael/world.bsn
+cd ../Viber && cargo run -- analyze ../Vael/world.bsn   # headless + cobertura
 ```
 
-Com o CLI instalado e o cwd nesta pasta: `viber run` (procura `world.xml`).
+Com o CLI instalado e o cwd nesta pasta: `viber run` (procura `world.bsn`).
 O wrapper segue o checkout e só recompila quando as fontes mudam; não correr
 `./install.sh` por cima (substitui o wrapper). Fluxo completo (LFS, assets,
 editor): [`AGENTS.md`](AGENTS.md).
@@ -43,8 +44,8 @@ viber run --scene main --entry dev
 ```
 
 Cai directo em `main`, com o HUD ligado e o estado de um **Novo Jogo** (sem
-save carregado). A entrada `dev` de `world.xml` é o sinal lido por
-`scripts/lib/dev.lua`; o título (`ui/title.lua`) e o prólogo
+save carregado). A entrada `dev` de `world.bsn` é o sinal lido por
+`scripts/lib/dev.lua`; o título (`src/ui/screens.rs`) e o prólogo
 (`game/story.lua`) saltam-se sem tocar na engine. Detalhe, efeitos no save e
 o que continua a tocar: [`docs/DEBUG.md`](docs/DEBUG.md).
 
@@ -153,7 +154,8 @@ altar, obelisco, mojão) com loot próprio (`prop-*`).
   `@chave` em `locale/{pt,en}.json`. `tools/i18n_extract.py` lista o que falta.
 - **Opções**: volume por bus (geral, música, efeitos, ambiente).
 - **Gate local**: `tools/check.sh` (lint de conteúdo, sintaxe Lua, `analyze`,
-  `scene lint`).
+  `scene lint`, traduções EN obrigatórias); `tools/check.sh --full` corre
+  também os testes do crate `vael`.
 
 ## Fronteira engine/jogo
 
@@ -169,9 +171,9 @@ todas em Lua:
 | dash/cura/radial/bomba/guarda | `scripts/game/abilities.lua` + `lib/rules.lua` |
 | colheita (golpes, loot, XP) | `scripts/game/harvest.lua` |
 | arma na mão (attach ao osso) | `scripts/game/equipment.lua` |
-| quests, cofre, XP, veneno, HUD | `scripts/lib/rules.lua` |
-| talentos/passivas | `scripts/ui/journal.lua` + `lib/rules.lua` |
-| viagem/Nota/mapa | `scripts/game/travel.lua` + `lib/landmarks.lua` |
+| quests, cofre, XP, veneno, vitais | `scripts/lib/rules.lua` |
+| talentos/passivas | `src/ui/screens.rs` (`skill_rows`) + `lib/rules.lua` |
+| viagem/Nota/mapa | `src/ui/map.rs` + `src/ui/waypoint.rs` + `lib/landmarks.lua` |
 | loja e despojos | `scripts/game/shop.lua`, `game/loot.lua` |
 | diálogo por grafo | `scripts/townsfolk.lua` + `dialogues/*.json` |
 | IA/FSM das criaturas | `scripts/lib/fsm.lua` + `enemies/`, `bosses/` |
@@ -193,42 +195,62 @@ descomprime meshopt/KTX2 à leitura.
 
 ## Estrutura
 
-- `world.xml` — **raiz do mundo (estático, fonte da verdade)**:
-  `<world static="true">`, `<Include src="/world/…">`, terreno no heightmap
-  final `world.data/terrain.ahgt`
-- `world/**.xml` — módulos do mundo (um ficheiro por include, cada um marcado
+- `world.bsn` — **raiz do mundo (estático, fonte da verdade)**:
+  `<world static="true">`, módulos `<Include>` em `world/**/*.bsn`, terreno no
+  heightmap final `world.data/terrain.ahgt`. O `.xml` legado fica ao lado
+- `world/**/*.bsn` — módulos do mundo (um ficheiro por include, cada um marcado
   `static="true"`): cidades, criaturas, landmarks, `spawn/…` (saída dos
   geradores), vegetação com `instances="world.data/veg/NNN.vinst"`, interiores
 - `world.data/` — dados binários: `terrain.ahgt` (+ `.paint`), `veg/*.vinst`,
-  `bake.json` (documento da conversão — World Overview do editor)
-- `scenes/menu.xml` + `scenes/menu.data/terrain.ahgt` — cena de arranque
+  `bake.json` (documento da conversão — World Overview)
+- `scenes/menu.bsn` + `scenes/menu.data/terrain.ahgt` — cena de arranque
   (`project.start-scene`): acampamento pequeno atrás do título. As salas
-  continuam em `scenes/interiors/`
+  continuam em `scenes/interiors/*.bsn`
 - `quests/*.json` + `quests/index.json` — definições das 37 quests (lidas por
   `scripts/lib/rules.lua`; campos: `id, npc, biome, title, lines_*, objective, rewards`)
 - `dialogues/*.json` — grafos de diálogo ambientais (lidos por `scripts/townsfolk.lua`)
 - `data/items.json`, `data/landmarks.json`, `data/progression.json` — itens/loja,
   marcos da Nota e progressão (XP/talentos), editáveis como conteúdo
-- `editor/plugins/*.lua` — plugins de autoria do Vael no ViberEditor; o editor
-  em si não tem regras de jogo (`Viber/editor/PLUGINS.md`)
+- `editor/` — editor de conteúdo sobre Jackdaw (`vael-editor`): painéis de
+  quests, diálogos, itens, marcos, progressão e validação; ver
+  [`editor/README.md`](editor/README.md). `content/` (`vael-content`) tem os
+  esquemas e as regras partilhadas com o jogo
 - `scripts/**.lua` — comportamento Luau (inimigos/bosses, colheita, POIs,
-  HUD/UI) via a API `viber.*` (`Viber/docs/LUA_API.md`)
+  quests, diálogo) via a API `viber.*` (`Viber/docs/LUA_API.md`)
 - `config.yaml` — **contrato de paths com a engine** (obrigatório; roots,
   dirs de áudio/texturas/scripts/UI, save) — `Viber/docs/ASSETS.md`
-- `ui/*.css` + `world/hud.xml`/`world/menu.xml` — HUD e menu declarativos
-- `qa-*.xml` / `ui-showcase.xml` — mundos QA, também estáticos (incluem
-  módulos partilhados de `world/**`)
+- `ui/*.xaml` + `ui/*.css` — HUD, menu, título, morte e mapa em bevy_pf;
+  `world/menu.xml`/`title.xml`/`death.xml` ficam só para o estado dos modais
+- `qa-*.bsn` / `ui-showcase.bsn` — mundos QA, também estáticos (incluem
+  módulos partilhados de `world/**/*.bsn`)
 
 ## Editar
 
 Por operações — `viber scene` / `viber tool` / `viber terrain` (offline ou
-`--live`) ou o ViberEditor. No editor, a autoria de conteúdo vive nos plugins
-do projeto (`Vael/editor/plugins/`): quests, diálogos, itens/loja, marcos,
-progressão e o grip das armas. Re-gerar a partir do exemplo original do motor TS
-deixou de ser o fluxo: produz um
-mundo procedural que teria de ser convertido (`viber bake`) e substituiria o
-estático editado. GLBs novos entram por `assets/` (`gameassets resume`);
-`viber analyze` confirma que os URLs resolvem.
+`--live`). A autoria do mundo e das cenas é no **Jackdaw oficial**, com este
+projeto já preparado (`jackdaw.toml`):
+
+```bash
+jd open .                 # abre o Vael no editor oficial
+jd build                  # reconstrói o schema do jogo (Play/PIE)
+```
+
+As extensões do Vael (terreno voxel, painéis de conteúdo) são projetos em
+`../bevy_extensions/extensions/`; empacotam-se e instalam-se como `.jdext`
+assinado:
+
+```bash
+cd ../bevy_extensions/extensions/bevy_voxel_terrain_jackdaw
+jd build && jd extension pack
+jd extension install bevy_voxel_terrain_jackdaw-*-x86_64-unknown-linux-gnu.jdext --trust-publisher
+```
+
+O editor abre `world.bsn` e as cenas `scenes/**/*.bsn`; a CLI de cena
+(`viber scene`/`tool settle`/`scatter`) continua XML e edita os legados.
+Re-gerar a partir do exemplo original do motor TS deixou de ser o fluxo:
+produz um mundo procedural que teria de ser convertido (`viber bake`) e
+substituiria o estático editado. GLBs novos entram por `assets/`
+(`gameassets resume`); `viber analyze` confirma que os URLs resolvem.
 
 ## Fila aberta (na engine, não neste mundo)
 

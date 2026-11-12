@@ -1,6 +1,8 @@
 # AGENTS.md — Vael
 
-Jogo. A engine é o checkout irmão `../Viber` (editor em `../Viber/editor`).
+Jogo. A engine é o checkout irmão `../Viber`. O editor oficial é o **Jackdaw
+0.20 instalado**: `jd open .` abre este projeto; as extensões do Vael entram
+como `.jdext` assinados. O crate `editor/` é legado (já não é o fluxo).
 As ferramentas de geração são o checkout irmão `../AiGameKit` (CLIs no PATH).
 Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 `../CelerAI`. Este ficheiro é curto de propósito. O contrato da engine está em
@@ -12,7 +14,8 @@ Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 |----------|--------|
 | `.` (Vael) | Mundo, scripts, quests, cenas, pool `assets/` |
 | `../Viber` | Bug ou API em falta na engine. `cargo test` lá. `viber run` a partir desse checkout reconstrói |
-| `../Viber/editor` | `cargo run --manifest-path ../Viber/editor/Cargo.toml -- .` |
+| `editor/` | **Legado**: editor próprio sobre Jackdaw. O fluxo é o Jackdaw oficial (`jd open .`) + extensões `.jdext` |
+| `../bevy_extensions` | Crates `bevy_ext_*`/`bevy_voxel_terrain` e as extensões oficiais em `extensions/` |
 | `../AiGameKit` | Gerar ou corrigir uma tool. Não abras o monorepo no workspace por defeito |
 | `../CelerAI` | Modelos `models/{nlu,d1}` (LFS) e crates de inferência. Sem ele a engine não compila nem os scripts carregam IA |
 
@@ -26,7 +29,7 @@ O jogo arranca pelo crate `vael`:
 
 ```bash
 CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
-  world.xml --scene main --entry dev --bridge 15706
+  world.bsn --scene main --entry dev --bridge 15706
 ```
 
 `gameplay:false` desliga IA/vitais/projéteis da engine; `player_camera:true`
@@ -38,13 +41,15 @@ trabalho em curso (regen/assets); não o tocar por arrasto.
 
 ## Só estático
 
-`world.xml` (`<world static="true">`) + `world/**` + `world.data/` são o mundo.
-As poses do XML são finais. O runtime não assenta props nem corre
-`<StaticSpawner>` / `place` (erro de parse). Única geração em runtime:
-`<DynamicSpawner>` (criaturas).
+`world.bsn` (árvore `<world static="true">`) + `world/**/*.bsn` +
+`world.data/` são o mundo. O `world.xml` e os módulos `.xml` ficam como
+legado da CLI de cena. As poses do `.bsn` são finais. O runtime não assenta
+props nem corre `<StaticSpawner>` / `place` (erro de parse). Única geração em
+runtime: `<DynamicSpawner>` (criaturas).
 
-Editar com `viber scene` / `viber tool` / `viber terrain` (offline ou `--live`)
-ou o editor. Hand-editar uma pose à espera que a engine a ajuste não funciona.
+Editar com `viber scene` / `viber tool` / `viber terrain` (offline ou `--live`,
+nos `.xml` legados) ou no **Jackdaw oficial** (`jd open .`; cenas `.bsn`).
+Hand-editar uma pose à espera que a engine a ajuste não funciona.
 Depois de pincéis: `viber tool settle`. Árvores e dressing:
 `viber tool scatter`, não um re-bake. Vegetação `.vinst` reescreve-se com
 `viber tool scatter` e não entra no undo — git ou re-scatter.
@@ -55,32 +60,36 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 
 | Caminho | O que é |
 |---------|---------|
-| `world.xml` | raiz estática e os `<Include src="/world/…">` |
-| `world/**.xml` | cidades, criaturas, landmarks, `spawn/…`, HUD |
-| `scenes/menu.xml` | cena de arranque: acampamento pequeno atrás do título |
-| `scenes/interiors/` | salas (cenas próprias, sem terreno) |
+| `world.bsn` | raiz estática e os módulos `<Include>` (`world/**/*.bsn`) |
+| `world/**/*.bsn` | cidades, criaturas, landmarks, `spawn/…`, HUD (fonte; o `.xml` legado fica ao lado) |
+| `scenes/menu.bsn` | cena de arranque: acampamento pequeno atrás do título |
+| `scenes/interiors/` | salas `.bsn` (cenas próprias, sem terreno) |
 | `quests/*.json` | 37 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
 | `dialogues/*.json` | grafos ambientais; lidos por `scripts/townsfolk.lua` |
 | `data/*.json` | itens/loja, marcos, progressão, enigmas (`riddles.json`) e regras do juiz (`verdicts.json`); lidos por `rules.lua`/`shop.lua`/`landmarks.lua`/`riddle.lua`/`judge.lua` |
-| `editor/plugins/*.lua` | autoria do jogo no ViberEditor (quests, diálogos, itens, marcos, progressão, grip) |
+| `editor/` + `content/` | **Legado**: App própria `vael-editor` (testes/painéis antigos) e esquemas `vael-content`. O fluxo é o Jackdaw oficial (`jd open .`; `jackdaw.toml` fixa `package = "vael"`/`plugin = "VaelPlugin"`) com as extensões `.jdext` em `../bevy_extensions/extensions/` |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
 | `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `viber.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`viber.decision`) |
 | `ui/*.css` | HUD e menu |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
 | `docs/AUDIO.md` | direção sonora (Coro de Vael), layers por bioma, manifests e gate de costura; regen com `assets/regen_audio.py` |
+| `docs/FLORA.md` | árvores procedurais (`bevy_flora`): estações `prop-flora` no XML, pools por espécie, colheita provisória e `tools/flora_migrate.py` |
 | `config.yaml` | `assets.roots: assets/public` |
-| `qa-*.xml` | mundos QA. Incluem `world/**` — editar o módulo muda o mundo |
+| `src/environment.rs` | **dono do céu/tempo** (`bevy_elements`): relógio astronómico, sol/lua/estrelas, clima, nuvens, chuva/neve e relâmpagos. Ponte `Weather` → `WeatherState` (chão molhado, áudio de chuva, vento das árvores), trovão → SFX, visibilidade → névoa e queries em `viber.vael.env_info()`. Gate `VAEL_ELEMENTS=0`. QA: `VAEL_START_HOUR`/`VAEL_START_WEATHER` |
+| `docs/LIGHTING.md` | como o céu/exposição/névoa se ligam hoje e o que ficou na engine |
+| `qa-elements.bsn` | **cópia** do `world.bsn` para QA do ambiente (corre-se sem escolher cena; save `qa-elements` isolado) |
+| `qa-*.bsn` | mundos QA. Incluem `world/**/*.bsn` — editar o módulo muda o mundo |
 
 ## Cenas
 
-Cada sala é `scenes/interiors/<sala>.xml` com `<SceneEntry name="from-town">`
+Cada sala é `scenes/interiors/<sala>.bsn` com `<SceneEntry name="from-town">`
 e `<ScenePortal name="exit" target="main" entry="@back" auto-radius="1.6">`.
 Portas da vila: `world/cities/discordia/portals.xml`. Jogador, câmara e HUD
-são autoloads (`world/autoload/*.xml`). Sala nova:
+são autoloads (`world/autoload/*.bsn`). Sala nova:
 `viber scene new-scene interiors/<nome> --interior "20 16"` mais um portal
 na vila. `viber scene lint` valida alvos.
 
-A cena de menu (`scenes/menu.xml`) é o `project.start-scene` do `config.yaml`:
+A cena de menu (`scenes/menu.bsn`) é o `project.start-scene` do `config.yaml`:
 sem `--scene`, o `viber run` arranca nela em vez de `main`. É só o acampamento
 (o terreno pequeno `scenes/menu.data/terrain.ahgt`) atrás do título; `Novo
 Jogo`/`Continuar` trocam para `main`, e a morte/botão "Ecrã de título" voltam
@@ -118,18 +127,29 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
   `to_paint` segue a fórmula (~270k a 2048); não baixar para 150k (ilhas
   minúsculas).
 - Depois de editar: `viber analyze` (exit 1 em erro).
+- O import do editor Jackdaw 0.20.x rejeita a requirement exata de Bevy: o
+  gate sonda `0.20.0` e `0.20.MAX`, e `bevy = "=0.20.1"` não admite nenhum.
+  Manter `bevy = "0.20.1"` (como no `../Viber`); o `jackdaw.toml` grava
+  `bevy = "0.20"`. O `main.rs` aceita `--jackdaw-extract-schema` (descoberta
+  de componentes do `jd`).
+- Céu e tempo são do `bevy_elements` (`src/environment.rs`): NÃO repor
+  `<Sky>`/`<DayCycle>`/`<Weather>` nem `DirectionalLight`/`AmbientLight`
+  autorais no `world/environment.bsn`/`scenes/menu.bsn` — a engine conduziria
+  um segundo sol/céu. Os `qa-*.bsn` antigos ainda os declaram; correr com
+  `VAEL_ELEMENTS=0`. A exposição automática da engine está cortada no
+  `config.yaml` (é do crate).
 
 ## Correr
 
 ```bash
-cd ../Viber && cargo run -- run ../Vael/world.xml
-cd ../Viber && cargo run -- analyze ../Vael/world.xml
+cd ../Viber && cargo run -- run ../Vael/world.bsn
+cd ../Viber && cargo run -- analyze ../Vael/world.bsn
 viber run          # cwd nesta pasta: binário do PATH, não recompila ../Viber
 viber run --scene main --entry dev   # debug: directo ao jogo, sem título/prólogo
 ```
 
 Arranque directo: `--scene main` salta a cena de menu e `--entry dev` (a
-`<SceneEntry name="dev">` de `world.xml`) faz `scripts/lib/dev.lua` marcar
+`<SceneEntry name="dev">` de `world.bsn`) faz `scripts/lib/dev.lua` marcar
 `skip_intro`; `title.lua` e `story.lua` saltam o véu e o prólogo. É por
 execução (não grava modo nenhum); o autosave seguinte fica com
 `story_prologo` marcado. Detalhe: `docs/DEBUG.md`.
@@ -137,7 +157,7 @@ execução (não grava modo nenhum); o autosave seguinte fica com
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
 
 GPU remota (opcional): `source ~/.config/vramd/remote.env` aponta o `vramd` ao
-servidor (`VRAMD_REMOTE=192.168.0.201:8790`); o `gameassets resume` passa a
+servidor (`VRAMD_REMOTE=192.168.0.100:8790`); o `gameassets resume` passa a
 correr as fases GPU lá e as CPU aqui, com upload/download automático dos
 ficheiros. O servidor tem **só** `vramd` (systemd, sem Docker/AiGameKit): o
 código viaja num bundle de sessão por backend/wave e as envs são cacheadas
@@ -164,7 +184,7 @@ Quatro checkouts irmãos, cada um com o seu remoto:
 | Repo | Papel |
 |------|--------|
 | `Vael` | Mundo, quests, scripts, pool `assets/`. Binários versionados vão em Git LFS |
-| `Viber` | Engine e editor (`editor/`). `~/.local/bin/viber` é um wrapper que segue o checkout |
+| `Viber` | Engine. `~/.local/bin/viber` é um wrapper que segue o checkout |
 | `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
 | `CelerAI` | Modelos NLU/d1 (`models/`, LFS) e crates de inferência. O Viber compila-as por path-dep `../CelerAI/crates/*` |
 
@@ -178,8 +198,11 @@ falhado → corre o último binário bom e não volta a tentar até a árvore mu
 `debug`/`session` nunca compilam. `VIBER_NO_BUILD=1` salta, `VIBER_FORCE_BUILD=1`
 força. NÃO correr `./install.sh` (viber) por cima — substitui o wrapper por um
 binário fixo que deixa de ver o código. Reinstalar o wrapper:
-`install -m 755 ../Viber/scripts/viber-latest.sh ~/.local/bin/viber`. O editor:
-`cd ../Viber && ./install.sh editor`, ou `viber editor world.xml`.
+`install -m 755 ../Viber/scripts/viber-latest.sh ~/.local/bin/viber`. O editor
+oficial: `jd open .` (abre `world.bsn`/as cenas `.bsn`; a CLI de cena continua
+XML). Extensões do Vael: `bevy_extensions/extensions/` → `jd build` →
+`jd extension pack` → `jd extension install --trust-publisher`; ver
+`extensions/bevy_voxel_terrain_jackdaw/README.md`.
 
 Assets: `cd assets && gameassets resume --profile game.yaml --manifest manifests/<pack>`.
 Output em `assets/public`. Intermediários (`meshes/_intermediate`, imagens de

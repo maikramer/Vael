@@ -46,7 +46,7 @@ function on_update(dt)
     local text = table.concat(lines or {}, "\n")
     text = text:gsub("{remaining}", tostring(math.max(0, (need or 1) - (have or 0))))
     if text ~= "" then
-      viber.say(text)
+      talk.say(text)
       viber.ui.set("dialogue.until", viber.time() + 0.75)
     end
   end
@@ -121,7 +121,7 @@ function on_update(dt)
   end
   options[#options + 1] = { key = "none", description = "nenhum aviso; outra coisa" }
 
-  viber.say("O que procuras? Diz uma palavra.")
+  talk.say("O que procuras? Diz uma palavra.")
   talk.ask({
     prompt = "O que procuras?",
     example = "lobos, goblins, lenha",
@@ -133,7 +133,7 @@ function on_update(dt)
         id = pick_alias(text)
       end
       if not id then
-        viber.say("Nenhum aviso sobre isso.")
+        talk.say("Nenhum aviso sobre isso.")
         return
       end
       local state = rules.quest_state(id)
@@ -154,7 +154,7 @@ function on_update(dt)
       cycle()
     end,
     on_cancel = function()
-      viber.say("O quadro continua lá.")
+      talk.say("O quadro continua lá.")
     end,
   })
 end

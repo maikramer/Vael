@@ -1,16 +1,24 @@
 #!/usr/bin/env bash
 # Gate local do Vael: corre tudo o que valida o jogo sem abrir a janela.
 #   tools/check.sh            # a partir de qualquer pasta
+#   tools/check.sh --full     # + testes do crate `vael` (compila; ~2-3 min)
 # Sai com 1 se algum passo OBRIGATÓRIO falhar. O binário da engine não é
 # recompilado (VIBER_NO_BUILD=1): isto valida o jogo, não a engine.
 set -u
 cd "$(dirname "$0")/.."
 export VIBER_NO_BUILD=1
 fail=0
+full=0
+[ "${1:-}" = "--full" ] && full=1
 step() { printf '\n== %s ==\n' "$1"; }
 
 step "conteúdo (JSON + referências)"
 python3 tools/lint_content.py || fail=1
+
+step "esquemas do conteúdo (vael-content)"
+# Round-trip dos JSON reais + regras de validação cruzada. Não compila o
+# editor (Jackdaw) nem o jogo.
+cargo test -p vael-content --quiet || fail=1
 
 step "sintaxe Lua"
 if python3 -c 'import luaparser' 2>/dev/null; then
@@ -37,7 +45,7 @@ fi
 
 step "viber analyze"
 if command -v viber >/dev/null; then
-  viber analyze world.xml 2>&1 | grep -v '^warning: <Road>' | tail -12
+  viber analyze world.bsn 2>&1 | grep -v '^warning: <Road>' | tail -12
   [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
   step "viber scene lint"
   viber scene lint 2>&1 | tail -8
@@ -46,8 +54,18 @@ else
   echo "saltado: viber não está no PATH"
 fi
 
-step "traduções em falta (informativo)"
-python3 tools/i18n_extract.py | tail -6 || true
+step "traduções em falta"
+# Obrigatório: as frases dos scripts estão todas em locale/strings_en.json.
+# Uma frase nova sem tradução aparecia em PT no jogo em inglês.
+python3 tools/i18n_extract.py | tail -6
+[ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
+
+if [ $full -eq 1 ]; then
+  step "testes do crate vael"
+  CARGO_TARGET_DIR=../Viber/target cargo test --release -p vael --quiet 2>&1 \
+    | grep -E 'FAILED|panicked|test result' | head -20
+  [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
+fi
 
 printf '\n%s\n' "$([ $fail -eq 0 ] && echo 'OK' || echo 'FALHOU')"
 exit $fail

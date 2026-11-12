@@ -336,7 +336,15 @@ local function break_prop(st, sw)
       end,
     })
   elseif style == "fall" then
-    viber.topple(sw.id)
+    -- Árvore procedural: `viber.vael.fell_tree` (Rust) move a árvore para uma
+    -- raiz com a pose global e pede o `FellTree` do bevy_flora — toco, queda e
+    -- tronco deitado. O `viber.topple` da engine fica como fallback para
+    -- props antigos (tomba e despawna, sem toco).
+    if viber.vael and viber.vael.fell_tree then
+      viber.vael.fell_tree(sw.id)
+    else
+      viber.topple(sw.id)
+    end
   else
     viber.entity_despawn(sw.id)
   end
@@ -390,7 +398,10 @@ local function reap_saved(st)
   for key in pairs(game) do
     if type(key) == "string" and key:sub(1, 10) == "harvested." then
       local name = key:sub(11)
-      if name ~= "" and not st.reaped_names[name] then
+      -- Árvore tombada com o `bevy_flora` (`flora-fell.<nome>.*`): o restauro
+      -- é do Rust (`reap_saved`), que a deita com toco em vez de a apagar.
+      local flora_fell = name ~= "" and game["flora-fell." .. name .. ".dx"] ~= nil
+      if name ~= "" and not flora_fell and not st.reaped_names[name] then
         -- Só conta como reposto quando a entidade EXISTE nesta cena. Marcar
         -- antes de a encontrar deixava a árvore colhida de fora do save:
         -- ao entrar na cena onde ela vive, `reaped_names` já a saltava e a

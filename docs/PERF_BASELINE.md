@@ -111,5 +111,26 @@ no teleporte para a vegetação **tanto com o batch ligado como com
 regressão do batch; o A/B de frame time/draw calls fica para uma sessão
 exclusiva.
 
+## Refino Bevy 0.19/0.20 (2026-11-12, em curso)
+
+O mundo concorrente tem ~75k entidades e 455 scripts (a baseline acima tinha
+~58k); com flora ligada houve OOM de render, e com `VAEL_FLORA=0` o regime
+ainda não é comparável ao de 2026-10-21. As mudanças desta ronda são
+mensuráveis com os gates:
+
+- `VIBER_LOD_SCAN_HZ=0` — desliga o throttle de 10 Hz do scan da escada
+  (controlo); default 10 Hz.
+- `VIBER_GPU_CULLING=1` — piloto `NoCpuCulling` em malhas estáticas
+  (Vulkan); default off.
+- `VIBER_ECS_MIRROR=1` — devolve o espelho por frame de `viber.ecs` no Vael
+  (default off).
+- `VIBER_NO_CONTACT_SHADOWS=1` / `VIBER_WATER_SSR=0` — desligam os dois
+  A/B visuais que o `config.yaml` passou a ligar.
+
+O HUD Rust continua a publicar (`100/100`, `30 de ouro`) com o estado só a
+10 Hz e sem republish por frame; a colheita/quests/marcos continuam a
+funcionar com os gates em Rust. A medição A/B de frame/hitches fica para uma
+sessão sem flora/WIP concorrente.
+
 
 

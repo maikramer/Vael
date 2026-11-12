@@ -1,8 +1,8 @@
 -- lib/clock.lua: a hora do mundo para as regras do jogo.
 --
--- O Rust lê o `<DayCycle>`/`<Weather>` (recursos Bevy) e publica a resposta
+-- O Rust lê o `WorldClock`/`Weather` do `bevy_elements` e publica a resposta
 -- em `viber.vael.clock_*`; este módulo é só o embrulho fino. Sem relógio
--- (mundos QA) `hour()` é nil e é sempre dia.
+-- (mundos QA antigos) `hour()` é nil e é sempre dia.
 
 local M = {}
 

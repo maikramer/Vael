@@ -93,7 +93,7 @@ A quest completa em qualquer uma; o desfecho muda o texto e os itens.
    `required`, `final_prompt`, `final_options`, `final_answer` (ou `endings`).
 3. Criar um NPC com `script="npc/decision-quest.lua"` e
    `prop-quest_id="<id>"` (mundo ou cena).
-4. O editor e o lint já aceitam `objective.type = "decision"` e não exigem
+4. O `vael-editor` e o lint já aceitam `objective.type = "decision"` e não exigem
    `parley` (o relato é o puzzle).
 
 ## Validado ao vivo

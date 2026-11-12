@@ -165,14 +165,13 @@ function on_update(dt)
       -- ficava na mão dentro da casa/título.
       st.scene = scene
       st.grip_key, st.kind, st.lantern_kind, st.arm = nil, nil, nil, nil
-      st.tries, st.attach_t = 0, 0
+      st.tries = 0
     end
   end
   local pid = viber.player_id()
   -- O herói pode ser recriado (cena/load): reanexa quando o dono muda.
   if st.owner ~= pid then
     st.owner = pid
-    st.attach_t = 0
     st.tries = 0
   end
   if not pid then
@@ -217,7 +216,6 @@ function on_update(dt)
     actions.record("equipar", "item", ITEMS[index].kind)
     -- Reanexa no mesmo frame: o slot substitui o GLB anterior.
     st.tries = 0
-    st.attach_t = 0
     local name = ITEMS[index].name
     if ITEMS[index].kind == "sword" then
       name = rules.weapon().label or name
@@ -245,7 +243,6 @@ function on_update(dt)
   if st.grip_key ~= grip_key then
     st.grip_key = grip_key
     st.tries = 0
-    st.attach_t = 0
   end
   -- O combate lê isto: com a tocha na mão não há arma para atacar. A
   -- `viber.lantern` acende a luz da tocha (o `if` protege engines antigas
@@ -271,16 +268,14 @@ function on_update(dt)
     st.arm = arm
     viber.bone_offset("upperarm_r", arm, 0, 0)
   end
-  -- Nos primeiros frames o GLB do herói pode ainda não ter hierarchy: o
-  -- attach falhava (osso não encontrado) e nunca era repetido. Tenta de
-  -- novo durante ~5 s (10 × 0,5 s); num disco lento 2 s não chegavam.
-  if (st.tries or 0) >= 10 then
+  -- UM pedido por mudança (item, grip, dono, cena). Nos primeiros frames o
+  -- GLB do herói ainda não tem hierarquia: a engine guarda o pedido até o
+  -- osso existir (`PendingAttachments`, ~15 s). Repetir aqui despachava e
+  -- recarregava a espada a cada 0,5 s (10 vezes por troca) e avisava em
+  -- spam "osso 'hand_r' não encontrado".
+  if (st.tries or 0) >= 1 then
     return
   end
-  st.attach_t = (st.attach_t or 0) - dt
-  if st.attach_t <= 0 then
-    st.attach_t = 0.5
-    st.tries = (st.tries or 0) + 1
-    viber.attach("weapon", grip.url, grip)
-  end
+  st.tries = 1
+  viber.attach("weapon", grip.url, grip)
 end

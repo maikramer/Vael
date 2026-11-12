@@ -44,8 +44,8 @@ lá é um no-op), mas partilha a VM dos scripts — `_G.viber_dev = true` liga a
 ferramentas na sessão viva, sem reiniciar a engine:
 
 ```bash
-viber debug --world world.xml lua '_G.viber_dev = true return true'
-viber debug --world world.xml input key f1     # ou o MCP viber_input
+viber debug --world world.bsn lua '_G.viber_dev = true return true'
+viber debug --world world.bsn input key f1     # ou o MCP viber_input
 ```
 
 Não há save carregado: o estado começa limpo, como no **Novo Jogo** (o kit
@@ -55,12 +55,9 @@ fluxo normal (Continuar) — o atalho é para arranques limpos.
 ## Como funciona
 
 O sinal é o **nome da entrada de cena**, lido em Lua por
-`viber.scene_entry()`. `world.xml` declara duas entradas na mesma pose:
-
-```xml
-<SceneEntry name="spawn" translation="0 150 0" />
-<SceneEntry name="dev" translation="0 150 0" />
-```
+`viber.scene_entry()`. `world.bsn` declara duas entradas na mesma pose
+(`WorldNode` com `tag: "SceneEntry"` e os attrs `name`/`translation`):
+`spawn` e `dev`.
 
 `spawn` é a **primeira** de propósito: um `change_scene("main")` sem entrada
 (o "Novo Jogo" do título) chega por ela e não pelo modo debug. A ordem importa
@@ -70,7 +67,7 @@ O sinal é o **nome da entrada de cena**, lido em Lua por
 
 - `scripts/lib/dev.lua` → `dev.skip_intro()` devolve `true` quando a cena é
   `main` e a entrada é `dev`.
-- `scripts/ui/title.lua` (autoload) vê o sinal no primeiro tick, aplica a
+- `src/ui/screens.rs` (`drive_title`) vê o sinal no primeiro tick, aplica a
   escala de UI guardada, liga o HUD e marca `title_done` — sem abrir o véu.
 - `scripts/game/story.lua` marca `story_prologo` no `viber.game()` para o
   prólogo não disparar nem agora nem ao voltar de um interior (a entidade do
@@ -106,11 +103,11 @@ save). Consequências:
 |--------|---------|
 | Só saltar a cena de menu, manter título e prólogo | `viber run --scene main` |
 | Só saltar o menu e o prólogo (debug) | `viber run --scene main --entry dev` |
-| Um cenário QA isolado, sem campanha | `viber run qa-cenarios.xml` (etc.) |
+| Um cenário QA isolado, sem campanha | `viber run qa-cenarios.bsn` (etc.) |
 | Voltar ao fluxo normal | `viber run` |
 
 `viber run --scene main --entry dev` também aceita caminho explícito
-(`viber run world.xml --scene main --entry dev`); o wrapper do CLI trata do
+(`viber run world.bsn --scene main --entry dev`); o wrapper do CLI trata do
 build.
 
 ## Onde está o código
@@ -120,9 +117,9 @@ build.
 | `scripts/lib/dev.lua` | `dev.entry()` / `dev.skip_intro()` — o sinal |
 | `scripts/game/devmode.lua` | [F1] voo livre + [F2] invulnerável (autoload) |
 | `scripts/lib/rules.lua` | `set_god`/`M.god` — o único portão do dano ao herói |
-| `scripts/ui/title.lua` | Salta o véu e liga o HUD no primeiro tick |
+| `src/ui/screens.rs` (`drive_title`) | Salta o véu e liga o HUD no primeiro tick |
 | `scripts/game/story.lua` | Trava o prólogo (marca persistente) |
-| `world.xml` | `spawn` (normal) e `dev` (debug), nesta ordem — a pose é a mesma |
+| `world.bsn` | `spawn` (normal) e `dev` (debug), nesta ordem — a pose é a mesma |
 
 Se mudares o nome da entrada, muda `DEBUG_ENTRY` em `lib/dev.lua` no mesmo
 commit; o resto do jogo lê o sinal por essa constante.

@@ -117,8 +117,13 @@ local function start_swing(st)
     duration = 0.5
   end
   -- A cadência é da ARMA (lib/gear.lua): o machado demora, a espada não.
+  -- A Agilidade multiplica a velocidade de ataque (`Stat.attack_speed`).
   local weapon = rules.weapon()
-  local speed = math.max(0.5, weapon.speed or ATTACK_SPEED)
+  local attack_speed = rules.stat("attack_speed")
+  if not attack_speed or attack_speed <= 0 then
+    attack_speed = 1.0
+  end
+  local speed = math.max(0.5, (weapon.speed or ATTACK_SPEED) * attack_speed)
   local occupy = duration / speed
   local fraction = IMPACT_FRACTION[clip] or 0.35
   local delay = math.min(0.6, math.max(0.12, duration * fraction / speed))
@@ -165,6 +170,11 @@ local function resolve_swing(st, sw)
   local execute_frac = EXECUTE_FRAC + rules.stat("execute")
   local shock_chance = rules.stat("shock_chance")
   local lifesteal = rules.stat("lifesteal")
+  -- Força empurra mais (`Stat.knockback`); 1.0 quando ninguém a dá.
+  local knockback = rules.stat("knockback")
+  if not knockback or knockback <= 0 then
+    knockback = 1.0
+  end
   local dealt = 0
   local hits, crit_any, kill_any = 0, false, false
   local alert_x, alert_z
@@ -234,7 +244,7 @@ local function resolve_swing(st, sw)
           end
           viber.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
           if viber.entity_knockback and not blocked and not BOSSES[h.kind or ""] then
-            local meters = crit and 0.65 or (finisher and 0.55 or 0.45)
+            local meters = (crit and 0.65 or (finisher and 0.55 or 0.45)) * knockback
             viber.entity_knockback(h.id, ux, uz, meters * 6.0)
           end
           viber.damage_number((blocked and "BLOQUEIO -" or "-") .. math.floor(dmg), {
@@ -297,6 +307,16 @@ local function resolve_swing(st, sw)
     st.combo_hits = (st.combo_hits or 0) + hits
     st.combo_window = COMBO_WINDOW
     publish_combo(st)
+    -- Combo em texto 3D no mundo (bevy_rich_text3d): o HUD mantém o
+    -- contador persistente; a partir do 2.º golpe o total sobe acima do
+    -- herói. Vai por `viber.damage_number` para herdar a i18n e a ponte
+    -- `DamageNumberEvent` -> `WorldTextEvent`. Um golpe só já tem o número
+    -- de dano no alvo; "1 HITS" seria ruído.
+    if st.combo_hits >= 2 then
+      viber.damage_number(st.combo_hits .. " HITS", {
+        color = "#f5d68e", x = px, y = py + 2.8, z = pz,
+      })
+    end
     viber.sound("hit", { x = px, y = py, z = pz })
     viber.hit_stop(kill_any and 0.09 or (crit_any and 0.07 or 0.05))
     viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))

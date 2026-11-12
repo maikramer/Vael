@@ -10,7 +10,8 @@ end
 --   * `viber.own_system("dialogue")` — a engine CEDE o [E] deste NPC (o
 --     fluxo nativo de quests cala; o prompt/ação continuam arbitrados pelo
 --     mesmo InteractionFocus);
---   * `viber.say(...)` escreve no BALÃO nativo do HUD;
+--   * `talk.say(...)` publica a fala do NPC (o Vael desenha um balão no
+--     mundo sobre ele);
 --   * `rules.quest_def(id)` lê o MESMO JSON autoral (`quests/*.json`) — o
 --     script não duplica títulos nem linhas;
 --   * aceitar/entregar usa os comandos `quest_accept`/`quest_turn_in`
@@ -29,7 +30,7 @@ local function say_lines(lines, fallback, remaining)
     text = fallback
   end
   text = text:gsub("{remaining}", tostring(remaining or 0))
-  viber.say(text)
+  talk.say(text)
   viber.ui.set("dialogue.until", viber.time() + 0.75)
 end
 
@@ -65,7 +66,7 @@ function on_update(dt)
   elseif state == "ready" then
     local p = rules.quest_parley(QUEST)
     if p and p.report and decide.ready() then
-      viber.say(p.report.prompt or "Diz-me o que encontraste.")
+      talk.say(p.report.prompt or "Diz-me o que encontraste.")
       talk.ask({
         prompt = p.report.prompt,
         example = p.report.example,
@@ -76,7 +77,7 @@ function on_update(dt)
           if ok then
             say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
           else
-            viber.say(msg or p.report.hint or "Não te ouvi.")
+            talk.say(msg or p.report.hint or "Não te ouvi.")
           end
         end,
         on_unavailable = function()
@@ -87,7 +88,7 @@ function on_update(dt)
           end
         end,
         on_cancel = function()
-          viber.say("“Conta-me quando os tiveres.”")
+          talk.say("“Conta-me quando os tiveres.”")
         end,
       })
     else

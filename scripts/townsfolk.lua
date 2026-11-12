@@ -21,7 +21,6 @@
 
 local rules = viber.load("lib/rules.lua")
 local talk = viber.load("ui/say.lua")
-local travel = viber.load("game/travel.lua")
 local marks = viber.load("lib/landmarks.lua")
 local parley = viber.load("lib/parley.lua")
 local decide = viber.load("lib/decide.lua")
@@ -85,7 +84,7 @@ end
 
 -- "Perguntar por um lugar": uma palavra resolve o marco e marca o waypoint.
 local function ask_place()
-  viber.say("Que lugar?")
+  talk.say("Que lugar?")
   local options = {}
   for _, m in ipairs(marks.LIST or {}) do
     options[#options + 1] = { key = m.name, description = m.label or m.name }
@@ -103,22 +102,22 @@ local function ask_place()
           id = alias_place(text)
         end
         if not id then
-          viber.say("Não conheço esse lugar.")
+          talk.say("Não conheço esse lugar.")
         else
-          travel.pin(id)
-          viber.say("Marquei no teu mapa.")
+          if viber.vael and viber.vael.travel_pin then viber.vael.travel_pin(id) end
+          talk.say("Marquei no teu mapa.")
         end
       end,
       on_cancel = function()
-        viber.say("Fica para outra vez.")
+        talk.say("Fica para outra vez.")
       end,
       on_unavailable = function()
-        viber.say("Não te ouvi.")
+        talk.say("Não te ouvi.")
       end,
     })
     return
   end
-  viber.say("Não te ouvi.")
+  talk.say("Não te ouvi.")
 end
 
 -- Alvo de sinais: `connect-opened="@discordia:notice"` num baú faz os
@@ -176,12 +175,12 @@ local function cursor(st)
   return st.graph.start
 end
 
-local BALLOON_SECS = 4.0 -- `hud::BALLOON_DURATION`: o balão nativo dura 4 s
+local BALLOON_SECS = 4.0 -- duração por omissão do `viber.say` (engine)
 
 local function show_dialogue(st)
   local body, node = node_body(st.graph, cursor(st))
   if body then
-    viber.say(body)
+    talk.say(body)
     -- `voice` é campo documentado no README de dialogues/ (clip de SFX
     -- opcional por nó); nenhum leitor o tocava — a doc era inerte. Um clip
     -- desconhecido é erro de script com warn 1× (a conversa sobrevive).

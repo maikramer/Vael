@@ -52,9 +52,24 @@ function M.is_equipped(id)
   return viber.vael.gear_is_equipped(id)
 end
 
--- Equipa (ou tira, se já estava). Devolve "on" | "off" | nil (não equipável).
+-- Equipa (ou tira, se já estava). Devolve "on" | "off" | "blocked" | nil
+-- (não equipável/ausente).
 function M.toggle(id)
   return viber.vael.gear_toggle(id)
+end
+
+-- Requisito de atributos do item (expressão do gauge, ex. "Strength >= 7"),
+-- texto curto para o diário ("Força 7") e se está satisfeito agora.
+function M.requirement(id)
+  return viber.vael.gear_requirement(id)
+end
+
+function M.requirement_text(id)
+  return viber.vael.gear_requirement_text(id)
+end
+
+function M.requirement_met(id)
+  return viber.vael.gear_requirement_met(id) == true
 end
 
 -- Soma dos `effects` de tudo o que está equipado: { chave = total }.
