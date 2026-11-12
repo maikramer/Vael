@@ -1,0 +1,365 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "52" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "88 88" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "36" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "14" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "38.730545" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"walls"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/walls.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/walls.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        --
+        #"roads"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/roads.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/roads.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        --
+        #"utilities"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/utilities.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/utilities.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        --
+        #"houses"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/houses.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/houses.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        --
+        #"forge"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/forge.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/forge.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        --
+        #"barn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/barn.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/barn.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        --
+        #"watch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/watch.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/watch.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        --
+        #"chapel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/chapel.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/chapel.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        --
+        #"market"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/market.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/market.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        --
+        #"longhouse"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/longhouse.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/longhouse.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        --
+        #"portals"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/portals.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/portals.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        --
+        #"skirts"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/skirts.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/skirts.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        --
+        #"clutter"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/clutter.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/clutter.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        --
+        #"approach"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/approach.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/approach.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        --
+        #"grid"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/grid.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/grid.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        --
+        #"life"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "discordia/life.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/cities/discordia/life.xml" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+    ]
+]
+

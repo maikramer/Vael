@@ -1,0 +1,1022 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/gameplay.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"Prototype bomb-lua"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "bomb-lua" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"bomb-lua"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "bomb-lua" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "game/bomb-lua.lua" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#2c2f33" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ff5a1f" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.239216, alpha: 1.0 }),
+                intensity: 300.0,
+                radius: 6.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "#ff8a3d" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "300" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "6" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [0, 0, 1],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype berry-bush-bare"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "berry-bush-bare" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/farm/berry_bush_bare_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [1, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene berry_bush_bare"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/berry_bush_bare_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/berry_bush_bare_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/farm/berry_bush_bare_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/farm/berry_bush_bare_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "34" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "95" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [1, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-wolf"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-wolf" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [2, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wolf"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [2, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-shade"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-shade" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [3],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/shade.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [3, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene shade"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/shade_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/shade_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/shade_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/shade_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [3, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-scorpion"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-scorpion" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [4],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/scorpion.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [4, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene scorpion"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/scorpion_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/scorpion_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/scorpion_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/scorpion_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [4, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-bandit"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-bandit" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [5],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [5, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bandit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [5, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-bandit-archer"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-bandit-archer" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [6],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-archer.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [6, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bandit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [6, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-bogling"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-bogling" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [7],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bogling.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bogling"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bogling_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bogling_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bogling_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bogling_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [7, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-goblin"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-goblin" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [8],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [8, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene goblin"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/goblin_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/goblin_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/goblin_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [8, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-slime"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-slime" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [9],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/slime.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [9, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene slime"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/slime_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/slime_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/slime_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/slime_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [9, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-goblin-brute"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-goblin-brute" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [10],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin-brute.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "220" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [10, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene goblin"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/goblin_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/goblin_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/goblin_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [10, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-bandit-shield"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-bandit-shield" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [11],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-shield.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "150" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [11, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bandit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [11, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-bogling-hexer"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-bogling-hexer" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [12],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bogling-hexer.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "80" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [12, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bogling"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bogling_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bogling_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bogling_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bogling_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [12, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype mob-shade-night"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "mob-shade-night" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [13],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/shade-night.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "120" },
+            ],
+            text: "",
+            origin_file: "world/gameplay.xml",
+            origin_path: [13, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene shade"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/shade_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/shade_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/shade_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/shade_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                ],
+                text: "",
+                origin_file: "world/gameplay.xml",
+                origin_path: [13, 0, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"game-lua-spawns"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-spawns" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/spawns.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [14],
+        pose: true,
+    }
+    --
+    #"game-lua-audio"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-audio" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/audio.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [15],
+        pose: true,
+    }
+    --
+    #"game-lua-ambience"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-ambience" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/ambience.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [16],
+        pose: true,
+    }
+    --
+    #"game-lua-harvest"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-harvest" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/harvest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [17],
+        pose: true,
+    }
+    --
+    #"game-lua-loot"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-loot" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/loot.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [18],
+        pose: true,
+    }
+    --
+    #"game-lua-story"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-story" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/story.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [19],
+        pose: true,
+    }
+    --
+    #"game-lua-equipment"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-equipment" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/equipment.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            bevy_world_xml::bsn::WorldProp { key: "groups", value: "grip-preview" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-preview", value: "tocha" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-tocha-x", value: "-0.002" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-tocha-y", value: "0.241" },
+        ],
+        text: "",
+        origin_file: "world/gameplay.xml",
+        origin_path: [20],
+        pose: true,
+    }
+]
+

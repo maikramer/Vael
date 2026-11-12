@@ -1,0 +1,2914 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/landmarks/forest.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"biome.forest.landmarks"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "biome.forest.landmarks" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/landmarks/forest.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"forest-outpost-tower"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -92.0, y: 44.276699, z: 176.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forest-outpost-tower" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92 44.2767 176" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/watchtower_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene watchtower"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/watchtower_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/watchtower_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.690196, blue: 0.376471, alpha: 1.0 }),
+                intensity: 70000.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb060" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "70000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 0, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -86.0, y: 44.245998, z: 172.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-86 44.246 172" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -98.0, y: 45.066601, z: 173.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-98 45.0666 173" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.0, y: 44.684799, z: 170.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-90 44.6848 170" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.8 0.8 0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/log_pile_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -88.0, y: 43.980499, z: 176.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 43.9805 176" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -80.0, y: 43.695801, z: 174.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-80 43.6958 174" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/weapon_rack_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -30 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene weapon_rack"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/weapon_rack_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -81.0, y: 43.5359, z: 176.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-81 43.5359 176" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.15 1.0 0.12" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene sword_hero"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/sword_hero_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/sword_hero_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"forest-watch-tome"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -84.0, y: 42.8974, z: 183.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forest-watch-tome" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 42.8974 183" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/watch-tome.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 48.9977, z: 250.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.9977 250" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 114.0, y: 48.954498, z: 246.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "114 48.9545 246" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 118.0, y: 48.900002, z: 236.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.55, y: 1.55, z: 1.55 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "118 48.9 236" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.55" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 114.0, y: 48.842701, z: 226.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.92388, z: 0.0, w: -0.382683 },
+            scale: glam::Vec3 { x: 1.35, y: 1.35, z: 1.35 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "114 48.8427 226" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 45 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.35" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 48.8409, z: 222.0 },
+            rotation: glam::Quat { x: 0.0, y: -1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.8409 222" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 0 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 94.0, y: 48.843399, z: 226.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.92388, z: 0.0, w: 0.382683 },
+            scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "94 48.8434 226" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -45 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 90.0, y: 48.874599, z: 236.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "90 48.8746 236" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 94.0, y: 48.965698, z: 246.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.45, y: 1.45, z: 1.45 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "94 48.9657 246" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.45" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 15, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"forest-stone-circle"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 48.900002, z: 236.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forest-stone-circle" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.9 236" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/druid_stone_altar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene druid_stone_altar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/druid_stone_altar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/druid_stone_altar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.431373, green: 0.784314, blue: 1.0, alpha: 1.0 }),
+                intensity: 1600.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x6ec8ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1600" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 16, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 48.900002, z: 236.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.9 236" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.4 0" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 17, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"glass.pool"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "glass.pool" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "104 236" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "4.2" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.08" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "77" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7fa8b8" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.22" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 18],
+            pose: false,
+        }
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "104 236" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "34" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 19],
+            pose: false,
+        }
+        --
+        #"logging.floor"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "logging.floor" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-56 126" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "10" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.24" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "95" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8f7a5e" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.98" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 20],
+            pose: false,
+        }
+        --
+        #"forest-logging-camp"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -60.0, y: 44.4659, z: 128.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
+            scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forest-logging-camp" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60 44.4659 128" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/village_longhouse_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -18 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.62" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene village_longhouse"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/village_longhouse_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_longhouse_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -42.0, y: 45.708401, z: 120.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.121869, z: 0.0, w: 0.992546 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-42 45.7084 120" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/log_pile_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -14 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/log_pile_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 22, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -36.799999, y: 46.409801, z: 117.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-36.8 46.4098 117.2" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/chopping_block_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene chopping_block"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/chopping_block_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/chopping_block_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -76.0, y: 42.812099, z: 117.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 42.8121 117" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 24, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -79.0, y: 43.863998, z: 122.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-79 43.864 122" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 25, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -47.0, y: 46.7561, z: 138.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-47 46.7561 138" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 26, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -60.0, y: 44.4659, z: 128.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60 44.4659 128" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 27],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 4.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 4; start-life-min: 2.4; start-life-max: 4.2; start-speed-min: 0.3; start-speed-max: 0.8; start-size-min: 0.35; start-size-max: 0.8; start-color: #9a9a9a; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 27, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-60 128" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 28],
+            pose: false,
+        }
+        --
+        #"forest-crossroads-well"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.0, y: 45.978001, z: 184.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forest-crossroads-well" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8 45.978 184" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/medieval_well_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 29],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene medieval_well"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/medieval_well_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/medieval_well_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 29, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 10.0, y: 46.047199, z: 182.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: 0.258819 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "10 46.0472 182" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -30 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 30, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 23.200001, y: 40.555401, z: 194.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "23.2 40.5554 194.8" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.690196, blue: 0.376471, alpha: 1.0 }),
+                intensity: 1120.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb060" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1120" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "28 192" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 32],
+            pose: false,
+        }
+        --
+        #"witch-hut"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -20.0, y: 47.8503, z: 270.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: 0.173648 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "witch-hut" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-20 47.8503 270" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 160 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/witch_hut_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene witch_hut"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/witch_hut_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/witch_hut_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/forest/witch_hut_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/forest/witch_hut_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 33, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.82, y: 5.52, z: -0.72 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0.82 5.52 -0.72" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 3; start-life-min: 2.6; start-life-max: 4.6; start-speed-min: 0.25; start-speed-max: 0.65; start-size-min: 0.3; start-size-max: 0.7; start-color: #8a8a92; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 33, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.0, y: 47.252899, z: 260.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8 47.2529 260" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 34],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.333333, green: 0.878431, blue: 0.333333, alpha: 1.0 }),
+                intensity: 1760.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x55e055" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1760" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 34, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-20 266" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "24" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 35],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -14.0, y: 47.382702, z: 264.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-14 47.3827 264" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/cauldron_iron_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 36],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene cauldron_iron"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/cauldron_iron_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cauldron_iron_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 36, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -24.0, y: 49.830002, z: 272.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.422618, z: 0.0, w: 0.906308 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-24 49.83 272" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 50 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 37],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 37, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 36.0, y: 49.298901, z: 144.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "36 49.2989 144" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 38],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.431373, green: 0.909804, blue: 0.847059, alpha: 1.0 }),
+                intensity: 1120.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.8 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x6ee8d8" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1120" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 38, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 34.400002, y: 49.466801, z: 142.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "34.4 49.4668 142.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 39],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 39, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.200001, y: 49.040798, z: 145.199997 },
+            rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: -0.173648 },
+            scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38.2 49.0408 145.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 20 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.85" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 40, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 36.799999, y: 49.360401, z: 141.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.766044, z: 0.0, w: 0.642788 },
+            scale: glam::Vec3 { x: 1.15, y: 1.15, z: 1.15 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "36.8 49.3604 141" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -80 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.15" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 41, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"forage-mushroom-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 45.942799, z: 124.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forage-mushroom-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 45.9428 124" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "mushroom.lua" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"forage-mushroom-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 52.0, y: 42.805401, z: 192.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "forage-mushroom-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "52 42.8054 192" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "mushroom.lua" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 43, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"menires-oferenda"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 106.599998, y: 48.900002, z: 239.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: 0.5 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "menires-oferenda" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "106.60 48.9 239.00" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 120 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "50" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir a oferenda dos menires" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 44, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -16.0, y: 47.779999, z: 276.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 2.4, y: 2.4, z: 2.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-16 47.78 276" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 45],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 45, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.486275, green: 1.0, blue: 0.815686, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 2.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7cffd0" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 45, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -24.0, y: 44.18, z: 262.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.9, y: 1.9, z: 1.9 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-24 44.18 262" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 46],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 46, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.486275, green: 1.0, blue: 0.815686, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 2.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7cffd0" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.0" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 46, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.0, y: 48.179401, z: 272.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-18 48.1794 272" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 47],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 47, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.0, y: 48.179401, z: 272.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-18 48.1794 272" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 48],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 20; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 48, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -23.5, y: 50.119999, z: 274.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-23.5 50.12 274" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.8 0.8 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 49],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/log_pile_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 49, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -88.0, y: 43.300301, z: 182.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 43.3003 182" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 50],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/campfire_pit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 50, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -88.0, y: 43.300301, z: 182.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 43.3003 182" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 51],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.26; start-life-min: 0.4; start-life-max: 1.1; start-speed-min: 1.0; start-speed-max: 2.2; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 51, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -88.0, y: 43.300301, z: 182.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 43.3003 182" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 52],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 60000.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.7 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "60000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 52, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -86.0, y: 43.509998, z: 179.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-86 43.51 179" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 53],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 53, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.0, y: 43.687, z: 180.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-90 43.687 180" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 54],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 54, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 90.0, y: 51.5606, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "90 51.5606 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 55],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 55, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 94.0, y: 50.744301, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "94 50.7443 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 56],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 56, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 98.0, y: 49.966999, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "98 49.967 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 57],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 57, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 102.0, y: 49.369598, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "102 49.3696 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 58],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 58, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 106.0, y: 49.341099, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "106 49.3411 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 59],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 59, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 110.0, y: 49.7416, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "110 49.7416 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 60],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 60, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 114.0, y: 50.411098, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "114 50.4111 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 61],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 61, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 118.0, y: 51.970699, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "118 51.9707 251" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 62],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 62, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 48.700001, z: 221.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.7 221" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 63],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 63, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 48.422199, z: 220.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.4222 220" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 64],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 64, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 47.997299, z: 219.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 47.9973 219" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 65],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 65, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 47.459999, z: 218.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 47.46 218" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 66],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 66, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 46.872501, z: 217.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 46.8725 217" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 67],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 67, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 46.298, z: 216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 46.298 216" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 68],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 68, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 45.7985, z: 215.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 45.7985 215" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 69],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 69, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 104.0, y: 45.419201, z: 214.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 45.4192 214" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/forest.xml",
+            origin_path: [0, 70],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/forest.xml",
+                origin_path: [0, 70, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

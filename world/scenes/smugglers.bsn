@@ -1,0 +1,1169 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/scenes/smugglers.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"scene.smugglers"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 39.5, z: 20.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "scene.smugglers" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 39.5 20" },
+        ],
+        text: "",
+        origin_file: "world/scenes/smugglers.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-90 260" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "34" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 -0.7696 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"smugglers-campfire"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.0, y: -0.5193, z: 240.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "smugglers-campfire" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-90 -0.5193 240" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/campfire_pit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.0, y: -0.5193, z: 240.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-90 -0.5193 240" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 34; shape-radius: 0.26; start-life-min: 0.5; start-life-max: 1.3; start-speed-min: 1.2; start-speed-max: 2.5; start-size-min: 0.28; start-size-max: 0.58; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.0, y: -0.5193, z: 240.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-90 -0.5193 240" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 4800.0,
+                radius: 0.8,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.7 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -88.0, y: -0.4814, z: 237.600006 },
+            rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 -0.4814 237.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.6 0.9 0.55" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -95.0, y: -0.684, z: 244.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.35, y: 1.35, z: 1.35 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-95 -0.684 244" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.35" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene market_stall"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/market_stall_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -84.0, y: 0.5304, z: 245.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: 0.173648 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 0.5304 245" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -20 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene market_stall"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/market_stall_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"smugglers-stash"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -92.0, y: -0.6303, z: 236.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.843391, z: 0.0, w: -0.5373 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "smugglers-stash" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92 -0.6303 236" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "45" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídoto" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Revistar o esconderijo" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "20" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 65 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -97.0, y: -0.7355, z: 238.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-97 -0.7355 238" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -98.0, y: -0.7141, z: 235.600006 },
+            rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-98 -0.7141 235.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -15 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -96.0, y: -0.6461, z: 233.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-96 -0.6461 233" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -82.0, y: 0.2038, z: 240.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-82 0.2038 240" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -86.0, y: -0.4596, z: 234.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-86 -0.4596 234" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.8 0.8 0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 60 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/log_pile_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -99.0, y: -0.7664, z: 249.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.953717, z: 0.0, w: -0.300706 },
+            scale: glam::Vec3 { x: 0.72, y: 0.72, z: 0.72 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-99 -0.7664 249" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/watchtower_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 35 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.72" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene watchtower"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/watchtower_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/watchtower_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.690196, blue: 0.376471, alpha: 1.0 }),
+                intensity: 4600.0,
+                radius: 0.8,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb060" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 13, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.0, y: -0.1011, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.819152, z: 0.0, w: -0.573576 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-94 -0.1011 251" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 70 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.0, y: -0.1011, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-94 -0.1011 251" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 15, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.0, y: -0.1011, z: 251.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-94 -0.1011 251" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.6" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -80.0, y: 0.9224, z: 246.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-80 0.9224 246" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/weapon_rack_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -70 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene weapon_rack"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/weapon_rack_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 17, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: -0.7696, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-road", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "honor-exclusion", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "6171" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-118 0 238" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "-62 0 282" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "30" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "300" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 -0.7696 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 18],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 18, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bandit"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/scenes/smugglers.xml",
+                    origin_path: [0, 18, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"npc_ranger_mira"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -72.0, y: 0.0226, z: 222.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: 0.258819 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_ranger_mira" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-72 0.0226 222" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "smugglers_cache" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -30 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 19],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene npc_scout"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_scout_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 19, 0],
+                pose: true,
+            }
+            --
+            #"NpcBody"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 19, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -86.0, y: -0.0577, z: 242.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-86 -0.0577 242" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 25 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 20],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 20, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -84.0, y: -0.172, z: 238.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 -0.172 238" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -96.0, y: -0.6758, z: 246.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-96 -0.6758 246" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 22, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -96.0, y: -0.6758, z: 246.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-96 -0.6758 246" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -96.0, y: -0.63, z: 232.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.939693, z: 0.0, w: -0.34202 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-96 -0.63 232" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 40 180" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/wrecked_boat_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wrecked_boat"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/wrecked_boat_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/wrecked_boat_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 24, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -98.0, y: -0.69, z: 234.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-98 -0.69 234" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 25, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -94.0, y: -0.63, z: 235.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-94 -0.63 235" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/smugglers.xml",
+                origin_path: [0, 26, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

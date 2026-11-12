@@ -1,0 +1,1275 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/atmosphere/ambient-fx.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"atmosphere.ambient"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "atmosphere.ambient" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/atmosphere/ambient-fx.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 170.0, y: 44.3773, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "170 44.3773 0" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 220.0, y: 51.4594, z: 70.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "220 51.4594 70" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 210.0, y: 45.816799, z: -80.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "210 45.8168 -80" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 260.0, y: 50.966099, z: 20.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "260 50.9661 20" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 190.0, y: 41.186298, z: -40.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "190 41.1863 -40" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 290.0, y: 51.98, z: -30.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "290 51.98 -30" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 320.0, y: 51.7318, z: 90.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "320 51.7318 90" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 250.0, y: 54.210499, z: -130.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "250 54.2105 -130" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.25 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 236.0, y: 52.105202, z: 40.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "236 52.1052 40" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sand-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: sand-dust; emission-rate: 3; start-life-min: 1.2; start-life-max: 2.2; start-speed-min: 0.2; start-speed-max: 0.5; start-size-min: 0.3; start-size-max: 0.7; start-color: #d8c4a0; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 300.0, y: 51.679401, z: -60.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "300 51.6794 -60" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sand-dust" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: sand-dust; emission-rate: 3; start-life-min: 1.2; start-life-max: 2.2; start-speed-min: 0.2; start-speed-max: 0.5; start-size-min: 0.3; start-size-max: 0.7; start-color: #d8c4a0; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 46.165199, z: 180.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 46.1652 180" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.0, y: 40.299801, z: 230.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-50 40.2998 230" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 44.0, y: 42.4422, z: 210.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "44 42.4422 210" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -100.0, y: 45.829899, z: 156.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100 45.8299 156" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 80.0, y: 80.0, z: 300.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "80 80 300" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.0, y: 93.252602, z: 330.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28 93.2526 330" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 15, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 12.0, y: 41.272598, z: 192.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "12 41.2726 192" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 6.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "leaves" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 6.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: leaves; emission-rate: 5; start-life-min: 4; start-life-max: 7; start-speed-min: 0.2; start-speed-max: 0.6; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -76.0, y: 39.408501, z: 240.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 39.4085 240" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 6.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "leaves" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 6.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: leaves; emission-rate: 4; start-life-min: 4; start-life-max: 7; start-speed-min: 0.2; start-speed-max: 0.6; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 17, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -16.0, y: 47.729401, z: 270.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-16 47.7294 270" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 18],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 8; start-life-min: 2; start-life-max: 4; start-speed-min: 0.4; start-speed-max: 1.0; start-size-min: 0.4; start-size-max: 0.9; start-color: #888888; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 18, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -170.0, y: 25.6348, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-170 25.6348 0" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 19],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.8 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 3; start-life-min: 4; start-life-max: 7; start-speed-min: 0.05; start-speed-max: 0.2; start-size-min: 0.6; start-size-max: 1.5; start-color: #93a596; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 19, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -240.0, y: 28.5109, z: 60.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-240 28.5109 60" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 20],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.8 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 3; start-life-min: 4; start-life-max: 7; start-speed-min: 0.05; start-speed-max: 0.2; start-size-min: 0.6; start-size-max: 1.5; start-color: #93a596; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 20, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -210.0, y: 34.181801, z: -68.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-210 34.1818 -68" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.8 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 3; start-life-min: 4; start-life-max: 7; start-speed-min: 0.05; start-speed-max: 0.2; start-size-min: 0.6; start-size-max: 1.4; start-color: #93a596; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -310.0, y: 34.533501, z: -8.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-310 34.5335 -8" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.8 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 3; start-life-min: 4; start-life-max: 7; start-speed-min: 0.05; start-speed-max: 0.2; start-size-min: 0.6; start-size-max: 1.4; start-color: #93a596; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 22, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 73.364502, z: -170.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 73.3645 -170" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 9.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "snow" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: snow; emission-rate: 10; start-life-min: 5; start-life-max: 8; start-speed-min: 0.3; start-speed-max: 0.9; start-size-min: 0.06; start-size-max: 0.14; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.0, y: 110.0233, z: -230.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8 110.0233 -230" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 9.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "snow" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: snow; emission-rate: 10; start-life-min: 5; start-life-max: 8; start-speed-min: 0.3; start-speed-max: 0.9; start-size-min: 0.06; start-size-max: 0.14; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 24, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -290.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0664 -290" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 9.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "snow" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: snow; emission-rate: 12; start-life-min: 5; start-life-max: 8; start-speed-min: 0.3; start-speed-max: 0.9; start-size-min: 0.06; start-size-max: 0.14; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 25, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -26.0, y: 85.014801, z: -190.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-26 85.0148 -190" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.6 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 26, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 74.0, y: 46.712101, z: 72.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "74 46.7121 72" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 27],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 27, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -76.0, y: 39.499599, z: 66.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-76 39.4996 66" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 28],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 28, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 70.0, y: 40.940899, z: -74.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "70 40.9409 -74" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 29],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 29, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -70.0, y: 35.353901, z: -70.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-70 35.3539 -70" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 30, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 88.0, y: 41.6964, z: 22.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "88 41.6964 22" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 6.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "leaves" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 6.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: leaves; emission-rate: 4; start-life-min: 4; start-life-max: 7; start-speed-min: 0.2; start-speed-max: 0.6; start-size-min: 0.1; start-size-max: 0.2; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -90.0, y: 31.171101, z: -20.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-90 31.1711 -20" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 32],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 6.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "leaves" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 6.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: leaves; emission-rate: 4; start-life-min: 4; start-life-max: 7; start-speed-min: 0.2; start-speed-max: 0.6; start-size-min: 0.1; start-size-max: 0.2; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 32, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -66.0, y: 41.163502, z: 96.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-66 41.1635 96" },
+            ],
+            text: "",
+            origin_file: "world/atmosphere/ambient-fx.xml",
+            origin_path: [0, 33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.0 0" },
+                ],
+                text: "",
+                origin_file: "world/atmosphere/ambient-fx.xml",
+                origin_path: [0, 33, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

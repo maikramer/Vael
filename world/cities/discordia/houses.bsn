@@ -1,0 +1,234 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/houses.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.houses"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.houses" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/houses.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"house_a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 25.0, y: 0.0, z: 12.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "house_a" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "25 0 12" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/village_house_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/houses.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene village_house"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/village_house_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_house_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/houses.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"house_b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -19.0, y: 0.0, z: 19.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.92388, z: 0.0, w: 0.382683 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "house_b" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 135 0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-19 0 19" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/village_house_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/houses.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene village_house"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/village_house_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_house_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/houses.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -14.6, y: 0.0, z: 14.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-14.6 0 14.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/houses.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/houses.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"house_c"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -17.0, y: 0.0, z: -20.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "house_c" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17 0 -20" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/village_house_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/houses.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene village_house"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/village_house_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_house_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/houses.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"shepherd_cottage"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -21.0, y: 0.0, z: 8.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "shepherd_cottage" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-21 0 8" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/shepherd_cottage_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/houses.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene shepherd_cottage"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/shepherd_cottage_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/shepherd_cottage_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/houses.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

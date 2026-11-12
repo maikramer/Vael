@@ -1,0 +1,1428 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/scenes/crystal-outpost.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"scene.crystal-outpost"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 196.122894, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "scene.crystal-outpost" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 196.1229 0" },
+        ],
+        text: "",
+        origin_file: "world/scenes/crystal-outpost.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "800 730" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"outpost-derrick"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 800.0, y: 0.0, z: 730.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-derrick" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "800 0 730" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.6, y: 1.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.6 1.9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.16 1.9 0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 2.6, y: 1.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.6 1.9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.16 1.9 0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.9, z: -2.2 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.9 -2.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.16 1.9 0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.9, z: 2.2 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.9 2.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.16 1.9 0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.4 0.14 0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 4],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.34 0.34 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 5],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 6],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.1, z: -2.2 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.1 -2.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.1 0.1 1.1" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 7],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.1, z: 2.2 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.1 2.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.1 0.1 1.1" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 8],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.85098, blue: 0.627451, alpha: 1.0 }),
+                intensity: 6000.0,
+                radius: 0.9,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd9a0" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 1, 9],
+                pose: true,
+            }
+        ]
+        --
+        #"outpost-vein-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 793.0, y: 0.0, z: 719.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 2.4, y: 2.4, z: 2.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-vein-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "793 0 719" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0; scale: 2.4 2.4 2.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "destructible", value: "popup-text: Pedra; popup-color: #cccccc; preset: dust; burst-count: 22; hits: 3; spark-on-hit: 1; hit-preset: rockshards; hit-burst-count: 10; crack-on-hit: 1; break-style: shatter" },
+                bevy_world_xml::bsn::WorldProp { key: "resource-kind", value: "stone" },
+                bevy_world_xml::bsn::WorldProp { key: "resource-yield", value: "8" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.560784, green: 0.815686, blue: 1.0, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.9,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x8fd0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 2, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"outpost-vein-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 790.0, y: 0.0, z: 724.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: 0.173648 },
+            scale: glam::Vec3 { x: 1.8, y: 1.8, z: 1.8 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-vein-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "790 0 724" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 160 0; scale: 1.8 1.8 1.8" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "destructible", value: "popup-text: Pedra; popup-color: #cccccc; preset: dust; burst-count: 22; hits: 3; spark-on-hit: 1; hit-preset: rockshards; hit-burst-count: 10; crack-on-hit: 1; break-style: shatter" },
+                bevy_world_xml::bsn::WorldProp { key: "resource-kind", value: "stone" },
+                bevy_world_xml::bsn::WorldProp { key: "resource-yield", value: "8" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 805.0, y: 0.0, z: 722.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.793353, z: 0.0, w: 0.608761 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "805 0 722" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 105 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene market_stall"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/market_stall_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 808.0, y: 0.0, z: 726.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "808 0 726" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 806.0, y: 0.0, z: 729.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 0 729" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"outpost-bomba"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 806.0, y: 0.8, z: 729.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.422618, z: 0.0, w: 0.906308 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-bomba" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 0.8 729" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 50 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bomb"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/bomb_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/bomb_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 809.0, y: 0.0, z: 719.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "809 0 719" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 795.0, y: 0.0, z: 732.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "795 0 732" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/quench_trough_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene quench_trough"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/quench_trough_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/quench_trough_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 803.0, y: 0.0, z: 734.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.573576, z: 0.0, w: 0.819152 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "803 0 734" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 70 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.8 0.8 0.9" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/log_pile_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 794.0, y: 0.0, z: 726.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "794 0 726" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/notice_board_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene notice_board"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/notice_board_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/notice_board_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 806.0, y: 0.0, z: 714.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 0 714" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 806.0, y: 0.0, z: 714.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 0 714" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 28; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 806.0, y: 0.0, z: 714.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 0 714" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.6" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 812.0, y: 0.0, z: 724.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.965926, z: 0.0, w: -0.258819 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "812 0 724" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 210 0; scale: 1.1 1.1 1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/terrain/form_stack_6_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene form_stack_6"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_stack_6_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_stack_6_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 15, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"npc_outpost_foreman"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 798.0, y: 0.0, z: 727.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_outpost_foreman" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "798 0 727" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "outpost_veins" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene npc_blacksmith"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_blacksmith_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_blacksmith_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+            --
+            #"NpcBody"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 16, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"outpost-miner-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 802.0, y: 0.0, z: 731.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: -0.5 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-miner-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "802 0 731" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 240 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“Os cristais cantam quando se partem.”|“Cuidado com as escarpas.”" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "2" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene npc_scout"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_scout_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 17, 0],
+                pose: true,
+            }
+            --
+            #"NpcBody"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 17, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"outpost-miner-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 795.0, y: 0.0, z: 722.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost-miner-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "795 0 722" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“Mais um dia, mais um veio.”|“Já viste o santuário de cristal?”" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "2" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 18],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene npc_cook"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_cook_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_cook_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 18, 0],
+                pose: true,
+            }
+            --
+            #"NpcBody"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 18, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"outpost.platform"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outpost.platform" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "800 730" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "161" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8274" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 19],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 794.0, y: 0.02, z: 719.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.601815, z: 0.0, w: 0.798636 },
+            scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "794 0.02 719" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 74 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 20],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 20, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.560784, green: 0.815686, blue: 1.0, alpha: 1.0 }),
+                intensity: 2200.0,
+                radius: 1.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x8fd0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 20, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 806.0, y: -0.07, z: 727.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.681998, z: 0.0, w: 0.731354 },
+            scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "806 -0.07 727" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 86 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.560784, green: 0.815686, blue: 1.0, alpha: 1.0 }),
+                intensity: 2200.0,
+                radius: 1.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x8fd0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 21, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 800.0, y: 0.05, z: 736.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "800 0.05 736" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 22, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.560784, green: 0.815686, blue: 1.0, alpha: 1.0 }),
+                intensity: 2200.0,
+                radius: 1.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x8fd0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 22, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 808.0, y: -0.18, z: 722.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.017452, z: 0.0, w: 0.999848 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "808 -0.18 722" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ore_vein"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/ore_vein_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/ore_vein_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 790.0, y: 0.14, z: 734.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.121869, z: 0.0, w: 0.992546 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "790 0.14 734" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 14 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ore_vein"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/ore_vein_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/ore_vein_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 24, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 804.0, y: 0.01, z: 736.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.669131, z: 0.0, w: 0.743145 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "804 0.01 736" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 84 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 25, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 792.0, y: 0.1, z: 724.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.587785, z: 0.0, w: 0.809017 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "792 0.1 724" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 72 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+            ],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/crystal-outpost.xml",
+                origin_path: [0, 26, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

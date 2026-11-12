@@ -1,0 +1,163 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/frontier/cliffs.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"biome.peaks.cliffs"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "biome.peaks.cliffs" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/frontier/cliffs.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"picos-escarpa-leste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "picos-escarpa-leste" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "92 -156 126 -150 164 -156" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "22" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "columnar" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.22" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "31" },
+                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "notches", value: "0.15" },
+                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/frontier/cliffs.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"picos-outcrop-oeste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "picos-outcrop-oeste" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-96 -118 -70 -112 -52 -118" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "14" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "convex" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.3" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "83" },
+                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/frontier/cliffs.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"picos-gargela-oeste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "picos-gargela-oeste" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-150 -256 -112 -266 -82 -280" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "14" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "47" },
+                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/frontier/cliffs.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"picos-anfiteatro-leste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "picos-anfiteatro-leste" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "58 -254 82 -268 72 -290" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "20" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "columnar" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "71" },
+                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.25" },
+            ],
+            text: "",
+            origin_file: "world/frontier/cliffs.xml",
+            origin_path: [0, 3],
+            pose: false,
+        }
+        --
+        #"picos-horizonte"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "picos-horizonte" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-100 -348 -76 -342 -58 -348" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "16" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "26" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "terraced" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.3" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "59" },
+                bevy_world_xml::bsn::WorldProp { key: "notches", value: "0.12" },
+            ],
+            text: "",
+            origin_file: "world/frontier/cliffs.xml",
+            origin_path: [0, 4],
+            pose: false,
+        }
+    ]
+]
+

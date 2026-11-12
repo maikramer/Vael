@@ -1,0 +1,578 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/title.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"UiStyle menu"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/menu.css" },
+        ],
+        text: "",
+        origin_file: "world/title.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    --
+    #"UiStyle title"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/title.css" },
+        ],
+        text: "",
+        origin_file: "world/title.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    --
+    #"UiRoot title-layer"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiRoot",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-layer" },
+            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-layer" },
+        ],
+        text: "",
+        origin_file: "world/title.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"UiModal title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiModal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "title" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "title-overlay" },
+                bevy_world_xml::bsn::WorldProp { key: "escape-closes", value: "false" },
+            ],
+            text: "",
+            origin_file: "world/title.xml",
+            origin_path: [2, 0],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "title-frame" },
+                ],
+                text: "",
+                origin_file: "world/title.xml",
+                origin_path: [2, 0, 0],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "title-kicker" },
+                    ],
+                    text: "@title.kicker",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 0, 0, 0],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "title-logo" },
+                    ],
+                    text: "VAEL",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 0, 0, 1],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "title-sub" },
+                    ],
+                    text: "@title.sub",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 0, 0, 2],
+                    pose: false,
+                }
+                --
+                #"UiColumn"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiColumn",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "title-menu" },
+                    ],
+                    text: "",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 0, 0, 3],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiButton title-continue"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-continue" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn primary" },
+                        ],
+                        text: "",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 0, 0, 3, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@title.continue",
+                            origin_file: "world/title.xml",
+                            origin_path: [2, 0, 0, 3, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiText title-save-info"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-save-info" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-save-info" },
+                        ],
+                        text: "—",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 0, 0, 3, 1],
+                        pose: false,
+                    }
+                    --
+                    #"UiButton title-new"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-new" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                        ],
+                        text: "",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 0, 0, 3, 2],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@title.new",
+                            origin_file: "world/title.xml",
+                            origin_path: [2, 0, 0, 3, 2, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiButton title-settings"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-settings" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                        ],
+                        text: "",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 0, 0, 3, 3],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@title.settings",
+                            origin_file: "world/title.xml",
+                            origin_path: [2, 0, 0, 3, 3, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiButton title-credits"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-credits" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                        ],
+                        text: "",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 0, 0, 3, 4],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@title.credits",
+                            origin_file: "world/title.xml",
+                            origin_path: [2, 0, 0, 3, 4, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiButton title-quit"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "title-quit" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                        ],
+                        text: "",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 0, 0, 3, 5],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@title.quit",
+                            origin_file: "world/title.xml",
+                            origin_path: [2, 0, 0, 3, 5, 0],
+                            pose: false,
+                        }
+                    ]
+                ]
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "title-hint" },
+                    ],
+                    text: "@title.hint",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 0, 0, 4],
+                    pose: false,
+                }
+            ]
+        ]
+        --
+        #"UiModal credits"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiModal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "credits" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "overlay" },
+            ],
+            text: "",
+            origin_file: "world/title.xml",
+            origin_path: [2, 1],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "frame credits-frame" },
+                ],
+                text: "",
+                origin_file: "world/title.xml",
+                origin_path: [2, 1, 0],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "frame-title" },
+                    ],
+                    text: "@title.credits.title",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 0],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "credits-line" },
+                    ],
+                    text: "VAEL — O Silêncio de Vael",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 1],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "credits-line" },
+                    ],
+                    text: "Um RPG de mundo aberto feito com a engine Viber.",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 2],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "credits-line" },
+                    ],
+                    text: "Mundo, quests e regras: scripts Luau do Vael.",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 3],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "credits-line" },
+                    ],
+                    text: "Engine, ferramentas e editor: Viber.",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 4],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "credits-line" },
+                    ],
+                    text: "Assets: pipeline AiGameKit.",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 5],
+                    pose: false,
+                }
+                --
+                #"UiSpacer"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiSpacer",
+                    attrs: [
+                    ],
+                    text: "",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 6],
+                    pose: false,
+                }
+                --
+                #"UiButton credits-close"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiButton",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "credits-close" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                    ],
+                    text: "",
+                    origin_file: "world/title.xml",
+                    origin_path: [2, 1, 0, 7],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                        ],
+                        text: "@title.back",
+                        origin_file: "world/title.xml",
+                        origin_path: [2, 1, 0, 7, 0],
+                        pose: false,
+                    }
+                ]
+            ]
+        ]
+    ]
+]
+

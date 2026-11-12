@@ -1,0 +1,1427 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/landmarks/wilds.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"biome.wilds.landmarks"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "biome.wilds.landmarks" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/landmarks/wilds.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "1480 -700" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "46" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1502.0, y: 161.937103, z: -700.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1502 161.9371 -700" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1495.599976, y: 162.343399, z: -684.400024 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1495.6 162.3434 -684.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1480.0, y: 162.0439, z: -678.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1480 162.0439 -678" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1464.400024, y: 161.569794, z: -684.400024 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1464.4 161.5698 -684.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1458.0, y: 161.111694, z: -700.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1458 161.1117 -700" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1464.400024, y: 161.177002, z: -715.599976 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1464.4 161.177 -715.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1480.0, y: 161.650696, z: -722.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1480 161.6507 -722" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1495.599976, y: 161.676102, z: -715.599976 },
+            rotation: glam::Quat { x: 0.338134, y: 0.41756, z: 0.530763, w: 0.655438 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1495.6 161.6761 -715.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 3.2 0.9 0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 65 78" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1472.0, y: 161.498398, z: -690.5 },
+            rotation: glam::Quat { x: 0.116193, y: -0.129046, z: -0.658965, w: 0.731855 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1472 161.4984 -690.5" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 3.2 0.9 0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -20 -84" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1446.0, y: 160.368301, z: -686.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1446 160.3683 -686" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_mossy_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_mossy"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1516.0, y: 161.844193, z: -712.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1516 161.8442 -712" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_mossy_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_mossy"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"orm-heart"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1480.0, y: 161.324005, z: -700.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "orm-heart" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1480 161.324 -700" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/ruin-relic.lua" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wilds-campfire"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1512.0, y: 160.154495, z: -726.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wilds-campfire" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1512 160.1545 -726" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/campfire_pit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1512.0, y: 160.154495, z: -726.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1512 160.1545 -726" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 40; shape-radius: 0.28; start-life-min: 0.5; start-life-max: 1.3; start-speed-min: 1.3; start-speed-max: 2.7; start-size-min: 0.3; start-size-max: 0.62; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1512.0, y: 160.154495, z: -726.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1512 160.1545 -726" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 1760.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.7 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1760" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 15, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1509.0, y: 160.0793, z: -730.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1509 160.0793 -730" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1516.0, y: 159.527298, z: -723.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1516 159.5273 -723" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 17, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "honor-exclusion", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "7331" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "1430 0 -750" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "1530 0 -650" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "1962" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 18],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 18, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bandit"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/landmarks/wilds.xml",
+                    origin_path: [0, 18, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"Lake"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Lake",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-540 30" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "26" },
+                bevy_world_xml::bsn::WorldProp { key: "depth", value: "2.4" },
+                bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "0.4" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "#2fa89a" },
+                bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "ripple", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "water-level", value: "61.236015" },
+                bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 19],
+            pose: false,
+        }
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-540 30" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "44" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 20],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -574.0, y: 63.636398, z: 8.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-574 63.6364 8" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -508.0, y: 60.769402, z: 6.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-508 60.7694 6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -566.0, y: 63.2481, z: 62.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.737277, z: 0.0, w: -0.67559 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-566 63.2481 62" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 85 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -510.0, y: 60.222, z: 58.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: -0.173648 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-510 60.222 58" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 20 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -536.0, y: 61.956799, z: -6.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: 0.258819 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-536 61.9568 -6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -30 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -521.0, y: 60.807499, z: 44.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-521 60.8075 44" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/paradise-spring.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 26, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -556.0, y: 60.583801, z: 48.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-556 60.5838 48" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 27],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 27, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -560.0, y: 61.1978, z: 16.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 0.7, y: 0.7, z: 0.7 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-560 61.1978 16" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/mushroom_red_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 28],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_red"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/mushroom_red_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 28, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -514.0, y: 61.050701, z: 20.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-514 61.0507 20" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/mushroom_red_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 29],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_red"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/mushroom_red_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 29, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-605 -725" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "26" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 30],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -605.0, y: 185.116196, z: -725.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-605 185.1162 -725" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/mirante-vista.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/stone_cairn_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/stone_cairn_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -621.0, y: 183.884705, z: -715.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-621 183.8847 -715" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 32],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 32, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -621.0, y: 183.884705, z: -715.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-621 183.8847 -715" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 33, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -621.0, y: 183.884705, z: -715.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-621 183.8847 -715" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 34],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 1280.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1280" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 34, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -589.0, y: 184.834198, z: -713.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-589 184.8342 -713" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 35],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 35, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -589.0, y: 184.834198, z: -713.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-589 184.8342 -713" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 36],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 36, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -589.0, y: 184.834198, z: -713.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-589 184.8342 -713" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 37],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 1280.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1280" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 37, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -605.0, y: 185.965103, z: -738.0 },
+            rotation: glam::Quat { x: 0.0, y: -1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-605 185.9651 -738" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.6 0.9 0.55" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 0 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [0, 38],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [0, 38, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

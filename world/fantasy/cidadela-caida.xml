@@ -291,15 +291,9 @@
       <GltfScene url="/assets/meshes/village/watchtower_lod0.glb" />
     </Entity>
 
-    <Entity translation="-918 188.574 -300" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1.2 5 1.2; pos-offset-y: 2.5" euler="4 20 3" scale="1.1">
-      <GltfScene url="/assets/meshes/forest/dead_tree_lod0.glb" />
-    </Entity>
-    <Entity translation="-848 188.574 -318" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.8 4 0.8; pos-offset-y: 2" euler="180 -50 180" scale="0.95">
-      <GltfScene url="/assets/meshes/forest/dead_tree_lod0.glb" />
-    </Entity>
-    <Entity translation="-890 188.574 -265" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 1 4.5 1; pos-offset-y: 2.25" euler="0 70 0" scale="1">
-      <GltfScene url="/assets/meshes/forest/dead_tree_lod0.glb" />
-    </Entity>
+    <Entity translation="-918 188.574 -300" rigidbody="type: fixed; mass: 0; gravity-scale: 0" euler="4 20 3" scale="1.1" collider="shape: cylinder; radius: 0.4; half-height: 2.2" prop-flora="dead_tree" />
+    <Entity translation="-848 188.574 -318" rigidbody="type: fixed; mass: 0; gravity-scale: 0" euler="180 -50 180" scale="0.95" collider="shape: cylinder; radius: 0.4; half-height: 2.2" prop-flora="dead_tree" />
+    <Entity translation="-890 188.574 -265" rigidbody="type: fixed; mass: 0; gravity-scale: 0" euler="0 70 0" scale="1" collider="shape: cylinder; radius: 0.4; half-height: 2.2" prop-flora="dead_tree" />
 
     <Entity translation="-915 188.574 -290" euler="0 20 0" scale="0.45">
       <GltfScene url="/assets/meshes/terrain/form_stack_6_lod0.glb" />

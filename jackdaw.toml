@@ -1,0 +1,33 @@
+# jackdaw project settings.
+
+# Optional name of your game's root Bevy Plugin (for setup / `jd doctor`).
+plugin = "VaelPlugin"
+
+# The workspace member jackdaw builds as the game.
+package = "vael"
+
+# Vael's AssetPlugin root: `/assets/...` resolves inside this folder.
+assets_dir = "assets/public"
+
+# Editor extensions enabled for this project (the bundle is installed
+# globally by `jd extension install`).
+[extensions]
+bevy_voxel_terrain_jackdaw = true
+
+# Recorded when this project was set up. Jackdaw compares these on
+# open so an editor upgrade is reported instead of surfacing as a
+# build failure.
+[jackdaw]
+version = "0.20.2"
+bevy = "0.20"
+channel = "stable"
+
+# Optional jackdaw modules this project uses. Change them from the
+# editor (File > Modules) so the game's Cargo.toml follows.
+[modules]
+physics = false
+navmesh = false
+multiplayer = false
+
+[[run]]
+name = "Play"

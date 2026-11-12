@@ -1,0 +1,921 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/creatures/enemies.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"creatures"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "creatures" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/creatures/enemies.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "20" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "101" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-170 0 124" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "170 0 350" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "402" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader wolf"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 0, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "14" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "202" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-170 0 160" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "170 0 360" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "411" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/shade.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader shade"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/shade_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/shade_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/shade_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/shade_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 1, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "20" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "303" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "124 0 -160" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "350 0 160" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "397" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/scorpion.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader scorpion"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/scorpion_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/scorpion_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/scorpion_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/scorpion_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 2, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "18" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "404" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "124 0 -160" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "330 0 160" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "379" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bandit"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 3, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "555" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "140 0 -140" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "320 0 140" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "362" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-archer.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bandit"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 4, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "22" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "505" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-350 0 -170" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "-124 0 170" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "402" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bogling.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bogling"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bogling_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bogling_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bogling_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bogling_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 5, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "10" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "515" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-340 0 -170" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "-160 0 170" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "393" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader wolf"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 6, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "18" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "707" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-110 0 -330" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "110 0 -124" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "50" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "360" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader goblin"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/goblin_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/goblin_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/goblin_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 7, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "808" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-40 0 -115" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "40 0 -50" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "50" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "134" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/slime.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader slime"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/slime_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/slime_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/slime_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/slime_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 8, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "14" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "909" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-110 0 -320" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "110 0 -124" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "50" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "351" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader wolf"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 9, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "7" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "414" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "150 0 -150" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "330 0 150" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "379" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-shield.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bandit"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bandit_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 10, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "525" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-340 0 -160" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "-150 0 160" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "393" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bogling-hexer.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader bogling"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bogling_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bogling_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bogling_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bogling_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 11, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"DynamicSpawner"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DynamicSpawner",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "717" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "-100 0 -320" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "100 0 -150" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "360" },
+            ],
+            text: "",
+            origin_file: "world/creatures/enemies.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Creature"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Creature",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
+                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin-brute.lua" },
+                ],
+                text: "",
+                origin_file: "world/creatures/enemies.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader goblin"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/goblin_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/goblin_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/goblin_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
+                    ],
+                    text: "",
+                    origin_file: "world/creatures/enemies.xml",
+                    origin_path: [0, 12, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+    ]
+]
+

@@ -1,0 +1,230 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/longhouse.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.longhouse"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.longhouse" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/longhouse.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"longhouse"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 29.0, y: 0.0, z: -31.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.92388, z: 0.0, w: 0.382683 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "longhouse" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 135 0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "29 0 -31" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/village_longhouse_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene village_longhouse"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/village_longhouse_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_longhouse_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 35.5, y: 0.0, z: -33.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "chest" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.5 0 -33" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "connect-opened", value: "@discordia:notice" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"npc_elder"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 22.0, y: 0.0, z: -24.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_elder" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "22 0 -24" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "story_notas" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene npc_elder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_elder_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_elder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+            --
+            #"NpcBody"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 2, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"npc_envoy_glass"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 25.0, y: 0.0, z: -24.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.92388, z: 0.0, w: -0.382683 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_envoy_glass" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "25 0 -24" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 225 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/decision-quest.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-quest_id", value: "story_glass_envoy" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene npc_scholar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_scholar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scholar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+            --
+            #"NpcBody"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 3, 1],
+                pose: true,
+            }
+        ]
+    ]
+]
+

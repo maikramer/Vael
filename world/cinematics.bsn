@@ -1,0 +1,1273 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cinematics.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"Cinematic prologo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "prologo" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "letterbox", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Fade"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Fade",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "0" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.4" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "notification" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "112 70 146" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "84 66 112" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 44 -4" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "8 46 6" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "46" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "1.8" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "Capítulo I · A Nota" },
+            ],
+            text: "O Silêncio de Vael",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 3],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "7.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.0" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Há trinta invernos que o Coro de Vael não canta.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 4],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.6" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "940 205 836" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "926 205 824" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "880 204 780" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "880 204 780" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "44" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 5],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "920 205 820" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "912 208 816" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "880 204 780" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "879 205 780" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "42" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 6],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "10.8" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.2" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Lá em cima, no Alto, os cristais cantavam — e enquanto cantavam, a bruma ficava no pântano e os bichos nos covis.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 7],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "-738 204 -270" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-765 201 -285" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "-880 193 -305" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "-880 193 -305" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "50" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 8],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "-783 197 -295" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-795 195 -299" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "-880 193 -300" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "-880 193 -300" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "44" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 9],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "15.4" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.6" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Até a Cidadela cair numa só noite. O canto partiu-se em quatro Notas, e quatro criaturas engoliram-nas.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 10],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "7.5" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "player" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "4.8 1.7 6.4" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "2.2 1.55 3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.25 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 1.5 0" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 11],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "21.8" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.2" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Tu vieste medir a terra, cartógrafo. Mede-a bem — e encontra-as.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 12],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "26.1" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "2.9" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Procura-me junto ao salão comunal.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [0, 13],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic guardiao-bruxa"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "guardiao-bruxa" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "boss_roar" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [1, 0],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "7 2.2 7" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "4.5 3.2 4.5" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.8 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 2.0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [1, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.6" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "-2.5 1.0 5.5" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-3.5 1.3 4.6" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 2.3 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [1, 2],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "Guardiã da Nota do Bosque" },
+            ],
+            text: "A Bruxa do Bosque",
+            origin_file: "world/cinematics.xml",
+            origin_path: [1, 3],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Irmã Vessa" },
+            ],
+            text: "Quando ela apontar o chão onde pisas, sai. A maldição cai no mesmo sítio.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [1, 4],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic guardiao-verme"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "guardiao-verme" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.1" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "boss_roar" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [2, 0],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "10 1.5 9" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "6 4.5 6" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 2.2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [2, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "0 7 -8" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "2 6 -7" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.5 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [2, 2],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "Guardião da Nota do Ermo" },
+            ],
+            text: "O Verme do Ermo",
+            origin_file: "world/cinematics.xml",
+            origin_path: [2, 3],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Kadi" },
+            ],
+            text: "Quando a areia tremer à volta dele, corre para longe do círculo.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [2, 4],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic guardiao-lodo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "guardiao-lodo" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [3],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "boss_roar" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [3, 0],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "6 1.0 -8" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "4 2.4 -5" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 2.0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [3, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "-6 3.5 3" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-5 3.0 4" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.8 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [3, 2],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "Guardião da Nota do Lodo" },
+            ],
+            text: "O Que Conta os Afogados",
+            origin_file: "world/cinematics.xml",
+            origin_path: [3, 3],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Onno" },
+            ],
+            text: "O lago leva tudo. Não fiques parado na lama quando ele se erguer.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [3, 4],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic guardiao-ogro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "guardiao-ogro" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [4],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.15" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "boss_roar" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [4, 0],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "3 0.8 9" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "2 1.6 6" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 3.0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 3.4 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [4, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "self" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "9 6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "7 5 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 2.0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [4, 2],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "Guardião da Nota dos Picos" },
+            ],
+            text: "O Ogro dos Picos",
+            origin_file: "world/cinematics.xml",
+            origin_path: [4, 3],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Batedora Sig" },
+            ],
+            text: "Quando ele erguer os punhos, sai de perto antes que a terra rache.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [4, 4],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic nota"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "nota" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [5],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.1" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "level_up" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [5, 0],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "5.4" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "player" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "4 1.6 4" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-3 3.4 4.5" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.4 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 1.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [5, 1],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.4" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "O Coro lembra-se de mais uma voz" },
+            ],
+            text: "Nota recuperada",
+            origin_file: "world/cinematics.xml",
+            origin_path: [5, 2],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "2.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "2.8" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Senti-a daqui, cartógrafo. Traz-ma ao velho, junto ao salão comunal.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [5, 3],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic campo-de-batalha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "campo-de-batalha" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [6],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Fade"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Fade",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "0" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [6, 0],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "-746 193.6 -246" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-756 192.9 -256" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "-770 193.2 -266" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "-776 193.6 -272" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [6, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "-776 193.8 -250" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "-788 196.2 -262" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "-848 196 -290" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "-878 198 -302" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "46" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [6, 2],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "Onde a coluna parou" },
+            ],
+            text: "O Campo de Batalha",
+            origin_file: "world/cinematics.xml",
+            origin_path: [6, 3],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "3.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.2" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Veterano do Campo" },
+            ],
+            text: "Subimos de noite para defender a Cidadela. Ao amanhecer já não havia Cidadela para defender.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [6, 4],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Veterano do Campo" },
+            ],
+            text: "As sombras que vês têm os rostos dos meus. Dá-lhes descanso.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [6, 5],
+            pose: false,
+        }
+    ]
+    --
+    #"Cinematic epilogo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cinematic",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "epilogo" },
+            bevy_world_xml::bsn::WorldProp { key: "skippable", value: "true" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [7],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Fade"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Fade",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "0" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 0],
+            pose: false,
+        }
+        --
+        #"Sound"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Sound",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "clip", value: "level_up" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 1],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "7" },
+                bevy_world_xml::bsn::WorldProp { key: "anchor", value: "player" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "3.6 1.75 4.6" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "1.2 3.4 6.2" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 1.45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "0 2.4 0" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 2],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.2" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Quatro Notas. Há trinta invernos que não as ouvia juntas.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 3],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "9" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "848 198.6 796" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "840 214 812" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "880 210 780" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "880 236 780" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "34" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 4],
+            pose: false,
+        }
+        --
+        #"Line"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Line",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "7.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.4" },
+                bevy_world_xml::bsn::WorldProp { key: "speaker", value: "Ancião Edmar" },
+            ],
+            text: "Escuta. Lá em cima, no Alto… o Coro canta outra vez.",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 5],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "12.2" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "3.6" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "O Silêncio de Vael terminou" },
+            ],
+            text: "O Coro canta outra vez",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 6],
+            pose: false,
+        }
+        --
+        #"Shot"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shot",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "from", value: "104 66 136" },
+                bevy_world_xml::bsn::WorldProp { key: "to", value: "70 60 96" },
+                bevy_world_xml::bsn::WorldProp { key: "look", value: "0 44 0" },
+                bevy_world_xml::bsn::WorldProp { key: "look-to", value: "4 46 -2" },
+                bevy_world_xml::bsn::WorldProp { key: "fov", value: "48" },
+                bevy_world_xml::bsn::WorldProp { key: "ease", value: "in-out" },
+            ],
+            text: "",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 7],
+            pose: false,
+        }
+        --
+        #"Title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Title",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "16.6" },
+                bevy_world_xml::bsn::WorldProp { key: "duration", value: "4.6" },
+                bevy_world_xml::bsn::WorldProp { key: "sub", value: "O Vale continua à tua espera" },
+            ],
+            text: "Fim do Capítulo I",
+            origin_file: "world/cinematics.xml",
+            origin_path: [7, 8],
+            pose: false,
+        }
+    ]
+    --
+    #"trigger.campo-de-batalha"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -760.0, y: 190.726395, z: -280.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "trigger.campo-de-batalha" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-760 190.7264 -280" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "cinematic-trigger.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-cinematic", value: "campo-de-batalha" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "22" },
+        ],
+        text: "",
+        origin_file: "world/cinematics.xml",
+        origin_path: [8],
+        pose: true,
+    }
+]
+

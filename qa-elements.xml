@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<world clear-color="#8fc2ef" static="true" title="Vael">
+  <!-- QA do ambiente `bevy_elements`: copia do `world.xml` (mesmos
+       Includes) para identidade e save proprios. Arranca-se com este
+       ficheiro como cena, sem escolher a cena principal: o projeto esta
+       a migrar para `.bsn` e a principal resolveria o BSN em curso.
+       Regerar quando o `world.xml` mudar. -->
+  <ProjectileTemplate id="enemy-arrow" speed="16" damage="8" max-life="2.5" sensor-radius="0.3" faction="enemy" />
+  <Include src="/world/environment.xml" />
+  <SpawnGate target-entity="player" y-fallback="150" />
+  <!-- Entradas da cena principal. `spawn` e a PRIMEIRA: `change_scene("main")`
+       sem entrada (Novo Jogo) chega por ela, na pose normal. `dev` e o sinal
+       do arranque de debug (docs/DEBUG.md) e tem de ficar DEPOIS de `spawn`:
+       se fosse a primeira, um Novo Jogo normal caia em modo debug. -->
+  <SceneEntry name="spawn" translation="0 150 0" />
+  <SceneEntry name="dev" translation="0 150 0" />
+  <Group name="world-base" translation="0 38.7304 0">
+    <Terrain render-distance="950" world-size="4000" max-height="200" levels="5" resolution="128" collision-resolution="64" lod-hysteresis="1.3" lod-distance-ratio="1.7" height-smoothing="1" heightmap="world.data/terrain.ahgt" base-color="#c9c5ba" layers="grass vale_grass dirt dirt_trail forest_floor gravel mountain_stone sand desert_sand snow_peak swamp_mud dirt_road" shore-width="6" cliff-angle="50" sharpen="true" sharpen-angle="35" splat-texel="1" sharpen-seed="7" cliff-streaks="0.55" cliff-moss="0.4" />
+    <NavMesh />
+  </Group>
+  <Include src="/world/cities/discordia.xml" />
+  <Include src="/world/spawn/ring.xml" />
+  <Include src="/world/spawn/dressing.xml" />
+  <Include src="/world/paths/network.xml" />
+  <Include src="/world/paths/trails.xml" />
+  <Include src="/world/paths/ground-wear.xml" />
+  <Include src="/world/bridges/ponte-norte.xml" />
+  <Include src="/world/gameplay.xml" />
+  <Include src="/world/bridges/passadeira-da-bruxa.xml" />
+  <Include src="/world/paths/lanterns.xml" />
+  <Include src="/world/vegetation/forest.xml" />
+  <Include src="/world/vegetation/desert.xml" />
+  <Include src="/world/vegetation/swamp.xml" />
+  <Include src="/world/vegetation/peaks.xml" />
+  <Include src="/world/landmarks/forest.xml" />
+  <Include src="/world/landmarks/desert.xml" />
+  <Include src="/world/landmarks/swamp.xml" />
+  <Include src="/world/landmarks/peaks.xml" />
+  <Include src="/world/landmarks/wilds.xml" />
+  <Include src="/world/landmarks/village.xml" />
+  <Include src="/world/towers.xml" />
+  <Include src="/world/koroks.xml" />
+  <Include src="/world/frontier/ridges.xml" />
+  <Include src="/world/frontier/cliffs.xml" />
+  <Include src="/world/frontier/horizon.xml" />
+  <Include src="/world/landforms/rampart.xml" />
+  <Include src="/world/landforms/gate-arms.xml" />
+  <Include src="/world/fantasy/alto-de-vael.xml" />
+  <Include src="/world/fantasy/grutas.xml" />
+  <Include src="/world/caves/caves.xml" />
+  <Include src="/world/fantasy/bosque-encantado.xml" />
+  <Include src="/world/fantasy/cidadela-caida.xml" />
+  <Include src="/world/scenes/pilgrims-camp.xml" />
+  <Include src="/world/scenes/crystal-outpost.xml" />
+  <Include src="/world/scenes/battlefield.xml" />
+  <Include src="/world/scenes/smugglers.xml" />
+  <Include src="/world/atmosphere/ambient-fx.xml" />
+  <Include src="/world/creatures/enemies.xml" />
+  <Include src="/world/creatures/bosses.xml" />
+  <Include src="/world/ai/npcs.xml" />
+  <Include src="/world/quest-stations.xml" />
+  <Scatter id="engine-53" profile="shore-rocks" count="9" seed="13943144449614675968" region-min="-210.0 0 -38.7" region-max="-168.5 0 9.6" avoid-water="0" avoid-road="1" avoid-cliff="1" align-to-terrain="1" random-yaw="1" avoid-overlaps="1" footprint-radius="0.8" max-slope-deg="55" max-slope-attempts="4" scale-min="0.55" scale-max="1.4" scale-axis-min="0.85" scale-axis-max="1.15" base-y-offset="-0.12">
+    <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" lod1-url="/assets/meshes/props/rock_boulder_lod1.glb" lod2-url="/assets/meshes/props/rock_boulder_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" />
+    <GltfScene url="/assets/meshes/props/rock_mossy_lod0.glb" lod1-url="/assets/meshes/props/rock_mossy_lod1.glb" lod2-url="/assets/meshes/props/rock_mossy_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" />
+    <GltfScene url="/assets/meshes/swamp/moss_rock_lod0.glb" lod1-url="/assets/meshes/swamp/moss_rock_lod1.glb" lod2-url="/assets/meshes/swamp/moss_rock_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" />
+    <GltfScene url="/assets/meshes/farm/flint_rock_lod0.glb" lod1-url="/assets/meshes/farm/flint_rock_lod1.glb" lod2-url="/assets/meshes/farm/flint_rock_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" />
+  </Scatter>
+  <Group name="spawn/engine-53" generated-by="engine-53">
+    <GltfScene url="/assets/meshes/props/rock_mossy_lod0.glb" lod1-url="/assets/meshes/props/rock_mossy_lod1.glb" lod2-url="/assets/meshes/props/rock_mossy_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0000" translation="-201.8047 24.4347 -25.8182" euler="-0.0349 -30.3642 -1.7803" scale="0.6737 0.7842 0.7741" />
+    <GltfScene url="/assets/meshes/props/rock_mossy_lod0.glb" lod1-url="/assets/meshes/props/rock_mossy_lod1.glb" lod2-url="/assets/meshes/props/rock_mossy_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0001" translation="-173.2292 25.2034 1.5292" euler="178.5932 -11.8457 177.8917" scale="1.2799 1.1332 1.0311" />
+    <GltfScene url="/assets/meshes/props/rock_mossy_lod0.glb" lod1-url="/assets/meshes/props/rock_mossy_lod1.glb" lod2-url="/assets/meshes/props/rock_mossy_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0002" translation="-201.9244 24.6401 -1.5259" euler="-171.7661 -76.5884 -170.6067" scale="1.1108 1.1346 1.1309" />
+    <GltfScene url="/assets/meshes/props/rock_boulder_lod0.glb" lod1-url="/assets/meshes/props/rock_boulder_lod1.glb" lod2-url="/assets/meshes/props/rock_boulder_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0003" translation="-197.903 24.0268 -6.2434" euler="179.1903 55.2221 -179.2417" scale="0.7712 0.7932 0.7457" />
+    <GltfScene url="/assets/meshes/swamp/moss_rock_lod0.glb" lod1-url="/assets/meshes/swamp/moss_rock_lod1.glb" lod2-url="/assets/meshes/swamp/moss_rock_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0004" translation="-198.1233 23.9514 -15.081" euler="3.827 68.878 -4.057" scale="1.3818 1.3372 1.1854" />
+    <GltfScene url="/assets/meshes/swamp/moss_rock_lod0.glb" lod1-url="/assets/meshes/swamp/moss_rock_lod1.glb" lod2-url="/assets/meshes/swamp/moss_rock_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0005" translation="-204.0771 24.7226 -19.0533" euler="2.0511 32.1178 -5.7908" scale="1.4013 1.3912 1.4882" />
+    <GltfScene url="/assets/meshes/props/rock_mossy_lod0.glb" lod1-url="/assets/meshes/props/rock_mossy_lod1.glb" lod2-url="/assets/meshes/props/rock_mossy_lod2.glb" lod-threshold-near="50" lod-threshold-mid="120" name="inst-engine-53-0006" translation="-181.901 24.6846 -28.1131" euler="3.537 -16.3636 2.9933" scale="1.1727 1.2797 1.4656" />
+  </Group>
+  <Include src="/world/cinematics.xml" />
+</world>

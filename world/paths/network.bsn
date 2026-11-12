@@ -1,0 +1,808 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/paths/network.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"paths.network"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "paths.network" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/paths/network.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"RoadNetwork"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "RoadNetwork",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "default-profile", value: "artery" },
+                bevy_world_xml::bsn::WorldProp { key: "default-width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "crossing-flare", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten-falloff", value: "26" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten-window", value: "72" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten-max-grade", value: "0.34" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "4" },
+            ],
+            text: "",
+            origin_file: "world/paths/network.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Way plaza"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "plaza" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "width", value: "4.8" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 0],
+                pose: false,
+            }
+            --
+            #"Way mid_n"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "mid_n" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "0 32" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 1],
+                pose: false,
+            }
+            --
+            #"Way mid_e"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "mid_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "32 0" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 2],
+                pose: false,
+            }
+            --
+            #"Way mid_s"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "mid_s" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "0 -32" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 3],
+                pose: false,
+            }
+            --
+            #"Way mid_w"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "mid_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-32 0" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 4],
+                pose: false,
+            }
+            --
+            #"Way ring_ne"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "ring_ne" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "25 25" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 5],
+                pose: false,
+            }
+            --
+            #"Way ring_se"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "ring_se" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "25 -25" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 6],
+                pose: false,
+            }
+            --
+            #"Way ring_sw"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "ring_sw" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-25 -25" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 7],
+                pose: false,
+            }
+            --
+            #"Way ring_nw"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "ring_nw" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-25 25" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 8],
+                pose: false,
+            }
+            --
+            #"Way w_lake_e"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "w_lake_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-163.9 9" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 9],
+                pose: false,
+            }
+            --
+            #"Way w_lake_w"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "w_lake_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-215.7 9.5" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 10],
+                pose: false,
+            }
+            --
+            #"Way n_gate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "n_gate" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-3 128" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 11],
+                pose: false,
+            }
+            --
+            #"Way n_bank"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "n_bank" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "4 175" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 12],
+                pose: false,
+            }
+            --
+            #"Way n_resume"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "n_resume" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "4 240" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 13],
+                pose: false,
+            }
+            --
+            #"Way n_end"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "n_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-8 286" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 14],
+                pose: false,
+            }
+            --
+            #"Way s_end"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "s_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-12 -286" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 15],
+                pose: false,
+            }
+            --
+            #"Way gate_e"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "gate_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "124 2" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 16],
+                pose: false,
+            }
+            --
+            #"Way desert_end"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "desert_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "290 -4" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 17],
+                pose: false,
+            }
+            --
+            #"Way w_end"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Way",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "w_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "-292 12" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 18],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "plaza" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_n" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 5 0 19" },
+                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "plaza" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 19],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "plaza" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_s" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 -5 0 -19" },
+                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "plaza" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 20],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "plaza" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "5 0 19 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "plaza" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 21],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "plaza" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-5 0 -19 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "plaza" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 22],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_n" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "n_gate" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 60 -2 96" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 23],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "n_gate" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "n_bank" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 152 2 168" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 24],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "n_resume" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "n_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "2 252 -4 270" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 25],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_s" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "s_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 -58 2 -84 0 -184 18 -220" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 26],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "gate_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "60 0 96 2" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 27],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "gate_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "desert_end" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "160 6 200 10 240 8" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 28],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "w_lake_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-58 0 -80 -2" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 29],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "w_lake_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "w_lake_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-174 26 -192 32 -206 27" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 30],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "w_lake_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "w_end" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 31],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_n" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "ring_ne" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "11 32 20 29" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 32],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "ring_ne" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "29 20 32 11" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 33],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_e" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "ring_se" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "32 -11 29 -20" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 34],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "ring_se" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_s" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "20 -29 11 -32" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 35],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_s" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "ring_sw" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-11 -32 -20 -29" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 36],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "ring_sw" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-29 -20 -32 -11" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 37],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_w" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "ring_nw" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-32 11 -29 20" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 38],
+                pose: false,
+            }
+            --
+            #"Segment"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Segment",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "a", value: "ring_nw" },
+                    bevy_world_xml::bsn::WorldProp { key: "b", value: "mid_n" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-20 29 -11 32" },
+                ],
+                text: "",
+                origin_file: "world/paths/network.xml",
+                origin_path: [0, 0, 39],
+                pose: false,
+            }
+        ]
+    ]
+]
+

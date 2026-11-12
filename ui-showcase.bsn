@@ -1,0 +1,1686 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "clear-color", value: "#1b2432" },
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "ui-showcase.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"Sky"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Sky",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "sun-size", value: "1.4" },
+        ],
+        text: "",
+        origin_file: "ui-showcase.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    --
+    #"DayCycle"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "DayCycle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "minute-of-day", value: "540" },
+            bevy_world_xml::bsn::WorldProp { key: "minutes-per-real-second", value: "4" },
+        ],
+        text: "",
+        origin_file: "ui-showcase.xml",
+        origin_path: [1],
+        pose: true,
+    }
+    --
+    #"Terrain"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Terrain",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "world-size", value: "256" },
+            bevy_world_xml::bsn::WorldProp { key: "max-height", value: "18" },
+            bevy_world_xml::bsn::WorldProp { key: "seed", value: "7" },
+            bevy_world_xml::bsn::WorldProp { key: "heightmap", value: "ui-showcase.data/terrain.ahgt" },
+        ],
+        text: "",
+        origin_file: "ui-showcase.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    --
+    #"UiStyle showcase"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/showcase.css" },
+        ],
+        text: "",
+        origin_file: "ui-showcase.xml",
+        origin_path: [3],
+        pose: false,
+    }
+    --
+    #"UiRoot showcase"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiRoot",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "showcase" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "ui/showcase.lua" },
+        ],
+        text: "",
+        origin_file: "ui-showcase.xml",
+        origin_path: [4],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"UiColumn stage"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiColumn",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "stage" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "stage" },
+            ],
+            text: "",
+            origin_file: "ui-showcase.xml",
+            origin_path: [4, 0],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiText heading"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiText",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "heading" },
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "heading" },
+                ],
+                text: "UI Showcase",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 0],
+                pose: false,
+            }
+            --
+            #"UiGrid inv"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiGrid",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "inv" },
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "inv" },
+                    bevy_world_xml::bsn::WorldProp { key: "cols", value: "repeat(5, 44)" },
+                    bevy_world_xml::bsn::WorldProp { key: "rows", value: "repeat(2, 44)" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 1],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Espada curta — dano 8" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 0],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-glyph" },
+                        ],
+                        text: "S",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 0, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot rare" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Arco élfico — item RARO" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 1],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-glyph" },
+                        ],
+                        text: "A",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 1, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Poção (12)" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 2],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiIcon icon_potion"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiIcon",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-icon" },
+                            bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/icon_potion.png" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 2, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Poção de antídoto" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 3],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiIcon icon_antidote"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiIcon",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-icon" },
+                            bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/icon_antidote.png" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 3, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot empty" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Vazio — arrasta itens para aqui" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 4],
+                    pose: false,
+                }
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Ouro" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 5],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiIcon hud_gold"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiIcon",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-icon" },
+                            bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/hud_gold.png" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 5, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Madeira" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 6],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiIcon hud_wood"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiIcon",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-icon" },
+                            bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/hud_wood.png" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 6, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Pedra" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 7],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiIcon hud_stone"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiIcon",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-icon" },
+                            bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/hud_stone.png" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 7, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot legendary" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Item LENDÁRIO" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 8],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-glyph" },
+                        ],
+                        text: "!",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 1, 8, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiPanel"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slot empty" },
+                        bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Vazio" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 1, 9],
+                    pose: false,
+                }
+            ]
+            --
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "group" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 2],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiCheck check-hud"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiCheck",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "check-hud" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "check" },
+                        bevy_world_xml::bsn::WorldProp { key: "value", value: "1" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 2, 0],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiPanel"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiPanel",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "check-box" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 2, 0, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiPanel"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiPanel",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "tick" },
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 2, 0, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "check-label" },
+                        ],
+                        text: "Mostrar HUD",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 2, 0, 1],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiCheck check-anim"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiCheck",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "check-anim" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "check" },
+                        bevy_world_xml::bsn::WorldProp { key: "value", value: "1" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 2, 1],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiPanel"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiPanel",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "check-box" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 2, 1, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiPanel"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiPanel",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "tick" },
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 2, 1, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "check-label" },
+                        ],
+                        text: "Animação do selo",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 2, 1, 1],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiCheck check-sfx"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiCheck",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "check-sfx" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "check" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 2, 2],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiPanel"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiPanel",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "check-box" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 2, 2, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiPanel"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiPanel",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "tick" },
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 2, 2, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "check-label" },
+                        ],
+                        text: "Som ambiente",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 2, 2, 1],
+                        pose: false,
+                    }
+                ]
+            ]
+            --
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "group" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 3],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiRow"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiRow",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slider-line" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 3, 0],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slider-label" },
+                        ],
+                        text: "Volume",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 3, 0, 0],
+                        pose: false,
+                    }
+                    --
+                    #"UiSlider volume"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiSlider",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "volume" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slider" },
+                            bevy_world_xml::bsn::WorldProp { key: "min", value: "0" },
+                            bevy_world_xml::bsn::WorldProp { key: "max", value: "100" },
+                            bevy_world_xml::bsn::WorldProp { key: "step", value: "5" },
+                            bevy_world_xml::bsn::WorldProp { key: "value", value: "70" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 3, 0, 1],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "slider-readout" },
+                            ],
+                            text: "70",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 3, 0, 1, 0],
+                            pose: false,
+                        }
+                    ]
+                ]
+            ]
+            --
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "group" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 4],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "label" },
+                    ],
+                    text: "Nome do herói",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 4, 0],
+                    pose: false,
+                }
+                --
+                #"UiInput hero-name"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiInput",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "hero-name" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "input" },
+                        bevy_world_xml::bsn::WorldProp { key: "placeholder", value: "Escreve aqui…" },
+                        bevy_world_xml::bsn::WorldProp { key: "max-length", value: "16" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 4, 1],
+                    pose: false,
+                }
+            ]
+            --
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "group" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 5],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiBar bar-xp"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiBar",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "bar-xp" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "track" },
+                        bevy_world_xml::bsn::WorldProp { key: "bind", value: "xp" },
+                        bevy_world_xml::bsn::WorldProp { key: "value", value: "0.62" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 5, 0],
+                    pose: false,
+                }
+                --
+                #"UiRow"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiRow",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slots" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 5, 1],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiCooldown cd-a"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiCooldown",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "cd-a" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                            bevy_world_xml::bsn::WorldProp { key: "bind", value: "cd.dash" },
+                            bevy_world_xml::bsn::WorldProp { key: "value", value: "0" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 5, 1, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiIcon glyph_dash"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiIcon",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "glyph" },
+                                bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/glyph_dash.png" },
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 5, 1, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiCooldown cd-b"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiCooldown",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "cd-b" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "slot" },
+                            bevy_world_xml::bsn::WorldProp { key: "bind", value: "cd.heal" },
+                            bevy_world_xml::bsn::WorldProp { key: "value", value: "0" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 5, 1, 1],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiIcon glyph_heal"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiIcon",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "glyph" },
+                                bevy_world_xml::bsn::WorldProp { key: "src", value: "/assets/icons/glyph_heal.png" },
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 5, 1, 1, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiPanel seal"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiPanel",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "seal" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "seal" },
+                            bevy_world_xml::bsn::WorldProp { key: "anim", value: "spin 6" },
+                            bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "Selo em rotação — `anim=`" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 5, 1, 2],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "seal-glyph" },
+                            ],
+                            text: "V",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 5, 1, 2, 0],
+                            pose: false,
+                        }
+                    ]
+                ]
+            ]
+            --
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "group" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 6],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiPanel banner"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiPanel",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "banner" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "banner" },
+                        bevy_world_xml::bsn::WorldProp { key: "bind", value: "demo.gradiente:on-tag" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 6, 0],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiText"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiText",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "banner-text" },
+                        ],
+                        text: "gradiente + transição",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 6, 0, 0],
+                        pose: false,
+                    }
+                ]
+                --
+                #"UiRow"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiRow",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "slots" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 6, 1],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiButton demo-btn"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "demo-btn" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "demo-btn" },
+                            bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "hover suave por `transition`" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 6, 1, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "hover em mim",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 6, 1, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiPanel danger-demo"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiPanel",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "danger-demo" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "danger-demo" },
+                            bevy_world_xml::bsn::WorldProp { key: "tooltip", value: "@keyframes danger-pulse em loop" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 0, 6, 1, 1],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                                bevy_world_xml::bsn::WorldProp { key: "class", value: "slot-glyph" },
+                            ],
+                            text: "!",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 0, 6, 1, 1, 0],
+                            pose: false,
+                        }
+                    ]
+                ]
+            ]
+            --
+            #"UiColumn dynamic-area"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "dynamic-area" },
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "group dynamic" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 0, 7],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "label" },
+                    ],
+                    text: "Área dinâmica (create/destroy por script):",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 0, 7, 0],
+                    pose: false,
+                }
+            ]
+        ]
+        --
+        #"UiColumn readout"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiColumn",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "readout" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "readout" },
+            ],
+            text: "",
+            origin_file: "ui-showcase.xml",
+            origin_path: [4, 1],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiText readout-text"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiText",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "id", value: "readout-text" },
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "readout-text" },
+                ],
+                text: "—",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 1, 0],
+                pose: false,
+            }
+        ]
+        --
+        #"UiModal demo-menu"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiModal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "demo-menu" },
+                bevy_world_xml::bsn::WorldProp { key: "key", value: "m" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "overlay" },
+            ],
+            text: "",
+            origin_file: "ui-showcase.xml",
+            origin_path: [4, 2],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "frame" },
+                ],
+                text: "",
+                origin_file: "ui-showcase.xml",
+                origin_path: [4, 2, 0],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiRow"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiRow",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "tabbar" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 2, 0, 0],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiButton"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "tab" },
+                            bevy_world_xml::bsn::WorldProp { key: "tab-group", value: "demo" },
+                            bevy_world_xml::bsn::WorldProp { key: "tab", value: "quests" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 2, 0, 0, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "Missões",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 2, 0, 0, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiButton"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "tab" },
+                            bevy_world_xml::bsn::WorldProp { key: "tab-group", value: "demo" },
+                            bevy_world_xml::bsn::WorldProp { key: "tab", value: "bag" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 2, 0, 0, 1],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "Mochila",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 2, 0, 0, 1, 0],
+                            pose: false,
+                        }
+                    ]
+                ]
+                --
+                #"UiColumn"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiColumn",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "page" },
+                        bevy_world_xml::bsn::WorldProp { key: "tab-group", value: "demo" },
+                        bevy_world_xml::bsn::WorldProp { key: "tab", value: "quests" },
+                        bevy_world_xml::bsn::WorldProp { key: "scroll", value: "y" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 2, 0, 1],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiList demo-quests"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiList",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "demo-quests" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "rows" },
+                            bevy_world_xml::bsn::WorldProp { key: "bind", value: "quests" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 2, 0, 1, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiTemplate"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiTemplate",
+                            attrs: [
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 2, 0, 1, 0, 0],
+                            pose: false,
+                        }
+                        bevy_ecs::hierarchy::Children [
+                            #"UiRow row-{index}"
+                            bevy_transform::components::transform::Transform {
+                                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                            }
+                            bevy_world_xml::bsn::WorldNode {
+                                tag: "UiRow",
+                                attrs: [
+                                    bevy_world_xml::bsn::WorldProp { key: "id", value: "row-{index}" },
+                                    bevy_world_xml::bsn::WorldProp { key: "class", value: "row {status}" },
+                                ],
+                                text: "",
+                                origin_file: "ui-showcase.xml",
+                                origin_path: [4, 2, 0, 1, 0, 0, 0],
+                                pose: false,
+                            }
+                            bevy_ecs::hierarchy::Children [
+                                #"UiText"
+                                bevy_transform::components::transform::Transform {
+                                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                                }
+                                bevy_world_xml::bsn::WorldNode {
+                                    tag: "UiText",
+                                    attrs: [
+                                        bevy_world_xml::bsn::WorldProp { key: "class", value: "row-title" },
+                                    ],
+                                    text: "{title}",
+                                    origin_file: "ui-showcase.xml",
+                                    origin_path: [4, 2, 0, 1, 0, 0, 0, 0],
+                                    pose: false,
+                                }
+                                --
+                                #"UiText"
+                                bevy_transform::components::transform::Transform {
+                                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                                }
+                                bevy_world_xml::bsn::WorldNode {
+                                    tag: "UiText",
+                                    attrs: [
+                                        bevy_world_xml::bsn::WorldProp { key: "class", value: "row-count" },
+                                    ],
+                                    text: "{progress_text}",
+                                    origin_file: "ui-showcase.xml",
+                                    origin_path: [4, 2, 0, 1, 0, 0, 0, 1],
+                                    pose: false,
+                                }
+                            ]
+                        ]
+                        --
+                        #"UiEmpty"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiEmpty",
+                            attrs: [
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 2, 0, 1, 0, 1],
+                            pose: false,
+                        }
+                        bevy_ecs::hierarchy::Children [
+                            #"UiText"
+                            bevy_transform::components::transform::Transform {
+                                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                            }
+                            bevy_world_xml::bsn::WorldNode {
+                                tag: "UiText",
+                                attrs: [
+                                    bevy_world_xml::bsn::WorldProp { key: "class", value: "empty" },
+                                ],
+                                text: "Sem missões.",
+                                origin_file: "ui-showcase.xml",
+                                origin_path: [4, 2, 0, 1, 0, 1, 0],
+                                pose: false,
+                            }
+                        ]
+                    ]
+                ]
+                --
+                #"UiColumn"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiColumn",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "page" },
+                        bevy_world_xml::bsn::WorldProp { key: "tab-group", value: "demo" },
+                        bevy_world_xml::bsn::WorldProp { key: "tab", value: "bag" },
+                        bevy_world_xml::bsn::WorldProp { key: "scroll", value: "y" },
+                    ],
+                    text: "",
+                    origin_file: "ui-showcase.xml",
+                    origin_path: [4, 2, 0, 2],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiList demo-bag"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiList",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "demo-bag" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "rows" },
+                            bevy_world_xml::bsn::WorldProp { key: "bind", value: "bag-demo" },
+                        ],
+                        text: "",
+                        origin_file: "ui-showcase.xml",
+                        origin_path: [4, 2, 0, 2, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiTemplate"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiTemplate",
+                            attrs: [
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 2, 0, 2, 0, 0],
+                            pose: false,
+                        }
+                        bevy_ecs::hierarchy::Children [
+                            #"UiRow"
+                            bevy_transform::components::transform::Transform {
+                                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                            }
+                            bevy_world_xml::bsn::WorldNode {
+                                tag: "UiRow",
+                                attrs: [
+                                    bevy_world_xml::bsn::WorldProp { key: "class", value: "row" },
+                                ],
+                                text: "",
+                                origin_file: "ui-showcase.xml",
+                                origin_path: [4, 2, 0, 2, 0, 0, 0],
+                                pose: false,
+                            }
+                            bevy_ecs::hierarchy::Children [
+                                #"UiText"
+                                bevy_transform::components::transform::Transform {
+                                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                                }
+                                bevy_world_xml::bsn::WorldNode {
+                                    tag: "UiText",
+                                    attrs: [
+                                        bevy_world_xml::bsn::WorldProp { key: "class", value: "row-title" },
+                                    ],
+                                    text: "{name}",
+                                    origin_file: "ui-showcase.xml",
+                                    origin_path: [4, 2, 0, 2, 0, 0, 0, 0],
+                                    pose: false,
+                                }
+                                --
+                                #"UiText"
+                                bevy_transform::components::transform::Transform {
+                                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                                }
+                                bevy_world_xml::bsn::WorldNode {
+                                    tag: "UiText",
+                                    attrs: [
+                                        bevy_world_xml::bsn::WorldProp { key: "class", value: "row-count" },
+                                    ],
+                                    text: "×{count}",
+                                    origin_file: "ui-showcase.xml",
+                                    origin_path: [4, 2, 0, 2, 0, 0, 0, 1],
+                                    pose: false,
+                                }
+                            ]
+                        ]
+                        --
+                        #"UiEmpty"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiEmpty",
+                            attrs: [
+                            ],
+                            text: "",
+                            origin_file: "ui-showcase.xml",
+                            origin_path: [4, 2, 0, 2, 0, 1],
+                            pose: false,
+                        }
+                        bevy_ecs::hierarchy::Children [
+                            #"UiText"
+                            bevy_transform::components::transform::Transform {
+                                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                            }
+                            bevy_world_xml::bsn::WorldNode {
+                                tag: "UiText",
+                                attrs: [
+                                    bevy_world_xml::bsn::WorldProp { key: "class", value: "empty" },
+                                ],
+                                text: "Mochila vazia.",
+                                origin_file: "ui-showcase.xml",
+                                origin_path: [4, 2, 0, 2, 0, 1, 0],
+                                pose: false,
+                            }
+                        ]
+                    ]
+                ]
+            ]
+        ]
+    ]
+]
+

@@ -1,0 +1,300 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/death.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"UiStyle menu"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/menu.css" },
+        ],
+        text: "",
+        origin_file: "world/death.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    --
+    #"UiStyle title"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/title.css" },
+        ],
+        text: "",
+        origin_file: "world/death.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    --
+    #"UiRoot death-layer"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiRoot",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "death-layer" },
+        ],
+        text: "",
+        origin_file: "world/death.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"UiModal death"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiModal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "death" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "death-overlay" },
+                bevy_world_xml::bsn::WorldProp { key: "escape-closes", value: "false" },
+            ],
+            text: "",
+            origin_file: "world/death.xml",
+            origin_path: [2, 0],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiColumn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiColumn",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "frame death-frame" },
+                ],
+                text: "",
+                origin_file: "world/death.xml",
+                origin_path: [2, 0, 0],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "death-kicker" },
+                    ],
+                    text: "O VALE FICA À ESPERA",
+                    origin_file: "world/death.xml",
+                    origin_path: [2, 0, 0, 0],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "frame-title" },
+                    ],
+                    text: "@death.title",
+                    origin_file: "world/death.xml",
+                    origin_path: [2, 0, 0, 1],
+                    pose: false,
+                }
+                --
+                #"UiText"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "death-line" },
+                    ],
+                    text: "@death.line",
+                    origin_file: "world/death.xml",
+                    origin_path: [2, 0, 0, 2],
+                    pose: false,
+                }
+                --
+                #"UiText death-save-info"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "death-save-info" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "death-save-info" },
+                    ],
+                    text: "—",
+                    origin_file: "world/death.xml",
+                    origin_path: [2, 0, 0, 3],
+                    pose: false,
+                }
+                --
+                #"UiRow"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiRow",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "death-actions" },
+                    ],
+                    text: "",
+                    origin_file: "world/death.xml",
+                    origin_path: [2, 0, 0, 4],
+                    pose: false,
+                }
+                bevy_ecs::hierarchy::Children [
+                    #"UiButton death-retry"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "death-retry" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn primary" },
+                        ],
+                        text: "",
+                        origin_file: "world/death.xml",
+                        origin_path: [2, 0, 0, 4, 0],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@death.retry",
+                            origin_file: "world/death.xml",
+                            origin_path: [2, 0, 0, 4, 0, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiButton death-load"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "death-load" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                        ],
+                        text: "",
+                        origin_file: "world/death.xml",
+                        origin_path: [2, 0, 0, 4, 1],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@death.load",
+                            origin_file: "world/death.xml",
+                            origin_path: [2, 0, 0, 4, 1, 0],
+                            pose: false,
+                        }
+                    ]
+                    --
+                    #"UiButton death-title"
+                    bevy_transform::components::transform::Transform {
+                        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                    }
+                    bevy_world_xml::bsn::WorldNode {
+                        tag: "UiButton",
+                        attrs: [
+                            bevy_world_xml::bsn::WorldProp { key: "id", value: "death-title" },
+                            bevy_world_xml::bsn::WorldProp { key: "class", value: "title-btn" },
+                        ],
+                        text: "",
+                        origin_file: "world/death.xml",
+                        origin_path: [2, 0, 0, 4, 2],
+                        pose: false,
+                    }
+                    bevy_ecs::hierarchy::Children [
+                        #"UiText"
+                        bevy_transform::components::transform::Transform {
+                            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                        }
+                        bevy_world_xml::bsn::WorldNode {
+                            tag: "UiText",
+                            attrs: [
+                            ],
+                            text: "@death.to_title",
+                            origin_file: "world/death.xml",
+                            origin_path: [2, 0, 0, 4, 2, 0],
+                            pose: false,
+                        }
+                    ]
+                ]
+            ]
+        ]
+    ]
+]
+

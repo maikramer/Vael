@@ -1,0 +1,133 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/bridges/passadeira-da-bruxa.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"bridge.passadeira-da-bruxa"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bridge.passadeira-da-bruxa" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/bridges/passadeira-da-bruxa.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"passadeira-bruxa-bridge"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -49.0, y: 1.87, z: 214.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "passadeira-bruxa-bridge" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-49 1.87 214.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/river_bridge_wood_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/bridges/passadeira-da-bruxa.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene river_bridge_wood"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/river_bridge_wood_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_wood_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/infra/river_bridge_wood_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/infra/river_bridge_wood_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                ],
+                text: "",
+                origin_file: "world/bridges/passadeira-da-bruxa.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Road -50"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-50.3 204.8 -52 198 -60 184 -68 172" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/forest_floor/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/forest_floor/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/bridges/passadeira-da-bruxa.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"Road -48"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-48.6 224.6 -34 248 -26 258 -20 270" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/forest_floor/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/forest_floor/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/bridges/passadeira-da-bruxa.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+    ]
+]
+

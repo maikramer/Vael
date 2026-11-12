@@ -83,6 +83,8 @@
   </Entity>
   <Group translation="0 0 0" body="none" collider="none">
     <PointLight translation="0 4.5 0" color="0xffd8b0" intensity="65000" radius="30" />
+    <!-- Luz de área (LTC): janela/fogo suave da forja, sem shadow map. -->
+    <RectLight name="interior.forge.window" translation="0 2.2 5.6" color="0xffb070" intensity="60000" range="9" width="2.4" height="1.8" />
   </Group>
   <Entity translation="-7.5 0 6.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: box; size: 0.55 1.7 0.55">
     <GltfScene url="/assets/meshes/interiors/candelabra_tall_lod0.glb" />

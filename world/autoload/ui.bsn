@@ -1,0 +1,192 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+    ],
+    text: "",
+    origin_file: "world/autoload/ui.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"ui"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "ui" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/ui.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"say"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "../say.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/say.xml" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        --
+        #"menu"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "../menu.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/menu.xml" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        --
+        #"profiler"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "../profiler.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/profiler.xml" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        --
+        #"title"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "../title.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/title.xml" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        --
+        #"death"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw::prefab::components::IsA { source: "../death.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/death.xml" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        --
+        #"HudScreenLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "HudScreenLayer",
+            attrs: [
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        --
+        #"Minimap"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Minimap",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "range", value: "60" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        --
+        #"Compass"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Compass",
+            attrs: [
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        --
+        #"WaypointArrow"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "WaypointArrow",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "margin", value: "64" },
+            ],
+            text: "",
+            origin_file: "world/autoload/ui.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+    ]
+]
+

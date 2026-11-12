@@ -1,0 +1,357 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/environment.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"environment"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "environment" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/environment.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"AdaptiveQuality"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "AdaptiveQuality",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "target-fps", value: "60" },
+                bevy_world_xml::bsn::WorldProp { key: "min-pixel-ratio", value: "0.55" },
+                bevy_world_xml::bsn::WorldProp { key: "max-pixel-ratio", value: "1.5" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        --
+        #"WorldBorder"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "WorldBorder",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "1800" },
+                bevy_world_xml::bsn::WorldProp { key: "warn-seconds", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "margin", value: "80" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"AudioMixer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "AudioMixer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "master", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "music", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "sfx", value: "0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "voice", value: "0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "ambience", value: "0.7" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "explore" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-explore" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.18" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "battle" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-battle" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.22" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "boss" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-boss" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.24" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "dungeon" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-dungeon" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.2" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "village" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-village" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.18" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "dark-forest" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-dark-forest" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.18" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "desert" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-desert" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.18" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "swamp" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-swamp" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.17" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        --
+        #"MusicLayer"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "MusicLayer",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "layer", value: "frozen-peaks" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-frozen-peaks" },
+                bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.2" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        --
+        #"BiomeRegion dark-forest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "dark-forest" },
+                bevy_world_xml::bsn::WorldProp { key: "display-name", value: "Floresta Sombria" },
+                bevy_world_xml::bsn::WorldProp { key: "polygon", value: "[-56,56;56,56;4040,4040;-4040,4040]" },
+                bevy_world_xml::bsn::WorldProp { key: "tint", value: "#1a3320" },
+                bevy_world_xml::bsn::WorldProp { key: "fog-density", value: "0.0008" },
+                bevy_world_xml::bsn::WorldProp { key: "pp-exposure", value: "0.78" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 12],
+            pose: false,
+        }
+        --
+        #"BiomeRegion desert"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "desert" },
+                bevy_world_xml::bsn::WorldProp { key: "display-name", value: "Ermo Rubro" },
+                bevy_world_xml::bsn::WorldProp { key: "polygon", value: "[56,-56;56,56;4040,4040;4040,-4040]" },
+                bevy_world_xml::bsn::WorldProp { key: "tint", value: "#c2a878" },
+                bevy_world_xml::bsn::WorldProp { key: "fog-density", value: "0.0006" },
+                bevy_world_xml::bsn::WorldProp { key: "pp-exposure", value: "0.74" },
+                bevy_world_xml::bsn::WorldProp { key: "pp-bloom-strength", value: "0.18" },
+                bevy_world_xml::bsn::WorldProp { key: "rain-scale", value: "0.1" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 13],
+            pose: false,
+        }
+        --
+        #"BiomeRegion swamp"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "swamp" },
+                bevy_world_xml::bsn::WorldProp { key: "display-name", value: "Pântano da Bruma" },
+                bevy_world_xml::bsn::WorldProp { key: "polygon", value: "[-56,-56;-56,56;-4040,4040;-4040,-4040]" },
+                bevy_world_xml::bsn::WorldProp { key: "tint", value: "#3a4a30" },
+                bevy_world_xml::bsn::WorldProp { key: "fog-density", value: "0.0030" },
+                bevy_world_xml::bsn::WorldProp { key: "pp-exposure", value: "0.70" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 14],
+            pose: false,
+        }
+        --
+        #"BiomeRegion frozen-peaks"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "BiomeRegion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "frozen-peaks" },
+                bevy_world_xml::bsn::WorldProp { key: "display-name", value: "Picos Gelados" },
+                bevy_world_xml::bsn::WorldProp { key: "polygon", value: "[-240,-240;240,-240;4040,-4040;-4040,-4040]" },
+                bevy_world_xml::bsn::WorldProp { key: "tint", value: "#cdd9e6" },
+                bevy_world_xml::bsn::WorldProp { key: "fog-density", value: "0.0006" },
+                bevy_world_xml::bsn::WorldProp { key: "pp-exposure", value: "0.78" },
+            ],
+            text: "",
+            origin_file: "world/environment.xml",
+            origin_path: [0, 15],
+            pose: false,
+        }
+    ]
+]
+

@@ -1,0 +1,3208 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/landmarks/peaks.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"biome.peaks.landmarks"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "biome.peaks.landmarks" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/landmarks/peaks.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-12 -290" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "76 76" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "34" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "24" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "110.066376" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-28 -300" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "44 44" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "26" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "16" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "110.066376" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "12 -244" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "40 40" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "24" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "14" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "110.035774" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-32 -280" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "36 36" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "22" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "110.066376" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 3],
+            pose: false,
+        }
+        --
+        #"peaks-cairn-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.0, y: 68.8936, z: -156.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-cairn-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8 68.8936 -156" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/stone_cairn_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/stone_cairn_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.352941, green: 0.690196, blue: 1.0, alpha: 1.0 }),
+                intensity: 65000.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x5ab0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "65000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 4, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"peaks-cairn-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.0, y: 85.200699, z: -200.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.422618, z: 0.0, w: 0.906308 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-cairn-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6 85.2007 -200" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/stone_cairn_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -50 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/stone_cairn_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.352941, green: 0.690196, blue: 1.0, alpha: 1.0 }),
+                intensity: 65000.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x5ab0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "65000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 5, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"peaks-cairn-3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 12.0, y: 110.035896, z: -244.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.843391, z: 0.0, w: 0.5373 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-cairn-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "12 110.0359 -244" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/stone_cairn_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -65 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/stone_cairn_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.352941, green: 0.690196, blue: 1.0, alpha: 1.0 }),
+                intensity: 65000.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x5ab0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "65000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 6, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"peaks-stack-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.0, y: 76.1912, z: -178.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.587785, z: 0.0, w: 0.809017 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-stack-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 76.1912 -178" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/form_stack_6_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -72 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene form_stack_6"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_stack_6_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_stack_6_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"peaks-stack-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -2.0, y: 109.988403, z: -222.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.866025, z: 0.0, w: 0.5 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-stack-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 109.9884 -222" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/form_stack_11_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -60 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene form_stack_11"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_stack_11_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_stack_11_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"peaks-goblin-outpost"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 65.672699, z: -172.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.906308, z: 0.0, w: 0.422618 },
+            scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-goblin-outpost" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 65.6727 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/watchtower_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -50 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.85" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene watchtower"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/watchtower_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/watchtower_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 67.499802, z: -172.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 67.4998 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 67.499802, z: -172.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 67.4998 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 1760.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1760" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 67.499802, z: -172.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 67.4998 -172" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -40.0, y: 72.326302, z: -178.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-40 72.3263 -178" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -54.0, y: 60.833302, z: -166.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.793353, z: 0.0, w: 0.608761 },
+            scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-54 60.8333 -166" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/form_cliff_1_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -75 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene form_cliff_1"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_cliff_1_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_cliff_1_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-42 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "20" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 15],
+            pose: false,
+        }
+        --
+        #"peaks-crystal-mine"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -60.0, y: 98.400002, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.953717, z: 0.0, w: 0.300706 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-crystal-mine" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60 98.40 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -35 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_mine_entrance"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/crystal_mine_entrance_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/crystal_mine_entrance_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"peaks-crystal-mine-jamb-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -61.310001, y: 99.019997, z: -215.080002 },
+            rotation: glam::Quat { x: 0.0, y: -0.953717, z: 0.0, w: 0.300706 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-crystal-mine-jamb-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.31 99.02 -215.08" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.9 3.5 3.2; pos-offset-y: 1.75" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -35 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        --
+        #"peaks-crystal-mine-jamb-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -58.689999, y: 99.019997, z: -216.919998 },
+            rotation: glam::Quat { x: 0.0, y: -0.953717, z: 0.0, w: 0.300706 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-crystal-mine-jamb-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.69 99.02 -216.92" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.9 3.5 3.2; pos-offset-y: 1.75" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -35 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 18],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -68.0, y: 103.319, z: -230.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 103.319 -230" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/form_cliff_20_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -70 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 19],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene form_cliff_20"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_cliff_20_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_cliff_20_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 19, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -55.0, y: 102.259499, z: -222.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 3.2, y: 3.2, z: 3.2 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-55 102.2595 -222" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "3.2" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 20],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 20, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -54.0, y: 95.414902, z: -211.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 2.4, y: 2.4, z: 2.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-54 95.4149 -211" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -56.0, y: 99.604301, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 99.6043 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.352941, green: 0.690196, blue: 1.0, alpha: 1.0 }),
+                intensity: 1920.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x5ab0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1920" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 22, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -56.0, y: 99.604301, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 99.6043 -216" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.6 0" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -64.0, y: 92.940399, z: -208.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-64 92.9404 -208" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 24, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -68.0, y: 93.768402, z: -211.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 93.7684 -211" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 25, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-60 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 26],
+            pose: false,
+        }
+        --
+        #"Lake"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Lake",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "68 -184" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
+                bevy_world_xml::bsn::WorldProp { key: "depth", value: "2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "0.4" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "#7fb5cc" },
+                bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "ripple", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "water-level", value: "79.44013" },
+                bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 27],
+            pose: false,
+        }
+        --
+        #"peaks-frost-cairn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 60.0, y: 78.020203, z: -176.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "peaks-frost-cairn" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "60 78.0202 -176" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/frost-cairn.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 28],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 28, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "68 -184" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "26" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 29],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -24.0, y: 85.689903, z: -190.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 2.6, y: 2.6, z: 2.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-24 85.6899 -190" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.6" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 30, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -29.0, y: 86.595802, z: -194.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 2.0, y: 2.0, z: 2.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-29 86.5958 -194" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -30.0, y: 80.0, z: -187.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 2.3, y: 2.3, z: 2.3 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30 80 -187" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 32],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 32, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -27.0, y: 84.769402, z: -190.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27 84.7694 -190" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.352941, green: 0.690196, blue: 1.0, alpha: 1.0 }),
+                intensity: 1440.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x5ab0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1440" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 33, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.0, y: 110.066399, z: -300.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28 110.0664 -300" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 34],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 34, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.0, y: 110.066399, z: -304.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 110.0664 -304" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -60 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 35],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 35, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -32.0, y: 110.066399, z: -280.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.843391, z: 0.0, w: 0.5373 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-32 110.0664 -280" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -65 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 36],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 36, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.0, y: 110.0513, z: -276.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8 110.0513 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -35 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 37],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 37, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -312.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0664 -312" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 38],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 38, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066299, z: -276.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0663 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 39],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 39, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066299, z: -276.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0663 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 1920.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1920" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 40, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -304.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0664 -304" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 41, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -304.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0664 -304" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 1920.0,
+                radius: 0.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1920" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066299, z: -276.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0663 -276" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 43, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -304.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0664 -304" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 44, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-12 -290" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "40" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 45],
+            pose: false,
+        }
+        --
+        #"ambient_water_ice_lake"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 68.0, y: 77.641403, z: -184.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ambient_water_ice_lake" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "68 77.6414 -184" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "ambient-water.lua" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 46],
+            pose: true,
+        }
+        --
+        #"mojao-esconderijo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 14.4, y: 110.036003, z: -241.600006 },
+            rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-esconderijo" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "14.40 110.036 -241.60" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 80 0" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "120" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "80" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o esconderijo do mojão" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 47],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 47, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 60.0, y: 77.919998, z: -180.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 2.4, y: 2.4, z: 2.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "60 77.92 -180" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 48],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_boulder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 48, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 76.0, y: 77.980003, z: -190.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.406737, z: 0.0, w: 0.913545 },
+            scale: glam::Vec3 { x: 2.0, y: 2.0, z: 2.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "76 77.98 -190" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 48 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 49],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_boulder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 49, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 64.0, y: 77.910004, z: -176.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
+            scale: glam::Vec3 { x: 1.8, y: 1.8, z: 1.8 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "64 77.91 -176" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.8" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 50],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_boulder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 50, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 72.0, y: 77.940002, z: -192.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.309017, z: 0.0, w: 0.951057 },
+            scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "72 77.94 -192" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 36 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 51],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_boulder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 51, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 64.0, y: 77.720001, z: -181.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.694658, z: 0.0, w: 0.71934 },
+            scale: glam::Vec3 { x: 2.6, y: 2.6, z: 2.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "64 77.72 -181" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 88 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 52],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 52, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.623529, green: 0.862745, blue: 1.0, alpha: 1.0 }),
+                intensity: 2600.0,
+                radius: 2.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x9fdcff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2600" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 52, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 73.0, y: 77.75, z: -187.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.968148, z: 0.0, w: 0.25038 },
+            scale: glam::Vec3 { x: 2.0, y: 2.0, z: 2.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "73 77.75 -187" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 151 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 53],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 53, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.623529, green: 0.862745, blue: 1.0, alpha: 1.0 }),
+                intensity: 2600.0,
+                radius: 2.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x9fdcff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2600" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 53, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 60.0, y: 77.989998, z: -184.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "60 77.99 -184" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 54],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 54, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.623529, green: 0.862745, blue: 1.0, alpha: 1.0 }),
+                intensity: 2600.0,
+                radius: 2.0,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x9fdcff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2600" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 54, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -61.200001, y: 98.419998, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-61.2 98.42 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.4 3.2 0.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 55],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.2 1.6 0.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 55, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -58.799999, y: 98.419998, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58.8 98.42 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.4 3.2 0.4" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 56],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.2 1.6 0.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 56, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -60.0, y: 101.5, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60 101.5 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 3.0 0.45 0.45" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 57],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.22 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.5 0.22 0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 57, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -62.0, y: 98.110001, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-62 98.11 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 58],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 58, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -62.0, y: 98.110001, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-62 98.11 -216" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 59],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 59, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -58.0, y: 99.18, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58 99.18 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 60],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 60, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -58.0, y: 99.18, z: -216.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-58 99.18 -216" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 61],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 61, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -64.0, y: 94.910004, z: -212.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-64 94.91 -212" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 62],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 62, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.560784, green: 0.815686, blue: 1.0, alpha: 1.0 }),
+                intensity: 2200.0,
+                radius: 1.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x8fd0ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 62, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 67.5, z: -174.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 67.5 -174" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 63],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/campfire_pit_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 63, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 67.5, z: -174.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 67.5 -174" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 64],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 26; shape-radius: 0.26; start-life-min: 0.4; start-life-max: 1.1; start-speed-min: 1.0; start-speed-max: 2.2; start-size-min: 0.22; start-size-max: 0.46; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 64, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 67.5, z: -174.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 67.5 -174" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 65],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.541176, blue: 0.2, alpha: 1.0 }),
+                intensity: 50000.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.7 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8a33" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "50000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 65, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -46.0, y: 65.870003, z: -172.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-46 65.87 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 66],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 66, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -42.0, y: 70.940002, z: -176.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-42 70.94 -176" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 67],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 67, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -46.0, y: 64.010002, z: -170.0 },
+            rotation: glam::Quat { x: -0.002736, y: 0.104493, z: -0.026034, w: 0.994181 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-46 64.01 -170" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 12 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.14; half-height: 1.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 68],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 68, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -42.0, y: 64.330002, z: -170.0 },
+            rotation: glam::Quat { x: -0.005442, y: 0.20784, z: -0.025605, w: 0.977812 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-42 64.33 -170" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.14; half-height: 1.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 69],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 69, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -48.0, y: 67.5, z: -174.0 },
+            rotation: glam::Quat { x: -0.00137, y: 0.052318, z: -0.026141, w: 0.998287 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-48 67.5 -174" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.14; half-height: 1.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 70],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 70, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -40.0, y: 69.080002, z: -174.0 },
+            rotation: glam::Quat { x: -0.006775, y: 0.25873, z: -0.025285, w: 0.965595 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-40 69.08 -174" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 30 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.14; half-height: 1.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 71],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 71, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 63.59, z: -168.0 },
+            rotation: glam::Quat { x: -0.004095, y: 0.156381, z: -0.025855, w: 0.98735 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 63.59 -168" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 18 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.14; half-height: 1.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 72],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 72, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 71.629997, z: -178.0 },
+            rotation: glam::Quat { x: -0.004095, y: 0.156381, z: -0.025855, w: 0.98735 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 71.63 -178" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 18 -3" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.14; half-height: 1.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 73],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 73, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -48.0, y: 64.0, z: -170.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-48 64.0 -170" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 4.2 0.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 74],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.2 0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 74, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.7, y: 3.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.7 3.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.8 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a1f1f" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 74, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -40.0, y: 67.0, z: -172.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-40 67.0 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 4.2 0.3" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 75],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.2 0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 75, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.7, y: 3.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.7 3.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.8 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a1f1f" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 75, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -47.0, y: 65.559998, z: -172.0 },
+            rotation: glam::Quat { x: 0.03221, y: 0.061875, z: 0.460624, w: 0.88485 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-47 65.56 -172" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 8 55" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 76],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene spear"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 76, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -41.0, y: 67.5, z: -173.0 },
+            rotation: glam::Quat { x: 0.028189, y: 0.054151, z: 0.460887, w: 0.885356 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-41 67.5 -173" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 7 55" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 77],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene spear"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 77, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -44.0, y: 65.0, z: -171.0 },
+            rotation: glam::Quat { x: 0.036228, y: 0.069594, z: 0.460325, w: 0.884276 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-44 65.0 -171" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 9 55" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/peaks.xml",
+            origin_path: [0, 78],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene spear"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/peaks.xml",
+                origin_path: [0, 78, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

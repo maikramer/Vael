@@ -1,0 +1,257 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/landforms/gate-arms.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"landforms.gate-arms"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 50.000801, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "landforms.gate-arms" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 50.0008 0" },
+        ],
+        text: "",
+        origin_file: "world/landforms/gate-arms.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"braco-oeste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "braco-oeste" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-36 66 -42 90 -47 112" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "7" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "9" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "right" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "81" },
+                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"ombro-capela-baixo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ombro-capela-baixo" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "30 54 36 66 41 82" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "convex" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.3" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "82" },
+                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"ombro-capela-alto"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cliff",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ombro-capela-alto" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "41 82 45 98 43 116" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "9" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
+                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "83" },
+                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.18" },
+                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "30 -104" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "20 20" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "16" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "9" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "50" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 3],
+            pose: false,
+        }
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "30 -104" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "10" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 4],
+            pose: false,
+        }
+        --
+        #"Road 2 -92 12 -97 21 -102"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "2 -92 12 -97 21 -102" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 5],
+            pose: false,
+        }
+        --
+        #"outeiro-banco"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.5, y: 0.0, z: -100.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.887011, z: 0.0, w: 0.461749 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outeiro-banco" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.5 0 -100.5" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -125 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.6 0.9 0.55" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/gate-arms.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"outeiro-cairn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 33.5, y: 0.0, z: -101.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "outeiro-cairn" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "33.5 0 -101" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/form_stack_6_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/landforms/gate-arms.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene form_stack_6"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_stack_6_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_stack_6_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/gate-arms.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

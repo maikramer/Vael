@@ -1,0 +1,2935 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/walls.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.walls"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.walls" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/walls.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"wall_corner_nw"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_corner_nw" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_corner_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_corner"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_corner_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_corner_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_corner_ne"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_corner_ne" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_corner_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_corner"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_corner_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_corner_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_corner_se"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_corner_se" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_corner_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_corner"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_corner_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_corner_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_corner_sw"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_corner_sw" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_corner_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_corner"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_corner_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_corner_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_w0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.13, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_w0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.13 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_w1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -14.51, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_w1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-14.51 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_w2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -20.889999, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_w2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-20.89 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_w3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -27.27, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_w3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27.27 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_w4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -33.650002, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_w4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-33.65 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_e0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.13, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_e0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.13 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_e1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 14.51, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_e1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "14.51 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_e2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 20.889999, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_e2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "20.89 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_e3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 27.27, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_e3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "27.27 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 12],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 12, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_n_e4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 33.650002, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_n_e4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "33.65 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 13],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 13, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_e0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.13, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_e0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.13 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 14, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_e1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 14.51, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_e1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "14.51 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 15],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 15, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_e2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 20.889999, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_e2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "20.89 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 16],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 16, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_e3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 27.27, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_e3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "27.27 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 17, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_e4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 33.650002, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_e4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "33.65 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 18],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 18, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_w0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.13, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_w0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.13 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 19],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 19, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_w1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -14.51, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_w1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-14.51 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 20],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 20, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_w2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -20.889999, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_w2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-20.89 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_w3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -27.27, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_w3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27.27 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 22, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_s_w4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -33.650002, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_s_w4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-33.65 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_n0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 8.13 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_n0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 8.13" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 24],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 24, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_n1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 14.51 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_n1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 14.51" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 25],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 25, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_n2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 20.889999 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_n2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 20.89" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 26, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_n3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 27.27 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_n3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 27.27" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 27],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 27, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_n4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 33.650002 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_n4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 33.65" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 28],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 28, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_s0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -8.13 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_s0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -8.13" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 29],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 29, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_s1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -14.51 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_s1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -14.51" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 30, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_s2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -20.889999 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_s2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -20.89" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_s3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -27.27 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_s3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -27.27" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 32],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 32, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_e_s4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -33.650002 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_e_s4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -33.65" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 33, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_s0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -8.13 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_s0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -8.13" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 34],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 34, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_s1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -14.51 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_s1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -14.51" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 35],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 35, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_s2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -20.889999 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_s2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -20.89" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 36],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 36, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_s3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -27.27 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_s3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -27.27" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 37],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 37, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_s4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -33.650002 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_s4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -33.65" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 38],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 38, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_n0"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 8.13 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_n0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 8.13" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 39],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 39, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_n1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 14.51 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_n1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 14.51" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 40, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_n2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 20.889999 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_n2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 20.89" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_b_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_b"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_b_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 41, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_n3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 27.27 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_n3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 27.27" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"wall_w_n4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 33.650002 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "wall_w_n4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 33.65" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_wall_seg_a_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_wall_seg_a"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_wall_seg_a_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_a_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 43, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_north"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_north" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_gate_arch_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_gate_arch"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_gate_arch_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_gate_arch_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 44, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_south"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_south" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_gate_arch_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 45],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_gate_arch"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_gate_arch_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_gate_arch_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 45, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_east"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_east" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_gate_arch_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 46],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_gate_arch"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_gate_arch_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_gate_arch_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 46, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_west"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_west" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/infra/city_gate_arch_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 47],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene city_gate_arch"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/infra/city_gate_arch_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_gate_arch_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 47, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_n_torch_w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_n_torch_w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 48],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 48, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0 38" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 49],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 49, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 50],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 50, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_n_torch_e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_n_torch_e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 51],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 51, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0 38" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 52],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 52, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.0, z: 38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0 38" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 53],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 53, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_s_torch_w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_s_torch_w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 54],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 54, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0 -38" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 55],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 55, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 56],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 56, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_s_torch_e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_s_torch_e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 57],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 57, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0 -38" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 58],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 58, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.0, z: -38.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0 -38" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 59],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 59, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_e_torch_s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_e_torch_s" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 60],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 60, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -5.8" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 61],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 61, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: -5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 -5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 62],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 62, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_e_torch_n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_e_torch_n" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 63],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 63, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 5.8" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 64],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 64, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 38.0, y: 0.0, z: 5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "38 0 5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 65],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 65, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_w_torch_s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -5.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_w_torch_s" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 66],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 66, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -5.8" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 67],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 67, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: -5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 -5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 68],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 68, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"gate_w_torch_n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 5.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "gate_w_torch_n" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 69],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 69, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 5.8" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 70],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 70, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -38.0, y: 0.0, z: 5.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-38 0 5.8" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/walls.xml",
+            origin_path: [0, 71],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 120000.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "120000" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/walls.xml",
+                origin_path: [0, 71, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

@@ -1,0 +1,2906 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/fantasy/grutas.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"mina-do-veio"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cave",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "mina-do-veio" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "-60 -216 -74 -236 -88 -256 -104 -276 -118 -292" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.4 3.6 3.6 3.2" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "10" },
+            bevy_world_xml::bsn::WorldProp { key: "open-ends", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "mouth-flare", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "mouth-fraction", value: "0.12" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Chamber"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Chamber",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-88 -256" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "8.5" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "7" },
+                bevy_world_xml::bsn::WorldProp { key: "depth", value: "13" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"Shaft"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shaft",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-104 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "depth", value: "12" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+    ]
+    --
+    #"porta-do-ermo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Cave",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "porta-do-ermo" },
+            bevy_world_xml::bsn::WorldProp { key: "path", value: "500 -58 540 -52 590 -46 640 -46 690 -52 720 -56" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "4" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "11" },
+            bevy_world_xml::bsn::WorldProp { key: "open-ends", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "mouth-flare", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "mouth-fraction", value: "0.12" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Chamber"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Chamber",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "590 -46" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "7" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "7" },
+                bevy_world_xml::bsn::WorldProp { key: "depth", value: "14" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [1, 0],
+            pose: false,
+        }
+        --
+        #"Shaft"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Shaft",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "620 -45" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.2" },
+                bevy_world_xml::bsn::WorldProp { key: "depth", value: "17" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [1, 1],
+            pose: false,
+        }
+    ]
+    --
+    #"fantasy.grutas.bocas"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "fantasy.grutas.bocas" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [2],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-60 -216" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "14" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 0],
+            pose: false,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -52.0, y: 95.410004, z: -210.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-52 95.41 -210" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -49.5, y: 98.437202, z: -213.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-49.5 98.4372 -213" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -66.0, y: 93.667603, z: -210.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.857167, z: 0.0, w: -0.515038 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-66 93.6676 -210" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.8 0.8 0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 62 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/log_pile_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.0, y: 94.284897, z: -206.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-50 94.2849 -206" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/notice_board_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -18 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene notice_board"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/notice_board_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/notice_board_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -68.0, y: 87.509003, z: -204.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.515038, z: 0.0, w: 0.857167 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 87.509 -204" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 62 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -68.0, y: 87.509003, z: -204.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 87.509 -204" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -68.0, y: 87.509003, z: -204.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-68 87.509 -204" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.6" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -56.0, y: 102.094902, z: -222.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 102.0949 -222" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -56.0, y: 102.094902, z: -222.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 102.0949 -222" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -56.0, y: 102.094902, z: -222.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 102.0949 -222" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.6,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.6" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 10, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -50.0, y: 102.179199, z: -220.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-50 102.1792 -220" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -60 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 11, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "500 -58" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "16" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 12],
+            pose: false,
+        }
+        --
+        #"Scatter grp-79"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Scatter",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "tree" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "5321" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "514 0 -78" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "540 0 -46" },
+                bevy_world_xml::bsn::WorldProp { key: "align-to-terrain", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "ground-align", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-road", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "56" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-attempts", value: "96" },
+                bevy_world_xml::bsn::WorldProp { key: "scale-min", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "scale-max", value: "1.7" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "footprint-radius", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "pick-strategy", value: "random" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "variation", value: "rock" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "1962" },
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "grp-79" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 13],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GameObject"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GameObject",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "static" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 13, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader rock_mossy"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    ],
+                    text: "",
+                    origin_file: "world/fantasy/grutas.xml",
+                    origin_path: [2, 13, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"spawn/grp-79"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "spawn/grp-79" },
+                bevy_world_xml::bsn::WorldProp { key: "generated-by", value: "grp-79" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 14],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"inst-grp-79-0000"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 521.05188, y: 86.442001, z: -74.832703 },
+                rotation: glam::Quat { x: 0.023371, y: 0.252722, z: 0.048003, w: 0.966065 },
+                scale: glam::Vec3 { x: 0.8269, y: 0.8269, z: 0.8269 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0000" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "521.0519 86.442 -74.8327" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "1.3738 29.3758 5.3292" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8269" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 0],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0001"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 527.464172, y: 88.400703, z: -46.370201 },
+                rotation: glam::Quat { x: 0.0921, y: -0.851484, z: 0.097309, w: 0.506975 },
+                scale: glam::Vec3 { x: 1.3463, y: 1.3463, z: 1.3463 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0001" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "527.4642 88.4007 -46.3702" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "150.9785 -57.7189 151.4179" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3463" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 1],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0002"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 521.401917, y: 86.030098, z: -68.8228 },
+                rotation: glam::Quat { x: 0.109269, y: -0.871841, z: 0.058396, w: 0.473859 },
+                scale: glam::Vec3 { x: 1.0327, y: 1.0327, z: 1.0327 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0002" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "521.4019 86.0301 -68.8228" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "159.3199 -54.4392 154.9899" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0327" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 2],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0003"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 527.71228, y: 88.458298, z: -67.559601 },
+                rotation: glam::Quat { x: -0.134346, y: 0.411613, z: 0.049915, w: 0.900019 },
+                scale: glam::Vec3 { x: 1.6653, y: 1.6653, z: 1.6653 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0003" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "527.7123 88.4583 -67.5596" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-24.3531 46.6779 16.9869" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6653" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 3],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0004"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 525.186523, y: 87.797699, z: -51.264801 },
+                rotation: glam::Quat { x: -0.124669, y: 0.987105, z: 0.019936, w: 0.098404 },
+                scale: glam::Vec3 { x: 1.3901, y: 1.3901, z: 1.3901 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0004" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "525.1865 87.7977 -51.2648" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-176.2691 10.9119 165.2471" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3901" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 4],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0005"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 514.44043, y: 85.100403, z: -74.273697 },
+                rotation: glam::Quat { x: -0.051327, y: 0.966779, z: 0.056712, w: -0.243902 },
+                scale: glam::Vec3 { x: 0.8178, y: 0.8178, z: 0.8178 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0005" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "514.4404 85.1004 -74.2737" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-174.4738 -28.5171 175.3273" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8178" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 5],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0006"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 538.90863, y: 94.698303, z: -75.579697 },
+                rotation: glam::Quat { x: -0.126673, y: 0.949143, z: 0.027058, w: 0.286968 },
+                scale: glam::Vec3 { x: 1.1421, y: 1.1421, z: 1.1421 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0006" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "538.9086 94.6983 -75.5797" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-171.5371 32.5402 162.3224" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1421" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 6],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0007"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 538.334473, y: 94.918999, z: -62.237801 },
+                rotation: glam::Quat { x: 0.176376, y: -0.982852, z: 0.048462, w: -0.023341 },
+                scale: glam::Vec3 { x: 0.855, y: 0.855, z: 0.855 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0007" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "538.3345 94.919 -62.2378" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "174.9974 3.6107 159.8105" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.855" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 7],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0008"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 526.236511, y: 87.417702, z: -74.853699 },
+                rotation: glam::Quat { x: -0.115438, y: 0.737848, z: 0.106629, w: 0.656418 },
+                scale: glam::Vec3 { x: 0.751, y: 0.751, z: 0.751 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0008" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "526.2365 87.4177 -74.8537" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-110.4997 70.7442 109.7757" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.751" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 8],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0009"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 519.834229, y: 85.639503, z: -64.170601 },
+                rotation: glam::Quat { x: -0.132545, y: 0.980926, z: 0.027692, w: 0.139458 },
+                scale: glam::Vec3 { x: 0.7013, y: 0.7013, z: 0.7013 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0009" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "519.8342 85.6395 -64.1706" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-174.5651 15.4416 163.8719" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7013" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 9],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0010"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 531.571716, y: 89.224503, z: -51.343498 },
+                rotation: glam::Quat { x: 0.08722, y: -0.465395, z: 0.085128, w: 0.876672 },
+                scale: glam::Vec3 { x: 0.7479, y: 0.7479, z: 0.7479 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0010" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "531.5717 89.2245 -51.3435" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "22.8256 -53.2398 22.647" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7479" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 10],
+                pose: true,
+            }
+            --
+            #"inst-grp-79-0011"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 523.011292, y: 86.410599, z: -56.6707 },
+                rotation: glam::Quat { x: 0.093704, y: -0.55958, z: 0.139339, w: 0.811588 },
+                scale: glam::Vec3 { x: 1.1216, y: 1.1216, z: 1.1216 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0011" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "523.0113 86.4106 -56.6707" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "40.8548 -61.9068 44.6672" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1216" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 14, 11],
+                pose: true,
+            }
+        ]
+        --
+        #"ermo-pillar-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 500.700012, y: 80.898499, z: -62.900002 },
+            rotation: glam::Quat { x: 0.0, y: -0.566406, z: 0.0, w: 0.824126 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.7 80.8985 -62.9" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 15],
+            pose: true,
+        }
+        --
+        #"ermo-pillar-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 499.299988, y: 81.028702, z: -53.099998 },
+            rotation: glam::Quat { x: 0.0, y: -0.566406, z: 0.0, w: 0.824126 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.3 81.0287 -53.1" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 16],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 500.700012, y: 80.898499, z: -62.900002 },
+            rotation: glam::Quat { x: 0.0, y: -0.566406, z: 0.0, w: 0.824126 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.7 80.8985 -62.9" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 17],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 17, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 499.299988, y: 81.028702, z: -53.099998 },
+            rotation: glam::Quat { x: 0.0, y: -0.824126, z: 0.0, w: -0.566406 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.3 81.0287 -53.1" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 69 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 18],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 18, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 494.0, y: 80.897301, z: -58.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "494 80.8973 -58" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 19],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 19, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 494.0, y: 80.897301, z: -58.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "494 80.8973 -58" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 20],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 32; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 20, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 494.0, y: 80.897301, z: -58.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "494 80.8973 -58" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 21],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 4600.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 21, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 506.0, y: 81.775101, z: -64.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "506 81.7751 -64" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 22],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 22, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 490.0, y: 80.4748, z: -52.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: 0.173648 },
+            scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "490 80.4748 -52" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -20 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 23],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 23, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"SpawnExclusion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "SpawnExclusion",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "720 -56" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "16" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 24],
+            pose: false,
+        }
+        --
+        #"Scatter grp-80"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Scatter",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "tree" },
+                bevy_world_xml::bsn::WorldProp { key: "count", value: "12" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "5322" },
+                bevy_world_xml::bsn::WorldProp { key: "region-min", value: "734 0 -74" },
+                bevy_world_xml::bsn::WorldProp { key: "region-max", value: "758 0 -44" },
+                bevy_world_xml::bsn::WorldProp { key: "align-to-terrain", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "ground-align", value: "auto" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-water", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-road", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-deg", value: "40" },
+                bevy_world_xml::bsn::WorldProp { key: "max-slope-attempts", value: "96" },
+                bevy_world_xml::bsn::WorldProp { key: "scale-min", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "scale-max", value: "1.7" },
+                bevy_world_xml::bsn::WorldProp { key: "avoid-overlaps", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "footprint-radius", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "pick-strategy", value: "random" },
+                bevy_world_xml::bsn::WorldProp { key: "random-yaw", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "variation", value: "rock" },
+                bevy_world_xml::bsn::WorldProp { key: "max-distance", value: "1962" },
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "grp-80" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 25],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GameObject"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GameObject",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "role", value: "static" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 25, 0],
+                pose: true,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"GLTFLoader rock_mossy"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "GLTFLoader",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    ],
+                    text: "",
+                    origin_file: "world/fantasy/grutas.xml",
+                    origin_path: [2, 25, 0, 0],
+                    pose: true,
+                }
+            ]
+        ]
+        --
+        #"spawn/grp-80"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "spawn/grp-80" },
+                bevy_world_xml::bsn::WorldProp { key: "generated-by", value: "grp-80" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 26],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"inst-grp-80-0000"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 744.153992, y: 175.475296, z: -49.5201 },
+                rotation: glam::Quat { x: 0.0, y: -0.624395, z: 0.0, w: 0.781109 },
+                scale: glam::Vec3 { x: 0.9395, y: 0.9395, z: 0.9395 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0000" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "744.154 175.4753 -49.5201" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -77.2756 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9395" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 0],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0001"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 740.163513, y: 175.485596, z: -54.119301 },
+                rotation: glam::Quat { x: 0.0, y: -0.206185, z: 0.0, w: 0.978513 },
+                scale: glam::Vec3 { x: 1.619, y: 1.619, z: 1.619 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0001" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "740.1635 175.4856 -54.1193" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -23.7977 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.619" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 1],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0002"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 738.063416, y: 175.727997, z: -67.0756 },
+                rotation: glam::Quat { x: 0.0, y: -0.999372, z: 0.0, w: 0.035434 },
+                scale: glam::Vec3 { x: 1.4033, y: 1.4033, z: 1.4033 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0002" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "738.0634 175.728 -67.0756" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -4.0613 180" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4033" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 2],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0003"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 739.380615, y: 175.267197, z: -46.940102 },
+                rotation: glam::Quat { x: 0.0, y: -0.68957, z: 0.0, w: 0.724219 },
+                scale: glam::Vec3 { x: 1.2763, y: 1.2763, z: 1.2763 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0003" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "739.3806 175.2672 -46.9401" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -87.1921 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2763" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 3],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0004"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 755.714417, y: 175.8647, z: -46.883701 },
+                rotation: glam::Quat { x: 0.0, y: 0.402311, z: 0.0, w: 0.915503 },
+                scale: glam::Vec3 { x: 1.1389, y: 1.1389, z: 1.1389 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0004" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "755.7144 175.8647 -46.8837" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 47.4454 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1389" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 4],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0005"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 741.389282, y: 175.759903, z: -61.688301 },
+                rotation: glam::Quat { x: 0.0, y: -0.762156, z: 0.0, w: -0.647394 },
+                scale: glam::Vec3 { x: 1.0525, y: 1.0525, z: 1.0525 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0005" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "741.3893 175.7599 -61.6883" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 80.6908 180" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0525" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 5],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0006"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 745.900513, y: 176.128906, z: -63.990799 },
+                rotation: glam::Quat { x: 0.0, y: -0.823444, z: 0.0, w: 0.567397 },
+                scale: glam::Vec3 { x: 1.2858, y: 1.2858, z: 1.2858 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0006" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "745.9005 176.1289 -63.9908" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -69.1378 180" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2858" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 6],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0007"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 757.020081, y: 176.852997, z: -65.453598 },
+                rotation: glam::Quat { x: 0.0, y: -0.724363, z: 0.0, w: 0.689419 },
+                scale: glam::Vec3 { x: 1.6572, y: 1.6572, z: 1.6572 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0007" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "757.0201 176.853 -65.4536" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -87.1683 180" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6572" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 7],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0008"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 747.140198, y: 175.981598, z: -57.6558 },
+                rotation: glam::Quat { x: 0.0, y: -0.64423, z: 0.0, w: 0.764831 },
+                scale: glam::Vec3 { x: 0.9144, y: 0.9144, z: 0.9144 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0008" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "747.1402 175.9816 -57.6558" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -80.216 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9144" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 8],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0009"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 751.730591, y: 176.309906, z: -60.852299 },
+                rotation: glam::Quat { x: 0.0, y: -0.207013, z: 0.0, w: 0.978338 },
+                scale: glam::Vec3 { x: 1.524, y: 1.524, z: 1.524 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0009" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "751.7306 176.3099 -60.8523" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -23.8947 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.524" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 9],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0010"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 748.611023, y: 176.491394, z: -68.295502 },
+                rotation: glam::Quat { x: 0.0, y: -0.793599, z: 0.0, w: -0.608441 },
+                scale: glam::Vec3 { x: 0.7715, y: 0.7715, z: 0.7715 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0010" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "748.611 176.4914 -68.2955" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 74.9537 180" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7715" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 10],
+                pose: true,
+            }
+            --
+            #"inst-grp-80-0011"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 748.747925, y: 175.737198, z: -51.715199 },
+                rotation: glam::Quat { x: 0.0, y: -0.772479, z: 0.0, w: 0.63504 },
+                scale: glam::Vec3 { x: 1.2669, y: 1.2669, z: 1.2669 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_mossy_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0011" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "748.7479 175.7372 -51.7152" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -78.8459 180" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2669" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 26, 11],
+                pose: true,
+            }
+        ]
+        --
+        #"ermo-pillar-c"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 719.400024, y: 174.984894, z: -61.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.743145, z: 0.0, w: -0.669131 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-c" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.4 174.9849 -61" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 84 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 27],
+            pose: true,
+        }
+        --
+        #"ermo-pillar-d"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 720.599976, y: 174.788605, z: -51.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.743145, z: 0.0, w: -0.669131 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-d" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.6 174.7886 -51" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 84 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 28],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 719.400024, y: 174.984894, z: -61.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.743145, z: 0.0, w: -0.669131 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.4 174.9849 -61" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 84 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 29],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 29, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 720.599976, y: 174.788605, z: -51.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.669131, z: 0.0, w: 0.743145 },
+            scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.6 174.7886 -51" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -84 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 30, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 726.0, y: 175.053101, z: -56.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "726 175.0531 -56" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 726.0, y: 175.053101, z: -56.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "726 175.0531 -56" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 32],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 32; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 32, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Group"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 726.0, y: 175.053101, z: -56.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Group",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "726 175.0531 -56" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.227451, alpha: 1.0 }),
+                intensity: 4600.0,
+                radius: 0.7,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa83a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 33, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 714.0, y: 174.690704, z: -62.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "714 174.6907 -62" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -30 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 34],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 34, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 730.0, y: 175.027405, z: -48.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: -0.258819 },
+            scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "730 175.0274 -48" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 30 180" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [2, 35],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/fantasy/grutas.xml",
+                origin_path: [2, 35, 0],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -74.0, y: 95.5, z: -236.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.498039, green: 0.831373, blue: 1.0, alpha: 1.0 }),
+        intensity: 2600.0,
+        radius: 0.9,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-74 95.5 -236" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7fd4ff" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2600" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [3],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -104.0, y: 109.5, z: -276.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.74902, green: 0.901961, blue: 1.0, alpha: 1.0 }),
+        intensity: 3400.0,
+        radius: 0.9,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-104 109.5 -276" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0xbfe6ff" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [4],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -88.0, y: 96.400002, z: -256.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.623529, green: 0.847059, blue: 1.0, alpha: 1.0 }),
+        intensity: 3600.0,
+        radius: 1.2,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 96.4 -256" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0x9fd8ff" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3600" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.2" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [5],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -88.0, y: 94.300003, z: -256.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+        intensity: 1800.0,
+        radius: 0.8,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 94.3 -256" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1800" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [6],
+        pose: true,
+    }
+    --
+    #"mina-do-veio-hoard"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -88.0, y: 92.900002, z: -256.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "mina-do-veio-hoard" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-88 92.9 -256" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "80" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bombas" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o tesouro da mina" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "60" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -91.5, y: 93.400002, z: -258.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
+        scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-91.5 93.4 -258.5" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0; scale: 2.2 2.2 2.2" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [8],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [8, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -84.5, y: 93.5, z: -259.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.996195, z: 0.0, w: 0.087156 },
+        scale: glam::Vec3 { x: 1.7, y: 1.7, z: 1.7 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84.5 93.5 -259" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 170 0; scale: 1.7 1.7 1.7" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [9],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [9, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -91.0, y: 93.5, z: -252.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.766044, z: 0.0, w: -0.642788 },
+        scale: glam::Vec3 { x: 1.9, y: 1.9, z: 1.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-91 93.5 -252.5" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 260 0; scale: 1.9 1.9 1.9" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [10],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [10, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -85.0, y: 93.5, z: -252.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
+        scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-85 93.5 -252.5" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0; scale: 1.3 1.3 1.3" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [11],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [11, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -92.5, y: 93.5, z: -255.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.965926, z: 0.0, w: -0.258819 },
+        scale: glam::Vec3 { x: 2.6, y: 2.6, z: 2.6 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92.5 93.5 -255" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 210 0; scale: 2.6 2.6 2.6" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [12],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [12, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"ParticleSystem"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -88.0, y: 93.800003, z: -256.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "ParticleSystem",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: -88 93.8 -256" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [13],
+        pose: true,
+    }
+    --
+    #"ParticleSystem"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -88.0, y: 95.199997, z: -256.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "ParticleSystem",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: -88 95.2 -256" },
+            bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; emission-rate: 14; shape-radius: 3.4; start-life-min: 1.2; start-life-max: 2.6; start-speed-min: 0.15; start-speed-max: 0.5; start-size-min: 0.1; start-size-max: 0.24; looping: 1; world-space: 1" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [14],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 540.0, y: 84.400002, z: -52.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.690196, blue: 0.4, alpha: 1.0 }),
+        intensity: 2800.0,
+        radius: 0.9,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "540 84.4 -52" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb066" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2800" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [15],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 640.0, y: 147.899994, z: -46.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.690196, blue: 0.4, alpha: 1.0 }),
+        intensity: 2800.0,
+        radius: 0.9,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "640 147.9 -46" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb066" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2800" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [16],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 690.0, y: 160.5, z: -52.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.74902, green: 0.901961, blue: 1.0, alpha: 1.0 }),
+        intensity: 2600.0,
+        radius: 0.9,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "690 160.5 -52" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0xbfe6ff" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2600" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.9" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [17],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 590.0, y: 116.199997, z: -46.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.623529, green: 0.847059, blue: 1.0, alpha: 1.0 }),
+        intensity: 3800.0,
+        radius: 1.2,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 116.2 -46" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0x9fd8ff" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3800" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.2" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [18],
+        pose: true,
+    }
+    --
+    #"PointLight"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 590.0, y: 114.300003, z: -46.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_light::point_light::PointLight {
+        color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+        intensity: 1600.0,
+        radius: 0.8,
+        shadow_maps_enabled: false,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PointLight",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 114.3 -46" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+            bevy_world_xml::bsn::WorldProp { key: "intensity", value: "1600" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [19],
+        pose: true,
+    }
+    --
+    #"porta-do-ermo-hoard"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 590.0, y: 112.449997, z: -46.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "porta-do-ermo-hoard" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 112.45 -46" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "60" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o tesouro" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "50" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [20],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [20, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 587.0, y: 112.900002, z: -48.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+        scale: glam::Vec3 { x: 1.8, y: 1.8, z: 1.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "587 112.9 -48" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0; scale: 1.8 1.8 1.8" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [21],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [21, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 593.0, y: 113.0, z: -48.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: -0.173648 },
+        scale: glam::Vec3 { x: 2.4, y: 2.4, z: 2.4 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "593 113 -48.5" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 200 0; scale: 2.4 2.4 2.4" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [22],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [22, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 587.5, y: 113.050003, z: -43.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: -0.866025 },
+        scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "587.5 113.05 -43" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 300 0; scale: 1.5 1.5 1.5" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [23],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [23, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 590.0, y: 112.800003, z: -49.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 112.8 -49" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [24],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene iron_brazier"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [24, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 590.0, y: 113.400002, z: -49.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 113.4 -49" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [25],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/fantasy/grutas.xml",
+            origin_path: [25, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"ParticleSystem"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 590.0, y: 113.400002, z: -45.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "ParticleSystem",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 590 113.4 -45" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [26],
+        pose: true,
+    }
+    --
+    #"ParticleSystem"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 620.0, y: 133.399994, z: -45.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "ParticleSystem",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 620 133.4 -45" },
+            bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: ground-dust; emission-rate: 10; start-life-min: 1.6; start-life-max: 3.0; start-speed-min: 0.1; start-speed-max: 0.4; start-size-min: 0.12; start-size-max: 0.3; looping: 1; world-space: 1" },
+        ],
+        text: "",
+        origin_file: "world/fantasy/grutas.xml",
+        origin_path: [27],
+        pose: true,
+    }
+]
+

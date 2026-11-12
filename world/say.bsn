@@ -1,0 +1,149 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/say.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"UiStyle theme"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/theme.css" },
+        ],
+        text: "",
+        origin_file: "world/say.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    --
+    #"UiStyle hud"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiStyle",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "src", value: "ui/hud.css" },
+        ],
+        text: "",
+        origin_file: "world/say.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    --
+    #"UiRoot hud"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "UiRoot",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "hud" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "ui/hud.lua" },
+        ],
+        text: "",
+        origin_file: "world/say.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"UiRow say"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "UiRow",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "id", value: "say" },
+                bevy_world_xml::bsn::WorldProp { key: "class", value: "anchor-say" },
+                bevy_world_xml::bsn::WorldProp { key: "bind", value: "say.active" },
+                bevy_world_xml::bsn::WorldProp { key: "fade", value: "0.1 0.15" },
+            ],
+            text: "",
+            origin_file: "world/say.xml",
+            origin_path: [2, 0],
+            pose: false,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"UiPanel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "UiPanel",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "class", value: "hud-card say-card" },
+                ],
+                text: "",
+                origin_file: "world/say.xml",
+                origin_path: [2, 0, 0],
+                pose: false,
+            }
+            bevy_ecs::hierarchy::Children [
+                #"UiText say-prompt"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiText",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "say-prompt" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "say-prompt" },
+                        bevy_world_xml::bsn::WorldProp { key: "bind", value: "say.prompt" },
+                    ],
+                    text: "",
+                    origin_file: "world/say.xml",
+                    origin_path: [2, 0, 0, 0],
+                    pose: false,
+                }
+                --
+                #"UiInput say-input"
+                bevy_transform::components::transform::Transform {
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                }
+                bevy_world_xml::bsn::WorldNode {
+                    tag: "UiInput",
+                    attrs: [
+                        bevy_world_xml::bsn::WorldProp { key: "id", value: "say-input" },
+                        bevy_world_xml::bsn::WorldProp { key: "class", value: "say-input" },
+                        bevy_world_xml::bsn::WorldProp { key: "placeholder", value: "uma palavra" },
+                        bevy_world_xml::bsn::WorldProp { key: "max-length", value: "48" },
+                    ],
+                    text: "",
+                    origin_file: "world/say.xml",
+                    origin_path: [2, 0, 0, 1],
+                    pose: false,
+                }
+            ]
+        ]
+    ]
+]
+

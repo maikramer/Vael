@@ -1,0 +1,201 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+    ],
+    text: "",
+    origin_file: "world/autoload/player.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"player"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 150.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "PlayerGLTF",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "player" },
+            bevy_world_xml::bsn::WorldProp { key: "pos", value: "0 150 0" },
+            bevy_world_xml::bsn::WorldProp { key: "model-url", value: "/assets/meshes/characters/hero_lod0.glb" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    --
+    #"OrbitCamera"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "OrbitCamera",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "distance", value: "3.3" },
+            bevy_world_xml::bsn::WorldProp { key: "height", value: "1.55" },
+            bevy_world_xml::bsn::WorldProp { key: "pitch", value: "18.3" },
+            bevy_world_xml::bsn::WorldProp { key: "fov", value: "64" },
+            bevy_world_xml::bsn::WorldProp { key: "follow-lag", value: "0.18" },
+            bevy_world_xml::bsn::WorldProp { key: "turn-lag", value: "0.38" },
+            bevy_world_xml::bsn::WorldProp { key: "min-terrain-distance", value: "1.0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [1],
+        pose: true,
+    }
+    --
+    #"game-audio-zone"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-audio-zone" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/audio_zone.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [2],
+        pose: true,
+    }
+    --
+    #"game-rules"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-rules" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/rules_host.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [3],
+        pose: true,
+    }
+    --
+    #"game-dev"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-dev" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/devmode.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [4],
+        pose: true,
+    }
+    --
+    #"game-lua-controller"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-controller" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/abilities.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [5],
+        pose: true,
+    }
+    --
+    #"game-lua-combat"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-combat" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/combat.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [6],
+        pose: true,
+    }
+    --
+    #"game-lua-hotbar"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-hotbar" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/hotbar.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    --
+    #"game-lua-equipment-interior"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-equipment-interior" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/equipment.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-tocha-x", value: "-0.002" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-tocha-y", value: "0.241" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [8],
+        pose: true,
+    }
+]
+

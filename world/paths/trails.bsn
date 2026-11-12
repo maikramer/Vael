@@ -1,0 +1,635 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/paths/trails.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"paths.trails"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "paths.trails" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/paths/trails.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Road 4 156 -32 160 -68 172 -88 176"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "4 156 -32 160 -68 172 -88 176" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/forest_floor/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/forest_floor/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"Road 8 230 24 224 56 220 88 232 100 236"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "8 230 24 224 56 220 88 232 100 236" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/forest_floor/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/forest_floor/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"Road -3 132 -28 128 -52 128"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-3 132 -28 128 -52 128" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/forest_floor/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/forest_floor/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"Road 160 6 148 52 143 73"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "160 6 148 52 143 73" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 3],
+            pose: false,
+        }
+        --
+        #"Road 200 10 184 -28 176 -60 164 -92 156 -110"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "200 10 184 -28 176 -60 164 -92 156 -110" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 4],
+            pose: false,
+        }
+        --
+        #"Road 240 8 236 52 240 72"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "240 8 236 52 240 72" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 5],
+            pose: false,
+        }
+        --
+        #"Road 200 10 210 -24 214 -32"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "200 10 210 -24 214 -32" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 6],
+            pose: false,
+        }
+        --
+        #"Road -192 32 -184 20 -196 18 -206 22 -218 36 -228 48 -244 76 -260 92"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-192 32 -184 20 -196 18 -206 22 -218 36 -228 48 -244 76 -260 92" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/swamp_mud/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/swamp_mud/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 7],
+            pose: false,
+        }
+        --
+        #"Road -222 -28 -207 -48 -188 -52"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-222 -28 -207 -48 -188 -52" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/swamp_mud/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/swamp_mud/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 8],
+            pose: false,
+        }
+        --
+        #"Road -2 -208 -32 -208 -54 -214"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-2 -208 -32 -208 -54 -214" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 9],
+            pose: false,
+        }
+        --
+        #"Road -2 -208 40 -186 42 -184"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-2 -208 40 -186 42 -184" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 10],
+            pose: false,
+        }
+        --
+        #"Road -2 -208 -26 -180 -38 -174"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-2 -208 -26 -180 -38 -174" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 11],
+            pose: false,
+        }
+        --
+        #"Road 290 -4 480 -180 760 -420 1100 -640 1300 -690 1450 -706"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "290 -4 480 -180 760 -420 1100 -640 1300 -690 1450 -706" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 12],
+            pose: false,
+        }
+        --
+        #"Road -292 12 -400 30 -470 28 -506 30"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-292 12 -400 30 -470 28 -506 30" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/swamp_mud/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/swamp_mud/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 13],
+            pose: false,
+        }
+        --
+        #"Road -12 -286 -96 -308 -160 -420 -380 -600 -520 -690 -590 -720"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-12 -286 -96 -308 -160 -420 -380 -600 -520 -690 -590 -720" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 14],
+            pose: false,
+        }
+        --
+        #"Road 290 -4 350 -20 400 -30 440 -42 470 -52 500 -58"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "290 -4 350 -20 400 -30 440 -42 470 -52 500 -58" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 15],
+            pose: false,
+        }
+        --
+        #"Road 720 -56 712 40 708 140 710 240 714 330 719 402 745 470 780 560 815 650 845 720 868 762 880 780"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "720 -56 712 40 708 140 710 240 714 330 719 402 745 470 780 560 815 650 845 720 868 762 880 780" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 16],
+            pose: false,
+        }
+        --
+        #"Road 880 780 850 772 810 752 770 730"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "880 780 850 772 810 752 770 730" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 17],
+            pose: false,
+        }
+        --
+        #"Road 708 140 704 180 706 213"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "708 140 704 180 706 213" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 18],
+            pose: false,
+        }
+        --
+        #"Road -8 286 -30 304 -52 330 -66 380 -76 430 -72 480 -56 530 -30 580 0 620 40 680 80 760 105 850 125 960 145 1070"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-8 286 -30 304 -52 330 -66 380 -76 430 -72 480 -56 530 -30 580 0 620 40 680 80 760 105 850 125 960 145 1070" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/forest_floor/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/forest_floor/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 19],
+            pose: false,
+        }
+        --
+        #"Road 145 1070 165 1160 182 1250 180 1310 172 1370"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "145 1070 165 1160 182 1250 180 1310 172 1370" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.1" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/swamp_mud/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/swamp_mud/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 20],
+            pose: false,
+        }
+        --
+        #"Road -292 12 -400 40 -500 -20 -560 -50 -620 -95"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-292 12 -400 40 -500 -20 -560 -50 -620 -95" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.6" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/swamp_mud/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/swamp_mud/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 21],
+            pose: false,
+        }
+        --
+        #"Road -620 -95 -700 -150 -745 -195 -780 -230 -860 -290 -876 -298"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Road",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "-620 -95 -700 -150 -745 -195 -780 -230 -860 -290 -876 -298" },
+                bevy_world_xml::bsn::WorldProp { key: "width", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
+                bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+            ],
+            text: "",
+            origin_file: "world/paths/trails.xml",
+            origin_path: [0, 22],
+            pose: false,
+        }
+    ]
+]
+

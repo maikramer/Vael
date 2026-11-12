@@ -1,0 +1,201 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/creatures/bosses.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"creatures.bosses"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "creatures.bosses" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/creatures/bosses.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"boss-witch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -4.0, y: 47.254101, z: 282.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "boss-witch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4 47.2541 282" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "bosses/witch.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "400" },
+                bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+            ],
+            text: "",
+            origin_file: "world/creatures/bosses.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene witch_boss"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/witch_boss_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/witch_boss_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/creatures/bosses.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"boss-sandworm"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 290.0, y: 48.155399, z: -12.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "boss-sandworm" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "290 48.1554 -12" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "bosses/sand-worm.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "500" },
+                bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+            ],
+            text: "",
+            origin_file: "world/creatures/bosses.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene sand_worm"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/sand_worm_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/sand_worm_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/creatures/bosses.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"boss-bogwarden"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -290.0, y: 26.840599, z: 12.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "boss-bogwarden" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-290 26.8406 12" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "bosses/bog-warden.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "600" },
+                bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+            ],
+            text: "",
+            origin_file: "world/creatures/bosses.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene bog_warden_boss"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bog_warden_boss_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bog_warden_boss_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/creatures/bosses.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"boss"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -290.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "boss" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 110.0664 -290" },
+                bevy_world_xml::bsn::WorldProp { key: "script", value: "bosses/boss.lua" },
+                bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+                bevy_world_xml::bsn::WorldProp { key: "health", value: "1200" },
+                bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+            ],
+            text: "",
+            origin_file: "world/creatures/bosses.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene boss_ogre"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/boss_ogre_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/boss_ogre_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/creatures/bosses.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

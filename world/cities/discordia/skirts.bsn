@@ -1,0 +1,241 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/skirts.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.skirts"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.skirts" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/skirts.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"city_oak_ne"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 15.0, y: 0.0, z: 13.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_ne" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0 13" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 24 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 1.4" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        --
+        #"city_oak_nw"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -13.0, y: 0.0, z: 11.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_nw" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13 0 11" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -70 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 1.4" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        --
+        #"city_oak_sw"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -15.0, y: 0.0, z: -11.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_sw" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-15 0 -11" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 1.4" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        --
+        #"city_oak_se"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 17.0, y: 0.0, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.939693, z: 0.0, w: 0.34202 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_se" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17 0 -7" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -140 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 1.4" },
+                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.5, y: 0.0, z: -6.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.5 0 -6" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/skirts.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.5, y: 0.0, z: -8.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.5 0 -8.4" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/skirts.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 21.0, y: 0.0, z: 32.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "21 0 32" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/chopping_block_collision.glb; mesh-anchor: base" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/skirts.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene chopping_block"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/chopping_block_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/chopping_block_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/skirts.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

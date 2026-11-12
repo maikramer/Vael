@@ -1,0 +1,427 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/roads.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.roads"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.roads" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/roads.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"city.plaza.floor"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.plaza.floor" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "34 34" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3.5" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.11" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "70" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "3.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9d9891" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 0],
+            pose: false,
+        }
+        --
+        #"city.street.n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.n" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0 27.5" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "7 21" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.14" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "73" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a08a6a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 1],
+            pose: false,
+        }
+        --
+        #"city.street.s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.s" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "0 -27.5" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "7 21" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.14" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "74" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9c8666" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 2],
+            pose: false,
+        }
+        --
+        #"city.street.e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.e" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "27.5 0" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "21 7" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.14" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "79" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a28a6a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 3],
+            pose: false,
+        }
+        --
+        #"city.street.w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.w" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-27.5 0" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "21 7" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.14" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "80" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9e8a68" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 4],
+            pose: false,
+        }
+        --
+        #"oak.pit.ne"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.ne" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "15 13" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "81" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d745a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 5],
+            pose: false,
+        }
+        --
+        #"oak.pit.nw"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.nw" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-13 11" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "82" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d745a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 6],
+            pose: false,
+        }
+        --
+        #"oak.pit.se"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.se" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "17 -7" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "83" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d745a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 7],
+            pose: false,
+        }
+        --
+        #"oak.pit.sw"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.sw" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-15 -11" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "84" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "2" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d745a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 8],
+            pose: false,
+        }
+        --
+        #"city.gate.n.w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.n.w" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-7.5 48" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "8 18" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.16" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "71" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a28a6a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 9],
+            pose: false,
+        }
+        --
+        #"city.gate.n.e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.n.e" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "7.5 48" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "8 18" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.16" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "72" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9c8666" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 10],
+            pose: false,
+        }
+        --
+        #"city.gate.e.n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.e.n" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "48 7.5" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.16" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "75" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a08a6a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 11],
+            pose: false,
+        }
+        --
+        #"city.gate.e.s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.e.s" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "48 -7.5" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.16" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "76" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a8466" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 12],
+            pose: false,
+        }
+        --
+        #"city.gate.w.n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.w.n" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-48 7.5" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.16" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "77" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a48e6e" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 13],
+            pose: false,
+        }
+        --
+        #"city.gate.w.s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.w.s" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-48 -7.5" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.16" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "78" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9e8a68" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/roads.xml",
+            origin_path: [0, 14],
+            pose: false,
+        }
+    ]
+]
+

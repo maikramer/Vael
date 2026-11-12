@@ -20,9 +20,9 @@
   <Include src="/world/landmarks/village.xml" />
   <Include src="/world/towers.xml" />
   <Include src="/world/koroks.xml" />
-  <!-- O mapa regional [M], o [F] de assinar e o [G] de viajar são do
-       `game-lua-travel` (`game/travel.lua` via `travel_host.lua`), host de
-       `world/gameplay.xml`. Sem este include o mapa deste QA nunca abre. -->
+  <!-- O mapa [M], o [F] de assinar e o [G] de viajar são do plugin Rust
+       (`src/ui/map.rs` + `src/ui/waypoint.rs`). O include traz os restantes
+       controllers de `world/gameplay.xml`. -->
   <Include src="/world/gameplay.xml" />
-  <!-- O HUD (`world/hud.xml`) já vem do autoload `world/autoload/ui.xml`. -->
+  <!-- O HUD (`ui/hud.xaml`) e a barra de fala (`world/say.xml`) vêm do autoload. -->
 </world>

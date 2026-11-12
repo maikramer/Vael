@@ -1,0 +1,1121 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/life.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.life"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.life" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/life.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 11.9, y: 0.0, z: -20.9 },
+            rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "11.9 0 -20.9" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.45 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.35 0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.1, y: 0.0, z: -19.6 },
+            rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.1 0 -19.6" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.45 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.35 0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"banner-plaza-n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 37.599998 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-n" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 37.6" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.06 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: 0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 1.15 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 2, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.95, z: 0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.95 0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.14 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 2, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"banner-plaza-s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: -37.599998 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-s" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -37.6" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.06 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: -0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 -0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 1.15 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 3, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.95, z: -0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.95 -0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.14 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 3, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"banner-plaza-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 37.599998, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "37.6 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.06 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: -0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 -0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 1.15 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#2b558e" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 4, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.95, z: -0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.95 -0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.14 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 4, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"banner-plaza-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -37.599998, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-37.6 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.06 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: 0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 1.15 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#2b558e" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 5, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.95, z: 0.12 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.95 0.12" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.14 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 5, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"street-lamp-n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.0, y: 0.0, z: 26.0 },
+            rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "street-lamp-n" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 0 26" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.25, z: 0.45 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.25 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 6, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: 0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.3 0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ffe6b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ffca80" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 6, 2],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: 0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 6, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"street-lamp-s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -4.0, y: 0.0, z: -26.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "street-lamp-s" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4 0 -26" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.25, z: -0.45 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.25 -0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 7, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: -0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 -0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.3 0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ffe6b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ffca80" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 7, 2],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: -0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 -0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 7, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"street-lamp-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.0, y: 0.0, z: -4.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "street-lamp-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26 0 -4" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.25, z: -0.45 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.25 -0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 8, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: -0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 -0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.3 0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ffe6b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ffca80" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 8, 2],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: -0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 -0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 8, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"street-lamp-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -26.0, y: 0.0, z: 4.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "street-lamp-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-26 0 4" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.6 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.25, z: 0.45 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.25 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 9, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: 0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.3 0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ffe6b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ffca80" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 9, 2],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.2, z: 0.85 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.2 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 9, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"street-lamp-market-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.5, y: 0.0, z: -21.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "street-lamp-market-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.5 0 -21.5" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.05, z: -0.4 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.05 -0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 10, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.0, z: -0.75 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.0 -0.75" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.2 0.28 0.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ffe6b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ffca80" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 10, 2],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.0, z: -0.75 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+                intensity: 3800.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.0 -0.75" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3800" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 10, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"street-lamp-market-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 22.5, y: 0.0, z: -12.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "street-lamp-market-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.5 0 -12.5" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 11],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 11, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.05, z: 0.4 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.05 0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 11, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.0, z: 0.75 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.0 0.75" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.2 0.28 0.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ffe6b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#ffca80" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 11, 2],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.0, z: 0.75 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.788235, blue: 0.541176, alpha: 1.0 }),
+                intensity: 3800.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.0 0.75" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc98a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3800" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 11, 3],
+                pose: true,
+            }
+        ]
+    ]
+]
+

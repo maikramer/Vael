@@ -1,0 +1,2305 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/koroks.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"korok-bosque-pedra-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -34.0, y: 50.0, z: 282.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-pedra-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34 50.0 282" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra junto à choupana" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-anel-a-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -72.5, y: 40.360001, z: 198.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-anel-a-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-72.5 40.36 198.5" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-bosque" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [1],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [1, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [1, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-anel-a-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -67.5, y: 40.360001, z: 198.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-anel-a-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-67.5 40.36 198.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-bosque" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [2],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [2, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [2, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-anel-a-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -70.0, y: 40.360001, z: 203.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-anel-a-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-70.0 40.36 203.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-bosque" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "3" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [3],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [3, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [3, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-odd-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 118.0, y: 48.139999, z: 228.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-odd-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "118 48.14 228" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [4],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [4, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [4, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-hide-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -110.0, y: 45.919998, z: 150.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-hide-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-110 45.92 150" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [5],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [5, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [5, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-pedra-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 44.0, y: 42.439999, z: 210.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-pedra-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "44 42.44 210" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/farm/flint_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [6],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [6, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene flint_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/flint_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/flint_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [6, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-bosque-hide-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 140.0, y: 58.759998, z: 260.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-bosque-hide-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 58.76 260" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene mushroom_glow"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-ermo-pedra-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 128.0, y: 49.18, z: 84.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-ermo-pedra-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "128 49.18 84" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra do oásis" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/rock_boulder_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [8],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [8, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene rock_boulder"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [8, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-ermo-odd-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 296.0, y: 47.349998, z: 118.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-ermo-odd-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "296 47.35 118" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [9],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [9, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [9, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-ermo-hide-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 232.0, y: 47.16, z: -20.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-ermo-hide-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "232 47.16 -20" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [10],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [10, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [10, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-ermo-pedra-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 250.0, y: 52.450001, z: 30.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-ermo-pedra-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "250 52.45 30" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/farm/flint_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [11],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [11, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene flint_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/flint_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/flint_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [11, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-ermo-hide-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 166.0, y: 49.84, z: -108.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-ermo-hide-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "166 49.84 -108" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [12],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [12, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-pedra-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -150.0, y: 26.26, z: -30.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-pedra-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-150 26.26 -30" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra da margem" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [13],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [13, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [13, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-odd-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -244.0, y: 27.030001, z: 24.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-odd-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-244 27.03 24" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [14],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [14, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [14, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-hide-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -272.0, y: 31.68, z: -34.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-hide-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-272 31.68 -34" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [15],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [15, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-anel-b-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -252.5, y: 30.58, z: 80.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-anel-b-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-252.5 30.58 80.5" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-pantano" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [16],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [16, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [16, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-anel-b-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -247.5, y: 30.58, z: 80.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-anel-b-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-247.5 30.58 80.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-pantano" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [17],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [17, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [17, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-anel-b-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -250.0, y: 30.58, z: 85.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-anel-b-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-250.0 30.58 85.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-pantano" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "3" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [18],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [18, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [18, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-pantano-hide-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -210.0, y: 26.370001, z: -40.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-pantano-hide-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-210 26.37 -40" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [19],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [19, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [19, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-picos-pedra-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -30.0, y: 53.639999, z: -148.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-picos-pedra-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30 53.64 -148" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra gelada" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/rock_boulder_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [20],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [20, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene rock_boulder"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [20, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-picos-odd-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -56.0, y: 74.730003, z: -184.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-picos-odd-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 74.73 -184" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [21],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [21, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [21, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-picos-anel-c-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -72.5, y: 88.32, z: -204.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-picos-anel-c-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-72.5 88.32 -204.5" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-picos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [22],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [22, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [22, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-picos-anel-c-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -67.5, y: 88.32, z: -205.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-picos-anel-c-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-67.5 88.32 -205.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-picos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [23],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [23, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [23, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-picos-anel-c-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -70.0, y: 93.099998, z: -210.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.55, y: 0.55, z: 0.55 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-picos-anel-c-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-70.0 93.10 -210.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-picos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "3" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [24],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [24, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [24, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-picos-hide-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 84.0, y: 78.879997, z: -196.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-picos-hide-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "84 78.88 -196" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [25],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [25, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-vale-hide-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 100.0, y: 40.18, z: -24.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-vale-hide-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "100 40.18 -24" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [26],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [26, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [26, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"korok-vale-pedra-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 18.0, y: 45.0, z: 78.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "korok-vale-pedra-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "18 45.0 78" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [27],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [27, 0],
+            pose: true,
+        }
+        --
+        #"GltfScene moss_rock"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [27, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-atalaia-vale"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 75.900002, y: 52.169998, z: -7.9 },
+        rotation: glam::Quat { x: 0.0, y: 0.965926, z: 0.0, w: -0.258819 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-atalaia-vale" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "75.9 52.17 -7.9" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 210 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "120" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "60" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do miradouro da atalaia" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [28],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [28, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-atalaia-bosque"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 16.0, y: 61.130001, z: 140.300003 },
+        rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-atalaia-bosque" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "16.0 61.13 140.3" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 30 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "90" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "55" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do miradouro da atalaia" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [29],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [29, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-oasis"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 137.0, y: 47.470001, z: 86.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-oasis" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "137.0 47.47 86.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "110" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "50" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Pescar o baú no fundo do oásis" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [30],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [30, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-ermo-ruinas"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 304.0, y: 47.389999, z: 128.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.608761, z: 0.0, w: 0.793353 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-ermo-ruinas" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "304.0 47.39 128.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 75 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "95" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "50" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bombas" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú entre as ruínas" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [31],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [31, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-pantano-cais"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -266.0, y: 29.780001, z: -12.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.766044, z: 0.0, w: -0.642788 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-pantano-cais" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-266.0 29.78 -12.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 260 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "85" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "45" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "3" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú sob o cais" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [32],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [32, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-ponte-norte"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.0, y: 38.91, z: 202.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.737277, z: 0.0, w: 0.67559 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-ponte-norte" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.0 38.91 202.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 95 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "75" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "45" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú à sombra da ponte" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [33],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [33, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-cidadela"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -870.0, y: 188.570007, z: -290.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-cidadela" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-870.0 188.57 -290.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "200" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "90" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bombas" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú da Cidadela Caída" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [34],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [34, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-mina-veio"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -63.0, y: 95.760002, z: -213.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: 0.173648 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-mina-veio" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-63.0 95.76 -213.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 160 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "130" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "70" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú à boca da mina" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [35],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [35, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-bosque-encantado"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 228.0, y: 72.480003, z: 1400.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-bosque-encantado" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "228.0 72.48 1400.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "160" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "80" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "3" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do bosque encantado" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [36],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [36, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-vael"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 702.5, y: 182.580002, z: 212.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.906308, z: 0.0, w: 0.422618 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-vael" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "702.5 182.58 212.5" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 130 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "150" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "75" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do Alto de Vael" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [37],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [37, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"bau-porta-ermo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 505.0, y: 81.519997, z: -57.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.996195, z: 0.0, w: -0.087156 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-porta-ermo" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "505.0 81.52 -57.0" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 190 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "140" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "70" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bomba" },
+            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú escondido na boca do Ermo" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/koroks.xml",
+        origin_path: [38],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene treasure_chest"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/koroks.xml",
+            origin_path: [38, 0],
+            pose: true,
+        }
+    ]
+]
+

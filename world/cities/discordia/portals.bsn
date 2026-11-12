@@ -1,0 +1,510 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/portals.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"city.portals"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.portals" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/portals.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"portal.chapel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 7.46, y: 0.0, z: 22.459999 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.chapel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.46 0 22.46" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/chapel" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras na capela." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.forge"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -30.469999, y: 0.0, z: -29.059999 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.forge" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30.47 0 -29.06" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/forge" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras na forja do Bram." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 1],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 1, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.house_a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.35, y: 0.0, z: 8.44 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.house_a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.35 0 8.44" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/house_a" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras numa casa da vila." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.house_b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -17.440001, y: 0.0, z: 22.469999 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.house_b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-17.44 0 22.47" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/house_b" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras numa casa da vila." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.house_c"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -20.469999, y: 0.0, z: -18.440001 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.house_c" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-20.47 0 -18.44" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/house_c" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras numa casa da vila." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 4],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 4, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.shepherd"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -22.33, y: 0.0, z: 12.95 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.shepherd" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-22.33 0 12.95" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/shepherd" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras na casa do pastor." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 5],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 5, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.barn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -26.110001, y: 0.0, z: 30.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.barn" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-26.11 0 30" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/barn" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras no celeiro." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 6],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 6, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.longhouse"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 35.529999, y: 0.0, z: -37.529999 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.longhouse" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.53 0 -37.53" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/longhouse" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras no salão comunal." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 7],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 7, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.market.stall_a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 10.1, y: 0.0, z: -15.7 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.market.stall_a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.1 0 -15.7" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/market" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras nas traseiras do mercado." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 8],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 12; shape-radius: 0.35; start-life-min: 0.6; start-life-max: 1.2; start-speed-min: 0.1; start-speed-max: 0.4; start-size-min: 0.08; start-size-max: 0.18; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 8, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.market.stall_b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 11.7, y: 0.0, z: -14.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.market.stall_b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "11.7 0 -14.4" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/market" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras nas traseiras do mercado." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 9],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 12; shape-radius: 0.35; start-life-min: 0.6; start-life-max: 1.2; start-speed-min: 0.1; start-speed-max: 0.4; start-size-min: 0.08; start-size-max: 0.18; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 9, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"portal.market.stall_c"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.9, y: 0.0, z: -20.299999 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ScenePortal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portal.market.stall_c" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.9 0 -20.3" },
+                bevy_world_xml::bsn::WorldProp { key: "target", value: "interiors/market" },
+                bevy_world_xml::bsn::WorldProp { key: "entry", value: "from-town" },
+                bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Entrar" },
+                bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_open" },
+                bevy_world_xml::bsn::WorldProp { key: "toast", value: "Entras nas traseiras do mercado." },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/portals.xml",
+            origin_path: [0, 10],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 12; shape-radius: 0.35; start-life-min: 0.6; start-life-max: 1.2; start-speed-min: 0.1; start-speed-max: 0.4; start-size-min: 0.08; start-size-max: 0.18; looping: 1; world-space: 1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/portals.xml",
+                origin_path: [0, 10, 0],
+                pose: true,
+            }
+        ]
+    ]
+]
+

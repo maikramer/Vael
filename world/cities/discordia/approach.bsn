@@ -1,0 +1,2927 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/cities/discordia/approach.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"Prototype banca-feira"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "banca-feira" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"banca-feira"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banca-feira" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [0, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.85, y: 1.05, z: -0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.85 1.05 -0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.055" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5f4a36" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 0],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.85, y: 1.05, z: -0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 1.05 -0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.055" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5f4a36" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 1],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.85, y: 2.15, z: 0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.85 2.15 0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.055" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5f4a36" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 2],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.85, y: 2.15, z: 0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.15 0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.055" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5f4a36" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.92, z: -0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.92 -0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.95 0.05 0.42" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a08560" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 4],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.5, z: -0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.5 -0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.95 0.34 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a704e" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 5],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.42, z: 0.05 },
+                rotation: glam::Quat { x: 0.121869, y: 0.0, z: 0.0, w: 0.992546 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.42 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.15 0.03 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "14 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a8544a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 6],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.45, y: 1.05, z: -0.5 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.45 1.05 -0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.11 0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#b0803a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 7],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.16, y: 1.05, z: -0.62 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.16 1.05 -0.62" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.11 0.08 0.11" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8fa04a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 8],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 1.06, z: -0.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 1.06 -0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a4a30" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 9],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.68, y: 1.04, z: -0.48 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.68 1.04 -0.48" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a5a3a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [0, 0, 10],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype carreta"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "carreta" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [1],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"carreta"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "carreta" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [1, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.78, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.78 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.72 0.05 0.42" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#96794f" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.96, z: -0.4 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.96 -0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.72 0.14 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d6240" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.96, z: 0.4 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.96 0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.72 0.14 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d6240" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.69, y: 0.96, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.69 0.96 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.03 0.14 0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d6240" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 3],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: -0.52 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.42 -0.52" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5a4632" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 4],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.52 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.42 0.52" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5a4632" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 5],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.42 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3a28" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 6],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.24, y: 0.62, z: 0.85 },
+                rotation: glam::Quat { x: 0.707107, y: 0.0, z: 0.0, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.24 0.62 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.035" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "90 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5a4632" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 7],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.24, y: 0.62, z: 0.85 },
+                rotation: glam::Quat { x: 0.707107, y: 0.0, z: 0.0, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.24 0.62 0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.035" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "90 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5a4632" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 8],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.28, y: 0.98, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 0.72, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 0.98 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.24" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1 0.72 1" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#b8a06a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 9],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.16, y: 0.96, z: 0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 0.7, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.16 0.96 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.21" },
+                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1 0.7 1" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a8905a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 10],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.52, y: 1.02, z: -0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.52 1.02 -0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.14 0.14" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a6a42" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [1, 0, 11],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype estandarte"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "estandarte" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [2],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"estandarte"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [2, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.07" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "2.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5f4a36" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [2, 0, 0],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.35, z: 0.0 },
+                rotation: glam::Quat { x: 0.707107, y: 0.0, z: 0.0, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.35 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.035" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.62" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "90 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3a28" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [2, 0, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.95, z: 0.34 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.017452, w: 0.999848 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 3.95 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.02 0.85 0.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2f2a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [2, 0, 2],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 4.66, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.66 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.07" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c9a44f" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [2, 0, 3],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype varal-roupa"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "varal-roupa" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [3],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"varal-roupa"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "varal-roupa" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [3, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.1, y: 1.7, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.1 1.7 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b5138" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [3, 0, 0],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 2.1, y: 1.7, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.1 1.7 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.7" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b5138" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [3, 0, 1],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.82, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.82 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "2.1" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3a28" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [3, 0, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.1, y: 1.42, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.026177, w: 0.999657 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.1 1.42 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.62 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 3" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#cfc5b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [3, 0, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.46, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.017452, w: 0.999848 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.46 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.58 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8fa0b0" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [3, 0, 4],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.15, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.034899, w: 0.999391 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.15 1.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.4 0.66 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#b0a488" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [3, 0, 5],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype canteiro"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "canteiro" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [4],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"canteiro"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "canteiro" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [4, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.19, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.19 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 0.19 0.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a704e" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.32, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.32 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.78 0.05 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3a28" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 1],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.42, y: 0.5, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.42 0.5 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4e7a3a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 2],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.04 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.55 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.23" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#578741" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 3],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 0.5, z: -0.03 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 0.5 -0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.19" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#497336" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 4],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.42, y: 0.68, z: 0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.42 0.68 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c94a44" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#5a1410" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 5],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.05, y: 0.76, z: -0.06 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.05 0.76 -0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d8c24a" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#4a3a08" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 6],
+                pose: true,
+            }
+            --
+            #"Sphere"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.44, y: 0.66, z: 0.02 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Sphere",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.44 0.66 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c94a44" },
+                    bevy_world_xml::bsn::WorldProp { key: "emissive", value: "#5a1410" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [4, 0, 7],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype cerca"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "cerca" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [5],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"cerca"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [5, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.62, y: 0.55, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.62 0.55 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.055" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b5138" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [5, 0, 0],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.62, y: 0.55, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.62 0.55 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.055" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b5138" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [5, 0, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.82, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.82 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.72 0.05 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d6248" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [5, 0, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.45 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.72 0.05 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#745a42" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [5, 0, 3],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"Prototype leira-cultivo"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Prototype",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "id", value: "leira-cultivo" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [6],
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"leira-cultivo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [6, 0],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.07, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.07 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "7.5 0.07 0.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#57432e" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 0],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -6.6, y: 0.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.6 0.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4e7a3a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 1],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -5.4, y: 0.3, z: 0.06 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.4 0.3 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#578741" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 2],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -4.2, y: 0.3, z: -0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.2 0.3 -0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#497336" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 3],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -3.0, y: 0.3, z: 0.04 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3 0.3 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4e7a3a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 4],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.8, y: 0.3, z: -0.04 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.8 0.3 -0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#578741" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 5],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.6, y: 0.3, z: 0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 0.3 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#497336" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 6],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.6, y: 0.3, z: -0.03 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.6 0.3 -0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4e7a3a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 7],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.8, y: 0.3, z: 0.04 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.8 0.3 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#578741" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 8],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 3.0, y: 0.3, z: -0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "3 0.3 -0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#497336" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 9],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 4.2, y: 0.3, z: 0.03 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.2 0.3 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4e7a3a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 10],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 5.4, y: 0.3, z: -0.04 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.4 0.3 -0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#578741" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 11],
+                pose: true,
+            }
+            --
+            #"Capsule"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 6.6, y: 0.3, z: 0.05 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Capsule",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.6 0.3 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.16" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#497336" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [6, 0, 12],
+                pose: true,
+            }
+        ]
+    ]
+    --
+    #"city.approach"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "city.approach" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/approach.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"feira-portao-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.0, y: 0.0, z: 12.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.62932, z: 0.0, w: 0.777146 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "banca-feira" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8 0 12" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 78 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "feira-portao-a" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+        --
+        #"feira-portao-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 0.0, z: 27.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.743145, z: 0.0, w: 0.669131 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "banca-feira" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-9 0 27.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 96 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "feira-portao-b" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 1],
+            pose: true,
+        }
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.2, y: 0.0, z: 31.799999 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.2 0 31.8" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 2],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 2, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"Entity"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.8, y: 0.0, z: 33.599998 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.8 0 33.6" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 3],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 3, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"canteiro-portao-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -12.0, y: 0.0, z: 7.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "canteiro" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-12 0 7.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "canteiro-portao-w" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 4],
+            pose: true,
+        }
+        --
+        #"carreta-portao"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 7.0, y: 0.0, z: 24.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "carreta" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "7 0 24.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -18 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "carreta-portao" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 5],
+            pose: true,
+        }
+        --
+        #"varal-portao"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.5, y: 0.0, z: 31.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.034899, z: 0.0, w: 0.999391 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "varal-roupa" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "9.5 0 31.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 4 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "varal-portao" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 6],
+            pose: true,
+        }
+        --
+        #"canteiro-portao-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 11.5, y: 0.0, z: 9.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "canteiro" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "11.5 0 9" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -25 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "canteiro-portao-e" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 7],
+            pose: true,
+        }
+        --
+        #"estandarte-portao-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -4.6, y: 0.0, z: 35.400002 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "estandarte" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-4.6 0 35.4" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-portao-w" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 8],
+            pose: true,
+        }
+        --
+        #"estandarte-portao-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.6, y: 0.0, z: 35.400002 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "estandarte" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "4.6 0 35.4" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-portao-e" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 9],
+            pose: true,
+        }
+        --
+        #"canteiro-portao-leste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 30.5, y: 0.0, z: 5.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "canteiro" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "30.5 0 5.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -70 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "canteiro-portao-leste" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 10],
+            pose: true,
+        }
+        --
+        #"canteiro-portao-leste-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 30.5, y: 0.0, z: -5.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.819152, z: 0.0, w: 0.573576 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "canteiro" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "30.5 0 -5.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -110 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "canteiro-portao-leste-2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 11],
+            pose: true,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-18.5 107" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "26 32" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "10" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "47" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 12],
+            pose: false,
+        }
+        --
+        #"TerrainPad"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "TerrainPad",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "18 108" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "24 26" },
+                bevy_world_xml::bsn::WorldProp { key: "falloff", value: "10" },
+                bevy_world_xml::bsn::WorldProp { key: "corner-radius", value: "8" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "47.5" },
+                bevy_world_xml::bsn::WorldProp { key: "pre-carved", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 13],
+            pose: false,
+        }
+        --
+        #"socalco-norte-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "socalco-norte-w" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-18.5 107" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "22 27" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.14" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a7050" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 14],
+            pose: false,
+        }
+        --
+        #"socalco-norte-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "socalco-norte-e" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "18 108" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "20 21" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.14" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a7050" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 15],
+            pose: false,
+        }
+        --
+        #"leira-w1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 96.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.5 8.2704 96" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-w1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 16],
+            pose: true,
+        }
+        --
+        #"leira-w2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 100.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.5 8.2704 100.8" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-w2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 17],
+            pose: true,
+        }
+        --
+        #"leira-w3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 105.599998 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.5 8.2704 105.6" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-w3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 18],
+            pose: true,
+        }
+        --
+        #"leira-w4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 110.400002 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.5 8.2704 110.4" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-w4" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 19],
+            pose: true,
+        }
+        --
+        #"leira-w5"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 115.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.5 8.2704 115.2" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-w5" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 20],
+            pose: true,
+        }
+        --
+        #"leira-w6"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 120.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.5 8.2704 120" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-w6" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 21],
+            pose: true,
+        }
+        --
+        #"leira-e1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.0, y: 8.7709, z: 98.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "18 8.7709 98" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-e1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 22],
+            pose: true,
+        }
+        --
+        #"leira-e2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.0, y: 8.7709, z: 102.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "18 8.7709 102.8" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-e2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 23],
+            pose: true,
+        }
+        --
+        #"leira-e3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.0, y: 8.7709, z: 107.599998 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "18 8.7709 107.6" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-e3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 24],
+            pose: true,
+        }
+        --
+        #"leira-e4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.0, y: 8.7709, z: 112.400002 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "18 8.7709 112.4" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-e4" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 25],
+            pose: true,
+        }
+        --
+        #"leira-e5"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 18.0, y: 8.7709, z: 117.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "leira-cultivo" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "18 8.7709 117.2" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "leira-e5" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 26],
+            pose: true,
+        }
+        --
+        #"espantalho-socalco"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.5, y: 8.2704, z: 108.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "espantalho-socalco" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-18.5 8.2704 108" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.6 1.7 0.3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 27],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene scarecrow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/scarecrow_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/scarecrow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 27, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"meda-socalco-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.5, y: 8.2704, z: 119.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "meda-socalco-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.5 8.2704 119" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 1.1; half-height: 0.9" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 28],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene hay_bale"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/hay_bale_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 28, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"meda-socalco-e1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 24.5, y: 8.7709, z: 119.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "meda-socalco-e1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "24.5 8.7709 119.5" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 1.1; half-height: 0.9" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 29],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene hay_bale"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/hay_bale_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 29, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"meda-socalco-e2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.5, y: 8.7709, z: 116.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.5373, z: 0.0, w: 0.843391 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "meda-socalco-e2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.5 8.7709 116" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 65 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 1.1; half-height: 0.9" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene hay_bale"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/hay_bale_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 30, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"galinheiro-socalco"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.0, y: 8.7709, z: 99.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.62932, z: 0.0, w: 0.777146 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "galinheiro-socalco" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26 8.7709 99" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -78 0" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.2 1.0 0.9" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene chicken_coop"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/chicken_coop_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/chicken_coop_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 31, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"cerca-w-s1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 94.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 94" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 32],
+            pose: true,
+        }
+        --
+        #"cerca-w-s2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 97.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 97.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 33],
+            pose: true,
+        }
+        --
+        #"cerca-w-s3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 101.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 101" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 34],
+            pose: true,
+        }
+        --
+        #"cerca-w-s4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 104.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 104.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s4" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 35],
+            pose: true,
+        }
+        --
+        #"cerca-w-s5"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 108.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 108" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s5" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 36],
+            pose: true,
+        }
+        --
+        #"cerca-w-s6"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 111.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 111.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s6" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 37],
+            pose: true,
+        }
+        --
+        #"cerca-w-s7"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 115.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 115" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s7" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 38],
+            pose: true,
+        }
+        --
+        #"cerca-w-s8"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.2, y: 8.2704, z: 118.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.2 8.2704 118.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s8" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 39],
+            pose: true,
+        }
+        --
+        #"cerca-w-w1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.799999, y: 8.2704, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-28.8 8.2704 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 40],
+            pose: true,
+        }
+        --
+        #"cerca-w-w2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -25.299999, y: 8.2704, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-25.3 8.2704 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 41],
+            pose: true,
+        }
+        --
+        #"cerca-w-s9"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -21.799999, y: 8.2704, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-21.8 8.2704 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s9" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 42],
+            pose: true,
+        }
+        --
+        #"cerca-w-s10"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -18.299999, y: 8.2704, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-18.3 8.2704 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s10" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 43],
+            pose: true,
+        }
+        --
+        #"cerca-w-s11"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -14.8, y: 8.2704, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-14.8 8.2704 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s11" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 44],
+            pose: true,
+        }
+        --
+        #"portao-socalco"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -11.7, y: 8.2404, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-socalco" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.7 8.2404 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/farm/fence_gate_collision.glb; mesh-anchor: base" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 45],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene fence_gate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/fence_gate_lod0.glb", scene_index: 0 }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_gate_lod0.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/farm/fence_gate_lod1.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/farm/fence_gate_lod2.glb" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
+                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 45, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"cerca-w-s12"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.9, y: 8.2704, z: 94.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-8.9 8.2704 94.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-s12" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 46],
+            pose: true,
+        }
+        --
+        #"cerca-w-w3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.799999, y: 8.2704, z: 119.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-28.8 8.2704 119.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 47],
+            pose: true,
+        }
+        --
+        #"cerca-w-w4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -25.299999, y: 8.2704, z: 119.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "-25.3 8.2704 119.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-w-w4" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 48],
+            pose: true,
+        }
+        --
+        #"cerca-e-w1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 97.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 97" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 49],
+            pose: true,
+        }
+        --
+        #"cerca-e-w2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 100.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 100.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 50],
+            pose: true,
+        }
+        --
+        #"cerca-e-w3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 104.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 104" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 51],
+            pose: true,
+        }
+        --
+        #"cerca-e-w4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 107.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 107.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w4" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 52],
+            pose: true,
+        }
+        --
+        #"cerca-e-w5"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 111.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 111" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w5" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 53],
+            pose: true,
+        }
+        --
+        #"cerca-e-w6"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 114.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 114.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w6" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 54],
+            pose: true,
+        }
+        --
+        #"cerca-e-w7"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.2, y: 8.7709, z: 118.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "8.2 8.7709 118" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-w7" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 55],
+            pose: true,
+        }
+        --
+        #"cerca-e-e1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 27.799999, y: 8.7709, z: 97.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "27.8 8.7709 97.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e1" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 56],
+            pose: true,
+        }
+        --
+        #"cerca-e-e2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 24.299999, y: 8.7709, z: 97.199997 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "24.3 8.7709 97.2" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 57],
+            pose: true,
+        }
+        --
+        #"cerca-e-e3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 27.799999, y: 8.7709, z: 118.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "27.8 8.7709 118.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e3" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 58],
+            pose: true,
+        }
+        --
+        #"cerca-e-e4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 24.299999, y: 8.7709, z: 118.800003 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Use",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "prototype", value: "cerca" },
+                bevy_world_xml::bsn::WorldProp { key: "pos", value: "24.3 8.7709 118.8" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cerca-e-e4" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 59],
+            pose: true,
+        }
+    ]
+]
+

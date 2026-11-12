@@ -1,0 +1,758 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    origin_file: "world/bridges/ponte-norte.xml",
+    origin_path: [0],
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"SpawnExclusion"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "SpawnExclusion",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "at", value: "4 209" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "42" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [0],
+        pose: false,
+    }
+    --
+    #"ponte_norte"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 4.0, y: 0.0, z: 216.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "ponte_norte" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 0 216.5" },
+            bevy_world_xml::bsn::WorldProp { key: "seat", value: "none" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [1],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 46.25, z: -33.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 46.25 -33" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.5 0.5 8.5" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a9a94" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 44.220001, z: 0.0 },
+            rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 44.22 0" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.5 0.5 25.5" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a9a94" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 1],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.35, y: 47.0, z: -37.25 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 47.0 -37.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 12.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 2],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.35, y: 47.0, z: -37.25 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 47.0 -37.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 12.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 3],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.35, y: 44.970001, z: -1.25 },
+            rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 44.97 -1.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 24.25" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 4],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.35, y: 44.970001, z: -1.25 },
+            rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 44.97 -1.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 24.25" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 5],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.35, y: 47.529999, z: -37.25 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 47.53 -37.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 12.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 6],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.35, y: 47.529999, z: -37.25 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 47.53 -37.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 12.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 7],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.35, y: 45.5, z: -1.25 },
+            rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 45.5 -1.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 24.25" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 8],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.35, y: 45.5, z: -1.25 },
+            rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 45.5 -1.25" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 24.25" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 9],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 46.049999, z: -45.75 },
+            rotation: glam::Quat { x: -0.024956, y: 0.0, z: 0.0, w: 0.999689 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 46.05 -45.75" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.5 0.5 4.25" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "-2.86 0 0" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a9a94" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 10],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.35, y: 47.150002, z: -49.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 47.15 -49.5" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 11],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.35, y: 47.150002, z: -49.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 47.15 -49.5" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 12],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.35, y: 43.099998, z: 23.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 43.1 23" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 13],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.35, y: 43.099998, z: 23.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 43.1 23" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 14],
+            pose: true,
+        }
+        --
+        #"Cylinder"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 41.299999, z: -10.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cylinder",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 41.3 -10" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "half-height", value: "3.3" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 15],
+            pose: true,
+        }
+        --
+        #"Cylinder"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 40.5, z: 10.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Cylinder",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 40.5 10" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
+                bevy_world_xml::bsn::WorldProp { key: "half-height", value: "2.5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [1, 16],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 9.8, y: 46.1754, z: 172.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 46.1754 172.5" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [2],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene torch_post"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [2, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 9.8, y: 46.1754, z: 172.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 46.1754 172.5" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [3],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [3, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Group"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 9.8, y: 46.1754, z: 172.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 46.1754 172.5" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [4],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.627451, blue: 0.25098, alpha: 1.0 }),
+            intensity: 55000.0,
+            radius: 0.5,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa040" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "55000" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [4, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -0.6, y: 42.734402, z: 242.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 42.7344 242.5" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [5],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene torch_post"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [5, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -0.6, y: 42.734402, z: 242.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 42.7344 242.5" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [6],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [6, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Group"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -0.6, y: 42.734402, z: 242.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 42.7344 242.5" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.627451, blue: 0.25098, alpha: 1.0 }),
+            intensity: 55000.0,
+            radius: 0.5,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa040" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "55000" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.6, y: 42.734402, z: 240.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.6 42.7344 240.5" },
+            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [8],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene torch_post"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [8, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.6, y: 42.734402, z: 240.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.6 42.7344 240.5" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [9],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
+                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.7; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [9, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"Group"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.6, y: 42.734402, z: 240.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Group",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.6 42.7344 240.5" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
+        ],
+        text: "",
+        origin_file: "world/bridges/ponte-norte.xml",
+        origin_path: [10],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.627451, blue: 0.25098, alpha: 1.0 }),
+            intensity: 55000.0,
+            radius: 0.5,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa040" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "55000" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+            ],
+            text: "",
+            origin_file: "world/bridges/ponte-norte.xml",
+            origin_path: [10, 0],
+            pose: true,
+        }
+    ]
+]
+

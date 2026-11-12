@@ -14,20 +14,13 @@
 <world static="true" clear-color="#12100d" title="Acampamento">
   <SceneEntry name="entrada" translation="0 8.35 18" euler="0 180 0" />
 
-  <!-- Relógio, clima e mixer são do JOGO: só a primeira cena os declara
-       (`spawn::startup` first_load). Têm de casar com world/environment.xml,
-       senão o menu muda o amanhecer e o ciclo de chuva da partida toda. -->
-  <DayCycle minute-of-day="480" minutes-per-real-second="1.2" dawn-minute="330" dusk-minute="1170" sun-azimuth-base="205" max-sun-elevation="62" drive-ambient="1" ambient-day-intensity="0.26" ambient-night-intensity="0.32" day-speed-scale="0.5" night-speed-scale="2.0" night-cap-minute="1200" />
-  <Weather wind="0.7 0.25" wind-strength="1.5" clouds="0.25" rain="0" cycle="1" />
+  <!-- Relógio, clima e luz do céu: `bevy_elements` (`src/environment.rs`).
+       O mixer continua a ser do JOGO: só a primeira cena o declara
+       (`spawn::startup` first_load) — sem ele o áudio não arranca. -->
   <AudioMixer master="1" music="0.7" sfx="0.8" voice="0.9" ambience="0.7" />
   <MusicLayer layer="menu" sound="bgm-menu" base-volume="0.24" />
   <!-- Créditos: o `title.lua` força esta layer enquanto o modal está aberto. -->
   <MusicLayer layer="credits" sound="bgm-credits" base-volume="0.22" />
-
-  <Entity>
-    <DirectionalLight euler="-45 35.2644 15" />
-    <AmbientLight color="0xc8d8e8" brightness="110" />
-  </Entity>
 
   <!-- Sem criaturas nem deslocação: a navmesh custava ~5 s de boot e a
        validação do height mesh é desnecessária aqui. -->
@@ -148,61 +141,27 @@
 
   <!-- Cinturão de árvores: fecha o enquadramento e esconde o fim do terreno. -->
   <Group name="scene.menu.trees" translation="0 0 0">
-    <Entity name="menu-tree-w1" translation="-26 8.45 -14" transform="rotation: 0 34 0; scale: 1.25 1.25 1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
-    <Entity name="menu-tree-w2" translation="-34 6.66 -4" transform="rotation: 0 -20 0; scale: 1.35 1.35 1.35" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
-    <Entity name="menu-tree-w3" translation="-30 7.27 10" transform="rotation: 0 58 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_oak_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_oak_lod0.glb" lod1-url="/assets/meshes/forest/tree_oak_lod1.glb" lod2-url="/assets/meshes/forest/tree_oak_lod2.glb" lod-threshold-near="38" lod-threshold-mid="105" />
-    </Entity>
-    <Entity name="menu-tree-w4" translation="-40 8.11 -22" transform="rotation: 0 12 0; scale: 1.45 1.45 1.45" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
-    <Entity name="menu-tree-e1" translation="28 8.19 -12" transform="rotation: 0 -38 0; scale: 1.3 1.3 1.3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
-    <Entity name="menu-tree-e2" translation="36 9.02 -2" transform="rotation: 0 25 0; scale: 1.15 1.15 1.15" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
-    <Entity name="menu-tree-e3" translation="30 9.51 12" transform="rotation: 0 -62 0; scale: 1.05 1.05 1.05" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_oak_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_oak_lod0.glb" lod1-url="/assets/meshes/forest/tree_oak_lod1.glb" lod2-url="/assets/meshes/forest/tree_oak_lod2.glb" lod-threshold-near="38" lod-threshold-mid="105" />
-    </Entity>
-    <Entity name="menu-tree-e4" translation="42 7.74 -24" transform="rotation: 0 8 0; scale: 1.5 1.5 1.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
-    <Entity name="menu-tree-s1" translation="-22 6.46 30" transform="rotation: 0 15 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_oak_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_oak_lod0.glb" lod1-url="/assets/meshes/forest/tree_oak_lod1.glb" lod2-url="/assets/meshes/forest/tree_oak_lod2.glb" lod-threshold-near="38" lod-threshold-mid="105" />
-    </Entity>
-    <Entity name="menu-tree-s2" translation="22 9.43 31" transform="rotation: 0 -30 0; scale: 1.2 1.2 1.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="40" lod-threshold-mid="110" />
-    </Entity>
+    <Entity name="menu-tree-w1" translation="-26 8.45 -14" transform="rotation: 0 34 0; scale: 1.25 1.25 1.25" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity name="menu-tree-w2" translation="-34 6.66 -4" transform="rotation: 0 -20 0; scale: 1.35 1.35 1.35" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="tree_pine" />
+    <Entity name="menu-tree-w3" translation="-30 7.27 10" transform="rotation: 0 58 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.55; half-height: 2.2" prop-flora="tree_oak" />
+    <Entity name="menu-tree-w4" translation="-40 8.11 -22" transform="rotation: 0 12 0; scale: 1.45 1.45 1.45" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity name="menu-tree-e1" translation="28 8.19 -12" transform="rotation: 0 -38 0; scale: 1.3 1.3 1.3" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="tree_pine" />
+    <Entity name="menu-tree-e2" translation="36 9.02 -2" transform="rotation: 0 25 0; scale: 1.15 1.15 1.15" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity name="menu-tree-e3" translation="30 9.51 12" transform="rotation: 0 -62 0; scale: 1.05 1.05 1.05" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.55; half-height: 2.2" prop-flora="tree_oak" />
+    <Entity name="menu-tree-e4" translation="42 7.74 -24" transform="rotation: 0 8 0; scale: 1.5 1.5 1.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity name="menu-tree-s1" translation="-22 6.46 30" transform="rotation: 0 15 0; scale: 1.0 1.0 1.0" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.55; half-height: 2.2" prop-flora="tree_oak" />
+    <Entity name="menu-tree-s2" translation="22 9.43 31" transform="rotation: 0 -30 0; scale: 1.2 1.2 1.2" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
   </Group>
 
   <!-- Crista a norte: a linha de pinheiros que fecha o horizonte. -->
   <Group name="scene.menu.ridge" translation="0 0 0">
-    <Entity translation="-20 13.26 -48" transform="rotation: 0 40 0; scale: 1.55 1.55 1.55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
-    <Entity translation="-8 13.55 -50" transform="rotation: 0 -18 0; scale: 1.65 1.65 1.65" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
-    <Entity translation="8 14.95 -52" transform="rotation: 0 22 0; scale: 1.7 1.7 1.7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
-    <Entity translation="24 12.03 -48" transform="rotation: 0 -44 0; scale: 1.5 1.5 1.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
-    <Entity translation="-14 18.05 -60" transform="rotation: 0 55 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
-    <Entity translation="0 19.2 -60" transform="rotation: 0 -10 0; scale: 1.9 1.9 1.9" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/tree_pine_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/tree_pine_lod0.glb" lod1-url="/assets/meshes/forest/tree_pine_lod1.glb" lod2-url="/assets/meshes/forest/tree_pine_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
-    <Entity translation="14 17.82 -60" transform="rotation: 0 30 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: precompute; mesh-url: /assets/meshes/forest/pine_dark_lod0.glb">
-      <GltfScene url="/assets/meshes/forest/pine_dark_lod0.glb" lod1-url="/assets/meshes/forest/pine_dark_lod1.glb" lod2-url="/assets/meshes/forest/pine_dark_lod2.glb" lod-threshold-near="55" lod-threshold-mid="140" />
-    </Entity>
+    <Entity translation="-20 13.26 -48" transform="rotation: 0 40 0; scale: 1.55 1.55 1.55" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity translation="-8 13.55 -50" transform="rotation: 0 -18 0; scale: 1.65 1.65 1.65" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="tree_pine" />
+    <Entity translation="8 14.95 -52" transform="rotation: 0 22 0; scale: 1.7 1.7 1.7" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity translation="24 12.03 -48" transform="rotation: 0 -44 0; scale: 1.5 1.5 1.5" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="tree_pine" />
+    <Entity translation="-14 18.05 -60" transform="rotation: 0 55 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
+    <Entity translation="0 19.2 -60" transform="rotation: 0 -10 0; scale: 1.9 1.9 1.9" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="tree_pine" />
+    <Entity translation="14 17.82 -60" transform="rotation: 0 30 0; scale: 1.8 1.8 1.8" rigidbody="type: fixed; mass: 0; gravity-scale: 0" collider="shape: cylinder; radius: 0.45; half-height: 2.2" prop-flora="pine_dark" />
   </Group>
 
   <!-- Pedras soltas para quebrar a relva. -->

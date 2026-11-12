@@ -4,7 +4,7 @@
        theme aqui, os `.keycap` dos Controlos ficavam sem a base. -->
   <UiStyle src="ui/theme.css" />
   <UiStyle src="ui/menu.css" />
-  <UiRoot id="menu-layer" script="ui/menu.lua" class="menu-layer">
+  <UiRoot id="menu-layer" class="menu-layer">
     <UiModal id="menu" key="q" class="overlay">
       <UiColumn class="frame">
         <UiRow class="frame-head">
@@ -107,6 +107,18 @@
             <UiText class="row-note">@menu.skills.points</UiText>
             <UiSpacer />
             <UiText class="row-title" bind="talent.points">0</UiText>
+          </UiRow>
+          <!-- Atributos e derivadas: publicados por `ui/journal.lua` a partir
+               do grafo do bevy_gauge (`viber.vael.stat_sheet`). -->
+          <UiRow class="row keyline">
+            <UiText class="row-note">Atributos</UiText>
+            <UiSpacer />
+            <UiText class="row-title">FOR 5 · DES 5 · VIT 5 · PRE 5 · ESP 5</UiText>
+          </UiRow>
+          <UiRow class="row keyline">
+            <UiText class="row-note">Derivadas</UiText>
+            <UiSpacer />
+            <UiText class="row-title">—</UiText>
           </UiRow>
           <UiList class="rows" bind="skills" scroll="y">
             <UiTemplate>
