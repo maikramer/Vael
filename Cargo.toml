@@ -3,16 +3,65 @@ name = "vael"
 version = "0.1.0"
 edition = "2024"
 rust-version = "1.97.1"
+# O jogo e os assets não vão para o crates.io; a distribuição é binário +
+# pool. Os pacotes reutilizáveis vivem em bevy_* (docs/PACKAGES.md).
+publish = false
+
+[workspace]
+# O jogo é o membro por omissão (`default-members`): `cargo run`/`cargo test`
+# na raiz não compilam o editor nem o Jackdaw. O editor constrói-se
+# explicitamente com `-p vael-editor`; o conteúdo é partilhado por ambos.
+members = ["content", "editor"]
+default-members = ["."]
+resolver = "3"
+
+[features]
+# Partículas GPU (protótipo): um efeito de brasas nas fogueiras, atrás de
+# `VAEL_HANABI=1`. Default off para não pagar o pipeline no build normal.
+hanabi = ["dep:bevy_hanabi"]
 
 [dependencies]
 anyhow = "1"
-bevy = "=0.20.1"
+# O import do Jackdaw 0.20.x só aceita requirements que admitam a linha
+# `0.20` (um pin `=0.20.1` é rejeitado); o lock continua a fixar 0.20.1.
+# Mesma forma do `../Viber`, que o jogo compila por path-dep.
+bevy = "0.20.1"
+# Ambiente vivo (Bevy 0.20): sol/lua/estrelas astronómicos, clima, nuvens
+# volumétricas, chuva/neve, névoa e relâmpagos. Substitui o `<Sky>`/`<DayCycle>`
+# da engine no Vael; o terreno/água/biomas continuam a ser nossos.
+bevy_elements = "0.8"
+# Falas no mundo: balões (quads billboard) rasterizados na CPU, barks e um
+# runtime de conversa. O crate fixa `bevy ^0.20` e o mesmo MSRV 1.97.1.
+bevy_speech_bubbles = "0.3"
+# Partículas GPU (Bevy 0.20): simulação/sorting no GPU, efeito de brasas.
+# Opcional — o sistema CPU do Viber continua a ser o default.
+bevy_hanabi = { version = "=0.20.0", default-features = false, features = ["3d"], optional = true }
+# Árvores procedurais (teste): meshes gerados em runtime a partir de presets,
+# com LOD próprio (`TreeLod`). O crate fixa `bevy ^0.20`, a mesma versão da
+# engine, por isso as features unificam sem duplicar o Bevy.
+bevy_flora = "0.47"
+# UI do jogo: XAML/WPF-like sobre bevy_ui (bindings por reflexão, estilos,
+# controlos e comandos). O crate alvo é bevy ^0.20; o Vael fixa 0.20.1.
+bevy_pf = "0.5.2"
+# Texto 3D do mundo (dano, cura, coleta, combo): quads com atlas de glifos,
+# material próprio para o fade e billboard para a câmera. O crate fixa
+# `bevy ^0.20`, a mesma versão da engine, por isso as features unificam.
+bevy_rich_text3d = "0.8.1"
+# Atributos/stats: grafo de dependências com expressões, modificadores e
+# requisitos. O crate fixa `bevy ^0.20.1`, a mesma versão do Vael.
+bevy_gauge = "0.6"
+# Runtime do editor Jackdaw: descoberta de componentes (o `jd` lança o jogo
+# com `--jackdaw-extract-schema`) e Play/PIE (`JACKDAW_PIE`). Sem PIE fica
+# inerte. A versão acompanha o `jackdaw.toml` ([jackdaw] version = "0.20.2").
+jackdaw_runtime = { version = "0.20", features = ["pie"] }
 # Mesma versão/features do Viber (o Cargo unifica): a bridge do cofre mexe
 # diretamente na tabela `viber_game` da VM partilhada.
 mlua = { version = "0.12", features = ["luau", "vendored", "send"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
-viber = { path = "../Viber" }
+# Esquemas e validação do conteúdo (sem Bevy), partilhados com o editor.
+vael-content = { path = "content" }
+viber = { path = "../Viber", features = ["ai"] }
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o
@@ -27,9 +76,10 @@ opt-level = 3
 debug = false
 
 # O `[patch]` do Viber NÃO atravessa a fronteira do workspace: sem esta
-# linha o `viber` (path-dep) resolvia o `rerecast` do crates.io (bevy_reflect
-# 0.19/glam 0.32) contra o `bevy_rerecast_core` vendorizado (bevy 0.20/glam
-# 0.33) e o crate não compilava. É o mesmo patch da engine; não altera o
-# código do sibling.
+# linha o jogo (que compila o `viber` por path-dep) resolveria o `rerecast`
+# 0.5.0 limpo do crates.io, enquanto a engine e os testes dela usam o fork
+# com os dois fixes de robustez (`../Viber/vendor/rerecast/VIBER_PATCH.md`).
+# A navmesh do jogo mudaria de comportamento entre os dois builds. É o mesmo
+# patch da engine; não altera o código do sibling.
 [patch.crates-io]
 rerecast = { path = "../Viber/vendor/rerecast" }

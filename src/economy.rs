@@ -858,6 +858,7 @@ mod tests {
                         buy: Some(2),
                         sell: None,
                         label: "Comprar poção".into(),
+                        ..Default::default()
                     }),
                     ..item("pocao", "Poção", "item")
                 },
@@ -866,6 +867,7 @@ mod tests {
                         buy: None,
                         sell: Some(2),
                         label: "Vender erva".into(),
+                        ..Default::default()
                     }),
                     ..item("erva", "Erva", "item")
                 },
@@ -875,6 +877,7 @@ mod tests {
                         buy: Some(1),
                         sell: Some(1),
                         label: String::new(),
+                        ..Default::default()
                     }),
                     ..item("semente", "Semente", "item")
                 },
@@ -883,6 +886,7 @@ mod tests {
                         buy: Some(0),
                         sell: None,
                         label: "Levar oferta".into(),
+                        ..Default::default()
                     }),
                     ..item("oferta", "Oferta", "item")
                 },
@@ -891,6 +895,7 @@ mod tests {
                         buy: Some(1),
                         sell: None,
                         label: "Comprar seiva".into(),
+                        ..Default::default()
                     }),
                     ..item("seiva", "Seiva", "resource")
                 },
@@ -899,6 +904,7 @@ mod tests {
                         buy: Some(-5),
                         sell: Some(0),
                         label: "Inválida".into(),
+                        ..Default::default()
                     }),
                     ..item("ruim", "Ruim", "item")
                 },
@@ -907,6 +913,7 @@ mod tests {
                         buy: None,
                         sell: Some(4),
                         label: "Vender relíquia".into(),
+                        ..Default::default()
                     }),
                     ..item("reliquia", "Relíquia", "item")
                 },
@@ -1429,6 +1436,9 @@ end
 viber.sound = function(name) sounds[#sounds + 1] = name end
 viber.player_position = function() return false end
 viber.toast = function(text) toasts[#toasts + 1] = text end
+-- `craft.lua` assina a lista com o idioma (`viber.game().lang`); o harness
+-- tem de expor a mesma API que o runtime.
+viber.game = function() return game end
 viber.ui = { list = function(name, rows) lists[name] = rows end }
 viber.own_action = function() end
 viber.state = function() return state end

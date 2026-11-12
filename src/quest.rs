@@ -960,6 +960,7 @@ mod tests {
                     gold: 80,
                     xp: 50,
                     items: vec!["potion:1".to_string()],
+                    ..Default::default()
                 },
                 ..entry(
                     "wolves",
@@ -977,6 +978,7 @@ mod tests {
                     gold: 10,
                     xp: 20,
                     items: vec!["potion:1".to_string()],
+                    ..Default::default()
                 },
                 ..entry(
                     "pelt",
@@ -1008,6 +1010,7 @@ mod tests {
                     gold: 5,
                     xp: 5,
                     items: Vec::new(),
+                    ..Default::default()
                 },
                 ..entry(
                     "board",
@@ -1024,6 +1027,7 @@ mod tests {
                     gold: 0,
                     xp: 0,
                     items: vec!["potion:3".to_string()],
+                    ..Default::default()
                 },
                 ..entry(
                     "hoard",

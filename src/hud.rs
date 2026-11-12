@@ -89,6 +89,12 @@ fn publish_hud_binds(
         }
         return;
     };
+    // O save só muda a 10 Hz e só quando o snapshot muda de facto. Entre
+    // mudanças, os binds Rust já estão publicados: recalcular 37 quests e
+    // formatar ~36 valores por frame era trabalho invisível.
+    if last.is_some() && !save.is_changed() && !content.is_changed() && !binds.0.is_empty() {
+        return;
+    }
     let computed = publish_binds(&save, &content);
     if !*logged {
         *logged = true;
@@ -112,7 +118,14 @@ fn publish_hud_binds(
             continue;
         }
         changed.push((name.clone(), value.clone()));
+        // Só diverge um valor que OUTRO escritor (o Lua) pôs no mapa. O que
+        // lá está igual à publicação Rust anterior é a nossa própria escrita:
+        // o `rules.publish` já não escreve vida/XP/economia, e comparar o
+        // valor novo com o nosso antigo dava "divergência" a cada mudança
+        // (ex.: o kit inicial 0 → 30 ouro no arranque).
+        let ours = last.as_ref().and_then(|prev| prev.get(name));
         if let Some(current) = binds.0.get(name)
+            && !ours.is_some_and(|ours| same_bind(current, ours))
             && !same_bind(current, value)
         {
             debug!("vael HUD: `{name}` diverge do Lua ({current:?} != {value:?})");
@@ -346,23 +359,24 @@ pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64
     let mut best_score = f64::NEG_INFINITY;
 
     for (id, def) in &content.quests {
+        let id_string = id.to_string();
         // `quest_state`: um estado desconhecido conta como `not_taken`.
         let state = save
             .quests
             .states
-            .get(id)
+            .get(&id_string)
             .map(String::as_str)
             .unwrap_or("not_taken");
         if state != "active" && state != "ready" {
             continue;
         }
         let need = quest_need(save, def);
-        let have = quest_progress(save, id);
+        let have = quest_progress(save, &id_string);
         let mut score = if state == "ready" { 2.0 } else { 0.0 };
         if need > 0.0 {
             score += have / need;
         }
-        if tracked == Some(id.as_str()) {
+        if tracked == Some(id_string.as_str()) {
             // A missão seguida ganha sempre.
             score = 1e9;
         }
@@ -371,7 +385,7 @@ pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64
         }
         best_score = score;
         best_title = if def.title.is_empty() {
-            id.clone()
+            id_string
         } else {
             def.title.clone()
         };

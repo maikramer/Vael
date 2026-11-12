@@ -1,5 +1,10 @@
 # vael-editor — autoria do Vael sobre Jackdaw
 
+> **Legado.** O fluxo de autoria é o **Jackdaw oficial** (`jd open .`) com as
+> extensões `.jdext` em `../bevy_extensions/extensions/`; este crate próprio
+> mantém-se como referência e para os testes sem janela. Não é o editor do
+> dia-a-dia.
+
 Editor do Vael. É uma App Bevy própria que regista uma extensão no
 [Jackdaw](https://crates.io/crates/jackdaw) 0.20 (a mesma linha do Bevy
 0.20.1 usada pelo jogo), abre as cenas `.bsn` do mundo e edita os JSON de
@@ -31,7 +36,7 @@ O jogo depende de `jackdaw_runtime` com a feature `pie`, e o `VaelPlugin`
 adiciona o `jackdaw_runtime::JackdawPlugin`. A descoberta de componentes
 lança o binário com `--jackdaw-extract-schema` (o `main.rs` aceita a flag) e
 o plugin responde com o schema refletido antes de abrir a janela. O `cargo
-run` normal não muda: sem `JACKDAW_PIE` o runtime fica inerte.
+run` normal continua a ser o jogo: sem `JACKDAW_PIE` o PIE não liga.
 
 O `jackdaw.toml` fixa `bevy = "0.20"`; o requisito do Cargo.toml tem de
 admitir essa linha (`bevy = "0.20.1"`, como no `../Viber`). Um pin exato

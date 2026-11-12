@@ -1,0 +1,530 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Visibility="{Binding menu_open}" Background="#C00B0F0D">
+  <Grid.Resources>
+    <SolidColorBrush x:Key="Gold" Color="#FFE7C987"/>
+    <SolidColorBrush x:Key="GoldDeep" Color="#FFA8854C"/>
+    <SolidColorBrush x:Key="Leaf" Color="#FF8FBF9F"/>
+    <SolidColorBrush x:Key="Ember" Color="#FFD9774F"/>
+    <SolidColorBrush x:Key="Muted" Color="#FFB7A98F"/>
+    <SolidColorBrush x:Key="Ink" Color="#FFF2E8D5"/>
+
+    <ControlTemplate x:Key="DarkButton" TargetType="Button">
+      <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
+              CornerRadius="4">
+        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="#33E6C888"/>
+          <Setter Property="BorderBrush" Value="#88E6C888"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="Tab" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="#66171D20"/>
+      <Setter Property="Foreground" Value="#FFE6D5AD"/>
+      <Setter Property="BorderBrush" Value="#44B7A477"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="12,6"/>
+      <Setter Property="Margin" Value="0,0,6,0"/>
+      <Setter Property="FontSize" Value="12"/>
+    </Style>
+
+    <Style x:Key="RowButton" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="#99171D20"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+      <Setter Property="BorderBrush" Value="#44B7A477"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="10,7"/>
+      <Setter Property="Margin" Value="0,2"/>
+      <Setter Property="FontSize" Value="14"/>
+    </Style>
+
+    <Style x:Key="BagCell" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="#99171D20"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+      <Setter Property="BorderBrush" Value="#55B7A477"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="10,8"/>
+      <Setter Property="Margin" Value="4"/>
+      <Setter Property="Width" Value="150"/>
+      <Setter Property="Height" Value="92"/>
+      <Setter Property="FontSize" Value="13"/>
+    </Style>
+
+    <Style x:Key="Action" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="#FF2A2418"/>
+      <Setter Property="Foreground" Value="#FFE6C888"/>
+      <Setter Property="BorderBrush" Value="#66B7A477"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="12,7"/>
+      <Setter Property="Margin" Value="0,0,8,8"/>
+      <Setter Property="FontSize" Value="13"/>
+    </Style>
+
+    <DataTemplate x:Key="RowTemplate">
+      <Button Style="{StaticResource RowButton}"
+              Command="{Binding DataContext.row_command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+              CommandParameter="{Binding action}"
+              IsEnabled="{Binding clickable}">
+        <Grid ColumnDefinitions="*,Auto" Width="940">
+          <StackPanel>
+            <TextBlock Text="{Binding title}" FontSize="14" Foreground="{StaticResource Ink}"/>
+            <TextBlock Text="{Binding subtitle}" FontSize="11" Foreground="{StaticResource Muted}"
+                       TextWrapping="Wrap"/>
+            <ProgressBar Value="{Binding progress}" Maximum="1" Height="3"
+                         Background="#FF090F13" Foreground="#FF8ABD9B"
+                         Visibility="{Binding has_progress}"/>
+          </StackPanel>
+          <TextBlock Grid.Column="1" Text="{Binding tag}" FontSize="12"
+                     Foreground="{StaticResource Gold}" Margin="10,0,0,0"
+                     VerticalAlignment="Center"/>
+        </Grid>
+      </Button>
+    </DataTemplate>
+
+    <DataTemplate x:Key="PlainRowTemplate">
+      <Border Background="#66171D20" BorderBrush="#33B7A477" BorderThickness="1"
+              Padding="10,6" Margin="0,2">
+        <Grid ColumnDefinitions="*,Auto,Auto" Width="940">
+          <TextBlock Text="{Binding title}" FontSize="13"/>
+          <TextBlock Grid.Column="1" Text="{Binding subtitle}" FontSize="11"
+                     Foreground="{StaticResource Muted}" Margin="10,0,0,0"/>
+          <TextBlock Grid.Column="2" Text="{Binding tag}" FontSize="12"
+                     Foreground="{StaticResource Gold}" Margin="10,0,0,0"/>
+        </Grid>
+      </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="BagCellTemplate">
+      <Button Style="{StaticResource BagCell}"
+              Command="{Binding DataContext.row_command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+              CommandParameter="{Binding action}">
+        <StackPanel Orientation="Horizontal" Spacing="8">
+          <Image Source="{Binding icon}" Width="26" Height="26" Stretch="Uniform"
+                 VerticalAlignment="Top" Visibility="{Binding has_icon}"/>
+          <StackPanel>
+            <TextBlock Text="{Binding title}" FontSize="13" Foreground="{StaticResource Ink}"/>
+            <TextBlock Text="{Binding subtitle}" FontSize="10" Foreground="{StaticResource Muted}"
+                       TextWrapping="Wrap"/>
+            <TextBlock Text="{Binding tag}" FontSize="10" Foreground="{StaticResource Gold}"
+                       Margin="0,4,0,0"/>
+          </StackPanel>
+        </StackPanel>
+      </Button>
+    </DataTemplate>
+
+    <!-- ── árvore de talentos ─────────────────────────────────────────── -->
+    <SolidColorBrush x:Key="TalentEdge" Color="#66B7A477"/>
+    <SolidColorBrush x:Key="TalentExclusion" Color="#99B05A5A"/>
+    <SolidColorBrush x:Key="TalentNodeBg" Color="#CC111A16"/>
+    <SolidColorBrush x:Key="TalentNodeBorder" Color="#66B7A477"/>
+    <SolidColorBrush x:Key="TalentLearned" Color="#FF8FBF9F"/>
+
+    <Style x:Key="TalentNode" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="{StaticResource TalentNodeBg}"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource TalentNodeBorder}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="0"/>
+      <Setter Property="Width" Value="64"/>
+      <Setter Property="Height" Value="64"/>
+    </Style>
+
+    <DataTemplate x:Key="TalentEdgeTemplate">
+      <Line X1="{Binding x1}" Y1="{Binding y1}" X2="{Binding x2}" Y2="{Binding y2}"
+            Stroke="{StaticResource TalentEdge}" StrokeThickness="2"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TalentExclusionTemplate">
+      <Line X1="{Binding x1}" Y1="{Binding y1}" X2="{Binding x2}" Y2="{Binding y2}"
+            Stroke="{StaticResource TalentExclusion}" StrokeThickness="1.5"/>
+    </DataTemplate>
+
+    <DataTemplate x:Key="TalentNodeTemplate">
+      <Button Width="{Binding size}" Height="{Binding size}"
+              Command="{Binding DataContext.row_command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
+              CommandParameter="{Binding action}">
+        <Button.Style>
+          <Style TargetType="Button" BasedOn="{StaticResource TalentNode}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding learned}" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource TalentLearned}"/>
+                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Background" Value="#33203A2A"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding locked}" Value="True">
+                <Setter Property="Opacity" Value="0.45"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding excluded}" Value="True">
+                <Setter Property="Opacity" Value="0.38"/>
+                <Setter Property="BorderBrush" Value="{StaticResource TalentExclusion}"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding selected}" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+                <Setter Property="BorderThickness" Value="2"/>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </Button.Style>
+        <Grid>
+          <Image Source="{Binding icon}" Width="38" Height="38" Stretch="Uniform"
+                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0"
+                 Visibility="{Binding has_icon}"/>
+          <TextBlock Text="{Binding short_label}" FontSize="8.5" Foreground="{StaticResource Ink}"
+                     TextAlignment="Center" TextWrapping="Wrap" MaxHeight="22"
+                     HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2,0,2,3"/>
+          <TextBlock Text="✓" FontSize="13" Foreground="{StaticResource Leaf}"
+                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,4,0"
+                     Visibility="{Binding learned}"/>
+          <TextBlock Text="×" FontSize="13" Foreground="{StaticResource Ember}"
+                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,4,0"
+                     Visibility="{Binding excluded}"/>
+        </Grid>
+      </Button>
+    </DataTemplate>
+  </Grid.Resources>
+
+  <Border Width="1040" Height="660" MaxWidth="1200" MaxHeight="900"
+          HorizontalAlignment="Center" VerticalAlignment="Center"
+          Background="#FF0D1210" BorderBrush="#70A8854C" BorderThickness="1"
+          CornerRadius="12" Padding="24,18">
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+      <!-- cabeçalho -->
+      <Grid ColumnDefinitions="*,Auto">
+        <StackPanel>
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <Grid Width="30" Height="30" VerticalAlignment="Center">
+              <Path Width="30" Height="30" Stretch="None" Fill="#00000000"
+                    Stroke="{StaticResource Gold}" StrokeThickness="1.5"
+                    Data="M15 0.9 L27.2 5.2 V14.1 C27.2 21.6 21.6 26.7 15 29.1 C8.4 26.7 2.8 21.6 2.8 14.1 V5.2 Z"/>
+              <Path Width="30" Height="30" Stretch="None" Fill="#00000000"
+                    Stroke="{StaticResource Gold}" StrokeThickness="1.5"
+                    Data="M9.4 8.9 L15 20.6 L20.6 8.9"/>
+            </Grid>
+            <TextBlock Text="{Binding menu_title}" FontSize="28" FontWeight="Bold"
+                       FontFamily="Noto Serif Display, serif"
+                       Foreground="{StaticResource Gold}" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding menu_clock}" FontSize="15" Foreground="{StaticResource Muted}"
+                       VerticalAlignment="Bottom" Margin="0,0,0,4"/>
+          </StackPanel>
+          <Path Width="120" Height="12" Stretch="None" Margin="0,4,0,0"
+                HorizontalAlignment="Left" Fill="{StaticResource Gold}"
+                Stroke="{StaticResource GoldDeep}" StrokeThickness="1"
+                Data="M0 6 H44 M76 6 H120 M44 2 L48 6 L44 10 L40 6 Z M72 2 L76 6 L72 10 L68 6 Z"/>
+        </StackPanel>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="10"
+                    Visibility="{Binding menu_stats_visible}">
+          <Border Background="#66171D20" BorderBrush="#33B7A477" BorderThickness="1"
+                  CornerRadius="6" Padding="10,4">
+            <StackPanel>
+              <TextBlock Text="{Binding menu_hp_label}" FontSize="9" Foreground="{StaticResource Muted}"/>
+              <TextBlock Text="{Binding menu_hp}" FontSize="16" FontWeight="Bold"
+                         Foreground="{StaticResource Gold}"/>
+            </StackPanel>
+          </Border>
+          <Border Background="#66171D20" BorderBrush="#33B7A477" BorderThickness="1"
+                  CornerRadius="6" Padding="10,4">
+            <StackPanel>
+              <TextBlock Text="{Binding menu_level_label}" FontSize="9" Foreground="{StaticResource Muted}"/>
+              <TextBlock Text="{Binding menu_level}" FontSize="16" FontWeight="Bold"
+                         Foreground="{StaticResource Gold}"/>
+            </StackPanel>
+          </Border>
+          <Border Background="#66171D20" BorderBrush="#33B7A477" BorderThickness="1"
+                  CornerRadius="6" Padding="10,4">
+            <StackPanel>
+              <TextBlock Text="{Binding menu_gold_label}" FontSize="9" Foreground="{StaticResource Muted}"/>
+              <TextBlock Text="{Binding menu_gold}" FontSize="16" FontWeight="Bold"
+                         Foreground="{StaticResource Gold}"/>
+            </StackPanel>
+          </Border>
+          <Button Content="×" Command="{Binding action_command}" CommandParameter="menu-close"
+                  Width="34" Height="34" FontSize="18" Padding="0"
+                  Background="#66171D20" Foreground="#FFE6D5AD"
+                  BorderBrush="#55B7A477" BorderThickness="1"/>
+        </StackPanel>
+      </Grid>
+
+      <!-- separadores -->
+      <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="0,14,0,8">
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="quests">
+          <Grid>
+            <Border x:Name="tab-quests-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="List" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_quests_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-quests-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="bag">
+          <Grid>
+            <Border x:Name="tab-bag-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Grid" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_bag_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-bag-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="skills">
+          <Grid>
+            <Border x:Name="tab-skills-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Star" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_skills_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-skills-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="shop">
+          <Grid>
+            <Border x:Name="tab-shop-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Location" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_shop_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-shop-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="forge">
+          <Grid>
+            <Border x:Name="tab-forge-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Settings" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_forge_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-forge-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="controls">
+          <Grid>
+            <Border x:Name="tab-controls-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Menu" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_controls_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-controls-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="a11y">
+          <Grid>
+            <Border x:Name="tab-a11y-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Eye" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_a11y_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-a11y-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+        <Button Style="{StaticResource Tab}"
+                Command="{Binding tab_command}" CommandParameter="system">
+          <Grid>
+            <Border x:Name="tab-system-active" Background="#33E6C888" CornerRadius="4"/>
+            <StackPanel Orientation="Horizontal" Spacing="6" HorizontalAlignment="Center"
+                        VerticalAlignment="Center" Margin="8,2">
+              <PackIcon Kind="Info" Width="13" Height="13" Foreground="{StaticResource Gold}"/>
+              <TextBlock Text="{Binding tab_system_label}" FontSize="12" Foreground="#FFE6D5AD"/>
+            </StackPanel>
+            <Border x:Name="tab-system-line" Height="2" Background="{StaticResource Gold}"
+                    VerticalAlignment="Bottom"/>
+          </Grid>
+        </Button>
+      </StackPanel>
+
+      <!-- páginas -->
+      <Grid Grid.Row="2">
+        <ScrollViewer x:Name="page-quests">
+          <StackPanel>
+            <TextBlock Text="{Binding quests_empty_text}" Foreground="{StaticResource Muted}"
+                       Visibility="{Binding quests_empty}" Margin="0,12"/>
+            <ItemsControl ItemsSource="{Binding quests}" ItemTemplate="{StaticResource RowTemplate}"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="page-bag">
+          <StackPanel>
+            <TextBlock Text="{Binding bag_empty_text}" Foreground="{StaticResource Muted}"
+                       Visibility="{Binding bag_empty}" Margin="0,12"/>
+            <ItemsControl ItemsSource="{Binding bag}" ItemTemplate="{StaticResource BagCellTemplate}">
+              <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                  <WrapPanel/>
+                </ItemsPanelTemplate>
+              </ItemsControl.ItemsPanel>
+            </ItemsControl>
+          </StackPanel>
+        </ScrollViewer>
+        <Grid x:Name="page-skills" RowDefinitions="Auto,*">
+          <StackPanel Grid.Row="0">
+            <Grid ColumnDefinitions="*,Auto" Margin="0,6,0,8">
+              <TextBlock Text="{Binding menu_points_label}" Foreground="{StaticResource Muted}"/>
+              <TextBlock Grid.Column="1" Text="{Binding menu_points}" FontSize="18"
+                         Foreground="{StaticResource Gold}"/>
+            </Grid>
+            <!-- Atributos e derivadas: o VM lê o snapshot do `StatEngine`
+                 (`src/stats.rs`), a mesma fonte do combate e do Lua. -->
+            <TextBlock Text="{Binding menu_attributes}" Foreground="{StaticResource Muted}"
+                       Margin="0,0,0,2"/>
+            <TextBlock Text="{Binding menu_derived}" Foreground="{StaticResource Gold}"
+                       Margin="0,0,0,8"/>
+          </StackPanel>
+
+          <Grid Grid.Row="1" ColumnDefinitions="*,248">
+            <ScrollViewer Grid.Column="0"
+                          HorizontalScrollBarVisibility="Auto"
+                          VerticalScrollBarVisibility="Auto">
+              <Grid Width="{Binding talent_canvas_width}" Height="{Binding talent_canvas_height}">
+                <ItemsControl ItemsSource="{Binding talent_requires_edges}"
+                              ItemTemplate="{StaticResource TalentEdgeTemplate}"
+                              IsHitTestVisible="False">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><Canvas/></ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemContainerStyle>
+                    <Style>
+                      <Setter Property="Canvas.Left" Value="{Binding x}"/>
+                      <Setter Property="Canvas.Top" Value="{Binding y}"/>
+                    </Style>
+                  </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding talent_exclusion_edges}"
+                              ItemTemplate="{StaticResource TalentExclusionTemplate}"
+                              IsHitTestVisible="False">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><Canvas/></ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemContainerStyle>
+                    <Style>
+                      <Setter Property="Canvas.Left" Value="{Binding x}"/>
+                      <Setter Property="Canvas.Top" Value="{Binding y}"/>
+                    </Style>
+                  </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+                <ItemsControl ItemsSource="{Binding talent_nodes}"
+                              ItemTemplate="{StaticResource TalentNodeTemplate}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate><Canvas/></ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemContainerStyle>
+                    <Style>
+                      <Setter Property="Canvas.Left" Value="{Binding x}"/>
+                      <Setter Property="Canvas.Top" Value="{Binding y}"/>
+                    </Style>
+                  </ItemsControl.ItemContainerStyle>
+                </ItemsControl>
+              </Grid>
+            </ScrollViewer>
+
+            <Border Grid.Column="1" Background="#66171D20" BorderBrush="#44B7A477"
+                    BorderThickness="1" CornerRadius="6" Padding="12" Margin="12,0,0,0">
+              <StackPanel Spacing="6">
+                <Image Source="{Binding talent_selected_icon}" Width="72" Height="72"
+                       Stretch="Uniform" HorizontalAlignment="Center"
+                       Visibility="{Binding talent_has_selected_icon}"/>
+                <TextBlock Text="{Binding talent_selected_title}" FontSize="15"
+                           Foreground="{StaticResource Ink}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding talent_selected_status}" FontSize="11"
+                           Foreground="{StaticResource Gold}"/>
+                <TextBlock Text="{Binding talent_selected_effects}" FontSize="11"
+                           Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding talent_selected_requirement}" FontSize="10"
+                           Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+                <Button Style="{StaticResource Action}" Content="{Binding talent_learn_label}"
+                        Command="{Binding action_command}" CommandParameter="talent-learn"
+                        IsEnabled="{Binding talent_learn_enabled}" Margin="0,6,0,0"/>
+              </StackPanel>
+            </Border>
+          </Grid>
+        </Grid>
+        <ScrollViewer x:Name="page-shop">
+          <StackPanel>
+            <TextBlock Text="{Binding shop_empty_text}" Foreground="{StaticResource Muted}"
+                       Visibility="{Binding shop_empty}" Margin="0,12"/>
+            <ItemsControl ItemsSource="{Binding shop}" ItemTemplate="{StaticResource RowTemplate}"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="page-forge">
+          <StackPanel>
+            <TextBlock Text="{Binding forge_empty_text}" Foreground="{StaticResource Muted}"
+                       Visibility="{Binding forge_empty}" Margin="0,12"/>
+            <ItemsControl ItemsSource="{Binding forge}" ItemTemplate="{StaticResource RowTemplate}"/>
+          </StackPanel>
+        </ScrollViewer>
+        <ScrollViewer x:Name="page-controls">
+          <ItemsControl ItemsSource="{Binding controls}" ItemTemplate="{StaticResource RowTemplate}"/>
+        </ScrollViewer>
+        <ScrollViewer x:Name="page-a11y">
+          <ItemsControl ItemsSource="{Binding a11y}" ItemTemplate="{StaticResource RowTemplate}"/>
+        </ScrollViewer>
+        <ScrollViewer x:Name="page-system">
+          <StackPanel>
+            <ItemsControl ItemsSource="{Binding system}" ItemTemplate="{StaticResource PlainRowTemplate}"/>
+            <StackPanel Orientation="Horizontal" Margin="0,14,0,0">
+              <Button Style="{StaticResource Action}" Content="{Binding save1_label}"
+                      Command="{Binding action_command}" CommandParameter="act-save-1"
+                      IsEnabled="{Binding save_enabled}"/>
+              <Button Style="{StaticResource Action}" Content="{Binding save2_label}"
+                      Command="{Binding action_command}" CommandParameter="act-save-2"
+                      IsEnabled="{Binding save_enabled}"/>
+              <Button Style="{StaticResource Action}" Content="{Binding save3_label}"
+                      Command="{Binding action_command}" CommandParameter="act-save-3"
+                      IsEnabled="{Binding save_enabled}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Button Style="{StaticResource Action}" Content="{Binding load1_label}"
+                      Command="{Binding action_command}" CommandParameter="act-load-1"
+                      IsEnabled="{Binding load1_enabled}"/>
+              <Button Style="{StaticResource Action}" Content="{Binding load2_label}"
+                      Command="{Binding action_command}" CommandParameter="act-load-2"
+                      IsEnabled="{Binding load2_enabled}"/>
+              <Button Style="{StaticResource Action}" Content="{Binding load3_label}"
+                      Command="{Binding action_command}" CommandParameter="act-load-3"
+                      IsEnabled="{Binding load3_enabled}"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+              <Button Style="{StaticResource Action}" Content="{Binding title_button_label}"
+                      Command="{Binding action_command}" CommandParameter="act-title"/>
+              <Button Style="{StaticResource Action}" Content="{Binding profiler_label}"
+                      Command="{Binding action_command}" CommandParameter="act-profiler"/>
+            </StackPanel>
+          </StackPanel>
+        </ScrollViewer>
+      </Grid>
+
+      <Grid Grid.Row="3" ColumnDefinitions="Auto,*" Margin="0,10,0,0">
+        <TextBlock Text="{Binding menu_foot}" FontSize="10"
+                   Foreground="{StaticResource Muted}"/>
+      </Grid>
+    </Grid>
+  </Border>
+</Grid>

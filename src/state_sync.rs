@@ -51,6 +51,9 @@ pub(crate) fn sync_state_from_lua(
     authority: Option<Res<VaelRulesAuthority>>,
     mut timer: Local<Option<Timer>>,
     mut logged: Local<bool>,
+    // Último snapshot aplicado: entre mudanças reais não vale a pena
+    // reconstruir o save nem marcar os recursos como `Changed`.
+    mut last: Local<Option<BTreeMap<String, Value>>>,
     mut vitals: ResMut<PlayerVitals>,
     mut xp: ResMut<XpState>,
     mut inventory: ResMut<Inventory>,
@@ -70,6 +73,10 @@ pub(crate) fn sync_state_from_lua(
         // A tabela `viber_game` ainda não existe (arranque): não zerar estado.
         return;
     }
+    if last.as_ref() == Some(&kv) {
+        return;
+    }
+    *last = Some(kv.clone());
     let rust = config.as_deref().is_some_and(|config| config.rust);
     ensure_rust_gate(&host, rust, &kv);
     // Com a autoridade ligada, os campos dela ganham ao snapshot Lua (que
@@ -134,11 +141,24 @@ pub fn apply_kv(
         return;
     }
     let parsed = VaelSave::from_world_kv(kv);
-    *vitals = parsed.vitals.clone();
-    *xp = parsed.progression.clone();
-    *inventory = parsed.inventory.clone();
-    *quests = parsed.quests.clone();
-    *save = parsed;
+    // Não marcar `Changed` quando o valor é igual: o HUD e a UI reagem ao
+    // tick de mudança e uma escrita incondicional a 10 Hz força trabalho em
+    // todos os consumidores.
+    if *vitals != parsed.vitals {
+        *vitals = parsed.vitals.clone();
+    }
+    if *xp != parsed.progression {
+        *xp = parsed.progression.clone();
+    }
+    if *inventory != parsed.inventory {
+        *inventory = parsed.inventory.clone();
+    }
+    if *quests != parsed.quests {
+        *quests = parsed.quests.clone();
+    }
+    if *save != parsed {
+        *save = parsed;
+    }
 }
 
 /// Aplica o snapshot do Lua e, quando a autoridade Rust está ligada, repõe

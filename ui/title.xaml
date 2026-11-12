@@ -1,0 +1,192 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Visibility="{Binding title_open}">
+  <Grid.Resources>
+    <SolidColorBrush x:Key="Gold" Color="#FFE7C987"/>
+    <SolidColorBrush x:Key="GoldDeep" Color="#FFA8854C"/>
+    <SolidColorBrush x:Key="Leaf" Color="#FF8FBF9F"/>
+    <SolidColorBrush x:Key="Ember" Color="#FFD9774F"/>
+    <SolidColorBrush x:Key="Muted" Color="#FFB7A98F"/>
+    <SolidColorBrush x:Key="Ink" Color="#FFF2E8D5"/>
+
+    <ControlTemplate x:Key="DarkButton" TargetType="Button">
+      <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
+              CornerRadius="5">
+        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="#33E6C888"/>
+          <Setter Property="BorderBrush" Value="#88E6C888"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="GoldButton" TargetType="Button">
+      <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
+              CornerRadius="5">
+        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="#FFFFE3A3"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="TitlePrimary" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource GoldButton}"/>
+      <Setter Property="Background" Value="#FFD9B45E"/>
+      <Setter Property="Foreground" Value="#FF171D20"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="16,11"/>
+      <Setter Property="Margin" Value="0,3"/>
+      <Setter Property="FontSize" Value="18"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+
+    <Style x:Key="TitleButton" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="#CC171D20"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+      <Setter Property="BorderBrush" Value="#55F59E0B"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="16,10"/>
+      <Setter Property="Margin" Value="0,3"/>
+      <Setter Property="FontSize" Value="17"/>
+      <Setter Property="HorizontalAlignment" Value="Stretch"/>
+    </Style>
+  </Grid.Resources>
+
+  <!-- véu à esquerda; o acampamento continua visível à direita -->
+  <Border HorizontalAlignment="Left" VerticalAlignment="Stretch" Width="640"
+          Background="#F20B0F0D" BorderBrush="#33F59E0B" BorderThickness="0,0,1,0"
+          Padding="64,0">
+    <StackPanel VerticalAlignment="Center" Spacing="10" Width="440">
+      <Grid>
+        <Border Width="3" Background="{StaticResource Gold}" HorizontalAlignment="Left"
+                VerticalAlignment="Stretch" Margin="0,6,0,6" CornerRadius="2"/>
+        <StackPanel Margin="18,0,0,0" Spacing="4">
+          <Grid Width="92" Height="92" HorizontalAlignment="Left" Margin="0,0,0,8">
+            <Path Width="92" Height="92" Stretch="None" Fill="#00000000"
+                  Stroke="{StaticResource Gold}" StrokeThickness="1.8"
+                  Data="M46 2.9 L83.4 15.8 V43.1 C83.4 66.1 66.1 81.9 46 89.1 C25.9 81.9 8.6 66.1 8.6 43.1 V15.8 Z"/>
+            <Path Width="92" Height="92" Stretch="None" Fill="#00000000"
+                  Stroke="{StaticResource Gold}" StrokeThickness="1.6"
+                  Data="M46 25.9 V71.9 M46 40.2 C38.8 34.5 33.1 30.2 28.8 23 C37.4 21.6 43.1 25.9 46 31.6 M46 40.2 C53.2 34.5 58.9 30.2 63.2 23 C54.6 21.6 48.9 25.9 46 31.6 M46 54.6 C40.2 50.3 35.9 46 33.1 40.2 C40.2 38.8 44.6 43.1 46 47.4 M46 54.6 C51.8 50.3 56.1 46 58.9 40.2 C51.8 38.8 47.4 43.1 46 47.4"/>
+            <Path Width="92" Height="92" Stretch="None" Fill="{StaticResource Gold}"
+                  StrokeThickness="0"
+                  Data="M46 40.2 C38.8 34.5 33.1 30.2 28.8 23 C37.4 21.6 43.1 25.9 46 31.6 Z M46 40.2 C53.2 34.5 58.9 30.2 63.2 23 C54.6 21.6 48.9 25.9 46 31.6 Z M46 54.6 C40.2 50.3 35.9 46 33.1 40.2 C40.2 38.8 44.6 43.1 46 47.4 Z M46 54.6 C51.8 50.3 56.1 46 58.9 40.2 C51.8 38.8 47.4 43.1 46 47.4 Z"/>
+            <Path Width="92" Height="92" Stretch="None" Fill="#00000000"
+                  Stroke="{StaticResource GoldDeep}" StrokeThickness="1.5"
+                  Data="M37.4 74.8 Q46 80.5 54.6 74.8"/>
+          </Grid>
+          <TextBlock Text="{Binding title_kicker}" FontSize="14" Foreground="{StaticResource Muted}"/>
+          <TextBlock Text="{Binding title_logo}" FontSize="78" FontWeight="Bold"
+                     FontFamily="Noto Serif Display, serif"
+                     Foreground="{StaticResource Gold}"/>
+          <TextBlock Text="{Binding title_sub}" FontSize="22" FontFamily="Noto Serif Display, serif"
+                     Foreground="{StaticResource Ink}"/>
+          <Path Width="140" Height="12" Stretch="None" Margin="0,8,0,0"
+                HorizontalAlignment="Left" Fill="{StaticResource Gold}"
+                Stroke="{StaticResource GoldDeep}" StrokeThickness="1"
+                Data="M0 6 H54 M86 6 H140 M54 2 L58 6 L54 10 L50 6 Z M82 2 L86 6 L82 10 L78 6 Z"/>
+        </StackPanel>
+      </Grid>
+      <StackPanel Spacing="6" Margin="0,22,0,0">
+        <Button Style="{StaticResource TitlePrimary}"
+                Command="{Binding action_command}" CommandParameter="title-continue"
+                IsEnabled="{Binding title_continue_enabled}">
+          <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+            <PackIcon Kind="ArrowRight" Width="17" Height="17" Foreground="#FF171D20"/>
+            <TextBlock Text="{Binding title_continue_label}" FontSize="18" FontWeight="Bold"
+                       Foreground="#FF171D20"/>
+          </StackPanel>
+        </Button>
+        <Border Background="#66171D20" BorderBrush="#33B7A477" BorderThickness="1"
+                CornerRadius="4" Padding="10,6" Margin="0,0,0,4">
+          <TextBlock Text="{Binding title_save_info}" FontSize="11" Foreground="{StaticResource Muted}"/>
+        </Border>
+        <Button Style="{StaticResource TitleButton}"
+                Command="{Binding action_command}" CommandParameter="title-new">
+          <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+            <PackIcon Kind="Star" Width="16" Height="16" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding title_new_label}" FontSize="17"
+                       Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+        <Button Style="{StaticResource TitleButton}"
+                Command="{Binding action_command}" CommandParameter="title-settings">
+          <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+            <PackIcon Kind="Settings" Width="16" Height="16" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding title_settings_label}" FontSize="17"
+                       Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+        <Button Style="{StaticResource TitleButton}"
+                Command="{Binding action_command}" CommandParameter="title-credits">
+          <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+            <PackIcon Kind="Info" Width="16" Height="16" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding title_credits_label}" FontSize="17"
+                       Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+        <Button Style="{StaticResource TitleButton}"
+                Command="{Binding action_command}" CommandParameter="title-quit">
+          <StackPanel Orientation="Horizontal" Spacing="10" HorizontalAlignment="Center">
+            <PackIcon Kind="Power" Width="16" Height="16" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding title_quit_label}" FontSize="17"
+                       Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+      <TextBlock Text="{Binding title_hint}" FontSize="11" Foreground="{StaticResource Muted}"
+                 Margin="0,18,0,0"/>
+    </StackPanel>
+  </Border>
+
+  <!-- créditos -->
+  <Grid Visibility="{Binding credits_open}" Background="#FA0C0A09">
+    <Border Width="640" MaxWidth="900" HorizontalAlignment="Center" VerticalAlignment="Center"
+            Background="#FF0C0A09" BorderBrush="#55B7A477" BorderThickness="1"
+            CornerRadius="12" Padding="32,26">
+      <StackPanel Spacing="10">
+        <Grid Width="34" Height="34" HorizontalAlignment="Center" Margin="0,0,0,2">
+          <Path Width="34" Height="34" Stretch="None" Fill="#00000000"
+                Stroke="{StaticResource Gold}" StrokeThickness="1.6"
+                Data="M17 1 L30.8 5.9 V16 C30.8 24.5 24.5 30.3 17 33 C9.5 30.3 3.2 24.5 3.2 16 V5.9 Z"/>
+          <Path Width="34" Height="34" Stretch="None" Fill="#00000000"
+                Stroke="{StaticResource Gold}" StrokeThickness="1.6"
+                Data="M10.7 10.1 L17 23.4 L23.3 10.1"/>
+        </Grid>
+        <TextBlock Text="{Binding credits_title}" FontSize="30" FontWeight="Bold"
+                   FontFamily="Noto Serif Display, serif"
+                   Foreground="{StaticResource Gold}" HorizontalAlignment="Center"/>
+        <Path Width="120" Height="12" Stretch="None" Margin="0,0,0,2"
+              HorizontalAlignment="Center" Fill="{StaticResource Gold}"
+              Stroke="{StaticResource GoldDeep}" StrokeThickness="1"
+              Data="M0 6 H44 M76 6 H120 M44 2 L48 6 L44 10 L40 6 Z M72 2 L76 6 L72 10 L68 6 Z"/>
+        <ItemsControl ItemsSource="{Binding credits}" Margin="0,10,0,10">
+          <ItemsControl.ItemTemplate>
+            <DataTemplate>
+              <TextBlock Text="{Binding title}" FontSize="14" Foreground="{StaticResource Ink}"
+                         HorizontalAlignment="Center" Margin="0,3"/>
+            </DataTemplate>
+          </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <Button Style="{StaticResource TitleButton}"
+                Command="{Binding action_command}" CommandParameter="credits-close"
+                HorizontalAlignment="Center" Width="180">
+          <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+            <PackIcon Kind="ChevronLeft" Width="15" Height="15" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding title_back_label}" FontSize="17" Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </Border>
+  </Grid>
+</Grid>

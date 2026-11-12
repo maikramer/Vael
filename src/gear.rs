@@ -9,26 +9,36 @@
 //! `viber.vael.gear_*`/`player_stats`/`stat` no arranque e lê/escreve a
 //! tabela `viber_game`, como o cofre e o XP.
 //!
+//! As passivas já não são somadas à mão: os efeitos alimentam o grafo de
+//! atributos do [`crate::stats`] (`bevy_gauge`) e as stats derivadas vêm de
+//! um [`crate::stats::StatSnapshot`]. O `Stats` plano continua a ser a vista
+//! compatível com o Lua (`bonus_damage`, `crit_bonus`, `speed_mult`,
+//! `max_hp_bonus`, `fx`).
+//!
 //! Regras portadas de `scripts/lib/gear.lua` e `scripts/lib/rules.lua`:
 //! - um item só conta com `item.<id>` numérico, não NaN e > 0;
 //! - `gear.<slot>` só vale para um item do mesmo slot e ainda na mochila —
 //!   uma marca órfã é limpa na leitura (o diário não mostra um fantasma);
-//! - `toggle` devolve `"on"`/`"off"` e `nil` para item não equipável/ausente;
+//! - `toggle` devolve `"on"`/`"off"`, `"blocked"` quando os atributos não
+//!   satisfazem o `requires` do item, e `nil` para item não equipável/ausente;
 //! - os `effects` somam por slot (`weapon`, `armor`, `charm`) e ignoram NaN;
-//! - `damage`/`crit`/`speed`/`max_hp` têm campo próprio nas [`Stats`], o resto
-//!   vai para `fx` e lê-se com [`stat`];
+//! - chaves `strength`/`agility`/`vitality`/`precision`/`spirit` mexem nos
+//!   atributos; as restantes são `Stat.<chave>` (as antigas `damage`, `crit`,
+//!   `speed`, `max_hp` mantêm o campo próprio nas [`Stats`]);
 //! - a arma vazia é a espada base (25 de dano, 1.4 de velocidade, 3.0 de
 //!   alcance, grip `espada`); um `weapon` parcial completa com esses valores
 //!   (0/ausente no JSON cai no default — o serde não distingue os dois).
 
 use std::collections::{BTreeMap, BTreeSet};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex, MutexGuard};
 
 use bevy::prelude::*;
+use bevy_gauge::prelude::AttributesPlugin;
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
 
 use crate::content::{ItemsFile, VaelContent, WeaponDef};
+use crate::stats::{AttributeRules, StatEngine, StatSnapshot};
 
 /// Slots de equipamento, na ordem em que os efeitos são somados.
 pub const SLOTS: [&str; 3] = ["weapon", "armor", "charm"];
@@ -68,6 +78,10 @@ pub struct GearItem {
     pub slot: String,
     pub effects: BTreeMap<String, f64>,
     pub weapon: Option<WeaponDef>,
+    /// Expressão de requisito do gauge (`"Strength >= 7"`), vazia = sem gate.
+    pub requires: String,
+    /// Texto curto do requisito para o diário (`"Força 7"`).
+    pub requires_text: String,
 }
 
 /// Regras do equipamento derivadas de `data/items.json` (e dos talentos de
@@ -96,6 +110,8 @@ impl GearRules {
                     slot: def.slot.clone(),
                     effects: def.effects.clone(),
                     weapon: def.weapon.clone(),
+                    requires: def.requires.clone(),
+                    requires_text: def.requires_text.clone(),
                 },
             );
         }
@@ -306,37 +322,39 @@ impl Default for Stats {
     }
 }
 
-/// Soma efeitos nas [`Stats`]; não finitos (NaN/±inf) são ignorados.
-fn add_effects(stats: &mut Stats, effects: &BTreeMap<String, f64>) {
-    for (key, value) in effects {
-        if !value.is_finite() {
-            continue;
+impl From<&StatSnapshot> for Stats {
+    /// Vista compatível do snapshot do gauge. As quatro stats antigas têm
+    /// campo próprio; tudo o resto (incluindo as novas `attack_speed`,
+    /// `knockback`, `heal_power` e efeitos arbitrários) vai para `fx`.
+    fn from(snapshot: &StatSnapshot) -> Self {
+        let mut fx = BTreeMap::new();
+        for (key, value) in &snapshot.stats {
+            if !matches!(key.as_str(), "damage" | "crit" | "speed" | "max_hp") {
+                fx.insert(key.clone(), *value);
+            }
         }
-        match key.as_str() {
-            "damage" => stats.bonus_damage += *value,
-            "crit" => stats.crit_bonus += *value,
-            "speed" => stats.speed_mult += *value,
-            "max_hp" => stats.max_hp_bonus += *value,
-            _ => *stats.fx.entry(key.clone()).or_insert(0.0) += *value,
+        Self {
+            bonus_damage: snapshot.stat("damage"),
+            crit_bonus: snapshot.stat("crit"),
+            speed_mult: snapshot.speed_mult(),
+            max_hp_bonus: snapshot.stat("max_hp"),
+            fx,
         }
     }
 }
 
 /// Passivas dos talentos aprendidos + equipamento.
+///
+/// Conveniência para testes/chamadas isoladas: cria um [`StatEngine`] novo.
+/// A bridge usa o motor partilhado (`install`) para não reconstruir o grafo
+/// a cada leitura.
 pub fn learned_stats(
     rules: &GearRules,
     state: &mut GearState,
     learned: &BTreeSet<String>,
 ) -> Stats {
-    let mut stats = Stats::default();
-    for (id, effects) in &rules.skills {
-        if learned.contains(id) {
-            add_effects(&mut stats, effects);
-        }
-    }
-    let gear_effects = effects(rules, state);
-    add_effects(&mut stats, &gear_effects);
-    stats
+    let mut engine = StatEngine::new(AttributeRules::default());
+    Stats::from(engine.snapshot(rules, state, learned))
 }
 
 /// O mesmo que [`learned_stats`]: as passivas do jogador no jogo.
@@ -344,18 +362,16 @@ pub fn player_stats(rules: &GearRules, state: &mut GearState, learned: &BTreeSet
     learned_stats(rules, state, learned)
 }
 
-/// Uma chave genérica das passivas; 0 quando ninguém a dá.
+/// Uma chave das passivas (`defense`, `lifesteal`, `attack_speed`, …);
+/// identidades (`attack_speed`/`knockback`/`heal_power`) valem 1.0, o resto 0.
 pub fn stat(
     rules: &GearRules,
     state: &mut GearState,
     learned: &BTreeSet<String>,
     key: &str,
 ) -> f64 {
-    learned_stats(rules, state, learned)
-        .fx
-        .get(key)
-        .copied()
-        .unwrap_or(0.0)
+    let mut engine = StatEngine::new(AttributeRules::default());
+    engine.snapshot(rules, state, learned).stat(key)
 }
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
@@ -366,6 +382,11 @@ pub struct VaelGearPlugin;
 
 impl Plugin for VaelGearPlugin {
     fn build(&self, app: &mut App) {
+        // O grafo de atributos usa os recursos/schedules do gauge; o
+        // `StatEngine` da bridge tem uma `World` própria (ver `stats.rs`),
+        // por isso o plugin não é obrigatório para as funções Lua — fica
+        // para o dia em que a entidade do herói viver na App principal.
+        app.add_plugins(AttributesPlugin);
         // `Startup` corre depois do `PreStartup` que carrega o `VaelContent`.
         app.add_systems(
             Startup,
@@ -405,8 +426,11 @@ pub(crate) fn install_gear_api(
 /// Acrescenta as funções de equipamento a `viber.vael`.
 ///
 /// Usa a tabela já criada pelo cofre/XP; só cria uma nova se esta não existir.
+/// O [`StatEngine`] é partilhado por todas as funções que leem as passivas —
+/// reconstrói o grafo só quando o conjunto equipado/talentos muda.
 pub(crate) fn install(lua: &Lua, rules: GearRules) -> mlua::Result<()> {
     let rules = Arc::new(rules);
+    let stats = Arc::new(Mutex::new(StatEngine::new(AttributeRules::default())));
     let viber: Table = lua.globals().get("viber")?;
     let vael: Table = match viber.get::<Value>("vael")? {
         Value::Table(table) => table,
@@ -457,15 +481,89 @@ pub(crate) fn install(lua: &Lua, rules: GearRules) -> mlua::Result<()> {
 
     {
         let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
         vael.set(
             "gear_toggle",
             lua.create_function(move |lua, id: Option<String>| {
                 let id = id.unwrap_or_default();
                 let (game, mut state) = read_state(lua)?;
                 read_held(&game, &id, &mut state)?;
+                let learned = read_learned(&game, &rules)?;
+                let requirement = rules
+                    .items
+                    .get(&id)
+                    .map(|item| item.requires.clone())
+                    .unwrap_or_default();
+                // Tirar o que já está equipado nunca é bloqueado: o requisito
+                // é para ENTRAR, não para sair (um item que dá o atributo não
+                // pode prender o jogador).
+                let already_equipped = is_equipped(&rules, &mut state, &id);
+                let met = already_equipped || {
+                    let mut engine = lock_stats(&stats);
+                    let _ = engine.snapshot(&rules, &mut state, &learned);
+                    engine.requirement_met(&requirement)
+                };
+                if !met {
+                    // O snapshot pode ter limpado uma marca órfã; grava-a.
+                    write_gear(&game, &state)?;
+                    return Ok(Some("blocked"));
+                }
                 let out = toggle(&rules, &mut state, &id).map(Toggle::as_str);
                 write_gear(&game, &state)?;
                 Ok(out)
+            })?,
+        )?;
+    }
+
+    {
+        let rules = Arc::clone(&rules);
+        vael.set(
+            "gear_requirement",
+            lua.create_function(move |_, id: Option<String>| {
+                let id = id.unwrap_or_default();
+                Ok(rules
+                    .items
+                    .get(&id)
+                    .map(|item| item.requires.clone())
+                    .filter(|requires| !requires.is_empty()))
+            })?,
+        )?;
+    }
+
+    {
+        let rules = Arc::clone(&rules);
+        vael.set(
+            "gear_requirement_text",
+            lua.create_function(move |_, id: Option<String>| {
+                let id = id.unwrap_or_default();
+                Ok(rules
+                    .items
+                    .get(&id)
+                    .map(|item| item.requires_text.clone())
+                    .filter(|text| !text.is_empty()))
+            })?,
+        )?;
+    }
+
+    {
+        let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
+        vael.set(
+            "gear_requirement_met",
+            lua.create_function(move |lua, id: Option<String>| {
+                let id = id.unwrap_or_default();
+                let Some(item) = rules.items.get(&id) else {
+                    return Ok(false);
+                };
+                let (game, mut state) = read_state(lua)?;
+                let learned = read_learned(&game, &rules)?;
+                let met = {
+                    let mut engine = lock_stats(&stats);
+                    let _ = engine.snapshot(&rules, &mut state, &learned);
+                    engine.requirement_met(&item.requires)
+                };
+                write_gear(&game, &state)?;
+                Ok(met)
             })?,
         )?;
     }
@@ -502,34 +600,110 @@ pub(crate) fn install(lua: &Lua, rules: GearRules) -> mlua::Result<()> {
 
     {
         let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
         vael.set(
             "player_stats",
             lua.create_function(move |lua, ()| {
                 let (game, mut state) = read_state(lua)?;
                 let learned = read_learned(&game, &rules)?;
-                let stats = player_stats(&rules, &mut state, &learned);
+                let snapshot = {
+                    let mut engine = lock_stats(&stats);
+                    engine.snapshot(&rules, &mut state, &learned).clone()
+                };
                 write_gear(&game, &state)?;
-                stats_table(lua, &stats)
+                stats_table(lua, &Stats::from(&snapshot))
             })?,
         )?;
     }
 
     {
         let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
         vael.set(
             "stat",
             lua.create_function(move |lua, key: Option<String>| {
                 let key = key.unwrap_or_default();
                 let (game, mut state) = read_state(lua)?;
                 let learned = read_learned(&game, &rules)?;
-                let value = stat(&rules, &mut state, &learned, &key);
+                let value = {
+                    let mut engine = lock_stats(&stats);
+                    engine.snapshot(&rules, &mut state, &learned).stat(&key)
+                };
                 write_gear(&game, &state)?;
                 Ok(value)
             })?,
         )?;
     }
 
+    {
+        let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
+        vael.set(
+            "attribute",
+            lua.create_function(move |lua, key: Option<String>| {
+                let key = key.unwrap_or_default();
+                let (game, mut state) = read_state(lua)?;
+                let learned = read_learned(&game, &rules)?;
+                let value = {
+                    let mut engine = lock_stats(&stats);
+                    engine
+                        .snapshot(&rules, &mut state, &learned)
+                        .attribute(&key)
+                };
+                write_gear(&game, &state)?;
+                Ok(value)
+            })?,
+        )?;
+    }
+
+    {
+        let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
+        vael.set(
+            "attributes",
+            lua.create_function(move |lua, ()| {
+                let (game, mut state) = read_state(lua)?;
+                let learned = read_learned(&game, &rules)?;
+                let snapshot = {
+                    let mut engine = lock_stats(&stats);
+                    engine.snapshot(&rules, &mut state, &learned).clone()
+                };
+                write_gear(&game, &state)?;
+                let table = lua.create_table()?;
+                for (key, value) in &snapshot.attributes {
+                    table.set(key.as_str(), *value)?;
+                }
+                Ok(table)
+            })?,
+        )?;
+    }
+
+    {
+        let rules = Arc::clone(&rules);
+        let stats = Arc::clone(&stats);
+        vael.set(
+            "stat_sheet",
+            lua.create_function(move |lua, ()| {
+                let (game, mut state) = read_state(lua)?;
+                let learned = read_learned(&game, &rules)?;
+                let snapshot = {
+                    let mut engine = lock_stats(&stats);
+                    engine.snapshot(&rules, &mut state, &learned).clone()
+                };
+                write_gear(&game, &state)?;
+                stat_sheet_table(lua, &snapshot)
+            })?,
+        )?;
+    }
+
     Ok(())
+}
+
+/// Trava o motor do stat sheet, recuperando de um pânico num closure Lua.
+fn lock_stats(engine: &Arc<Mutex<StatEngine>>) -> MutexGuard<'_, StatEngine> {
+    engine
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner())
 }
 
 /// Lê os slots e as contagens que as funções puras precisam de validar.
@@ -605,6 +779,23 @@ fn stats_table(lua: &Lua, stats: &Stats) -> mlua::Result<Table> {
     Ok(table)
 }
 
+/// `viber.vael.stat_sheet()`: atributos e stats derivadas para o diário.
+fn stat_sheet_table(lua: &Lua, snapshot: &StatSnapshot) -> mlua::Result<Table> {
+    let table = lua.create_table()?;
+    let attributes = lua.create_table()?;
+    for (key, value) in &snapshot.attributes {
+        attributes.set(key.as_str(), *value)?;
+    }
+    let stats = lua.create_table()?;
+    for (key, value) in &snapshot.stats {
+        stats.set(key.as_str(), *value)?;
+    }
+    table.set("attributes", attributes)?;
+    table.set("stats", stats)?;
+    table.set("speed_mult", snapshot.speed_mult())?;
+    Ok(table)
+}
+
 fn weapon_table(lua: &Lua, weapon: &Weapon) -> mlua::Result<Table> {
     let table = lua.create_table()?;
     table.set("id", weapon.id.as_str())?;
@@ -629,6 +820,7 @@ mod tests {
             speed: 1.0,
             range: 2.0,
             grip: "machado".into(),
+            ..Default::default()
         }
     }
 
@@ -652,6 +844,12 @@ mod tests {
                     weapon: Some(arma(38.0)),
                     ..item("machado", "weapon", &[("crit", 0.05)])
                 },
+                ItemDef {
+                    weapon: Some(arma(50.0)),
+                    requires: "Strength >= 7".into(),
+                    requires_text: "Força 7".into(),
+                    ..item("machado_pesado", "weapon", &[])
+                },
                 item("manto", "armor", &[("defense", 0.15), ("max_hp", 15.0)]),
                 item("amuleto", "charm", &[("damage", 8.0), ("lifesteal", 0.04)]),
                 item("pocao", "", &[("max_hp", 999.0)]),
@@ -666,6 +864,10 @@ mod tests {
                 ("speed".to_string(), 0.1),
                 ("strike_burn".to_string(), 3.0),
             ]),
+        );
+        rules.skills.insert(
+            "strength1".into(),
+            BTreeMap::from([("strength".to_string(), 2.0)]),
         );
         rules
     }
@@ -881,8 +1083,12 @@ mod tests {
         let rules = regras();
         let mut state = estado(&[]);
         let stats = learned_stats(&rules, &mut state, &BTreeSet::new());
-        assert_eq!(stats, Stats::default());
+        assert_eq!(stats.bonus_damage, 0.0);
+        assert_eq!(stats.crit_bonus, 0.0);
+        assert_eq!(stats.max_hp_bonus, 0.0);
         assert_eq!(stats.speed_mult, 1.0);
+        assert_eq!(stats.fx.get("attack_speed"), Some(&1.0));
+        assert_eq!(stats.fx.get("knockback"), Some(&1.0));
     }
 
     #[test]
@@ -1073,6 +1279,113 @@ mod tests {
     }
 
     #[test]
+    fn bridge_atributos_e_stat_sheet_propagam_do_talento() {
+        let (lua, game) = lua_com_bridge(regras());
+        // Sem talentos: base 5 e dano derivado 0.
+        let base: f64 = lua
+            .load("return viber.vael.attribute('strength')")
+            .eval()
+            .expect("strength base");
+        assert_eq!(base, 5.0);
+        let damage: f64 = lua
+            .load("return viber.vael.stat('damage')")
+            .eval()
+            .expect("damage base");
+        assert_eq!(damage, 0.0);
+
+        game.raw_set("skill.strength1", true).expect("talento");
+        let strength: f64 = lua
+            .load("return viber.vael.attribute('strength')")
+            .eval()
+            .expect("strength");
+        assert_eq!(strength, 7.0);
+        let damage: f64 = lua
+            .load("return viber.vael.stat('damage')")
+            .eval()
+            .expect("damage");
+        assert_eq!(damage, 6.0);
+
+        let sheet: Table = lua
+            .load("return viber.vael.stat_sheet()")
+            .eval()
+            .expect("stat_sheet");
+        let attributes: Table = sheet.get("attributes").expect("attributes");
+        assert_eq!(attributes.get::<f64>("strength").expect("força"), 7.0);
+        let stats: Table = sheet.get("stats").expect("stats");
+        assert_eq!(stats.get::<f64>("damage").expect("dano"), 6.0);
+        assert_eq!(stats.get::<f64>("attack_speed").expect("ataque"), 1.0);
+        assert_eq!(sheet.get::<f64>("speed_mult").expect("velocidade"), 1.0);
+    }
+
+    #[test]
+    fn equipamento_respeita_requisito_de_atributo() {
+        let (lua, game) = lua_com_bridge(regras());
+        game.raw_set("item.machado_pesado", 1).expect("item");
+
+        assert!(
+            lua.load("return viber.vael.gear_requirement('machado_pesado') == 'Strength >= 7'")
+                .eval::<bool>()
+                .expect("expressão")
+        );
+        assert!(
+            lua.load("return viber.vael.gear_requirement_text('machado_pesado') == 'Força 7'")
+                .eval::<bool>()
+                .expect("texto")
+        );
+        assert!(
+            !lua.load("return viber.vael.gear_requirement_met('machado_pesado')")
+                .eval::<bool>()
+                .expect("requisito")
+        );
+
+        // Base 5: o machado pesado fica bloqueado e o slot não muda.
+        let blocked: Option<String> = lua
+            .load("return viber.vael.gear_toggle('machado_pesado')")
+            .eval()
+            .expect("toggle bloqueado");
+        assert_eq!(blocked.as_deref(), Some("blocked"));
+        assert!(matches!(
+            game.raw_get::<Value>("gear.weapon").expect("slot"),
+            Value::Nil
+        ));
+
+        // Um talento de Força chega aos 7 e o item equipa.
+        game.raw_set("skill.strength1", true).expect("talento");
+        assert!(
+            lua.load("return viber.vael.gear_requirement_met('machado_pesado')")
+                .eval::<bool>()
+                .expect("requisito cumprido")
+        );
+        let on: Option<String> = lua
+            .load("return viber.vael.gear_toggle('machado_pesado')")
+            .eval()
+            .expect("toggle");
+        assert_eq!(on.as_deref(), Some("on"));
+        assert_eq!(
+            game.raw_get::<String>("gear.weapon").expect("slot"),
+            "machado_pesado"
+        );
+    }
+
+    #[test]
+    fn equipamento_com_requisito_pode_sempre_sair() {
+        let (lua, game) = lua_com_bridge(regras());
+        game.raw_set("item.machado_pesado", 1).expect("item");
+        // Marca equipada sem satisfazer Força 7 (save editado, por exemplo).
+        game.raw_set("gear.weapon", "machado_pesado").expect("slot");
+
+        let off: Option<String> = lua
+            .load("return viber.vael.gear_toggle('machado_pesado')")
+            .eval()
+            .expect("toggle off");
+        assert_eq!(off.as_deref(), Some("off"));
+        assert!(matches!(
+            game.raw_get::<Value>("gear.weapon").expect("slot"),
+            Value::Nil
+        ));
+    }
+
+    #[test]
     fn bridge_slot_of_delega_a_tabela_de_itens() {
         let (lua, _game) = lua_com_bridge(regras());
         assert_eq!(
@@ -1181,7 +1494,12 @@ mod tests {
                  and type(viber.vael.gear_weapon) == 'function' \
                  and type(viber.vael.gear_effects) == 'function' \
                  and type(viber.vael.gear_slot_of) == 'function' \
+                 and type(viber.vael.gear_requirement) == 'function' \
+                 and type(viber.vael.gear_requirement_met) == 'function' \
                  and type(viber.vael.player_stats) == 'function' \
+                 and type(viber.vael.attribute) == 'function' \
+                 and type(viber.vael.attributes) == 'function' \
+                 and type(viber.vael.stat_sheet) == 'function' \
                  and type(viber.vael.stat) == 'function'",
             )
             .eval()

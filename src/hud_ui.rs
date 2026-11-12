@@ -11,7 +11,7 @@ use std::time::Duration;
 
 use bevy::prelude::*;
 use viber::ui::script::{ScriptBindValue, UiScriptBinds};
-use viber::ui::{UiClicks, UiSet, UiWriter};
+use viber::ui::{UiClicks, UiRegistry, UiSet, UiWriter};
 
 use crate::content::VaelContent;
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};
@@ -108,12 +108,23 @@ fn refresh_other_quests(
     save: Res<VaelSave>,
     binds: Option<Res<UiScriptBinds>>,
     writer: Option<Res<UiWriter>>,
+    registry: Option<Res<UiRegistry>>,
     time: Res<Time>,
     mut timer: Local<Option<Timer>>,
 ) {
     let (Some(content), Some(writer)) = (content.as_deref(), writer.as_deref()) else {
         return;
     };
+    // As linhas `quest-other-*` eram do HUD declarativo; o HUD `bevy_pf`
+    // (`HudVm::quest_others`) calcula-as sozinho. Sem esta guarda o writer
+    // avisava "unknown element" e as linhas eram recalculadas a cada 0,5 s
+    // para nada.
+    if registry
+        .as_deref()
+        .is_none_or(|registry| registry.get("quest-other-1").is_none())
+    {
+        return;
+    }
     if !others_due(&mut timer, &time) {
         return;
     }
@@ -182,11 +193,20 @@ fn journal_click(clicks: Option<Res<UiClicks>>, writer: Option<Res<UiWriter>>) {
 fn combo_shake(
     binds: Option<Res<UiScriptBinds>>,
     writer: Option<Res<UiWriter>>,
+    registry: Option<Res<UiRegistry>>,
     mut last: Local<Option<String>>,
 ) {
     let (Some(binds), Some(writer)) = (binds.as_deref(), writer.as_deref()) else {
         return;
     };
+    // O `combo-text` do HUD declarativo já não existe (HUD bevy_pf); sem esta
+    // guarda o writer enchia o log com "unknown element".
+    if registry
+        .as_deref()
+        .is_none_or(|registry| registry.get("combo-text").is_none())
+    {
+        return;
+    }
     let Some(value) = binds.get("combo.text") else {
         return;
     };

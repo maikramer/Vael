@@ -1,0 +1,118 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Visibility="{Binding death_open}" Background="#E02A0F0D">
+  <Grid.Resources>
+    <SolidColorBrush x:Key="Gold" Color="#FFE7C987"/>
+    <SolidColorBrush x:Key="GoldDeep" Color="#FFA8854C"/>
+    <SolidColorBrush x:Key="Ember" Color="#FFD9774F"/>
+    <SolidColorBrush x:Key="Blood" Color="#FFC8564B"/>
+    <SolidColorBrush x:Key="Muted" Color="#FFB7A98F"/>
+    <SolidColorBrush x:Key="Ink" Color="#FFF2E8D5"/>
+
+    <ControlTemplate x:Key="DarkButton" TargetType="Button">
+      <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
+              CornerRadius="5">
+        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="#33E6C888"/>
+          <Setter Property="BorderBrush" Value="#88E6C888"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <ControlTemplate x:Key="GoldButton" TargetType="Button">
+      <Border Background="{TemplateBinding Background}" BorderBrush="{TemplateBinding BorderBrush}"
+              BorderThickness="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}"
+              CornerRadius="5">
+        <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+      </Border>
+      <ControlTemplate.Triggers>
+        <Trigger Property="IsMouseOver" Value="True">
+          <Setter Property="Background" Value="#FFFFE3A3"/>
+        </Trigger>
+      </ControlTemplate.Triggers>
+    </ControlTemplate>
+
+    <Style x:Key="DeathPrimary" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource GoldButton}"/>
+      <Setter Property="Background" Value="#FFD9B45E"/>
+      <Setter Property="Foreground" Value="#FF171D20"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="14,10"/>
+      <Setter Property="Margin" Value="6,0"/>
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="FontWeight" Value="Bold"/>
+      <Setter Property="Width" Value="160"/>
+    </Style>
+
+    <Style x:Key="DeathButton" TargetType="Button">
+      <Setter Property="Template" Value="{StaticResource DarkButton}"/>
+      <Setter Property="Background" Value="#CC171D20"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+      <Setter Property="BorderBrush" Value="#557F1D1D"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="Padding" Value="16,10"/>
+      <Setter Property="Margin" Value="6,0"/>
+      <Setter Property="FontSize" Value="16"/>
+      <Setter Property="Width" Value="160"/>
+    </Style>
+  </Grid.Resources>
+
+  <Border Width="620" MaxWidth="880" HorizontalAlignment="Center" VerticalAlignment="Center"
+          Background="#FF0D1210" BorderBrush="#88C8564B" BorderThickness="1"
+          CornerRadius="12" Padding="34,28">
+    <StackPanel Spacing="10">
+      <Path Width="64" Height="64" Stretch="Uniform" Fill="#00000000"
+            Stroke="{StaticResource Ember}" StrokeThickness="1.6"
+            HorizontalAlignment="Center" Margin="0,0,0,4"
+            Data="M32 4 L32 56 M32 16 L20 6 M32 16 L44 6 M32 28 L16 16 M32 28 L48 16 M32 40 L22 32 M32 40 L42 32 M24 60 L32 52 L40 60 M32 0 L36 4 L32 8 L28 4 Z"/>
+      <TextBlock Text="{Binding death_kicker}" FontSize="12" Foreground="#FFC9785F"
+                 HorizontalAlignment="Center"/>
+      <Path Width="110" Height="10" Stretch="None" Margin="0,2,0,4"
+            HorizontalAlignment="Center" Fill="{StaticResource Ember}"
+            Stroke="{StaticResource Blood}" StrokeThickness="1"
+            Data="M0 5 H42 M68 5 H110 M42 1 L46 5 L42 9 L38 5 Z M64 1 L68 5 L64 9 L60 5 Z"/>
+      <TextBlock Text="{Binding death_title}" FontSize="56" FontWeight="Bold"
+                 FontFamily="Noto Serif Display, serif"
+                 Foreground="#FFF3DCC4" HorizontalAlignment="Center"/>
+      <TextBlock Text="{Binding death_line}" FontSize="17" Foreground="{StaticResource Muted}"
+                 HorizontalAlignment="Center" TextAlignment="Center"/>
+      <Border Background="#66171D20" BorderBrush="#557F1D1D" BorderThickness="1"
+              CornerRadius="6" Padding="14,7" HorizontalAlignment="Center" Margin="0,10,0,18">
+        <TextBlock Text="{Binding death_save_info}" FontSize="12" Foreground="{StaticResource Muted}"
+                   HorizontalAlignment="Center"/>
+      </Border>
+      <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+        <Button Style="{StaticResource DeathPrimary}"
+                Command="{Binding action_command}" CommandParameter="death-retry">
+          <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+            <PackIcon Kind="Refresh" Width="16" Height="16" Foreground="#FF171D20"/>
+            <TextBlock Text="{Binding death_retry_label}" FontSize="16" FontWeight="Bold"
+                       Foreground="#FF171D20"/>
+          </StackPanel>
+        </Button>
+        <Button Style="{StaticResource DeathButton}"
+                Command="{Binding action_command}" CommandParameter="death-load"
+                IsEnabled="{Binding death_load_enabled}">
+          <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+            <PackIcon Kind="Download" Width="16" Height="16" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding death_load_label}" FontSize="16"
+                       Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+        <Button Style="{StaticResource DeathButton}"
+                Command="{Binding action_command}" CommandParameter="death-title">
+          <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+            <PackIcon Kind="Home" Width="16" Height="16" Foreground="{StaticResource Gold}"/>
+            <TextBlock Text="{Binding death_title_label}" FontSize="16"
+                       Foreground="{StaticResource Ink}"/>
+          </StackPanel>
+        </Button>
+      </StackPanel>
+    </StackPanel>
+  </Border>
+</Grid>

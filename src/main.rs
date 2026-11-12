@@ -1,4 +1,4 @@
-//! Arranque do Vael: `vael [world.xml] [--entry <nome>]`.
+//! Arranque do Vael: `vael [world.bsn] [--entry <nome>]`.
 //!
 //! A engine monta o mundo; o crate do jogo entra por cima com
 //! [`viber::app::AppOptions::gameplay`] desligado, a IA em
@@ -10,14 +10,35 @@ use std::path::{Path, PathBuf};
 use anyhow::Result;
 use bevy::prelude::*;
 
-use vael::{VaelPlugin, VaelProjectRoot};
+use vael::{VaelPlugin, VaelProjectRoot, ui::VaelUiPlugin};
 
 fn main() -> Result<()> {
+    // O IBL da engine pinta um cubemap a partir do `<Sky>`/`AtmosphereState`
+    // antigos. Com o ambiente novo (`bevy_elements`) a luz do céu vem da
+    // atmosfera do crate (`AtmosphereEnvironmentMapLight`); dois IBLs
+    // somavam luz do céu errado. `VIBER_NO_IBL` é lido no `build_app`, antes
+    // de qualquer thread dos `DefaultPlugins` nascer — daí o `set_var`.
+    if vael::elements_enabled() {
+        // SAFETY: single-threaded, antes de `build_app`.
+        unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
+    }
     let args: Vec<String> = std::env::args().skip(1).collect();
-    let mut world = PathBuf::from("world.xml");
+    // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos checkouts
+    // ainda não convertidos.
+    let mut world = if Path::new("world.bsn").is_file() {
+        PathBuf::from("world.bsn")
+    } else {
+        PathBuf::from("world.xml")
+    };
     let mut entry: Option<String> = None;
     let mut scene: Option<String> = None;
     let mut bridge: Option<u16> = None;
+    // Resolução da janela: `--resolution WxH` > `VAEL_RESOLUTION` > default da
+    // engine (1280x720). Num portátil com a GPU no teto, é o corte de fill-rate
+    // mais direto: a 1600x900 o frame é 100% GPU-bound.
+    let mut resolution: Option<(u32, u32)> = std::env::var("VAEL_RESOLUTION")
+        .ok()
+        .and_then(|raw| parse_resolution(&raw));
     let mut i = 0;
 
     while i < args.len() {
@@ -36,6 +57,16 @@ fn main() -> Result<()> {
                 scene = Some(name.clone());
                 i += 2;
             }
+            "--resolution" => {
+                let Some(raw) = args.get(i + 1) else {
+                    anyhow::bail!("--resolution precisa de WxH (ex.: 1280x720)");
+                };
+                resolution = Some(
+                    parse_resolution(raw)
+                        .ok_or_else(|| anyhow::anyhow!("--resolution inválida: {raw} (WxH)"))?,
+                );
+                i += 2;
+            }
             "--bridge" => {
                 let Some(port) = args.get(i + 1).and_then(|raw| raw.parse::<u16>().ok()) else {
                     anyhow::bail!("--bridge precisa de uma porta (ex.: 15704)");
@@ -45,10 +76,15 @@ fn main() -> Result<()> {
             }
             "--help" | "-h" => {
                 println!(
-                    "uso: vael [world.xml] [--scene <nome>] [--entry <nome>] [--bridge <porta>]"
+                    "uso: vael [world.bsn] [--scene <nome>] [--entry <nome>] [--bridge <porta>]"
                 );
                 return Ok(());
             }
+            // `jd` corre o binário do jogo com esta flag para ler o schema
+            // refletido (componentes) e sair antes de abrir a janela. Quem
+            // trata dela é o `jackdaw_runtime::JackdawPlugin` no `VaelPlugin`;
+            // aqui só não pode ser rejeitada como argumento desconhecido.
+            "--jackdaw-extract-schema" => i += 1,
             flag if flag.starts_with('-') => {
                 anyhow::bail!("argumento desconhecido: {flag}");
             }
@@ -73,6 +109,10 @@ fn main() -> Result<()> {
         &world,
         viber::app::AppOptions {
             gameplay: false,
+            // O texto de dano/cura/coleta/combo é do Vael desde a migração
+            // para `bevy_rich_text3d`; o pool 2D projectado da engine
+            // desenhava-o duas vezes e com outra fonte.
+            damage_numbers_2d: false,
             // A FSM simples da engine fica desligada, mas o serviço de IA
             // (sentidos + `AiLocomotion`) mantém-se para os scripts Luau
             // moverem as criaturas via `viber.move_towards`.
@@ -81,16 +121,35 @@ fn main() -> Result<()> {
             // engine enquanto as regras migram para Rust.
             player_camera: true,
             scripts: viber::app::ScriptsMode::Compat,
+            // O jogo não usa `viber.ecs`: o espelho refletido por frame é
+            // trabalho morto e exclusivo. QA/bridge pode reativá-lo com
+            // `VIBER_ECS_MIRROR=1`.
+            ecs_mirror: ecs_mirror_enabled(),
             start_entry: entry.clone(),
             bridge_port: bridge,
             // A identidade da bridge é o mundo que o utilizador pediu, não a
             // cena de arranque resolvida (senão `--scene main` respondia menu).
             world_path: Some(requested.clone()),
+            // Play do Jackdaw em modo embedded: o runtime desliga a janela
+            // quando o editor pede `JACKDAW_PIE_WINDOWLESS`. Fora do PIE o
+            // wrapper devolve o grupo da engine intacto.
+            default_plugins: Some(jackdaw_plugins),
             ..Default::default()
         },
     )?;
+    // A janela primária nasce no `WindowPlugin` (já no `build_app`): mudar a
+    // resolução aqui chega antes do `run` criar a janela do SO.
+    if let Some((width, height)) = resolution {
+        let mut windows = app.world_mut().query::<&mut Window>();
+        if let Some(mut window) = windows.iter_mut(app.world_mut()).next() {
+            window.resolution = bevy::window::WindowResolution::new(width, height);
+        }
+    }
     app.insert_resource(VaelProjectRoot(root.clone()));
     app.add_plugins(VaelPlugin);
+    // UI do jogo em XAML (bevy_pf): precisa do `DefaultPlugins` e dos
+    // resources do Vael já registados.
+    app.add_plugins(VaelUiPlugin);
 
     info!(
         world = %world.display(),
@@ -106,4 +165,34 @@ fn main() -> Result<()> {
 
     let _ = app.run();
     Ok(())
+}
+
+/// Grupo `DefaultPlugins` do jogo, passado ao `build_app` com o wrapper do
+/// PIE: o `maybe_windowless` só altera o grupo quando o editor pede uma
+/// sessão sem janela (`JACKDAW_PIE_WINDOWLESS`); sem PIE é o grupo da engine.
+fn jackdaw_plugins(
+    plugins: bevy::app::PluginGroupBuilder,
+) -> bevy::app::PluginGroupBuilder {
+    jackdaw_runtime::maybe_windowless(plugins)
+}
+
+/// `viber.ecs` por frame é opt-in no Vael (default off).
+fn ecs_mirror_enabled() -> bool {
+    matches!(
+        std::env::var("VIBER_ECS_MIRROR")
+            .ok()
+            .map(|raw| raw.trim().to_ascii_lowercase())
+            .as_deref(),
+        Some("1" | "true" | "on" | "yes")
+    )
+}
+
+/// `WxH` (ex.: `1280x720`) → tamanho físico da janela. Teto defensivo: um
+/// valor absurdo na env não pode abrir uma janela de 100000 px.
+fn parse_resolution(raw: &str) -> Option<(u32, u32)> {
+    let (width, height) = raw.trim().split_once(['x', 'X'])?;
+    let width: u32 = width.trim().parse().ok()?;
+    let height: u32 = height.trim().parse().ok()?;
+    let ok = (320..=8192).contains(&width) && (200..=8192).contains(&height);
+    ok.then_some((width, height))
 }

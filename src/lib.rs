@@ -29,19 +29,28 @@ pub mod combat;
 pub mod components;
 pub mod content;
 pub mod economy;
+pub mod environment;
+pub mod flora;
 pub mod gear;
+#[cfg(feature = "hanabi")]
+pub mod hanabi_fx;
 pub mod harvest;
 pub mod hud;
 pub mod hud_ui;
+pub mod lighting;
 pub mod quest;
 pub mod quest_events;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
+pub mod speech;
 pub mod state_sync;
+pub mod stats;
 pub mod travel;
+pub mod ui;
 pub mod ui_bind;
 pub mod vault;
+pub mod world_text;
 pub mod xp;
 
 pub use attach::{VaelAttachPlugin, VaelScriptTags};
@@ -52,19 +61,25 @@ pub use content::{VaelContent, VaelContentPlugin};
 pub use economy::{
     CraftRules, CraftStatus, ShopRules, ShopStatus, TradeAction, TradeReason, VaelEconomyPlugin,
 };
+pub use environment::{VaelEnvironmentPlugin, elements_enabled};
+pub use flora::VaelFloraPlugin;
 pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
+pub use lighting::VaelShadowPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
 pub use quest_events::VaelQuestEventsPlugin;
 pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
 pub use rules_shadow::{VaelRulesShadow, VaelRulesShadowPlugin};
 pub use save::{VaelSave, VaelSavePlugin};
+pub use speech::VaelSpeechPlugin;
 pub use state_sync::VaelStateSyncPlugin;
+pub use stats::{AttributeRules, StatEngine, StatSnapshot};
 pub use travel::VaelTravelPlugin;
-pub use ui_bind::{VaelHud, VaelUiPlugin};
+pub use ui_bind::{VaelHud, VaelHudResourcePlugin};
 pub use vault::VaelVaultPlugin;
+pub use world_text::{VaelWorldTextPlugin, WorldTextEvent};
 pub use xp::{VaelXpPlugin, XpGain, XpRules};
 
 /// Raiz do projeto Vael: a pasta com `config.yaml`, `data/`, `quests/`,
@@ -80,6 +95,13 @@ pub struct VaelPlugin;
 
 impl Plugin for VaelPlugin {
     fn build(&self, app: &mut App) {
+        // Um erro de COMANDO do ECS (entidade despawnada a meio de uma
+        // transição de cena) não pode abortar o jogo: o `bevy_elements`
+        // (nuvens) e as câmaras transitórias do carregamento disparam-no. O
+        // handler `warn` loga e segue — um bug real continua visível no log,
+        // mas um frame transitório deixa de matar o processo.
+        app.set_error_handler(bevy::ecs::error::warn);
+        app.add_plugins(jackdaw_runtime::JackdawPlugin);
         app.register_type::<VaelProjectRoot>()
             .init_resource::<VaelProjectRoot>()
             .add_plugins((
@@ -101,10 +123,11 @@ impl Plugin for VaelPlugin {
                 // `viber.vael.guard`/`damage_player`/`heal_player`/
                 // `grant_iframes`, depois das quests.
                 VaelCombatPlugin,
-                // Relógio/chuva lidos do `DayCycleState`/`WeatherState`:
+                // Relógio/chuva: `WorldClock`/`Weather` do `bevy_elements`
+                // (ou `DayCycleState`/`WeatherState` da engine, sem ele):
                 // `viber.vael.clock_*`, depois do combate.
                 VaelClockPlugin,
-                VaelUiPlugin,
+                VaelHudResourcePlugin,
                 // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
                 VaelStateSyncPlugin,
                 // Simulação paralela das regras vitais do `rules.lua`.
@@ -121,11 +144,33 @@ impl Plugin for VaelPlugin {
         // do relógio. Em chamada à parte: a tupla do Bevy pára nos 15.
         app.add_plugins((
             VaelEconomyPlugin,
+            // Waypoint/marcadores do HUD (o `travel.lua` deixou de ser o
+            // publicador): blips, beacons, pin e a seta da quest.
+            ui::waypoint::VaelWaypointPlugin,
             // Colheita/interação, viagem/marcos e eventos de quest: cada
             // módulo instala o seu plugin sem tocar no `lib.rs`.
             VaelHarvestPlugin,
             VaelTravelPlugin,
             VaelQuestEventsPlugin,
+            // Texto flutuante no mundo (`bevy_rich_text3d`): dano, cura,
+            // coleta e combo. Substitui o pool 2D da engine — o `main.rs`
+            // arranca com `damage_numbers_2d: false`.
+            VaelWorldTextPlugin,
+            // Falas no mundo (`bevy_speech_bubbles`): o `viber.say` deixa de
+            // escrever no balão do HUD e passa a ser um balão sobre o NPC.
+            VaelSpeechPlugin::<viber::recipes::spawn::OrbitCamera>::default(),
+            // Árvores procedurais (`bevy_flora`) na entrada da cidade: teste
+            // A/B contra os GLB, atrás do gate `VAEL_FLORA`.
+            VaelFloraPlugin,
+            // Ambiente vivo (`bevy_elements`): céu astronómico, clima,
+            // nuvens, chuva/neve e relâmpagos no lugar do `<Sky>`/
+            // `<DayCycle>`/`<Weather>` da engine. `VAEL_ELEMENTS=0` desliga.
+            VaelEnvironmentPlugin,
+            // Sombras do sol a 15 Hz no modo `day-night` (`shadow-refresh-hz`
+            // do `<DayCycle>`); fora desse modo é um no-op.
+            VaelShadowPlugin,
         ));
+        #[cfg(feature = "hanabi")]
+        app.add_plugins(hanabi_fx::VaelHanabiPlugin);
     }
 }

@@ -14,6 +14,7 @@
 use std::sync::{Arc, Mutex};
 
 use bevy::prelude::*;
+use bevy_elements::{Weather as ElementsWeather, WorldClock as ElementsWorldClock};
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
 use viber::worldsys::{DayCycleState, WeatherState};
@@ -86,6 +87,37 @@ pub fn snapshot(
     }
 }
 
+/// mm/h de água líquida a que a chuva satura o `rain` 0..1 do Lua.
+///
+/// O preset `Rain` do `bevy_elements` vale 4 mm/h e já é chuva a sério; 8 mm/h
+/// deixa margem para `Thunderstorm` (25 mm/h) ler 1.0 sem cortar demasiado
+/// cedo o `RAIN_HEAVY` (0.3) das regras.
+pub const ELEMENTS_RAIN_MM_H: f64 = 8.0;
+
+/// Chuva 0..1 a partir do clima do `bevy_elements`.
+///
+/// `precipitation_mm_h` é equivalente em água, chuva e neve juntas. A neve
+/// não apaga o fogo nem corta a visão como a chuva (`burn`/`RAIN_SIGHT` do
+/// Lua), por isso só a fração líquida conta.
+pub fn elements_rain(weather: &ElementsWeather) -> f64 {
+    let liquid = weather.precipitation_mm_h * (1.0 - weather.snow_fraction());
+    (liquid as f64 / ELEMENTS_RAIN_MM_H).clamp(0.0, 1.0)
+}
+
+/// Snapshot a partir do relógio/clima do `bevy_elements` (ambiente novo).
+///
+/// `None` enquanto os dois recursos não existirem (arranque, mundos QA sem o
+/// plugin) — aí o chamador cai no snapshot da engine.
+pub fn elements_snapshot(
+    clock: Option<&ElementsWorldClock>,
+    weather: Option<&ElementsWeather>,
+) -> Option<ClockSnapshot> {
+    Some(ClockSnapshot {
+        hour: Some(clock?.hour),
+        rain: elements_rain(weather?),
+    })
+}
+
 /// Hora de um snapshot (`M.hour` do Lua).
 pub fn hour(snapshot: &ClockSnapshot) -> Option<f64> {
     snapshot.hour
@@ -111,15 +143,28 @@ pub fn raining(rain: f64) -> bool {
 
 // ── sistemas ────────────────────────────────────────────────────────────
 
-/// Copia `DayCycleState`/`WeatherState` para o snapshot partilhado.
+/// Copia o relógio para o snapshot partilhado.
 ///
-/// Corre no `PreUpdate` para os scripts do `Update` verem o estado do frame.
+/// Com o ambiente novo (`bevy_elements`) a hora/chuva vêm de
+/// `WorldClock`/`Weather`; sem ele cai no `DayCycleState`/`WeatherState` da
+/// engine. Corre no `PreUpdate` para os scripts do `Update` verem o estado do
+/// frame (o relógio do `bevy_elements` avança no `Update`, por isso a hora
+/// pode ir um frame atrás — irrelevante para HUD/regras).
 fn update_clock_snapshot(
     clock: Res<VaelClock>,
     day_cycle: Option<Res<DayCycleState>>,
     weather: Option<Res<WeatherState>>,
+    elements_clock: Option<Res<ElementsWorldClock>>,
+    elements_weather: Option<Res<ElementsWeather>>,
 ) {
-    let next = snapshot(day_cycle.as_deref(), weather.as_deref());
+    let mut next = elements_snapshot(elements_clock.as_deref(), elements_weather.as_deref())
+        .unwrap_or_else(|| snapshot(day_cycle.as_deref(), weather.as_deref()));
+    // `WeatherState.rain` é o valor que o jogo consome: com o ambiente novo
+    // inclui o `rain-scale` do bioma (o `bridge_weather`), como o antigo
+    // `weather_drive`; o `elements_snapshot` cru não tem essa escala.
+    if let Some(state) = weather.as_deref() {
+        next.rain = state.rain.clamp(0.0, 1.0) as f64;
+    }
     clock.set(next);
 }
 
@@ -441,5 +486,31 @@ mod tests {
 
         let clock = app.world().resource::<VaelClock>().get();
         assert_eq!(clock, snap(None, 0.0));
+    }
+
+    #[test]
+    fn chuva_do_bevy_elements_ignora_neve() {
+        let mut weather = ElementsWeather {
+            precipitation_mm_h: 4.0,
+            temperature_c: 10.0,
+            ..Default::default()
+        };
+        assert!((elements_rain(&weather) - 0.5).abs() < 1e-9);
+        weather.temperature_c = -5.0;
+        assert_eq!(elements_rain(&weather), 0.0, "neve não apaga fogo");
+    }
+
+    #[test]
+    fn snapshot_do_bevy_elements_usa_o_world_clock() {
+        let clock =
+            ElementsWorldClock::new(bevy_elements::CivilDate::new(2026, 6, 21)).at_hour(19.5);
+        let weather = ElementsWeather {
+            precipitation_mm_h: 8.0,
+            temperature_c: 10.0,
+            ..Default::default()
+        };
+        let snapshot = elements_snapshot(Some(&clock), Some(&weather)).expect("snapshot");
+        assert_eq!(snapshot.hour, Some(19.5));
+        assert!((snapshot.rain - 1.0).abs() < 1e-9);
     }
 }

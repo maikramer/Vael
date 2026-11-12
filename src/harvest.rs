@@ -27,13 +27,16 @@
 
 use bevy::ecs::message::Messages;
 use bevy::prelude::*;
+use bevy_flora::{
+    BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeShake, TreeShakes,
+};
 use mlua::{Lua, Table, Value as LuaValue};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
 use viber::ambient::{SfxClip, SfxEvent};
 use viber::feedback::DamageNumberEvent;
-use viber::interact::{InteractionFocus, scaled_range};
+use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
 use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
@@ -84,6 +87,19 @@ pub const PICK_FALLBACK_YIELD: i64 = 3;
 /// Substitutos permitidos (lista FECHADA, como no Lua).
 pub const REPLACEMENTS: &[&str] = &["berry-bush-bare"];
 
+/// Comprimento de cada toro ao retalhar uma árvore deitada (m).
+pub const LOG_LENGTH: f32 = 2.2;
+/// Raio mínimo dos ramos que viram toro.
+pub const LOG_MIN_RADIUS: f32 = 0.08;
+/// Collider do toco depois do corte: raio e meia-altura (m). O tronco deitado
+/// do `bevy_flora` não colide; o toco continua sólido e curto.
+pub const STUMP_RADIUS: f32 = 0.45;
+pub const STUMP_HALF_HEIGHT: f32 = 0.35;
+/// Alcance do prompt "Cortar em toros" (m, autorado; escala do `interact`).
+pub const BUCK_RANGE: f32 = 3.0;
+/// Intervalo entre golpes de retalhar (s).
+pub const BUCK_COOLDOWN: f32 = 0.5;
+
 /// Estilo de quebra autorado (`break-style`).
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Reflect)]
 pub enum BreakStyle {
@@ -132,8 +148,11 @@ pub struct Harvestable {
     pub popup: String,
     /// Cor do popup em RGB linear-ish (3 ou 6 dígitos hex).
     pub popup_color: [f32; 3],
-    /// Alcance AUTORADO; o efetivo é [`scaled_range`].
+    /// Alcance AUTORADO; o efetivo é `viber::interact::scaled_range`.
     pub range: f32,
+    /// Altura do corte acima da base (`cut-height`, m): o `bevy_flora` corta
+    /// a árvore aí e o toco fica com essa altura.
+    pub cut_height: f32,
     /// Substituto autorado (`replacement`), ainda por validar.
     pub replacement: String,
     /// Escala do substituto (`replace-scale`, 0,05..20).
@@ -196,6 +215,15 @@ impl Harvestable {
             Some(value) if value.is_finite() && value > 0.0 => value as f32,
             _ => RANGE_DEFAULT,
         };
+        let cut_height = match parse_number(
+            components
+                .get("cut-height")
+                .map(String::as_str)
+                .unwrap_or(""),
+        ) {
+            Some(value) if value.is_finite() && value > 0.0 => (value as f32).clamp(0.05, 3.0),
+            _ => 0.5,
+        };
         let replace_scale = match parse_number(
             components
                 .get("replace-scale")
@@ -221,6 +249,7 @@ impl Harvestable {
             popup,
             popup_color,
             range,
+            cut_height,
             replacement,
             replace_scale,
             name: name.to_string(),
@@ -243,6 +272,174 @@ impl Harvestable {
         REPLACEMENTS
             .contains(&self.replacement.as_str())
             .then_some(self.replacement.as_str())
+    }
+}
+
+/// Chave estável da estação tombada com o `bevy_flora`
+/// (`flora-fell.<chave>.*` no save). Vive na árvore deitada (raiz) até ser
+/// retalhada.
+#[derive(Component, Debug, Clone)]
+struct FloraFellKey(String);
+
+/// Na **estação**: a árvore tombada que saiu dela. O `bevy_flora` corta em
+/// espaço local (`Transform`), por isso a árvore que tomba tem de ser uma
+/// entidade RAIZ com a pose global — a estação é filha do grupo da vegetação
+/// (offset de +38,73 m) e um `Transform` local punha o toco debaixo do chão.
+#[derive(Component, Debug, Clone, Copy)]
+struct FloraFellTree(Entity);
+
+/// Foco da interação "Cortar em toros" numa árvore já deitada.
+#[derive(Debug, Clone, Default, Resource)]
+struct BuckFocus {
+    entity: Option<Entity>,
+    cooldown: f32,
+}
+
+/// Pedidos de tombo vindos do Lua (`viber.vael.fell_tree`): a função só
+/// enfileira (o closure não tem o ECS); o sistema processa no `Update`.
+#[derive(Resource, Clone, Default)]
+struct PendingFloraFell(std::sync::Arc<std::sync::Mutex<Vec<u64>>>);
+
+/// Instala `viber.vael.fell_tree(id) -> true` — o `harvest.lua` usa-a no ramo
+/// `break-style: fall` no lugar de `viber.topple`. Sem isto o caminho Lua
+/// (default) tombava a ESTAÇÃO com o `Falling` da engine e perdia o toco e o
+/// tronco deitado do `bevy_flora`.
+fn install_fell_api(host: Option<Res<LuaScriptHost>>, mut commands: Commands) {
+    let Some(host) = host else {
+        return;
+    };
+    let queue = PendingFloraFell::default();
+    let shared = std::sync::Arc::clone(&queue.0);
+    let lua = &host.lua;
+    let installed = (|| -> mlua::Result<()> {
+        let viber: Table = lua.globals().get("viber")?;
+        let vael: Table = match viber.get::<LuaValue>("vael")? {
+            LuaValue::Table(table) => table,
+            _ => {
+                let table = lua.create_table()?;
+                viber.set("vael", table.clone())?;
+                table
+            }
+        };
+        vael.set(
+            "fell_tree",
+            lua.create_function(move |_, bits: i64| {
+                shared
+                    .lock()
+                    .unwrap_or_else(|poisoned| poisoned.into_inner())
+                    .push(bits as u64);
+                Ok(true)
+            })?,
+        )
+    })();
+    match installed {
+        Ok(()) => {
+            commands.insert_resource(queue);
+            info!("vael: `viber.vael.fell_tree` ligado (tombo do bevy_flora no Lua)");
+        }
+        Err(err) => error!("vael: falha a instalar `viber.vael.fell_tree`: {err}"),
+    }
+}
+
+/// Processa os pedidos do Lua: árvore procedural → `FellTree` numa raiz com a
+/// pose global; prop antigo → o `Falling` da engine (o que o `viber.topple`
+/// fazia).
+fn process_pending_fell(
+    mut commands: Commands,
+    pending: Option<Res<PendingFloraFell>>,
+    host: Option<Res<LuaScriptHost>>,
+    mut save: Option<ResMut<VaelSave>>,
+    props: Query<(
+        &GlobalTransform,
+        Option<&PooledTree>,
+        Option<&PooledLook>,
+        Option<&Harvestable>,
+        Option<&Transform>,
+    )>,
+    players: Query<&GlobalTransform, With<Player>>,
+) {
+    let Some(pending) = pending else {
+        return;
+    };
+    let requests = std::mem::take(
+        &mut *pending
+            .0
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner()),
+    );
+    if requests.is_empty() {
+        return;
+    }
+    let lua = host.as_deref().map(|host| &host.lua);
+    let player = players
+        .iter()
+        .next()
+        .map(GlobalTransform::translation)
+        .unwrap_or(Vec3::ZERO);
+    for bits in requests {
+        let Some(entity) = Entity::try_from_bits(bits) else {
+            continue;
+        };
+        let Ok((global, pooled, look, harvestable, local)) = props.get(entity) else {
+            continue;
+        };
+        let position = global.translation();
+        let direction = (position - player).normalize_or_zero();
+        let cut_height = harvestable.map(|h| h.cut_height).unwrap_or(0.5);
+        let key = harvestable.and_then(|h| h.stable_key.clone());
+        if let Some(pooled) = pooled {
+            let tree = spawn_felled_tree(
+                &mut commands,
+                pooled,
+                look,
+                global,
+                direction,
+                cut_height,
+                false,
+            );
+            if let Some(key) = key.as_deref() {
+                commands
+                    .entity(tree)
+                    .insert(FloraFellKey(key.to_string()));
+                store_flora_fell(
+                    lua,
+                    save.as_deref_mut(),
+                    key,
+                    direction,
+                    cut_height,
+                    false,
+                );
+            }
+            commands
+                .entity(entity)
+                .try_remove::<(
+                    Harvestable,
+                    ScriptInteraction,
+                    viber::luau::components::LuaScriptRef,
+                )>()
+                .remove::<PooledTree>()
+                .insert(FloraFellTree(tree));
+            viber::physics::replace_with_stump_collider(
+                &mut commands,
+                entity,
+                STUMP_RADIUS,
+                STUMP_HALF_HEIGHT,
+            );
+        } else {
+            let initial = local.map(|local| local.rotation).unwrap_or_default();
+            commands
+                .entity(entity)
+                .try_remove::<(
+                    Harvestable,
+                    ScriptInteraction,
+                    viber::luau::components::LuaScriptRef,
+                )>()
+                .insert(Falling {
+                    axis: Vec3::new(direction.z, 0.0, -direction.x),
+                    timer: 0.0,
+                    initial,
+                });
+        }
     }
 }
 
@@ -324,20 +521,20 @@ impl Plugin for VaelHarvestPlugin {
             .register_type::<BreakStyle>()
             // O gate vive fora do `run_if`: quando OFF também tem de apagar
             // um `true` que venha de um save antigo.
-            .add_systems(Startup, publish_harvest_gate)
+            .add_systems(Startup, (publish_harvest_gate, install_fell_api).chain())
             .add_systems(Update, sync_harvest_gate)
+            // `Harvestable` e o reap correm SEMPRE: o caminho Lua (default)
+            // também precisa deles para o restauro das árvores tombadas
+            // (`flora-fell.*`). O foco/golpe Rust continuam atrás do gate.
             .add_systems(
                 PostStartup,
-                (attach_harvestables, reap_on_load)
-                    .chain()
-                    .run_if(harvest_rust_enabled),
+                (attach_harvestables, reap_on_load).chain(),
             )
             .add_systems(
                 viber::scene_loader::SceneLoad,
                 (attach_harvestables, reap_on_load)
                     .chain()
-                    .after(viber::recipes::spawn::startup)
-                    .run_if(harvest_rust_enabled),
+                    .after(viber::recipes::spawn::startup),
             )
             .add_systems(
                 Update,
@@ -345,7 +542,19 @@ impl Plugin for VaelHarvestPlugin {
                     .chain()
                     .run_if(harvest_rust_enabled),
             )
-            .add_systems(Update, reap_periodic.run_if(harvest_rust_enabled));
+            // O processamento do tombo do Lua, o reap periódico, o embate e
+            // os toros valem para os DOIS caminhos de colheita.
+            .add_systems(
+                Update,
+                (
+                    process_pending_fell,
+                    reap_periodic,
+                    tree_landed_feedback,
+                    buck_felled_trees,
+                    despawn_fell_trees,
+                ),
+            )
+            .init_resource::<BuckFocus>();
     }
 }
 
@@ -606,6 +815,84 @@ fn store_stump(
     }
 }
 
+/// Guarda o estado do tombo de uma árvore procedural (`flora-fell.<chave>.*`):
+/// direcção da queda, altura do corte e se já foi retalhada em toros. É o que
+/// o load usa para a deitar no sítio certo, sem a tombar outra vez.
+fn store_flora_fell(
+    lua: Option<&Lua>,
+    save: Option<&mut VaelSave>,
+    key: &str,
+    direction: Vec3,
+    cut_height: f32,
+    bucked: bool,
+) {
+    if key.is_empty() {
+        return;
+    }
+    let fields = [
+        (format!("flora-fell.{key}.dx"), json!(direction.x)),
+        (format!("flora-fell.{key}.dz"), json!(direction.z)),
+        (format!("flora-fell.{key}.cut"), json!(cut_height)),
+        (format!("flora-fell.{key}.bucked"), Json::Bool(bucked)),
+    ];
+    if let Some(save) = save {
+        for (name, value) in &fields {
+            save.legacy.insert(name.clone(), value.clone());
+        }
+    }
+    if let Some(lua) = lua {
+        apply_patch(lua, &fields.into_iter().collect());
+    }
+}
+
+/// Marca a árvore deitada como retalhada em toros (`flora-fell.<chave>.bucked`).
+fn store_flora_bucked(lua: Option<&Lua>, save: Option<&mut VaelSave>, key: &str) {
+    if key.is_empty() {
+        return;
+    }
+    let name = format!("flora-fell.{key}.bucked");
+    if let Some(save) = save {
+        save.legacy.insert(name.clone(), Json::Bool(true));
+    }
+    if let Some(lua) = lua {
+        let mut patch = BTreeMap::new();
+        patch.insert(name, Json::Bool(true));
+        apply_patch(lua, &patch);
+    }
+}
+
+/// Estado de uma árvore tombada com o `bevy_flora`, lido do save.
+#[derive(Debug, Clone, Copy, PartialEq)]
+pub struct FloraFell {
+    pub dx: f32,
+    pub dz: f32,
+    pub cut_height: f32,
+    pub bucked: bool,
+}
+
+/// `flora-fell.<chave>.*` do snapshot → [`FloraFell`]; `None` se não houver
+/// direcção guardada (save antigo, entidade sem chave).
+pub fn flora_fell_from_kv(kv: &BTreeMap<String, Json>, key: &str) -> Option<FloraFell> {
+    let get = |suffix: &str| kv.get(&format!("flora-fell.{key}.{suffix}"));
+    let dx = get("dx")?.as_f64()? as f32;
+    let dz = get("dz")?.as_f64()? as f32;
+    if !dx.is_finite() || !dz.is_finite() {
+        return None;
+    }
+    let cut_height = get("cut")
+        .and_then(Json::as_f64)
+        .filter(|value| value.is_finite() && *value > 0.0)
+        .map(|value| (value as f32).clamp(0.05, 3.0))
+        .unwrap_or(0.5);
+    let bucked = get("bucked").and_then(Json::as_bool).unwrap_or(false);
+    Some(FloraFell {
+        dx,
+        dz,
+        cut_height,
+        bucked,
+    })
+}
+
 /// Dados do substituto guardados no save.
 #[derive(Debug, Clone, PartialEq)]
 pub struct Stump {
@@ -743,12 +1030,16 @@ where
 {
     let mut best: Option<(Entity, f32)> = None;
     for (entity, position, range) in candidates {
-        let distance = position.distance(origin);
-        if distance <= range && best.is_none_or(|(_, best_distance)| distance < best_distance) {
-            best = Some((entity, distance));
+        // Comparação em distância ao quadrado: o `sqrt` só no vencedor.
+        let distance_sq = position.distance_squared(origin);
+        let range = range.max(0.0);
+        if distance_sq <= range * range
+            && best.is_none_or(|(_, best_distance_sq)| distance_sq < best_distance_sq)
+        {
+            best = Some((entity, distance_sq));
         }
     }
-    best
+    best.map(|(entity, distance_sq)| (entity, distance_sq.sqrt()))
 }
 
 // ── sistemas ────────────────────────────────────────────────────────────
@@ -851,6 +1142,8 @@ fn update_harvest_focus(
         return;
     };
     let origin = player.translation();
+    // Uma leitura do env por frame, não uma por harvestable.
+    let scale = range_scale();
     let nearest = nearest_within(
         origin,
         harvestables
@@ -859,11 +1152,7 @@ fn update_harvest_focus(
                 harvestable.remaining > 0 && health.is_none_or(|health| health.current > 0.0)
             })
             .map(|(entity, transform, harvestable, _)| {
-                (
-                    entity,
-                    transform.translation(),
-                    scaled_range(harvestable.range),
-                )
+                (entity, transform.translation(), harvestable.range * scale)
             }),
     );
     let Some((entity, _)) = nearest else {
@@ -881,7 +1170,7 @@ fn update_harvest_focus(
         commands.entity(entity).try_insert(ScriptInteraction {
             label: harvestable.label().to_string(),
             key: KeyCode::KeyJ,
-            range: scaled_range(harvestable.range),
+            range: harvestable.range * scale,
         });
     }
     set_tool(&mut focus, harvestable.tool(), ui.as_deref_mut());
@@ -910,6 +1199,43 @@ fn set_tool(focus: &mut HarvestFocus, tool: &str, ui: Option<&mut UiScriptBinds>
     }
 }
 
+/// Spawn da árvore que tomba como entidade RAIZ, com a pose GLOBAL da
+/// estação (o `bevy_flora` corta em espaço local e a estação é filha do grupo
+/// da vegetação — um `Transform` local punha o toco 38 m abaixo). Herda o
+/// pool, a variante e o look da estação.
+fn spawn_felled_tree(
+    commands: &mut Commands,
+    pooled: &PooledTree,
+    look: Option<&PooledLook>,
+    global: &GlobalTransform,
+    direction: Vec3,
+    cut_height: f32,
+    lying: bool,
+) -> Entity {
+    let tree = commands
+        .spawn((
+            PooledTree {
+                pool: pooled.pool.clone(),
+                variant: pooled.variant,
+            },
+            Transform::from_translation(global.translation())
+                .with_rotation(global.rotation())
+                .with_scale(global.scale()),
+            Visibility::Inherited,
+            FellTree {
+                direction: Vec2::new(direction.x, direction.z),
+                cut_height,
+                speed: 1.0,
+                lying,
+            },
+        ))
+        .id();
+    if let Some(look) = look {
+        commands.entity(tree).insert(*look);
+    }
+    tree
+}
+
 /// J num alvo em foco: um golpe; no último, loot/XP/persistência/quebra.
 #[allow(clippy::too_many_arguments)]
 fn harvest_input(
@@ -921,7 +1247,15 @@ fn harvest_input(
     host: Option<Res<LuaScriptHost>>,
     typing: Option<Res<UiFocusedInput>>,
     interaction: Option<Res<InteractionFocus>>,
-    mut harvestables: Query<(&mut Harvestable, &GlobalTransform, Option<&Transform>)>,
+    time: Res<Time>,
+    mut shakes: Option<ResMut<TreeShakes>>,
+    mut harvestables: Query<(
+        &mut Harvestable,
+        &GlobalTransform,
+        Option<&Transform>,
+        Option<&PooledTree>,
+        Option<&PooledLook>,
+    )>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
     players: Query<&GlobalTransform, With<Player>>,
     queue: Option<Res<QuestEventQueue>>,
@@ -947,7 +1281,7 @@ fn harvest_input(
     {
         return;
     }
-    let Ok((mut harvestable, transform, local)) = harvestables.get_mut(entity) else {
+    let Ok((mut harvestable, transform, local, pooled, look)) = harvestables.get_mut(entity) else {
         focus.entity = None;
         return;
     };
@@ -963,6 +1297,24 @@ fn harvest_input(
     focus.cooldown = SWING_COOLDOWN;
     if !broken {
         play_sfx(&mut commands, hit_clip(style, &kind), position);
+        // Árvore procedural: a copa abana no golpe e larga folhas
+        // (`FallingLeaves::per_shake`). Prop antigo não tem de onde abanar.
+        if pooled.is_some()
+            && let Some(shakes) = shakes.as_mut()
+        {
+            let wave = (position - player).normalize_or_zero();
+            shakes.shake(
+                TreeShake {
+                    at: Vec2::new(position.x, position.z),
+                    radius: 1.8,
+                    strength: 0.9,
+                    direction: Vec2::new(wave.x, wave.z),
+                    duration: 0.5,
+                    start: 0.0,
+                },
+                &time,
+            );
+        }
         return;
     }
 
@@ -1050,17 +1402,55 @@ fn harvest_input(
         commands.entity(entity).try_despawn();
     } else if style == BreakStyle::Fall {
         let direction = (position - player).normalize_or_zero();
-        let initial = local.map(|local| local.rotation).unwrap_or_default();
-        commands.entity(entity).try_remove::<(
-            Harvestable,
-            ScriptInteraction,
-            viber::luau::components::LuaScriptRef,
-        )>();
-        commands.entity(entity).try_insert(Falling {
-            axis: Vec3::new(direction.z, 0.0, -direction.x),
-            timer: 0.0,
-            initial,
-        });
+        if let Some(pooled) = pooled {
+            // Árvore procedural: o `bevy_flora` corta-a (toco, queda, faces de
+            // corte). A árvore passa para uma entidade RAIZ com a pose GLOBAL
+            // (ver `FloraFellTree`); a estação fica com os props e o toco.
+            let cut_height = harvestable.cut_height;
+            let tree = spawn_felled_tree(
+                &mut commands,
+                pooled,
+                look,
+                transform,
+                direction,
+                cut_height,
+                false,
+            );
+            commands
+                .entity(entity)
+                .try_remove::<(
+                    Harvestable,
+                    ScriptInteraction,
+                    viber::luau::components::LuaScriptRef,
+                )>()
+                .remove::<PooledTree>()
+                .insert(FloraFellTree(tree));
+            viber::physics::replace_with_stump_collider(
+                &mut commands,
+                entity,
+                STUMP_RADIUS,
+                STUMP_HALF_HEIGHT,
+            );
+            if let Some(key) = key.as_deref() {
+                commands
+                    .entity(tree)
+                    .insert(FloraFellKey(key.to_string()));
+                store_flora_fell(lua, save.as_deref_mut(), key, direction, cut_height, false);
+            }
+        } else {
+            // Prop antigo (era GLB): tombo da engine, como antes.
+            let initial = local.map(|local| local.rotation).unwrap_or_default();
+            commands.entity(entity).try_remove::<(
+                Harvestable,
+                ScriptInteraction,
+                viber::luau::components::LuaScriptRef,
+            )>();
+            commands.entity(entity).try_insert(Falling {
+                axis: Vec3::new(direction.z, 0.0, -direction.x),
+                timer: 0.0,
+                initial,
+            });
+        }
     } else {
         commands.entity(entity).try_despawn();
     }
@@ -1193,7 +1583,14 @@ fn reap_saved(
     lua: Option<&Lua>,
     save: Option<&VaelSave>,
     mut spawns: Option<&mut PendingScriptSpawns>,
-    harvestables: &Query<(Entity, &Harvestable)>,
+    harvestables: &Query<(
+        Entity,
+        &Harvestable,
+        Option<&PooledTree>,
+        Option<&PooledLook>,
+        Option<&FloraFellTree>,
+        &GlobalTransform,
+    )>,
 ) {
     // Um só snapshot por varredura: `harvested.*` e `stump.*` saem da mesma
     // tabela (o `game_to_json` clona o jogo inteiro).
@@ -1209,10 +1606,49 @@ fn reap_saved(
     if harvested.is_empty() {
         return;
     }
-    for (entity, harvestable) in harvestables.iter() {
+    for (entity, harvestable, pooled, look, fell_tree, global) in harvestables.iter() {
         let Some(matched) = reaped_key(harvestable, &harvested) else {
             continue;
         };
+        // Árvore procedural já tombada: o save diz COMO está deitada. Repõe-se
+        // a árvore-raiz já deitada (`FellTree { lying }`), com toco e, se
+        // `bucked`, os toros — em vez de despawnar. Uma só vez por estação.
+        if let Some(fell) = flora_fell_from_kv(&kv, &matched) {
+            let Some(pooled) = pooled else { continue };
+            if fell_tree.is_some() {
+                continue;
+            }
+            let tree = spawn_felled_tree(
+                commands,
+                pooled,
+                look,
+                global,
+                Vec3::new(fell.dx, 0.0, fell.dz),
+                fell.cut_height,
+                true,
+            );
+            commands
+                .entity(tree)
+                .insert(FloraFellKey(matched.clone()));
+            if fell.bucked {
+                commands.entity(tree).try_insert(BuckTree {
+                    log_length: LOG_LENGTH,
+                    min_radius: LOG_MIN_RADIUS,
+                });
+            }
+            commands
+                .entity(entity)
+                .try_remove::<(Harvestable, ScriptInteraction)>()
+                .remove::<PooledTree>()
+                .insert(FloraFellTree(tree));
+            viber::physics::replace_with_stump_collider(
+                commands,
+                entity,
+                STUMP_RADIUS,
+                STUMP_HALF_HEIGHT,
+            );
+            continue;
+        }
         commands.entity(entity).try_despawn();
         let Some(stump) = stump_for(&kv, &matched) else {
             continue;
@@ -1236,7 +1672,14 @@ fn reap_on_load(
     host: Option<Res<LuaScriptHost>>,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
-    harvestables: Query<(Entity, &Harvestable)>,
+    harvestables: Query<(
+        Entity,
+        &Harvestable,
+        Option<&PooledTree>,
+        Option<&PooledLook>,
+        Option<&FloraFellTree>,
+        &GlobalTransform,
+    )>,
 ) {
     reap_saved(
         &mut commands,
@@ -1256,7 +1699,14 @@ fn reap_periodic(
     host: Option<Res<LuaScriptHost>>,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
-    harvestables: Query<(Entity, &Harvestable)>,
+    harvestables: Query<(
+        Entity,
+        &Harvestable,
+        Option<&PooledTree>,
+        Option<&PooledLook>,
+        Option<&FloraFellTree>,
+        &GlobalTransform,
+    )>,
 ) {
     let timer =
         timer.get_or_insert_with(|| Timer::from_seconds(REAP_PERIOD_SECS, TimerMode::Repeating));
@@ -1270,6 +1720,138 @@ fn reap_periodic(
         spawns.as_deref_mut(),
         &harvestables,
     );
+}
+
+/// As árvores tombadas são raízes (fora da hierarquia da cena): numa troca de
+/// cena ficariam a flutuar. O estado persiste no save e o restauro repõe-nas.
+fn despawn_fell_trees(
+    mut commands: Commands,
+    current: Option<Res<CurrentScene>>,
+    trees: Query<Entity, Or<(With<FellTree>, With<Felled>)>>,
+    mut last: Local<Option<String>>,
+) {
+    let Some(current) = current else {
+        return;
+    };
+    let id = current.id.clone().unwrap_or_default();
+    if last.as_deref() == Some(id.as_str()) {
+        return;
+    }
+    let first = last.is_none();
+    *last = Some(id);
+    if first {
+        return;
+    }
+    for tree in &trees {
+        commands.entity(tree).despawn();
+    }
+}
+
+/// Embate da árvore cortada: o `bevy_flora` avisa com `TreeLanded` no primeiro
+/// contacto com o chão. Som de queda é do jogo (o crate já larga as folhas).
+fn tree_landed_feedback(
+    mut landed: Option<MessageReader<TreeLanded>>,
+    mut sfx: Option<MessageWriter<SfxEvent>>,
+) {
+    let Some(landed) = landed.as_mut() else {
+        return;
+    };
+    let Some(sfx) = sfx.as_mut() else {
+        // Consome as mensagens para o buffer não crescer.
+        for _ in landed.read() {}
+        return;
+    };
+    for message in landed.read() {
+        sfx.write(SfxEvent {
+            clip: SfxClip::ChopBreak,
+            position: Some(message.at),
+        });
+    }
+}
+
+/// `[J]` numa árvore já deitada: publica "Cortar em toros" e retalha-a
+/// (`BuckTree`) — o `bevy_flora` substitui-a por `TreeLog`s no chão.
+#[allow(clippy::too_many_arguments)]
+fn buck_felled_trees(
+    mut commands: Commands,
+    keys: Option<Res<ButtonInput<KeyCode>>>,
+    time: Res<Time>,
+    mut focus: ResMut<BuckFocus>,
+    interaction: Option<Res<InteractionFocus>>,
+    host: Option<Res<LuaScriptHost>>,
+    mut save: Option<ResMut<VaelSave>>,
+    players: Query<&GlobalTransform, With<Player>>,
+    felled: Query<
+        (
+            Entity,
+            &GlobalTransform,
+            Option<&BuckTree>,
+            Option<&FloraFellKey>,
+        ),
+        Or<(With<Felled>, With<FellTree>)>,
+    >,
+) {
+    focus.cooldown = (focus.cooldown - time.delta_secs()).max(0.0);
+    let Some(keys) = keys else {
+        return;
+    };
+    let Some(player) = players.iter().next().map(GlobalTransform::translation) else {
+        return;
+    };
+    let reach = BUCK_RANGE * range_scale();
+    let mut best: Option<(Entity, f32)> = None;
+    for (entity, transform, bucked, _) in &felled {
+        if bucked.is_some() {
+            continue;
+        }
+        let distance = transform.translation().distance(player);
+        if distance <= reach && best.is_none_or(|(_, best)| distance < best) {
+            best = Some((entity, distance));
+        }
+    }
+    let target = best.map(|(entity, _)| entity);
+    if focus.entity != target {
+        if let Some(previous) = focus.entity
+            && Some(previous) != target
+        {
+            commands.entity(previous).try_remove::<ScriptInteraction>();
+        }
+        if let Some(target) = target {
+            commands.entity(target).try_insert(ScriptInteraction {
+                label: "Cortar em toros".to_string(),
+                key: KeyCode::KeyJ,
+                range: reach,
+            });
+        }
+        focus.entity = target;
+    }
+    let Some(target) = target else {
+        return;
+    };
+    if !keys.just_pressed(KeyCode::KeyJ) || focus.cooldown > 0.0 {
+        return;
+    }
+    // Outro [J] nativo mais próximo (o prompt da colheita) tem prioridade.
+    if let Some(interaction) = interaction.as_deref()
+        && let Some(winner) = interaction.winner(KeyCode::KeyJ)
+        && winner != target
+    {
+        return;
+    }
+    commands.entity(target).try_insert(BuckTree {
+        log_length: LOG_LENGTH,
+        min_radius: LOG_MIN_RADIUS,
+    });
+    // Persistência ANTES: o crate pode despawnar a entidade no mesmo frame.
+    if let Ok((_, _, _, Some(key))) = felled.get(target) {
+        store_flora_bucked(
+            host.as_deref().map(|host| &host.lua),
+            save.as_deref_mut(),
+            &key.0,
+        );
+    }
+    focus.cooldown = BUCK_COOLDOWN;
+    focus.entity = None;
 }
 
 #[cfg(test)]
@@ -1313,6 +1895,7 @@ mod tests {
             popup: "Pedra".to_string(),
             popup_color: DEFAULT_POPUP_COLOR,
             range,
+            cut_height: 0.5,
             replacement: String::new(),
             replace_scale: 1.0,
             name: name.to_string(),
@@ -1614,7 +2197,7 @@ mod tests {
             .expect("prompt publicado");
         assert_eq!(interaction.key, KeyCode::KeyJ);
         assert_eq!(interaction.label, "Cortar");
-        assert!((interaction.range - scaled_range(3.5)).abs() < 1e-5);
+        assert!((interaction.range - viber::interact::scaled_range(3.5)).abs() < 1e-5);
 
         // Move o prop para longe: o prompt tem de sair.
         if let Some(mut transform) = app.world_mut().get_mut::<GlobalTransform>(prop) {
@@ -1790,6 +2373,195 @@ mod tests {
         assert_eq!(save.inventory.wood, 5);
         assert_eq!(save.progression.xp, HARVEST_XP as i64);
         assert!(save.harvested.contains("tree@world/forest.xml#1"));
+    }
+
+    /// `cut-height` do `destructible` chega ao `Harvestable` (o `bevy_flora`
+    /// corta a árvore a essa altura); ausente/inválido cai em 0,5 m.
+    #[test]
+    fn cut_height_vem_do_destructible() {
+        let com = props(&[(
+            "destructible",
+            "hits: 2; break-style: fall; cut-height: 0.7",
+        )]);
+        let parsed = Harvestable::from_props(&com, "tree", None).expect("colhível");
+        assert!((parsed.cut_height - 0.7).abs() < 1e-5);
+
+        let sem = props(&[("destructible", "hits: 2; break-style: fall")]);
+        let parsed = Harvestable::from_props(&sem, "tree", None).expect("colhível");
+        assert!((parsed.cut_height - 0.5).abs() < 1e-5);
+
+        let lixo = props(&[(
+            "destructible",
+            "hits: 2; break-style: fall; cut-height: -3",
+        )]);
+        let parsed = Harvestable::from_props(&lixo, "tree", None).expect("colhível");
+        assert!((parsed.cut_height - 0.5).abs() < 1e-5);
+    }
+
+    /// `flora-fell.<chave>.*` ida e volta pelo save e pelo snapshot.
+    #[test]
+    fn flora_fell_ida_e_volta() {
+        let mut save = VaelSave::default();
+        store_flora_fell(
+            None,
+            Some(&mut save),
+            "arvore@world/forest.xml#1",
+            Vec3::new(0.6, 0.0, -0.8),
+            0.7,
+            true,
+        );
+        let fell = flora_fell_from_kv(&save.legacy, "arvore@world/forest.xml#1")
+            .expect("estado guardado");
+        assert!((fell.dx - 0.6).abs() < 1e-5);
+        assert!((fell.dz + 0.8).abs() < 1e-5);
+        assert!((fell.cut_height - 0.7).abs() < 1e-5);
+        assert!(fell.bucked);
+        // Sem direcção guardada não há restauro.
+        assert!(flora_fell_from_kv(&save.legacy, "outra").is_none());
+    }
+
+    /// O último golpe numa árvore procedural NÃO despawna: insere `FellTree`
+    /// (o bevy_flora tomba e deixa o toco) e guarda a direcção no save.
+    #[test]
+    fn tombo_de_arvore_procedural_insere_fell_tree() {
+        let mut app = app_rust();
+        app.insert_resource(content_com(&[("wood", "resource", None)]));
+        let _player = spawn_player(&mut app);
+        let mut h = harvestable("tree", Some("tree@world/forest.xml#1"), 1, 3.5, "wood", 5);
+        h.style = BreakStyle::Fall;
+        h.cut_height = 0.7;
+        let prop = spawn_prop(&mut app, h);
+        app.world_mut()
+            .entity_mut(prop)
+            .insert(PooledTree {
+                pool: Handle::default(),
+                variant: 0,
+            });
+
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::KeyJ);
+        app.update();
+
+        assert!(
+            app.world().get_entity(prop).is_ok(),
+            "a estação (toco + props) fica no mundo"
+        );
+        assert!(
+            app.world().get::<PooledTree>(prop).is_none(),
+            "a árvore sai da estação (o corte é em espaço global)"
+        );
+        let tree = app
+            .world()
+            .get::<FloraFellTree>(prop)
+            .expect("a estação aponta para a árvore tombada")
+            .0;
+        assert!(
+            app.world().get::<FellTree>(tree).is_some(),
+            "o bevy_flora recebe o FellTree na árvore-raiz"
+        );
+        assert!(
+            app.world().get::<Falling>(tree).is_none(),
+            "o tombo antigo da engine não entra numa árvore procedural"
+        );
+        let save = app.world().resource::<VaelSave>();
+        assert!(
+            save.legacy
+                .contains_key("flora-fell.tree@world/forest.xml#1.dx"),
+            "a direcção da queda fica no save"
+        );
+    }
+
+    /// O `reap_saved` repõe a árvore TOMBADA do save (em vez de a despawnar):
+    /// `FellTree { lying: true }` + chave `flora-fell` na entidade.
+    #[test]
+    fn reap_restaura_arvore_deitada_do_save() {
+        let mut app = app_rust();
+        app.insert_resource(content_com(&[("wood", "resource", None)]));
+        let _player = spawn_player(&mut app);
+        let point = Vec2::new(-102.0, 176.0);
+        app.insert_resource(bevy_flora::FloraGround::new(move |_| 45.0));
+        let mut h = harvestable("tree", Some("tree@world/forest.xml#1"), 3, 3.5, "wood", 3);
+        h.style = BreakStyle::Fall;
+        let prop = spawn_prop(&mut app, h);
+        app.world_mut().entity_mut(prop).insert(PooledTree {
+            pool: Handle::default(),
+            variant: 0,
+        });
+        {
+            let mut save = app.world_mut().resource_mut::<VaelSave>();
+            store_flora_fell(
+                None,
+                Some(&mut save),
+                "tree@world/forest.xml#1",
+                Vec3::new(0.6, 0.0, -0.8),
+                0.7,
+                false,
+            );
+            save.harvested.insert("tree@world/forest.xml#1".into());
+        }
+
+        app.update();
+
+        assert!(
+            app.world().get_entity(prop).is_ok(),
+            "a estação tombada não é despawnada pelo reap"
+        );
+        let tree = app
+            .world()
+            .get::<FloraFellTree>(prop)
+            .expect("a estação aponta para a árvore reposta")
+            .0;
+        let fell = app
+            .world()
+            .get::<FellTree>(tree)
+            .expect("o save repõe o FellTree lying");
+        assert!(fell.lying, "restaurada já deitada, sem tombar outra vez");
+        assert!((fell.direction.x - 0.6).abs() < 1e-5);
+        assert!((fell.cut_height - 0.7).abs() < 1e-5);
+        assert!(app.world().get::<Harvestable>(prop).is_none());
+        let _ = point;
+    }
+
+    /// `[J]` numa árvore deitada retalha-a em toros e marca o save.
+    #[test]
+    fn j_na_arvore_deitada_insere_buck_tree() {
+        let mut app = app_rust();
+        let _player = spawn_player(&mut app);
+        // Uma árvore já deitada não é um `Harvestable` (foi cortada): sem isto
+        // o `harvest_input` apanhava o J e despawnava-a.
+        let lying = app
+            .world_mut()
+            .spawn((
+                Transform::default(),
+                GlobalTransform::default(),
+                FellTree {
+                    direction: Vec2::X,
+                    cut_height: 0.5,
+                    speed: 1.0,
+                    lying: true,
+                },
+                FloraFellKey("tree@world/forest.xml#1".into()),
+            ))
+            .id();
+
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::KeyJ);
+        app.update();
+
+        assert!(
+            app.world().get::<BuckTree>(lying).is_some(),
+            "o [J] na árvore deitada pede os toros"
+        );
+        let save = app.world().resource::<VaelSave>();
+        assert!(
+            matches!(
+                save.legacy.get("flora-fell.tree@world/forest.xml#1.bucked"),
+                Some(Json::Bool(true))
+            ),
+            "o estado retalhado fica no save"
+        );
     }
 
     #[test]

@@ -8,8 +8,8 @@
   align: stretch;
   gap: 8;
   padding: 12 14;
-  background: #171d20ed;
-  border: 1 #b7a47770;
+  background: #141b18ed;
+  border: 1 #a8854c70;
   radius: 8;
   box-shadow: 0 4 12 #00000055;
 }
@@ -264,14 +264,14 @@
    O NPC pergunta em cima; o UiInput fica focado por scripts/ui/say.lua.
    Fica acima do prompt [E] (bottom 136) para não tapar a interacção. */
 #hud .anchor-say { position: absolute; bottom: 190; left: 0; right: 0; justify: center }
-#hud .say-card { width: 520; max-width: 72vw; gap: 7; padding: 10 14; border-color: #d6b979 }
-#hud .say-prompt { font-size: 13; color: #e5d2a5; text-align: center; width: 100% }
+#hud .say-card { width: 520; max-width: 72vw; gap: 7; padding: 10 14; border-color: #a8854c }
+#hud .say-prompt { font-size: 13; color: #e7c987; text-align: center; width: 100% }
 #hud .say-input {
   width: 100%; height: 30; padding: 4 10;
-  background: #10161a; border: 1 #63887f; radius: 6; cursor: text;
+  background: #0b0f0d; border: 1 #8fbf9f; radius: 6; cursor: text;
 }
-#hud .say-input.focused { border-color: #84bacb; box-shadow: 0 0 6 #84bacb55 }
-#hud .say-input .input-text { font-size: 15; color: #eee9dc }
+#hud .say-input.focused { border-color: #e7c987; box-shadow: 0 0 6 #e7c98755 }
+#hud .say-input .input-text { font-size: 15; color: #f2e8d5 }
 /* O `#hud` é preciso: sem o id, esta regra (0,3,0) perdia para a de cima
    (1,2,0) e o placeholder saía com a cor do texto escrito. */
 #hud .say-input.placeholder .input-text { color: #6f7a7d }

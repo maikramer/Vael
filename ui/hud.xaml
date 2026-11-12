@@ -1,0 +1,458 @@
+<Grid xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      Visibility="{Binding hud_visible}">
+  <Grid.Resources>
+    <SolidColorBrush x:Key="Ink" Color="#FFF2E8D5"/>
+    <SolidColorBrush x:Key="Muted" Color="#FFB7A98F"/>
+    <SolidColorBrush x:Key="GoldDeep" Color="#FFA8854C"/>
+    <SolidColorBrush x:Key="Leaf" Color="#FF8FBF9F"/>
+    <SolidColorBrush x:Key="Ember" Color="#FFD9774F"/>
+    <SolidColorBrush x:Key="Gold" Color="#FFE7C987"/>
+    <SolidColorBrush x:Key="CardBrush" Color="#ED141B18"/>
+    <SolidColorBrush x:Key="CardBorder" Color="#70A8854C"/>
+    <SolidColorBrush x:Key="TrackBrush" Color="#FF090F13"/>
+
+    <Style TargetType="TextBlock">
+      <Setter Property="FontSize" Value="14"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+    </Style>
+
+    <Style x:Key="Card" TargetType="Border">
+      <Setter Property="Background" Value="{StaticResource CardBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource CardBorder}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="8"/>
+      <Setter Property="Padding" Value="12,10"/>
+    </Style>
+
+    <Style x:Key="Label" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Foreground" Value="{StaticResource Muted}"/>
+    </Style>
+
+    <Style x:Key="Value" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="13"/>
+      <Setter Property="Foreground" Value="{StaticResource Gold}"/>
+    </Style>
+
+    <Style x:Key="QuestTitle" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="15"/>
+      <Setter Property="FontFamily" Value="Noto Serif Display, serif"/>
+      <Setter Property="Foreground" Value="{StaticResource Ink}"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="QuestOther" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="11"/>
+      <Setter Property="Foreground" Value="#FFE7DCC3"/>
+      <Setter Property="TextAlignment" Value="Right"/>
+      <Setter Property="TextWrapping" Value="Wrap"/>
+    </Style>
+
+    <Style x:Key="Keycap" TargetType="Border">
+      <Setter Property="Background" Value="#FFDDC798"/>
+      <Setter Property="CornerRadius" Value="3"/>
+      <Setter Property="Padding" Value="5,2"/>
+      <Setter Property="MinWidth" Value="18"/>
+    </Style>
+
+    <Style x:Key="Slot" TargetType="Border">
+      <Setter Property="Background" Value="#FF20282D"/>
+      <Setter Property="BorderBrush" Value="#FF4D5A60"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="5"/>
+      <Setter Property="Width" Value="48"/>
+      <Setter Property="Height" Value="46"/>
+    </Style>
+
+    <Style x:Key="SlotIcon" TargetType="Image">
+      <Setter Property="Width" Value="30"/>
+      <Setter Property="Height" Value="30"/>
+      <Setter Property="Stretch" Value="Uniform"/>
+    </Style>
+
+    <Style x:Key="ActionName" TargetType="TextBlock">
+      <Setter Property="FontSize" Value="10"/>
+      <Setter Property="Foreground" Value="#FFD1CFC3"/>
+      <Setter Property="TextAlignment" Value="Center"/>
+    </Style>
+
+    <Style x:Key="Toast" TargetType="Border">
+      <Setter Property="Background" Value="{StaticResource CardBrush}"/>
+      <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+      <Setter Property="BorderThickness" Value="1"/>
+      <Setter Property="CornerRadius" Value="6"/>
+      <Setter Property="Padding" Value="14,9"/>
+      <Setter Property="MaxWidth" Value="520"/>
+    </Style>
+  </Grid.Resources>
+
+  <!-- ── direcção do dano ─────────────────────────────────────────────── -->
+  <Border VerticalAlignment="Top" Height="90" Background="#B0DC2626" Visibility="{Binding dmg_front}">
+  </Border>
+  <Border VerticalAlignment="Bottom" Height="90" Background="#B0DC2626" Visibility="{Binding dmg_back}">
+  </Border>
+  <Border HorizontalAlignment="Left" Width="90" Background="#B0DC2626" Visibility="{Binding dmg_left}">
+  </Border>
+  <Border HorizontalAlignment="Right" Width="90" Background="#B0DC2626" Visibility="{Binding dmg_right}">
+  </Border>
+
+  <!-- ── canto superior esquerdo: vitais, estados e bolsa ─────────────── -->
+  <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top"
+              Margin="18" Spacing="8" Width="284" MaxWidth="300">
+    <Border Style="{StaticResource Card}" Visibility="{Binding vitals_visible}">
+      <StackPanel Spacing="7">
+        <Grid ColumnDefinitions="Auto,*">
+          <Grid Width="42" Height="46" VerticalAlignment="Top">
+            <Path Stretch="Uniform" Fill="#FF10161A" Stroke="{StaticResource GoldDeep}"
+                  StrokeThickness="1.3"
+                  Data="M21 2 L38 8 V23 C38 33 30 40 21 44 C12 40 4 33 4 23 V8 Z"/>
+            <TextBlock Text="{Binding level_text}" FontSize="18" Foreground="{StaticResource Gold}"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,1,0,0"/>
+            <Border Width="15" Height="15" CornerRadius="8" Background="{StaticResource Gold}"
+                    BorderBrush="#FF141B18" BorderThickness="1"
+                    HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,-3,-3,0"
+                    Visibility="{Binding talent_ready}">
+              <TextBlock Text="+" FontSize="10" Foreground="#FF141B18"
+                         HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </Border>
+          </Grid>
+          <StackPanel Grid.Column="1" Margin="10,0,0,0" Spacing="5">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{Binding lbl_health}" Style="{StaticResource Label}" FontSize="12"
+                         Foreground="#FFC9B7A7"/>
+              <TextBlock Grid.Column="1" Text="{Binding health_text}" FontSize="19" FontWeight="Bold"
+                         Foreground="#FFFFF4EB"/>
+            </Grid>
+            <ProgressBar Value="{Binding health}" Maximum="1" Height="9"
+                         Background="{StaticResource TrackBrush}" Foreground="#FFDF6964"/>
+            <Grid ColumnDefinitions="*,Auto" Margin="0,2,0,0">
+              <ProgressBar Value="{Binding xp}" Maximum="1" Height="3"
+                           Background="{StaticResource TrackBrush}" Foreground="#FFD6B979"
+                           VerticalAlignment="Center"/>
+              <TextBlock Grid.Column="1" Text="{Binding xp_text}" FontSize="11"
+                         Foreground="#FFD7C69E" Margin="8,0,0,0"/>
+            </Grid>
+          </StackPanel>
+        </Grid>
+        <Border Height="3" CornerRadius="2" Background="#FFEC8A71"
+                Visibility="{Binding health_low}"/>
+        <TextBlock Text="{Binding lbl_low}" FontSize="11" Foreground="#FFFFBA88"
+                   Visibility="{Binding health_low}"/>
+      </StackPanel>
+    </Border>
+
+    <Border Background="#D816241C" BorderBrush="#668ABD9B" BorderThickness="1"
+            CornerRadius="4" Padding="9,5" Visibility="{Binding status_venom}">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding lbl_venom}" FontSize="11" Foreground="#FFA9D9AD"/>
+        <TextBlock Grid.Column="1" Text="{Binding lbl_venom_hint}" FontSize="9" Foreground="#FF7FA886"/>
+      </Grid>
+    </Border>
+    <Border Background="#D8261C18" BorderBrush="#66FF9B73" BorderThickness="1"
+            CornerRadius="4" Padding="9,5" Visibility="{Binding status_burn}">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding lbl_burn}" FontSize="11" Foreground="#FFFFB98A"/>
+        <TextBlock Grid.Column="1" Text="{Binding lbl_moss_hint}" FontSize="9" Foreground="#FFC98A63"/>
+      </Grid>
+    </Border>
+    <Border Background="#D8161C26" BorderBrush="#6684BACB" BorderThickness="1"
+            CornerRadius="4" Padding="9,5" Visibility="{Binding status_frost}">
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding lbl_frost}" FontSize="11" Foreground="#FFA9D4FF"/>
+        <TextBlock Grid.Column="1" Text="{Binding lbl_moss_hint}" FontSize="9" Foreground="#FF7F9FC4"/>
+      </Grid>
+    </Border>
+
+    <Border Style="{StaticResource Card}" Padding="8,10">
+      <StackPanel Spacing="5">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Image Source="assets/icons/hud_gold.png" Width="17" Height="17" Stretch="Uniform"/>
+          <TextBlock Grid.Column="1" Text="{Binding lbl_gold}" Style="{StaticResource Label}"
+                     Margin="6,0,0,0" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="2" Text="{Binding gold}" Style="{StaticResource Value}"/>
+        </Grid>
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Image Source="assets/icons/hud_wood.png" Width="17" Height="17" Stretch="Uniform"/>
+          <TextBlock Grid.Column="1" Text="{Binding lbl_wood}" Style="{StaticResource Label}"
+                     Margin="6,0,0,0" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="2" Text="{Binding wood}" Style="{StaticResource Value}"/>
+        </Grid>
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Image Source="assets/icons/hud_stone.png" Width="17" Height="17" Stretch="Uniform"/>
+          <TextBlock Grid.Column="1" Text="{Binding lbl_stone}" Style="{StaticResource Label}"
+                     Margin="6,0,0,0" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="2" Text="{Binding stone}" Style="{StaticResource Value}"/>
+        </Grid>
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Image Source="assets/icons/berry.png" Width="17" Height="17" Stretch="Uniform"/>
+          <TextBlock Grid.Column="1" Text="{Binding lbl_berry}" Style="{StaticResource Label}"
+                     Margin="6,0,0,0" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="2" Text="{Binding berry}" Style="{StaticResource Value}"/>
+        </Grid>
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Image Source="assets/icons/crystal_blue.png" Width="17" Height="17" Stretch="Uniform"/>
+          <TextBlock Grid.Column="1" Text="{Binding lbl_seeds}" Style="{StaticResource Label}"
+                     Margin="6,0,0,0" VerticalAlignment="Center"/>
+          <TextBlock Grid.Column="2" Text="{Binding seeds}" Style="{StaticResource Value}"/>
+        </Grid>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+
+  <!-- ── canto superior direito: diário e missão ──────────────────────── -->
+  <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top"
+              Margin="18" Spacing="10" Width="266" MaxWidth="300">
+    <Button Content="{Binding lbl_journal}" Command="{Binding open_journal}"
+            HorizontalAlignment="Right" Padding="12,7"
+            Background="#ED171D20" Foreground="#FFE6D5AD"
+            BorderBrush="#70B7A477" BorderThickness="1"/>
+    <Border Style="{StaticResource Card}" Visibility="{Binding quest_active}">
+      <StackPanel Spacing="7">
+        <StackPanel Orientation="Horizontal" Spacing="5">
+          <PackIcon Kind="List" Width="12" Height="12" Foreground="{StaticResource Gold}"
+                    VerticalAlignment="Center"/>
+          <TextBlock Text="{Binding lbl_quest}" Style="{StaticResource Label}"/>
+        </StackPanel>
+        <TextBlock Text="{Binding quest_title}" Style="{StaticResource QuestTitle}"/>
+        <ProgressBar Value="{Binding quest}" Maximum="1" Height="3"
+                     Background="{StaticResource TrackBrush}" Foreground="#FF8ABD9B"/>
+        <TextBlock Text="{Binding quest_text}" FontSize="12" Foreground="#FFABD1B1"/>
+      </StackPanel>
+    </Border>
+    <ItemsControl ItemsSource="{Binding quest_others}" Visibility="{Binding quests_others}">
+      <ItemsControl.ItemTemplate>
+        <DataTemplate>
+          <TextBlock Text="{Binding text}" Margin="0,2">
+            <TextBlock.Style>
+              <Style TargetType="TextBlock" BasedOn="{StaticResource QuestOther}">
+                <Style.Triggers>
+                  <DataTrigger Binding="{Binding ready}" Value="True">
+                    <Setter Property="Foreground" Value="#FFA9E0B0"/>
+                  </DataTrigger>
+                </Style.Triggers>
+              </Style>
+            </TextBlock.Style>
+          </TextBlock>
+        </DataTemplate>
+      </ItemsControl.ItemTemplate>
+    </ItemsControl>
+    <TextBlock Text="{Binding quest_others_more}" FontSize="10" Foreground="#FFB9AB8C"
+               HorizontalAlignment="Right" Visibility="{Binding quest_others_more_visible}"/>
+  </StackPanel>
+
+  <!-- ── centro: chefe, alvo e combo ──────────────────────────────────── -->
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top"
+              Margin="0,60,0,0" Spacing="10">
+    <Border Style="{StaticResource Card}" Width="460" MaxWidth="520"
+            Padding="14,8" BorderBrush="#99C9785F"
+            Visibility="{Binding boss_active}">
+      <StackPanel Spacing="6">
+        <Grid ColumnDefinitions="Auto,*,Auto">
+          <Border Background="#FFD98A6C" CornerRadius="3" Padding="5,1">
+            <TextBlock Text="{Binding lbl_boss}" FontSize="9" Foreground="#FF171D20"/>
+          </Border>
+          <TextBlock Grid.Column="1" Text="{Binding boss_name}" FontSize="15"
+                     Foreground="#FFF3DCC4" Margin="8,0,0,0"/>
+          <TextBlock Grid.Column="2" Text="{Binding lbl_rage}" FontSize="10"
+                     Foreground="#FFFF9B73" Visibility="{Binding boss_enraged}"/>
+        </Grid>
+        <ProgressBar Value="{Binding boss}" Maximum="1" Height="8"
+                     Background="{StaticResource TrackBrush}" Foreground="#FFC9493B"/>
+      </StackPanel>
+    </Border>
+    <Border Style="{StaticResource Card}" Width="240" MaxWidth="300"
+            Padding="12,8" Visibility="{Binding target_alive}">
+      <StackPanel Spacing="6">
+        <TextBlock Text="{Binding target_name}" FontSize="13" HorizontalAlignment="Center"/>
+        <ProgressBar Value="{Binding target}" Maximum="1" Height="5"
+                     Background="{StaticResource TrackBrush}" Foreground="#FFDF6964"/>
+      </StackPanel>
+    </Border>
+    <TextBlock Text="{Binding combo_text}" FontSize="23" FontWeight="Bold"
+               Foreground="#FFF5D68E" HorizontalAlignment="Center"
+               Visibility="{Binding combo_active}"/>
+  </StackPanel>
+
+  <!-- ── relógio e clima ─────────────────────────────────────────────── -->
+  <Border Style="{StaticResource Card}" HorizontalAlignment="Left" VerticalAlignment="Bottom"
+          Margin="18,0,0,174" Width="208" Padding="11,8">
+    <StackPanel Spacing="5">
+      <TextBlock Text="{Binding zone_name}" FontSize="12" Foreground="#FFECE1C9"/>
+      <Grid ColumnDefinitions="Auto,*,Auto">
+        <PackIcon Kind="Clock" Width="12" Height="12" Foreground="{StaticResource Gold}"
+                  VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Text="{Binding lbl_clock}" Style="{StaticResource Label}"
+                   FontSize="9" Margin="5,0,0,0"/>
+        <TextBlock Grid.Column="2" Text="{Binding clock}" FontSize="14"
+                   Foreground="{StaticResource Gold}"/>
+      </Grid>
+      <ProgressBar Value="{Binding day}" Maximum="1" Height="2"
+                   Background="{StaticResource TrackBrush}" Foreground="#FF86BFC8"/>
+      <Grid ColumnDefinitions="Auto,*,Auto" Visibility="{Binding net_on}">
+        <TextBlock Text="{Binding lbl_net}" Style="{StaticResource Label}" FontSize="9"/>
+        <TextBlock Grid.Column="2" Text="{Binding net_label}" FontSize="14"
+                   Foreground="{StaticResource Gold}"/>
+      </Grid>
+      <Grid ColumnDefinitions="Auto,Auto,*" Visibility="{Binding wet}">
+        <Image Source="assets/icons/icon_rain.png" Width="13" Height="13" Stretch="Uniform"/>
+        <TextBlock Grid.Column="1" Text="{Binding lbl_rain}" Style="{StaticResource Label}"
+                   FontSize="9" Margin="6,0,0,0"/>
+        <ProgressBar Grid.Column="2" Value="{Binding rain}" Maximum="1" Height="3"
+                     Background="{StaticResource TrackBrush}" Foreground="#FF7FB3D5"
+                     Margin="8,0,0,0" VerticalAlignment="Center"/>
+      </Grid>
+    </StackPanel>
+  </Border>
+
+  <!-- ── dock de acções ──────────────────────────────────────────────── -->
+  <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom"
+              Margin="18" Spacing="7" MaxWidth="520">
+    <Grid ColumnDefinitions="*,*" Width="426">
+      <TextBlock Text="{Binding lbl_attack}" FontSize="10" Foreground="#FFFFF1D2"/>
+      <TextBlock Grid.Column="1" Text="{Binding lbl_guard}" FontSize="10"
+                 Foreground="#FFFFF1D2" TextAlignment="Right"/>
+    </Grid>
+    <Border Style="{StaticResource Card}" Padding="10,9">
+      <StackPanel Orientation="Horizontal" Spacing="6">
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Esquiva [C]">
+            <Border Style="{StaticResource Slot}"/>
+            <Border Background="Transparent" BorderBrush="#FFC6AC74" BorderThickness="1"
+                    CornerRadius="5" Visibility="{Binding dash_ready}"/>
+            <Image Source="assets/icons/ability_dash.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding dash_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="C" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <ProgressBar Value="{Binding dash_cd}" Maximum="1" Height="3"
+                         Background="#00000000" Foreground="#FF84BACB"
+                         VerticalAlignment="Bottom"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_dash}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Cantil [E] — cura 50, gasta uma carga">
+            <Border Style="{StaticResource Slot}"/>
+            <Border Background="Transparent" BorderBrush="#FFC6AC74" BorderThickness="1"
+                    CornerRadius="5" Visibility="{Binding heal_ready}"/>
+            <Image Source="assets/icons/ability_heal.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding heal_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="E" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <TextBlock Text="{Binding flask}" FontSize="10" Foreground="#FFCCE4D2"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,3,0"/>
+            <ProgressBar Value="{Binding heal_cd}" Maximum="1" Height="3"
+                         Background="#00000000" Foreground="#FF84BACB"
+                         VerticalAlignment="Bottom"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_flask}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Golpe radial [R]">
+            <Border Style="{StaticResource Slot}"/>
+            <Border Background="Transparent" BorderBrush="#FFC6AC74" BorderThickness="1"
+                    CornerRadius="5" Visibility="{Binding strike_ready}"/>
+            <Image Source="assets/icons/ability_power.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding strike_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="R" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <ProgressBar Value="{Binding strike_cd}" Maximum="1" Height="3"
+                         Background="#00000000" Foreground="#FF84BACB"
+                         VerticalAlignment="Bottom"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_strike}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+        <Border Width="1" Height="46" Background="#44B7A477" Margin="3,0"/>
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Poção [1] — recupera 50 de vida">
+            <Border Style="{StaticResource Slot}"/>
+            <Image Source="assets/icons/potion_health.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding potion_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="1" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <TextBlock Text="{Binding potion}" FontSize="10" Foreground="#FFCCE4D2"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,3,0"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_potion}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Antídoto [2] — remove o veneno">
+            <Border Style="{StaticResource Slot}"/>
+            <Image Source="assets/icons/item_antidote.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding antidote_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="2" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <TextBlock Text="{Binding antidote}" FontSize="10" Foreground="#FFCCE4D2"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,3,0"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_antidote}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Musgo [3] — cura 35 e limpa estados">
+            <Border Style="{StaticResource Slot}"/>
+            <Image Source="assets/icons/moss_potion.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding moss_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="3" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <TextBlock Text="{Binding moss}" FontSize="10" Foreground="#FFCCE4D2"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,3,0"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_moss}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+        <StackPanel Width="52" Spacing="5">
+          <Grid Width="48" Height="46" ToolTip="Bomba [B] — rebenta em área">
+            <Border Style="{StaticResource Slot}"/>
+            <Image Source="assets/icons/item_bomb.png" Style="{StaticResource SlotIcon}"
+                   Opacity="{Binding bomb_opacity}"/>
+            <Border Background="#FFDDC798" CornerRadius="3" Padding="3,1"
+                    HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0,0,2,2">
+              <TextBlock Text="B" FontSize="10" Foreground="#FF171D20"/>
+            </Border>
+            <TextBlock Text="{Binding bomb}" FontSize="10" Foreground="#FFCCE4D2"
+                       HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,2,3,0"/>
+          </Grid>
+          <TextBlock Text="{Binding lbl_bomb}" Style="{StaticResource ActionName}"/>
+        </StackPanel>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+
+  <!-- ── prompt de interacção ─────────────────────────────────────────── -->
+  <Border Style="{StaticResource Card}" HorizontalAlignment="Center" VerticalAlignment="Bottom"
+          Margin="0,0,0,136" Padding="12,7" Visibility="{Binding prompt_active}">
+    <StackPanel Orientation="Horizontal" Spacing="10">
+      <Border Style="{StaticResource Keycap}">
+        <TextBlock Text="{Binding prompt_key}" FontSize="15" Foreground="#FF171D20"/>
+      </Border>
+      <TextBlock Text="{Binding prompt_label}" FontSize="14" VerticalAlignment="Center"/>
+    </StackPanel>
+  </Border>
+
+  <!-- ── descoberta de zona ───────────────────────────────────────────── -->
+  <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,260,0,0"
+              Spacing="7" Visibility="{Binding zone_active}">
+    <TextBlock Text="{Binding lbl_explore}" FontSize="11" Foreground="#FFE5D2A5"
+               HorizontalAlignment="Center"/>
+    <TextBlock Text="{Binding zone_name}" FontSize="30" HorizontalAlignment="Center"
+               TextAlignment="Center" MaxWidth="900"/>
+  </StackPanel>
+
+  <!-- ── notificação / toast ──────────────────────────────────────────── -->
+  <Border Style="{StaticResource Toast}" HorizontalAlignment="Center" VerticalAlignment="Top"
+          Margin="0,22,0,0" Visibility="{Binding toast_active}">
+    <TextBlock Text="{Binding toast_text}" FontSize="13" TextAlignment="Center"
+               TextWrapping="Wrap"/>
+  </Border>
+</Grid>

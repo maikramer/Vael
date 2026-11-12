@@ -88,7 +88,7 @@ impl Landmark {
             biome: def.biome.clone(),
             label,
             radius,
-            survey: def.survey.clone(),
+            survey: def.survey.clone().unwrap_or_default(),
             pilgrim: def.pilgrim,
         })
     }
@@ -349,6 +349,18 @@ impl TravelState {
             .lock()
             .unwrap_or_else(|poisoned| poisoned.into_inner()) = snapshot;
     }
+
+    /// Substitui só quando algo mudou (evita acordar leitores da bridge e
+    /// reescrever um mapa de 22 marcos a 2 Hz sem necessidade).
+    pub fn set_if_changed(&self, snapshot: TravelSnapshot) {
+        let mut current = self
+            .0
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner());
+        if *current != snapshot {
+            *current = snapshot;
+        }
+    }
 }
 
 /// Catálogo do sistema, construído no `Startup` a partir do [`VaelContent`].
@@ -418,7 +430,7 @@ fn update_travel_state(
     // `iter().next()` e não `single()`: com dois heróis (co-op) o `single`
     // falhava e a fotografia ficava presa.
     let Some(player) = players.iter().next() else {
-        state.set(TravelSnapshot::default());
+        state.set_if_changed(TravelSnapshot::default());
         return;
     };
     let player_at = player.translation().to_array();
@@ -437,7 +449,7 @@ fn update_travel_state(
     let empty = VaelSave::default();
     let save = save.as_deref().unwrap_or(&empty);
     let nearest = rules.focus(&positions, save, player_at[0], player_at[2]);
-    state.set(TravelSnapshot {
+    state.set_if_changed(TravelSnapshot {
         player: Some(player_at),
         positions,
         nearest,
@@ -660,6 +672,23 @@ pub(crate) fn install(
                 }
                 let label = rules.label(&name);
                 Ok(Value::String(lua.create_string(&label)?))
+            })?,
+        )?;
+    }
+
+    {
+        // Substitui o `travel.pin` do Lua (diálogo "Perguntar por um lugar").
+        let rules = Arc::clone(&rules);
+        vael.set(
+            "travel_pin",
+            lua.create_function(move |lua, name: Option<String>| {
+                let name = name.unwrap_or_default();
+                if name.is_empty() || rules.get(&name).is_none() {
+                    return Ok(false);
+                }
+                let game: Table = lua.named_registry_value("viber_game")?;
+                game.raw_set("pin", name)?;
+                Ok(true)
             })?,
         )?;
     }

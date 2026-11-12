@@ -266,6 +266,9 @@ uibutton.cell.focused { border-color: amber-300; box-shadow: 0 0 0.9vmin amber-5
 .cell.equipped { border-color: amber-400; box-shadow: 0 0 0.8vmin amber-50066 }
 .cell.equipped .cell-tag { color: amber-300 }
 .cell.equippable .cell-tag { color: sky-300 }
+/* Requisito de atributo por cumprir (ex.: machado exige Força 7). */
+.cell.locked { opacity: 0.72 }
+.cell.locked .cell-tag { color: amber-300 }
 
 /* ── sistema: chave → valor ────────────────────────────────── */
 .row.keyline .row-title { color: amber-200 }

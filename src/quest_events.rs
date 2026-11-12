@@ -830,6 +830,8 @@ fn drain_quest_events(
     player: Query<&GlobalTransform, Or<(With<viber::player::Player>, With<VaelPlayer>)>>,
     mut toasts: Option<MessageWriter<ScriptToast>>,
     mut quests: Option<ResMut<QuestLog>>,
+    // Regras construídas uma vez por carregamento de conteúdo, não por lote.
+    mut rules_cache: Local<Option<QuestRules>>,
 ) {
     let events = queue.take_non_visit();
     if events.is_empty() {
@@ -850,16 +852,21 @@ fn drain_quest_events(
     let Some(content) = content else {
         return;
     };
-    let rules = QuestRules::from_content(&content);
+    if content.is_changed() || rules_cache.is_none() {
+        *rules_cache = Some(QuestRules::from_content(&content));
+    }
+    let rules = rules_cache
+        .as_ref()
+        .expect("cache acabou de ser preenchido");
     let mut kv = before.clone();
     for event in events {
         match event {
             QuestEvent::ReportKill { kind, elite } => {
-                report_kill(&rules, &mut kv, &kind, elite);
+                report_kill(rules, &mut kv, &kind, elite);
             }
             QuestEvent::SyncCollect => {
-                let vault = collect_quantities(&rules, &kv);
-                sync_collect(&rules, &mut kv, &vault);
+                let vault = collect_quantities(rules, &kv);
+                sync_collect(rules, &mut kv, &vault);
             }
             // Consumido pelo sistema das visitas.
             QuestEvent::ScanVisits => {}
@@ -869,7 +876,7 @@ fn drain_quest_events(
     if patch.is_empty() {
         return;
     }
-    let notices = quest_notices(&rules, &before, &kv);
+    let notices = quest_notices(rules, &before, &kv);
     apply_patch(&host.lua, &patch);
     if let Some(quests) = quests.as_deref_mut() {
         apply_quest_mirror(&before, &kv, quests);
@@ -898,6 +905,7 @@ fn scan_visits_system(
     mut quests: Option<ResMut<QuestLog>>,
     mut timer: Local<Option<Timer>>,
     mut logged_missing: Local<BTreeSet<String>>,
+    mut rules_cache: Local<Option<QuestRules>>,
 ) {
     let requested = queue.take_visit_requests();
     let timer =
@@ -918,8 +926,13 @@ fn scan_visits_system(
         return;
     }
     ensure_gate(&host.lua, &mut before, true);
-    let rules = QuestRules::from_content(&content);
-    let tokens = pending_visit_tokens(&rules, &before);
+    if content.is_changed() || rules_cache.is_none() {
+        *rules_cache = Some(QuestRules::from_content(&content));
+    }
+    let rules = rules_cache
+        .as_ref()
+        .expect("cache acabou de ser preenchido");
+    let tokens = pending_visit_tokens(rules, &before);
     if tokens.is_empty() {
         return;
     }
@@ -928,14 +941,20 @@ fn scan_visits_system(
     };
     let position = player.translation();
     let player = [position.x as f64, position.z as f64];
+    // Só os nomes que podem resolver um token (exacto ou substring, como o
+    // `resolve_positions`): num mundo com ~79k entidades, alocar uma `String`
+    // por nome a 5 Hz era o grosso da varredura.
     let named: Vec<(String, [f64; 2])> = names
         .iter()
-        .map(|(name, transform)| {
+        .filter_map(|(name, transform)| {
+            let name = name.as_str();
+            let relevant =
+                tokens.contains(name) || tokens.iter().any(|token| name.contains(token.as_str()));
+            if !relevant {
+                return None;
+            }
             let position = transform.translation();
-            (
-                name.as_str().to_string(),
-                [position.x as f64, position.z as f64],
-            )
+            Some((name.to_string(), [position.x as f64, position.z as f64]))
         })
         .collect();
     let (positions, missing) = resolve_positions(&named, &tokens);
@@ -949,13 +968,13 @@ fn scan_visits_system(
         return;
     }
     let mut kv = before.clone();
-    let hits = scan_visits(&rules, &mut kv, player, &positions);
+    let hits = scan_visits(rules, &mut kv, player, &positions);
     if hits.is_empty() {
         return;
     }
     let patch = changed_patch(&before, &kv);
     if !patch.is_empty() {
-        let notices = quest_notices(&rules, &before, &kv);
+        let notices = quest_notices(rules, &before, &kv);
         apply_patch(&host.lua, &patch);
         if let Some(quests) = quests.as_deref_mut() {
             apply_quest_mirror(&before, &kv, quests);

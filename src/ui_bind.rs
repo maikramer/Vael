@@ -13,9 +13,9 @@ use bevy::prelude::*;
 pub struct VaelHud;
 
 /// Plugin de UI do Vael. Sem sistemas nesta passagem.
-pub struct VaelUiPlugin;
+pub struct VaelHudResourcePlugin;
 
-impl Plugin for VaelUiPlugin {
+impl Plugin for VaelHudResourcePlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<VaelHud>().register_type::<VaelHud>();
     }
