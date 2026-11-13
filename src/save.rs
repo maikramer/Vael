@@ -470,9 +470,9 @@ impl VaelSave {
         kv
     }
 
-    /// Lê o estado tipado de um [`viber::save::SaveGame`]: a secção
+    /// Lê o estado tipado de um [`bevy_ext_save::SaveGame`]: a secção
     /// `game.vael` manda; sem ela (save antigo), migra o `world_kv`.
-    pub fn from_save_game(save: &viber::save::SaveGame) -> Self {
+    pub fn from_save_game(save: &bevy_ext_save::SaveGame) -> Self {
         if let Some(typed) = save.game.as_ref().and_then(|game| game.get("vael")) {
             match serde_json::from_value::<Self>(typed.clone()) {
                 Ok(parsed) => return parsed,
@@ -486,7 +486,7 @@ impl VaelSave {
 
     /// Escreve o envelope: `world_kv` (transição Lua) + `game.vael`
     /// (schema tipado). Não toca no resto do save da engine.
-    pub fn write_to_save_game(&self, save: &mut viber::save::SaveGame) {
+    pub fn write_to_save_game(&self, save: &mut bevy_ext_save::SaveGame) {
         save.world_kv = self.to_world_kv();
         let value = match serde_json::to_value(self) {
             Ok(value) => value,
@@ -757,7 +757,7 @@ mod tests {
     #[test]
     fn save_game_ida_e_volta() {
         let save = VaelSave::from_world_kv(&kv_antigo());
-        let mut envelope = viber::save::SaveGame::default();
+        let mut envelope = bevy_ext_save::SaveGame::default();
         save.write_to_save_game(&mut envelope);
 
         assert!(envelope.game.as_ref().and_then(|g| g.get("vael")).is_some());

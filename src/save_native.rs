@@ -23,7 +23,8 @@ use viber::locale::Locale;
 use viber::luau::game::{game_to_json, json_to_game};
 use viber::luau::host::LuaScriptHost;
 use viber::music::AudioMixerSettings;
-use viber::save::{SaveDir, SaveRequest, SaveSlotInfo, WorldSaveKey};
+use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
+use viber::save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiWriter;
@@ -396,7 +397,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
 // ── paths e slots ───────────────────────────────────────────────────────
 
 fn default_save_dir() -> PathBuf {
-    viber::save::save_path()
+    bevy_ext_save::save_path()
         .parent()
         .map(Path::to_path_buf)
         .unwrap_or_else(|| PathBuf::from("."))
@@ -464,7 +465,7 @@ fn read_meta(path: &Path) -> Option<SlotMeta> {
 /// Lista os quatro slots nativos; se um slot ainda só tiver o JSON antigo,
 /// devolve o metadata antigo para o menu continuar a mostrá-lo.
 pub fn list_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlotInfo> {
-    let old = viber::save::list_save_slots(world_key, save_dir);
+    let old = bevy_ext_save::list_save_slots(world_key, save_dir);
     let base = save_dir
         .map(Path::to_path_buf)
         .unwrap_or_else(default_save_dir);
@@ -526,8 +527,8 @@ fn legacy_payload(world: &mut World, slot: Option<u32>) -> Option<VaelSaveFile> 
     let dir = world
         .get_resource::<SaveDir>()
         .and_then(|dir| dir.0.clone());
-    let old_path = viber::save::save_path_for_slot(key.as_deref(), dir.as_deref(), slot);
-    let game = viber::save::load_from_disk(&old_path).ok()?;
+    let old_path = bevy_ext_save::save_path_for_slot(key.as_deref(), dir.as_deref(), slot);
+    let game = bevy_ext_save::load_from_disk(&old_path).ok()?;
     let save = game
         .game
         .as_ref()
