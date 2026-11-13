@@ -81,7 +81,7 @@ Se o objectivo for reduzir LOC, os alavancas estão na F2 (clap no
 
 ## Substituições por crates
 
-Política aplicada: [`../Viber/docs/CRATES.md`](../../Viber/docs/CRATES.md)
+Política aplicada: [`../bevy_extensions/docs/CRATES.md`](../../bevy_extensions/docs/CRATES.md)
 — substituir roda própria sem mudar comportamento visível, zero deps git,
 `bevy = "0.20.1"` sem pin exacto (gate do Jackdaw). **Tudo abaixo é
 substituição interna: nenhum pacote novo no lock.**
@@ -137,10 +137,10 @@ Grafo normal do jogo: **595 crates únicos** (2026-11-13). Pesos principais:
   optional e desligado.
 
 Perfis: o Vael define `[profile.dev]` igual à engine mas **não tem
-`[profile.release]`** — o dia-a-dia (`CARGO_TARGET_DIR=../Viber/target
-cargo run --release`) usa o release default do Cargo enquanto o Viber usa
-`lto="thin", codegen-units=16`; os fingerprints das deps divergem e o
-target partilhado guarda **duas cópias das deps release**.
+`[profile.release]`** — o dia-a-dia (`cargo run --release`) usa o release
+default do Cargo enquanto o checkout Viber usava
+`lto="thin", codegen-units=16`; os fingerprints das deps divergiam e o
+target partilhado guardava **duas cópias das deps release**.
 
 ### Baseline (2026-11-13, `d929a29`, sessão concorrente activa)
 
@@ -156,9 +156,9 @@ GC do target: as unidades do Vael não estavam na lista do
 teste de ~450 MB acumulavam sem morte. Com o patch (unidades
 `vael|vael_editor|vael_content`), a primeira execução real (2026-11-13)
 libertou **6,4 GB** (o target partilhado passou de ~16 GB para 9,8 GB). O
-GC só corre pelos builds do wrapper da engine; builds do Vael devem
-corrê-lo à mão de quando em quando
-(`bash ../Viber/scripts/target-gc.sh ../Viber/target ../Viber`).
+GC só corria pelos builds do wrapper da engine; o `target-gc.sh` vivia no
+checkout Viber e foi aposentado com ele (2026-11-13). Hoje o Vael usa
+`target/` próprio; builds dele devem ser limpos à mão de quando em quando.
 
 Nota de higiene do irmão: `celer-nlu` compila com 31 warnings
 (`unsafe_op_in_unsafe_fn` na edição 2024, código AVX2) — não é deste

@@ -1,12 +1,13 @@
 # AGENTS.md — Vael
 
-Jogo. A engine é o checkout irmão `../Viber`. O editor oficial é o **Jackdaw
+Jogo. A engine vive em `../bevy_extensions/crates/bevy_ext_viber_engine`
+(o checkout `../Viber` foi aposentado a 2026-11-13). O editor oficial é o **Jackdaw
 0.20 instalado**: `jd open .` abre este projeto; as extensões do Vael entram
 como `.jdext` assinados. O crate `editor/` é legado (já não é o fluxo).
 As ferramentas de geração são o checkout irmão `../AiGameKit` (CLIs no PATH).
 Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 `../CelerAI`. Este ficheiro é curto de propósito. O contrato da engine está em
-`../Viber/AGENTS.md`; lê a secção que a tarefa pede, não o ficheiro inteiro.
+`../bevy_extensions/AGENTS.md`; lê a secção que a tarefa pede, não o ficheiro inteiro.
 
 ## Irmãos
 
@@ -14,14 +15,14 @@ Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 |----------|--------|
 | `.` (Vael) | Mundo, scripts, quests, cenas, pool `assets/` |
 | `../viber-tools` | **CLI `viber`**, `analyze`/`lint`/`bsn`, runtime de debug e extensões Jackdaw (`vael_analyze/profiler/debugger/mcp`) |
-| `../Viber` | Bug ou API em falta na engine. `cargo test` lá. O runtime de gameplay ainda é o monólito |
+| `../bevy_extensions/crates/bevy_ext_viber_engine` | Bug ou API em falta na engine. `cargo test` lá (excluído do workspace; corre standalone). O runtime de gameplay ainda é o monólito |
 | `editor/` | **Legado**: editor próprio sobre Jackdaw. O fluxo é o Jackdaw oficial (`jd open .`) + extensões `.jdext` |
 | `../bevy_extensions` | Crates `bevy_ext_*`/`bevy_voxel_terrain` e extensões genéricas em `extensions/` |
 | `../AiGameKit` | Gerar ou corrigir uma tool. Não abras o monorepo no workspace por defeito |
 | `../CelerAI` | Modelos `models/{nlu,d1}` (LFS) e crates de inferência. Sem ele a engine não compila nem os scripts carregam IA |
 
-Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta + `../Viber` +
-`../CelerAI` + `../viber-tools`).
+Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta +
+`../bevy_extensions` + `../CelerAI` + `../viber-tools`).
 
 ## Crate Rust (migração)
 
@@ -29,14 +30,14 @@ Este checkout é o worktree da migração para Rust/Bevy (`refactor/bevy-native`
 O jogo arranca pelo crate `vael`:
 
 ```bash
-CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
+cargo run --release -- \
   world.bsn --scene main --entry dev --bridge 15706
 ```
 
 `gameplay:false` desliga IA/vitais/projéteis da engine; `player_camera:false`
 dá o corpo e a câmara ao Vael (`src/player.rs`/`src/camera.rs`; a engine ainda
 spawna o `PlayerGLTF` e o collider). O `viber.game()` ainda é a fonte de
-verdade; `VaelStateSync` espelha-o e `VaelHud` publica o HUD. O estado, gates
+verdade; `VaelStateSync` espelha-o e o `hud.rs` publica os binds do HUD. O estado, gates
 e dívidas estão em [`docs/MIGRATION.md`](docs/MIGRATION.md). O checkout
 principal pode ter trabalho em curso (regen/assets); não o tocar por arrasto.
 
@@ -177,7 +178,7 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 - Depois de editar: `viber analyze` (exit 1 em erro).
 - O import do editor Jackdaw 0.20.x rejeita a requirement exata de Bevy: o
   gate sonda `0.20.0` e `0.20.MAX`, e `bevy = "=0.20.1"` não admite nenhum.
-  Manter `bevy = "0.20.1"` (como no `../Viber`); o `jackdaw.toml` grava
+  Manter `bevy = "0.20.1"` (como no `bevy_ext_viber_engine`); o `jackdaw.toml` grava
   `bevy = "0.20"`. O `main.rs` aceita `--jackdaw-extract-schema` (descoberta
   de componentes do `jd`).
 - Céu e tempo são do `bevy_elements` (`src/environment.rs`): NÃO repor
@@ -197,10 +198,11 @@ viber scene lint --world world.bsn
 viber run --scene main --entry dev      # debug: directo ao jogo, sem título/prólogo
 ```
 
-`viber` é o router do `viber-tools`; o wrapper antigo do Viber fica preservado
-como `viber-engine` (bake/scatter/trace/lua enquanto a extração não termina).
-`cd ../Viber && cargo run -- run ../Vael/world.bsn` continua possível para
-testar a engine.
+`viber` é o router do `viber-tools`. O wrapper antigo (`viber-engine`) apontava
+ao checkout `Viber` aposentado — os comandos que delegavam nele (`trace`,
+`lua`, `scene --live`, `tool --live`) precisam do runtime novo. Para testar a
+engine sozinha: `cd ../bevy_extensions/crates/bevy_ext_viber_engine && cargo
+run -- run ../Vael/world.bsn`.
 
 Arranque directo: `--scene main` salta a cena de menu e `--entry dev` (a
 `<SceneEntry name="dev">` de `world.bsn`) faz `scripts/lib/dev.lua` marcar
@@ -240,7 +242,7 @@ Cinco checkouts irmãos, cada um com o seu remoto:
 |------|--------|
 | `Vael` | Mundo, quests, scripts, pool `assets/`. Binários versionados vão em Git LFS |
 | `viber-tools` | CLI `viber`, core headless, runtime de debug e extensões Jackdaw |
-| `Viber` | Engine de gameplay (transitória). `viber-engine` é o wrapper antigo |
+| `bevy_extensions` | Engine de gameplay (`crates/bevy_ext_viber_engine`) e os pacotes publicáveis `bevy_ext_*`. O checkout `Viber` foi aposentado a 2026-11-13 |
 | `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
 | `CelerAI` | Modelos NLU/d1 (`models/`, LFS) e crates de inferência. O Viber compila-as por path-dep `../CelerAI/crates/*` |
 
@@ -248,12 +250,11 @@ Clone novo de qualquer um precisa dos cinco irmãos lado a lado; no Vael,
 correr `tools/fetch_models.sh` uma vez (cria os symlinks `assets/public/{nlu,d1}`).
 
 `~/.local/bin/viber` é agora um symlink para `viber-tools` (instalado por
-`../viber-tools/tools/install.sh`). O wrapper antigo do Viber fica em
-`~/.local/bin/viber-engine`: tira um fingerprint das fontes da engine e só
-chama `cargo build --release` quando mudaram; senão corre a cache
-(`~/.local/share/viber/bin/viber-release`). `VIBER_NO_BUILD=1` salta,
-`VIBER_FORCE_BUILD=1` força. NÃO correr `../Viber/install.sh` por cima — troca
-o wrapper por um binário fixo. O editor oficial: `jd open .` (abre
+`../viber-tools/tools/install.sh`). O wrapper antigo do Viber
+(`~/.local/bin/viber-engine`) tirava um fingerprint das fontes do checkout
+`Viber` — **quebrado com a aposentação desse checkout (2026-11-13)**; a
+delegação antiga (`trace`/`lua`/`scene --live`/`tool --live`) precisa de ser
+migrada para o `viber_tools_runtime`. O editor oficial: `jd open .` (abre
 `world.bsn`/as cenas `.bsn`; a CLI de cena continua XML). Extensões do Vael
 (`../bevy_extensions/extensions/` e `../viber-tools/extensions/`):
 `bevy_voxel_terrain_jackdaw` (terreno + paint, preview progressivo de

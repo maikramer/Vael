@@ -5,7 +5,7 @@
 > Os pacotes chamam-se hoje `bevy_ext_*` (+ `bevy_voxel_terrain`) e vivem no
 > monorepo `../bevy_extensions`, com CI e publicação próprios. O registo de
 > adoção de dependências da engine é
-> [`../../Viber/docs/CRATES.md`](../../Viber/docs/CRATES.md).
+> [`../../bevy_extensions/docs/CRATES.md`](../../bevy_extensions/docs/CRATES.md).
 >
 > Este documento guarda só o que é do **Vael**: o que consome, a sequência da
 > Fase 4, os gates e as decisões que afectam o jogo. O plano antigo (família

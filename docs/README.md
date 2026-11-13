@@ -2,7 +2,7 @@
 
 Este índice diz **onde está a verdade** e **o que é histórico**. O contrato do
 projeto (mundo, fluxo, gotchas) é o [`../AGENTS.md`](../AGENTS.md); a engine
-tem o seu próprio contrato em [`../../Viber/AGENTS.md`](../../Viber/AGENTS.md).
+tem o seu próprio contrato em [`../../bevy_extensions/AGENTS.md`](../../bevy_extensions/AGENTS.md).
 Quando um doc e o código divergem, o código e o `AGENTS.md` ganham — e o doc
 deve ser corrigido no mesmo commit.
 

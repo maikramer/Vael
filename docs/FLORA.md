@@ -15,7 +15,8 @@ texturas, e cada instância carregava a sua subárvore de LOD da engine.
 - `src/harvest.rs`: golpe, loot/XP, tombo com o `bevy_flora`, tocos, toros e a
   persistência do estado tombado.
 - `tools/flora_migrate.py`: migra o mundo (XML) de `<GltfScene>` para estações.
-- `../Viber/src/water_ssr.rs` e `../Viber/src/postfx.rs`: guards que ignoram
+- `../bevy_extensions/crates/bevy_ext_viber_engine/src/water_ssr.rs` e
+  `.../src/postfx.rs`: guards que ignoram
   câmaras offscreen (o bake dos impostores) — sem eles a lente misturava
   alvos de tamanhos diferentes e o wgpu rejeitava o frame.
 

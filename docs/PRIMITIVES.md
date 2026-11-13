@@ -112,9 +112,10 @@ Corrimão contínuo (sweep):
 - Contrato/render: `cargo test -p bevy_ext_scene primitives`,
   `cargo test -p bevy_ext_gradmesh` e
   `cargo test -p bevy_ext_gradmesh --features physics` (no `../bevy_extensions`).
-- Engine (transitório): `cargo test -p viber --lib composition_tests` e
-  `cargo test -p viber --test composition_spawn` (marker + fallback).
-- Jogo: `CARGO_TARGET_DIR=../Viber/target cargo check` no Vael.
+- Engine (transitório): `cargo test --lib composition_tests` e
+  `cargo test --test composition_spawn` dentro de
+  `../bevy_extensions/crates/bevy_ext_viber_engine` (marker + fallback).
+- Jogo: `cargo check` no Vael.
 - O preview do Jackdaw usa o mesmo crate (`vael_jackdaw` 0.1.7); se o viewport
   não mostrar as primitivas, confirmar que o editor foi reiniciado depois de
   instalar a extensão.
