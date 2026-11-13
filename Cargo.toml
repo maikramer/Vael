@@ -109,9 +109,14 @@ debug = "line-tables-only"
 opt-level = 3
 debug = false
 
-# O `[patch]` do Viber NÃO atravessa a fronteira do workspace: sem esta
-# linha o jogo (que compila o `viber` por path-dep) resolveria o `rerecast`
-# 0.5.0 limpo do crates.io, enquanto a engine e os testes dela usam o fork
-# com os dois fixes de robustez (`../Viber/vendor/rerecast/VIBER_PATCH.md`).
-# A navmesh do jogo mudaria de comportamento entre os dois builds. É o mesmo
-# patch da engine; não altera o código do sibling.
+# O `[patch]` do `bevy_ext_viber_engine` NÃO atravessa as path-deps: sem
+# esta tabela o jogo (que compila o `viber` por path) resolveria o
+# `rerecast` limpo do crates.io (0.5.1), enquanto a engine standalone e os
+# testes dela usam o fork do vendor com os dois fixes de robustez
+# (`../bevy_extensions/crates/bevy_ext_viber_engine/vendor/rerecast/VIBER_PATCH.md`).
+# A navmesh do jogo mudaria de comportamento entre os dois builds. O vendor
+# mudou-se do `../Viber` para o `bevy_extensions` (dono do runtime); é o
+# mesmo patch da engine e não altera o código do sibling.
+
+[patch.crates-io]
+rerecast = { path = "../bevy_extensions/crates/bevy_ext_viber_engine/vendor/rerecast" }
