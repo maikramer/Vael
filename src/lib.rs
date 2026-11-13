@@ -35,6 +35,7 @@ pub mod attach;
 pub mod camera;
 pub mod clock;
 pub mod combat;
+mod compat;
 pub mod components;
 pub mod content;
 pub mod economy;

@@ -26,8 +26,9 @@ use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
 
+use crate::compat::lua_count;
 use crate::content::{ItemsFile, RecipesFile, VaelContent};
-use crate::vault::{VaultRules, item_key, vault_add, vault_get, vault_take};
+use crate::vault::{VaultRules, item_key, vael_fn, vael_table, vault_add, vault_get, vault_take};
 
 // ── loja ────────────────────────────────────────────────────────────────
 
@@ -632,145 +633,137 @@ pub(crate) fn install_economy_api(
 pub(crate) fn install(lua: &Lua, shop: ShopRules, craft: CraftRules) -> mlua::Result<()> {
     let shop = Arc::new(shop);
     let craft = Arc::new(craft);
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "shop_price",
+        [shop = Arc::clone(&shop)],
+        move |_, (id, action): (Option<String>, Option<String>)| {
+            let id = id.unwrap_or_default();
+            let Some(action) = TradeAction::parse(&action.unwrap_or_default()) else {
+                return Ok(None);
+            };
+            Ok(shop_price(&shop, &id, action))
         }
-    };
+    );
 
-    {
-        let shop = Arc::clone(&shop);
-        vael.set(
-            "shop_price",
-            lua.create_function(move |_, (id, action): (Option<String>, Option<String>)| {
-                let id = id.unwrap_or_default();
-                let Some(action) = TradeAction::parse(&action.unwrap_or_default()) else {
-                    return Ok(None);
-                };
-                Ok(shop_price(&shop, &id, action))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "shop_rows",
+        [shop = Arc::clone(&shop)],
+        move |lua, ()| {
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kinds: Vec<&str> = Vec::with_capacity(shop.catalog.len() + 1);
+            kinds.push("gold");
+            kinds.extend(shop.catalog.keys().map(String::as_str));
+            let kv = read_items(&game, &kinds)?;
+            let rows = shop_rows(&shop, &kv);
+            let table = lua.create_table()?;
+            for (index, row) in rows.iter().enumerate() {
+                let item = lua.create_table()?;
+                item.set("id", row.id.as_str())?;
+                item.set("label", row.label.as_str())?;
+                item.set("selling", row.selling)?;
+                item.set("price", row.price)?;
+                item.set("stock", row.stock)?;
+                item.set("cap", row.cap)?;
+                item.set("status", row.status.as_str())?;
+                table.set(index + 1, item)?;
+            }
+            Ok(table)
+        }
+    );
 
-    {
-        let shop = Arc::clone(&shop);
-        vael.set(
-            "shop_rows",
-            lua.create_function(move |lua, ()| {
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kinds: Vec<&str> = Vec::with_capacity(shop.catalog.len() + 1);
-                kinds.push("gold");
-                kinds.extend(shop.catalog.keys().map(String::as_str));
-                let kv = read_items(&game, &kinds)?;
-                let rows = shop_rows(&shop, &kv);
-                let table = lua.create_table()?;
-                for (index, row) in rows.iter().enumerate() {
-                    let item = lua.create_table()?;
-                    item.set("id", row.id.as_str())?;
-                    item.set("label", row.label.as_str())?;
-                    item.set("selling", row.selling)?;
-                    item.set("price", row.price)?;
-                    item.set("stock", row.stock)?;
-                    item.set("cap", row.cap)?;
-                    item.set("status", row.status.as_str())?;
-                    table.set(index + 1, item)?;
+    vael_fn!(
+        lua,
+        vael,
+        "shop_trade",
+        [shop = Arc::clone(&shop)],
+        move |lua, (action, id): (Option<String>, Option<String>)| {
+            let id = id.unwrap_or_default();
+            let Some(action) = TradeAction::parse(&action.unwrap_or_default()) else {
+                return trade_table(
+                    lua,
+                    &trade_fail(TradeReason::UnknownAction, None, None, None),
+                );
+            };
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_items(&game, &[id.as_str(), "gold"])?;
+            let before = kv.clone();
+            let out = shop_trade(&shop, &mut kv, action, &id);
+            write_items(&game, &before, &kv)?;
+            trade_table(lua, &out)
+        }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
+        "craft_recipes",
+        [craft = Arc::clone(&craft)],
+        move |lua, ()| {
+            let table = lua.create_table()?;
+            for (index, recipe) in craft_recipes(&craft).iter().enumerate() {
+                let row = lua.create_table()?;
+                row.set("id", recipe.id.as_str())?;
+                row.set("out", recipe.out.as_str())?;
+                row.set("count", recipe.count)?;
+                let cost = lua.create_table()?;
+                for (item, n) in &recipe.cost {
+                    cost.set(item.as_str(), *n)?;
                 }
-                Ok(table)
-            })?,
-        )?;
-    }
+                row.set("cost", cost)?;
+                table.set(index + 1, row)?;
+            }
+            Ok(table)
+        }
+    );
 
-    {
-        let shop = Arc::clone(&shop);
-        vael.set(
-            "shop_trade",
-            lua.create_function(move |lua, (action, id): (Option<String>, Option<String>)| {
-                let id = id.unwrap_or_default();
-                let Some(action) = TradeAction::parse(&action.unwrap_or_default()) else {
-                    return trade_table(
-                        lua,
-                        &trade_fail(TradeReason::UnknownAction, None, None, None),
-                    );
-                };
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_items(&game, &[id.as_str(), "gold"])?;
-                let before = kv.clone();
-                let out = shop_trade(&shop, &mut kv, action, &id);
-                write_items(&game, &before, &kv)?;
-                trade_table(lua, &out)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "craft_status",
+        [craft = Arc::clone(&craft)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let Some(recipe) = craft.get(&id) else {
+                return Ok(Value::Nil);
+            };
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let kv = read_items(&game, &craft_keys(recipe))?;
+            Ok(match craft_status(&craft, &kv, &id) {
+                Some(status) => Value::String(lua.create_string(status.as_str())?),
+                None => Value::Nil,
+            })
+        }
+    );
 
-    {
-        let craft = Arc::clone(&craft);
-        vael.set(
-            "craft_recipes",
-            lua.create_function(move |lua, ()| {
-                let table = lua.create_table()?;
-                for (index, recipe) in craft_recipes(&craft).iter().enumerate() {
-                    let row = lua.create_table()?;
-                    row.set("id", recipe.id.as_str())?;
-                    row.set("out", recipe.out.as_str())?;
-                    row.set("count", recipe.count)?;
-                    let cost = lua.create_table()?;
-                    for (item, n) in &recipe.cost {
-                        cost.set(item.as_str(), *n)?;
-                    }
-                    row.set("cost", cost)?;
-                    table.set(index + 1, row)?;
-                }
-                Ok(table)
-            })?,
-        )?;
-    }
-
-    {
-        let craft = Arc::clone(&craft);
-        vael.set(
-            "craft_status",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let Some(recipe) = craft.get(&id) else {
-                    return Ok(Value::Nil);
-                };
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let kv = read_items(&game, &craft_keys(recipe))?;
-                Ok(match craft_status(&craft, &kv, &id) {
-                    Some(status) => Value::String(lua.create_string(status.as_str())?),
-                    None => Value::Nil,
-                })
-            })?,
-        )?;
-    }
-
-    {
-        let craft = Arc::clone(&craft);
-        vael.set(
-            "craft_make",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = match craft.get(&id) {
-                    Some(recipe) => read_items(&game, &craft_keys(recipe))?,
-                    None => BTreeMap::new(),
-                };
-                let before = kv.clone();
-                let out = craft_make(&craft, &mut kv, &id);
-                write_items(&game, &before, &kv)?;
-                let table = lua.create_table()?;
-                table.set("ok", out.ok)?;
-                table.set("output", out.output.as_str())?;
-                table.set("count", out.count)?;
-                table.set("reason", out.reason.map(CraftReason::as_str))?;
-                Ok(table)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "craft_make",
+        [craft = Arc::clone(&craft)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = match craft.get(&id) {
+                Some(recipe) => read_items(&game, &craft_keys(recipe))?,
+                None => BTreeMap::new(),
+            };
+            let before = kv.clone();
+            let out = craft_make(&craft, &mut kv, &id);
+            write_items(&game, &before, &kv)?;
+            let table = lua.create_table()?;
+            table.set("ok", out.ok)?;
+            table.set("output", out.output.as_str())?;
+            table.set("count", out.count)?;
+            table.set("reason", out.reason.map(CraftReason::as_str))?;
+            Ok(table)
+        }
+    );
 
     Ok(())
 }
@@ -824,20 +817,11 @@ fn write_items(
     Ok(())
 }
 
-/// Contagem de um valor Lua; não numérico ou não finito vale 0 (como o
-/// `lua_count` do cofre).
-fn lua_count(value: Value) -> i64 {
-    match value {
-        Value::Integer(n) => n,
-        Value::Number(n) if n.is_finite() => n as i64,
-        _ => 0,
-    }
-}
-
 #[cfg(test)]
 mod tests {
     use super::*;
     use crate::content::{ItemDef, ItemShop, ItemsFile, RecipeDef, RecipesFile};
+    use crate::vault::kv;
 
     /// Cofre pequeno de propósito: `resource_cap` (3) < `stack_max` (5) faz
     /// os rollbacks de compra/forja serem alcançáveis.
@@ -954,13 +938,6 @@ mod tests {
 
     fn craft() -> CraftRules {
         CraftRules::from_content(&items_file(), &recipes_file())
-    }
-
-    fn kv(pares: &[(&str, i64)]) -> BTreeMap<String, i64> {
-        pares
-            .iter()
-            .map(|(chave, valor)| (chave.to_string(), *valor))
-            .collect()
     }
 
     #[test]

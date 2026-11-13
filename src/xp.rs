@@ -30,8 +30,10 @@ use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
 
+use crate::compat::{lua_number, write_number};
 use crate::components::XpState;
 use crate::content::{ProgressionFile, VaelContent};
+use crate::vault::{vael_fn, vael_table};
 
 /// Defaults do `rules.lua` quando o `data/progression.json` não traz o campo.
 pub const DEFAULT_XP_BASE: i64 = 100;
@@ -251,64 +253,56 @@ pub(crate) fn install_xp_api(host: Option<Res<LuaScriptHost>>, content: Option<R
 /// (nunca substitui as funções do cofre).
 pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
     let rules = Arc::new(rules);
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "ensure_xp",
+        [rules = Arc::clone(&rules)],
+        move |lua, ()| {
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_xp(&game)?;
+            ensure_xp(&mut kv, &rules);
+            write_xp(&game, &kv)
         }
-    };
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "ensure_xp",
-            lua.create_function(move |lua, ()| {
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_xp(&game)?;
-                ensure_xp(&mut kv, &rules);
-                write_xp(&game, &kv)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "add_xp",
+        [rules = Arc::clone(&rules)],
+        move |lua, gain: Option<Value>| {
+            let gain = lua_number(gain.unwrap_or(Value::Nil));
+            if !gain.is_finite() || gain <= 0.0 {
+                return Ok(());
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_xp(&game)?;
+            add_xp(&mut kv, &rules, gain);
+            write_xp(&game, &kv)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "add_xp",
-            lua.create_function(move |lua, gain: Option<Value>| {
-                let gain = lua_number(gain.unwrap_or(Value::Nil));
-                if !gain.is_finite() || gain <= 0.0 {
-                    return Ok(());
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_xp(&game)?;
-                add_xp(&mut kv, &rules, gain);
-                write_xp(&game, &kv)
-            })?,
-        )?;
-    }
-
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "add_skill_points",
-            lua.create_function(move |lua, n: Option<Value>| {
-                let n = lua_number(n.unwrap_or(Value::Nil));
-                if !n.is_finite() || n <= 0.0 {
-                    return Ok(());
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_xp(&game)?;
-                // O Lua chama `ensure_xp()` antes de somar.
-                ensure_xp(&mut kv, &rules);
-                add_skill_points(&mut kv, n);
-                write_xp(&game, &kv)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "add_skill_points",
+        [rules = Arc::clone(&rules)],
+        move |lua, n: Option<Value>| {
+            let n = lua_number(n.unwrap_or(Value::Nil));
+            if !n.is_finite() || n <= 0.0 {
+                return Ok(());
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_xp(&game)?;
+            // O Lua chama `ensure_xp()` antes de somar.
+            ensure_xp(&mut kv, &rules);
+            add_skill_points(&mut kv, n);
+            write_xp(&game, &kv)
+        }
+    );
 
     Ok(())
 }
@@ -339,27 +333,6 @@ fn write_xp(game: &Table, kv: &XpMap) -> mlua::Result<()> {
         }
     }
     Ok(())
-}
-
-/// Escreve inteiro quando o valor é inteiro, `float` quando é fracionário.
-fn write_number(game: &Table, key: &str, value: f64) -> mlua::Result<()> {
-    if value.is_finite()
-        && value.fract() == 0.0
-        && (i64::MIN as f64..=i64::MAX as f64).contains(&value)
-    {
-        game.raw_set(key, value as i64)
-    } else {
-        game.raw_set(key, value)
-    }
-}
-
-/// Argumento numérico do Lua: `nil`/não numérico vira NaN e é ignorado.
-fn lua_number(value: Value) -> f64 {
-    match value {
-        Value::Integer(n) => n as f64,
-        Value::Number(n) => n,
-        _ => f64::NAN,
-    }
 }
 
 #[cfg(test)]

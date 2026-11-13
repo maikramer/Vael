@@ -32,13 +32,14 @@ use viber::luau::components::ScriptToast;
 use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
 
+use crate::compat::env_enabled;
 use crate::components::{QuestLog, VaelPlayer};
 use crate::content::{Objective, VaelContent};
 use crate::quest::{
     QuestKv, QuestRules, STATE_ACTIVE, STATE_DONE, STATE_READY, quest_key, quest_objective,
     quest_progress, quest_set_progress, quest_state,
 };
-use crate::vault::item_key;
+use crate::vault::{item_key, vael_fn, vael_table};
 
 /// Variável de ambiente que liga os eventos de quest em Rust.
 pub const RUST_ENV: &str = "VAEL_QUEST_EVENTS_RUST";
@@ -76,15 +77,6 @@ impl Default for VaelQuestEventsConfig {
     fn default() -> Self {
         Self::from_env()
     }
-}
-
-/// Gate opt-in (o mesmo conjunto de valores do `VAEL_RULES_RUST`).
-fn env_enabled(raw: Option<&str>) -> bool {
-    matches!(
-        raw.map(|value| value.trim().to_ascii_lowercase())
-            .as_deref(),
-        Some("1" | "true" | "on" | "yes")
-    )
 }
 
 // ── fila de eventos ─────────────────────────────────────────────────────
@@ -709,55 +701,47 @@ pub(crate) fn install_quest_events_api(
 
 /// Acrescenta as três funções à tabela `viber.vael` existente.
 pub(crate) fn install(lua: &Lua, queue: &QuestEventQueue) -> mlua::Result<()> {
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "quest_report_kill",
+        [queue = queue.clone()],
+        move |_, (kind, elite): (Option<String>, Option<bool>)| {
+            let kind = kind.unwrap_or_default();
+            if kind.is_empty() {
+                return Ok(());
+            }
+            queue.push(QuestEvent::ReportKill {
+                kind,
+                elite: elite.unwrap_or(false),
+            });
+            Ok(())
         }
-    };
+    );
 
-    {
-        let queue = queue.clone();
-        vael.set(
-            "quest_report_kill",
-            lua.create_function(move |_, (kind, elite): (Option<String>, Option<bool>)| {
-                let kind = kind.unwrap_or_default();
-                if kind.is_empty() {
-                    return Ok(());
-                }
-                queue.push(QuestEvent::ReportKill {
-                    kind,
-                    elite: elite.unwrap_or(false),
-                });
-                Ok(())
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_sync_collect",
+        [queue = queue.clone()],
+        move |_, ()| {
+            queue.push(QuestEvent::SyncCollect);
+            Ok(())
+        }
+    );
 
-    {
-        let queue = queue.clone();
-        vael.set(
-            "quest_sync_collect",
-            lua.create_function(move |_, ()| {
-                queue.push(QuestEvent::SyncCollect);
-                Ok(())
-            })?,
-        )?;
-    }
-
-    {
-        let queue = queue.clone();
-        vael.set(
-            "quest_scan_visits",
-            lua.create_function(move |_, ()| {
-                queue.push(QuestEvent::ScanVisits);
-                Ok(())
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_scan_visits",
+        [queue = queue.clone()],
+        move |_, ()| {
+            queue.push(QuestEvent::ScanVisits);
+            Ok(())
+        }
+    );
 
     Ok(())
 }

@@ -39,6 +39,7 @@ use viber::luau::host::LuaScriptHost;
 
 use crate::content::{ItemsFile, VaelContent, WeaponDef};
 use crate::stats::{AttributeRules, StatEngine, StatSnapshot};
+use crate::vault::{vael_fn, vael_table};
 
 /// Slots de equipamento, na ordem em que os efeitos são somados.
 pub const SLOTS: [&str; 3] = ["weapon", "armor", "charm"];
@@ -431,270 +432,255 @@ pub(crate) fn install_gear_api(
 pub(crate) fn install(lua: &Lua, rules: GearRules) -> mlua::Result<()> {
     let rules = Arc::new(rules);
     let stats = Arc::new(Mutex::new(StatEngine::new(AttributeRules::default())));
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "gear_slot_of",
+        [rules = Arc::clone(&rules)],
+        move |_, id: Option<String>| {
+            Ok(rules.slot_of(&id.unwrap_or_default()).map(str::to_owned))
         }
-    };
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_slot_of",
-            lua.create_function(move |_, id: Option<String>| {
-                Ok(rules.slot_of(&id.unwrap_or_default()).map(str::to_owned))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "gear_equipped",
+        [rules = Arc::clone(&rules)],
+        move |lua, slot: Option<String>| {
+            let slot = slot.unwrap_or_default();
+            let (game, mut state) = read_state(lua)?;
+            let out = equipped(&rules, &mut state, &slot);
+            write_gear(&game, &state)?;
+            Ok(out)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_equipped",
-            lua.create_function(move |lua, slot: Option<String>| {
-                let slot = slot.unwrap_or_default();
-                let (game, mut state) = read_state(lua)?;
-                let out = equipped(&rules, &mut state, &slot);
+    vael_fn!(
+        lua,
+        vael,
+        "gear_is_equipped",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let (game, mut state) = read_state(lua)?;
+            let out = is_equipped(&rules, &mut state, &id);
+            write_gear(&game, &state)?;
+            Ok(out)
+        }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
+        "gear_toggle",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let (game, mut state) = read_state(lua)?;
+            read_held(&game, &id, &mut state)?;
+            let learned = read_learned(&game, &rules)?;
+            let requirement = rules
+                .items
+                .get(&id)
+                .map(|item| item.requires.clone())
+                .unwrap_or_default();
+            // Tirar o que já está equipado nunca é bloqueado: o requisito
+            // é para ENTRAR, não para sair (um item que dá o atributo não
+            // pode prender o jogador).
+            let already_equipped = is_equipped(&rules, &mut state, &id);
+            let met = already_equipped || {
+                let mut engine = lock_stats(&stats);
+                let _ = engine.snapshot(&rules, &mut state, &learned);
+                engine.requirement_met(&requirement)
+            };
+            if !met {
+                // O snapshot pode ter limpado uma marca órfã; grava-a.
                 write_gear(&game, &state)?;
-                Ok(out)
-            })?,
-        )?;
-    }
+                return Ok(Some("blocked"));
+            }
+            let out = toggle(&rules, &mut state, &id).map(Toggle::as_str);
+            write_gear(&game, &state)?;
+            Ok(out)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_is_equipped",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let (game, mut state) = read_state(lua)?;
-                let out = is_equipped(&rules, &mut state, &id);
-                write_gear(&game, &state)?;
-                Ok(out)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "gear_requirement",
+        [rules = Arc::clone(&rules)],
+        move |_, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            Ok(rules
+                .items
+                .get(&id)
+                .map(|item| item.requires.clone())
+                .filter(|requires| !requires.is_empty()))
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "gear_toggle",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let (game, mut state) = read_state(lua)?;
-                read_held(&game, &id, &mut state)?;
-                let learned = read_learned(&game, &rules)?;
-                let requirement = rules
-                    .items
-                    .get(&id)
-                    .map(|item| item.requires.clone())
-                    .unwrap_or_default();
-                // Tirar o que já está equipado nunca é bloqueado: o requisito
-                // é para ENTRAR, não para sair (um item que dá o atributo não
-                // pode prender o jogador).
-                let already_equipped = is_equipped(&rules, &mut state, &id);
-                let met = already_equipped || {
-                    let mut engine = lock_stats(&stats);
-                    let _ = engine.snapshot(&rules, &mut state, &learned);
-                    engine.requirement_met(&requirement)
-                };
-                if !met {
-                    // O snapshot pode ter limpado uma marca órfã; grava-a.
-                    write_gear(&game, &state)?;
-                    return Ok(Some("blocked"));
-                }
-                let out = toggle(&rules, &mut state, &id).map(Toggle::as_str);
-                write_gear(&game, &state)?;
-                Ok(out)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "gear_requirement_text",
+        [rules = Arc::clone(&rules)],
+        move |_, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            Ok(rules
+                .items
+                .get(&id)
+                .map(|item| item.requires_text.clone())
+                .filter(|text| !text.is_empty()))
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_requirement",
-            lua.create_function(move |_, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                Ok(rules
-                    .items
-                    .get(&id)
-                    .map(|item| item.requires.clone())
-                    .filter(|requires| !requires.is_empty()))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "gear_requirement_met",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let Some(item) = rules.items.get(&id) else {
+                return Ok(false);
+            };
+            let (game, mut state) = read_state(lua)?;
+            let learned = read_learned(&game, &rules)?;
+            let met = {
+                let mut engine = lock_stats(&stats);
+                let _ = engine.snapshot(&rules, &mut state, &learned);
+                engine.requirement_met(&item.requires)
+            };
+            write_gear(&game, &state)?;
+            Ok(met)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_requirement_text",
-            lua.create_function(move |_, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                Ok(rules
-                    .items
-                    .get(&id)
-                    .map(|item| item.requires_text.clone())
-                    .filter(|text| !text.is_empty()))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "gear_effects",
+        [rules = Arc::clone(&rules)],
+        move |lua, ()| {
+            let (game, mut state) = read_state(lua)?;
+            let effects = effects(&rules, &mut state);
+            write_gear(&game, &state)?;
+            let table = lua.create_table()?;
+            for (key, value) in effects {
+                table.set(key, value)?;
+            }
+            Ok(table)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "gear_requirement_met",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let Some(item) = rules.items.get(&id) else {
-                    return Ok(false);
-                };
-                let (game, mut state) = read_state(lua)?;
-                let learned = read_learned(&game, &rules)?;
-                let met = {
-                    let mut engine = lock_stats(&stats);
-                    let _ = engine.snapshot(&rules, &mut state, &learned);
-                    engine.requirement_met(&item.requires)
-                };
-                write_gear(&game, &state)?;
-                Ok(met)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "gear_weapon",
+        [rules = Arc::clone(&rules)],
+        move |lua, ()| {
+            let (game, mut state) = read_state(lua)?;
+            let weapon = weapon(&rules, &mut state);
+            write_gear(&game, &state)?;
+            weapon_table(lua, &weapon)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_effects",
-            lua.create_function(move |lua, ()| {
-                let (game, mut state) = read_state(lua)?;
-                let effects = effects(&rules, &mut state);
-                write_gear(&game, &state)?;
-                let table = lua.create_table()?;
-                for (key, value) in effects {
-                    table.set(key, value)?;
-                }
-                Ok(table)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "player_stats",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, ()| {
+            let (game, mut state) = read_state(lua)?;
+            let learned = read_learned(&game, &rules)?;
+            let snapshot = {
+                let mut engine = lock_stats(&stats);
+                engine.snapshot(&rules, &mut state, &learned).clone()
+            };
+            write_gear(&game, &state)?;
+            stats_table(lua, &Stats::from(&snapshot))
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "gear_weapon",
-            lua.create_function(move |lua, ()| {
-                let (game, mut state) = read_state(lua)?;
-                let weapon = weapon(&rules, &mut state);
-                write_gear(&game, &state)?;
-                weapon_table(lua, &weapon)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "stat",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, key: Option<String>| {
+            let key = key.unwrap_or_default();
+            let (game, mut state) = read_state(lua)?;
+            let learned = read_learned(&game, &rules)?;
+            let value = {
+                let mut engine = lock_stats(&stats);
+                engine.snapshot(&rules, &mut state, &learned).stat(&key)
+            };
+            write_gear(&game, &state)?;
+            Ok(value)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "player_stats",
-            lua.create_function(move |lua, ()| {
-                let (game, mut state) = read_state(lua)?;
-                let learned = read_learned(&game, &rules)?;
-                let snapshot = {
-                    let mut engine = lock_stats(&stats);
-                    engine.snapshot(&rules, &mut state, &learned).clone()
-                };
-                write_gear(&game, &state)?;
-                stats_table(lua, &Stats::from(&snapshot))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "attribute",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, key: Option<String>| {
+            let key = key.unwrap_or_default();
+            let (game, mut state) = read_state(lua)?;
+            let learned = read_learned(&game, &rules)?;
+            let value = {
+                let mut engine = lock_stats(&stats);
+                engine
+                    .snapshot(&rules, &mut state, &learned)
+                    .attribute(&key)
+            };
+            write_gear(&game, &state)?;
+            Ok(value)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "stat",
-            lua.create_function(move |lua, key: Option<String>| {
-                let key = key.unwrap_or_default();
-                let (game, mut state) = read_state(lua)?;
-                let learned = read_learned(&game, &rules)?;
-                let value = {
-                    let mut engine = lock_stats(&stats);
-                    engine.snapshot(&rules, &mut state, &learned).stat(&key)
-                };
-                write_gear(&game, &state)?;
-                Ok(value)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "attributes",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, ()| {
+            let (game, mut state) = read_state(lua)?;
+            let learned = read_learned(&game, &rules)?;
+            let snapshot = {
+                let mut engine = lock_stats(&stats);
+                engine.snapshot(&rules, &mut state, &learned).clone()
+            };
+            write_gear(&game, &state)?;
+            let table = lua.create_table()?;
+            for (key, value) in &snapshot.attributes {
+                table.set(key.as_str(), *value)?;
+            }
+            Ok(table)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "attribute",
-            lua.create_function(move |lua, key: Option<String>| {
-                let key = key.unwrap_or_default();
-                let (game, mut state) = read_state(lua)?;
-                let learned = read_learned(&game, &rules)?;
-                let value = {
-                    let mut engine = lock_stats(&stats);
-                    engine
-                        .snapshot(&rules, &mut state, &learned)
-                        .attribute(&key)
-                };
-                write_gear(&game, &state)?;
-                Ok(value)
-            })?,
-        )?;
-    }
-
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "attributes",
-            lua.create_function(move |lua, ()| {
-                let (game, mut state) = read_state(lua)?;
-                let learned = read_learned(&game, &rules)?;
-                let snapshot = {
-                    let mut engine = lock_stats(&stats);
-                    engine.snapshot(&rules, &mut state, &learned).clone()
-                };
-                write_gear(&game, &state)?;
-                let table = lua.create_table()?;
-                for (key, value) in &snapshot.attributes {
-                    table.set(key.as_str(), *value)?;
-                }
-                Ok(table)
-            })?,
-        )?;
-    }
-
-    {
-        let rules = Arc::clone(&rules);
-        let stats = Arc::clone(&stats);
-        vael.set(
-            "stat_sheet",
-            lua.create_function(move |lua, ()| {
-                let (game, mut state) = read_state(lua)?;
-                let learned = read_learned(&game, &rules)?;
-                let snapshot = {
-                    let mut engine = lock_stats(&stats);
-                    engine.snapshot(&rules, &mut state, &learned).clone()
-                };
-                write_gear(&game, &state)?;
-                stat_sheet_table(lua, &snapshot)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "stat_sheet",
+        [rules = Arc::clone(&rules), stats = Arc::clone(&stats)],
+        move |lua, ()| {
+            let (game, mut state) = read_state(lua)?;
+            let learned = read_learned(&game, &rules)?;
+            let snapshot = {
+                let mut engine = lock_stats(&stats);
+                engine.snapshot(&rules, &mut state, &learned).clone()
+            };
+            write_gear(&game, &state)?;
+            stat_sheet_table(lua, &snapshot)
+        }
+    );
 
     Ok(())
 }

@@ -33,7 +33,7 @@ use bevy_elements::{
     SurfaceWeathering, TerrainPlugin, Thunder, TrailsPlugin, WaterPlugin, WavesPlugin, Weather,
     WeatherDirector, WeatherPreset, WeatheredPlugin, WorldClock,
 };
-use mlua::{Lua, Table, Value};
+use mlua::{Lua, Value};
 use viber::ambient::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use viber::luau::host::LuaScriptHost;
 use viber::player::Player;
@@ -44,6 +44,7 @@ use viber::worldsys::{
 
 use crate::clock::elements_rain;
 use crate::settings::SceneSetting;
+use crate::vault::{vael_fn, vael_table};
 use bevy_ext_elements::{ElementsQualityLevel, ElementsSettings};
 
 /// Latitude do mundo (graus, norte positivo).
@@ -964,87 +965,84 @@ fn install_env_api(host: Option<Res<LuaScriptHost>>, control: Res<VaelEnvControl
 }
 
 fn install_env_api_inner(lua: &Lua, control: &VaelEnvControl) -> mlua::Result<()> {
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "env_set_hour",
+        [control = control.clone()],
+        move |_, hour: f64| {
+            control.lock().set_hour = Some(hour);
+            Ok(())
         }
-    };
-    {
-        let control = control.clone();
-        vael.set(
-            "env_set_hour",
-            lua.create_function(move |_, hour: f64| {
-                control.lock().set_hour = Some(hour);
-                Ok(())
-            })?,
-        )?;
-    }
-    {
-        let control = control.clone();
-        vael.set(
-            "env_pause",
-            lua.create_function(move |_, paused: bool| {
-                control.lock().set_paused = Some(paused);
-                Ok(())
-            })?,
-        )?;
-    }
-    {
-        let control = control.clone();
-        vael.set(
-            "env_set_weather",
-            lua.create_function(move |_, name: String| {
-                control.lock().set_weather = Some(name);
-                Ok(())
-            })?,
-        )?;
-    }
-    {
-        let control = control.clone();
-        vael.set(
-            "env_info",
-            lua.create_function(move |lua, ()| {
-                let info = control.lock().info;
-                let table = lua.create_table()?;
-                table.set("hour", info.hour)?;
-                table.set("sun_altitude", info.sun_altitude_deg)?;
-                table.set("moon_altitude", info.moon_altitude_deg)?;
-                table.set("cloud", info.cloud_cover)?;
-                table.set("rain", info.rain)?;
-                table.set("rain_effective", info.rain_effective)?;
-                table.set("temperature", info.temperature_c)?;
-                table.set("visibility", info.visibility_m)?;
-                table.set("wind_speed", info.wind_speed_ms)?;
-                table.set("wind_dir_x", info.wind_dir_x)?;
-                table.set("wind_dir_z", info.wind_dir_z)?;
-                table.set("gustiness", info.gustiness)?;
-                table.set("storminess", info.storminess)?;
-                table.set("wetness", info.wetness)?;
-                table.set("snow_cover", info.snow_cover)?;
-                table.set("snow_depth", info.snow_depth_m)?;
-                table.set("cloud_transmittance", info.cloud_transmittance)?;
-                table.set("camera_ev100", info.camera_ev100)?;
-                table.set("elements_ev100", info.elements_ev100)?;
-                table.set("camera_ambient", info.camera_ambient)?;
-                table.set("camera_env_intensity", info.camera_env_intensity)?;
-                table.set("camera_fog_density", info.camera_fog_density)?;
-                table.set("camera_volumetric", info.camera_volumetric)?;
-                match info.player_cloud_shadow {
-                    Some(value) => table.set("player_cloud_shadow", value)?,
-                    None => table.set("player_cloud_shadow", Value::Nil)?,
-                }
-                table.set("precip_rain", info.precip_rain)?;
-                table.set("precip_snow", info.precip_snow)?;
-                table.set("precip_dust", info.precip_dust)?;
-                table.set("interior", info.interior)?;
-                Ok(table)
-            })?,
-        )?;
-    }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
+        "env_pause",
+        [control = control.clone()],
+        move |_, paused: bool| {
+            control.lock().set_paused = Some(paused);
+            Ok(())
+        }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
+        "env_set_weather",
+        [control = control.clone()],
+        move |_, name: String| {
+            control.lock().set_weather = Some(name);
+            Ok(())
+        }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
+        "env_info",
+        [control = control.clone()],
+        move |lua, ()| {
+            let info = control.lock().info;
+            let table = lua.create_table()?;
+            table.set("hour", info.hour)?;
+            table.set("sun_altitude", info.sun_altitude_deg)?;
+            table.set("moon_altitude", info.moon_altitude_deg)?;
+            table.set("cloud", info.cloud_cover)?;
+            table.set("rain", info.rain)?;
+            table.set("rain_effective", info.rain_effective)?;
+            table.set("temperature", info.temperature_c)?;
+            table.set("visibility", info.visibility_m)?;
+            table.set("wind_speed", info.wind_speed_ms)?;
+            table.set("wind_dir_x", info.wind_dir_x)?;
+            table.set("wind_dir_z", info.wind_dir_z)?;
+            table.set("gustiness", info.gustiness)?;
+            table.set("storminess", info.storminess)?;
+            table.set("wetness", info.wetness)?;
+            table.set("snow_cover", info.snow_cover)?;
+            table.set("snow_depth", info.snow_depth_m)?;
+            table.set("cloud_transmittance", info.cloud_transmittance)?;
+            table.set("camera_ev100", info.camera_ev100)?;
+            table.set("elements_ev100", info.elements_ev100)?;
+            table.set("camera_ambient", info.camera_ambient)?;
+            table.set("camera_env_intensity", info.camera_env_intensity)?;
+            table.set("camera_fog_density", info.camera_fog_density)?;
+            table.set("camera_volumetric", info.camera_volumetric)?;
+            match info.player_cloud_shadow {
+                Some(value) => table.set("player_cloud_shadow", value)?,
+                None => table.set("player_cloud_shadow", Value::Nil)?,
+            }
+            table.set("precip_rain", info.precip_rain)?;
+            table.set("precip_snow", info.precip_snow)?;
+            table.set("precip_dust", info.precip_dust)?;
+            table.set("interior", info.interior)?;
+            Ok(table)
+        }
+    );
+
     Ok(())
 }
 

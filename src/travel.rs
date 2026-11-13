@@ -28,6 +28,7 @@ use viber::player::Player;
 use crate::components::VaelPlayer;
 use crate::content::{LandmarkDef, LandmarksFile, VaelContent};
 use crate::save::VaelSave;
+use crate::vault::{vael_fn, vael_table};
 
 /// Variável de ambiente que liga a autoridade dos marcos (`1`/`true`/`on`/`yes`).
 pub const RUST_TRAVEL_ENV: &str = "VAEL_TRAVEL_RUST";
@@ -569,129 +570,117 @@ pub(crate) fn install(
     rules: Arc<LandmarkRules>,
     state: &TravelState,
 ) -> mlua::Result<()> {
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
-        }
-    };
+    let vael = vael_table(lua)?;
 
-    {
-        let rules = Arc::clone(&rules);
-        let state = state.clone();
-        vael.set(
-            "travel_landmarks",
-            lua.create_function(move |lua, ()| {
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let snapshot = state.get();
-                let rows = lua.create_table()?;
-                for (index, mark) in rules.landmarks.iter().enumerate() {
-                    let position = snapshot.positions.get(&mark.name).copied();
-                    let distance = match (position, snapshot.player) {
-                        (Some(position), Some(player)) => Some(distance_xz(position, player)),
-                        _ => None,
-                    };
-                    let row = landmark_row(lua, &rules, &game, mark, position, distance)?;
-                    rows.set(index + 1, row)?;
-                }
-                Ok(rows)
-            })?,
-        )?;
-    }
-
-    {
-        let rules = Arc::clone(&rules);
-        let state = state.clone();
-        vael.set(
-            "travel_nearest",
-            lua.create_function(move |lua, (px, pz): (Option<f64>, Option<f64>)| {
-                let snapshot = state.get();
-                let (px, pz) = match (px, pz) {
-                    (Some(px), Some(pz)) => (px as f32, pz as f32),
-                    // Sem coordenadas: o herói da fotografia.
-                    _ => match snapshot.player {
-                        Some(player) => (player[0], player[2]),
-                        None => return Ok(Value::Nil),
-                    },
-                };
-                let Some(nearest) = rules.nearest(&snapshot.positions, px, pz) else {
-                    return Ok(Value::Nil);
-                };
-                let Some(mark) = rules.landmarks.get(nearest.index) else {
-                    return Ok(Value::Nil);
-                };
-                let game: Table = lua.named_registry_value("viber_game")?;
+    vael_fn!(
+        lua,
+        vael,
+        "travel_landmarks",
+        [rules = Arc::clone(&rules), state = state.clone()],
+        move |lua, ()| {
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let snapshot = state.get();
+            let rows = lua.create_table()?;
+            for (index, mark) in rules.landmarks.iter().enumerate() {
                 let position = snapshot.positions.get(&mark.name).copied();
-                let row = landmark_row(lua, &rules, &game, mark, position, Some(nearest.distance))?;
-                Ok(Value::Table(row))
-            })?,
-        )?;
-    }
+                let distance = match (position, snapshot.player) {
+                    (Some(position), Some(player)) => Some(distance_xz(position, player)),
+                    _ => None,
+                };
+                let row = landmark_row(lua, &rules, &game, mark, position, distance)?;
+                rows.set(index + 1, row)?;
+            }
+            Ok(rows)
+        }
+    );
 
-    {
-        vael.set(
-            "travel_reveal",
-            lua.create_function(move |lua, biome: Option<String>| {
-                let biome = biome.unwrap_or_default();
-                if biome.is_empty() {
-                    return Ok(false);
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                game.raw_set(format!("{BIOME_KEY_PREFIX}{biome}"), true)?;
-                Ok(true)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "travel_nearest",
+        [rules = Arc::clone(&rules), state = state.clone()],
+        move |lua, (px, pz): (Option<f64>, Option<f64>)| {
+            let snapshot = state.get();
+            let (px, pz) = match (px, pz) {
+                (Some(px), Some(pz)) => (px as f32, pz as f32),
+                // Sem coordenadas: o herói da fotografia.
+                _ => match snapshot.player {
+                    Some(player) => (player[0], player[2]),
+                    None => return Ok(Value::Nil),
+                },
+            };
+            let Some(nearest) = rules.nearest(&snapshot.positions, px, pz) else {
+                return Ok(Value::Nil);
+            };
+            let Some(mark) = rules.landmarks.get(nearest.index) else {
+                return Ok(Value::Nil);
+            };
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let position = snapshot.positions.get(&mark.name).copied();
+            let row = landmark_row(lua, &rules, &game, mark, position, Some(nearest.distance))?;
+            Ok(Value::Table(row))
+        }
+    );
 
-    {
-        vael.set(
-            "travel_is_revealed",
-            lua.create_function(move |lua, biome: Option<String>| {
-                let biome = biome.unwrap_or_default();
-                if biome.is_empty() {
-                    return Ok(false);
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let key = format!("{BIOME_KEY_PREFIX}{biome}");
-                Ok(matches!(game.raw_get::<Value>(key)?, Value::Boolean(true)))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "travel_reveal",
+        move |lua, biome: Option<String>| {
+            let biome = biome.unwrap_or_default();
+            if biome.is_empty() {
+                return Ok(false);
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            game.raw_set(format!("{BIOME_KEY_PREFIX}{biome}"), true)?;
+            Ok(true)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "travel_label",
-            lua.create_function(move |lua, name: Option<String>| {
-                let name = name.unwrap_or_default();
-                if name.is_empty() {
-                    return Ok(Value::Nil);
-                }
-                let label = rules.label(&name);
-                Ok(Value::String(lua.create_string(&label)?))
-            })?,
-        )?;
-    }
+    vael_fn!(lua, vael, "travel_is_revealed", move |lua,
+                                                    biome: Option<
+        String,
+    >| {
+        let biome = biome.unwrap_or_default();
+        if biome.is_empty() {
+            return Ok(false);
+        }
+        let game: Table = lua.named_registry_value("viber_game")?;
+        let key = format!("{BIOME_KEY_PREFIX}{biome}");
+        Ok(matches!(game.raw_get::<Value>(key)?, Value::Boolean(true)))
+    });
 
-    {
-        // Substitui o `travel.pin` do Lua (diálogo "Perguntar por um lugar").
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "travel_pin",
-            lua.create_function(move |lua, name: Option<String>| {
-                let name = name.unwrap_or_default();
-                if name.is_empty() || rules.get(&name).is_none() {
-                    return Ok(false);
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                game.raw_set("pin", name)?;
-                Ok(true)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "travel_label",
+        [rules = Arc::clone(&rules)],
+        move |lua, name: Option<String>| {
+            let name = name.unwrap_or_default();
+            if name.is_empty() {
+                return Ok(Value::Nil);
+            }
+            let label = rules.label(&name);
+            Ok(Value::String(lua.create_string(&label)?))
+        }
+    );
+
+    // Substitui o `travel.pin` do Lua (diálogo "Perguntar por um lugar").
+    vael_fn!(
+        lua,
+        vael,
+        "travel_pin",
+        [rules = Arc::clone(&rules)],
+        move |lua, name: Option<String>| {
+            let name = name.unwrap_or_default();
+            if name.is_empty() || rules.get(&name).is_none() {
+                return Ok(false);
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            game.raw_set("pin", name)?;
+            Ok(true)
+        }
+    );
 
     Ok(())
 }

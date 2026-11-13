@@ -22,6 +22,7 @@ use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
 
+use crate::compat::lua_count;
 use crate::content::{ItemsFile, VaelContent};
 
 /// Prefixo das chaves do cofre no `viber.game()`.
@@ -236,111 +237,147 @@ pub(crate) fn install_vault_api(
     }
 }
 
+/// Obtém a tabela `viber.vael` da VM partilhada, criando-a (dentro de
+/// `viber`) se ainda não existir. O cofre instala-a primeiro no arranque;
+/// os módulos seguintes estendem a mesma tabela — nunca substituem as
+/// funções uns dos outros.
+pub(crate) fn vael_table(lua: &Lua) -> mlua::Result<Table> {
+    let viber: Table = lua.globals().get("viber")?;
+    match viber.get::<Value>("vael")? {
+        Value::Table(table) => Ok(table),
+        _ => {
+            let table = lua.create_table()?;
+            viber.set("vael", table.clone())?;
+            Ok(table)
+        }
+    }
+}
+
+/// Regista uma função na tabela `viber.vael`.
+///
+/// As capturas (`[nome = expr, …]`) são avaliadas uma vez por função — a
+/// closure tem de ser `'static` — e ficam visíveis para o corpo com o nome
+/// dado. Sem capturas, dispensa-se a lista:
+///
+/// ```ignore
+/// vael_fn!(lua, vael, "vault_get", [rules = Arc::clone(&rules)],
+///     move |lua, kind: Option<String>| Ok(vault_get(&rules, &kv, &kind)));
+/// vael_fn!(lua, vael, "heal_player", move |lua, amount: Option<Value>| { … });
+/// ```
+macro_rules! vael_fn {
+    ($lua:expr, $vael:expr, $name:literal, [$($cap:ident = $cap_expr:expr),* $(,)?], $func:expr) => {{
+        $(let $cap = $cap_expr;)*
+        $vael.set($name, $lua.create_function($func)?)?;
+    }};
+    ($lua:expr, $vael:expr, $name:literal, $func:expr) => {{
+        $vael.set($name, $lua.create_function($func)?)?;
+    }};
+}
+pub(crate) use vael_fn;
+
 /// Instala as quatro funções do cofre na tabela `viber.vael`.
 pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
     let rules = Arc::new(rules);
-    let viber: Table = lua.globals().get("viber")?;
-    let vael = lua.create_table()?;
+    let vael = vael_table(lua)?;
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "vault_get",
-            lua.create_function(move |lua, kind: Option<String>| {
-                let kind = kind.unwrap_or_default();
-                if kind.is_empty() {
-                    return Ok(0i64);
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = BTreeMap::new();
-                if let Some(count) = read_item(&game, &kind)? {
-                    kv.insert(item_key(&kind), count);
-                }
-                Ok(vault_get(&rules, &kv, &kind))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "vault_get",
+        [rules = Arc::clone(&rules)],
+        move |lua, kind: Option<String>| {
+            let kind = kind.unwrap_or_default();
+            if kind.is_empty() {
+                return Ok(0i64);
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = BTreeMap::new();
+            if let Some(count) = read_item(&game, &kind)? {
+                kv.insert(item_key(&kind), count);
+            }
+            Ok(vault_get(&rules, &kv, &kind))
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "vault_add",
-            lua.create_function(move |lua, (kind, amount): (Option<String>, Value)| {
-                let kind = kind.unwrap_or_default();
-                if kind.is_empty() {
-                    return Ok(0i64);
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = BTreeMap::new();
-                if let Some(count) = read_item(&game, &kind)? {
-                    kv.insert(item_key(&kind), count);
-                }
-                let added = vault_add(&rules, &mut kv, &kind, lua_amount(amount));
-                if added > 0
-                    && let Some(value) = kv.get(&item_key(&kind))
-                {
-                    game.raw_set(item_key(&kind), *value)?;
-                }
-                Ok(added)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "vault_add",
+        [rules = Arc::clone(&rules)],
+        move |lua, (kind, amount): (Option<String>, Value)| {
+            let kind = kind.unwrap_or_default();
+            if kind.is_empty() {
+                return Ok(0i64);
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = BTreeMap::new();
+            if let Some(count) = read_item(&game, &kind)? {
+                kv.insert(item_key(&kind), count);
+            }
+            let added = vault_add(&rules, &mut kv, &kind, lua_amount(amount));
+            if added > 0
+                && let Some(value) = kv.get(&item_key(&kind))
+            {
+                game.raw_set(item_key(&kind), *value)?;
+            }
+            Ok(added)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "vault_take",
-            lua.create_function(move |lua, (kind, amount): (Option<String>, Value)| {
-                let kind = kind.unwrap_or_default();
-                if kind.is_empty() {
-                    return Ok(false);
-                }
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = BTreeMap::new();
-                if let Some(count) = read_item(&game, &kind)? {
-                    kv.insert(item_key(&kind), count);
-                }
-                let ok = vault_take(&rules, &mut kv, &kind, lua_amount(amount));
-                if ok && let Some(value) = kv.get(&item_key(&kind)) {
-                    game.raw_set(item_key(&kind), *value)?;
-                }
-                Ok(ok)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "vault_take",
+        [rules = Arc::clone(&rules)],
+        move |lua, (kind, amount): (Option<String>, Value)| {
+            let kind = kind.unwrap_or_default();
+            if kind.is_empty() {
+                return Ok(false);
+            }
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = BTreeMap::new();
+            if let Some(count) = read_item(&game, &kind)? {
+                kv.insert(item_key(&kind), count);
+            }
+            let ok = vault_take(&rules, &mut kv, &kind, lua_amount(amount));
+            if ok && let Some(value) = kv.get(&item_key(&kind)) {
+                game.raw_set(item_key(&kind), *value)?;
+            }
+            Ok(ok)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "seed_starting",
-            lua.create_function(move |lua, ()| {
-                let game: Table = lua.named_registry_value("viber_game")?;
-                // Só o gate (`gold`/`potion`) e as chaves do kit: um valor
-                // não numérico conta como PRESENTE, como no Lua.
-                let mut keys: Vec<&str> = rules.starting.keys().map(String::as_str).collect();
-                keys.push("gold");
-                keys.push("potion");
-                keys.sort_unstable();
-                keys.dedup();
-                let mut kv = BTreeMap::new();
-                for kind in keys {
-                    if let Some(count) = read_item(&game, kind)? {
-                        kv.insert(item_key(kind), count);
-                    }
+    vael_fn!(
+        lua,
+        vael,
+        "seed_starting",
+        [rules = Arc::clone(&rules)],
+        move |lua, ()| {
+            let game: Table = lua.named_registry_value("viber_game")?;
+            // Só o gate (`gold`/`potion`) e as chaves do kit: um valor
+            // não numérico conta como PRESENTE, como no Lua.
+            let mut keys: Vec<&str> = rules.starting.keys().map(String::as_str).collect();
+            keys.push("gold");
+            keys.push("potion");
+            keys.sort_unstable();
+            keys.dedup();
+            let mut kv = BTreeMap::new();
+            for kind in keys {
+                if let Some(count) = read_item(&game, kind)? {
+                    kv.insert(item_key(kind), count);
                 }
-                let before = kv.clone();
-                let seeded = seed_starting(&rules, &mut kv);
-                for (key, value) in &kv {
-                    if before.get(key) != Some(value) {
-                        game.raw_set(key.as_str(), *value)?;
-                    }
+            }
+            let before = kv.clone();
+            let seeded = seed_starting(&rules, &mut kv);
+            for (key, value) in &kv {
+                if before.get(key) != Some(value) {
+                    game.raw_set(key.as_str(), *value)?;
                 }
-                Ok(seeded as i64)
-            })?,
-        )?;
-    }
+            }
+            Ok(seeded as i64)
+        }
+    );
 
-    viber.set("vael", vael)?;
     Ok(())
 }
 
@@ -353,15 +390,6 @@ fn read_item(game: &Table, kind: &str) -> mlua::Result<Option<i64>> {
     })
 }
 
-/// Contagem de um valor Lua; não numérico ou não finito vale 0.
-fn lua_count(value: Value) -> i64 {
-    match value {
-        Value::Integer(n) => n,
-        Value::Number(n) if n.is_finite() => n as i64,
-        _ => 0,
-    }
-}
-
 /// `amount` do Lua: `nil`/`false` valem 1 (`amount or 1`); o resto não
 /// numérico vira NaN e é ignorado pelas funções puras.
 fn lua_amount(value: Value) -> f64 {
@@ -371,6 +399,15 @@ fn lua_amount(value: Value) -> f64 {
         Value::Number(n) => n,
         _ => f64::NAN,
     }
+}
+
+/// Mapa `chave → contagem` para os testes da bridge (cofre e loja/forja).
+#[cfg(test)]
+pub(crate) fn kv(pares: &[(&str, i64)]) -> BTreeMap<String, i64> {
+    pares
+        .iter()
+        .map(|(chave, valor)| (chave.to_string(), *valor))
+        .collect()
 }
 
 #[cfg(test)]
@@ -404,13 +441,6 @@ mod tests {
             ..Default::default()
         };
         VaultRules::from_items(&file)
-    }
-
-    fn kv(pares: &[(&str, i64)]) -> BTreeMap<String, i64> {
-        pares
-            .iter()
-            .map(|(chave, valor)| (chave.to_string(), *valor))
-            .collect()
     }
 
     #[test]

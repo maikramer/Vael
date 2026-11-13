@@ -15,9 +15,11 @@ use std::sync::{Arc, Mutex};
 
 use bevy::prelude::*;
 use bevy_elements::{Weather as ElementsWeather, WorldClock as ElementsWorldClock};
-use mlua::{Lua, Table, Value};
+use mlua::{Lua, Value};
 use viber::luau::host::LuaScriptHost;
 use viber::worldsys::{DayCycleState, WeatherState};
+
+use crate::vault::{vael_fn, vael_table};
 
 /// Hora em que a noite começa (20:00).
 pub const NIGHT_FROM: f64 = 20.0;
@@ -199,52 +201,44 @@ pub(crate) fn install_clock_api(host: Option<Res<LuaScriptHost>>, clock: Res<Vae
 /// Acrescenta `clock_hour`, `clock_is_night`, `clock_rain` e `clock_raining`
 /// a `viber.vael` sem substituir as funções que já lá estão.
 pub(crate) fn install(lua: &Lua, clock: &VaelClock) -> mlua::Result<()> {
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "clock_hour",
+        [clock = clock.clone()],
+        move |_, ()| {
+            Ok(match hour(&clock.get()) {
+                Some(hour) => Value::Number(hour),
+                None => Value::Nil,
+            })
         }
-    };
+    );
 
-    {
-        let clock = clock.clone();
-        vael.set(
-            "clock_hour",
-            lua.create_function(move |_, ()| {
-                Ok(match hour(&clock.get()) {
-                    Some(hour) => Value::Number(hour),
-                    None => Value::Nil,
-                })
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "clock_is_night",
+        [clock = clock.clone()],
+        move |_, ()| { Ok(is_night(hour(&clock.get()))) }
+    );
 
-    {
-        let clock = clock.clone();
-        vael.set(
-            "clock_is_night",
-            lua.create_function(move |_, ()| Ok(is_night(hour(&clock.get()))))?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "clock_rain",
+        [clock = clock.clone()],
+        move |_, ()| { Ok(rain(&clock.get())) }
+    );
 
-    {
-        let clock = clock.clone();
-        vael.set(
-            "clock_rain",
-            lua.create_function(move |_, ()| Ok(rain(&clock.get())))?,
-        )?;
-    }
-
-    {
-        let clock = clock.clone();
-        vael.set(
-            "clock_raining",
-            lua.create_function(move |_, ()| Ok(raining(rain(&clock.get()))))?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "clock_raining",
+        [clock = clock.clone()],
+        move |_, ()| { Ok(raining(rain(&clock.get()))) }
+    );
 
     Ok(())
 }
@@ -252,7 +246,7 @@ pub(crate) fn install(lua: &Lua, clock: &VaelClock) -> mlua::Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use mlua::Function;
+    use mlua::{Function, Table};
 
     fn snap(hour: Option<f64>, rain: f64) -> ClockSnapshot {
         ClockSnapshot { hour, rain }

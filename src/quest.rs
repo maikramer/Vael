@@ -35,8 +35,9 @@ use mlua::{Lua, Table, Value};
 use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
 
+use crate::compat::lua_tonumber;
 use crate::content::{Objective, Reward, VaelContent};
-use crate::vault::{VaultRules, item_key, vault_add, vault_take};
+use crate::vault::{VaultRules, item_key, vael_fn, vael_table, vault_add, vault_take};
 use crate::xp::{XP_KEYS, XpMap, XpRules, add_xp};
 
 /// Prefixo das chaves de quest no `viber.game()`.
@@ -691,182 +692,176 @@ pub(crate) fn install(
     let rules = Arc::new(rules);
     let vault = Arc::new(vault);
     let xp = Arc::new(xp);
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
+    let vael = vael_table(lua)?;
+
+    vael_fn!(
+        lua,
+        vael,
+        "quest_state",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let kv = read_keys(&game, &[quest_key(&id)])?;
+            Ok(quest_state(&rules, &kv, &id))
         }
-    };
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_state",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let kv = read_keys(&game, &[quest_key(&id)])?;
-                Ok(quest_state(&rules, &kv, &id))
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_progress",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let kv = read_keys(
+                &game,
+                &[
+                    key_with(&id, "n"),
+                    key_with(&id, "need"),
+                    key_with(&id, "stage"),
+                ],
+            )?;
+            let (have, need) = quest_progress(&rules, &kv, &id);
+            let table = lua.create_table()?;
+            table.set("have", have)?;
+            table.set("need", need)?;
+            Ok(table)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_progress",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let kv = read_keys(
-                    &game,
-                    &[
-                        key_with(&id, "n"),
-                        key_with(&id, "need"),
-                        key_with(&id, "stage"),
-                    ],
-                )?;
-                let (have, need) = quest_progress(&rules, &kv, &id);
-                let table = lua.create_table()?;
-                table.set("have", have)?;
-                table.set("need", need)?;
-                Ok(table)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_objective",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let kv = read_keys(&game, &[key_with(&id, "stage")])?;
+            let view = quest_objective(&rules, &kv, &id);
+            let obj = lua.create_table()?;
+            obj.set("type", view.objective_type.as_str())?;
+            obj.set("target", view.target.as_str())?;
+            obj.set("count", view.count)?;
+            obj.set("title", view.title.as_str())?;
+            let table = lua.create_table()?;
+            table.set("obj", obj)?;
+            table.set("at", view.at)?;
+            table.set("total", view.total)?;
+            Ok(table)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_objective",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let kv = read_keys(&game, &[key_with(&id, "stage")])?;
-                let view = quest_objective(&rules, &kv, &id);
-                let obj = lua.create_table()?;
-                obj.set("type", view.objective_type.as_str())?;
-                obj.set("target", view.target.as_str())?;
-                obj.set("count", view.count)?;
-                obj.set("title", view.title.as_str())?;
-                let table = lua.create_table()?;
-                table.set("obj", obj)?;
-                table.set("at", view.at)?;
-                table.set("total", view.total)?;
-                Ok(table)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_available",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let Some(def) = rules.quests.get(&id) else {
+                return Ok(false);
+            };
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let keys: Vec<String> = def.requires.iter().map(|other| quest_key(other)).collect();
+            let kv = read_keys(&game, &keys)?;
+            Ok(quest_available(&rules, &kv, &id))
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_available",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let Some(def) = rules.quests.get(&id) else {
-                    return Ok(false);
+    vael_fn!(
+        lua,
+        vael,
+        "quest_chain",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let game: Table = lua.named_registry_value("viber_game")?;
+            // A cadeia é curta (máx. 16 saltos): só os estados percorridos.
+            let mut keys = Vec::new();
+            let mut current = id.as_str();
+            for _ in 0..=MAX_CHAIN {
+                keys.push(quest_key(current));
+                let Some(def) = rules.quests.get(current) else {
+                    break;
                 };
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let keys: Vec<String> = def.requires.iter().map(|other| quest_key(other)).collect();
-                let kv = read_keys(&game, &keys)?;
-                Ok(quest_available(&rules, &kv, &id))
-            })?,
-        )?;
-    }
-
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_chain",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let game: Table = lua.named_registry_value("viber_game")?;
-                // A cadeia é curta (máx. 16 saltos): só os estados percorridos.
-                let mut keys = Vec::new();
-                let mut current = id.as_str();
-                for _ in 0..=MAX_CHAIN {
-                    keys.push(quest_key(current));
-                    let Some(def) = rules.quests.get(current) else {
-                        break;
-                    };
-                    if def.next.is_empty() {
-                        break;
-                    }
-                    current = def.next.as_str();
+                if def.next.is_empty() {
+                    break;
                 }
-                let kv = read_keys(&game, &keys)?;
-                Ok(quest_chain(&rules, &kv, &id))
-            })?,
-        )?;
-    }
+                current = def.next.as_str();
+            }
+            let kv = read_keys(&game, &keys)?;
+            Ok(quest_chain(&rules, &kv, &id))
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_set_progress",
-            lua.create_function(move |lua, (id, n): (Option<String>, Option<Value>)| {
-                let id = id.unwrap_or_default();
-                let n = lua_number(n.unwrap_or(Value::Nil));
-                let before = game_to_json(lua);
-                let mut kv = before.clone();
-                let out = quest_set_progress(&rules, &mut kv, &id, n);
-                write_kv(lua, &before, &kv);
-                let table = lua.create_table()?;
-                table.set("ok", out.ok)?;
-                table.set("stage_advanced", out.stage_advanced)?;
-                table.set("stage", out.stage)?;
-                table.set("total", out.total)?;
-                table.set("title", out.title.as_str())?;
-                table.set("ready", out.ready)?;
-                Ok(table)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_set_progress",
+        [rules = Arc::clone(&rules)],
+        move |lua, (id, n): (Option<String>, Option<Value>)| {
+            let id = id.unwrap_or_default();
+            let n = lua_tonumber(n.unwrap_or(Value::Nil));
+            let before = game_to_json(lua);
+            let mut kv = before.clone();
+            let out = quest_set_progress(&rules, &mut kv, &id, n);
+            write_kv(lua, &before, &kv);
+            let table = lua.create_table()?;
+            table.set("ok", out.ok)?;
+            table.set("stage_advanced", out.stage_advanced)?;
+            table.set("stage", out.stage)?;
+            table.set("total", out.total)?;
+            table.set("title", out.title.as_str())?;
+            table.set("ready", out.ready)?;
+            Ok(table)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        vael.set(
-            "quest_accept",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let before = game_to_json(lua);
-                let mut kv = before.clone();
-                let ok = quest_accept(&rules, &mut kv, &id);
-                write_kv(lua, &before, &kv);
-                Ok(ok)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_accept",
+        [rules = Arc::clone(&rules)],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let before = game_to_json(lua);
+            let mut kv = before.clone();
+            let ok = quest_accept(&rules, &mut kv, &id);
+            write_kv(lua, &before, &kv);
+            Ok(ok)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let vault = Arc::clone(&vault);
-        let xp = Arc::clone(&xp);
-        vael.set(
-            "quest_turn_in",
-            lua.create_function(move |lua, id: Option<String>| {
-                let id = id.unwrap_or_default();
-                let before = game_to_json(lua);
-                let mut kv = before.clone();
-                let out = quest_turn_in(&rules, &vault, &xp, &mut kv, &id);
-                write_kv(lua, &before, &kv);
-                let table = lua.create_table()?;
-                table.set("ok", out.ok)?;
-                table.set("gold", out.gold)?;
-                table.set("missing_items", out.missing_items)?;
-                table.set("title", out.title.as_str())?;
-                table.set(
-                    "reason",
-                    out.reason.map(TurnInReason::as_str).unwrap_or_default(),
-                )?;
-                Ok(table)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "quest_turn_in",
+        [
+            rules = Arc::clone(&rules),
+            vault = Arc::clone(&vault),
+            xp = Arc::clone(&xp)
+        ],
+        move |lua, id: Option<String>| {
+            let id = id.unwrap_or_default();
+            let before = game_to_json(lua);
+            let mut kv = before.clone();
+            let out = quest_turn_in(&rules, &vault, &xp, &mut kv, &id);
+            write_kv(lua, &before, &kv);
+            let table = lua.create_table()?;
+            table.set("ok", out.ok)?;
+            table.set("gold", out.gold)?;
+            table.set("missing_items", out.missing_items)?;
+            table.set("title", out.title.as_str())?;
+            table.set(
+                "reason",
+                out.reason.map(TurnInReason::as_str).unwrap_or_default(),
+            )?;
+            Ok(table)
+        }
+    );
 
     Ok(())
 }
@@ -909,21 +904,6 @@ fn write_kv(lua: &Lua, before: &QuestKv, after: &QuestKv) {
     }
     if !patch.is_empty() {
         apply_patch(lua, &patch);
-    }
-}
-
-/// Argumento numérico do Lua: `nil`/não numérico vira NaN; strings numéricas
-/// contam (o `tonumber` do Lua aceitava-as).
-fn lua_number(value: Value) -> f64 {
-    match value {
-        Value::Integer(n) => n as f64,
-        Value::Number(n) => n,
-        Value::String(text) => text
-            .to_str()
-            .ok()
-            .and_then(|text| text.trim().parse::<f64>().ok())
-            .unwrap_or(f64::NAN),
-        _ => f64::NAN,
     }
 }
 

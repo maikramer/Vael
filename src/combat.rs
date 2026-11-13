@@ -30,6 +30,9 @@ use bevy::prelude::*;
 use mlua::{Function, Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
 
+use crate::compat::{lua_number, truthy, write_number};
+use crate::vault::{vael_fn, vael_table};
+
 /// Duração da guarda [L].
 pub const GUARD_SECS: f64 = 0.5;
 /// Janela de parry depois de abrir a guarda.
@@ -306,92 +309,88 @@ pub(crate) fn install_combat_api(host: Option<Res<LuaScriptHost>>) {
 pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
     let rules = Arc::new(rules);
     let guard_session = Arc::new(Mutex::new(GuardState::default()));
-    let viber: Table = lua.globals().get("viber")?;
-    let vael: Table = match viber.get::<Value>("vael")? {
-        Value::Table(table) => table,
-        _ => {
-            let table = lua.create_table()?;
-            viber.set("vael", table.clone())?;
-            table
-        }
-    };
+    let vael = vael_table(lua)?;
 
-    {
-        let rules = Arc::clone(&rules);
-        let session = Arc::clone(&guard_session);
-        vael.set(
-            "guard",
-            lua.create_function(move |lua, now: Option<Value>| {
-                let now = lua_number(now.unwrap_or(Value::Nil));
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = CombatKv::default();
+    vael_fn!(
+        lua,
+        vael,
+        "guard",
+        [
+            rules = Arc::clone(&rules),
+            session = Arc::clone(&guard_session)
+        ],
+        move |lua, now: Option<Value>| {
+            let now = lua_number(now.unwrap_or(Value::Nil));
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = CombatKv::default();
+            let mut session = lock_session(&session);
+            session.load(&game, &mut kv)?;
+            guard(&mut kv, &rules, now);
+            session.store(&kv);
+            Ok(())
+        }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
+        "damage_player",
+        [
+            rules = Arc::clone(&rules),
+            session = Arc::clone(&guard_session)
+        ],
+        move |lua, (amount, now): (Option<Value>, Option<Value>)| {
+            let amount = lua_number(amount.unwrap_or(Value::Nil));
+            let now = lua_number(now.unwrap_or(Value::Nil));
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_vitals(&game)?;
+            {
                 let mut session = lock_session(&session);
                 session.load(&game, &mut kv)?;
-                guard(&mut kv, &rules, now);
+            }
+            let defense = stats_defense(lua)?;
+            let result = damage(&mut kv, &rules, defense, amount, now);
+            write_vitals(&game, &kv)?;
+            {
+                let mut session = lock_session(&session);
                 session.store(&kv);
-                Ok(())
-            })?,
-        )?;
-    }
+            }
+            result_table(lua, result)
+        }
+    );
 
-    {
-        let rules = Arc::clone(&rules);
-        let session = Arc::clone(&guard_session);
-        vael.set(
-            "damage_player",
-            lua.create_function(move |lua, (amount, now): (Option<Value>, Option<Value>)| {
-                let amount = lua_number(amount.unwrap_or(Value::Nil));
-                let now = lua_number(now.unwrap_or(Value::Nil));
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_vitals(&game)?;
-                {
-                    let mut session = lock_session(&session);
-                    session.load(&game, &mut kv)?;
-                }
-                let defense = stats_defense(lua)?;
-                let result = damage(&mut kv, &rules, defense, amount, now);
-                write_vitals(&game, &kv)?;
-                {
-                    let mut session = lock_session(&session);
-                    session.store(&kv);
-                }
-                result_table(lua, result)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "heal_player",
+        move |lua, amount: Option<Value>| {
+            let amount = lua_number(amount.unwrap_or(Value::Nil));
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_vitals(&game)?;
+            let healed = heal(&mut kv, amount);
+            write_vitals(&game, &kv)?;
+            Ok(healed)
+        }
+    );
 
-    {
-        vael.set(
-            "heal_player",
-            lua.create_function(move |lua, amount: Option<Value>| {
-                let amount = lua_number(amount.unwrap_or(Value::Nil));
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_vitals(&game)?;
-                let healed = heal(&mut kv, amount);
-                write_vitals(&game, &kv)?;
-                Ok(healed)
-            })?,
-        )?;
-    }
-
-    {
-        vael.set(
-            "grant_iframes",
-            lua.create_function(move |lua, secs: Option<Value>| {
-                // `secs or 0` do Lua: nil vira 0; um NaN continua NaN (o
-                // `math.max` devolve o valor actual).
-                let secs = match secs.unwrap_or(Value::Nil) {
-                    Value::Integer(n) => n as f64,
-                    Value::Number(n) => n,
-                    _ => 0.0,
-                };
-                let game: Table = lua.named_registry_value("viber_game")?;
-                let mut kv = read_vitals(&game)?;
-                grant_iframes(&mut kv, secs);
-                write_iframes(&game, &kv)
-            })?,
-        )?;
-    }
+    vael_fn!(
+        lua,
+        vael,
+        "grant_iframes",
+        move |lua, secs: Option<Value>| {
+            // `secs or 0` do Lua: nil vira 0; um NaN continua NaN (o
+            // `math.max` devolve o valor actual).
+            let secs = match secs.unwrap_or(Value::Nil) {
+                Value::Integer(n) => n as f64,
+                Value::Number(n) => n,
+                _ => 0.0,
+            };
+            let game: Table = lua.named_registry_value("viber_game")?;
+            let mut kv = read_vitals(&game)?;
+            grant_iframes(&mut kv, secs);
+            write_iframes(&game, &kv)
+        }
+    );
 
     Ok(())
 }
@@ -437,21 +436,6 @@ fn read_number(game: &Table, key: &str, missing: f64) -> mlua::Result<f64> {
     })
 }
 
-/// Escreve inteiro quando o valor é inteiro, `float` quando é fracionário.
-fn write_number(game: &Table, key: &str, value: f64) -> mlua::Result<()> {
-    if value.is_nan() {
-        return Ok(());
-    }
-    if value.is_finite()
-        && value.fract() == 0.0
-        && (i64::MIN as f64..=i64::MAX as f64).contains(&value)
-    {
-        game.raw_set(key, value as i64)
-    } else {
-        game.raw_set(key, value)
-    }
-}
-
 /// `session_id` do jogo; ausente/não numérico vale 0.
 fn read_session_id(game: &Table) -> mlua::Result<f64> {
     read_number(game, KEY_SESSION_ID, 0.0)
@@ -474,21 +458,6 @@ fn stats_defense(lua: &Lua) -> mlua::Result<f64> {
         Value::Number(n) => n,
         _ => 0.0,
     })
-}
-
-/// `amount`/`now` do Lua: `nil`/não numérico vira NaN e é ignorado pelas
-/// funções puras.
-fn lua_number(value: Value) -> f64 {
-    match value {
-        Value::Integer(n) => n as f64,
-        Value::Number(n) => n,
-        _ => f64::NAN,
-    }
-}
-
-/// Verdade do Lua (`death_pending`): só `nil` e `false` são falsos.
-fn truthy(value: Value) -> bool {
-    !matches!(value, Value::Nil | Value::Boolean(false))
 }
 
 fn result_table(lua: &Lua, result: DamageResult) -> mlua::Result<Table> {

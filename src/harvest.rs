@@ -27,6 +27,7 @@
 
 use bevy::ecs::message::Messages;
 use bevy::prelude::*;
+use bevy_ext_world::xml::values::parse_color;
 use bevy_flora::{
     BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeShake, TreeShakes,
 };
@@ -52,11 +53,12 @@ use viber::ui::widgets::UiFocusedInput;
 use viber::vitals::Health;
 
 use crate::VaelProjectRoot;
+use crate::compat::env_enabled;
 use crate::components::{Inventory, PlayerVitals, XpState};
 use crate::content::VaelContent;
 use crate::quest_events::{QuestEvent, QuestEventQueue};
 use crate::save::VaelSave;
-use crate::vault::{VaultRules, item_key, vault_add, vault_take};
+use crate::vault::{VaultRules, item_key, vael_fn, vael_table, vault_add, vault_take};
 use crate::xp::{
     KEY_LEVEL, KEY_SKILL_POINTS, KEY_XP, KEY_XP_NEXT, XP_KEYS, XpGain, XpMap, XpRules, add_xp,
 };
@@ -309,25 +311,21 @@ fn install_fell_api(host: Option<Res<LuaScriptHost>>, mut commands: Commands) {
     let shared = std::sync::Arc::clone(&queue.0);
     let lua = &host.lua;
     let installed = (|| -> mlua::Result<()> {
-        let viber: Table = lua.globals().get("viber")?;
-        let vael: Table = match viber.get::<LuaValue>("vael")? {
-            LuaValue::Table(table) => table,
-            _ => {
-                let table = lua.create_table()?;
-                viber.set("vael", table.clone())?;
-                table
-            }
-        };
-        vael.set(
+        let vael = vael_table(lua)?;
+        vael_fn!(
+            lua,
+            vael,
             "fell_tree",
-            lua.create_function(move |_, bits: i64| {
+            [shared = std::sync::Arc::clone(&shared)],
+            move |_, bits: i64| {
                 shared
                     .lock()
                     .unwrap_or_else(|poisoned| poisoned.into_inner())
                     .push(bits as u64);
                 Ok(true)
-            })?,
-        )
+            }
+        );
+        Ok(())
     })();
     match installed {
         Ok(()) => {
@@ -548,15 +546,6 @@ pub fn harvest_rust_enabled(config: Option<Res<VaelHarvestConfig>>) -> bool {
     config.is_some_and(|config| config.rust)
 }
 
-/// `true` só para os valores aceites pelo resto da migração.
-fn env_enabled(raw: Option<&str>) -> bool {
-    matches!(
-        raw.map(|value| value.trim().to_ascii_lowercase())
-            .as_deref(),
-        Some("1" | "true" | "on" | "yes")
-    )
-}
-
 // ── parser de props ─────────────────────────────────────────────────────
 
 /// `prop-<nome>` do `ScriptProps` (texto cru; "" quando ausente).
@@ -637,33 +626,18 @@ fn parse_number(raw: &str) -> Option<f64> {
 }
 
 /// Cor `#rgb`/`#rrggbb`; inválida cai no amarelo do Lua.
+///
+/// O parse é o do formato de cena ([`parse_color`] do `bevy_ext_world`, a
+/// mesma matemática `/255`), mas o contrato do prop é mais estreito: só
+/// `#hex` conta — nomes de cor e `0x` do formato de cena continuam a cair
+/// no amarelo, como no Lua.
 pub fn parse_popup_color(raw: &str) -> [f32; 3] {
-    let Some(hex) = raw.strip_prefix('#') else {
-        return DEFAULT_POPUP_COLOR;
-    };
-    let bytes = hex.as_bytes();
-    match bytes.len() {
-        3 if bytes.iter().all(|byte| byte.is_ascii_hexdigit()) => [
-            (hex_nibble(bytes[0]) * 17) as f32 / 255.0,
-            (hex_nibble(bytes[1]) * 17) as f32 / 255.0,
-            (hex_nibble(bytes[2]) * 17) as f32 / 255.0,
-        ],
-        6 if bytes.iter().all(|byte| byte.is_ascii_hexdigit()) => [
-            (hex_nibble(bytes[0]) * 16 + hex_nibble(bytes[1])) as f32 / 255.0,
-            (hex_nibble(bytes[2]) * 16 + hex_nibble(bytes[3])) as f32 / 255.0,
-            (hex_nibble(bytes[4]) * 16 + hex_nibble(bytes[5])) as f32 / 255.0,
-        ],
-        _ => DEFAULT_POPUP_COLOR,
+    if raw.starts_with('#')
+        && let Ok(color) = parse_color(raw, "popup-color")
+    {
+        return color;
     }
-}
-
-fn hex_nibble(byte: u8) -> u8 {
-    match byte {
-        b'0'..=b'9' => byte - b'0',
-        b'a'..=b'f' => byte - b'a' + 10,
-        b'A'..=b'F' => byte - b'A' + 10,
-        _ => 0,
-    }
+    DEFAULT_POPUP_COLOR
 }
 
 /// Ferramenta do prop (o `tool_of` do Lua).
