@@ -10,8 +10,8 @@
 use std::time::Duration;
 
 use bevy::prelude::*;
-use viber::ui::script::{ScriptBindValue, UiScriptBinds};
-use viber::ui::{UiClicks, UiRegistry, UiSet, UiWriter};
+use bevy_ext_ui::ui::script::{ScriptBindValue, UiScriptBinds};
+use bevy_ext_ui::ui::{UiClicks, UiRegistry, UiSet, UiWriter};
 
 use crate::content::VaelContent;
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};

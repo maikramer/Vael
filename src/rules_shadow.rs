@@ -23,7 +23,7 @@ use std::collections::BTreeMap;
 use bevy::prelude::*;
 use serde_json::Value;
 use bevy_ext_core::MenusOpen;
-use viber::ui::modal::UiModalsOpen;
+use bevy_ext_ui::ui::modal::UiModalsOpen;
 use viber::worldsys::WeatherState;
 
 use crate::components::PlayerVitals;

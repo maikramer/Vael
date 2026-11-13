@@ -11,8 +11,8 @@ use std::collections::BTreeMap;
 
 use bevy::prelude::*;
 use serde_json::Value;
-use viber::ui::UiSet;
-use viber::ui::script::{ScriptBindValue, UiScriptBinds};
+use bevy_ext_ui::ui::UiSet;
+use bevy_ext_ui::ui::script::{ScriptBindValue, UiScriptBinds};
 
 use crate::compat::json_number_like;
 use crate::content::{Objective, QuestDef, VaelContent};

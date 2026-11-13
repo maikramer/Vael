@@ -13,10 +13,10 @@ use bevy::prelude::*;
 use bevy::reflect::Reflect;
 use bevy_pf::prelude::*;
 use serde_json::Value;
-use viber::ui::UiData;
-use viber::ui::UiModalsOpen;
-use viber::ui::script::UiScriptBinds;
-use viber::ui::writer::UiWriter;
+use bevy_ext_ui::ui::UiData;
+use bevy_ext_ui::ui::UiModalsOpen;
+use bevy_ext_ui::ui::script::UiScriptBinds;
+use bevy_ext_ui::ui::writer::UiWriter;
 
 use crate::content::{VaelContent, label};
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};
