@@ -115,6 +115,16 @@ fn on_native_loaded(_event: On<Loaded>, mut state: ResMut<NativeSaveState>) {
 /// moonshine. O ficheiro é escrito/deserializado nos observers; o frame de
 /// `PostUpdate` aplica o resultado.
 fn process_save_requests(world: &mut World) {
+    // Um load/save pedido a meio de uma troca de cena aplicaria o payload na
+    // cena errada (o `request_change` de um load também é recusado enquanto
+    // o loader está ocupado). O pedido fica em `SaveRequest` e volta a ser
+    // tentado no frame seguinte.
+    if world
+        .get_resource::<viber::scene_loader::SceneLoader>()
+        .is_some_and(|loader| loader.busy())
+    {
+        return;
+    }
     let Some(mut request) = world.get_resource_mut::<SaveRequest>() else {
         return;
     };
