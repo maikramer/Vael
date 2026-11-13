@@ -51,6 +51,9 @@ pub struct VaelController {
     pub jump_buffer_time: f32,
     pub last_steer_time: f32,
     pub last_moving_time: f32,
+    /// Já viu o [`viber::player::TeleportSettle`] corrente (distingue a
+    /// CHEGADA de um teleporte da tutela a meio). Ver `player_movement`.
+    pub settle_seen: bool,
 }
 
 impl Default for VaelController {
@@ -71,6 +74,7 @@ impl Default for VaelController {
             jump_buffer_time: f32::NEG_INFINITY,
             last_steer_time: f32::NEG_INFINITY,
             last_moving_time: f32::INFINITY,
+            settle_seen: false,
         }
     }
 }
@@ -306,6 +310,25 @@ fn player_movement(
         // Tutela pós-teleporte: enquanto dura, o chão ANALÍTICO manda mesmo
         // que já exista collider algures — a coluna de destino pode estar a
         // assar e uma queda a 55 m/s atravessa o trimesh antes disso.
+        //
+        // Settle FRESCO é a CHEGADA de um teleporte (viagem pelo mapa,
+        // `viber.teleport_player`, load do save): a chegada tem de ser limpa,
+        // sem a inércia nem o knockback do sítio antigo. Quem teleporta repõe
+        // o `Player` da engine — agora um espelho que este sync reescreve —
+        // por isso o reset do MOVIMENTO vive aqui, no dono.
+        let fresh_settle = settle.is_some() && !controller.settle_seen;
+        controller.settle_seen = settle.is_some();
+        if fresh_settle {
+            controller.vel_x = 0.0;
+            controller.vel_z = 0.0;
+            controller.vel_y = 0.0;
+            controller.is_jumping = false;
+            controller.jump_cooldown = 0.0;
+            controller.can_jump = true;
+            commands
+                .entity(entity)
+                .remove::<viber::physics_fx::Knockback>();
+        }
         let settling = match settle.as_deref_mut() {
             Some(state) if state.frames > 0 => {
                 state.frames -= 1;

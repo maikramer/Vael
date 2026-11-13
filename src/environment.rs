@@ -27,16 +27,17 @@ use bevy::light::{
 use bevy::pbr::{DistanceFog, FogFalloff};
 use bevy::prelude::*;
 use bevy_elements::{
-    CivilDate, Climate, CloudShadows, DustPlugin, ElementsCamera, ElementsPlugins, ElementsQuality,
-    ElementsSystems, Environment, GeoLocation, GroundCoverPlugin, HydrologyPlugin, PathsPlugin,
-    PrecipitationBlocker, PrecipitationState, RocksPlugin, SunState, SurfaceWeathering,
-    TerrainPlugin, Thunder, TrailsPlugin, WaterPlugin, WavesPlugin, Weather, WeatherDirector,
-    WeatherPreset, WeatheredPlugin, WorldClock,
+    CivilDate, Climate, CloudShadows, DustPlugin, ElementsCamera, ElementsExposure,
+    ElementsPlugins, ElementsQuality, ElementsSystems, Environment, GeoLocation, GroundCoverPlugin,
+    HydrologyPlugin, PathsPlugin, PrecipitationBlocker, PrecipitationState, RocksPlugin, SunState,
+    SurfaceWeathering, TerrainPlugin, Thunder, TrailsPlugin, WaterPlugin, WavesPlugin, Weather,
+    WeatherDirector, WeatherPreset, WeatheredPlugin, WorldClock,
 };
 use mlua::{Lua, Table, Value};
 use viber::ambient::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use viber::luau::host::LuaScriptHost;
 use viber::player::Player;
+use viber::postfx::{ExternalExposure, PostFxState};
 use viber::worldsys::{
     AtmosphereState, BiomeRegions, InteriorLighting, WeatherState, rain_scale_at,
 };
@@ -212,9 +213,15 @@ impl Plugin for VaelEnvironmentPlugin {
             // terreno real e o áudio (sem chuva dupla). Ver `EngineRainVisuals`.
             .insert_resource(EngineRainVisuals(false))
             .init_resource::<VaelEnvControl>()
+            // O kick de exposição da engine (`viber.punch`) é reaplicado por
+            // cima do EV do crate: ver `VaelExposureKick`.
+            .init_resource::<VaelExposureKick>()
             .add_plugins(group)
             // Pedidos de QA entram ANTES do relógio para a hora valer neste frame.
             .add_systems(Update, apply_env_control.before(ElementsSystems::Clock))
+            // Desfaz o kick do frame anterior antes do `auto_exposure` do crate
+            // ler a exposição (senão o kick realimentava a adaptação).
+            .add_systems(PreUpdate, undo_exposure_kick)
             // Gravar o `environment.bsn` com o jogo a correr aplica-se já.
             .add_systems(Update, apply_scene_settings.before(ElementsSystems::Clock))
             // O clima do crate alimenta o `WeatherState` da engine.
@@ -253,7 +260,7 @@ impl Plugin for VaelEnvironmentPlugin {
             )
             // A névoa da engine é inserida por `biome_fog_system` (Update,
             // via Commands); este passe corre depois de os comandos assentarem.
-            .add_systems(PostUpdate, apply_weather_visibility)
+            .add_systems(PostUpdate, (apply_weather_visibility, apply_exposure_kick))
             .add_systems(
                 Update,
                 // Depois do `collect_ui_data` (que só escreve com `<DayCycle>`) e
@@ -308,6 +315,9 @@ pub struct EnvInfo {
     pub player_cloud_shadow: Option<f32>,
     /// Valores vivos da câmara `ElementsCamera` (QA de exposição/ambiente).
     pub camera_ev100: f32,
+    /// EV100 que o `bevy_elements` publicou (dono da exposição; deve ser o
+    /// mesmo que a câmara tem, salvo o kick de `viber.punch`).
+    pub elements_ev100: f32,
     pub camera_ambient: f32,
     pub camera_env_intensity: f32,
     pub camera_fog_density: f32,
@@ -348,7 +358,9 @@ impl VaelEnvControl {
 /// iluminância (sol/lua/nuvens). A exposição automática da engine é desligada
 /// no `config.yaml` (`postfx.disabled: auto-exposure`): dois donos do mesmo
 /// `Exposure` davam flicker, e a curva nocturna da engine (feita para o céu
-/// antigo) branqueava o céu físico ao meio-dia.
+/// antigo) branqueava o céu físico ao meio-dia. A marca [`ExternalExposure`]
+/// fecha a porta que faltava: o `drive_postfx` da engine escrevia o EV base
+/// (`BASE_EV100`, EV100 ~10,2) por cima do EV físico (~13,3).
 ///
 /// `distance_fog`/`volumetric_fog` desligados: a névoa de distância por bioma
 /// é da engine (`biome_fog_system`) e os volumétricos já estão cortados no
@@ -402,14 +414,20 @@ fn attach_elements_camera(
         }
     }
     if current.is_none() {
-        commands.entity(chosen).insert(ElementsCamera {
-            auto_exposure: true,
-            atmosphere: true,
-            distance_fog: false,
-            volumetric_fog: false,
-            ambient: true,
-            msaa_off: true,
-        });
+        commands.entity(chosen).insert((
+            ElementsCamera {
+                auto_exposure: true,
+                atmosphere: true,
+                distance_fog: false,
+                volumetric_fog: false,
+                ambient: true,
+                msaa_off: true,
+            },
+            // O EV é do crate (céu físico). Sem a marca, o `drive_postfx` da
+            // engine escrevia por cima a curva `BASE_EV100` do domo antigo
+            // (EV100 ~10,2 ao meio-dia) e o céu físico saía branco/cinza.
+            ExternalExposure,
+        ));
         let total = cameras.iter().count();
         info!(
             camera = %chosen,
@@ -535,6 +553,61 @@ fn apply_weather_visibility(
                 *density = next;
             }
         }
+    }
+}
+
+/// Juice de exposição da engine (`viber.punch`) aplicado por cima do EV do
+/// crate.
+///
+/// O `drive_postfx` da engine aplica o kick a `Exposure::ev100`; com
+/// [`ExternalExposure`] deixa de tocar na câmara do crate. Para o juice não
+/// desaparecer, este par de sistemas aplica-o depois do `drive_postfx`
+/// (PostUpdate) e **desfá-lo antes do `auto_exposure` do crate** (PreUpdate):
+/// sem o desfazer, a adaptação do crate lia o EV com o kick e o flash ficava
+/// lido como cena mais escura, arrastando a exposição para baixo.
+///
+/// O `viber.punch` negativo (o "ai" do dano recebido) escurece por outro
+/// caminho: empurra o `state.ev100` da engine acima do alvo (piso
+/// `BASE_EV100 + MAX_DARKEN_EV`) e o drive devolve-o ao alvo a `BLEND_RATE`.
+/// Essa escrita também não chega à câmara marcada — o dono aplica o desvio
+/// POSITIVO (`ev100 − target`), que é o escurecimento transitório; a parte
+/// negativa do blend de transições fica de fora porque a adaptação do crate
+/// já cobre o clima por si (não duplicar).
+#[derive(Resource, Default)]
+struct VaelExposureKick {
+    /// `(câmara, EV de juice)` aplicado no fim do frame anterior.
+    applied: Vec<(Entity, f32)>,
+}
+
+/// Desfaz o juice do frame anterior (corre em `PreUpdate`, antes do
+/// `auto_exposure` do crate).
+fn undo_exposure_kick(
+    mut kick: ResMut<VaelExposureKick>,
+    mut cameras: Query<&mut bevy::camera::Exposure>,
+) {
+    for (entity, ev) in kick.applied.drain(..) {
+        if let Ok(mut exposure) = cameras.get_mut(entity) {
+            exposure.ev100 += ev;
+        }
+    }
+}
+
+/// Aplica o juice corrente ao EV do crate, no fim do frame (depois de o
+/// `drive_postfx` ter decaído o kick e blendado o EV).
+fn apply_exposure_kick(
+    postfx: Option<Res<PostFxState>>,
+    mut kick: ResMut<VaelExposureKick>,
+    mut cameras: Query<(Entity, &mut bevy::camera::Exposure), With<ElementsCamera>>,
+) {
+    let ev = postfx.as_deref().map_or(0.0, |state| {
+        state.kick + (state.ev100 - state.target_ev100).max(0.0)
+    });
+    if ev <= 0.0 {
+        return;
+    }
+    for (entity, mut exposure) in &mut cameras {
+        exposure.ev100 -= ev;
+        kick.applied.push((entity, ev));
     }
 }
 
@@ -813,6 +886,7 @@ fn collect_env_info(
     state: Res<WeatherState>,
     weathering: Option<Res<SurfaceWeathering>>,
     shadows: Option<Res<CloudShadows>>,
+    elements_exposure: Option<Res<ElementsExposure>>,
     environment: Environment,
     players: Query<&GlobalTransform, With<Player>>,
     cameras: Query<
@@ -855,6 +929,9 @@ fn collect_env_info(
         cloud_transmittance: shadows.as_deref().map_or(1.0, |s| s.mean_transmittance),
         player_cloud_shadow,
         camera_ev100: camera.map_or(0.0, |(_, exposure, _, _, _)| exposure.ev100),
+        elements_ev100: elements_exposure
+            .as_deref()
+            .map_or(0.0, |exposure| exposure.ev100),
         camera_ambient: camera.map_or(0.0, |(ambient, _, _, _, _)| ambient.brightness),
         camera_env_intensity: camera.map_or(0.0, |(_, _, environment, _, _)| {
             environment.map_or(0.0, |environment| environment.intensity)
@@ -951,6 +1028,7 @@ fn install_env_api_inner(lua: &Lua, control: &VaelEnvControl) -> mlua::Result<()
                 table.set("snow_depth", info.snow_depth_m)?;
                 table.set("cloud_transmittance", info.cloud_transmittance)?;
                 table.set("camera_ev100", info.camera_ev100)?;
+                table.set("elements_ev100", info.elements_ev100)?;
                 table.set("camera_ambient", info.camera_ambient)?;
                 table.set("camera_env_intensity", info.camera_env_intensity)?;
                 table.set("camera_fog_density", info.camera_fog_density)?;

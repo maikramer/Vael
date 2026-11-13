@@ -1,30 +1,27 @@
 //! Cadência das sombras do sol.
 //!
-//! Com o céu/tempo do `bevy_elements` (`src/environment.rs`) o relógio é
-//! contínuo e o sol anda ~0.3°/s; o passe de sombras corre a **15 Hz**
-//! (`ELEMENTS_SHADOW_REFRESH_HZ`), com as cascatas congeladas entre refreshes.
+//! **O default é desenhar o mapa de sombras em TODOS os frames** (cadência 0).
 //! Sem `<DayCycle>` nem `bevy_elements` (mundos QA antigos), o sistema é um
 //! no-op.
 //!
-//! Com `<DayCycle mode="day-night" shadow-refresh-hz="15">` (A/B antigo), o
-//! sol fica
-//! parado numa âncora e o mapa de sombras direcional só precisa de ser
-//! re-renderizado quando as cascatas se deslocam com a câmara ou quando um
-//! caster dinâmico (herói, NPC, criatura) se mexe. Em vez de pagar as 4
-//! vistas de sombra em TODOS os frames, o jogo salta o passe nos frames
-//! intermédios e re-renderiza a 15 Hz.
+//! O modo de cadência (saltar o passe nos frames intermédios e congelar as
+//! cascatas) existe atrás de `VAEL_SHADOW_HZ` / `shadow-refresh-hz` e **está
+//! quebrado com o Bevy 0.20**: medido a 2026-11-12, a 15 Hz o mapa de
+//! profundidade NÃO sobrevive aos frames saltados — o resultado é chão sem
+//! sombra nenhuma e acne nas faces voltadas ao sol (sombras em sítios onde
+//! não há oclusor). A/B com o mesmo arranque: `VAEL_SHADOW_HZ=15` (partido) vs
+//! `VAEL_SHADOW_HZ=0` (correto). O mecanismo ficou como ferramenta de A/B;
+//! não voltar a ligá-lo sem provar que o mapa persiste.
 //!
 //! O mecanismo: `per_view_shadow_pass` do Bevy devolve cedo quando não há
 //! uma `BinnedRenderPhase<Shadow>` para a view retida. Removemos a entrada
-//! das views direcionais ANTES do passe; a textura de profundidade persiste
-//! (o `prepare_lights` volta a pedi-la ao `TextureCache` todos os frames), e
-//! o passe principal continua a amostrá-la. Nada de alterar o Bevy.
+//! das views direcionais ANTES do passe e supúnhamos que a textura de
+//! profundidade persistia entre frames. Não persiste (ou algo a limpa antes
+//! do passe principal), logo o passe principal amostra um mapa vazio.
 //!
-//! Fora do modo `day-night` (ou durante a travessia dia↔noite, ou com
-//! `shadow-refresh-hz="0"`) o sistema não salta nada — o comportamento é o
-//! de sempre. Com o relógio contínuo do `bevy_elements` a cadência é
-//! `VAEL_SHADOW_HZ` (default 15; 0 = todos os frames). Uma cena nova
-//! (`SceneEpoch`) força um render imediato.
+//! Com o relógio contínuo do `bevy_elements` a cadência é `VAEL_SHADOW_HZ`
+//! (default 0 = todos os frames). Uma cena nova (`SceneEpoch`) força um
+//! render imediato.
 
 use bevy::core_pipeline::schedule::Core3d;
 use bevy::light::Cascades;
@@ -39,13 +36,14 @@ use viber::worldsys::DayCycleState;
 
 /// Cadência das sombras com o relógio contínuo do `bevy_elements`.
 ///
-/// O sol anda ~0.3°/s (72 s de jogo por segundo real): a 15 Hz o passo é
-/// ~0.02°, invisível, e o passe de sombras deixa de correr em 3 de cada 4
-/// frames. O céu/relógio continuam contínuos (sem saltos que realocam o
-/// probe do céu).
-const ELEMENTS_SHADOW_REFRESH_HZ: f32 = 15.0;
+/// **0 = todos os frames**, que é o único valor correto com o Bevy 0.20: o
+/// mapa de sombras não sobrevive aos frames saltados (ver o doc do módulo).
+/// Com o sol a andar ~0.3°/s a cadência nunca foi o gargalo — o custo é o
+/// passe em si, e trocá-lo por sombras partidas não paga.
+const ELEMENTS_SHADOW_REFRESH_HZ: f32 = 0.0;
 
-/// Cadência pedida por `VAEL_SHADOW_HZ` (default 15; 0 = todos os frames).
+/// Cadência pedida por `VAEL_SHADOW_HZ` (default 0 = todos os frames; > 0
+/// liga o modo de cadência partido, só para A/B).
 fn elements_shadow_hz() -> f32 {
     std::env::var("VAEL_SHADOW_HZ")
         .ok()
@@ -56,8 +54,9 @@ fn elements_shadow_hz() -> f32 {
 
 /// Pedido main→render: este frame re-renderiza as sombras do sol?
 ///
-/// `active` é só diagnóstico (o modo está ligado e assentado); `render` é o
-/// que o system do render app lê. Fora do modo, `render` fica sempre `true`.
+/// `active` marca que o modo de cadência está ligado e assentado (com a
+/// cadência a 0, que é o default, fica sempre falso); `render` é o que o
+/// system do render app lê. Fora do modo, `render` fica sempre `true`.
 #[derive(Resource, Clone, Debug, ExtractResource)]
 #[extract_app(RenderApp)]
 pub struct VaelShadowRefresh {
@@ -129,6 +128,7 @@ fn drive_shadow_refresh(
     mut last_visual: Local<f32>,
     mut last_camera: Local<Vec3>,
     mut last_light_switch: Local<Option<(bool, bool)>>,
+    mut warned_cadence: Local<bool>,
 ) {
     let (hz, active, visual_changed) = match clock.as_deref() {
         Some(clock) => {
@@ -144,9 +144,10 @@ fn drive_shadow_refresh(
             *last_visual = visual;
             (hz, active, changed)
         }
-        // Relógio contínuo do `bevy_elements`: cadência fixa de 15 Hz. Um
-        // salto de minuto nunca acontece em jogo (o relógio avança sempre);
-        // o QA arranca já na hora com `VAEL_START_HOUR`.
+        // Relógio contínuo do `bevy_elements`: `VAEL_SHADOW_HZ` (default 0 =
+        // todos os frames; > 0 é só A/B, o mapa não sobrevive aos saltos com
+        // o Bevy 0.20). Um salto de minuto nunca acontece em jogo (o relógio
+        // avança sempre); o QA arranca já na hora com `VAEL_START_HOUR`.
         None if elements.is_some() => {
             let hz = elements_shadow_hz();
             (hz, hz > 0.0, false)
@@ -170,6 +171,15 @@ fn drive_shadow_refresh(
     let just_activated = active != *was_active;
     *was_active = active;
     refresh.active = active;
+    if active && !*warned_cadence {
+        *warned_cadence = true;
+        warn!(
+            hz,
+            "vael: cadência de sombras ligada (`VAEL_SHADOW_HZ`/`shadow-refresh-hz`); \
+             com o Bevy 0.20 o mapa não sobrevive aos frames saltados e as sombras \
+             ficam ausentes/acne — usar só para A/B"
+        );
+    }
 
     // O crate troca as sombras do Sol pelas da Lua quando ela nasce: o mapa
     // novo tem de ser desenhado JÁ, não 66 ms depois.
@@ -219,10 +229,13 @@ fn refresh_due(active: bool, hz: f32, dt: f32, accumulator: &mut f32) -> bool {
     }
 }
 
-/// Salta o passe das sombras direcionais nos frames em que o cache é válido.
+/// Salta o passe das sombras direcionais nos frames em que o cache seria
+/// válido — **modo de cadência, desligado por omissão**.
 ///
-/// Remover a fase faz `view_shadow_pass` sair antes de abrir o render pass,
-/// portanto a depth view NÃO é limpa e o conteúdo do frame anterior fica.
+/// Remover a fase faz `view_shadow_pass` sair antes de abrir o render pass e
+/// portanto não limpar a depth view. Na prática, com o Bevy 0.20, o mapa NÃO
+/// sobrevive ao frame saltado (ver o doc do módulo): só usar para A/B com
+/// `VAEL_SHADOW_HZ`.
 fn skip_cached_directional_shadows(
     refresh: Option<Res<VaelShadowRefresh>>,
     phases: Option<ResMut<ViewBinnedRenderPhases<Shadow>>>,
@@ -249,11 +262,18 @@ fn skip_cached_directional_shadows(
 /// Sem isto, o `build_directional_light_cascades` recalculava as matrizes com
 /// a câmara atual e o passe principal amostrava o mapa antigo com matrizes
 /// novas: a sombra do mundo deslizava a cada frame saltado.
+///
+/// Com a cadência desligada (default) não há frames saltados: o cache nem
+/// chega a ser preenchido.
 fn freeze_cached_cascades(
     refresh: Res<VaelShadowRefresh>,
     mut lights: Query<(Entity, &mut Cascades)>,
     mut cache: Local<Vec<(Entity, Cascades)>>,
 ) {
+    if !refresh.active {
+        cache.clear();
+        return;
+    }
     if refresh.render {
         cache.clear();
         for (entity, cascades) in &lights {
@@ -270,7 +290,15 @@ fn freeze_cached_cascades(
 
 #[cfg(test)]
 mod tests {
-    use super::refresh_due;
+    use super::{ELEMENTS_SHADOW_REFRESH_HZ, refresh_due};
+
+    /// O default TEM de ser "todos os frames": com o Bevy 0.20 o mapa não
+    /// sobrevive a um frame saltado (chão sem sombra + acne nas faces
+    /// iluminadas). Ligar a cadência é só para A/B com `VAEL_SHADOW_HZ`.
+    #[test]
+    fn default_cadence_renders_every_frame() {
+        assert_eq!(ELEMENTS_SHADOW_REFRESH_HZ, 0.0);
+    }
 
     /// 15 Hz a 60 fps: 3 frames saltados, o 4.º renderiza.
     #[test]
@@ -285,7 +313,7 @@ mod tests {
         );
     }
 
-    /// Fora do modo (ou com hz=0) nunca salta — o comportamento antigo.
+    /// Fora do modo (ou com hz=0, o default) nunca salta.
     #[test]
     fn inactive_or_zero_hz_always_renders() {
         let mut acc = 0.0;

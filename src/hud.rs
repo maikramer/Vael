@@ -1,10 +1,11 @@
-//! HUD do Vael calculado em Rust — shadow mode.
+//! HUD do Vael calculado em Rust.
 //!
-//! O `scripts/lib/rules.lua` continua a publicar os mesmos binds. Este módulo
-//! calcula-os outra vez a partir do estado tipado e compara-os com o que o Lua
-//! deixou em [`UiScriptBinds`]: divergência = `debug!` por chave e `warn!` uma
-//! vez. O último escritor vence — o Lua reescreve no fim do frame, por isso só
-//! um bind divergente aparece por UM frame. `VAEL_HUD_RUST=0` desliga-o.
+//! Publica os binds de vida/XP/economia/status/quest no [`UiScriptBinds`]
+//! antes de `UiSet::Bind`. O `rules.publish` já não escreve esses binds;
+//! ficou com netplay/alvo/combo/`abilities.active`/`vitals.active`/
+//! `xp.recent`/`quest.recent`. Os valores que ainda são escritos dos dois
+//! lados são comparados: divergência = `debug!` por chave e `warn!` uma vez.
+//! `VAEL_HUD_RUST=0` desliga-o.
 
 use std::collections::BTreeMap;
 
