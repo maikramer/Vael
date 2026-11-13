@@ -9,6 +9,10 @@
 //! câmara de terceira pessoa vive em [`crate::camera`].
 
 use bevy::prelude::*;
+use bevy_ext_core::{
+    KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle, knockback_decay_factor,
+    knockback_travel_factor,
+};
 use bevy_rapier3d::prelude::{KinematicCharacterController, KinematicCharacterControllerOutput};
 use viber::recipes::spawn::OrbitCamera;
 
@@ -82,10 +86,10 @@ impl Default for VaelController {
 /// Anexa o controller às entidades que o spawner marcou com `Player`.
 fn attach_controllers(
     mut commands: Commands,
-    players: Query<(Entity, Option<&VaelController>), With<viber::player::Player>>,
+    players: Query<(Entity, Option<&VaelController>), With<Player>>,
 ) {
     for (entity, controller) in &players {
-        commands.entity(entity).insert(VaelPlayer);
+        commands.entity(entity).insert((VaelPlayer, PlayerBody));
         if controller.is_none() {
             commands.entity(entity).insert(VaelController::default());
         }
@@ -205,7 +209,7 @@ fn player_movement(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
-    menus: Option<Res<viber::menus::MenusOpen>>,
+    menus: Option<Res<bevy_ext_core::MenusOpen>>,
     typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
     actions: Option<Res<viber::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
@@ -218,11 +222,11 @@ fn player_movement(
         Entity,
         &mut Transform,
         &mut VaelController,
-        &mut viber::player::Player,
+        &mut Player,
         Option<&mut KinematicCharacterController>,
         Option<&KinematicCharacterControllerOutput>,
-        Option<&mut viber::player::TeleportSettle>,
-        Option<&mut viber::physics_fx::Knockback>,
+        Option<&mut TeleportSettle>,
+        Option<&mut Knockback>,
         Option<&viber::spawn_gate::SpawnGated>,
     )>,
     mut sfx: MessageWriter<viber::ambient::SfxEvent>,
@@ -327,7 +331,7 @@ fn player_movement(
             controller.can_jump = true;
             commands
                 .entity(entity)
-                .remove::<viber::physics_fx::Knockback>();
+                .remove::<Knockback>();
         }
         let settling = match settle.as_deref_mut() {
             Some(state) if state.frames > 0 => {
@@ -335,14 +339,14 @@ fn player_movement(
                 if state.frames == 0 {
                     commands
                         .entity(entity)
-                        .remove::<viber::player::TeleportSettle>();
+                        .remove::<TeleportSettle>();
                 }
                 true
             }
             Some(_) => {
                 commands
                     .entity(entity)
-                    .remove::<viber::player::TeleportSettle>();
+                    .remove::<TeleportSettle>();
                 false
             }
             None => false,
@@ -415,13 +419,13 @@ fn player_movement(
         // controller (escrito no Transform atravessava paredes e props).
         if let Some(knockback) = knockback.as_deref_mut() {
             motion +=
-                knockback.velocity.with_y(0.0) * viber::physics_fx::knockback_travel_factor(dt);
-            knockback.velocity *= viber::physics_fx::knockback_decay_factor(dt);
-            if knockback.velocity.length() < viber::physics_fx::KNOCKBACK_EPSILON {
+                knockback.velocity.with_y(0.0) * knockback_travel_factor(dt);
+            knockback.velocity *= knockback_decay_factor(dt);
+            if knockback.velocity.length() < KNOCKBACK_EPSILON {
                 knockback.velocity = Vec3::ZERO;
                 commands
                     .entity(entity)
-                    .remove::<viber::physics_fx::Knockback>();
+                    .remove::<Knockback>();
             }
         }
 
@@ -560,7 +564,7 @@ fn player_movement(
 fn world_border_clamp(
     border: Option<Res<viber::worldsys::WorldBorderConfig>>,
     scene: Option<Res<viber::worldsys::InteriorSceneConfig>>,
-    mut players: Query<&mut Transform, With<viber::player::Player>>,
+    mut players: Query<&mut Transform, With<Player>>,
     mut logged: Local<bool>,
 ) {
     let Some(border) = border else {
@@ -593,7 +597,7 @@ fn world_border_clamp(
     }
 }
 
-fn sync_engine_player(engine: &mut viber::player::Player, controller: &VaelController) {
+fn sync_engine_player(engine: &mut Player, controller: &VaelController) {
     engine.speed = controller.speed;
     engine.sprint_multiplier = controller.sprint_multiplier;
     engine.jump_height = controller.jump_height;

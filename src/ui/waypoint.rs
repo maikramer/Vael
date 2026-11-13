@@ -7,7 +7,7 @@
 
 use bevy::prelude::*;
 use serde_json::Value;
-use viber::hud::markers::{HudBlip, HudMarkers, HudPoint};
+use bevy_ext_core::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::host::LuaScriptHost;
 use viber::player::Player;
 use viber::scene_loader::CurrentScene;

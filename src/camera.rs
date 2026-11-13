@@ -6,6 +6,7 @@
 //! sistemas da engine não correm; este módulo é o dono da vista.
 
 use bevy::prelude::*;
+use bevy_ext_core::{CameraSnapshot, LOOK_PIVOT_HEIGHT, Player, ScriptCameraFree};
 
 use viber::camera::{
     AutoCameraInput, COLLISION_EYE_HEIGHT, CameraKick, CameraShake, INTERIOR_ROOM_LAG, SHAKE_DECAY,
@@ -54,7 +55,7 @@ fn orbit_camera_follow(
     mut cameras: Query<(&mut Transform, &OrbitCamera)>,
     names: Query<(Entity, &Name)>,
     globals: Query<&GlobalTransform>,
-    players: Query<&GlobalTransform, With<viber::player::Player>>,
+    players: Query<&GlobalTransform, With<Player>>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
 ) {
     let has_player = players.iter().next().is_some();
@@ -115,7 +116,7 @@ fn third_person_camera(
     mut shake: ResMut<CameraShake>,
     mut kick: ResMut<CameraKick>,
     mut cameras: Query<(&mut Transform, &mut OrbitCamera)>,
-    players: Query<(&GlobalTransform, &viber::player::Player)>,
+    players: Query<(&GlobalTransform, &Player)>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
     a11y: Option<Res<viber::a11y::A11y>>,
@@ -285,7 +286,7 @@ fn third_person_camera(
         );
         transform.translation = cam.current_pos + sway + shake_off + kick.offset;
         transform.look_at(
-            cam.follow_point + Vec3::Y * viber::camera::LOOK_PIVOT_HEIGHT,
+            cam.follow_point + Vec3::Y * LOOK_PIVOT_HEIGHT,
             Vec3::Y,
         );
         if shake_roll.abs() > 1e-5 {
@@ -299,8 +300,8 @@ fn third_person_camera(
 /// publica a pose viva para `viber.camera_state()`. Corre depois do rig:
 /// no modo livre sobrescreve-o; fora dele só lê.
 fn script_camera(
-    free: Res<viber::camera::ScriptCameraFree>,
-    mut snapshot: ResMut<viber::camera::CameraSnapshot>,
+    free: Res<ScriptCameraFree>,
+    mut snapshot: ResMut<CameraSnapshot>,
     mut cameras: Query<(&mut Transform, &OrbitCamera)>,
 ) {
     let mut recorded = false;
@@ -368,7 +369,7 @@ mod tests {
             .spawn((
                 Transform::from_translation(player_at),
                 GlobalTransform::from(Transform::from_translation(player_at)),
-                viber::player::Player::default(),
+                Player::default(),
             ))
             .id();
         let cam = app.world_mut().spawn((Transform::default(), camera)).id();

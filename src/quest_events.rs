@@ -884,7 +884,7 @@ fn scan_visits_system(
     content: Option<Res<VaelContent>>,
     player: Query<&GlobalTransform, Or<(With<viber::player::Player>, With<VaelPlayer>)>>,
     names: Query<(&Name, &GlobalTransform)>,
-    menus: Option<Res<viber::menus::MenusOpen>>,
+    menus: Option<Res<bevy_ext_core::MenusOpen>>,
     mut toasts: Option<MessageWriter<ScriptToast>>,
     mut quests: Option<ResMut<QuestLog>>,
     mut timer: Local<Option<Timer>>,

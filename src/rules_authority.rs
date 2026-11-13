@@ -33,7 +33,7 @@ use bevy::prelude::*;
 use serde_json::Value;
 use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
-use viber::menus::MenusOpen;
+use bevy_ext_core::MenusOpen;
 use viber::scene_loader::CurrentScene;
 use viber::ui::modal::UiModalsOpen;
 use viber::worldsys::WeatherState;
