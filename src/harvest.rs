@@ -44,9 +44,9 @@ use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::MenusOpen;
 use bevy_ext_core::Falling;
 use bevy_ext_core::Player;
-use bevy_ext_scene_runtime::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
+use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
 use viber::scene::SceneSource;
-use bevy_ext_scene_runtime::scene_loader::CurrentScene;
+use viber::scene_loader::CurrentScene;
 use bevy_ext_ui::ui::ScriptBindValue;
 use bevy_ext_ui::ui::script::UiScriptBinds;
 use bevy_ext_ui::ui::widgets::UiFocusedInput;
@@ -571,10 +571,10 @@ impl Plugin for VaelHarvestPlugin {
             // (`flora-fell.*`). O foco/golpe Rust continuam atrás do gate.
             .add_systems(PostStartup, (attach_harvestables, reap_on_load).chain())
             .add_systems(
-                bevy_ext_scene_runtime::scene_loader::SceneLoad,
+                viber::scene_loader::SceneLoad,
                 (attach_harvestables, reap_on_load)
                     .chain()
-                    .after(bevy_ext_scene_runtime::recipes::spawn::startup),
+                    .after(viber::recipes::spawn::startup),
             )
             .add_systems(
                 Update,

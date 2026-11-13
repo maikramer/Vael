@@ -25,8 +25,8 @@ use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::AudioMixerSettings;
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use viber::save::SaveRequest;
-use bevy_ext_scene_runtime::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use bevy_ext_terrain_runtime::runtime::TerrainRuntime;
+use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use viber::terrain::runtime::TerrainRuntime;
 use bevy_ext_ui::ui::UiWriter;
 
 use crate::save::{VAEL_SAVE_VERSION, VaelSave};
@@ -127,7 +127,7 @@ fn process_save_requests(world: &mut World) {
     // o loader está ocupado). O pedido fica em `SaveRequest` e volta a ser
     // tentado no frame seguinte.
     if world
-        .get_resource::<bevy_ext_scene_runtime::scene_loader::SceneLoader>()
+        .get_resource::<viber::scene_loader::SceneLoader>()
         .is_some_and(|loader| loader.busy())
     {
         return;

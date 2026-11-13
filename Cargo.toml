@@ -89,8 +89,6 @@ bevy_ext_elements = { path = "../bevy_extensions/crates/bevy_ext_elements" }
 bevy_ext_flora = { path = "../bevy_extensions/crates/bevy_ext_flora" }
 bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
 bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
-bevy_ext_scene_runtime = { path = "../bevy_extensions/crates/bevy_ext_scene_runtime" }
-bevy_ext_terrain_runtime = { path = "../bevy_extensions/crates/bevy_ext_terrain_runtime" }
 bevy_ext_ui = { path = "../bevy_extensions/crates/bevy_ext_ui" }
 bevy_ext_save = { path = "../bevy_extensions/crates/bevy_ext_save" }
 # Render procedural dos objetos de primitivas (lathe/sweep/extruded/…): o
@@ -98,6 +96,10 @@ bevy_ext_save = { path = "../bevy_extensions/crates/bevy_ext_save" }
 # fallback do spawner pelo mesh/material/colisor exatos. `physics` liga os
 # colisores Rapier exatos (trimesh para as formas procedurais).
 bevy_ext_gradmesh = { path = "../bevy_extensions/crates/bevy_ext_gradmesh", features = ["physics"] }
+# Usados directamente na composição da App (src/app.rs): os buses de áudio
+# do runtime e o plugin das primitivas procedurais.
+bevy_kira_audio = { version = "0.27.1", features = ["ogg"] }
+bevy_gradmesh = "0.3.9"
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

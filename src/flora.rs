@@ -28,7 +28,7 @@ use bevy::camera::RenderTarget;
 use bevy::prelude::*;
 use bevy_flora::prelude::*;
 use viber::luau::ScriptProps;
-use bevy_ext_terrain_runtime::runtime::TerrainRuntime;
+use viber::terrain::runtime::TerrainRuntime;
 use viber::worldsys::WeatherState;
 
 use crate::components::VaelPlayer;
@@ -576,7 +576,7 @@ fn install_ground(
 #[allow(clippy::too_many_arguments)]
 fn plant_grove(
     mut commands: Commands,
-    current: Option<Res<bevy_ext_scene_runtime::scene_loader::CurrentScene>>,
+    current: Option<Res<viber::scene_loader::CurrentScene>>,
     terrain: Option<Res<TerrainRuntime>>,
     ground: Option<Res<FloraGround>>,
     mut state: ResMut<FloraPools>,

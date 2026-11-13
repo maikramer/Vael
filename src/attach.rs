@@ -32,8 +32,8 @@ impl Plugin for VaelAttachPlugin {
             // O primeiro `spawn::startup` corre no `Startup`; as trocas de
             // cena voltam a correr `SceneLoad` — a ordem importa.
             .add_systems(
-                bevy_ext_scene_runtime::scene_loader::SceneLoad,
-                attach_script_tags.after(bevy_ext_scene_runtime::recipes::spawn::startup),
+                viber::scene_loader::SceneLoad,
+                attach_script_tags.after(viber::recipes::spawn::startup),
             );
     }
 }
