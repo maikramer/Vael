@@ -30,6 +30,10 @@ jobs:
         with:
           repository: Celer-Brasil/CelerAI
           path: CelerAI
+      - uses: actions/checkout@v4
+        with:
+          repository: maikramer/viber-tools
+          path: viber-tools
       - name: system dependencies
         run: |
           sudo apt-get update
