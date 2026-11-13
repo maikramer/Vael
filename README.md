@@ -25,15 +25,19 @@ Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
 ## Correr
 
 ```bash
-install -m 755 ../Viber/scripts/viber-latest.sh ~/.local/bin/viber   # uma vez
-cd ../Viber && cargo run -- run ../Vael/world.bsn
-cd ../Viber && cargo run -- analyze ../Vael/world.bsn   # headless + cobertura
+cd ../viber-tools && tools/install.sh   # uma vez
+cd ../Vael && viber run                 # procura world.bsn
+viber analyze world.bsn                 # headless
+viber scene lint --world world.bsn
 ```
 
-Com o CLI instalado e o cwd nesta pasta: `viber run` (procura `world.bsn`).
-O wrapper segue o checkout e só recompila quando as fontes mudam; não correr
-`./install.sh` por cima (substitui o wrapper). Fluxo completo (LFS, assets,
-editor): [`AGENTS.md`](AGENTS.md).
+O comando `viber` é agora o router do **`viber-tools`** (`~/.local/bin/viber`
+→ `viber-tools`). O wrapper antigo do Viber fica preservado como
+`viber-engine` e só é usado para `bake`/`tool scatter`/`trace`/`lua` enquanto
+a extração não termina. `viber run` lança o binário do Vael; a engine `viber`
+continua a ser a dependência de gameplay nesta fase. Fluxo completo (LFS,
+assets, editor): [`AGENTS.md`](AGENTS.md); detalhe do CLI novo:
+[`docs/VIBER_TOOLS.md`](docs/VIBER_TOOLS.md).
 
 ### Arranque directo (debug)
 
@@ -51,23 +55,21 @@ o que continua a tocar: [`docs/DEBUG.md`](docs/DEBUG.md).
 
 ## Profiling (sem screenshots)
 
-Com a engine viva (`viber run --bridge`), o CLI responde ao ciclo completo:
+Com o jogo vivo (`viber run --bridge`), o runtime novo (`viber_tools_runtime`)
+responde a frames/p95/hitches/RSS e input; `viber tools mcp` expõe o mesmo aos
+agentes:
 
 ```bash
-viber debug prof --tab frames              # frame avg/p95/max, topo, hitches, memória
-viber debug prof --hitches                 # cada engasgo + o sistema que o causou
-viber debug prof --record 30 --hz 2 -o perf.jsonl   # série + resumo
-viber debug trace 10 -o trace.json         # Perfetto (chrome://tracing / ui.perfetto.dev)
-viber debug trace --seconds 0              # gravação manual…
-viber debug mark "entrei na vila"          # …com marcas no trace
-viber debug trace --stop -o trace.json
+viber debug prof --tab frames              # frame avg/p95/max, hitches, RSS
+viber debug prof --hitches                 # hitches recentes
+viber debug prof --record 30 --hz 2 -o perf.jsonl   # série para análise
+viber debug key f3 --hold-ms 120           # input sintético
 ```
 
-O `trace` imprime o resumo analítico (p50/p95/p99, frames acima do orçamento,
-top sistemas por total e por pico, hitches e contadores) e o ficheiro abre em
-Perfetto. No jogo, **P → FRAMES** mostra a mesma série, os hitches e os
-botões TRAÇAR/PARAR/EXPORTAR; **F3** passou a incluir p95, topo do frame,
-hitches e RSS. Limiar de hitch: `VIBER_HITCH_MS` (default 50 ms).
+`trace`, `lua`, `scene --live` e `tool --live` ainda são servidos pelo
+`viber-engine` legado durante a transição; `viber debug trace`/`lua` delegam
+nele. No jogo, **P → FRAMES** e **F3** continuam a mostrar o profiler da
+engine. Limiar de hitch do runtime novo: `VIBER_HITCH_MS` (default 50 ms).
 
 ## Estado atual
 
