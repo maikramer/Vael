@@ -34,7 +34,7 @@ use bevy_elements::{
     WeatherDirector, WeatherPreset, WeatheredPlugin, WorldClock,
 };
 use mlua::{Lua, Value};
-use viber::ambient::{EngineRainVisuals, SfxClip, SfxLoudEvent};
+use bevy_ext_core::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::Player;
 use viber::postfx::{ExternalExposure, PostFxState};

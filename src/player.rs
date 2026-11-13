@@ -226,7 +226,7 @@ fn player_movement(
         Option<&mut Knockback>,
         Option<&viber::spawn_gate::SpawnGated>,
     )>,
-    mut sfx: MessageWriter<viber::ambient::SfxEvent>,
+    mut sfx: MessageWriter<bevy_ext_core::SfxEvent>,
 ) {
     let dt = time.delta_secs();
     let now = time.elapsed_secs();
@@ -450,8 +450,8 @@ fn player_movement(
             controller.can_jump = false;
             controller.jump_cooldown = JUMP_COOLDOWN;
             controller.jump_buffer_time = f32::NEG_INFINITY;
-            sfx.write(viber::ambient::SfxEvent {
-                clip: viber::ambient::SfxClip::Jump,
+            sfx.write(bevy_ext_core::SfxEvent {
+                clip: bevy_ext_core::SfxClip::Jump,
                 position: Some(transform.translation),
             });
         }
@@ -543,11 +543,11 @@ fn player_movement(
             .is_some()
         {
             let clip = if runtime.is_some_and(|rt| rt.in_water(px, pz)) {
-                viber::ambient::SfxClip::FootstepWater
+                bevy_ext_core::SfxClip::FootstepWater
             } else {
-                viber::ambient::SfxClip::Footstep
+                bevy_ext_core::SfxClip::Footstep
             };
-            sfx.write(viber::ambient::SfxEvent {
+            sfx.write(bevy_ext_core::SfxEvent {
                 clip,
                 position: Some(transform.translation),
             });

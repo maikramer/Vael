@@ -18,7 +18,7 @@ use bevy::ui::GlobalZIndex;
 use bevy_pf::prelude::*;
 use serde_json::{Value, json};
 use viber::a11y::A11y;
-use viber::ambient::{SfxClip, SfxEvent};
+use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::locale::Locale;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;

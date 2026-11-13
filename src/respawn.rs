@@ -9,7 +9,7 @@ use std::collections::BTreeMap;
 
 use bevy::prelude::*;
 use serde_json::{Value, json};
-use viber::ambient::{SfxClip, SfxEvent};
+use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};

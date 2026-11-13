@@ -8,7 +8,7 @@ use bevy::prelude::*;
 use bevy::ui::GlobalZIndex;
 use bevy_pf::prelude::*;
 use serde_json::{Value, json};
-use viber::ambient::{SfxClip, SfxEvent};
+use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_ext_core::HudMarkers;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
