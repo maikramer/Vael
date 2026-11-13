@@ -19,6 +19,67 @@
         "wrong": "O altar não reconhece nenhuma das marcas."
       },
       "reward": { "xp": 120, "items": ["blessed_rod:1"] }
+    },
+    {
+      "id": "desert_ascetic",
+      "site": "judge-desert",
+      "intro": "O Voto da Sede: cruza o arco, abate o escorpião e empunha a lâmina — sem tocar em poções.",
+      "require": [
+        { "kind": "local", "id": "desert-arch", "verb": "visitar" },
+        { "kind": "criatura", "id": "scorpion", "verb": "matar" },
+        { "kind": "item", "id": "sword", "verb": "equipar" }
+      ],
+      "order": ["visitar", "matar", "equipar"],
+      "forbid": [
+        { "kind": "item", "id": "potion" }
+      ],
+      "window": 900,
+      "verdicts": {
+        "correct": "A areia cala-se. O Voto da Sede foi honrado.",
+        "partial": "A areia ainda pesa o teu passo. O Voto da Sede está incompleto.",
+        "wrong": "O Voto da Sede foi rejeitado pelo altar do ermo."
+      },
+      "reward": { "xp": 50, "gold": 30 }
+    },
+    {
+      "id": "swamp_purifier",
+      "site": "judge-swamp",
+      "intro": "O Voto do Lodo: visita a cabana, abate o lodo e purifica o veneno — sem derramar sangue de bandido.",
+      "require": [
+        { "kind": "local", "id": "swamp-shack", "verb": "visitar" },
+        { "kind": "criatura", "id": "slime", "verb": "matar" },
+        { "kind": "item", "id": "antidote", "verb": "usar" }
+      ],
+      "order": ["visitar", "matar", "usar"],
+      "forbid": [
+        { "kind": "criatura", "id": "bandit" }
+      ],
+      "window": 900,
+      "verdicts": {
+        "correct": "O lodo assenta. O Voto do Lodo foi purificado.",
+        "partial": "O pântano reconhece parte do voto, mas o rito ainda espera.",
+        "wrong": "O pântano rejeita o teu juramento."
+      },
+      "reward": { "xp": 55, "gold": 35 }
+    },
+    {
+      "id": "peaks_vigil",
+      "site": "judge-peaks",
+      "intro": "O Voto da Vigília: ergue a tocha, abate a sombra e entra na mina de cristal, pela ordem.",
+      "require": [
+        { "kind": "item", "id": "torch", "verb": "equipar" },
+        { "kind": "criatura", "id": "shade", "verb": "matar" },
+        { "kind": "local", "id": "peaks-crystal-mine", "verb": "visitar" }
+      ],
+      "order": ["equipar", "matar", "visitar"],
+      "forbid": [],
+      "window": 900,
+      "verdicts": {
+        "correct": "A chama da vigília mantém-se firme. Os picos aceitam o teu voto.",
+        "partial": "A vigília treme no gelo — falta cumprir o voto por inteiro.",
+        "wrong": "Os picos não reconhecem a tua vigília."
+      },
+      "reward": { "xp": 65, "gold": 40 }
     }
   ]
 }

@@ -43,6 +43,56 @@
       "hint": "Duas uivam; a terceira não tem sombra própria.",
       "solved": "A estátua errada desfaz-se em fumo.",
       "reward": { "xp": 50, "items": ["potion:1"] }
+    },
+    {
+      "id": "menhir_route",
+      "site": "menhir-route-shrine",
+      "interact": "Examinar os marcos",
+      "clue": { "kind": "props" },
+      "require_marks": [
+        "desert-arch",
+        "desert-sun-obelisk",
+        "forest-stone-circle"
+      ],
+      "prompt": "Que marco mediste nesta rota?",
+      "example": "Arco do Deserto",
+      "expect": [{ "kind": "local", "id": "*" }],
+      "all": false,
+      "hint": "Diz o nome de um dos três marcos que mediste pelo vale.",
+      "solved": "Os três marcos alinham-se no silêncio do menir.",
+      "reward": { "xp": 50, "gold": 30 }
+    },
+    {
+      "id": "desert_venom",
+      "site": "desert-venom-shrine",
+      "interact": "Contemplar o espelho de areia",
+      "clue": { "kind": "props" },
+      "prompt": "O que arde no espelho de areia?",
+      "example": "escorpião e cristal",
+      "expect": [
+        { "kind": "criatura", "id": "scorpion" },
+        { "kind": "item", "id": "stone" }
+      ],
+      "all": true,
+      "hint": "Um fere com o ferrão; o outro guarda a luz da duna.",
+      "solved": "A areia reflete o ferrão e o brilho. O espelho cede.",
+      "reward": { "xp": 45, "gold": 25 }
+    },
+    {
+      "id": "peaks_echo",
+      "site": "peaks-echo-shrine",
+      "interact": "Escutar a vigília do gelo",
+      "clue": { "kind": "statues" },
+      "prompt": "O que vela entre o cristal e o gelo?",
+      "example": "cristal e sombra",
+      "expect": [
+        { "kind": "item", "id": "stone" },
+        { "kind": "criatura", "id": "shade" }
+      ],
+      "all": true,
+      "hint": "Um brilha nas veias da serra; o outro move-se onde falta a luz.",
+      "solved": "O cristal e a sombra aquietam-se na neve.",
+      "reward": { "xp": 55, "gold": 30 }
     }
   ]
 }

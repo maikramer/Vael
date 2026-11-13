@@ -55,10 +55,28 @@ function on_update(dt)
     return
   end
   local result = judge.evaluate(st.id)
+  if not result then
+    return
+  end
   local text = (rule.verdicts or {})[result.verdict] or "O altar pesa as tuas ações."
+  local got = result.got or 0
+  local need = result.need or 0
+  if result.verdict == "partial" then
+    if result.reason == "order" then
+      text = text .. "\nA ordem ritual foi quebrada (" .. got .. "/" .. need .. ")."
+    else
+      text = text .. "\nMarcas cumpridas: " .. got .. "/" .. need .. "."
+    end
+  elseif result.verdict == "wrong" then
+    if result.reason == "forbidden" then
+      text = text .. "\nUm tabu violou o voto (" .. got .. "/" .. need .. ")."
+    else
+      text = text .. "\nNenhuma marca aceite (" .. got .. "/" .. need .. ")."
+    end
+  end
   viber.say(text)
   judge.reward(st.id, result)
-  -- Ordem errada: o próximo [E] volta a ler as marcas e abre uma janela
+  -- Ordem errada ou tabu: o próximo [E] volta a ler as marcas e abre uma janela
   -- nova (as ações antigas não podem manchar a nova tentativa).
   if result.verdict == "wrong" then
     judge.reset(st.id)

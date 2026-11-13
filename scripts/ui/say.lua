@@ -113,12 +113,13 @@ function M.ask(opts)
     end
   end
   local use_decision = opts.questions ~= nil
+  local ready
   if use_decision then
-    if not (viber.decision and viber.decision.ready and viber.decision.ready()) then
-      unavailable(st.load_error)
-      return false
-    end
-  elseif not (viber.nlu and viber.nlu.ready and viber.nlu.ready()) then
+    ready = viber.decision and viber.decision.ready and viber.decision.ready()
+  else
+    ready = viber.nlu and viber.nlu.ready and viber.nlu.ready()
+  end
+  if not ready and not opts.allow_fallback then
     unavailable(st.load_error)
     return false
   end
@@ -140,6 +141,10 @@ function M.ask(opts)
   local prompt = opts.prompt or "Diz uma palavra."
   if opts.example and opts.example ~= "" then
     prompt = prompt .. "  ·  ex.: " .. opts.example
+  elseif opts.hint and opts.hint ~= "" then
+    prompt = prompt .. "  ·  " .. opts.hint
+  elseif opts.allow_fallback then
+    prompt = prompt .. "  ·  Diga um verso elemental ou o nome de uma criatura..."
   end
   viber.ui.set("say.prompt", prompt)
   viber.ui.set_text(INPUT, "")
@@ -189,6 +194,17 @@ local function submit(text)
     hide()
     return
   end
+  local ready
+  if st.backend == "decision" then
+    ready = viber.decision and viber.decision.ready and viber.decision.ready()
+  else
+    ready = viber.nlu and viber.nlu.ready and viber.nlu.ready()
+  end
+  if not ready and st.opts and st.opts.allow_fallback then
+    st.said = text
+    finish(nil)
+    return
+  end
   st.phase = "waiting"
   st.said = text
   st.timer = THINK_TIMEOUT
@@ -220,11 +236,13 @@ end
 function M.tick(dt)
   M.init()
   local backend = st.backend
+  local can_poll
   if backend == "decision" then
-    if not (viber.decision and viber.decision.poll) then
-      return
-    end
-  elseif not (viber.nlu and viber.nlu.poll) then
+    can_poll = viber.decision and viber.decision.poll
+  else
+    can_poll = viber.nlu and viber.nlu.poll
+  end
+  if not can_poll and not (st.opts and st.opts.allow_fallback) then
     return
   end
 
@@ -270,35 +288,37 @@ function M.tick(dt)
 
   -- 2. Resultados do worker. Drena sempre: o `loaded` pode chegar a qualquer
   --    momento e há resultados tardios de pedidos cancelados.
-  while true do
-    local r = backend == "decision" and viber.decision.poll() or viber.nlu.poll()
-    if not r then
-      break
-    end
-    if r.kind == "loaded" then
-      if not r.ok then
-        st.load_error = r.error
+  if can_poll then
+    while true do
+      local r = backend == "decision" and viber.decision.poll() or viber.nlu.poll()
+      if not r then
+        break
       end
-    elseif backend == "decision" and r.kind == "decided"
-        and st.phase == "waiting" and r.id == st.id then
-      finish(r.answers)
-      return
-    elseif backend == "nlu" and r.kind == "parsed"
-        and st.phase == "waiting" and r.id == st.id then
-      finish(r)
-      return
-    elseif r.kind == "error" and st.phase == "waiting" and r.id == st.id then
-      local opts = st.opts
-      local speaker = st.speaker
-      hide()
-      if opts and opts.on_unavailable then
-        st.speaker = speaker
-        opts.on_unavailable(r.error)
-        if st.speaker == speaker then
-          st.speaker = nil
+      if r.kind == "loaded" then
+        if not r.ok then
+          st.load_error = r.error
         end
+      elseif backend == "decision" and r.kind == "decided"
+          and st.phase == "waiting" and r.id == st.id then
+        finish(r.answers)
+        return
+      elseif backend == "nlu" and r.kind == "parsed"
+          and st.phase == "waiting" and r.id == st.id then
+        finish(r)
+        return
+      elseif r.kind == "error" and st.phase == "waiting" and r.id == st.id then
+        local opts = st.opts
+        local speaker = st.speaker
+        hide()
+        if opts and opts.on_unavailable then
+          st.speaker = speaker
+          opts.on_unavailable(r.error)
+          if st.speaker == speaker then
+            st.speaker = nil
+          end
+        end
+        return
       end
-      return
     end
   end
 

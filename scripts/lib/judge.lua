@@ -140,6 +140,9 @@ function M.evaluate_log(rule, entries)
         break
       end
     end
+    if forbidden then
+      break
+    end
   end
 
   local missing = {}
@@ -159,17 +162,26 @@ function M.evaluate_log(rule, entries)
   local need = #reqs
   local got = #matched
   local verdict = "wrong"
+  local reason = "missing"
   if forbidden then
     verdict = "wrong"
+    reason = "forbidden"
   elseif need == 0 then
     verdict = "wrong"
+    reason = "empty"
   elseif got == need and order_ok then
     verdict = "correct"
+    reason = "ok"
+  elseif got == need then
+    verdict = "partial"
+    reason = "order"
   elseif got > 0 then
     verdict = "partial"
+    reason = "missing"
   end
   return {
     verdict = verdict,
+    reason = reason,
     got = got,
     need = need,
     order_ok = order_ok,
@@ -202,6 +214,7 @@ function M.evaluate(id)
     local verb_label = {
       matar = "matou", visitar = "visitou", equipar = "equipou",
       usar = "usou", comprar = "comprou", vender = "vendeu",
+      entoar = "entoou", colher = "colheu", forjar = "forjou",
     }
     local questions = {}
     for i, req in ipairs(reqs) do
@@ -212,10 +225,11 @@ function M.evaluate(id)
       )
     end
     for _, e in ipairs(entries) do
-      local answers = decision_cache[e.text]
+      local cache_key = tostring(id) .. "\0" .. tostring(e.text)
+      local answers = decision_cache[cache_key]
       if not answers then
         answers = decide.decide({ action = e.text }, questions) or {}
-        decision_cache[e.text] = answers
+        decision_cache[cache_key] = answers
       end
       for i, req in ipairs(reqs) do
         local a = answers["r" .. i]
@@ -280,13 +294,21 @@ function M.reward(id, result)
     if rewards.xp and rewards.xp > 0 then
       rules.add_xp(rewards.xp)
     end
+    if rewards.gold and rewards.gold > 0 then
+      rules.vault_add("gold", rewards.gold)
+    end
     for _, item in ipairs(rewards.items or {}) do
       local name, count = tostring(item):match("^([^:]+):?(%d*)$")
       if name and name ~= "" then
         rules.item_add(name, tonumber(count) or 1)
       end
     end
-    viber.toast("Juramento cumprido (+" .. (rewards.xp or 0) .. " XP)")
+    local toast = "Juramento cumprido (+" .. (rewards.xp or 0) .. " XP"
+    if rewards.gold and rewards.gold > 0 then
+      toast = toast .. ", +" .. rewards.gold .. " ouro"
+    end
+    toast = toast .. ")"
+    viber.toast(toast)
     viber.sound("quest_complete")
   elseif result.verdict == "partial" then
     viber.toast("O altar reconhece parte do juramento.")
@@ -301,7 +323,7 @@ function M.self_test()
   local function e(verb, kind, id)
     return { verb = verb, kind = kind, id = id, res = { [kind] = { [id] = true } } }
   end
-  local rule = {
+  local synthetic_rule = {
     require = {
       { kind = "criatura", id = "wolf", verb = "matar" },
       { kind = "local", id = "forest-crossroads-well", verb = "visitar" },
@@ -313,32 +335,45 @@ function M.self_test()
   local cases = {
     {
       name = "ordem certa",
+      rule = synthetic_rule,
       entries = {
         e("matar", "criatura", "wolf"),
         e("visitar", "local", "forest-crossroads-well"),
         e("equipar", "item", "torch"),
       },
       want = "correct",
+      want_reason = "ok",
+      want_got = 3,
+      want_need = 3,
     },
     {
       name = "ordem trocada",
+      rule = synthetic_rule,
       entries = {
         e("equipar", "item", "torch"),
         e("visitar", "local", "forest-crossroads-well"),
         e("matar", "criatura", "wolf"),
       },
       want = "partial",
+      want_reason = "order",
+      want_got = 3,
+      want_need = 3,
     },
     {
       name = "falta a tocha",
+      rule = synthetic_rule,
       entries = {
         e("matar", "criatura", "wolf"),
         e("visitar", "local", "forest-crossroads-well"),
       },
       want = "partial",
+      want_reason = "missing",
+      want_got = 2,
+      want_need = 3,
     },
     {
       name = "proibido",
+      rule = synthetic_rule,
       entries = {
         e("matar", "criatura", "wolf"),
         e("visitar", "local", "forest-crossroads-well"),
@@ -346,14 +381,187 @@ function M.self_test()
         e("usar", "item", "stone"),
       },
       want = "wrong",
+      want_reason = "forbidden",
     },
-    { name = "nada feito", entries = {}, want = "wrong" },
+    {
+      name = "nada feito",
+      rule = synthetic_rule,
+      entries = {},
+      want = "wrong",
+      want_reason = "missing",
+      want_got = 0,
+      want_need = 3,
+    },
+    {
+      name = "hunter_oath positivo",
+      rule_id = "hunter_oath",
+      entries = {
+        e("matar", "criatura", "wolf"),
+        e("visitar", "local", "forest-crossroads-well"),
+        e("equipar", "item", "torch"),
+      },
+      want = "correct",
+      want_reason = "ok",
+      want_got = 3,
+      want_need = 3,
+    },
+    {
+      name = "hunter_oath ordem errada",
+      rule_id = "hunter_oath",
+      entries = {
+        e("equipar", "item", "torch"),
+        e("visitar", "local", "forest-crossroads-well"),
+        e("matar", "criatura", "wolf"),
+      },
+      want = "partial",
+      want_reason = "order",
+      want_got = 3,
+      want_need = 3,
+    },
+    {
+      name = "desert_ascetic positivo",
+      rule_id = "desert_ascetic",
+      entries = {
+        e("visitar", "local", "desert-arch"),
+        e("matar", "criatura", "scorpion"),
+        e("equipar", "item", "sword"),
+      },
+      want = "correct",
+      want_reason = "ok",
+      want_got = 3,
+      want_need = 3,
+    },
+    {
+      name = "desert_ascetic forbid potion",
+      rule_id = "desert_ascetic",
+      entries = {
+        e("visitar", "local", "desert-arch"),
+        e("matar", "criatura", "scorpion"),
+        e("equipar", "item", "sword"),
+        e("usar", "item", "potion"),
+      },
+      want = "wrong",
+      want_reason = "forbidden",
+    },
+    {
+      name = "desert_ascetic parcial",
+      rule_id = "desert_ascetic",
+      entries = {
+        e("visitar", "local", "desert-arch"),
+      },
+      want = "partial",
+      want_reason = "missing",
+      want_got = 1,
+      want_need = 3,
+    },
+    {
+      name = "swamp_purifier positivo",
+      rule_id = "swamp_purifier",
+      entries = {
+        e("visitar", "local", "swamp-shack"),
+        e("matar", "criatura", "slime"),
+        e("usar", "item", "antidote"),
+      },
+      want = "correct",
+      want_reason = "ok",
+      want_got = 3,
+      want_need = 3,
+    },
+    {
+      name = "swamp_purifier forbid bandit",
+      rule_id = "swamp_purifier",
+      entries = {
+        e("visitar", "local", "swamp-shack"),
+        e("matar", "criatura", "slime"),
+        e("usar", "item", "antidote"),
+        e("matar", "criatura", "bandit"),
+      },
+      want = "wrong",
+      want_reason = "forbidden",
+    },
+    {
+      name = "swamp_purifier parcial",
+      rule_id = "swamp_purifier",
+      entries = {
+        e("visitar", "local", "swamp-shack"),
+        e("matar", "criatura", "slime"),
+      },
+      want = "partial",
+      want_reason = "missing",
+      want_got = 2,
+      want_need = 3,
+    },
+    {
+      name = "peaks_vigil ordem certa",
+      rule_id = "peaks_vigil",
+      entries = {
+        e("equipar", "item", "torch"),
+        e("matar", "criatura", "shade"),
+        e("visitar", "local", "peaks-crystal-mine"),
+      },
+      want = "correct",
+      want_reason = "ok",
+      want_got = 3,
+      want_need = 3,
+    },
+    {
+      name = "peaks_vigil ordem errada",
+      rule_id = "peaks_vigil",
+      entries = {
+        e("matar", "criatura", "shade"),
+        e("equipar", "item", "torch"),
+        e("visitar", "local", "peaks-crystal-mine"),
+      },
+      want = "partial",
+      want_reason = "order",
+      want_got = 3,
+      want_need = 3,
+    },
+    {
+      name = "peaks_vigil parcial",
+      rule_id = "peaks_vigil",
+      entries = {
+        e("equipar", "item", "torch"),
+        e("visitar", "local", "peaks-crystal-mine"),
+      },
+      want = "partial",
+      want_reason = "missing",
+      want_got = 2,
+      want_need = 3,
+    },
+    {
+      name = "peaks_vigil nada feito",
+      rule_id = "peaks_vigil",
+      entries = {},
+      want = "wrong",
+      want_reason = "missing",
+      want_got = 0,
+      want_need = 3,
+    },
   }
   local errors = {}
   for _, c in ipairs(cases) do
-    local r = M.evaluate_log(rule, c.entries)
-    if r.verdict ~= c.want then
-      errors[#errors + 1] = c.name .. ": " .. r.verdict .. " ~= " .. c.want
+    local rule = c.rule
+    if not rule and c.rule_id then
+      rule = M.get(c.rule_id)
+      if not rule then
+        errors[#errors + 1] = c.name .. ": regra ausente (" .. tostring(c.rule_id) .. ")"
+      end
+    end
+    if rule then
+      local r = M.evaluate_log(rule, c.entries)
+      if r.verdict ~= c.want then
+        errors[#errors + 1] = c.name .. ": verdict " .. tostring(r.verdict) .. " ~= " .. tostring(c.want)
+      end
+      if c.want_reason and r.reason ~= c.want_reason then
+        errors[#errors + 1] = c.name .. ": reason " .. tostring(r.reason) .. " ~= " .. tostring(c.want_reason)
+      end
+      if c.want_got ~= nil and r.got ~= c.want_got then
+        errors[#errors + 1] = c.name .. ": got " .. tostring(r.got) .. " ~= " .. tostring(c.want_got)
+      end
+      if c.want_need ~= nil and r.need ~= c.want_need then
+        errors[#errors + 1] = c.name .. ": need " .. tostring(r.need) .. " ~= " .. tostring(c.want_need)
+      end
     end
   end
   return #errors == 0, errors
