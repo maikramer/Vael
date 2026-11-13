@@ -23,6 +23,7 @@ local ROW = "say"
 local DEFAULT_TIMEOUT = 8.0
 local THINK_TIMEOUT = 8.0
 local DECISION_DIR = "assets/public/d1"
+local NLU_DIR = "assets/public/nlu"
 
 local st = {
   phase = "idle",          -- idle | input | waiting
@@ -92,6 +93,13 @@ function M.init()
   if viber.decision and viber.decision.available
       and viber.decision.available(DECISION_DIR) then
     viber.decision.load(DECISION_DIR)
+  end
+  -- O NLU (GLiNER2) é o backend legado da barra (relatos sem `questions`),
+  -- o fallback do enigma e a extração de entidades do juiz. Ninguém o
+  -- carregava: `ready()` ficava false para sempre e esses caminhos degradavam
+  -- em silêncio. O load é async, idempotente e falha macio sem os ficheiros.
+  if viber.nlu and viber.nlu.load then
+    viber.nlu.load(NLU_DIR)
   end
 end
 
@@ -258,6 +266,12 @@ function M.tick(dt)
   if st.phase == "input" and viber.ui.read then
     local rd = viber.ui.read(INPUT)
     local txt = rd and rd.text or ""
+    if txt ~= "" and txt ~= st.typed then
+      -- O timeout é de OCIOSIDADE, não do total da barra: quem demora a
+      -- pensar/escrever via a barra fechar antes do Enter (o timeout conta
+      -- só enquanto o campo não muda).
+      st.timer = st.opts and st.opts.timeout or DEFAULT_TIMEOUT
+    end
     if txt ~= "" then
       st.typed = txt
     end
