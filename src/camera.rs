@@ -14,7 +14,7 @@ use viber::camera::{
     low_pass_factor, noise_pm1, shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
 };
 use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
-use viber::worldsys::InteriorSceneConfig;
+use bevy_ext_core::InteriorSceneConfig;
 
 use crate::player::PlayerMovementSet;
 

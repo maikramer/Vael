@@ -212,8 +212,8 @@ fn player_movement(
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
     collision: Option<Res<viber::physics::TerrainCollisionStatus>>,
-    interior: Option<Res<viber::worldsys::InteriorSceneConfig>>,
-    interior_state: Option<Res<viber::worldsys::InteriorLighting>>,
+    interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
+    interior_state: Option<Res<bevy_ext_core::InteriorLighting>>,
     mut cameras: Query<&mut OrbitCamera>,
     mut players: Query<(
         Entity,
@@ -366,7 +366,7 @@ fn player_movement(
             .is_some_and(|scene| scene.contains(transform.translation.x, transform.translation.z));
         let interior_floor = (interior_mode
             && interior_state.as_deref().is_some_and(|state| state.active))
-        .then_some(viber::worldsys::INTERIOR_FLOOR_Y);
+        .then_some(bevy_ext_core::INTERIOR_FLOOR_Y);
         let (dir, input_mag) = if interior_mode {
             let yaw = interior
                 .as_deref()
@@ -559,8 +559,8 @@ fn player_movement(
 /// `<WorldBorder>`: mantém o herói dentro do disco do mapa (fora das
 /// bolsas de interior). Corre depois do movimento, no mesmo frame.
 fn world_border_clamp(
-    border: Option<Res<viber::worldsys::WorldBorderConfig>>,
-    scene: Option<Res<viber::worldsys::InteriorSceneConfig>>,
+    border: Option<Res<bevy_ext_core::WorldBorderConfig>>,
+    scene: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     mut players: Query<&mut Transform, With<Player>>,
     mut logged: Local<bool>,
 ) {
