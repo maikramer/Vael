@@ -1078,6 +1078,7 @@ name = "bevy_ext_postfx"
 version = "0.1.0"
 dependencies = [
  "bevy",
+ "bevy_ext_core",
 ]
 
 [[package]]
@@ -1106,6 +1107,17 @@ dependencies = [
  "bevy",
  "bevy_voxel_terrain",
  "flate2",
+ "serde_json",
+]
+
+[[package]]
+name = "bevy_ext_ui"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_ext_core",
+ "bevy_ext_world",
+ "mlua",
  "serde_json",
 ]
 
@@ -9480,6 +9492,7 @@ dependencies = [
  "bevy_ext_postfx",
  "bevy_ext_save",
  "bevy_ext_scene",
+ "bevy_ext_ui",
  "bevy_ext_world",
  "bevy_flora",
  "bevy_gauge",

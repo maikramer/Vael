@@ -268,8 +268,8 @@ impl Plugin for VaelEnvironmentPlugin {
                 // antes do `UiSet::Bind`, para o HUD ler a hora NO MESMO frame.
                 bridge_ui_clock
                     .after(ElementsSystems::Clock)
-                    .after(viber::ui::collect::collect_ui_data)
-                    .before(viber::ui::UiSet::Bind),
+                    .after(bevy_ext_ui::ui::collect::collect_ui_data)
+                    .before(bevy_ext_ui::ui::UiSet::Bind),
             );
         info!(
             hour = start_hour_or(scene.start_hour),
@@ -776,7 +776,7 @@ fn interior_precipitation(
 fn bridge_ui_clock(
     clock: Res<WorldClock>,
     weather: Res<Weather>,
-    mut data: ResMut<viber::ui::UiData>,
+    mut data: ResMut<bevy_ext_ui::ui::UiData>,
 ) {
     let minutes = (clock.hour * 60.0).rem_euclid(1440.0);
     let text = format!(

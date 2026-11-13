@@ -26,7 +26,16 @@ pub const JUMP_BUFFER: f32 = 0.1;
 pub const COYOTE_TIME: f32 = 0.1;
 pub const JUMP_COOLDOWN: f32 = 0.2;
 pub const ACCEL_TAU: f32 = 0.08;
-pub const DECEL_TAU: f32 = 0.14;
+/// Travagem no chão sem input. Era um corte seco (velocidade 0 no frame em
+/// que se larga a tecla): o blend da animação saltava de marcha para idle
+/// sem tempo para o cross-fade. Curta o bastante para não deslizar (~0,3 m
+/// a correr).
+pub const DECEL_TAU: f32 = 0.06;
+/// Abaixo disto a travagem acaba em zero (o low-pass nunca chega lá).
+pub const STOP_EPSILON: f32 = 0.05;
+/// Rampa do giro de câmara com A/D: o giro entra e sai em ~0,1 s em vez de
+/// arrancar a 143°/s no primeiro frame.
+pub const STEER_TAU: f32 = 0.09;
 pub const AIR_TAU: f32 = 0.3;
 /// Queda abaixo do topo do mundo que já não é gruta: o herói furou o
 /// collider e é resgatado para a superfície.
@@ -52,6 +61,8 @@ pub struct VaelController {
     pub jump_buffer_time: f32,
     pub last_steer_time: f32,
     pub last_moving_time: f32,
+    /// Giro de câmara corrente (−1..1), suavizado por [`STEER_TAU`].
+    pub steer: f32,
     /// Já viu o [`viber::player::TeleportSettle`] corrente (distingue a
     /// CHEGADA de um teleporte da tutela a meio). Ver `player_movement`.
     pub settle_seen: bool,
@@ -75,6 +86,7 @@ impl Default for VaelController {
             jump_buffer_time: f32::NEG_INFINITY,
             last_steer_time: f32::NEG_INFINITY,
             last_moving_time: f32::INFINITY,
+            steer: 0.0,
             settle_seen: false,
         }
     }
@@ -115,6 +127,12 @@ impl Plugin for VaelPlayerPlugin {
                 Update,
                 player_movement
                     .in_set(PlayerMovementSet)
+                    // O driver de animação da engine lê `grounded`/`vel_*`
+                    // do `Player` que este sistema espelha; a ordem dele é
+                    // contra o `player_movement` da ENGINE (desligado com
+                    // `player_camera:false`), por isso sem isto a animação
+                    // via o estado de um frame atrás, ao acaso.
+                    .before(viber::animation::drive_player_animation)
                     .run_if(no_editor_camera),
             )
             .add_systems(
@@ -162,14 +180,15 @@ fn integrate_horizontal(
     input_active: bool,
     dt: f32,
 ) -> (f32, f32) {
-    if grounded && !input_active {
-        return (0.0, 0.0);
-    }
     let a = low_pass_factor(dt, movement_tau(grounded, input_active));
-    (
+    let (x, z) = (
         vel_x + (desired.x - vel_x) * a,
         vel_z + (desired.z - vel_z) * a,
-    )
+    );
+    if grounded && !input_active && x * x + z * z < STOP_EPSILON * STOP_EPSILON {
+        return (0.0, 0.0);
+    }
+    (x, z)
 }
 
 fn jump_velocity(height: f32) -> f32 {
@@ -207,7 +226,7 @@ fn player_movement(
     keys: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
-    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    typing: Option<Res<bevy_ext_ui::ui::widgets::UiFocusedInput>>,
     actions: Option<Res<viber::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
@@ -378,14 +397,27 @@ fn player_movement(
             )
         } else {
             let mut camera_yaw_deg = 0.0f32;
+            controller.steer += (move_x - controller.steer) * low_pass_factor(dt, STEER_TAU);
+            if move_x == 0.0 && controller.steer.abs() < 1e-3 {
+                controller.steer = 0.0;
+            }
             if let Some(mut camera) = cameras.iter_mut().next() {
-                camera.yaw_deg -= move_x * CAMERA_TURN_SPEED.to_degrees() * dt;
+                let turn = controller.steer * CAMERA_TURN_SPEED.to_degrees() * dt;
+                camera.yaw_deg -= turn;
+                // O giro MANUAL entra também no yaw suavizado: o `turn_lag`
+                // (0,38 s) é para a auto-câmara. Aplicado ao giro, a vista
+                // ficava ~50° atrás do herói durante a curva e continuava a
+                // rodar depois de largar a tecla — a curva "a mais".
+                camera.smooth_yaw_deg -= turn;
                 camera_yaw_deg = camera.yaw_deg;
             }
             if move_x != 0.0 {
                 controller.last_steer_time = now;
             }
-            let strafe = move_x * SIDE_MOVE_FACTOR;
+            // Com W/S, A/D só giram: o strafe somado punha o herói a correr
+            // ~31° de lado e a auto-câmara perseguia esse heading depois de
+            // largar a tecla (mais giro). Sem W/S, A/D continuam a contornar.
+            let strafe = move_x * SIDE_MOVE_FACTOR * (1.0 - move_forward.abs().min(1.0));
             (
                 process_input(move_forward, strafe, camera_yaw_deg),
                 input_magnitude(move_forward, strafe),
@@ -617,9 +649,14 @@ mod tests {
     use super::*;
 
     #[test]
-    fn grounded_without_input_stops_immediately() {
-        let (x, z) = integrate_horizontal(3.0, -2.0, Vec3::X * 4.0, true, false, 0.016);
-        assert_eq!((x, z), (0.0, 0.0));
+    fn grounded_without_input_brakes_fast_then_stops() {
+        let (x, z) = integrate_horizontal(3.0, -2.0, Vec3::ZERO, true, false, 0.016);
+        assert!(x > 0.0 && x < 3.0 && z < 0.0 && z > -2.0, "trava, não corta");
+        let (mut x, mut z) = (4.0, 0.0);
+        for _ in 0..30 {
+            (x, z) = integrate_horizontal(x, z, Vec3::ZERO, true, false, 0.016);
+        }
+        assert_eq!((x, z), (0.0, 0.0), "em ~0,5 s está parado");
     }
 
     #[test]

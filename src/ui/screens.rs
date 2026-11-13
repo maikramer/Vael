@@ -26,8 +26,8 @@ use viber::music::AudioMixerSettings;
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use viber::save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use viber::ui::scale::UiUserScale;
-use viber::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
+use bevy_ext_ui::ui::scale::UiUserScale;
+use bevy_ext_ui::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
 
 use crate::content::{ItemDef, QuestDef, VaelContent, label};
 use crate::economy::{
@@ -1817,7 +1817,7 @@ pub fn build_rules(
 }
 
 pub fn hide_legacy_roots(
-    registry: Option<Res<viber::ui::UiRegistry>>,
+    registry: Option<Res<bevy_ext_ui::ui::UiRegistry>>,
     writer: Option<Res<UiWriter>>,
     mut done: Local<bool>,
 ) {

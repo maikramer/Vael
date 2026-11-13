@@ -27,7 +27,7 @@ use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use viber::save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::terrain::runtime::TerrainRuntime;
-use viber::ui::UiWriter;
+use bevy_ext_ui::ui::UiWriter;
 
 use crate::save::{VAEL_SAVE_VERSION, VaelSave};
 

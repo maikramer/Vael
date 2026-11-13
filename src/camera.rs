@@ -32,16 +32,18 @@ impl Plugin for VaelCameraPlugin {
                 .before(PlayerMovementSet)
                 .run_if(no_editor_camera),
         )
+        // A terceira pessoa corre no `PostUpdate`, DEPOIS do writeback do
+        // Rapier: o character controller só aplica o `translation` pedido no
+        // `PostUpdate`, por isso no `Update` a câmara lia a pose do frame
+        // ANTERIOR. O desvio câmara↔herói ficava `vel * dt` — com o dt a
+        // variar de frame para frame, o herói tremia no ecrã ("engasgos").
+        // Antes da propagação: o `GlobalTransform` da câmara sai deste frame.
         .add_systems(
-            Update,
-            third_person_camera
-                .after(PlayerMovementSet)
-                .run_if(no_editor_camera),
-        )
-        .add_systems(
-            Update,
-            script_camera
-                .after(third_person_camera)
+            PostUpdate,
+            (third_person_camera, script_camera)
+                .chain()
+                .after(bevy_rapier3d::prelude::PhysicsSet::Writeback)
+                .before(bevy::transform::TransformSystems::Propagate)
                 .run_if(no_editor_camera),
         );
     }
@@ -115,8 +117,9 @@ fn third_person_camera(
     real: Res<Time<Real>>,
     mut shake: ResMut<CameraShake>,
     mut kick: ResMut<CameraKick>,
-    mut cameras: Query<(&mut Transform, &mut OrbitCamera)>,
-    players: Query<(&GlobalTransform, &Player)>,
+    mut cameras: Query<(&mut Transform, &mut OrbitCamera), Without<Player>>,
+    players: Query<(&Transform, Option<&ChildOf>, &Player), Without<OrbitCamera>>,
+    parents: Query<&GlobalTransform>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
     a11y: Option<Res<viber::a11y::A11y>>,
@@ -133,8 +136,14 @@ fn third_person_camera(
     let (kick_off, kick_vel) = kick_spring_step(kick.offset, kick.vel, dt);
     kick.offset = kick_off;
     kick.vel = kick_vel;
-    let Some((target, player)) = players.iter().next() else {
+    let Some((local, parent, player)) = players.iter().next() else {
         return;
+    };
+    // Pose DESTE frame: o Rapier acabou de a escrever no `Transform` e a
+    // propagação ainda não correu (o pai é estático; o global dele serve).
+    let target = match parent.and_then(|parent| parents.get(parent.parent()).ok()) {
+        Some(parent) => parent.mul_transform(*local),
+        None => GlobalTransform::from(*local),
     };
     let target_pos = target.translation();
     // Bolsa de interior: JRPG de 16 bits — enquadra a SALA, não o herói.

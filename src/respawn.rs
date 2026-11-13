@@ -14,7 +14,7 @@ use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use viber::ui::UiWriter;
+use bevy_ext_ui::ui::UiWriter;
 
 use crate::save::VaelSave;
 

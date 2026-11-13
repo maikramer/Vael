@@ -35,7 +35,7 @@ use mlua::{Lua, Table, Value as LuaValue};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
-use viber::ambient::{SfxClip, SfxEvent};
+use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::feedback::DamageNumberEvent;
 use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
@@ -47,9 +47,9 @@ use viber::player::Player;
 use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
 use viber::scene::SceneSource;
 use viber::scene_loader::CurrentScene;
-use viber::ui::ScriptBindValue;
-use viber::ui::script::UiScriptBinds;
-use viber::ui::widgets::UiFocusedInput;
+use bevy_ext_ui::ui::ScriptBindValue;
+use bevy_ext_ui::ui::script::UiScriptBinds;
+use bevy_ext_ui::ui::widgets::UiFocusedInput;
 use viber::vitals::Health;
 
 use crate::VaelProjectRoot;
@@ -246,6 +246,63 @@ impl Harvestable {
             popup,
             popup_color,
             range,
+            cut_height,
+            replacement,
+            replace_scale,
+            name: name.to_string(),
+            stable_key,
+        })
+    }
+
+    /// O mesmo que [`Self::from_props`], a partir dos componentes tipados do
+    /// `.bsn` (`bevy_ext_scene`): sem strings do DSL pelo meio. Paridade com
+    /// `from_props` garantida pelo teste `specs_e_props_dao_o_mesmo`.
+    pub fn from_specs(
+        destructible: Option<&bevy_ext_scene::Destructible>,
+        harvest: Option<&bevy_ext_scene::Harvestable>,
+        name: &str,
+        stable_key: Option<String>,
+    ) -> Option<Self> {
+        if destructible.is_none() && harvest.is_none() {
+            return None;
+        }
+        let style =
+            destructible.map_or(BreakStyle::Burst, |d| BreakStyle::from_raw(&d.break_style));
+        let replacement = destructible
+            .and_then(|d| d.replacement.clone())
+            .unwrap_or_default();
+        let is_berry = style == BreakStyle::Pick || replacement == "berry-bush-bare";
+        let raw_kind = harvest.map_or("", |h| h.kind.as_str());
+        let kind = if raw_kind.is_empty() && is_berry {
+            PICK_FALLBACK_KIND.to_string()
+        } else {
+            raw_kind.to_string()
+        };
+        let amount = match harvest.map(|h| h.amount) {
+            Some(amount) if amount >= 1 => i64::from(amount),
+            _ if is_berry => PICK_FALLBACK_YIELD,
+            _ => 1,
+        };
+        let hits = destructible.map_or(3, |d| i64::from(d.hits.max(1)));
+        let cut_height = match destructible.and_then(|d| d.cut_height) {
+            Some(value) if value.is_finite() && value > 0.0 => value.clamp(0.05, 3.0),
+            _ => 0.5,
+        };
+        let replace_scale = match destructible.and_then(|d| d.replace_scale) {
+            Some(value) if value.is_finite() && (0.05..=20.0).contains(&value) => value,
+            _ => 1.0,
+        };
+        Some(Self {
+            hits,
+            remaining: hits,
+            style,
+            kind,
+            amount,
+            popup: destructible
+                .map(|d| d.popup_text.clone())
+                .unwrap_or_default(),
+            popup_color: parse_popup_color(destructible.map_or("", |d| d.popup_color.as_str())),
+            range: RANGE_DEFAULT,
             cut_height,
             replacement,
             replace_scale,
@@ -1064,7 +1121,18 @@ fn attach_harvestables(
     for (entity, props, name, source) in &props {
         let name = name.map(Name::as_str).unwrap_or("");
         let key = stable_key(Some(name), source, root);
-        if let Some(harvestable) = Harvestable::from_props(&props.0, name, key) {
+        // O `.bsn` tipado é a fonte; as props (strings do DSL) só para mundos
+        // antigos/QA que ainda não foram migrados.
+        let specs = source.and_then(|source| bevy_ext_world::bsn::specs::specs_for(&source.0));
+        let typed = specs.as_deref().and_then(|specs| {
+            Harvestable::from_specs(
+                specs.destructible.as_ref(),
+                specs.harvest.as_ref(),
+                name,
+                key.clone(),
+            )
+        });
+        if let Some(harvestable) = typed.or_else(|| Harvestable::from_props(&props.0, name, key)) {
             commands.entity(entity).insert(harvestable);
         }
     }
@@ -1079,7 +1147,7 @@ fn update_harvest_focus(
     players: Query<&GlobalTransform, With<Player>>,
     harvestables: Query<(Entity, &GlobalTransform, &Harvestable, Option<&Health>), Without<Player>>,
     menus: Option<Res<MenusOpen>>,
-    modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
+    modals: Option<Res<bevy_ext_ui::ui::modal::UiModalsOpen>>,
     scene: Option<Res<CurrentScene>>,
     vitals: Option<Res<PlayerVitals>>,
     mut ui: Option<ResMut<UiScriptBinds>>,
@@ -1812,6 +1880,47 @@ fn buck_felled_trees(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// Cada nó colhível do mundo dá o mesmo `Harvestable` pelos componentes
+    /// tipados e pelas strings do DSL (que o loader ainda reconstrói).
+    #[test]
+    fn specs_e_props_dao_o_mesmo() {
+        let world = Path::new(env!("CARGO_MANIFEST_DIR")).join("world.bsn");
+        let loaded = bevy_ext_world::bsn::load_bsn_world(&world).expect("world.bsn");
+        fn walk(nodes: &[bevy_ext_world::xml::XmlNode], checked: &mut usize) {
+            for node in nodes {
+                if let Some(origin) = &node.origin
+                    && let Some(specs) = bevy_ext_world::bsn::specs::specs_for(origin)
+                    && (specs.destructible.is_some() || specs.harvest.is_some())
+                {
+                    let props: Vec<(String, String)> = node
+                        .attrs
+                        .iter()
+                        .filter(|(k, _)| {
+                            matches!(
+                                k.as_str(),
+                                "destructible" | "resource-kind" | "resource-yield"
+                            )
+                        })
+                        .cloned()
+                        .collect();
+                    let by_props = Harvestable::from_props(&props, "n", None);
+                    let by_specs = Harvestable::from_specs(
+                        specs.destructible.as_ref(),
+                        specs.harvest.as_ref(),
+                        "n",
+                        None,
+                    );
+                    assert_eq!(by_specs, by_props, "{:?}", node.attrs);
+                    *checked += 1;
+                }
+                walk(&node.children, checked);
+            }
+        }
+        let mut checked = 0;
+        walk(&loaded.nodes, &mut checked);
+        assert!(checked > 2000, "só {checked} nós colhíveis com specs");
+    }
     use bevy::MinimalPlugins;
     use bevy::ecs::system::RunSystemOnce;
     use bevy::input::ButtonInput;

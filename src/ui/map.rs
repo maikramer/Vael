@@ -15,8 +15,8 @@ use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::MenusOpen;
 use bevy_ext_core::{Player, TeleportSettle};
 use viber::terrain::runtime::TerrainRuntime;
-use viber::ui::UiModalsOpen;
-use viber::ui::widgets::UiFocusedInput;
+use bevy_ext_ui::ui::UiModalsOpen;
+use bevy_ext_ui::ui::widgets::UiFocusedInput;
 
 use crate::content::{VaelContent, label};
 use crate::save::VaelSave;
