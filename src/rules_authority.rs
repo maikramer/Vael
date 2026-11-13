@@ -278,7 +278,9 @@ fn rules_authority_system(
     // mundo atrás é decoração): a autoridade também não avança — senão uma
     // morte cancelada no "Ecrã de título" rearmava por baixo do véu.
     if !ui_owns_frame(scene.as_deref(), modals.as_deref()) {
-        let rain = weather.as_deref().is_some_and(|w| w.rain >= RAIN_HEAVY);
+        let rain = weather
+            .as_deref()
+            .is_some_and(|w| w.rain >= RAIN_HEAVY as f32);
         // `frozen` é o portão dos estados: menu aberto ou god do DEV.
         let frozen = menus.as_deref().is_some_and(MenusOpen::any) || kv_flag(&kv, GOD_KEY);
         let death_open = modals.as_deref().is_some_and(|m| m.is_open("death"));
@@ -401,7 +403,11 @@ mod tests {
             ("spawn_z", json!(3.5)),
         ]);
         assert_eq!(spawn_from_kv(&kv), Some([1.5, 2.5, 3.5]));
-        assert_eq!(spawn_from_kv(&BTreeMap::new()), None, "sem spawn, UI usa o default");
+        assert_eq!(
+            spawn_from_kv(&BTreeMap::new()),
+            None,
+            "sem spawn, UI usa o default"
+        );
     }
 
     #[test]

@@ -197,12 +197,22 @@ Nota de higiene do irmão: `celer-nlu` compila com 31 warnings
   módulos de bridge (nomes/assinaturas Lua imutáveis), `parse_popup_color`
   sobre o `parse_color` da cena, `kv()` de teste partilhado, unidades do
   Vael no `target-gc.sh`.
-- **F2 (pós-WIP; nada disto colide com contratos)**: clap no `main.rs`;
-  locale/`label()` unificados pela engine; leitores JSON do legacy
-  (`save.rs::as_*`, `hud.rs::number_like`) para o `compat`; builder de
-  `RowVm` + `close_overlays` + `apply_preferences` nos ecrãs; fsync no
-  `write_meta`; `register_type` dos testes; `RAIN_HEAVY` re-exportado;
-  `kv_flag`/`parse_spawn` do `rules_authority` para `compat`.
+- **F2 (aplicada 2026-11-13)**: clap no `main.rs` (`Args::parse`; o `--force`
+  passa a exigir `--export-settings` e o `--help`/erros passam a ser do
+  clap — a forma das flags do `viber run` não mudou); `label()` com fonte
+  única no `content.rs` (usado por `ui/mod`, `ui/map` e `ui/screens`);
+  leitores JSON do legacy (`json_i64`/`json_f32`/`json_bool`/
+  `json_number_like`) no `compat` (save/hud re-pointed); builder `RowVm::
+  menu(...)` com `.with_progress/.with_icon/.info` + `close_overlays` +
+  `PREF_KEYS` (a sig e o corpo das preferências já não podem divergir) nos
+  ecrãs; fsync tmp+rename no `write_meta`; `register_save_types`
+  partilhado plugin/testes; `RAIN_HEAVY` re-exportado do `clock` (cast
+  f64→f32 nos dois usos). Duas avaliações negativas novas: o
+  `viber::locale::Locale::load` engole ficheiros inválidos em silêncio
+  (o loader do Vael reporta no `content.errors`, gate do teste de
+  conteúdo — não se adota) e o `kv_flag`/`spawn_from_kv` do
+  `rules_authority` têm semânticas próprias (strings valem `false`;
+  chaves planas `spawn_*` com filtro finito — não são os do `compat`).
 - **F3 (pilotos com QA runtime)**: features 3–5 da lista de compilação;
   remoção do `editor/` do workspace (é decisão de produto — o build normal
   já não o compila; só limparia lock/`--workspace`).

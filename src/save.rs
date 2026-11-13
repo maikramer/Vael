@@ -16,6 +16,7 @@ use bevy::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
+use crate::compat::{json_bool, json_f32, json_i64};
 use crate::components::{Inventory, PlayerVitals, QuestLog, XpState};
 
 /// Versão do schema tipado [`VaelSave`].
@@ -108,48 +109,48 @@ impl VaelSave {
             let key = raw_key.as_str();
             match key {
                 "hp" => {
-                    if let Some(n) = as_f32(value) {
+                    if let Some(n) = json_f32(value) {
                         save.vitals.hp = n;
                     }
                     continue;
                 }
                 "max_hp" => {
-                    if let Some(n) = as_f32(value) {
+                    if let Some(n) = json_f32(value) {
                         save.vitals.max_hp = n;
                     }
                     continue;
                 }
                 "xp" => {
-                    if let Some(n) = as_i64(value) {
+                    if let Some(n) = json_i64(value) {
                         save.progression.xp = n;
                     }
                     continue;
                 }
                 "xp_next" => {
-                    if let Some(n) = as_i64(value) {
+                    if let Some(n) = json_i64(value) {
                         save.progression.xp_next = n;
                     }
                     continue;
                 }
                 "level" => {
-                    if let Some(n) = as_i64(value) {
+                    if let Some(n) = json_i64(value) {
                         save.progression.level = n;
                         level_visto = true;
                     }
                     continue;
                 }
                 "skill_points" => {
-                    if let Some(n) = as_i64(value) {
+                    if let Some(n) = json_i64(value) {
                         save.progression.skill_points = n;
                     }
                     continue;
                 }
                 "save_level" => {
-                    menu_level = as_i64(value);
+                    menu_level = json_i64(value);
                     continue;
                 }
                 "save_gold" => {
-                    menu_gold = as_i64(value);
+                    menu_gold = json_i64(value);
                     continue;
                 }
                 "tracked_quest" => {
@@ -161,15 +162,15 @@ impl VaelSave {
                     continue;
                 }
                 "spawn_x" => {
-                    spawn[0] = as_f32(value);
+                    spawn[0] = json_f32(value);
                     continue;
                 }
                 "spawn_y" => {
-                    spawn[1] = as_f32(value);
+                    spawn[1] = json_f32(value);
                     continue;
                 }
                 "spawn_z" => {
-                    spawn[2] = as_f32(value);
+                    spawn[2] = json_f32(value);
                     continue;
                 }
                 "spawn_pos" => {
@@ -177,11 +178,11 @@ impl VaelSave {
                     continue;
                 }
                 "story_prologo" => {
-                    save.story.prologue = as_bool(value).unwrap_or(false);
+                    save.story.prologue = json_bool(value).unwrap_or(false);
                     continue;
                 }
                 "story_epilogo" => {
-                    save.story.epilogue = as_bool(value).unwrap_or(false);
+                    save.story.epilogue = json_bool(value).unwrap_or(false);
                     continue;
                 }
                 "quest_states" => {
@@ -238,7 +239,7 @@ impl VaelSave {
             }
 
             if let Some(id) = key.strip_prefix("item.") {
-                if let Some(n) = as_i64(value) {
+                if let Some(n) = json_i64(value) {
                     if id == "gold" {
                         gold_visto = true;
                     }
@@ -249,7 +250,7 @@ impl VaelSave {
                 continue;
             }
             if let Some(id) = key.strip_prefix("skill.") {
-                match as_bool(value) {
+                match json_bool(value) {
                     Some(true) => {
                         save.progression.skills.insert(id.to_string());
                     }
@@ -293,7 +294,7 @@ impl VaelSave {
                 continue;
             }
             if let Some(name) = key.strip_prefix("harvested.") {
-                match as_bool(value) {
+                match json_bool(value) {
                     Some(true) => {
                         save.harvested.insert(name.to_string());
                     }
@@ -305,7 +306,7 @@ impl VaelSave {
                 continue;
             }
             if let Some(name) = key.strip_prefix("mark.") {
-                match as_bool(value) {
+                match json_bool(value) {
                     Some(true) => {
                         save.markers.insert(name.to_string());
                     }
@@ -523,38 +524,16 @@ impl Plugin for VaelSavePlugin {
 }
 
 // ── conversões defensivas ───────────────────────────────────────────────
-
-fn as_i64(value: &Value) -> Option<i64> {
-    match value {
-        Value::Number(n) => n.as_i64().or_else(|| n.as_f64().map(|f| f.floor() as i64)),
-        Value::String(s) => s.parse().ok(),
-        _ => None,
-    }
-}
-
-fn as_f32(value: &Value) -> Option<f32> {
-    match value {
-        Value::Number(n) => n.as_f64().map(|f| f as f32),
-        Value::String(s) => s.parse().ok(),
-        _ => None,
-    }
-}
-
-fn as_bool(value: &Value) -> Option<bool> {
-    match value {
-        Value::Bool(b) => Some(*b),
-        Value::Number(n) => Some(n.as_f64().is_some_and(|f| f != 0.0)),
-        Value::String(s) => s.parse().ok(),
-        _ => None,
-    }
-}
+// Os leitores tolerantes (`as_i64`/`as_f32`/`as_bool`) vivem no
+// `crate::compat` (o JSON legacy e o `viber_game` partilham as mesmas
+// tolerâncias do Lua); aqui ficam só os parsers de estruturas do save.
 
 fn parse_spawn(value: &Value) -> Option<[f32; 3]> {
     let obj = value.as_object()?;
     Some([
-        as_f32(obj.get("x")?)?,
-        as_f32(obj.get("y")?)?,
-        as_f32(obj.get("z")?)?,
+        json_f32(obj.get("x")?)?,
+        json_f32(obj.get("y")?)?,
+        json_f32(obj.get("z")?)?,
     ])
 }
 
@@ -587,7 +566,7 @@ fn parse_skill_list(value: &Value) -> Option<Vec<String>> {
         }
         Value::Object(map) => Some(
             map.iter()
-                .filter(|(_, raw)| as_bool(raw) == Some(true))
+                .filter(|(_, raw)| json_bool(raw) == Some(true))
                 .map(|(id, _)| id.clone())
                 .collect(),
         ),
@@ -618,7 +597,7 @@ fn truthy_names(value: &Value) -> Option<Vec<String>> {
         }
         Value::Object(map) => Some(
             map.iter()
-                .filter(|(_, raw)| as_bool(raw) == Some(true))
+                .filter(|(_, raw)| json_bool(raw) == Some(true))
                 .map(|(name, _)| name.clone())
                 .collect(),
         ),

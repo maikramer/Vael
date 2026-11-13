@@ -14,6 +14,7 @@ use serde_json::Value;
 use viber::ui::UiSet;
 use viber::ui::script::{ScriptBindValue, UiScriptBinds};
 
+use crate::compat::json_number_like;
 use crate::content::{Objective, QuestDef, VaelContent};
 use crate::save::VaelSave;
 
@@ -300,16 +301,6 @@ fn num(save: &VaelSave, key: &str) -> f64 {
     save.legacy.get(key).and_then(Value::as_f64).unwrap_or(0.0)
 }
 
-/// `tonumber(...)` do Lua: número ou string numérica.
-fn number_like(value: &Value) -> Option<f64> {
-    match value {
-        Value::Number(n) => n.as_f64(),
-        Value::String(text) => text.trim().parse::<f64>().ok(),
-        _ => None,
-    }
-    .filter(|n| n.is_finite())
-}
-
 /// `held()`/`vault_get()` do `rules.lua`: nunca negativo.
 fn item(save: &VaelSave, id: &str) -> i64 {
     save.inventory.get(id).max(0)
@@ -337,7 +328,7 @@ fn quest_need(save: &VaelSave, def: &QuestDef) -> f64 {
     if let Some(override_n) = save
         .legacy
         .get(&format!("q.{}.need", def.id))
-        .and_then(number_like)
+        .and_then(json_number_like)
         && override_n >= 1.0
     {
         return override_n.floor();

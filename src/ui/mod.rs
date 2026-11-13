@@ -18,7 +18,7 @@ use viber::ui::UiModalsOpen;
 use viber::ui::script::UiScriptBinds;
 use viber::ui::writer::UiWriter;
 
-use crate::content::VaelContent;
+use crate::content::{VaelContent, label};
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};
 use crate::save::VaelSave;
 
@@ -304,14 +304,6 @@ fn legacy_text(save: &VaelSave, key: &str) -> String {
         .and_then(Value::as_str)
         .unwrap_or("")
         .to_string()
-}
-
-fn label(content: Option<&VaelContent>, lang: &str, key: &str, fallback: &str) -> String {
-    content
-        .and_then(|content| content.locale.get(lang))
-        .and_then(|table| table.get(key))
-        .cloned()
-        .unwrap_or_else(|| fallback.to_string())
 }
 
 /// Sistema de sincronização: HUD lê o estado e publica no view-model.

@@ -28,7 +28,7 @@ use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::scale::UiUserScale;
 use viber::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
 
-use crate::content::{ItemDef, QuestDef, VaelContent};
+use crate::content::{ItemDef, QuestDef, VaelContent, label};
 use crate::economy::{
     CraftRules, ShopRules, TradeAction, craft_make, craft_status, shop_rows, shop_trade,
 };
@@ -59,6 +59,55 @@ pub struct RowVm {
     pub clickable: bool,
     pub icon: String,
     pub has_icon: bool,
+}
+
+impl RowVm {
+    /// Linha base das listas dos menus: clicável, sem progresso nem ícone
+    /// (os dois só existem em algumas abas — entram com os métodos abaixo).
+    fn menu(
+        action: impl Into<String>,
+        title: impl Into<String>,
+        subtitle: impl Into<String>,
+        tag: impl Into<String>,
+    ) -> Self {
+        Self {
+            action: action.into(),
+            title: title.into(),
+            subtitle: subtitle.into(),
+            tag: tag.into(),
+            clickable: true,
+            ..Self::default()
+        }
+    }
+
+    /// Marca a linha com uma barra de progresso (0..1).
+    fn with_progress(mut self, progress: f64) -> Self {
+        self.progress = progress;
+        self.has_progress = true;
+        self
+    }
+
+    /// Dá um ícone à linha (`None` deixa o lugar vazio).
+    fn with_icon(mut self, icon: Option<String>) -> Self {
+        self.has_icon = icon.is_some();
+        self.icon = icon.unwrap_or_default();
+        self
+    }
+
+    /// Linha informativa: sem `action`, sem clique.
+    fn info(mut self) -> Self {
+        self.clickable = false;
+        self
+    }
+}
+
+/// Fecha os overlays de jogo (diário, mapa, viagem, profiler). Os modais
+/// de topo (morte/título) e o HUD ficam para quem chama.
+fn close_overlays(writer: &UiWriter) {
+    writer.open("menu", false);
+    writer.open("region-map", false);
+    writer.open("travel", false);
+    writer.open("profiler-win", false);
 }
 
 /// Regras derivadas do conteúdo, construídas uma vez.
@@ -455,10 +504,7 @@ pub(crate) fn drive_death_screen(
     let open = modals.as_deref().is_some_and(|m| m.is_open("death"));
     let pending = death_pending(&save);
     if death_should_open(&save, open) && !state.death_open_requested {
-        writer.open("menu", false);
-        writer.open("region-map", false);
-        writer.open("travel", false);
-        writer.open("profiler-win", false);
+        close_overlays(&writer);
         writer.open("death", true);
         state.death_open_requested = true;
     } else if !pending && open && state.death_open_requested {
@@ -605,10 +651,7 @@ fn request_load(world: &mut World, slot: u32) {
         request.slot = Some(slot);
     }
     if let Some(writer) = world.get_resource::<UiWriter>() {
-        writer.open("menu", false);
-        writer.open("region-map", false);
-        writer.open("travel", false);
-        writer.open("profiler-win", false);
+        close_overlays(&writer);
         writer.set_visible("hud", true);
     }
     let mut state = world.resource_mut::<VaelScreensState>();
@@ -997,10 +1040,7 @@ fn menu_to_title(world: &mut World) {
     }
     patch_game(world, patch);
     if let Some(writer) = world.get_resource::<UiWriter>() {
-        writer.open("menu", false);
-        writer.open("region-map", false);
-        writer.open("travel", false);
-        writer.open("profiler-win", false);
+        close_overlays(&writer);
         writer.set_visible("hud", false);
         writer.open("title", true);
     }
@@ -1100,7 +1140,10 @@ fn death_retry(world: &mut World) {
 /// de vitais já foi escrito pela autoridade; aqui fecha-se o ciclo com o
 /// teleporte, os frascos e a troca de cena se estiver num interior.
 pub(crate) fn apply_respawn_request(world: &mut World) {
-    let Some(request) = world.get_resource::<crate::respawn::RespawnRequest>().copied() else {
+    let Some(request) = world
+        .get_resource::<crate::respawn::RespawnRequest>()
+        .copied()
+    else {
         return;
     };
     if !request.active {
@@ -1165,14 +1208,6 @@ fn death_to_title(world: &mut World) {
 }
 
 // ── construção de linhas ────────────────────────────────────────────────
-
-fn label(content: Option<&VaelContent>, lang: &str, key: &str, fallback: &str) -> String {
-    content
-        .and_then(|content| content.locale.get(lang))
-        .and_then(|table| table.get(key))
-        .cloned()
-        .unwrap_or_else(|| fallback.to_string())
-}
 
 fn lang(save: &VaelSave) -> String {
     save.legacy
@@ -1332,25 +1367,23 @@ fn quest_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
         };
         let tracked = save.quests.tracked.as_deref() == Some(id_string.as_str())
             && (state == "active" || state == "ready");
-        rows.push(RowVm {
-            action: format!("track-{id_string}"),
-            title: if tracked {
-                format!("▶ {}", def.title)
-            } else {
-                def.title.clone()
-            },
-            subtitle: format!(
-                "{} · {}",
-                objective_line(content, def, &state, &view),
-                biome_label(&def.biome)
-            ),
-            tag: status_text.to_string(),
-            progress,
-            has_progress: true,
-            clickable: true,
-            icon: String::new(),
-            has_icon: false,
-        });
+        rows.push(
+            RowVm::menu(
+                format!("track-{id_string}"),
+                if tracked {
+                    format!("▶ {}", def.title)
+                } else {
+                    def.title.clone()
+                },
+                format!(
+                    "{} · {}",
+                    objective_line(content, def, &state, &view),
+                    biome_label(&def.biome)
+                ),
+                status_text,
+            )
+            .with_progress(progress),
+        );
         let _ = progress_text;
     }
     rows
@@ -1461,21 +1494,17 @@ fn bag_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules)
                 tip.push_str(" — ");
                 tip.push_str(&item.desc);
             }
-            RowVm {
-                action: format!("bag-{}", item.id),
-                title: item.label.clone(),
-                subtitle: if item.desc.is_empty() {
+            RowVm::menu(
+                format!("bag-{}", item.id),
+                item.label.clone(),
+                if item.desc.is_empty() {
                     tip
                 } else {
                     item.desc.clone()
                 },
                 tag,
-                progress: 0.0,
-                has_progress: false,
-                clickable: true,
-                icon: icon.clone().unwrap_or_default(),
-                has_icon: icon.is_some(),
-            }
+            )
+            .with_icon(icon)
         })
         .collect()
 }
@@ -1484,24 +1513,21 @@ fn shop_list_rows(save: &VaelSave, rules: &VaelUiRules) -> Vec<RowVm> {
     let kv = inventory_kv(save);
     shop_rows(&rules.shop, &kv)
         .into_iter()
-        .map(|row| RowVm {
-            action: format!("shop-{}", row.id),
-            title: if row.selling {
-                format!("{} ×{}", row.label, row.stock)
-            } else {
-                row.label.clone()
-            },
-            subtitle: String::new(),
-            tag: if row.selling {
-                format!("+{}", row.price)
-            } else {
-                row.price.to_string()
-            },
-            progress: 0.0,
-            has_progress: false,
-            clickable: true,
-            icon: String::new(),
-            has_icon: false,
+        .map(|row| {
+            RowVm::menu(
+                format!("shop-{}", row.id),
+                if row.selling {
+                    format!("{} ×{}", row.label, row.stock)
+                } else {
+                    row.label.clone()
+                },
+                String::new(),
+                if row.selling {
+                    format!("+{}", row.price)
+                } else {
+                    row.price.to_string()
+                },
+            )
         })
         .collect()
 }
@@ -1534,21 +1560,16 @@ fn forge_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
                 crate::economy::CraftStatus::Missing => ("falta material", String::new()),
                 crate::economy::CraftStatus::Full => ("mochila cheia", String::new()),
             };
-            RowVm {
-                action: format!("forge-{}", recipe.id),
-                title: if count > 1 {
+            RowVm::menu(
+                format!("forge-{}", recipe.id),
+                if count > 1 {
                     format!("{label} ×{count}")
                 } else {
                     label
                 },
-                subtitle: if cost.is_empty() { note } else { cost },
-                tag: status_text.to_string(),
-                progress: 0.0,
-                has_progress: false,
-                clickable: true,
-                icon: String::new(),
-                has_icon: false,
-            }
+                if cost.is_empty() { note } else { cost },
+                status_text,
+            )
         })
         .collect()
 }
@@ -1574,17 +1595,7 @@ fn controls_rows() -> Vec<RowVm> {
         ("P", "profiler"),
     ]
     .into_iter()
-    .map(|(key, action)| RowVm {
-        action: String::new(),
-        title: key.to_string(),
-        subtitle: action.to_string(),
-        tag: String::new(),
-        progress: 0.0,
-        has_progress: false,
-        clickable: false,
-        icon: String::new(),
-        has_icon: false,
-    })
+    .map(|(key, action)| RowVm::menu(String::new(), key, action, String::new()).info())
     .collect()
 }
 
@@ -1645,17 +1656,7 @@ fn a11y_rows(
         ),
     ]
     .into_iter()
-    .map(|(id, label, value)| RowVm {
-        action: format!("a11y-{id}"),
-        title: label,
-        subtitle: String::new(),
-        tag: value,
-        progress: 0.0,
-        has_progress: false,
-        clickable: true,
-        icon: String::new(),
-        has_icon: false,
-    })
+    .map(|(id, label, value)| RowVm::menu(format!("a11y-{id}"), label, String::new(), value))
     .collect()
 }
 
@@ -1691,17 +1692,7 @@ fn system_rows(save: &VaelSave, ui: Option<&UiData>, scene: Option<&CurrentScene
         ("Sessão".to_string(), playtime),
     ]
     .into_iter()
-    .map(|(key, value)| RowVm {
-        action: String::new(),
-        title: key,
-        subtitle: String::new(),
-        tag: value,
-        progress: 0.0,
-        has_progress: false,
-        clickable: false,
-        icon: String::new(),
-        has_icon: false,
-    })
+    .map(|(key, value)| RowVm::menu(String::new(), key, String::new(), value).info())
     .collect()
 }
 
@@ -1864,6 +1855,21 @@ pub fn refresh_slots(
 
 /// Repõe escala/idioma/a11y/volumes guardados no `viber.game()` (o antigo
 /// `menu.lua` fazia-o; sem ele o save carregado ficava com os defaults).
+/// As chaves de preferência que o [`apply_preferences`] aplica; a assinatura
+/// de mudança deriva da mesma lista, para a sig e o corpo não divergirem.
+const PREF_KEYS: [&str; 10] = [
+    "a11y.shake",
+    "a11y.hitstop",
+    "a11y.interact_hold",
+    "a11y.subtitle_scale",
+    "ui_scale",
+    "lang",
+    "vol.master",
+    "vol.music",
+    "vol.sfx",
+    "vol.ambience",
+];
+
 pub fn apply_preferences(
     save: Res<VaelSave>,
     mut a11y: ResMut<A11y>,
@@ -1872,19 +1878,7 @@ pub fn apply_preferences(
     mut mixer: ResMut<AudioMixerSettings>,
     mut last: Local<String>,
 ) {
-    let sig = format!(
-        "{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}|{:?}",
-        save.legacy.get("a11y.shake"),
-        save.legacy.get("a11y.hitstop"),
-        save.legacy.get("a11y.interact_hold"),
-        save.legacy.get("a11y.subtitle_scale"),
-        save.legacy.get("ui_scale"),
-        save.legacy.get("lang"),
-        save.legacy.get("vol.master"),
-        save.legacy.get("vol.music"),
-        save.legacy.get("vol.sfx"),
-        save.legacy.get("vol.ambience"),
-    );
+    let sig = format!("{:?}", PREF_KEYS.map(|key| save.legacy.get(key)));
     if *last == sig {
         return;
     }

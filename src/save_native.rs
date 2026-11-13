@@ -28,7 +28,7 @@ use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiWriter;
 
-use crate::save::{VaelSave, VAEL_SAVE_VERSION};
+use crate::save::{VAEL_SAVE_VERSION, VaelSave};
 
 /// Payload refletido do save. Tudo o que não é `Reflect` (legacy do
 /// `VaelSave`, KV do Lua, rebinds) fica em strings JSON.
@@ -83,14 +83,20 @@ pub struct NativeSaveState {
 
 pub struct VaelNativeSavePlugin;
 
+/// A cadeia reflectida que o payload gravável precisa — registada pelo
+/// plugin e pelos testes que montam `App`'s à mão.
+fn register_save_types(app: &mut App) {
+    app.register_type::<VaelSaveFile>()
+        .register_type::<Vec3>()
+        .register_type::<Vec2>()
+        .register_type::<viber::terrain::delta::DeltaPatch>();
+}
+
 impl Plugin for VaelNativeSavePlugin {
     fn build(&self, app: &mut App) {
+        register_save_types(app);
         app.init_resource::<VaelSaveFile>()
             .init_resource::<NativeSaveState>()
-            .register_type::<VaelSaveFile>()
-            .register_type::<Vec3>()
-            .register_type::<Vec2>()
-            .register_type::<viber::terrain::delta::DeltaPatch>()
             .add_observer(save_on_default_event)
             .add_observer(load_on_default_event)
             .add_observer(on_native_saved)
@@ -234,7 +240,10 @@ fn finish_native_load(world: &mut World) {
 }
 
 fn capture(world: &mut World) -> Option<VaelSaveFile> {
-    let save = world.get_resource::<VaelSave>().cloned().unwrap_or_default();
+    let save = world
+        .get_resource::<VaelSave>()
+        .cloned()
+        .unwrap_or_default();
     let kv = world
         .get_resource::<LuaScriptHost>()
         .map(|host| game_to_json(&host.lua))
@@ -337,7 +346,8 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
         locale.set_lang(&payload.locale);
     }
     if let Some(mut map) = world.get_resource_mut::<ActionMap>()
-        && let Ok(keys) = serde_json::from_str::<BTreeMap<String, String>>(&payload.action_keys_json)
+        && let Ok(keys) =
+            serde_json::from_str::<BTreeMap<String, String>>(&payload.action_keys_json)
     {
         for (name, key) in keys {
             if let Some(action) = Action::parse(&name) {
@@ -433,9 +443,16 @@ fn meta_of(payload: &VaelSaveFile) -> SlotMeta {
 }
 
 fn write_meta(path: &Path, meta: &SlotMeta) -> Result<(), String> {
+    use std::io::Write as _;
     let text = serde_json::to_string_pretty(meta).map_err(|err| err.to_string())?;
     let tmp = meta_path(path).with_extension("meta.json.tmp");
-    std::fs::write(&tmp, text).map_err(|err| err.to_string())?;
+    // tmp+fsync+rename (o padrão atómico do `bevy_ext_save`): um kill -9
+    // entre a escrita e o rename não deixa a meta do slot meia-escrita.
+    let mut file = std::fs::File::create(&tmp).map_err(|err| err.to_string())?;
+    file.write_all(text.as_bytes())
+        .and_then(|()| file.sync_all())
+        .map_err(|err| err.to_string())?;
+    drop(file);
     std::fs::rename(&tmp, meta_path(path)).map_err(|err| err.to_string())
 }
 
@@ -448,7 +465,9 @@ fn read_meta(path: &Path) -> Option<SlotMeta> {
 /// devolve o metadata antigo para o menu continuar a mostrá-lo.
 pub fn list_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlotInfo> {
     let old = viber::save::list_save_slots(world_key, save_dir);
-    let base = save_dir.map(Path::to_path_buf).unwrap_or_else(default_save_dir);
+    let base = save_dir
+        .map(Path::to_path_buf)
+        .unwrap_or_else(default_save_dir);
     let key = world_key.unwrap_or("vael");
     let mut rows = Vec::with_capacity(5);
     for slot in 0..=3u32 {
@@ -516,17 +535,13 @@ fn legacy_payload(world: &mut World, slot: Option<u32>) -> Option<VaelSaveFile> 
         .and_then(|value| serde_json::from_value::<VaelSave>(value.clone()).ok())
         .unwrap_or_else(|| VaelSave::from_world_kv(&game.world_kv));
     let world_kv_json = serde_json::to_string(&game.world_kv).unwrap_or_default();
-    let action_keys_json =
-        serde_json::to_string(&game.action_keys).unwrap_or_default();
+    let action_keys_json = serde_json::to_string(&game.action_keys).unwrap_or_default();
     Some(VaelSaveFile {
         version: game.version.max(VAEL_SAVE_VERSION),
         save_id: format!("legacy-{:?}", slot),
         saved_at: game.saved_at.unwrap_or(0.0),
         playtime: game.playtime.unwrap_or(0.0),
-        title: game
-            .title
-            .clone()
-            .unwrap_or_else(|| "Vael".to_string()),
+        title: game.title.clone().unwrap_or_else(|| "Vael".to_string()),
         position: game.position.map(Vec3::from_array),
         volumes: game
             .volumes
@@ -581,25 +596,20 @@ mod tests {
         {
             let mut app = App::new();
             app.add_plugins((MinimalPlugins, AssetPlugin::default()));
-            app.register_type::<VaelSaveFile>()
-                .register_type::<Vec3>()
-                .register_type::<Vec2>()
-                .register_type::<viber::terrain::delta::DeltaPatch>()
-                .add_observer(save_on_default_event);
+            register_save_types(&mut app);
+            app.add_observer(save_on_default_event);
             app.insert_resource(payload());
-            app.world_mut()
-                .trigger_save(SaveWorld::default_into_file(path.clone()).include_resource::<VaelSaveFile>());
+            app.world_mut().trigger_save(
+                SaveWorld::default_into_file(path.clone()).include_resource::<VaelSaveFile>(),
+            );
             app.update();
         }
         assert!(path.is_file(), "moonshine devia ter escrito o ficheiro");
         {
             let mut app = App::new();
             app.add_plugins((MinimalPlugins, AssetPlugin::default()));
+            register_save_types(&mut app);
             app.init_resource::<VaelSaveFile>()
-                .register_type::<VaelSaveFile>()
-                .register_type::<Vec3>()
-                .register_type::<Vec2>()
-                .register_type::<viber::terrain::delta::DeltaPatch>()
                 .add_observer(load_on_default_event);
             app.world_mut()
                 .trigger_load(LoadWorld::default_from_file(path.clone()));

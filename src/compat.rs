@@ -1,13 +1,60 @@
-//! Coerções partilhadas entre o Lua, o `viber_game` e as env vars de QA.
+//! Coerções partilhadas entre o Lua, o `viber_game`, o JSON do save e as
+//! env vars de QA.
 //!
 //! Cada módulo da bridge `viber.vael` lia argumentos e chaves do jogo com a
 //! mesma tolerância do Lua antigo (`tonumber`, "não numérico vale 0", a
-//! verdade do Lua) — cada um com a sua cópia local. Estas funções são essa
+//! verdade do Lua) e a migração de saves lia o JSON legacy com as mesmas
+//! tolerâncias — cada um com a sua cópia local. Estas funções são essa
 //! semântica escrita uma vez; quando duas variantes coexistiam (número
 //! estrito vs `tonumber` com strings), ambas têm nome próprio em vez de um
 //! parâmetro a escolher o comportamento às escondidas.
 
 use mlua::{Table, Value};
+
+// ── JSON do save legacy ─────────────────────────────────────────────────
+
+use serde_json::Value as Json;
+
+/// Número inteiro do save legacy: número JSON, `2.9` trunca para 2 e uma
+/// string numérica também conta (o `world_kv` plano guardava tudo em
+/// texto).
+pub(crate) fn json_i64(value: &Json) -> Option<i64> {
+    match value {
+        Json::Number(n) => n.as_i64().or_else(|| n.as_f64().map(|f| f.floor() as i64)),
+        Json::String(s) => s.parse().ok(),
+        _ => None,
+    }
+}
+
+/// Número real do save legacy: número JSON ou string numérica.
+pub(crate) fn json_f32(value: &Json) -> Option<f32> {
+    match value {
+        Json::Number(n) => n.as_f64().map(|f| f as f32),
+        Json::String(s) => s.parse().ok(),
+        _ => None,
+    }
+}
+
+/// Booleano do save legacy: `true`/número ≠ 0/string "true"/"false".
+pub(crate) fn json_bool(value: &Json) -> Option<bool> {
+    match value {
+        Json::Bool(b) => Some(*b),
+        Json::Number(n) => Some(n.as_f64().is_some_and(|f| f != 0.0)),
+        Json::String(s) => s.parse().ok(),
+        _ => None,
+    }
+}
+
+/// O `tonumber(...)` do Lua sobre JSON: número ou string numérica (com
+/// espaços à volta), sempre finito — o `num(chave, 0)` do `rules.lua`.
+pub(crate) fn json_number_like(value: &Json) -> Option<f64> {
+    match value {
+        Json::Number(n) => n.as_f64(),
+        Json::String(text) => text.trim().parse::<f64>().ok(),
+        _ => None,
+    }
+    .filter(|n| n.is_finite())
+}
 
 /// Argumento numérico do Lua: `nil`/não numérico vira NaN e é ignorado
 /// pelas funções puras (cofre/XP/combate).
@@ -149,5 +196,32 @@ mod tests {
         ] {
             assert!(!env_enabled(off), "{off:?} devia ficar desligado");
         }
+    }
+
+    #[test]
+    fn json_legacy_aceita_numeros_e_strings() {
+        use serde_json::json;
+        assert_eq!(json_i64(&json!(7)), Some(7));
+        assert_eq!(json_i64(&json!(2.9)), Some(2));
+        assert_eq!(json_i64(&json!("-3")), Some(-3));
+        assert_eq!(json_i64(&json!("x")), None);
+        assert_eq!(json_i64(&json!(true)), None);
+        assert_eq!(json_f32(&json!(1.5)), Some(1.5));
+        assert_eq!(json_f32(&json!("2.5")), Some(2.5));
+        assert_eq!(json_bool(&json!(true)), Some(true));
+        assert_eq!(json_bool(&json!(0)), Some(false));
+        assert_eq!(json_bool(&json!(2)), Some(true));
+        assert_eq!(json_bool(&json!("true")), Some(true));
+        assert_eq!(json_bool(&json!("não")), None);
+    }
+
+    #[test]
+    fn json_number_like_e_o_num_do_lua() {
+        use serde_json::json;
+        assert_eq!(json_number_like(&json!(3)), Some(3.0));
+        // String com espaços, como o Lua aparava.
+        assert_eq!(json_number_like(&json!(" 4 ")), Some(4.0));
+        assert_eq!(json_number_like(&json!("abc")), None);
+        assert_eq!(json_number_like(&json!(serde_json::Value::Null)), None);
     }
 }

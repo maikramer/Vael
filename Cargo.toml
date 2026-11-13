@@ -22,6 +22,9 @@ hanabi = ["dep:bevy_hanabi"]
 
 [dependencies]
 anyhow = "1"
+# CLI do arranque (a mesma stack/versão da engine; o lock unifica as
+# features e não acrescenta pacotes novos).
+clap = { version = "4.6", features = ["derive"] }
 # O import do Jackdaw 0.20.x só aceita requirements que admitam a linha
 # `0.20` (um pin `=0.20.1` é rejeitado); o lock continua a fixar 0.20.1.
 # Mesma forma do `../Viber`, que o jogo compila por path-dep.
@@ -82,6 +85,11 @@ bevy_ext_elements = { path = "../bevy_extensions/crates/bevy_ext_elements" }
 bevy_ext_flora = { path = "../bevy_extensions/crates/bevy_ext_flora" }
 bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
 bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
+# Render procedural dos objetos de primitivas (lathe/sweep/extruded/…): o
+# contrato Shape/MaterialSpec vem do `bevy_ext_scene`; este crate troca o
+# fallback do spawner pelo mesh/material/colisor exatos. `physics` liga os
+# colisores Rapier exatos (trimesh para as formas procedurais).
+bevy_ext_gradmesh = { path = "../bevy_extensions/crates/bevy_ext_gradmesh", features = ["physics"] }
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

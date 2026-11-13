@@ -18,7 +18,7 @@ use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiModalsOpen;
 use viber::ui::widgets::UiFocusedInput;
 
-use crate::content::VaelContent;
+use crate::content::{VaelContent, label};
 use crate::save::VaelSave;
 use crate::travel::{
     TravelState, VaelTravelRules, available, distance_xz, is_revealed, is_surveyed,
@@ -391,14 +391,6 @@ fn project(position: [f32; 3], world_size: f32) -> (f64, f64) {
     let left = ((position[0] + half) / world_size * CANVAS - MARKER_R).clamp(0.0, CANVAS - 12.0);
     let top = ((position[2] + half) / world_size * CANVAS - MARKER_R).clamp(0.0, CANVAS - 12.0);
     (left as f64, top as f64)
-}
-
-fn label(content: Option<&VaelContent>, lang: &str, key: &str, fallback: &str) -> String {
-    content
-        .and_then(|content| content.locale.get(lang))
-        .and_then(|table| table.get(key))
-        .cloned()
-        .unwrap_or_else(|| fallback.to_string())
 }
 
 #[allow(clippy::too_many_arguments)]

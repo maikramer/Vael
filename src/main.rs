@@ -9,8 +9,45 @@ use std::path::{Path, PathBuf};
 
 use anyhow::Result;
 use bevy::prelude::*;
+use clap::Parser as CliParser;
 
 use vael::{VaelPlugin, VaelProjectRoot, ui::VaelUiPlugin};
+
+/// Vael: o jogo sobre a engine Viber (`world.bsn`).
+#[derive(CliParser)]
+#[command(
+    name = "vael",
+    about = "Vael",
+    disable_version_flag = true,
+    // `uso: vael [world.bsn] [--scene <nome>] [--entry <nome>] [--bridge <porta>]`
+    override_usage = "vael [world.bsn] [OPTIONS]"
+)]
+struct Args {
+    /// Ficheiro do mundo (default: `world.bsn`, com fallback a `world.xml`).
+    world: Option<PathBuf>,
+    /// Entrada de cena do arranque (ex.: `dev`).
+    #[arg(long)]
+    entry: Option<String>,
+    /// Cena de arranque (ex.: `main`); sem ela, o `start-scene` decide.
+    #[arg(long)]
+    scene: Option<String>,
+    /// Porta da bridge de debug (ex.: 15706).
+    #[arg(long)]
+    bridge: Option<u16>,
+    /// Resolução da janela `WxH`, ex.: `1280x720` (ganha a `VAEL_RESOLUTION`).
+    #[arg(long, value_parser = parse_resolution_arg)]
+    resolution: Option<(u32, u32)>,
+    /// Reescreve `world/settings/*.bsn` com os valores de antes da cena e sai.
+    #[arg(long)]
+    export_settings: bool,
+    /// Com `--export-settings`: reescreve mesmo sem mudanças.
+    #[arg(long, requires = "export_settings")]
+    force: bool,
+    /// Passada pelo `jd` para extrair o schema refletido; trata dela o
+    /// `jackdaw_runtime::JackdawPlugin` no `VaelPlugin` — aqui só é aceite.
+    #[arg(long, hide = true)]
+    jackdaw_extract_schema: bool,
+}
 
 fn main() -> Result<()> {
     // O IBL da engine pinta um cubemap a partir do `<Sky>`/`AtmosphereState`
@@ -22,88 +59,39 @@ fn main() -> Result<()> {
         // SAFETY: single-threaded, antes de `build_app`.
         unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
     }
-    let args: Vec<String> = std::env::args().skip(1).collect();
-    // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos checkouts
-    // ainda não convertidos.
-    let mut world = if Path::new("world.bsn").is_file() {
-        PathBuf::from("world.bsn")
-    } else {
-        PathBuf::from("world.xml")
-    };
-    let mut entry: Option<String> = None;
-    let mut scene: Option<String> = None;
-    let mut bridge: Option<u16> = None;
-    // Resolução da janela: `--resolution WxH` > `VAEL_RESOLUTION` > default da
-    // engine (1280x720). Num portátil com a GPU no teto, é o corte de fill-rate
-    // mais direto: a 1600x900 o frame é 100% GPU-bound.
-    let mut resolution: Option<(u32, u32)> = std::env::var("VAEL_RESOLUTION")
-        .ok()
-        .and_then(|raw| parse_resolution(&raw));
-    let mut i = 0;
+    let args = Args::parse();
 
-    while i < args.len() {
-        match args[i].as_str() {
-            "--entry" => {
-                let Some(name) = args.get(i + 1) else {
-                    anyhow::bail!("--entry precisa do nome da entrada");
-                };
-                entry = Some(name.clone());
-                i += 2;
-            }
-            "--scene" => {
-                let Some(name) = args.get(i + 1) else {
-                    anyhow::bail!("--scene precisa do nome da cena");
-                };
-                scene = Some(name.clone());
-                i += 2;
-            }
-            "--resolution" => {
-                let Some(raw) = args.get(i + 1) else {
-                    anyhow::bail!("--resolution precisa de WxH (ex.: 1280x720)");
-                };
-                resolution = Some(
-                    parse_resolution(raw)
-                        .ok_or_else(|| anyhow::anyhow!("--resolution inválida: {raw} (WxH)"))?,
-                );
-                i += 2;
-            }
-            "--bridge" => {
-                let Some(port) = args.get(i + 1).and_then(|raw| raw.parse::<u16>().ok()) else {
-                    anyhow::bail!("--bridge precisa de uma porta (ex.: 15704)");
-                };
-                bridge = Some(port);
-                i += 2;
-            }
-            // Escreve `world/settings/*.bsn` com os valores de antes da cena
-            // (ambiente, PostFX e espécies de flora) e sai.
-            "--export-settings" => {
-                let force = args.iter().any(|arg| arg == "--force");
-                let root = std::env::current_dir()?;
-                for path in vael::settings::export_settings(&root, force)? {
-                    println!("{}", path.display());
-                }
-                return Ok(());
-            }
-            "--help" | "-h" => {
-                println!(
-                    "uso: vael [world.bsn] [--scene <nome>] [--entry <nome>] [--bridge <porta>]"
-                );
-                return Ok(());
-            }
-            // `jd` corre o binário do jogo com esta flag para ler o schema
-            // refletido (componentes) e sair antes de abrir a janela. Quem
-            // trata dela é o `jackdaw_runtime::JackdawPlugin` no `VaelPlugin`;
-            // aqui só não pode ser rejeitada como argumento desconhecido.
-            "--jackdaw-extract-schema" => i += 1,
-            flag if flag.starts_with('-') => {
-                anyhow::bail!("argumento desconhecido: {flag}");
-            }
-            path => {
-                world = PathBuf::from(path);
-                i += 1;
-            }
+    // Escreve `world/settings/*.bsn` com os valores de antes da cena
+    // (ambiente, PostFX e espécies de flora) e sai.
+    if args.export_settings {
+        let root = std::env::current_dir()?;
+        for path in vael::settings::export_settings(&root, args.force)? {
+            println!("{}", path.display());
         }
+        return Ok(());
     }
+
+    // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos
+    // checkouts ainda não convertidos.
+    let world = args.world.unwrap_or_else(|| {
+        if Path::new("world.bsn").is_file() {
+            PathBuf::from("world.bsn")
+        } else {
+            PathBuf::from("world.xml")
+        }
+    });
+    let entry = args.entry;
+    let scene = args.scene;
+    let bridge = args.bridge;
+    // Resolução da janela: `--resolution WxH` > `VAEL_RESOLUTION` > default
+    // da engine (1280x720). Num portátil com a GPU no teto, é o corte de
+    // fill-rate mais direto: a 1600x900 o frame é 100% GPU-bound. A env
+    // inválida é ignorada em silêncio, como sempre foi.
+    let resolution = args.resolution.or_else(|| {
+        std::env::var("VAEL_RESOLUTION")
+            .ok()
+            .and_then(|raw| parse_resolution(&raw))
+    });
 
     // Absoluto: o cwd não pode decidir onde vivem o config, os assets e o save.
     let requested = std::path::absolute(&world)
@@ -240,4 +228,55 @@ fn parse_resolution(raw: &str) -> Option<(u32, u32)> {
     let height: u32 = height.trim().parse().ok()?;
     let ok = (320..=8192).contains(&width) && (200..=8192).contains(&height);
     ok.then_some((width, height))
+}
+
+/// O mesmo parse, na forma que o clap espera para `--resolution`.
+fn parse_resolution_arg(raw: &str) -> Result<(u32, u32), String> {
+    parse_resolution(raw).ok_or_else(|| format!("resolução inválida: {raw} (WxH)"))
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// O contrato com o `viber run`/wrapper: flags com valor separado por
+    /// espaço e o mundo como posicional.
+    #[test]
+    fn flags_da_bridge_e_da_cena_parseiam() {
+        let args = Args::try_parse_from([
+            "vael",
+            "outro.bsn",
+            "--scene",
+            "main",
+            "--entry",
+            "dev",
+            "--bridge",
+            "15706",
+            "--resolution",
+            "1280x720",
+        ])
+        .expect("args válidas");
+        assert_eq!(args.world, Some(PathBuf::from("outro.bsn")));
+        assert_eq!(args.scene.as_deref(), Some("main"));
+        assert_eq!(args.entry.as_deref(), Some("dev"));
+        assert_eq!(args.bridge, Some(15706));
+        assert_eq!(args.resolution, Some((1280, 720)));
+    }
+
+    /// A flag silenciosa do `jd` é aceite; o `--force` só existe com
+    /// `--export-settings` (antes era bandeira solta ignorada fora do ramo).
+    #[test]
+    fn flag_do_jd_e_aceite_e_forca_exige_export() {
+        assert!(Args::try_parse_from(["vael", "--jackdaw-extract-schema"]).is_ok());
+        assert!(Args::try_parse_from(["vael", "--force"]).is_err());
+        assert!(Args::try_parse_from(["vael", "--export-settings", "--force"]).is_ok());
+    }
+
+    /// Teto defensivo do `WxH` (a env não pode abrir janelas absurdas).
+    #[test]
+    fn resolucao_fora_dos_limites_e_rejeitada() {
+        assert!(Args::try_parse_from(["vael", "--resolution", "100x100"]).is_err());
+        assert!(Args::try_parse_from(["vael", "--resolution", "abc"]).is_err());
+        assert!(Args::try_parse_from(["vael", "--resolution", "1280x720"]).is_ok());
+    }
 }

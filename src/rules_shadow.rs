@@ -29,8 +29,10 @@ use viber::worldsys::WeatherState;
 use crate::components::PlayerVitals;
 use crate::save::VaelSave;
 
-/// A partir daqui `clock.raining()` diz que chove (`clock.RAIN_HEAVY`).
-pub const RAIN_HEAVY: f32 = 0.3;
+/// A partir daqui `clock.raining()` diz que chove. Fonte única: o contrato
+/// 0,3 é o [`crate::clock::RAIN_HEAVY`] (f64); as comparações com o
+/// `WeatherState` da engine (f32) fazem o cast.
+pub use crate::clock::RAIN_HEAVY;
 
 /// DPS dos estados (tabela `STATUS` do Lua).
 const VENOM_DPS: f32 = 4.0;
@@ -520,7 +522,9 @@ fn rules_shadow_system(
         shadow.seed_from(lua);
     }
 
-    let rain = weather.as_deref().is_some_and(|w| w.rain >= RAIN_HEAVY);
+    let rain = weather
+        .as_deref()
+        .is_some_and(|w| w.rain >= RAIN_HEAVY as f32);
     // `viber.menu_open()` é o `MenusOpen::any()`; o título também congela.
     let frozen = menus.as_deref().is_some_and(MenusOpen::any)
         || modals.as_deref().is_some_and(|m| m.is_open("title"));

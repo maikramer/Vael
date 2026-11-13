@@ -78,6 +78,24 @@ impl VaelContent {
         content.errors = errors;
         content
     }
+
+    /// Texto localizado com fallback: a chave ausente (ou o idioma em falta)
+    /// fica com o texto dado.
+    pub fn label(&self, lang: &str, key: &str, fallback: &str) -> String {
+        self.locale
+            .get(lang)
+            .and_then(|table| table.get(key))
+            .cloned()
+            .unwrap_or_else(|| fallback.to_string())
+    }
+}
+
+/// [`VaelContent::label`] para os sistemas que leem `Option<&VaelContent>`:
+/// sem o plugin de conteúdo, o fallback é a resposta.
+pub fn label(content: Option<&VaelContent>, lang: &str, key: &str, fallback: &str) -> String {
+    content
+        .map(|content| content.label(lang, key, fallback))
+        .unwrap_or_else(|| fallback.to_string())
 }
 
 /// Plugin de conteúdo: carrega antes de qualquer `Startup` do jogo.
