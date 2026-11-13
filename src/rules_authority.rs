@@ -1,4 +1,5 @@
-//! Autoridade Rust das vitais/status/morte (`VAEL_RULES_RUST=1`).
+//! Autoridade Rust das vitais/status/morte (default; `VAEL_RULES_RUST=0`
+//! devolve o tick ao Lua).
 //!
 //! A partir do momento em que o flag está ligado, o tick por frame de vida,
 //! i-frames, estados e morte é deste módulo: lê o KV do `viber.game()` DEPOIS
@@ -22,7 +23,8 @@
 //!   espelha-o quando a autoridade está ligada); sem esse espelho o god do
 //!   Lua não seria visível daqui.
 //!
-//! `VAEL_RULES_RUST=0` (default) mantém o tick no Lua, como antes. O shadow
+//! A autoridade é o **default** desde a Onda 4a; `VAEL_RULES_RUST=0`
+//! (ou `false`/`off`/`no`) mantém o tick no Lua, como antes. O shadow
 //! (`VAEL_RULES_SHADOW=1`) permanece independente.
 
 use std::collections::BTreeMap;
@@ -68,7 +70,7 @@ impl VaelRulesConfig {
 }
 
 impl Default for VaelRulesConfig {
-    /// Opt-in: só liga com `1`/`true`/`on`/`yes`.
+    /// Ligada por omissão; a env só a desliga explicitamente.
     fn default() -> Self {
         Self::from_env()
     }
@@ -306,12 +308,13 @@ fn json_num(value: f32) -> Value {
         .unwrap_or_else(|| Value::Number(0.into()))
 }
 
-/// Gate `VAEL_RULES_RUST` (opt-in: só com `1`/`true`/`on`/`yes`).
+/// Gate `VAEL_RULES_RUST`: ligado por omissão, desligado só com um valor
+/// explícito de off (`0`/`false`/`off`/`no`).
 fn rust_enabled(raw: Option<&str>) -> bool {
-    matches!(
+    !matches!(
         raw.map(|value| value.trim().to_ascii_lowercase())
             .as_deref(),
-        Some("1" | "true" | "on" | "yes")
+        Some("0" | "false" | "off" | "no")
     )
 }
 
@@ -328,8 +331,8 @@ mod tests {
 
     #[test]
     fn gate_por_variavel_de_ambiente() {
-        assert!(!rust_enabled(None));
-        assert!(!rust_enabled(Some("")));
+        assert!(rust_enabled(None));
+        assert!(rust_enabled(Some("")));
         assert!(!rust_enabled(Some("0")));
         for on in ["1", "true", "on", "yes", " TRUE ", "On"] {
             assert!(rust_enabled(Some(on)), "devia ligar: {on}");
@@ -337,9 +340,10 @@ mod tests {
         for off in ["0", "false", "off", "no", "OFF", " False "] {
             assert!(!rust_enabled(Some(off)), "devia desligar: {off}");
         }
-        // Sem variável (None) o gate fica desligado, como o default.
-        assert!(!VaelRulesConfig::from_raw(None).rust);
+        // Sem variável (None) o gate fica LIGADO (default da Onda 4a).
+        assert!(VaelRulesConfig::from_raw(None).rust);
         assert!(VaelRulesConfig::from_raw(Some("1")).rust);
+        assert!(!VaelRulesConfig::from_raw(Some("0")).rust);
     }
 
     #[test]
@@ -352,8 +356,8 @@ mod tests {
         );
         if std::env::var_os(RUST_RULES_ENV).is_none() {
             assert!(
-                !VaelRulesConfig::default().rust,
-                "sem a variável a autoridade fica desligada"
+                VaelRulesConfig::default().rust,
+                "sem a variável a autoridade fica ligada"
             );
         }
     }
