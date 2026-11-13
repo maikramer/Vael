@@ -37,6 +37,20 @@ local COMBO_WINDOW = 2.5
 local COMBO_PER_HIT = 0.02
 local COMBO_CAP = 0.3
 local EXECUTE_FRAC = 0.15
+-- Corte entre golpes: 250 ms (o blend dos gestos) deixava a chain mole.
+local SWING_BLEND = 0.1
+-- Cancelamento: o golpe seguinte (em buffer) sai este tempo DEPOIS do
+-- impacto, sem esperar a recuperação inteira do clip. O remate (passo 2)
+-- continua a pesar: só cancela a 75 % do clip.
+local RECOVERY = 0.16
+local FINISHER_COMMIT = 0.75
+-- Mira suave: o golpe vira o herói para o hostil mais provável à frente
+-- (o alvo da barra ganha) e avança um passo curto até ele.
+local SOFT_LOCK_EXTRA = 2.0
+local SOFT_LOCK_ARC = 0.0 -- meia-frente
+local LUNGE_MIN, LUNGE_MAX = 0.25, 1.2
+-- Durante o windup o herói anda a 25 %: já não desliza em pose de golpe.
+local ATTACK_SLOW = 0.25
 local BOSSES = {
   witch = true, ["sand-worm"] = true, ["bog-warden"] = true, boss = true,
 }
@@ -100,6 +114,28 @@ local function show_target(kind, hp, max_hp)
   end
 end
 
+-- Hostil para onde o golpe deve virar: perto, à frente e, de preferência,
+-- o alvo da barra. Devolve o hostil e a distância (ou nil).
+local function aim_target(st, px, py, pz, fx, fz, reach)
+  local best, best_dist, best_score
+  local limit = reach + SOFT_LOCK_EXTRA
+  for _, h in ipairs(rules.hostiles(limit) or {}) do
+    if (h.hp or 0) > 0 and math.abs((h.y or py) - py) <= VERTICAL then
+      local dx, dz = (h.x or px) - px, (h.z or pz) - pz
+      local dist = math.sqrt(dx * dx + dz * dz)
+      local dot = dist > 1e-3 and (fx * dx + fz * dz) / dist or 1
+      local locked = h.id == st.target
+      if dist <= limit and (dot >= SOFT_LOCK_ARC or (locked and dot >= -0.5)) then
+        local score = dist - dot * 2.0 - (locked and 1.5 or 0)
+        if not best_score or score < best_score then
+          best, best_dist, best_score = h, dist, score
+        end
+      end
+    end
+  end
+  return best, best_dist
+end
+
 local function start_swing(st)
   -- Dentro da janela avança 0→1→2→0; fora, recomeça no primeiro corte.
   local step = 0
@@ -127,18 +163,38 @@ local function start_swing(st)
   local occupy = duration / speed
   local fraction = IMPACT_FRACTION[clip] or 0.35
   local delay = math.min(0.6, math.max(0.12, duration * fraction / speed))
-  st.attack_t = occupy
+  if step >= 2 then
+    st.attack_t = math.max(delay + RECOVERY, occupy * FINISHER_COMMIT)
+  else
+    st.attack_t = math.min(occupy, delay + RECOVERY)
+  end
   st.chain_timer = math.max(occupy + CHAIN_LINK, CHAIN_FLOOR)
   -- A mira do golpe é a do PRESS (o corpo pode girar durante o windup, e um
   -- piparote no rato/A-D não pode fazer o corte aterrar atrás do herói).
+  -- Com um hostil à frente, a mira vira para ele (mira suave).
   local fx, fz = viber.player_forward()
+  local has, px, py, pz = viber.player_position()
+  local lunge = LUNGE_MIN
+  if has then
+    local reach = weapon.range or MELEE_RANGE
+    local target, dist = aim_target(st, px, py, pz, fx, fz, reach)
+    if target and dist > 1e-3 then
+      fx, fz = ((target.x or px) - px) / dist, ((target.z or pz) - pz) / dist
+      -- Fecha a distância até ~metade do alcance; colado, só o passo mínimo.
+      lunge = math.max(LUNGE_MIN, math.min(LUNGE_MAX, dist - reach * 0.55))
+    end
+  end
   st.swing = { t = delay, step = step, fx = fx, fz = fz }
+  if viber.vael and viber.vael.attack_motion then
+    viber.vael.attack_motion({
+      secs = delay + 0.08, slow = ATTACK_SLOW, lunge = lunge, fx = fx, fz = fz,
+    })
+  end
   local pid = viber.player_id()
   if pid then
-    viber.play_clip(clip, { speed = speed, id = pid })
+    viber.play_clip(clip, { speed = speed, id = pid, blend = SWING_BLEND })
   end
   -- O controller vive na origem: sem posição o whoosh tocava a 40+ m.
-  local has, px, py, pz = viber.player_position()
   if has then
     viber.sound("whoosh", { x = px, y = py, z = pz })
   else
@@ -233,6 +289,17 @@ local function resolve_swing(st, sw)
           end
           local killed = rules.damage_enemy(h.id, dmg)
           dealt = dealt + dmg
+          local g = viber.game()
+          if g and g.voice_buff_until and viber.time() < (tonumber(g.voice_buff_until) or 0) then
+            local vk = g.voice_buff_kind
+            if vk == "brasa" then
+              rules.enemy_status(h.id, "burn", 3.5)
+            elseif vk == "geada" then
+              rules.enemy_status(h.id, "frost", 3.5)
+            elseif vk == "tempestade" then
+              rules.enemy_status(h.id, "shock", 2.0)
+            end
+          end
           if blocked then
             viber.sound("block", { x = h.x, y = h.y, z = h.z })
           elseif shock_chance > 0 and math.random() < shock_chance then
@@ -530,7 +597,16 @@ function on_update(dt)
     st.buffer_queued = false
     st.buffer_t = 0
   end
-  local busy = (st.attack_t or 0) > 0 or st.swing ~= nil
+  -- Esquiva em curso: um golpe pendente é cancelado (a esquiva ganha) e o
+  -- próximo espera pela aterragem, em buffer.
+  local dodge = viber.game().hero_dodge
+  local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - viber.time()) or 0
+  local dodging = dodge_left > 0 and dodge_left < 1.0
+  if dodging and st.swing then
+    st.swing = nil
+    st.attack_t = 0
+  end
+  local busy = dodging or (st.attack_t or 0) > 0 or st.swing ~= nil
   if pressed then
     if busy then
       st.buffer_queued = true

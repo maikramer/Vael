@@ -2,7 +2,8 @@ local rules = viber.load("lib/rules.lua")
 -- game/abilities.lua: as HABILIDADES do herói são do JOGO (Lua), sobre a API
 -- genérica da engine (que já não tem handlers nativos para estas teclas):
 --
---   [C] dash     → player_forward + push_player (colide) + grant_iframes + FOV kick
+--   [C] esquiva  → `viber.vael.dodge()` (controller Rust): W rola, A/D salto
+--                  lateral, S/nada salto para trás; + grant_iframes + clip
 --   [E] cura     → heal_player + número flutuante
 --   [R] radial   → rules.radial_damage (falloff + knockback) + anel e shake
 --   [B] bomba    → vault_take + spawn_prototype do `<Prototype id="bomb-lua">`
@@ -15,13 +16,16 @@ local rules = viber.load("lib/rules.lua")
 -- controller corre onde o herói andar; sem o tag o LOD de 45 m congelava-o).
 -- Autoload para dash/cura/impacto funcionarem também dentro das casas.
 
--- Esquiva curta (3 s): é a resposta principal aos golpes telegrafados. A
+-- Esquiva curta (1,2 s): é a resposta principal aos golpes telegrafados. A
 -- cura [E] deixou de ser uma recarga grátis: gasta uma carga do CANTIL
 -- (`rules.flask_*`), que só volta no descanso; a recarga de 2 s só evita o
 -- duplo toque.
-local CD_DASH, CD_HEAL, CD_STRIKE = 3.0, 2.0, 8.0
-local DASH_DISTANCE = 5.0 -- o controller perde ~15 % no atrito: anda ~4,2 m
+local CD_DASH, CD_HEAL, CD_STRIKE = 1.2, 2.0, 8.0
+local DASH_DISTANCE = 5.0 -- só o recurso sem `viber.vael.dodge` (push_player)
 local DASH_IFRAMES = 0.35
+-- Clip de cada esquiva: o rolamento tem clip próprio; os saltos usam o
+-- `jump` acelerado para caber na duração do salto.
+local DODGE_CLIP = { roll = "roll", side = "jump", back = "jump" }
 local HEAL_AMOUNT = 50
 local STRIKE_RADIUS, STRIKE_DAMAGE, STRIKE_KNOCKBACK = 4.8, 60, 7
 local BOMB_LAUNCH_DISTANCE = 2.6
@@ -81,6 +85,10 @@ function on_update(dt)
     st.cd = { dash = 0, heal = 0, strike = 0 }
   end
   st.playtime = playtime
+  if game and game.voice_dash_reset then
+    st.cd.dash = 0
+    game.voice_dash_reset = false
+  end
   -- Título aberto ou cena de menu (acampamento atrás do véu): C/E/R/B/L são
   -- da UI. O `viber.menu_open()` não cobre o título — o hotbar e o
   -- equipamento já tinham o portão (o [1] gastava uma poção por cima do
@@ -123,20 +131,50 @@ function on_update(dt)
     rules.guard()
   end
 
-  -- [C] dash: reto no forward do herói; o teleport assenta o Y.
+  -- [C] esquiva. O controller Rust escolhe pelo input do frame: W rola,
+  -- A/D dão o salto lateral (sem rodar o corpo), S/nada o salto para trás.
+  -- Recusa no ar ou a meio de outra esquiva (devolve nil) — sem gastar a
+  -- recarga.
   if viber.input.pressed("c") and st.cd.dash <= 0 then
-    -- Talento "Passo de vento": `dash_cd` é a variação da recarga (−0,4).
-    st.cd.dash = CD_DASH * math.max(0.3, 1 + rules.stat("dash_cd"))
-    PERIOD.dash = st.cd.dash
-    local fx, fz = viber.player_forward()
-    -- Sem `face_player()`: o controller roda-se a si próprio, não o herói.
-    -- Pelo character controller: colide com muros (o teleporte atravessava
-    -- a muralha) e dá i-frames durante a rajada.
-    viber.push_player(fx * DASH_DISTANCE, fz * DASH_DISTANCE)
-    rules.grant_iframes(DASH_IFRAMES + rules.stat("dash_iframes"))
-    viber.fov_kick(8)
-    viber.sound("dash", { x = px, y = py, z = pz })
-    viber.burst("ground-dust", px, py + 0.2, pz, 10)
+    local kind, duration
+    if viber.vael and viber.vael.dodge then
+      kind, duration = viber.vael.dodge()
+    else
+      -- Recurso: o dash antigo pelo character controller.
+      local fx, fz = viber.player_forward()
+      viber.push_player(fx * DASH_DISTANCE, fz * DASH_DISTANCE)
+      kind, duration = "dash", 0.3
+    end
+    if kind then
+      -- Talento "Passo de vento": `dash_cd` é a variação da recarga (−0,4).
+      st.cd.dash = CD_DASH * math.max(0.3, 1 + rules.stat("dash_cd"))
+      PERIOD.dash = st.cd.dash
+      rules.grant_iframes(DASH_IFRAMES + rules.stat("dash_iframes"))
+      -- O melee lê isto: a esquiva cancela o golpe pendente e adia o
+      -- próximo até aterrar.
+      -- TABELA (não viaja no save, como o `attack_alert`): um escalar com o
+      -- relógio de outra sessão trancava o ataque depois de um load.
+      local g = viber.game()
+      if type(g.hero_dodge) ~= "table" then
+        g.hero_dodge = {}
+      end
+      g.hero_dodge.until_t = viber.time() + (duration or 0.3)
+      local clip = DODGE_CLIP[kind]
+      local pid = viber.player_id()
+      if clip and pid then
+        local clip_len = viber.clip_duration and viber.clip_duration(clip) or 0
+        local speed = 1.0
+        if clip_len and clip_len > 0 and duration and duration > 0 then
+          speed = math.max(0.6, math.min(3.0, clip_len / duration))
+        end
+        viber.play_clip(clip, { speed = speed, id = pid, blend = 0.08 })
+      end
+      if kind == "roll" or kind == "dash" then
+        viber.fov_kick(8)
+      end
+      viber.sound("dash", { x = px, y = py, z = pz })
+      viber.burst("ground-dust", px, py + 0.2, pz, 10)
+    end
   end
 
   -- [E] cura (sem interação em alcance — a fronteira do nativo: o prompt
