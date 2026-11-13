@@ -29,6 +29,7 @@ deve ser corrigido no mesmo commit.
 | [`PERF_BASELINE.md`](PERF_BASELINE.md) | medição de 2026-10-21, anterior a `bevy_elements`, UI `bevy_pf` e player/câmara no Vael; serve de ordem de grandeza e método |
 | [`AAA_ROADMAP.md`](AAA_ROADMAP.md) | plano de apresentação/performance de 2026-10-21; o pressuposto “regras em Lua” foi substituído pela migração |
 | [`TERRAIN-VOXEL-STUDY.md`](TERRAIN-VOXEL-STUDY.md) | estudo de 2026-11-11 que decidiu **não** migrar o terreno para `voxel-framework` |
+| [`CODE-SLIM-STUDY.md`](CODE-SLIM-STUDY.md) | estudo de 2026-11-13 sobre enxugar o crate (crates existentes, repetição, compilação); a Fase 1 foi aplicada no mesmo dia |
 | `perf-baseline-*.jsonl` | séries brutas do profiler que suportam o `PERF_BASELINE.md` |
 
 ## Convenções de manutenção
