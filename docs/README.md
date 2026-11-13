@@ -16,6 +16,7 @@ deve ser corrigido no mesmo commit.
 | [`VIBER_TOOLS.md`](VIBER_TOOLS.md) | CLI `viber`, runtime de debug e extensões Jackdaw | **vivo** |
 | [`DEBUG.md`](DEBUG.md) | arranque directo (`--scene main --entry dev`), F1/F2 e efeitos no save | **vivo** |
 | [`FLORA.md`](FLORA.md) | árvores procedurais, estações, pools, colheita e gates | **vivo** |
+| [`PRIMITIVES.md`](PRIMITIVES.md) | tags de primitivas (lathe/sweep/extruded/…), presets de material, colisores e preview no Jackdaw | **vivo** |
 | [`AUDIO.md`](AUDIO.md) | direção sonora, layers por bioma, manifests e regen | **vivo** |
 | [`REMOTE_GPU.md`](REMOTE_GPU.md) | `vramd` na rede, bundles e GPU remota | **vivo** |
 | [`DECISION_QUESTS.md`](DECISION_QUESTS.md) | quests de decisão com o d1 e os seus dados | **vivo** |

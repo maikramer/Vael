@@ -1,23 +1,20 @@
 //! Vael em Rust: fundação do jogo nativo sobre a engine Viber.
 //!
-//! O mundo e o conteúdo continuam a ser os ficheiros do projeto (`world.xml`,
-//! JSON e, nesta fase, os scripts Lua). Este crate monta a App com o
-//! comportamento de jogo da engine DESLIGADO (`gameplay: false`) e o host
-//! Luau em `Compat`: as regras passam para Rust onda a onda, sem deixar o
-//! jogo sem comportamento enquanto a transição decorre.
+//! O mundo e o conteúdo são os ficheiros do projeto (`world.bsn`, JSON e os
+//! scripts Lua transitórios). Este crate monta a App com o comportamento de
+//! jogo da engine DESLIGADO (`gameplay: false`) e o host Luau em `Compat`:
+//! as regras passam para Rust onda a onda, sem deixar o jogo sem
+//! comportamento enquanto a transição decorre.
 //!
-//! Nesta passagem o estado corre em **shadow mode**: [`VaelStateSyncPlugin`]
-//! espelha o `viber.game()`, [`VaelRulesShadowPlugin`] simula as regras vitais
-//! ao lado do Lua e [`VaelHudPlugin`] publica os binds do HUD ao lado do Lua,
-//! só a ler. A tabela Lua continua a ser a fonte de verdade.
+//! O [`VaelStateSyncPlugin`] espelha o `viber.game()` e o [`VaelHudPlugin`]
+//! publica os binds do HUD. A autoridade de vitais/status/morte é o
+//! **default** desde a Onda 4a ([`VaelRulesAuthorityPlugin`];
+//! `VAEL_RULES_RUST=0` devolve o tick ao Lua). O [`VaelRulesShadowPlugin`]
+//! (`VAEL_RULES_SHADOW=1`) continua a ser a ferramenta de paridade.
 //!
-//! O comportamento de HUD que não é diálogo (`scripts/ui/hud.lua`) já é do
-//! [`VaelHudUiPlugin`]: linhas de "outras missões", clique do diário, TTL da
-//! barra de chefe e soco do combo.
-//!
-//! Com `VAEL_RULES_RUST=1`, o [`VaelRulesAuthorityPlugin`] passa a ser o dono
-//! do tick de vitais/status/morte: lê o `viber.game()` depois do Luau, simula
-//! com o mesmo `shadow_tick` e escreve de volta as chaves que possui.
+//! O comportamento de HUD que não é diálogo é do [`VaelHudUiPlugin`]: linhas
+//! de "outras missões", clique do diário, TTL da barra de chefe e soco do
+//! combo.
 
 // Sistemas Bevy exprimem queries grandes e as VMs da UI são construídas campo
 // a campo; estes três lints são ruído de estilo neste código, não contratos.
@@ -49,6 +46,7 @@ pub mod hud;
 pub mod hud_ui;
 pub mod lighting;
 pub mod player;
+pub mod primitives;
 pub mod quest;
 pub mod quest_events;
 pub mod respawn;
@@ -82,6 +80,7 @@ pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
 pub use lighting::VaelShadowPlugin;
+pub use primitives::VaelPrimitivesPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
 pub use quest_events::VaelQuestEventsPlugin;
 pub use rules_authority::{VaelRulesAuthority, VaelRulesAuthorityPlugin, VaelRulesConfig};
@@ -97,7 +96,7 @@ pub use world_text::{VaelWorldTextPlugin, WorldTextEvent};
 pub use xp::{VaelXpPlugin, XpGain, XpRules};
 
 /// Raiz do projeto Vael: a pasta com `config.yaml`, `data/`, `quests/`,
-/// `locale/` e o `world.xml`. Resolvida no arranque; todos os loaders leem
+/// `locale/` e o `world.bsn`. Resolvida no arranque; todos os loaders leem
 /// daqui (nunca do cwd).
 #[derive(Resource, Debug, Clone, Default, Reflect)]
 #[reflect(Resource)]
@@ -145,12 +144,13 @@ impl Plugin for VaelPlugin {
                 // `viber.vael.clock_*`, depois do combate.
                 VaelClockPlugin,
                 VaelHudResourcePlugin,
-                // Shadow mode: espelho do `viber.game()` e HUD ao lado do Lua.
+                // Espelho do `viber.game()`; o HUD tem o seu próprio plugin.
                 VaelStateSyncPlugin,
-                // Simulação paralela das regras vitais do `rules.lua`.
+                // Simulação paralela das regras vitais do `rules.lua`
+                // (ferramenta de paridade, `VAEL_RULES_SHADOW=1`).
                 VaelRulesShadowPlugin,
-                // Autoridade (opt-in `VAEL_RULES_RUST=1`): o tick de
-                // vitais/status/morte passa para Rust.
+                // Autoridade (default; `VAEL_RULES_RUST=0` devolve o tick
+                // de vitais/status/morte ao Lua).
                 VaelRulesAuthorityPlugin,
                 VaelHudPlugin,
                 // HUD comportamental que o `scripts/ui/hud.lua` deixou.
@@ -180,12 +180,18 @@ impl Plugin for VaelPlugin {
             // Árvores procedurais (`bevy_flora`) na entrada da cidade: teste
             // A/B contra os GLB, atrás do gate `VAEL_FLORA`.
             VaelFloraPlugin,
+            // Objetos de primitivas autorais (`<Composition>`): troca o
+            // fallback StandardMaterial do spawner pelo mesh/material/colisor
+            // do `bevy_ext_gradmesh` (o mesmo crate do preview do Jackdaw).
+            // `VAEL_PRIMITIVES=standard` desliga.
+            VaelPrimitivesPlugin,
             // Ambiente vivo (`bevy_elements`): céu astronómico, clima,
             // nuvens, chuva/neve e relâmpagos no lugar do `<Sky>`/
             // `<DayCycle>`/`<Weather>` da engine. `VAEL_ELEMENTS=0` desliga.
             VaelEnvironmentPlugin,
-            // Sombras do sol a 15 Hz no modo `day-night` (`shadow-refresh-hz`
-            // do `<DayCycle>`); fora desse modo é um no-op.
+            // Sombras do sol: o mapa é re-desenhado em TODOS os frames. O modo
+            // de cadência (`shadow-refresh-hz`/`VAEL_SHADOW_HZ`) parte o mapa
+            // com o Bevy 0.20 e fica desligado por omissão (ver `lighting.rs`).
             VaelShadowPlugin,
             // Player/câmara do Vael: substitui os sistemas da engine
             // (`player_camera:false`) e mantém o `Player` sincronizado só
