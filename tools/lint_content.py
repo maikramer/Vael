@@ -12,7 +12,7 @@ Apanha o que o `viber analyze` não vê, porque são regras do jogo (Lua):
 
   python3 tools/lint_content.py        # a partir da raiz do jogo
 """
-import glob, json, re, sys
+import glob, json, os, re, subprocess, sys
 
 errors, warns = [], []
 def err(msg): errors.append(msg)
@@ -79,9 +79,37 @@ for path, src in scripts.items():
     if '/enemies/' in path or '/bosses/' in path:
         kinds.update(re.findall(r'\bkind\s*=\s*"([^"]+)"', src))
 
-world_xml = read_all(['world.xml', 'world/**/*.xml', 'scenes/**/*.xml'])
-entity_names = set(re.findall(r'\bname="([^"]+)"', world_xml))
-prototypes = set(re.findall(r'<Prototype\s+id="([^"]+)"', world_xml))
+def analyze_world():
+    """Nomes/protótipos do mundo pela CLI nova; `.xml` só como fallback."""
+    exe = os.environ.get('VIBER_TOOLS_BIN', 'viber')
+    try:
+        out = subprocess.run(
+            [exe, 'analyze', 'world.bsn', '--json'],
+            capture_output=True, text=True, timeout=120,
+        )
+    except FileNotFoundError:
+        warn(f'{exe} ausente; referências ao mundo não verificadas')
+        return None
+    except Exception as e:  # noqa: BLE001 — o lint reporta, não rebenta
+        err(f'analyze do mundo: {e}')
+        return None
+    if out.returncode != 0:
+        err(f'analyze do mundo: exit {out.returncode}: {out.stderr.strip()[:300]}')
+        return None
+    try:
+        return json.loads(out.stdout)
+    except Exception as e:  # noqa: BLE001
+        err(f'analyze do mundo: JSON inválido ({e})')
+        return None
+
+world = analyze_world()
+if world is not None:
+    entity_names = set(world.get('names') or [])
+    prototypes = set(world.get('prototype_ids') or [])
+else:
+    world_xml = read_all(['world.xml', 'world/**/*.xml', 'scenes/**/*.xml'])
+    entity_names = set(re.findall(r'\bname="([^"]+)"', world_xml))
+    prototypes = set(re.findall(r'<Prototype\s+id="([^"]+)"', world_xml))
 for path, src in scripts.items():
     for proto in set(re.findall(r'"(mob-[a-z0-9-]+)"', src)):
         if proto not in prototypes:
