@@ -1082,11 +1082,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_ext_scene"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
 name = "bevy_ext_world"
 version = "0.1.0"
 dependencies = [
  "anyhow",
  "bevy",
+ "bevy_ext_scene",
  "flate2",
  "jackdaw_bsn",
  "jackdaw_prefab",
@@ -6344,6 +6352,39 @@ dependencies = [
 ]
 
 [[package]]
+name = "moonshine-save"
+version = "0.8.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "705cd86a8373da286ad82b80cded6ff8457148e01c4230c29b09f7b98a0eb6e0"
+dependencies = [
+ "bevy_app",
+ "bevy_asset",
+ "bevy_ecs",
+ "bevy_log",
+ "bevy_platform",
+ "bevy_reflect",
+ "bevy_world_serialization",
+ "moonshine-util",
+ "ron",
+ "serde",
+ "thiserror 2.0.21",
+]
+
+[[package]]
+name = "moonshine-util"
+version = "0.6.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b0dafd6cddb08e8f4c4f111dfe04018432c4626ff6a835cdd81668d8e82c0fec"
+dependencies = [
+ "bevy_app",
+ "bevy_ecs",
+ "bevy_log",
+ "bevy_platform",
+ "bevy_reflect",
+ "disqualified",
+]
+
+[[package]]
 name = "moxcms"
 version = "0.8.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -9414,6 +9455,7 @@ dependencies = [
  "bevy_ext_elements",
  "bevy_ext_flora",
  "bevy_ext_postfx",
+ "bevy_ext_scene",
  "bevy_ext_world",
  "bevy_flora",
  "bevy_gauge",
@@ -9424,6 +9466,7 @@ dependencies = [
  "bevy_speech_bubbles",
  "jackdaw_runtime",
  "mlua",
+ "moonshine-save",
  "serde",
  "serde_json",
  "vael-content",

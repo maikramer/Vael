@@ -50,9 +50,11 @@ pub mod lighting;
 pub mod player;
 pub mod quest;
 pub mod quest_events;
+pub mod respawn;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
+pub mod save_native;
 pub mod settings;
 pub mod speech;
 pub mod state_sync;
@@ -157,6 +159,7 @@ impl Plugin for VaelPlugin {
         // Loja/forja (preços, tetos e negociação): `shop_*`/`craft_*`, depois
         // do relógio. Em chamada à parte: a tupla do Bevy pára nos 15.
         app.add_plugins((
+            save_native::VaelNativeSavePlugin,
             VaelEconomyPlugin,
             // Waypoint/marcadores do HUD (o `travel.lua` deixou de ser o
             // publicador): blips, beacons, pin e a seta da quest.

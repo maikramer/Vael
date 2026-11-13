@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.97.1"
 # O jogo e os assets não vão para o crates.io; a distribuição é binário +
-# pool. Os pacotes reutilizáveis vivem em bevy_* (docs/PACKAGES.md).
+# pool. Os pacotes reutilizáveis vivem em `bevy_ext_*` (docs/PACKAGES.md).
 publish = false
 
 [workspace]
@@ -65,6 +65,9 @@ viber = { path = "../Viber", features = ["ai"] }
 # Runtime de debug/ferramentas: regista `viber-tools/*` no `bevy_remote` do
 # jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
 viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
+# Save/load próprio do Vael: mundo refletido (recursos + componentes) em RON
+# por slot. Substitui o `SavePlugin` do Viber quando `external_save: true`.
+moonshine-save = "0.8" 
 # Character controller do herói (o controller/collider nascem no spawner da
 # engine; o movimento passa a ser nosso com `player_camera:false`).
 bevy_rapier3d = { version = "0.37", default-features = false, features = [
@@ -78,6 +81,7 @@ bevy_ext_world = { path = "../bevy_extensions/crates/bevy_ext_world" }
 bevy_ext_elements = { path = "../bevy_extensions/crates/bevy_ext_elements" }
 bevy_ext_flora = { path = "../bevy_extensions/crates/bevy_ext_flora" }
 bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
+bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

@@ -79,6 +79,9 @@ pub struct VaelRulesShadow {
     pub dying: f32,
     pub death_pending: bool,
     pub death_wait: f32,
+    /// O `shadow_tick` chamou `respawn()` neste frame. Não faz parte da
+    /// comparação shadow↔Lua; é o sinal para a UI teleportar/refrescar.
+    pub respawned: bool,
 
     // ── referência Lua e contadores ─────────────────────────────────────
     /// Último snapshot Lua usado para semear. `iframes` entra na cópia mas
@@ -117,6 +120,7 @@ impl Default for VaelRulesShadow {
             dying: 0.0,
             death_pending: false,
             death_wait: 0.0,
+            respawned: false,
             last_lua: None,
             comparisons: 0,
             divergences: 0,
@@ -305,6 +309,7 @@ pub fn shadow_tick(
     frozen: bool,
     menu_open: bool,
 ) {
+    state.respawned = false;
     sanitize(state);
     if !dt.is_finite() || dt <= 0.0 {
         return;
@@ -415,6 +420,7 @@ fn respawn(state: &mut VaelRulesShadow) {
     state.death_wait = 0.0;
     state.status_clear();
     state.iframes = RESPAWN_IFRAMES;
+    state.respawned = true;
 }
 
 /// Semeia o estado a partir do KV plano do `viber.game()`.
@@ -738,6 +744,9 @@ mod tests {
             "iframes={}",
             state.iframes
         );
+        assert!(state.respawned, "o fallback tem de sinalizar a UI");
+        tick(&mut state, 0.1);
+        assert!(!state.respawned, "o sinal dura um tick");
     }
 
     #[test]

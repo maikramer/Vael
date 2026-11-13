@@ -105,6 +105,11 @@ impl VaelRulesAuthority {
         self.state.ticks
     }
 
+    /// O último tick chamou o respawn de fallback (sem modal de morte).
+    pub fn respawned(&self) -> bool {
+        self.state.respawned
+    }
+
     /// Os campos que o Rust possui, para o save/componentes.
     pub fn owned(&self) -> OwnedVitals {
         OwnedVitals {
@@ -196,6 +201,11 @@ impl OwnedVitals {
     }
 }
 
+/// Conjunto dos sistemas da autoridade. A UI ordena os seus sistemas de
+/// morte/respawn depois deste set para ler o estado já deste frame.
+#[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
+pub struct VaelRulesSet;
+
 /// Plugin da autoridade Rust.
 pub struct VaelRulesAuthorityPlugin;
 
@@ -203,12 +213,14 @@ impl Plugin for VaelRulesAuthorityPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<VaelRulesConfig>()
             .init_resource::<VaelRulesAuthority>()
+            .init_resource::<crate::respawn::RespawnRequest>()
             // O Lua lê `vael_rust_vitals` no `rules.tick`; tem de existir
             // antes do primeiro `luau_update`.
             .add_systems(Startup, apply_rust_gate)
             .add_systems(
                 Update,
                 rules_authority_system
+                    .in_set(VaelRulesSet)
                     // O tick LÊ o que o Lua acabou de fazer no frame e escreve
                     // as vitais de volta para o `viber.game()`.
                     .after(viber::luau::luau_update)
@@ -249,6 +261,7 @@ fn rules_authority_system(
     vitals: Option<ResMut<PlayerVitals>>,
     save: Option<ResMut<VaelSave>>,
     mut authority: ResMut<VaelRulesAuthority>,
+    mut respawn: ResMut<crate::respawn::RespawnRequest>,
 ) {
     if !config.rust {
         return;
@@ -270,6 +283,13 @@ fn rules_authority_system(
         let frozen = menus.as_deref().is_some_and(MenusOpen::any) || kv_flag(&kv, GOD_KEY);
         let death_open = modals.as_deref().is_some_and(|m| m.is_open("death"));
         authority.tick(time.delta_secs(), rain, frozen, death_open);
+        if authority.respawned() {
+            // O patch de vitais já vai a seguir; a UI consome este pedido para
+            // fazer o que o `M.respawn` fazia e o Rust não possui: teleporte,
+            // frascos e troca de cena quando a morte aconteceu num interior.
+            respawn.active = true;
+            respawn.spawn = spawn_from_kv(&kv).unwrap_or([0.0, 150.0, 0.0]);
+        }
     }
 
     // Só as chaves que o Rust possui; `xp`, `item.*`, `q.*`, ouro, etc. não
@@ -289,6 +309,17 @@ fn rules_authority_system(
 fn ui_owns_frame(scene: Option<&CurrentScene>, modals: Option<&UiModalsOpen>) -> bool {
     scene.is_some_and(|scene| scene.id.as_deref() == Some("menu"))
         || modals.is_some_and(|modals| modals.is_open("title"))
+}
+
+/// Posição de renascimento no KV plano (a mesma que o `stored_spawn` do Lua).
+fn spawn_from_kv(kv: &BTreeMap<String, Value>) -> Option<[f32; 3]> {
+    let value = |key: &str| {
+        kv.get(key)
+            .and_then(Value::as_f64)
+            .filter(|value| value.is_finite())
+            .map(|value| value as f32)
+    };
+    Some([value("spawn_x")?, value("spawn_y")?, value("spawn_z")?])
 }
 
 /// `vael_god`: `true` booleano ou número diferente de zero.
@@ -360,6 +391,17 @@ mod tests {
                 "sem a variável a autoridade fica ligada"
             );
         }
+    }
+
+    #[test]
+    fn spawn_do_kv_alimenta_o_pedido_de_respawn() {
+        let kv = kv(&[
+            ("spawn_x", json!(1.5)),
+            ("spawn_y", json!(2.5)),
+            ("spawn_z", json!(3.5)),
+        ]);
+        assert_eq!(spawn_from_kv(&kv), Some([1.5, 2.5, 3.5]));
+        assert_eq!(spawn_from_kv(&BTreeMap::new()), None, "sem spawn, UI usa o default");
     }
 
     #[test]

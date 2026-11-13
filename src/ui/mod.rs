@@ -201,6 +201,12 @@ impl Plugin for VaelUiPlugin {
                 (
                     sync_hud.before(PfBindingSystems),
                     screens::sync_screens.before(PfBindingSystems),
+                    screens::drive_death_screen
+                        .after(crate::rules_authority::VaelRulesSet)
+                        .before(PfBindingSystems),
+                    screens::apply_respawn_request
+                        .after(crate::rules_authority::VaelRulesSet)
+                        .before(PfBindingSystems),
                     screens::sync_menu_pages,
                     screens::hide_legacy_roots,
                     screens::refresh_slots,

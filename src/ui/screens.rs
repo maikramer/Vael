@@ -23,8 +23,7 @@ use viber::locale::Locale;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use viber::music::AudioMixerSettings;
-use viber::player::{Player, TeleportSettle};
-use viber::save::{SaveDir, SaveRequest, SaveSlotInfo, WorldSaveKey, list_save_slots};
+use viber::save::{SaveDir, SaveRequest, SaveSlotInfo, WorldSaveKey};
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::scale::UiUserScale;
 use viber::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
@@ -86,6 +85,8 @@ pub struct VaelScreensState {
     pub pending_menu_scene: u8,
     /// Talento selecionado na árvore visual (a seleção não gasta pontos).
     pub talent_selected: Option<String>,
+    /// O `drive_death_screen` já pediu a abertura do modal de morte.
+    pub death_open_requested: bool,
 }
 
 /// Cache de metadados dos slots (evita ler o disco todos os frames).
@@ -423,6 +424,51 @@ fn scene_id(scene: Option<&CurrentScene>) -> String {
     scene
         .and_then(|scene| scene.id.clone())
         .unwrap_or_else(|| "—".to_string())
+}
+
+/// O save está à espera de mostrar o ecrã de morte. A autoridade Rust
+/// escreve `death_pending` no KV; o estado chega aqui pelo `VaelSave`.
+fn death_pending(save: &VaelSave) -> bool {
+    save.legacy
+        .get("death_pending")
+        .and_then(Value::as_bool)
+        .unwrap_or(false)
+}
+
+/// Transição do modal de morte. Puro para testar sem UI.
+fn death_should_open(save: &VaelSave, modal_open: bool) -> bool {
+    death_pending(save) && !modal_open
+}
+
+/// Abre o ecrã de morte quando a autoridade o pede. Com a autoridade de
+/// vitais ligada, o `rules.lua` já não abre o modal (o bloco está dentro de
+/// `not rust_vitals()`); sem este sistema a morte caía no fallback sem UI.
+pub(crate) fn drive_death_screen(
+    save: Option<Res<VaelSave>>,
+    modals: Option<Res<UiModalsOpen>>,
+    writer: Option<Res<UiWriter>>,
+    mut state: ResMut<VaelScreensState>,
+) {
+    let (Some(save), Some(writer)) = (save, writer) else {
+        return;
+    };
+    let open = modals.as_deref().is_some_and(|m| m.is_open("death"));
+    let pending = death_pending(&save);
+    if death_should_open(&save, open) && !state.death_open_requested {
+        writer.open("menu", false);
+        writer.open("region-map", false);
+        writer.open("travel", false);
+        writer.open("profiler-win", false);
+        writer.open("death", true);
+        state.death_open_requested = true;
+    } else if !pending && open && state.death_open_requested {
+        // Load/retry já curaram o herói mas o modal ainda estava aberto.
+        writer.open("death", false);
+        state.death_open_requested = false;
+    }
+    if !open && !pending {
+        state.death_open_requested = false;
+    }
 }
 
 fn player_alive(save: &VaelSave) -> bool {
@@ -1032,62 +1078,43 @@ fn title_settings(world: &mut World) {
     world.resource_mut::<VaelScreensState>().menu_settings = true;
 }
 
-fn death_retry(world: &mut World) {
-    let save = world.resource::<VaelSave>().clone();
-    let max_hp = save.vitals.max_hp.max(1.0);
-    let spawn = save.spawn.unwrap_or([0.0, 150.0, 0.0]);
-    let mut patch = BTreeMap::new();
-    patch.insert("hp".to_string(), json!(max_hp));
-    patch.insert("dying".to_string(), json!(0));
-    patch.insert("death_pending".to_string(), json!(false));
-    patch.insert("death_wait".to_string(), json!(0));
-    patch.insert("iframes".to_string(), json!(2.0));
-    patch.insert("venom".to_string(), json!(0));
-    patch.insert("burn".to_string(), json!(0));
-    patch.insert("frost".to_string(), json!(0));
-    patch.insert("flasks".to_string(), json!(2));
-    patch.insert("title_done".to_string(), json!(true));
-    patch_game(world, patch);
-    if let Some(writer) = world.get_resource::<UiWriter>() {
-        writer.open("death", false);
-        writer.set_visible("hud", true);
-    }
-    let mut state = world.resource_mut::<VaelScreensState>();
-    state.hud_visible = true;
-    let scene = world.get_resource::<CurrentScene>().cloned();
-    let need_scene = scene
-        .as_ref()
-        .and_then(|scene| scene.id.as_deref())
-        .is_some_and(|id| id != "main" && id != "menu");
-    if need_scene {
-        if let Err(err) = request_change(world, ChangeScene::new("main", Arrival::Entry(None))) {
-            warn!("vael UI: respawn sem troca de cena: {err}");
-        }
-    } else {
-        teleport_player(world, Vec3::from_array(spawn));
-    }
-    toast(world, "Renasces no último descanso…");
-    sfx(world, SfxClip::LevelUp);
+fn flask_max(save: &VaelSave, rules: &VaelUiRules) -> u32 {
+    let learned = learned_set(save);
+    let mut state = gear_state(save);
+    let mut engine = StatEngine::new(rules.attributes);
+    let snapshot = engine.snapshot(&rules.gear, &mut state, &learned);
+    crate::respawn::flasks_from_stat(snapshot.stat("flasks"))
 }
 
-fn teleport_player(world: &mut World, requested: Vec3) {
-    let Some(entity) = world
-        .query_filtered::<Entity, With<Player>>()
-        .iter(world)
-        .next()
-    else {
+fn death_retry(world: &mut World) {
+    let save = world.resource::<VaelSave>().clone();
+    let spawn = save.spawn.unwrap_or([0.0, 150.0, 0.0]);
+    let flasks = world
+        .get_resource::<VaelUiRules>()
+        .map(|rules| flask_max(&save, rules))
+        .unwrap_or(crate::respawn::FLASK_BASE);
+    crate::respawn::respawn_now(world, Vec3::from_array(spawn), flasks);
+}
+
+/// Consome o pedido do fallback da autoridade (sem modal de morte). O patch
+/// de vitais já foi escrito pela autoridade; aqui fecha-se o ciclo com o
+/// teleporte, os frascos e a troca de cena se estiver num interior.
+pub(crate) fn apply_respawn_request(world: &mut World) {
+    let Some(request) = world.get_resource::<crate::respawn::RespawnRequest>().copied() else {
         return;
     };
-    let landing = viber::player::teleport_landing(world, requested, &[entity]);
-    if let Some(mut transform) = world.get_mut::<Transform>(entity) {
-        transform.translation = landing;
+    if !request.active {
+        return;
     }
-    if let Some(mut player) = world.get_mut::<Player>(entity) {
-        player.vel_x = 0.0;
-        player.vel_y = 0.0;
-        player.vel_z = 0.0;
+    if let Some(mut request) = world.get_resource_mut::<crate::respawn::RespawnRequest>() {
+        request.active = false;
     }
-    world.entity_mut(entity).insert(TeleportSettle::default());
+    let save = world.resource::<VaelSave>().clone();
+    let flasks = world
+        .get_resource::<VaelUiRules>()
+        .map(|rules| flask_max(&save, rules))
+        .unwrap_or(crate::respawn::FLASK_BASE);
+    crate::respawn::respawn_now(world, Vec3::from_array(request.spawn), flasks);
 }
 
 fn death_load(world: &mut World) {
@@ -1829,7 +1856,7 @@ pub fn refresh_slots(
         return;
     }
     cache.timer = 0.5;
-    cache.slots = list_save_slots(
+    cache.slots = crate::save_native::list_slots(
         key.as_deref().and_then(|key| key.0.as_deref()),
         dir.as_deref().and_then(|dir| dir.0.as_deref()),
     );
@@ -2285,6 +2312,16 @@ pub fn sync_screens(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn death_abre_so_com_death_pending() {
+        let mut save = VaelSave::default();
+        assert!(!death_should_open(&save, false));
+        save.legacy
+            .insert("death_pending".into(), Value::Bool(true));
+        assert!(death_should_open(&save, false));
+        assert!(!death_should_open(&save, true));
+    }
 
     fn slot(n: u32, scene: Option<&str>, saved_at: f64, level: u32) -> SaveSlotInfo {
         SaveSlotInfo {

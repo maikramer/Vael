@@ -340,6 +340,74 @@ impl VaelSave {
         save
     }
 
+    /// Aplica um snapshot do `viber.game()` **sem apagar** o que o Rust
+    /// possui e o KV não trouxe.
+    ///
+    /// O snapshot de 10 Hz é normalmente completo, mas há campos que o Rust
+    /// escreve à frente do espelho Lua (`spawn`, colheitas, marcadores) e
+    /// chaves só-Rust em `legacy`. Substituir o `VaelSave` inteiro perdia-os
+    /// até ao próximo `apply_patch`; o merge mantém-nos.
+    pub fn merge_world_kv(&mut self, kv: &BTreeMap<String, Value>) {
+        if kv.is_empty() {
+            return;
+        }
+        let incoming = Self::from_world_kv(kv);
+        let has = |key: &str| kv.contains_key(key);
+        let has_prefix = |prefix: &str| kv.keys().any(|key| key.starts_with(prefix));
+
+        if has("hp") {
+            self.vitals.hp = incoming.vitals.hp;
+        }
+        if has("max_hp") {
+            self.vitals.max_hp = incoming.vitals.max_hp;
+        }
+        if has("xp") {
+            self.progression.xp = incoming.progression.xp;
+        }
+        if has("xp_next") {
+            self.progression.xp_next = incoming.progression.xp_next;
+        }
+        if has("level") {
+            self.progression.level = incoming.progression.level;
+        }
+        if has("skill_points") {
+            self.progression.skill_points = incoming.progression.skill_points;
+        }
+        if has("skill_learned") || has_prefix("skill.") {
+            self.progression.skills = incoming.progression.skills.clone();
+        }
+        if has_prefix("item.") || has("save_gold") {
+            self.inventory = incoming.inventory.clone();
+        }
+        if has("quest_states") || has_prefix("q.") {
+            self.quests = incoming.quests.clone();
+        }
+        if has("equipment") || has_prefix("gear.") {
+            self.equipment = incoming.equipment.clone();
+        }
+        if has("story_prologo") {
+            self.story.prologue = incoming.story.prologue;
+        }
+        if has("story_epilogo") {
+            self.story.epilogue = incoming.story.epilogue;
+        }
+        if has("spawn_x") || has("spawn_y") || has("spawn_z") || has("spawn_pos") {
+            self.spawn = incoming.spawn;
+        }
+        // Colheitas/marcadores são monotónicos e o Rust é o dono; o KV é
+        // espelho. A união nunca desfaz uma colheita feita neste frame.
+        self.harvested.extend(incoming.harvested.iter().cloned());
+        self.markers.extend(incoming.markers.iter().cloned());
+
+        let mut legacy = incoming.legacy;
+        for (key, value) in &self.legacy {
+            if !kv.contains_key(key) && !is_typed_key(key) {
+                legacy.entry(key.clone()).or_insert_with(|| value.clone());
+            }
+        }
+        self.legacy = legacy;
+    }
+
     /// Espelho plano compatível com o `viber.game()` do Lua.
     pub fn to_world_kv(&self) -> BTreeMap<String, Value> {
         let mut kv = BTreeMap::new();
@@ -436,8 +504,9 @@ impl VaelSave {
     }
 }
 
-/// Plugin do save do Vael: recurso tipado (a ponte com o disco continua a
-/// ser a do [`viber::save::SavePlugin`]).
+/// Plugin do save do Vael: recurso tipado. O disco é do
+/// [`crate::save_native`] (`moonshine-save`); este plugin só garante o
+/// `VaelSave` e os tipos registados.
 pub struct VaelSavePlugin;
 
 impl Plugin for VaelSavePlugin {
@@ -714,6 +783,53 @@ mod tests {
 
         assert!(envelope.game.as_ref().and_then(|g| g.get("vael")).is_some());
         assert_eq!(VaelSave::from_save_game(&envelope), save);
+    }
+
+    #[test]
+    fn merge_preserva_campos_rust_ausentes_do_kv() {
+        let mut save = VaelSave::default();
+        save.vitals.hp = 90.0;
+        save.vitals.max_hp = 140.0;
+        save.spawn = Some([1.0, 2.0, 3.0]);
+        save.harvested.insert("old_tree".into());
+        save.markers.insert("atalaia-do-vale".into());
+        save.legacy.insert("vael_god".into(), json!(true));
+
+        let mut kv = BTreeMap::new();
+        kv.insert("hp".into(), json!(50));
+
+        save.merge_world_kv(&kv);
+
+        assert_eq!(save.vitals.hp, 50.0);
+        assert_eq!(save.vitals.max_hp, 140.0, "max_hp não veio no KV");
+        assert_eq!(save.spawn, Some([1.0, 2.0, 3.0]));
+        assert!(save.harvested.contains("old_tree"));
+        assert!(save.markers.contains("atalaia-do-vale"));
+        assert_eq!(save.legacy.get("vael_god"), Some(&json!(true)));
+    }
+
+    #[test]
+    fn merge_snapshot_completo_sobrepoe_e_une_monotonicos() {
+        let mut save = VaelSave::default();
+        save.spawn = Some([1.0, 2.0, 3.0]);
+        save.markers.insert("antigo".into());
+        save.harvested.insert("old_tree".into());
+
+        let mut kv = kv_antigo();
+        kv.insert("spawn_x".into(), json!(9.0));
+        kv.insert("spawn_y".into(), json!(8.0));
+        kv.insert("spawn_z".into(), json!(7.0));
+        kv.insert("mark.novo".into(), json!(true));
+        kv.insert("harvested.new_tree".into(), json!(true));
+
+        save.merge_world_kv(&kv);
+
+        assert_eq!(save.spawn, Some([9.0, 8.0, 7.0]));
+        assert!(save.markers.contains("antigo"));
+        assert!(save.markers.contains("novo"));
+        assert!(save.harvested.contains("old_tree"));
+        assert!(save.harvested.contains("new_tree"));
+        assert_eq!(save.vitals.hp, 73.0);
     }
 
     #[test]

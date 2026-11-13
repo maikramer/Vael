@@ -156,8 +156,13 @@ pub fn apply_kv(
     if *quests != parsed.quests {
         *quests = parsed.quests.clone();
     }
-    if *save != parsed {
-        *save = parsed;
+    // O snapshot pode ser parcial ou chegar antes do `apply_patch` de um
+    // campo só-Rust (spawn, colheitas, marcadores). O merge preserva o que o
+    // KV não trouxe em vez de reconstruir o save do zero.
+    let mut merged = save.clone();
+    merged.merge_world_kv(kv);
+    if *save != merged {
+        *save = merged;
     }
 }
 

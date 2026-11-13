@@ -130,6 +130,10 @@ fn main() -> Result<()> {
             // O Vael já traz o controller/câmara em `src/player.rs`; a engine
             // continua a spawnar o corpo e o collider, mas não o move.
             player_camera: false,
+            // Slots e envelope são do Vael (`moonshine-save`); o SavePlugin
+            // da engine continua fora do caminho. `SaveRequest` fica vivo
+            // para o Lua pedir autosaves.
+            external_save: true,
             scripts: viber::app::ScriptsMode::Compat,
             // O jogo não usa `viber.ecs`: o espelho refletido por frame é
             // trabalho morto e exclusivo. QA/bridge pode reativá-lo com
