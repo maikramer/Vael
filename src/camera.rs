@@ -26,6 +26,8 @@ pub struct VaelCameraPlugin;
 
 impl Plugin for VaelCameraPlugin {
     fn build(&self, app: &mut App) {
+        app.init_resource::<viber::camera::ScriptCameraFree>()
+            .init_resource::<viber::camera::CameraSnapshot>();
         app.add_systems(
             Update,
             (orbit_camera_follow, auto_orbit)
