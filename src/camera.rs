@@ -12,7 +12,7 @@ use viber::camera::{
     auto_camera_yaw, behind_yaw_deg, camera_offset, interior_camera_pose, kick_spring_step,
     low_pass_factor, noise_pm1, shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
 };
-use viber::recipes::spawn::OrbitCamera;
+use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
 use viber::worldsys::InteriorSceneConfig;
 
 use crate::player::PlayerMovementSet;
@@ -27,10 +27,84 @@ impl Plugin for VaelCameraPlugin {
     fn build(&self, app: &mut App) {
         app.add_systems(
             Update,
+            (orbit_camera_follow, auto_orbit)
+                .before(PlayerMovementSet)
+                .run_if(no_editor_camera),
+        )
+        .add_systems(
+            Update,
             third_person_camera
                 .after(PlayerMovementSet)
                 .run_if(no_editor_camera),
+        )
+        .add_systems(
+            Update,
+            script_camera
+                .after(third_person_camera)
+                .run_if(no_editor_camera),
         );
+    }
+}
+
+/// Follow rígido das câmaras com `target` (ou sem jogador): a pose é
+/// `alvo + camera_offset`, sem low-pass. As câmaras de terceira pessoa
+/// (sem alvo, com jogador) ficam para [`third_person_camera`].
+#[allow(clippy::type_complexity)]
+fn orbit_camera_follow(
+    mut cameras: Query<(&mut Transform, &OrbitCamera)>,
+    names: Query<(Entity, &Name)>,
+    globals: Query<&GlobalTransform>,
+    players: Query<&GlobalTransform, With<viber::player::Player>>,
+    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+) {
+    let has_player = players.iter().next().is_some();
+    for (mut cam, settings) in &mut cameras {
+        if settings.target.is_none() && has_player {
+            continue; // third-person: a câmara do Vael trata dela
+        }
+        let target_pos = match &settings.target {
+            Some(target_name) => names
+                .iter()
+                .find(|(_, name)| name.as_str() == target_name)
+                .and_then(|(entity, _)| globals.get(entity).ok())
+                .map(|global| global.translation())
+                .unwrap_or(Vec3::ZERO),
+            None => Vec3::ZERO,
+        };
+        let offset = camera_offset(
+            settings.yaw_deg,
+            settings.pitch_state_deg,
+            settings.distance,
+            0.0,
+        );
+        cam.translation = target_pos + offset;
+        if let Some(runtime) = runtime.as_deref() {
+            let min_y = runtime
+                .surface_below(
+                    cam.translation.x,
+                    cam.translation.z,
+                    cam.translation.y + 0.5,
+                )
+                .unwrap_or(f32::NEG_INFINITY)
+                + 1.0;
+            if cam.translation.y < min_y {
+                cam.translation.y = min_y;
+            }
+        }
+        cam.look_at(target_pos + Vec3::Y * settings.pivot_height(), Vec3::Y);
+    }
+}
+
+/// Câmara de recurso de um mundo sem `<OrbitCamera>`: órbita lenta.
+fn auto_orbit(time: Res<Time>, mut cameras: Query<(&mut Transform, &mut AutoOrbit)>) {
+    for (mut transform, mut orbit) in &mut cameras {
+        orbit.yaw += time.delta_secs() * 0.25;
+        transform.translation = Vec3::new(
+            orbit.yaw.cos() * orbit.radius,
+            orbit.height,
+            orbit.yaw.sin() * orbit.radius,
+        );
+        transform.look_at(Vec3::ZERO, Vec3::Y);
     }
 }
 
@@ -217,6 +291,36 @@ fn third_person_camera(
         if shake_roll.abs() > 1e-5 {
             let view = transform.forward();
             transform.rotate_axis(view, shake_roll);
+        }
+    }
+}
+
+/// Aplica a pose do modo livre (`viber.camera_free`/`viber.camera_pose`) e
+/// publica a pose viva para `viber.camera_state()`. Corre depois do rig:
+/// no modo livre sobrescreve-o; fora dele só lê.
+fn script_camera(
+    free: Res<viber::camera::ScriptCameraFree>,
+    mut snapshot: ResMut<viber::camera::CameraSnapshot>,
+    mut cameras: Query<(&mut Transform, &OrbitCamera)>,
+) {
+    let mut recorded = false;
+    for (mut transform, cam) in &mut cameras {
+        if cam.target.is_some() {
+            continue;
+        }
+        if free.active {
+            transform.translation = free.pos;
+            let dir = free.look - free.pos;
+            if dir.length_squared() > 1e-8 {
+                transform.look_at(free.look, Vec3::Y);
+            }
+        }
+        if !recorded {
+            let forward = transform.forward();
+            snapshot.pos = transform.translation;
+            snapshot.yaw_deg = forward.x.atan2(forward.z).to_degrees();
+            snapshot.pitch_deg = forward.y.clamp(-1.0, 1.0).asin().to_degrees();
+            recorded = true;
         }
     }
 }

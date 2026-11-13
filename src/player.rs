@@ -111,6 +111,12 @@ impl Plugin for VaelPlayerPlugin {
                 player_movement
                     .in_set(PlayerMovementSet)
                     .run_if(no_editor_camera),
+            )
+            .add_systems(
+                Update,
+                world_border_clamp
+                    .after(PlayerMovementSet)
+                    .run_if(no_editor_camera),
             );
     }
 }
@@ -523,6 +529,44 @@ fn player_movement(
             });
         }
         sync_engine_player(&mut engine_player, &controller);
+    }
+}
+
+/// `<WorldBorder>`: mantém o herói dentro do disco do mapa (fora das
+/// bolsas de interior). Corre depois do movimento, no mesmo frame.
+fn world_border_clamp(
+    border: Option<Res<viber::worldsys::WorldBorderConfig>>,
+    scene: Option<Res<viber::worldsys::InteriorSceneConfig>>,
+    mut players: Query<&mut Transform, With<viber::player::Player>>,
+    mut logged: Local<bool>,
+) {
+    let Some(border) = border else {
+        return;
+    };
+    let limit = border.radius - border.margin;
+    if limit <= 0.0 {
+        return;
+    }
+    for mut transform in &mut players {
+        let pos = transform.translation;
+        if scene
+            .as_deref()
+            .is_some_and(|scene| scene.contains(pos.x, pos.z))
+        {
+            continue;
+        }
+        let dist_sq = pos.x * pos.x + pos.z * pos.z;
+        if dist_sq > limit * limit {
+            let scale = limit / dist_sq.sqrt();
+            transform.translation.x = pos.x * scale;
+            transform.translation.z = pos.z * scale;
+            if !*logged {
+                *logged = true;
+                info!("world border: player returned inside r={limit}");
+            }
+        } else {
+            *logged = false;
+        }
     }
 }
 
