@@ -65,6 +65,12 @@ viber = { path = "../Viber", features = ["ai"] }
 # Runtime de debug/ferramentas: regista `viber-tools/*` no `bevy_remote` do
 # jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
 viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
+# Character controller do herói (o controller/collider nascem no spawner da
+# engine; o movimento passa a ser nosso com `player_camera:false`).
+bevy_rapier3d = { version = "0.37", default-features = false, features = [
+    "dim3",
+    "async-collider",
+] }
 # Definições autoradas na cena (`world/settings/*.bsn`, editadas no Jackdaw):
 # o contrato partilhado com as extensões do editor. O `bevy_ext_world` é o
 # mesmo crate que o Viber usa como `bevy_world_xml` (path igual, unifica).

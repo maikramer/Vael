@@ -127,9 +127,9 @@ fn main() -> Result<()> {
             // (sentidos + `AiLocomotion`) mantém-se para os scripts Luau
             // moverem as criaturas via `viber.move_towards`.
             ai: viber::app::AiMode::Service,
-            // O crate do jogo ainda não tem controller/câmara; usa os da
-            // engine enquanto as regras migram para Rust.
-            player_camera: true,
+            // O Vael já traz o controller/câmara em `src/player.rs`; a engine
+            // continua a spawnar o corpo e o collider, mas não o move.
+            player_camera: false,
             scripts: viber::app::ScriptsMode::Compat,
             // O jogo não usa `viber.ecs`: o espelho refletido por frame é
             // trabalho morto e exclusivo. QA/bridge pode reativá-lo com
@@ -166,6 +166,13 @@ fn main() -> Result<()> {
     if bridge.is_some() || tools_enabled() {
         let port = bridge.unwrap_or(default_tools_port());
         app.add_plugins(viber_tools_runtime::ViberToolsPlugin { port });
+        // O `input.key` sintético é aplicado no `PreUpdate`; tem de correr
+        // ANTES do `gather_actions` do jogo para o `just_pressed` (salto,
+        // ataque, interagir) entrar no `ActionState` no mesmo frame.
+        app.configure_sets(
+            PreUpdate,
+            viber_tools_runtime::ViberToolsInput.before(viber::input_map::gather_actions),
+        );
     }
 
     info!(
@@ -200,7 +207,12 @@ fn default_tools_port() -> u16 {
 /// `VAEL_TOOLS=1` ou PIE ligam o runtime sem `--bridge`.
 fn tools_enabled() -> bool {
     let flag = std::env::var("VAEL_TOOLS")
-        .map(|raw| !matches!(raw.trim().to_ascii_lowercase().as_str(), "0" | "false" | "off" | "no"))
+        .map(|raw| {
+            !matches!(
+                raw.trim().to_ascii_lowercase().as_str(),
+                "0" | "false" | "off" | "no"
+            )
+        })
         .unwrap_or(false);
     flag || std::env::var_os("JACKDAW_PIE").is_some()
 }

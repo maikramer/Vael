@@ -32,6 +32,7 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod attach;
+pub mod camera;
 pub mod clock;
 pub mod combat;
 pub mod components;
@@ -46,6 +47,7 @@ pub mod harvest;
 pub mod hud;
 pub mod hud_ui;
 pub mod lighting;
+pub mod player;
 pub mod quest;
 pub mod quest_events;
 pub mod rules_authority;
@@ -181,6 +183,11 @@ impl Plugin for VaelPlugin {
             // Sombras do sol a 15 Hz no modo `day-night` (`shadow-refresh-hz`
             // do `<DayCycle>`); fora desse modo é um no-op.
             VaelShadowPlugin,
+            // Player/câmara do Vael: substitui os sistemas da engine
+            // (`player_camera:false`) e mantém o `Player` sincronizado só
+            // para a animação enquanto essa camada não é portada.
+            player::VaelPlayerPlugin,
+            camera::VaelCameraPlugin,
         ));
         #[cfg(feature = "hanabi")]
         app.add_plugins(hanabi_fx::VaelHanabiPlugin);
