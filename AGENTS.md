@@ -237,7 +237,7 @@ espécies com preview real do `bevy_flora` e árvores nas estações) e
 `vael.analyze.run` sobre o `viber_tools_core`), `vael_profiler_jackdaw`
 (p95/hitches/RSS do runtime em polling), `vael_debugger_jackdaw`
 (play/pause/step/F3) e `vael_mcp_jackdaw` (operadores de
-seleção/grupo/input/screenshot visíveis no `jd mcp`; o servidor MCP tipado é
+grupo/input/screenshot visíveis no `jd mcp`; o servidor MCP tipado é
 `viber mcp`). Só UMA
 extensão pode registar um tipo partilhado (`WorldNode`): cada dylib tem a sua
 cópia e a última a registar rouba o type path às outras — as restantes leem-no
