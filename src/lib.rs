@@ -28,7 +28,6 @@ use std::path::PathBuf;
 
 use bevy::prelude::*;
 
-pub mod attach;
 pub mod camera;
 pub mod clock;
 pub mod combat;
@@ -44,7 +43,6 @@ pub mod hanabi_fx;
 pub mod harvest;
 pub mod hud;
 pub mod hud_ui;
-pub mod lighting;
 pub mod player;
 pub mod primitives;
 pub mod quest;
@@ -60,12 +58,10 @@ pub mod state_sync;
 pub mod stats;
 pub mod travel;
 pub mod ui;
-pub mod ui_bind;
 pub mod vault;
 pub mod world_text;
 pub mod xp;
 
-pub use attach::{VaelAttachPlugin, VaelScriptTags};
 pub use clock::{ClockSnapshot, VaelClock, VaelClockPlugin};
 pub use combat::{CombatKv, CombatRules, DamageResult, VaelCombatPlugin};
 pub use components::{Inventory, PlayerVitals, QuestLog, VaelPlayer, XpState};
@@ -79,7 +75,6 @@ pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
-pub use lighting::VaelShadowPlugin;
 pub use primitives::VaelPrimitivesPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
 pub use quest_events::VaelQuestEventsPlugin;
@@ -90,7 +85,7 @@ pub use speech::VaelSpeechPlugin;
 pub use state_sync::VaelStateSyncPlugin;
 pub use stats::{AttributeRules, StatEngine, StatSnapshot};
 pub use travel::VaelTravelPlugin;
-pub use ui_bind::{VaelHud, VaelHudResourcePlugin};
+pub use ui::waypoint::{VaelAttachPlugin, VaelScriptTags};
 pub use vault::VaelVaultPlugin;
 pub use world_text::{VaelWorldTextPlugin, WorldTextEvent};
 pub use xp::{VaelXpPlugin, XpGain, XpRules};
@@ -143,7 +138,6 @@ impl Plugin for VaelPlugin {
                 // (ou `DayCycleState`/`WeatherState` da engine, sem ele):
                 // `viber.vael.clock_*`, depois do combate.
                 VaelClockPlugin,
-                VaelHudResourcePlugin,
                 // Espelho do `viber.game()`; o HUD tem o seu próprio plugin.
                 VaelStateSyncPlugin,
                 // Simulação paralela das regras vitais do `rules.lua`
@@ -189,10 +183,6 @@ impl Plugin for VaelPlugin {
             // nuvens, chuva/neve e relâmpagos no lugar do `<Sky>`/
             // `<DayCycle>`/`<Weather>` da engine. `VAEL_ELEMENTS=0` desliga.
             VaelEnvironmentPlugin,
-            // Sombras do sol: o mapa é re-desenhado em TODOS os frames. O modo
-            // de cadência (`shadow-refresh-hz`/`VAEL_SHADOW_HZ`) parte o mapa
-            // com o Bevy 0.20 e fica desligado por omissão (ver `lighting.rs`).
-            VaelShadowPlugin,
             // Player/câmara do Vael: substitui os sistemas da engine
             // (`player_camera:false`) e mantém o `Player` sincronizado só
             // para a animação enquanto essa camada não é portada.

@@ -29,13 +29,13 @@ tempo** mudaram de dono.
 ## Sombras
 
 O relógio é contínuo (sem saltos: um salto realoca o probe do céu), por isso
-o sol move-se ~0.3°/s. O `VaelShadowPlugin` (`src/lighting.rs`) desenha o mapa
-de sombras em **todos os frames** (`VAEL_SHADOW_HZ=0`, o default). O modo de
-cadência (saltar o passe nos frames intermédios e congelar as cascatas) está
-**quebrado com o Bevy 0.20**: o mapa de profundidade não sobrevive aos frames
-saltados — o resultado é chão sem sombra e acne nas faces voltadas ao sol. O
-mecanismo ficou atrás de `VAEL_SHADOW_HZ` (> 0) só para A/B; não voltar a
-ligá-lo sem provar que o mapa persiste.
+o sol move-se ~0.3°/s. O `bevy_elements` desenha o mapa de sombras em **todos
+os frames** (sombras ligadas no Sol da câmara do crate). O antigo
+`VaelShadowPlugin` (`src/lighting.rs`) desenhava uma cadência a 15 Hz atrás de
+`VAEL_SHADOW_HZ`; o modo (> 0) estava **quebrado com o Bevy 0.20** (o mapa de
+profundidade não sobrevive aos frames saltados: chão sem sombra e acne) e o
+default era inerte — o plugin foi **removido em 2026-11-13** (F0). Não repor a
+cadência sem provar que o mapa persiste.
 
 ## Exposição
 
@@ -108,11 +108,10 @@ silenciado.
 
 ## Performance
 
-- `VAEL_SHADOW_HZ` (default **0** = sombras em todos os frames). O modo de
-  cadência (> 0) existe só para A/B e com o Bevy 0.20 produz sombras
-  ausentes/acne (ver **Sombras**); não usar em jogo. Medição antiga do modo a
-  15 Hz a 1280×720: ≈ 31 ms/frame vs ≈ 104 ms em todos os frames — foi feita
-  antes da mudança de câmara e serve só de ordem de grandeza.
+- Sombras em todos os frames (o `bevy_elements` desenha-as; o modo de
+  cadência foi **removido em 2026-11-13** — ver **Sombras**). Medição antiga
+  do modo a 15 Hz a 1280×720: ≈ 31 ms/frame vs ≈ 104 ms em todos os frames —
+  feita antes da mudança de câmara, só ordem de grandeza.
 - `VAEL_ELEMENTS_QUALITY=low|medium|high|ultra` (default **medium**). O frame
   do Vael é CPU-bound: `low` não mudou o frame de forma mensurável; `medium`
   fica por causa da chuva (60k partículas vs 20k) e das nuvens.
@@ -140,8 +139,8 @@ viber debug lua 'viber.vael.env_set_weather("Thunderstorm")'
 `VAEL_ELEMENTS=0` desliga o crate (volta ao céu da engine). Nesse modo é
 preciso repor os elementos antigos no `world/environment.bsn` e no
 `scenes/menu.bsn`; a exposição automática também não está lá (foi desligada
-no `config.yaml`). O `VaelShadowPlugin` fica inactivo sem `<DayCycle>` e sem
-o crate.
+no `config.yaml`). Sem o crate, as sombras voltam a ser as da engine (o
+`VaelShadowPlugin` já não existe).
 
 ## Limites conhecidos
 

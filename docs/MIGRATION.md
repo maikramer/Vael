@@ -158,7 +158,7 @@ migração do jogo; o `PACKAGES.md` manda na fronteira engine/pacotes.
 
 ```bash
 # a partir da raiz do Vael (checkout principal, com o pool atual)
-CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
+cargo run --release -- \
   world.bsn --scene main --entry dev --bridge 15706
 ```
 
@@ -166,7 +166,7 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 - O bridge fica em `127.0.0.1:15706`; `curl` com `viber.lua`, `world.query`,
   `world.get_resources`, `viber.ecs`.
 - `VIBER_NO_BUILD=1 ./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
-- `CARGO_TARGET_DIR=../Viber/target cargo test --lib` no Vael: gate da suite
+- `cargo test --lib` no Vael: gate da suite
   do jogo (a contagem cresce por onda; usar o sumário da corrida, não um
   número fixo neste doc).
 - Editor oficial: `jd open .`, `jd doctor --project .`; as extensões do Vael
@@ -322,7 +322,7 @@ templates e comandos.
   `gear::toggle`, `add_xp`, `vault`) e escrevem as chaves partilhadas no
   `viber.game()` com `apply_patch`. Não há `dispatch` de Lua: os antigos
   `scripts/ui/{menu,journal,title,death}.lua` deixaram de ser carregados
-  pelos roots (o `journal.lua` fica como ficheiro legado).
+  pelos roots (o `journal.lua` legado também foi removido, em 2026-11-13).
 - Os nós legados de menu/título/morte em `world/autoload/ui.bsn` continuam
   no autoload apenas para o estado dos modais (`UiModalsOpen`/`MenusOpen`),
   `UiTabs` e para o `viber.ui.is_open("title"/"death")` dos scripts de jogo;

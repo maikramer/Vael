@@ -4,16 +4,22 @@
 //! blips/beacons dos marcos disponíveis, o pin (destino do mapa) e a seta da
 //! quest seguida (pronta → dador; ativa → objetivo; sem quest → dador novo
 //! mais próximo). O mapa/viagem e o input já são de `crate::ui::map`.
+//!
+//! Também copia o caminho/props do script Luau para [`VaelScriptTags`]
+//! (o antigo `attach.rs`), que a seta de quest consulta para o tipo de
+//! inimigo.
+
+use std::collections::BTreeMap;
 
 use bevy::prelude::*;
 use serde_json::Value;
 use bevy_ext_core::{HudBlip, HudMarkers, HudPoint};
+use viber::luau::components::{LuaScriptRef, ScriptProps};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::Player;
 use viber::scene_loader::CurrentScene;
 use viber::vitals::{Health, Hostile};
 
-use crate::attach::VaelScriptTags;
 use crate::content::VaelContent;
 use crate::harvest::Harvestable;
 use crate::quest::{quest_available, quest_objective, quest_state};
@@ -28,6 +34,52 @@ const PERIOD: f32 = 0.5;
 const PIN_ARRIVED_M: f32 = 4.0;
 /// Beacons no HUD: os mais próximos, sem atalaias (as torres veem-se).
 const BEACON_CAP: usize = 16;
+
+/// Script e props de uma entidade, já fora do host Luau.
+///
+/// A engine marca cada nó com [`LuaScriptRef`] (o caminho do script) e, se o
+/// nó declara `prop-*`, com [`ScriptProps`]. O Vael copia esses dados para um
+/// [`VaelScriptTags`] estável: é o gancho que diz qual é o comportamento de
+/// cada entidade sem voltar a consultar o XML.
+#[derive(Component, Debug, Clone, PartialEq, Eq, Reflect)]
+#[reflect(Component)]
+pub struct VaelScriptTags {
+    /// Caminho relativo a `scripts/` (ex.: `doors/gate.lua`).
+    pub path: String,
+    /// Props por instância (`prop-<nome>` do XML), texto cru.
+    pub props: BTreeMap<String, String>,
+}
+
+/// Plugin de ligação: corre depois do spawn da cena e a cada troca de cena.
+pub struct VaelAttachPlugin;
+
+impl Plugin for VaelAttachPlugin {
+    fn build(&self, app: &mut App) {
+        app.register_type::<VaelScriptTags>()
+            .add_systems(PostStartup, attach_script_tags)
+            // O primeiro `spawn::startup` corre no `Startup`; as trocas de
+            // cena voltam a correr `SceneLoad` — a ordem importa.
+            .add_systems(
+                viber::scene_loader::SceneLoad,
+                attach_script_tags.after(viber::recipes::spawn::startup),
+            );
+    }
+}
+
+fn attach_script_tags(
+    mut commands: Commands,
+    scripts: Query<(Entity, &LuaScriptRef, Option<&ScriptProps>), Without<VaelScriptTags>>,
+) {
+    for (entity, script, props) in &scripts {
+        let props = props
+            .map(|props| props.0.iter().cloned().collect())
+            .unwrap_or_default();
+        commands.entity(entity).insert(VaelScriptTags {
+            path: script.path.clone(),
+            props,
+        });
+    }
+}
 
 pub struct VaelWaypointPlugin;
 
