@@ -64,7 +64,10 @@ serde = { version = "1", features = ["derive"] }
 serde_json = "1"
 # Esquemas e validação do conteúdo (sem Bevy), partilhados com o editor.
 vael-content = { path = "content" }
-viber = { path = "../Viber", features = ["ai"] }
+# Runtime de gameplay: o código do Viber mudou-se para o monorepo
+# bevy_extensions como crate transitório. O alias `viber` preserva todos
+# os imports `viber::` do jogo. TODO(viber-exit): dividir em pacotes finais.
+viber = { package = "bevy_ext_viber_engine", path = "../bevy_extensions/crates/bevy_ext_viber_engine", features = ["ai"] }
 # Runtime de debug/ferramentas: regista `viber-tools/*` no `bevy_remote` do
 # jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
 viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
@@ -112,5 +115,3 @@ debug = false
 # com os dois fixes de robustez (`../Viber/vendor/rerecast/VIBER_PATCH.md`).
 # A navmesh do jogo mudaria de comportamento entre os dois builds. É o mesmo
 # patch da engine; não altera o código do sibling.
-[patch.crates-io]
-rerecast = { path = "../Viber/vendor/rerecast" }
