@@ -6,12 +6,32 @@
 -- engolia os cliques buy/sell e despejava-os todos ao regressar à banca.
 local shop = viber.load("game/shop.lua")
 local rules = viber.load("lib/rules.lua")
+-- Reação a esbarrão (o herói empurra a banca; o Bram tropeça/cede).
+local bump = viber.load("lib/bump.lua")
+
+function on_collision_enter(other)
+  bump.enter(viber.state(), other)
+end
+
+function on_collision_stay(other, dt)
+  bump.stay(viber.state(), other, dt)
+end
+
+function on_collision_exit(other)
+  bump.exit(viber.state(), other)
+end
 
 --@export prompt: string = "Falar com Bram"     -- texto do prompt de interação
 --@export range: number(0.5..10) = 3.5          -- alcance do [E] (m)
 --@export lines: string[] = "“Ferro bom não se negocia barato, forasteiro.”" | "“Precisa de uma lâmina? Chegou na hora certa.”" | "“Dizem que há cristais nas ruínas ao leste...”"
 function on_update(dt)
   local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  bump.sample(st, viber.time())
+  if bump.tick(st, viber.time()) then
+    -- A loja continua a drenar a fila mesmo durante o tropeço.
+    shop.update(dt)
+    return
+  end
   if not st.ready then
     st.ready = true
     viber.set_interaction(viber.prop("prompt"), "e", viber.prop("range"))

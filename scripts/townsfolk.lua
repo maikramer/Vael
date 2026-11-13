@@ -224,6 +224,21 @@ local function choose(st, digit)
   return true
 end
 
+-- Reação a esbarrão (herói empurra → tropeço/queda/passo ao lado).
+local bump = viber.load("lib/bump.lua")
+
+function on_collision_enter(other)
+  bump.enter(viber.state(), other)
+end
+
+function on_collision_stay(other, dt)
+  bump.stay(viber.state(), other, dt)
+end
+
+function on_collision_exit(other)
+  bump.exit(viber.state(), other)
+end
+
 function on_update(dt)
   local st = viber.state() -- POR ENTIDADE (o top-level é partilhado)
   -- Relógio para trás = load: um `st.talking` de outra sessão não pode
@@ -235,6 +250,8 @@ function on_update(dt)
     viber.ui.set("dialogue.until", 0)
   end
   st.clock = now
+  bump.sample(st, now)
+  if bump.tick(st, now) then return end
   if not st.ready then
     st.ready = true
     st.gesture_t = 3 + math.random() * 4 -- 1.º gesto cedo
