@@ -74,6 +74,16 @@ fn main() -> Result<()> {
                 bridge = Some(port);
                 i += 2;
             }
+            // Escreve `world/settings/*.bsn` com os valores de antes da cena
+            // (ambiente, PostFX e espécies de flora) e sai.
+            "--export-settings" => {
+                let force = args.iter().any(|arg| arg == "--force");
+                let root = std::env::current_dir()?;
+                for path in vael::settings::export_settings(&root, force)? {
+                    println!("{}", path.display());
+                }
+                return Ok(());
+            }
             "--help" | "-h" => {
                 println!(
                     "uso: vael [world.bsn] [--scene <nome>] [--entry <nome>] [--bridge <porta>]"
@@ -190,12 +200,7 @@ fn default_tools_port() -> u16 {
 /// `VAEL_TOOLS=1` ou PIE ligam o runtime sem `--bridge`.
 fn tools_enabled() -> bool {
     let flag = std::env::var("VAEL_TOOLS")
-        .map(|raw| {
-            !matches!(
-                raw.trim().to_ascii_lowercase().as_str(),
-                "0" | "false" | "off" | "no"
-            )
-        })
+        .map(|raw| !matches!(raw.trim().to_ascii_lowercase().as_str(), "0" | "false" | "off" | "no"))
         .unwrap_or(false);
     flag || std::env::var_os("JACKDAW_PIE").is_some()
 }

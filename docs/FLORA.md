@@ -40,6 +40,15 @@ texturas, e cada instância carregava a sua subárvore de LOD da engine.
 
 ## Espécies e pools
 
+As espécies vivem na cena: `world/settings/flora.bsn` tem um `FloraSettings`
+(LOD 45/110 m, impostor 260 m, raio de sombra 90 m, look frio acima de 55 m) e
+uma entidade `FloraSpecies` por espécie (`key` = `prop-flora`, `variants`,
+`cold_look` e o `TreeParams` completo do `bevy_flora`). Editam-se no Jackdaw
+(inspector + painel **Vael: Flora**, com preview real das variantes e das
+árvores nas estações); gravar reconstrói os pools no jogo a correr. A tabela
+abaixo é a origem (`POOLS` em `src/flora.rs`, usado por
+`vael --export-settings` e como reserva se a cena não tiver espécies).
+
 | `prop-flora` | Instâncias | Preset | Variantes |
 |---|---|---:|---:|
 | `pine_dark` | 487 | Pine | 8 |

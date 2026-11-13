@@ -32,68 +32,18 @@ use viber::terrain::runtime::TerrainRuntime;
 use viber::worldsys::WeatherState;
 
 use crate::components::VaelPlayer;
+use crate::settings::{SceneSetting, SceneSettingList};
+use bevy_ext_flora::{FloraSettings, FloraSpecies};
 
 use std::collections::{BTreeSet, HashMap};
-
-/// Distâncias do LOD das árvores do mundo. As árvores têm 8–9 m: 45 m mantém
-/// as próximas em detalhe e 110 m passa ao nível de meia-lheira.
-const LOD_LOD1: f32 = 45.0;
-const LOD_LOD2: f32 = 110.0;
-
-/// Distância do impostor: a partir daqui cada árvore é um quad com uma vista
-/// do bake (`ImpostorAtlas`). O bake corre numa câmara offscreen — o guard do
-/// `postfx`/`water_ssr` do Viber ignora essas vistas, senão o passe misturava
-/// alvos de tamanhos diferentes (erro de validação wgpu).
-const IMPOSTOR_DEFAULT: f32 = 260.0;
-
-/// Raio de sombra das árvores (m): só as árvores perto da câmara entram nos
-/// cascatas de sombra. É o maior custo de uma floresta e não se nota a longe.
-const SHADOW_RADIUS: f32 = 90.0;
 
 /// Quantas estações plantar por frame (o mundo tem 1634; um frame só seria um
 /// hitch de spawn de entidades).
 const BATCH: usize = 192;
 
-/// Altura local (m) acima da qual a árvore usa o look frio do pool (serras e
-/// planaltos). As vegetações de planície têm y local perto de 0.
-const COLD_LOOK_Y: f32 = 55.0;
-
-/// Uma entrada de `prop-flora` -> pool.
-struct TreeKind {
-    prop: &'static str,
-    pool: &'static str,
-}
-
-const KINDS: &[TreeKind] = &[
-    TreeKind {
-        prop: "pine_dark",
-        pool: "pine_dark",
-    },
-    TreeKind {
-        prop: "tree_pine",
-        pool: "tree_pine",
-    },
-    TreeKind {
-        prop: "tree_oak",
-        pool: "tree_oak",
-    },
-    TreeKind {
-        prop: "tree_birch",
-        pool: "tree_birch",
-    },
-    TreeKind {
-        prop: "dead_tree",
-        pool: "dead_tree",
-    },
-    TreeKind {
-        prop: "dead_willow",
-        pool: "dead_willow",
-    },
-    TreeKind {
-        prop: "palm_tree",
-        pool: "palm_tree",
-    },
-];
+// LOD (45/110 m), impostor (260 m), raio de sombra (90 m) e a altura do look
+// frio (55 m) vivem em `FloraSettings` (`world/settings/flora.bsn`); as
+// espécies em `FloraSpecies` na mesma cena. Os `VAEL_FLORA_*` ganham (QA).
 
 /// Um pool por espécie: preset, nº de variantes, tom e o fator de altura que
 /// leva o preset (altura em metros) à altura do GLB autorado.
@@ -258,10 +208,17 @@ struct FloraPlanted;
 #[derive(Component)]
 struct FloraGroveRoot;
 
-/// Pools por espécie, construídos uma vez por sessão.
+/// Pools por espécie, construídos uma vez por sessão (e reconstruídos quando
+/// as espécies mudam no `world/settings/flora.bsn`).
 #[derive(Resource, Default)]
 struct FloraPools {
-    pools: HashMap<&'static str, Handle<TreePool>>,
+    pools: HashMap<String, Handle<TreePool>>,
+    /// Variantes de cada pool (a variante da estação é `hash % variants`).
+    variants: HashMap<String, u32>,
+    /// Parâmetros de cada espécie (o `footing` da mata autoral usa-os).
+    params: HashMap<String, TreeParams>,
+    /// Altura do look frio (de `FloraSettings`).
+    cold_look_y: f32,
     /// `prop-flora` desconhecidos (logar uma vez, não por instância).
     warned: BTreeSet<String>,
     planted: usize,
@@ -276,17 +233,8 @@ impl Plugin for VaelFloraPlugin {
         app.add_plugins(FloraPlugin)
             .init_resource::<FloraPools>()
             .init_resource::<FallingLeaves>()
-            .add_systems(
-                Startup,
-                (
-                    |mut commands: Commands| {
-                        commands.insert_resource(FloraShadows {
-                            radius: shadow_radius(),
-                        });
-                    },
-                    build_pools,
-                ),
-            )
+            .add_systems(Startup, build_pools)
+            .add_systems(Update, rebuild_pools_on_edit)
             .add_systems(
                 Update,
                 (
@@ -309,42 +257,62 @@ fn env_on(name: &str) -> bool {
     )
 }
 
-fn shadow_radius() -> f32 {
+fn shadow_radius_or(default: f32) -> f32 {
     std::env::var("VAEL_FLORA_SHADOW_RADIUS")
         .ok()
         .and_then(|raw| raw.parse().ok())
         .filter(|radius: &f32| *radius > 0.0)
-        .unwrap_or(SHADOW_RADIUS)
+        .unwrap_or(default)
 }
 
 /// Distância do impostor: `VAEL_FLORA_IMPOSTOR` (m; `0` desliga), senão
-/// [`IMPOSTOR_DEFAULT`].
-fn impostor_distance() -> f32 {
+/// o da cena.
+fn impostor_distance_or(default: f32) -> f32 {
     match std::env::var("VAEL_FLORA_IMPOSTOR")
         .ok()
         .and_then(|raw| raw.trim().parse::<f32>().ok())
     {
         Some(distance) if distance <= 0.0 => f32::INFINITY,
         Some(distance) => distance,
-        None => IMPOSTOR_DEFAULT,
+        None => default,
     }
 }
 
-fn lod_settings() -> LodSettings {
+fn lod_settings(settings: &FloraSettings) -> LodSettings {
     LodSettings {
         distances: LodDistances {
-            lod1: LOD_LOD1,
-            lod2: LOD_LOD2,
-            impostor: impostor_distance(),
+            lod1: settings.lod1_distance,
+            lod2: settings.lod2_distance,
+            impostor: impostor_distance_or(settings.impostor_distance),
         },
         ..default()
     }
 }
 
-fn kind_of(prop: &str) -> Option<&'static TreeKind> {
-    KINDS.iter().find(|kind| kind.prop == prop)
+/// As espécies de antes da cena (`POOLS`): servem para exportar o
+/// `world/settings/flora.bsn` inicial e de reserva se a cena não tiver
+/// nenhuma.
+pub(crate) fn legacy_species() -> Vec<FloraSpecies> {
+    POOLS
+        .iter()
+        .map(|pool| FloraSpecies {
+            key: pool.key.to_string(),
+            variants: pool.variants,
+            cold_look: true,
+            params: pool_params(pool),
+        })
+        .collect()
 }
 
+/// As espécies da cena, ou as de reserva.
+fn species_catalog(list: Option<&SceneSettingList<FloraSpecies>>) -> Vec<FloraSpecies> {
+    match list {
+        Some(list) if !list.0.is_empty() => list.0.clone(),
+        _ => legacy_species(),
+    }
+}
+
+#[cfg(test)]
 fn pool_of(key: &str) -> Option<&'static PoolKind> {
     POOLS.iter().find(|pool| pool.key == key)
 }
@@ -382,38 +350,119 @@ fn pool_params(pool: &PoolKind) -> TreeParams {
 /// `TreePool` antes de ir para os assets: o segundo look partilha os meshes e
 /// custa só dois materiais. É trabalho de arranque uma vez (logado em ms).
 fn build_pools(
+    mut commands: Commands,
     mut state: ResMut<FloraPools>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut tree_pools: ResMut<Assets<TreePool>>,
+    species: Option<Res<SceneSettingList<FloraSpecies>>>,
+    settings: Option<Res<SceneSetting<FloraSettings>>>,
 ) {
+    let settings = settings.map(|s| s.0.clone()).unwrap_or_default();
+    commands.insert_resource(FloraShadows {
+        radius: shadow_radius_or(settings.shadow_radius),
+    });
     if !env_on("VAEL_FLORA") || !state.pools.is_empty() {
         return;
     }
+    let species = species_catalog(species.as_deref());
+    fill_pools(
+        &mut state,
+        &species,
+        &settings,
+        &mut meshes,
+        &mut tree_pools,
+    );
+}
+
+/// Constrói (ou substitui no mesmo handle) o pool de cada espécie.
+fn fill_pools(
+    state: &mut FloraPools,
+    species: &[FloraSpecies],
+    settings: &FloraSettings,
+    meshes: &mut Assets<Mesh>,
+    tree_pools: &mut Assets<TreePool>,
+) {
     let started = Instant::now();
-    for kind in POOLS {
-        let params = pool_params(kind);
-        let mut pool = build_pool(
-            &params,
-            kind.variants,
-            f32::INFINITY,
-            &lod_settings(),
-            &mut meshes,
-        );
+    let lod = lod_settings(settings);
+    state.cold_look_y = settings.cold_look_y;
+    for species in species {
+        if species.key.is_empty() {
+            continue;
+        }
+        let variants = species.variants.max(1);
+        let mut pool = build_pool(&species.params, variants, f32::INFINITY, &lod, &mut *meshes);
         // Look 0 = cores da espécie; look 1 = frio das serras/planaltos.
-        pool.add_look(PoolColors {
-            wood: cold_tint(kind.wood),
-            leaves: cold_tint(kind.leaves),
-            unlit: false,
+        let (wood, leaves) = (species.params.trunk_color, species.params.foliage.color);
+        pool.add_look(if species.cold_look {
+            PoolColors {
+                wood: cold_tint(wood),
+                leaves: cold_tint(leaves),
+                unlit: false,
+            }
+        } else {
+            PoolColors {
+                wood,
+                leaves,
+                unlit: false,
+            }
         });
-        state.pools.insert(kind.key, tree_pools.add(pool));
+        match state.pools.get(&species.key) {
+            Some(handle) => {
+                let _ = tree_pools.insert(handle.id(), pool);
+            }
+            None => {
+                let handle = tree_pools.add(pool);
+                state.pools.insert(species.key.clone(), handle);
+            }
+        }
+        state.variants.insert(species.key.clone(), variants);
+        state
+            .params
+            .insert(species.key.clone(), species.params.clone());
     }
     info!(
         pools = state.pools.len(),
-        variants = POOLS.iter().map(|kind| kind.variants).sum::<u32>(),
+        variants = species.iter().map(|species| species.variants).sum::<u32>(),
         build_ms = started.elapsed().as_secs_f64() * 1000.0,
-        impostor = impostor_distance(),
+        impostor = lod.distances.impostor,
         "flora: pools das espécies construídos"
     );
+}
+
+/// Gravar o `flora.bsn` no editor reconstrói os pools no mesmo handle: as
+/// árvores plantadas seguem a edição.
+fn rebuild_pools_on_edit(
+    mut state: ResMut<FloraPools>,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut tree_pools: ResMut<Assets<TreePool>>,
+    species: Option<Res<SceneSettingList<FloraSpecies>>>,
+    settings: Option<Res<SceneSetting<FloraSettings>>>,
+    mut shadows: Option<ResMut<FloraShadows>>,
+) {
+    if state.pools.is_empty() {
+        return;
+    }
+    let species_changed = species
+        .as_ref()
+        .is_some_and(|s| s.is_changed() && !s.is_added());
+    let settings_changed = settings
+        .as_ref()
+        .is_some_and(|s| s.is_changed() && !s.is_added());
+    if !species_changed && !settings_changed {
+        return;
+    }
+    let settings = settings.map(|s| s.0.clone()).unwrap_or_default();
+    let catalog = species_catalog(species.as_deref());
+    fill_pools(
+        &mut state,
+        &catalog,
+        &settings,
+        &mut meshes,
+        &mut tree_pools,
+    );
+    if let Some(shadows) = shadows.as_mut() {
+        shadows.radius = shadow_radius_or(settings.shadow_radius);
+    }
 }
 
 /// `hash` estável do nome da instância (escolhe a variante do pool).
@@ -430,7 +479,7 @@ fn variant_of(name: Option<&Name>, variants: u32) -> u32 {
 }
 
 /// Põe a árvore do pool **na própria entidade** (a estação), com o look frio
-/// acima de [`COLD_LOOK_Y`]. Devolve `false` se o pool ainda não existe.
+/// acima de `FloraSettings::cold_look_y`. Devolve `false` se o pool ainda não existe.
 fn plant_on_entity(
     commands: &mut Commands,
     state: &FloraPools,
@@ -442,7 +491,7 @@ fn plant_on_entity(
     let Some(handle) = state.pools.get(pool_key) else {
         return false;
     };
-    let variants = pool_of(pool_key).map(|pool| pool.variants).unwrap_or(1);
+    let variants = state.variants.get(pool_key).copied().unwrap_or(1);
     let mut tree = commands.entity(entity);
     tree.insert((
         PooledTree {
@@ -477,15 +526,21 @@ fn plant_stations(
         let Some(prop) = prop else {
             continue;
         };
-        let Some(kind) = kind_of(prop) else {
+        if state.pools.is_empty() {
+            return;
+        }
+        if !state.pools.contains_key(prop) {
             if state.warned.insert(prop.to_string()) {
-                warn!(prop, "flora: `prop-flora` sem espécie conhecida");
+                warn!(
+                    prop,
+                    "flora: `prop-flora` sem espécie no world/settings/flora.bsn"
+                );
             }
             continue;
-        };
+        }
         let variant = variant_of(name, u32::MAX);
-        let cold = transform.translation.y > COLD_LOOK_Y;
-        if plant_on_entity(&mut commands, &state, entity, kind.pool, variant, cold) {
+        let cold = transform.translation.y > state.cold_look_y;
+        if plant_on_entity(&mut commands, &state, entity, prop, variant, cold) {
             planted += 1;
             if planted >= BATCH {
                 break;
@@ -569,13 +624,9 @@ fn plant_grove(
     grove.replace(root);
 
     for (index, tree) in GROVE.iter().enumerate() {
-        let Some(kind) = kind_of(tree.kind) else {
+        let Some(params) = state.params.get(tree.kind).cloned() else {
             continue;
         };
-        let Some(pool) = pool_of(kind.pool) else {
-            continue;
-        };
-        let params = pool_params(pool);
         let at = Vec2::new(GATE_ANCHOR.x + tree.x, GATE_ANCHOR.y + tree.dz);
         let foot = ground.footing(at, params.base_radius() * tree.scale);
         let entity = commands
@@ -592,7 +643,7 @@ fn plant_grove(
             &mut commands,
             &state,
             entity,
-            kind.pool,
+            tree.kind,
             index as u32,
             false,
         ) {
@@ -704,24 +755,19 @@ fn see_through_trees(
 mod tests {
     use super::*;
 
-    /// Todo `prop-flora` que o mundo usa tem de existir em `KINDS` e o pool
-    /// respetivo em `POOLS` — senão a árvore fica invisível e o log avisa uma
-    /// vez por valor.
+    /// Toda a espécie que o mundo usa (`prop-flora`) tem de existir nas
+    /// espécies de reserva — senão a árvore fica invisível sem cena.
     #[test]
     fn every_prop_maps_to_a_pool() {
-        for kind in KINDS {
-            let pool = POOLS
-                .iter()
-                .find(|pool| pool.key == kind.pool)
-                .unwrap_or_else(|| panic!("prop `{}` aponta para um pool inexistente", kind.prop));
+        let species = legacy_species();
+        for pool in POOLS {
             assert!(
                 pool.height_scale > 0.5 && pool.height_scale < 2.0,
                 "fator de altura de `{}` fora do razoável: {}",
-                kind.prop,
+                pool.key,
                 pool.height_scale
             );
         }
-        // As espécies do script de migração têm de casar com as daqui.
         for prop in [
             "pine_dark",
             "tree_pine",
@@ -731,7 +777,30 @@ mod tests {
             "dead_willow",
             "palm_tree",
         ] {
-            assert!(kind_of(prop).is_some(), "espécie `{prop}` sem `TreeKind`");
+            assert!(
+                species.iter().any(|species| species.key == prop),
+                "espécie `{prop}` sem pool"
+            );
+        }
+    }
+
+    /// O `world/settings/flora.bsn` do projeto cobre as mesmas espécies.
+    #[test]
+    fn flora_bsn_cobre_as_especies() {
+        let world = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("world.bsn");
+        let flora = world.with_file_name("world/settings/flora.bsn");
+        if !flora.is_file() {
+            return;
+        }
+        let (natives, _) =
+            bevy_ext_world::bsn::settings::read_natives(&world).expect("ler world.bsn");
+        let species = bevy_ext_world::bsn::settings::native_values::<FloraSpecies>(&natives);
+        for legacy in legacy_species() {
+            assert!(
+                species.iter().any(|species| species.key == legacy.key),
+                "`{}` falta no flora.bsn",
+                legacy.key
+            );
         }
     }
 

@@ -7,6 +7,8 @@ title: Vael
 graphics: equilibrado
 
 # Post-FX por jogo (engine LÊ `postfx.disabled`; `VIBER_NO_*` ainda ganha).
+# Fallback: o `world/settings/postfx.bsn` (painel Vael: PostFX no Jackdaw)
+# substitui este bloco enquanto existir e muda ao vivo ao gravar.
 # Fica o que dá resultado barato: tonemapping, bloom, exposição (do
 # `bevy_elements`), SSAO Medium (assenta os objetos), CAS e TAA.
 postfx:

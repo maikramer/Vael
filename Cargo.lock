@@ -1039,6 +1039,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_ext_elements"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+]
+
+[[package]]
+name = "bevy_ext_flora"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_flora",
+]
+
+[[package]]
 name = "bevy_ext_gltf"
 version = "0.1.0"
 dependencies = [
@@ -1046,6 +1061,13 @@ dependencies = [
  "bevy",
  "meshopt 0.7.0",
  "serde_json",
+]
+
+[[package]]
+name = "bevy_ext_postfx"
+version = "0.1.0"
+dependencies = [
+ "bevy",
 ]
 
 [[package]]
@@ -9389,6 +9411,10 @@ dependencies = [
  "anyhow",
  "bevy",
  "bevy_elements",
+ "bevy_ext_elements",
+ "bevy_ext_flora",
+ "bevy_ext_postfx",
+ "bevy_ext_world",
  "bevy_flora",
  "bevy_gauge",
  "bevy_hanabi",

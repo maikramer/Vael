@@ -65,6 +65,13 @@ viber = { path = "../Viber", features = ["ai"] }
 # Runtime de debug/ferramentas: regista `viber-tools/*` no `bevy_remote` do
 # jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
 viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
+# Definições autoradas na cena (`world/settings/*.bsn`, editadas no Jackdaw):
+# o contrato partilhado com as extensões do editor. O `bevy_ext_world` é o
+# mesmo crate que o Viber usa como `bevy_world_xml` (path igual, unifica).
+bevy_ext_world = { path = "../bevy_extensions/crates/bevy_ext_world" }
+bevy_ext_elements = { path = "../bevy_extensions/crates/bevy_ext_elements" }
+bevy_ext_flora = { path = "../bevy_extensions/crates/bevy_ext_flora" }
+bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

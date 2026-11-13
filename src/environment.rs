@@ -42,6 +42,8 @@ use viber::worldsys::{
 };
 
 use crate::clock::elements_rain;
+use crate::settings::SceneSetting;
+use bevy_ext_elements::{ElementsQualityLevel, ElementsSettings};
 
 /// Latitude do mundo (graus, norte positivo).
 ///
@@ -63,20 +65,51 @@ pub const START_HOUR: f64 = 8.0;
 
 /// Hora inicial, de `VAEL_START_HOUR` se for válida.
 pub fn start_hour() -> f64 {
+    start_hour_or(START_HOUR)
+}
+
+/// `VAEL_START_HOUR` por cima da hora da cena (`ElementsSettings`).
+pub fn start_hour_or(scene: f64) -> f64 {
     std::env::var("VAEL_START_HOUR")
         .ok()
         .and_then(|raw| raw.trim().parse::<f64>().ok())
         .filter(|hour| hour.is_finite())
-        .map(|hour| hour.rem_euclid(24.0))
-        .unwrap_or(START_HOUR)
+        .unwrap_or(scene)
+        .rem_euclid(24.0)
 }
 
 /// Clima forçado no arranque (`VAEL_START_WEATHER=Rain`, QA de chuva/trovoada).
 pub fn start_weather() -> Option<WeatherPreset> {
     let name = std::env::var("VAEL_START_WEATHER").ok()?;
+    weather_preset(&name)
+}
+
+fn weather_preset(name: &str) -> Option<WeatherPreset> {
     WeatherPreset::ALL
         .into_iter()
         .find(|preset| format!("{preset:?}").eq_ignore_ascii_case(name.trim()))
+}
+
+/// `VAEL_START_WEATHER` por cima do clima da cena.
+fn start_weather_or(scene: &ElementsSettings) -> Option<WeatherPreset> {
+    start_weather().or_else(|| scene.start_weather.preset_name().and_then(weather_preset))
+}
+
+/// As definições de ambiente da cena (`world/settings/environment.bsn`).
+fn scene_settings(app: &App) -> ElementsSettings {
+    app.world()
+        .get_resource::<SceneSetting<ElementsSettings>>()
+        .map(|setting| setting.0.clone())
+        .unwrap_or_default()
+}
+
+fn quality_of(level: ElementsQualityLevel) -> ElementsQuality {
+    match level {
+        ElementsQualityLevel::Low => ElementsQuality::Low,
+        ElementsQualityLevel::Medium => ElementsQuality::Medium,
+        ElementsQualityLevel::High => ElementsQuality::High,
+        ElementsQualityLevel::Ultra => ElementsQuality::Ultra,
+    }
 }
 
 /// Qualidade do crate (`VAEL_ELEMENTS_QUALITY=low|medium|high|ultra`).
@@ -85,8 +118,13 @@ pub fn start_weather() -> Option<WeatherPreset> {
 /// só custa GPU (grelha de vento 64³, mais passos de nuvem/névoa). O `Low`
 /// existe para GPUs mais fracas/AA de 6 GB com pouco espaço.
 pub fn elements_quality() -> ElementsQuality {
+    elements_quality_or(ElementsQuality::Medium)
+}
+
+/// `VAEL_ELEMENTS_QUALITY` por cima da qualidade da cena.
+pub fn elements_quality_or(scene: ElementsQuality) -> ElementsQuality {
     let Ok(raw) = std::env::var("VAEL_ELEMENTS_QUALITY") else {
-        return ElementsQuality::Medium;
+        return scene;
     };
     match raw.trim().to_ascii_lowercase().as_str() {
         "low" => ElementsQuality::Low,
@@ -136,93 +174,100 @@ impl Plugin for VaelEnvironmentPlugin {
             .disable::<WavesPlugin>()
             .disable::<WeatheredPlugin>()
             .disable::<RocksPlugin>();
-        app.insert_resource(
-            WorldClock::new(START_DATE)
-                .at_hour(start_hour())
-                .with_time_scale(TIME_SCALE),
-        )
-        .insert_resource(GeoLocation {
-            latitude_deg: LATITUDE_DEG,
-            ..default()
-        })
-        .insert_resource(Climate::temperate())
-        // High é o default do crate (grelha de vento 64³ + passos de névoa
-        // altos); o frame do Vael é CPU-bound, por isso começamos em Medium.
-        .insert_resource(elements_quality())
-        // O look físico da chuva é fino a 1280×720; o "readable" alonga e
-        // engrossa os traços sem deixar de ser chuva (foi o que o crate
-        // escolheu para câmaras afastadas).
-        .insert_resource(bevy_elements::PrecipitationLook::readable())
-        // Estado de clima da engine: é o que `terrain_rain_wetness`,
-        // `rain_ambience_driver` e `drive_weather` (flora) leem. Existe
-        // antes do primeiro `Update` para o loop de chuva nascer; o
-        // `bridge_weather` escreve-o a partir do `Weather` do crate e
-        // `cycle:false` impede o `weather_drive` de o reescrever.
-        .insert_resource(WeatherState {
-            wind: [1.0, 0.0],
-            wind_strength: 0.0,
-            clouds: 0.0,
-            rain: 0.0,
-            cycle: false,
-        })
-        // O crate desenha as gotas; a engine fica com as ondulações no
-        // terreno real e o áudio (sem chuva dupla). Ver `EngineRainVisuals`.
-        .insert_resource(EngineRainVisuals(false))
-        .init_resource::<VaelEnvControl>()
-        .add_plugins(group)
-        // Pedidos de QA entram ANTES do relógio para a hora valer neste frame.
-        .add_systems(Update, apply_env_control.before(ElementsSystems::Clock))
-        // O clima do crate alimenta o `WeatherState` da engine.
-        .add_systems(Update, bridge_weather.after(ElementsSystems::Weather))
-        // O trovão chega depois da simulação (o `run_strikes` agenda-o).
-        .add_systems(Update, bridge_thunder.after(ElementsSystems::Simulation))
-        .add_systems(
-            Update,
-            collect_env_info
-                .after(ElementsSystems::Celestial)
-                .after(ElementsSystems::Weather)
-                .after(ElementsSystems::Readback)
-                .after(bridge_weather),
-        )
-        .add_systems(
-            Startup,
-            (
-                install_env_api.after(crate::combat::install_combat_api),
-                force_start_weather,
-            ),
-        )
-        .add_systems(
-            Update,
-            (
-                attach_elements_camera,
-                bridge_atmosphere,
-                interior_elements_lighting,
-                interior_precipitation,
+        // Data/hora/latitude/clima/qualidade vêm da cena (Jackdaw); os
+        // `VAEL_START_*`/`VAEL_ELEMENTS_QUALITY` ganham (QA).
+        let scene = scene_settings(app);
+        let start_date = CivilDate::new(scene.start_year, scene.start_month, scene.start_day);
+        app.insert_resource(StartWeather(start_weather_or(&scene)))
+            .insert_resource(
+                WorldClock::new(start_date)
+                    .at_hour(start_hour_or(scene.start_hour))
+                    .with_time_scale(scene.time_scale),
             )
-                // O `SunState` do crate é escrito no set `Celestial`; o
-                // `AtmosphereState` da engine no `atmosphere_drive`.
-                .after(ElementsSystems::Celestial)
-                .after(viber::worldsys::atmosphere_drive)
-                .after(viber::worldsys::interior_lighting_drive)
-                .after(viber::worldsys::interior_lighting_apply),
-        )
-        // A névoa da engine é inserida por `biome_fog_system` (Update,
-        // via Commands); este passe corre depois de os comandos assentarem.
-        .add_systems(PostUpdate, apply_weather_visibility)
-        .add_systems(
-            Update,
-            // Depois do `collect_ui_data` (que só escreve com `<DayCycle>`) e
-            // antes do `UiSet::Bind`, para o HUD ler a hora NO MESMO frame.
-            bridge_ui_clock
-                .after(ElementsSystems::Clock)
-                .after(viber::ui::collect::collect_ui_data)
-                .before(viber::ui::UiSet::Bind),
-        );
+            .insert_resource(GeoLocation {
+                latitude_deg: scene.latitude_deg,
+                ..default()
+            })
+            .insert_resource(Climate::temperate())
+            // High é o default do crate (grelha de vento 64³ + passos de névoa
+            // altos); o frame do Vael é CPU-bound, por isso começamos em Medium.
+            .insert_resource(elements_quality_or(quality_of(scene.quality)))
+            // O look físico da chuva é fino a 1280×720; o "readable" alonga e
+            // engrossa os traços sem deixar de ser chuva (foi o que o crate
+            // escolheu para câmaras afastadas).
+            .insert_resource(bevy_elements::PrecipitationLook::readable())
+            // Estado de clima da engine: é o que `terrain_rain_wetness`,
+            // `rain_ambience_driver` e `drive_weather` (flora) leem. Existe
+            // antes do primeiro `Update` para o loop de chuva nascer; o
+            // `bridge_weather` escreve-o a partir do `Weather` do crate e
+            // `cycle:false` impede o `weather_drive` de o reescrever.
+            .insert_resource(WeatherState {
+                wind: [1.0, 0.0],
+                wind_strength: 0.0,
+                clouds: 0.0,
+                rain: 0.0,
+                cycle: false,
+            })
+            // O crate desenha as gotas; a engine fica com as ondulações no
+            // terreno real e o áudio (sem chuva dupla). Ver `EngineRainVisuals`.
+            .insert_resource(EngineRainVisuals(false))
+            .init_resource::<VaelEnvControl>()
+            .add_plugins(group)
+            // Pedidos de QA entram ANTES do relógio para a hora valer neste frame.
+            .add_systems(Update, apply_env_control.before(ElementsSystems::Clock))
+            // Gravar o `environment.bsn` com o jogo a correr aplica-se já.
+            .add_systems(Update, apply_scene_settings.before(ElementsSystems::Clock))
+            // O clima do crate alimenta o `WeatherState` da engine.
+            .add_systems(Update, bridge_weather.after(ElementsSystems::Weather))
+            // O trovão chega depois da simulação (o `run_strikes` agenda-o).
+            .add_systems(Update, bridge_thunder.after(ElementsSystems::Simulation))
+            .add_systems(
+                Update,
+                collect_env_info
+                    .after(ElementsSystems::Celestial)
+                    .after(ElementsSystems::Weather)
+                    .after(ElementsSystems::Readback)
+                    .after(bridge_weather),
+            )
+            .add_systems(
+                Startup,
+                (
+                    install_env_api.after(crate::combat::install_combat_api),
+                    force_start_weather,
+                ),
+            )
+            .add_systems(
+                Update,
+                (
+                    attach_elements_camera,
+                    bridge_atmosphere,
+                    interior_elements_lighting,
+                    interior_precipitation,
+                )
+                    // O `SunState` do crate é escrito no set `Celestial`; o
+                    // `AtmosphereState` da engine no `atmosphere_drive`.
+                    .after(ElementsSystems::Celestial)
+                    .after(viber::worldsys::atmosphere_drive)
+                    .after(viber::worldsys::interior_lighting_drive)
+                    .after(viber::worldsys::interior_lighting_apply),
+            )
+            // A névoa da engine é inserida por `biome_fog_system` (Update,
+            // via Commands); este passe corre depois de os comandos assentarem.
+            .add_systems(PostUpdate, apply_weather_visibility)
+            .add_systems(
+                Update,
+                // Depois do `collect_ui_data` (que só escreve com `<DayCycle>`) e
+                // antes do `UiSet::Bind`, para o HUD ler a hora NO MESMO frame.
+                bridge_ui_clock
+                    .after(ElementsSystems::Clock)
+                    .after(viber::ui::collect::collect_ui_data)
+                    .before(viber::ui::UiSet::Bind),
+            );
         info!(
-            hour = start_hour(),
-            latitude = LATITUDE_DEG,
-            time_scale = TIME_SCALE,
-            weather = ?start_weather(),
+            hour = start_hour_or(scene.start_hour),
+            latitude = scene.latitude_deg,
+            time_scale = scene.time_scale,
+            weather = ?start_weather_or(&scene),
             "vael: ambiente `bevy_elements` ligado"
         );
     }
@@ -682,11 +727,53 @@ fn bridge_ui_clock(
 
 /// Força o clima de `VAEL_START_WEATHER` no arranque (antes do primeiro
 /// probe do céu; um `force` depois não salta o relógio).
-fn force_start_weather(mut director: ResMut<WeatherDirector>) {
-    if let Some(preset) = start_weather() {
+fn force_start_weather(start: Res<StartWeather>, mut director: ResMut<WeatherDirector>) {
+    if let Some(preset) = start.0 {
         director.force(preset, Duration::ZERO);
-        info!(preset = ?preset, "vael: clima inicial (VAEL_START_WEATHER)");
+        info!(preset = ?preset, "vael: clima inicial (cena/VAEL_START_WEATHER)");
     }
+}
+
+/// Clima de arranque resolvido (cena + `VAEL_START_WEATHER`).
+#[derive(Resource, Debug, Clone, Copy)]
+struct StartWeather(Option<WeatherPreset>);
+
+/// Edição do `ElementsSettings` com o jogo a correr (o Jackdaw gravou):
+/// latitude, escala do tempo e clima seguem; a hora só muda se a da cena
+/// mudou (não reescreve o relógio a cada gravação).
+fn apply_scene_settings(
+    setting: Option<Res<SceneSetting<ElementsSettings>>>,
+    mut clock: ResMut<WorldClock>,
+    mut geo: ResMut<GeoLocation>,
+    mut director: ResMut<WeatherDirector>,
+    mut last: Local<Option<ElementsSettings>>,
+) {
+    let Some(setting) = setting else {
+        return;
+    };
+    let Some(previous) = last.replace(setting.0.clone()) else {
+        return;
+    };
+    if previous == setting.0 {
+        return;
+    }
+    let scene = &setting.0;
+    geo.latitude_deg = scene.latitude_deg;
+    clock.time_scale = scene.time_scale;
+    if previous.start_hour != scene.start_hour {
+        clock.hour = scene.start_hour.rem_euclid(24.0);
+    }
+    if previous.start_weather != scene.start_weather
+        && let Some(preset) = scene.start_weather.preset_name().and_then(weather_preset)
+    {
+        director.force(preset, Duration::from_secs(5));
+    }
+    info!(
+        hour = scene.start_hour,
+        latitude = scene.latitude_deg,
+        weather = ?scene.start_weather,
+        "vael: ambiente da cena atualizado"
+    );
 }
 
 /// Aplica os pedidos do QA antes do `ElementsSystems::Clock`.

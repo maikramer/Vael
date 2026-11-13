@@ -3,7 +3,9 @@
 > **Legado.** O fluxo de autoria é o **Jackdaw oficial** (`jd open .`) com as
 > extensões `.jdext` em `../bevy_extensions/extensions/`; este crate próprio
 > mantém-se como referência e para os testes sem janela. Não é o editor do
-> dia-a-dia.
+> dia-a-dia. Os painéis deste crate (Itens, Marcos, Progressão, Diálogos,
+> Missões, Conteúdo e Cenas) estão portados para a extensão
+> **`vael_content_jackdaw`**, ativa no `jackdaw.toml` do projeto.
 
 Editor do Vael. É uma App Bevy própria que regista uma extensão no
 [Jackdaw](https://crates.io/crates/jackdaw) 0.20 (a mesma linha do Bevy

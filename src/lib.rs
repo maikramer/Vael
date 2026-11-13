@@ -51,6 +51,7 @@ pub mod quest_events;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
+pub mod settings;
 pub mod speech;
 pub mod state_sync;
 pub mod stats;
@@ -112,6 +113,9 @@ impl Plugin for VaelPlugin {
         app.add_plugins(jackdaw_runtime::JackdawPlugin);
         app.register_type::<VaelProjectRoot>()
             .init_resource::<VaelProjectRoot>()
+            // Definições da cena (ambiente/PostFX/flora) antes dos plugins
+            // que as leem no `build`.
+            .add_plugins(settings::VaelSettingsPlugin)
             .add_plugins((
                 VaelContentPlugin,
                 VaelSavePlugin,

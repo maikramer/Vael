@@ -1,0 +1,16 @@
+// Definições do Vael (postfx.bsn). Editar no Jackdaw (`jd open .`):
+// o inspector e os painéis da extensão vael_jackdaw gravam aqui.
+
+#"Pós-processamento"
+bevy_transform::components::transform::Transform
+bevy_ext_postfx::PostFxSettings {
+    ssao_quality: bevy_ext_postfx::SsaoQuality::Medium,
+    auto_exposure: false,
+    depth_of_field: false,
+    motion_blur: false,
+    volumetrics: false,
+    chromatic_aberration: false,
+    vignette: false,
+    split_tone: false,
+    aerial: false,
+}
