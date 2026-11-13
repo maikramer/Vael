@@ -61,6 +61,13 @@ Editar no **Jackdaw oficial** (`jd open .`). Estrutura do `world.bsn`:
   `PostFxSettings` e `FloraSettings` + uma `FloraSpecies` por espécie. São
   componentes `Reflect` (crates `bevy_ext_{elements,postfx,flora}`) que o
   jogo lê em `src/settings.rs` e relê ao gravar (o jogo a correr segue).
+- **componentes tipados** (`bevy_ext_scene`): `ColliderSpec`, `BodySpec`,
+  `Destructible` e `Harvestable` substituem as strings `collider=`/
+  `rigidbody=`/`destructible=`/`resource-kind/yield` do DSL (3.7k nós
+  migrados a 2026-11-13). O loader devolve-os ao parser do Viber como
+  atributos; o componente ganha a um atributo homónimo. Migrar mais ficheiros:
+  `cargo run -p bevy_ext_world --example bsn_migrate -- <ficheiros.bsn>` (só
+  move o que volta igual; idempotente) + `bsn_equiv` contra a cópia de antes;
   Precedência: cena > `config.yaml`/constantes; `VAEL_START_*`, `VIBER_NO_*`
   e `VAEL_FLORA_*` ganham (QA). `vael --export-settings [--force]` reescreve
   os ficheiros com os valores de origem.
@@ -88,21 +95,20 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `editor/` + `content/` | **Legado**: App própria `vael-editor` (testes/painéis antigos) e esquemas `vael-content`. O fluxo é o Jackdaw oficial (`jd open .`; `jackdaw.toml` fixa `package = "vael"`/`plugin = "VaelPlugin"`) com as extensões `.jdext` em `../bevy_extensions/extensions/` e `../viber-tools/extensions/`; os painéis de conteúdo vivem em `vael_content_jackdaw` |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
 | `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `viber.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`viber.decision`) |
-| `ui/*.css` | HUD e menu |
+| `ui/*.xaml` | HUD, menu, título, morte e mapa (`bevy_pf`); os `*.css` que restam são legado de HUD/profiler/showcase |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
+| `docs/README.md` | índice da documentação: o que é vivo, o que é histórico e as convenções de manutenção |
 | `docs/AUDIO.md` | direção sonora (Coro de Vael), layers por bioma, manifests e gate de costura; regen com `assets/regen_audio.py` |
-| `docs/FLORA.md` | árvores procedurais (`bevy_flora`): estações `prop-flora` no XML, pools por espécie, colheita provisória e `tools/flora_migrate.py` |
+| `docs/FLORA.md` | árvores procedurais (`bevy_flora`): estações `prop-flora` no `.bsn`, pools por espécie, colheita provisória e `tools/flora_migrate.py` |
 | `config.yaml` | `assets.roots: assets/public` |
 | `src/environment.rs` | **dono do céu/tempo** (`bevy_elements`): relógio astronómico, sol/lua/estrelas, clima, nuvens, chuva/neve e relâmpagos. Ponte `Weather` → `WeatherState` (chão molhado, áudio de chuva, vento das árvores), trovão → SFX, visibilidade → névoa e queries em `viber.vael.env_info()`. Gate `VAEL_ELEMENTS=0`. QA: `VAEL_START_HOUR`/`VAEL_START_WEATHER` |
 | `docs/LIGHTING.md` | como o céu/exposição/névoa se ligam hoje e o que ficou na engine |
-| `qa-elements.bsn` | **cópia** do `world.bsn` para QA do ambiente (corre-se sem escolher cena; save `qa-elements` isolado) |
-| `qa-*.bsn` | mundos QA. Incluem `world/**/*.bsn` — editar o módulo muda o mundo |
 
 ## Cenas
 
 Cada sala é `scenes/interiors/<sala>.bsn` com `<SceneEntry name="from-town">`
 e `<ScenePortal name="exit" target="main" entry="@back" auto-radius="1.6">`.
-Portas da vila: `world/cities/discordia/portals.xml`. Jogador, câmara e HUD
+Portas da vila: `world/cities/discordia/portals.bsn`. Jogador, câmara e HUD
 são autoloads (`world/autoload/*.bsn`). Sala nova:
 `viber scene new-scene interiors/<nome> --interior "20 16"` mais um portal
 na vila. `viber scene lint` valida alvos.
@@ -153,8 +159,8 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 - Céu e tempo são do `bevy_elements` (`src/environment.rs`): NÃO repor
   `<Sky>`/`<DayCycle>`/`<Weather>` nem `DirectionalLight`/`AmbientLight`
   autorais no `world/environment.bsn`/`scenes/menu.bsn` — a engine conduziria
-  um segundo sol/céu. Os `qa-*.bsn` antigos ainda os declaram; correr com
-  `VAEL_ELEMENTS=0`. A exposição automática da engine está cortada no
+  um segundo sol/céu. `VAEL_ELEMENTS=0` desliga o crate. A exposição
+  automática da engine está cortada no
   `config.yaml` (é do crate).
 
 ## Correr
@@ -226,8 +232,10 @@ chama `cargo build --release` quando mudaram; senão corre a cache
 o wrapper por um binário fixo. O editor oficial: `jd open .` (abre
 `world.bsn`/as cenas `.bsn`; a CLI de cena continua XML). Extensões do Vael
 (`../bevy_extensions/extensions/` e `../viber-tools/extensions/`):
-`bevy_voxel_terrain_jackdaw` (terreno, previews de props/terreno, regista o
-`WorldNode`), `vael_jackdaw` (painéis **Ambiente**, **PostFX** e **Flora**:
+`bevy_voxel_terrain_jackdaw` (terreno + paint, preview progressivo de
+props/terreno, regista o `WorldNode`), `vael_scene_jackdaw` (ícones do Outliner, categorias Physics/Gameplay/DSL
+no inspector, gizmos de colisores/exclusões/spawners/portais/luzes e painel
+**Vael: Cena** com problemas), `vael_jackdaw` (painéis **Ambiente**, **PostFX** e **Flora**:
 hora/clima com sol de preview, efeitos com "lente do jogo" no viewport,
 espécies com preview real do `bevy_flora` e árvores nas estações) e
 `vael_content_jackdaw` (painéis **Itens**, **Marcos**, **Progressão**,
@@ -242,7 +250,10 @@ grupo/input/screenshot visíveis no `jd mcp`; o servidor MCP tipado é
 extensão pode registar um tipo partilhado (`WorldNode`): cada dylib tem a sua
 cópia e a última a registar rouba o type path às outras — as restantes leem-no
 por reflexão. Uma entidade autorada sem `Transform` não entra na hierarquia
-do editor. Ciclo: `jd build` →
+do editor. Os modelos NÃO levam `GltfSource` no `.bsn`: o loader do editor não lê meshopt/KTX2 e
+cada um era uma leitura falhada do GLB; o preview real vem da cache descodificada
+da `bevy_voxel_terrain_jackdaw` (`assets/public/.jackdaw-cache/`). A câmara do
+viewport escala a velocidade pela distância ao chão (`vael_jackdaw`, `camera.rs`). Ciclo: `jd build` →
 `jd extension pack` → `jd extension install --trust-publisher`; ver
 `extensions/bevy_voxel_terrain_jackdaw/README.md`.
 

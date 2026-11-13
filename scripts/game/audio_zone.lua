@@ -29,7 +29,7 @@ function on_update(_dt)
   local menu = scene == "menu"
   -- Interiores são `scenes/interiors/*` (id `interiors/<sala>`). A regra
   -- antiga ("tudo o que não é main nem menu") punha reverb de sala numa cena
-  -- própria ao ar livre (ex.: `qa-batch`).
+  -- própria ao ar livre.
   local interior = scene ~= nil and scene:find("^interiors/") ~= nil
   local reverb = interior and "room" or "off"
   if reverb ~= current_reverb and viber.audio and viber.audio.reverb then

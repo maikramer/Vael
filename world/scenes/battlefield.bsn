@@ -57,13 +57,15 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Composition",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "battlefield-banner" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 0 -265" },
                 bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -189,14 +191,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/wrecked_boat_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "battlefield-wreck" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-774 0 -270" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/wrecked_boat_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -210,7 +216,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/wrecked_boat_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -229,13 +234,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.819152, z: 0.0, w: -0.573576 },
             scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/market_stall_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-766 0 -272" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 250 0; scale: 1.1 1.1 1.1" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/market_stall_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -249,7 +258,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/market_stall_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -305,13 +313,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-761 0 -268" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -325,7 +337,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -344,13 +355,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.55, y: 0.7, z: 0.55 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-778 0 -274" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.55 0.7 0.55" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -364,7 +379,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -383,13 +397,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-764 0 -276" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -403,7 +421,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -422,12 +439,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.224385, y: 0.258126, z: 0.616494, w: 0.709195 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-782 0 -262" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 82" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.0 1.0" },
             ],
             text: "",
@@ -442,7 +461,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -461,12 +479,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.678192, y: 0.702289, z: -0.150352, w: -0.155694 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-758 0 -258" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 205 88" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.0 1.0" },
             ],
             text: "",
@@ -481,7 +501,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -500,13 +519,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.743145, z: 0.0, w: 0.669131 },
             scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_stack_11_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-768 0 -256" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 96 0; scale: 1.3 1.3 1.3" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/form_stack_11_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -520,7 +543,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_stack_11_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -539,14 +561,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.906308, z: 0.0, w: 0.422618 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/bone_altar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "battlefield-cairn" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 0 -276" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 130 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/bone_altar_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -560,7 +586,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/bone_altar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -642,13 +667,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/weapon_rack_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-779 0 -268" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/weapon_rack_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -662,7 +691,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/weapon_rack_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -681,13 +709,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.210569, y: 0.269516, z: 0.578533, w: 0.740488 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.35, y: 0.9, z: 0.15 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-760 0 -272" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 76" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -701,7 +733,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -720,13 +751,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.06719, y: 0.080073, z: 0.639266, w: 0.761848 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.35, y: 0.9, z: 0.15 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-763 0 -264" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 80" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -740,7 +775,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/axe_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -759,13 +793,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: -0.866025 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-786 0 -272" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 300 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -779,7 +817,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -798,13 +835,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.996195, z: 0.0, w: -0.087156 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-754 0 -270" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 190 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -818,7 +859,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -919,7 +959,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/shade_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -965,7 +1004,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_guard_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1000,11 +1038,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-790 -1.43 -260" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
             ],
             text: "",
@@ -1084,11 +1124,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-750 -0.77 -270" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
             ],
             text: "",
@@ -1168,11 +1210,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 -0.07 -285" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
             ],
             text: "",
@@ -1252,13 +1296,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-790 -1.1 -275" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.2 0.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1345,13 +1393,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.043619, z: 0.0, w: 0.999048 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-755 -0.58 -262" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 5 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.2 0.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1438,13 +1490,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-765 -0.36 -290" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 35 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.2 0.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1531,13 +1587,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-785 -0.65 -285" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 0" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.2 0.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1624,13 +1684,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.176153, y: 0.293168, z: 0.483977, w: 0.805474 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.35, y: 0.9, z: 0.15 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-760 -0.1 -268" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 62" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1644,7 +1708,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1663,13 +1726,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.098274, y: 0.163555, z: 0.505575, w: 0.841419 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.35, y: 0.9, z: 0.15 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-778 -0.33 -278" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 22 62" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1683,7 +1750,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1702,13 +1768,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.209485, y: 0.348641, z: 0.470511, w: 0.783061 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.35, y: 0.9, z: 0.15 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-752 -0.51 -275" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 48 62" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.35 0.9 0.15" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1722,7 +1792,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/spear_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [

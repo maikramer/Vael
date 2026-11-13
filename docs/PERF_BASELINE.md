@@ -1,5 +1,10 @@
 # PERF_BASELINE.md — Vael
 
+> **Medição histórica (2026-10-21).** Antes do ambiente `bevy_elements`, da UI
+> `bevy_pf` e da saída do player/câmara para o Vael. Os números continuam a
+> servir de ordem de grandeza e de método, mas **não são o gate atual**:
+> medir de novo com `viber debug prof` no HEAD corrente antes de comparar.
+
 Primeira linha de base de performance depois das primitivas da Fase 1
 (áudio, save slots, locale, gamepad, escala de UI, decals). Medição
 **CLI-first** (`viber debug prof` / `hash`), sem screenshots do painel.
@@ -95,7 +100,10 @@ pendente de uma sessão limpa (as sessões concorrentes ocupam a VRAM).
 
 ### QA do batch (mundo pequeno)
 
-`scenes/qa-batch.xml` + `scenes/qa-batch.vinst` (40 plantas no mesmo tile):
+> Histórico: `scenes/qa-batch.bsn` foi removido a 2026-11-12; os números
+> abaixo ficam como referência da medição original.
+
+Cenário: 40 plantas no mesmo tile.
 
 - 40 plantas → **4 tiles fundidos** (`batch:foliage`), 40 meshes de origem
   escondidos.

@@ -59,7 +59,7 @@ extraídas, e a validação exige as três. `lenha` vale por `wood`, `frutas` po
 | Juiz (resolve + valida + recompensa) | `scripts/lib/riddle.lua` |
 | Modo enigma do santuário | `scripts/crystal-shrine.lua` (`prop-riddle_id`) |
 | Resolvedor de entidades | `scripts/lib/parley.lua` + `data/nlu_aliases.json` |
-| Barra de resposta | `scripts/ui/say.lua` + `world/hud.xml` |
+| Barra de resposta | `scripts/ui/say.lua` + `world/say.bsn` + `ui/hud.xaml` |
 
 O santuário mostra o prompt (`Ouvir o santuário` / `Examinar as oferendas` /
 `Examinar as estátuas`), toca a pista sonora quando aplicável e, no [E], abre a

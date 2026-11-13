@@ -39,13 +39,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/medieval_well_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "well" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6 0 4" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/medieval_well_collision.glb; mesh-anchor: base" },
                 bevy_world_xml::bsn::WorldProp { key: "script", value: "well.lua" },
             ],
             text: "",
@@ -60,7 +64,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/medieval_well_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -79,13 +82,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/campfire_pit_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "campfire" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.5 0 -6.6" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/campfire_pit_collision.glb; mesh-anchor: base" },
                 bevy_world_xml::bsn::WorldProp { key: "script", value: "campfire.lua" },
             ],
             text: "",
@@ -100,7 +107,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/campfire_pit_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -156,12 +162,12 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec
         bevy_world_xml::bsn::WorldNode {
             tag: "Group",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.5 0 -6.6" },
                 bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -203,13 +209,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.6, y: 0.9, z: 0.55 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.5 0 -3.6" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.6 0.9 0.55" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -223,7 +233,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -242,13 +251,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.6, y: 0.9, z: 0.55 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.7 0 -3.4" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.6 0.9 0.55" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -262,7 +275,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_bench_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -281,13 +293,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/notice_board_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "notice_board" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "5 0 -12.5" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/notice_board_collision.glb; mesh-anchor: base" },
                 bevy_world_xml::bsn::WorldProp { key: "script", value: "notice-board.lua" },
             ],
             text: "",
@@ -302,7 +318,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/notice_board_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -321,12 +336,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.5 0 8.5" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -340,7 +359,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -396,12 +414,12 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec
         bevy_world_xml::bsn::WorldNode {
             tag: "Group",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.5 0 8.5" },
                 bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -443,12 +461,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.5 0 -8.5" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -462,7 +484,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -518,12 +539,12 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec
         bevy_world_xml::bsn::WorldNode {
             tag: "Group",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.5 0 -8.5" },
                 bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
             ],
             text: "",
             origin_file: "world/cities/discordia/utilities.xml",
@@ -584,13 +605,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "rune-pillar" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-35 0 17" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/stone_pillar_collision.glb; mesh-anchor: base" },
                 bevy_world_xml::bsn::WorldProp { key: "script", value: "stone-pillar.lua" },
             ],
             text: "",
@@ -605,7 +630,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -624,13 +648,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "crystal-shrine" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "35 0 17" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/props/crystal_blue_collision.glb; mesh-anchor: base" },
                 bevy_world_xml::bsn::WorldProp { key: "script", value: "crystal-shrine.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-riddle_id", value: "odd_statue" },
             ],
@@ -646,7 +674,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -682,7 +709,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GltfScene",
                     attrs: [
@@ -719,7 +745,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GltfScene",
                     attrs: [
@@ -756,7 +781,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/shade_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GltfScene",
                     attrs: [
@@ -818,7 +842,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_elder_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -874,7 +897,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_scout_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -932,7 +954,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_blacksmith_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [

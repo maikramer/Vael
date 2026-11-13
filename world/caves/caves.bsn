@@ -87,13 +87,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-135.32 49.22 179.02" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -107,7 +111,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -190,13 +193,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-143.99 50.37 182.64" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -210,7 +217,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -293,13 +299,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-145.5 43.38 138.44" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -313,7 +323,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -396,13 +405,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-154.77 42.26 139.98" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -416,7 +429,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -499,13 +511,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-143.35 40.5 165.28" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -519,7 +535,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -602,13 +617,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-148.89 37.85 158.8" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -622,7 +641,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -705,13 +723,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-146.08 39.21 150.61" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -725,7 +747,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -808,12 +829,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-146 39.21 158" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -855,14 +876,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/druid_stone_altar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-150 36.61 158" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/druid_stone_altar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -876,7 +901,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/druid_stone_altar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -922,14 +946,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
         scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/bone_altar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-142 36.61 156" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 60 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/bone_altar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -943,7 +971,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/bone_altar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -962,14 +989,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
         scale: glam::Vec3 { x: 0.7, y: 0.7, z: 0.7 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/swamp/bone_altar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-149 36.61 161" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -30 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/swamp/bone_altar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -983,7 +1014,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/bone_altar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1002,6 +1032,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: 0.5 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1014,8 +1050,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
             bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
             bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1029,7 +1063,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1048,13 +1081,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-151 36.61 155" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1068,7 +1105,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1151,13 +1187,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/rock_boulder_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-141 36.61 155" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 1.3 1.3 1.3" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1171,7 +1211,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1256,12 +1295,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "333.47 51.27 65.62" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 56.3 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
             bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.3 4.8 1.0" },
         ],
         text: "",
@@ -1299,12 +1340,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "336.52 51.27 61.04" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 56.3 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
             bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.3 4.8 1.0" },
         ],
         text: "",
@@ -1342,12 +1385,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "334.99 53.07 63.33" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 56.3 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
             bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 3.2 1.2 1.0" },
         ],
         text: "",
@@ -1385,13 +1430,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 8.1, y: 0.3, z: 1.24 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "334.99 53.82 63.33" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 56.3 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 8.1 0.3 1.24" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1428,14 +1477,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "325.34 53.61 64.83" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1449,7 +1502,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1468,14 +1520,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "332.66 54.56 53.84" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1489,7 +1545,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1508,12 +1563,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "332.05 49.51 65.21" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1527,7 +1586,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1610,12 +1668,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "335.6 49.51 59.89" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1629,7 +1691,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1712,13 +1773,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "366.96 53.72 94.17" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1732,7 +1797,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1815,13 +1879,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "374.17 54.58 86.96" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1835,7 +1903,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1918,13 +1985,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "343.68 43.77 72.06" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1938,7 +2009,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2021,13 +2091,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "354.75 42.38 73.56" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2041,7 +2115,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2124,13 +2197,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "358.7 45.96 82.1" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2144,7 +2221,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2227,12 +2303,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "350 43.53 75" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2274,14 +2350,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
         scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "347.0 40.93 75" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2295,7 +2375,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2314,14 +2393,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "353.0 40.93 75" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -20 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2335,7 +2418,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2354,12 +2436,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "350 41.43 75" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
             bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.2 1.0 2.4" },
         ],
         text: "",
@@ -2397,6 +2481,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -2409,8 +2499,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
             bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
             bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2424,7 +2512,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2443,12 +2530,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "356 40.93 79" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2462,7 +2553,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2545,13 +2635,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.843391, z: 0.0, w: 0.5373 },
         scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/crystal_blue_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "346 40.93 71" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 115 0; scale: 1.4 1.4 1.4" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2565,7 +2659,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2611,13 +2704,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "355 40.93 71" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2631,7 +2728,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2780,13 +2876,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "48.82 106.4 -237.2" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2800,7 +2900,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2883,13 +2982,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "39.05 109.32 -236.39" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2903,7 +3006,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -2986,13 +3088,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "64.03 114.82 -282.1" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3006,7 +3112,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3089,13 +3194,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "57.1 112.31 -289.03" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3109,7 +3218,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3192,13 +3300,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "45.93 99.45 -255.72" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3212,7 +3324,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3295,13 +3406,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "43.53 99.66 -265.93" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3315,7 +3430,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3398,13 +3512,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "52.1 100.09 -273.92" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3418,7 +3536,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3501,12 +3618,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "45 101.38 -270" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3548,13 +3665,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.147809, z: 0.0, w: 0.989016 },
         scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/crystal_blue_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "41 98.78 -270" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 17 0; scale: 2.2 2.2 2.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3568,7 +3689,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3614,13 +3734,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.551937, z: 0.0, w: 0.833886 },
         scale: glam::Vec3 { x: 1.8, y: 1.8, z: 1.8 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/crystal_blue_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "49 98.78 -272" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 67 0; scale: 1.8 1.8 1.8" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3634,7 +3758,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3680,13 +3803,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.477159, z: 0.0, w: 0.878817 },
         scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/crystal_blue_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "45 98.78 -266" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 57 0; scale: 1.4 1.4 1.4" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3700,7 +3827,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3746,6 +3872,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -3758,8 +3890,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
             bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
             bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3773,7 +3903,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3792,13 +3921,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
         scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/rock_boulder_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "41 98.78 -274" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 10 0; scale: 1.6 1.6 1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/rock_boulder_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3812,7 +3945,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/rock_boulder_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3831,12 +3963,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "45 98.78 -274" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3850,7 +3986,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -3933,13 +4068,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "41 98.78 -266" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3953,7 +4092,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4055,12 +4193,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Composition",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "minecart" },
                 bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -4234,13 +4374,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/farm/ore_vein_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-63 -213 98.4" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 1.3 1.3 1.3" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4254,7 +4398,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/ore_vein_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4273,13 +4416,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
         scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/farm/ore_vein_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-57 -219 98.4" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0; scale: 1.1 1.1 1.1" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4293,7 +4440,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/ore_vein_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4312,13 +4458,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-62 -214 98.4" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4332,7 +4482,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4351,13 +4500,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92 93.1 -252" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4371,7 +4524,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4454,13 +4606,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 93.1 -260" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4474,7 +4630,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4557,13 +4712,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.139173, z: 0.0, w: 0.990268 },
         scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/crystal_blue_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92 93.1 -260" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 16 0; scale: 1.6 1.6 1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4577,7 +4736,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4623,13 +4781,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/farm/ore_vein_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 93.1 -252" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 1.2 1.2 1.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/farm/ore_vein_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4643,7 +4805,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/farm/ore_vein_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4662,13 +4823,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-92 93.1 -256" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4682,7 +4847,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4701,13 +4865,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.44, y: 3.4, z: 0.44 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.34 81.03 -53.6" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 81.5 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.44 3.4 0.44" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4743,13 +4911,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.44, y: 3.53, z: 0.44 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.66 80.9 -62.4" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 81.5 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.44 3.53 0.44" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4785,13 +4957,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 9.6, y: 0.28, z: 0.44 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "500 84.59 -58" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 81.5 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 9.6 0.28 0.44" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4866,12 +5042,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.19 81.0 -52.56" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4885,7 +5065,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -4968,12 +5147,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.81 80.9 -63.44" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -4987,7 +5170,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5070,13 +5252,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.77 80.9 -63.14" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5090,7 +5276,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5109,13 +5294,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.44, y: 3.4, z: 0.44 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.41 174.96 -60.41" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -82.4 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.44 3.4 0.44" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5151,13 +5340,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.44, y: 3.56, z: 0.44 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.59 174.81 -51.59" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -82.4 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.44 3.56 0.44" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5193,13 +5386,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 9.6, y: 0.28, z: 0.44 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "720 178.52 -56" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -82.4 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 9.6 0.28 0.44" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5274,12 +5471,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.27 175.0 -61.45" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5293,7 +5494,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5376,12 +5576,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.73 174.78 -50.55" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5395,7 +5599,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5478,13 +5681,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.8, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.69 174.79 -50.85" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.8 0.8 0.8" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5498,7 +5705,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5517,14 +5723,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
         scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "586 111.22 -46" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5538,7 +5748,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5557,14 +5766,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
         scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "594 111.22 -46" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -20 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/desert/ruin_pillar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5578,7 +5791,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/ruin_pillar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5597,6 +5809,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -5609,8 +5827,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
             bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
             bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/treasure_chest_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5624,7 +5840,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/treasure_chest_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5643,13 +5858,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "585 111.22 -50" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5663,7 +5882,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5746,13 +5964,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "595 111.22 -42" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5766,7 +5988,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5849,13 +6070,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.406737, z: 0.0, w: 0.913545 },
         scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/crystal_blue_lod0.glb" },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "594 111.22 -50" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 48 0; scale: 1.5 1.5 1.5" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/crystal_blue_lod0.glb" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5869,7 +6094,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/crystal_blue_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -5915,12 +6139,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "586 111.22 -42" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5934,7 +6162,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -6017,12 +6244,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "331.86 54.50 54.51" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -6036,7 +6267,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -6119,12 +6349,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "325.64 53.69 63.83" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/iron_brazier_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -6138,7 +6372,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/iron_brazier_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -6221,13 +6454,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "331.22 54.40 55.29" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -6241,7 +6478,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -6324,13 +6560,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "326.12 53.70 62.94" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0.0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -6344,7 +6584,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [

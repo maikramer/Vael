@@ -1,6 +1,6 @@
 # Arranque directo para debug (sem menu e sem prólogo)
 
-O jogo arranca normalmente na cena de menu (`scenes/menu.xml`), mostra o ecrã
+O jogo arranca normalmente na cena de menu (`scenes/menu.bsn`), mostra o ecrã
 de título e, ao entrar em `main`, toca a cinemática `prologo` (~35 s) na
 primeira partida. Para iterar em gameplay isso é tempo perdido. O atalho é:
 
@@ -22,7 +22,7 @@ O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 ## Ferramentas de debug ([F1]/[F2])
 
 Num run com `--entry dev`, `scripts/game/devmode.lua` (autoload
-`world/autoload/player.xml`) liga três ferramentas:
+`world/autoload/player.bsn`) liga três ferramentas:
 
 | Tecla | Efeito |
 |-------|--------|
@@ -103,7 +103,6 @@ save). Consequências:
 |--------|---------|
 | Só saltar a cena de menu, manter título e prólogo | `viber run --scene main` |
 | Só saltar o menu e o prólogo (debug) | `viber run --scene main --entry dev` |
-| Um cenário QA isolado, sem campanha | `viber run qa-cenarios.bsn` (etc.) |
 | Voltar ao fluxo normal | `viber run` |
 
 `viber run --scene main --entry dev` também aceita caminho explícito

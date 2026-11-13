@@ -15,8 +15,8 @@ mundo original já têm runtime, incluindo as tags `EngineConfig`
 (`world.data/terrain.ahgt`), geradores resolvidos em grupos `spawn/…`
 editáveis (receita `<Scatter>` ao lado), vegetação em `.vinst`. É o que corre
 e o que se edita no Jackdaw; `viber analyze`/`viber scene lint` e `viber bsn`
-leem `.bsn`. O `world.xml` e os módulos `.xml` ficam como legado da CLI de
-cena (`viber scene`/`tool`/`terrain`). Não há fonte procedural:
+leem `.bsn`. Os `.xml` foram aposentados a 2026-11-12 (vivem no histórico do
+git; não regenerar com `viber bsn convert`). Não há fonte procedural:
 foi convertida no sítio e apagada (2026-10-14; fica no histórico do git).
 
 Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
@@ -213,17 +213,18 @@ descomprime meshopt/KTX2 à leitura.
 - `dialogues/*.json` — grafos de diálogo ambientais (lidos por `scripts/townsfolk.lua`)
 - `data/items.json`, `data/landmarks.json`, `data/progression.json` — itens/loja,
   marcos da Nota e progressão (XP/talentos), editáveis como conteúdo
-- `editor/` — editor de conteúdo sobre Jackdaw (`vael-editor`): painéis de
-  quests, diálogos, itens, marcos, progressão e validação; ver
-  [`editor/README.md`](editor/README.md). `content/` (`vael-content`) tem os
-  esquemas e as regras partilhadas com o jogo
+- `editor/` + `content/` — **legado**: a App própria `vael-editor` e os
+  esquemas `vael-content`. O fluxo é o Jackdaw oficial (`jd open .`) com as
+  extensões `.jdext`; os painéis de conteúdo vivem em `vael_content_jackdaw`
+  (ver [`AGENTS.md`](AGENTS.md))
 - `scripts/**.lua` — comportamento Luau (inimigos/bosses, colheita, POIs,
   quests, diálogo) via a API `viber.*` (`Viber/docs/LUA_API.md`)
 - `config.yaml` — **contrato de paths com a engine** (obrigatório; roots,
   dirs de áudio/texturas/scripts/UI, save) — `Viber/docs/ASSETS.md`
 - `ui/*.xaml` + `ui/*.css` — HUD, menu, título, morte e mapa em bevy_pf;
-  `world/menu.xml`/`title.xml`/`death.xml` ficam só para o estado dos modais
-- `qa-*.bsn` / `ui-showcase.bsn` — mundos QA, também estáticos (incluem
+  `world/menu.bsn`/`title.bsn`/`death.bsn` ficam só para o estado dos modais
+  (os `.css` que restam são legado de HUD/profiler/showcase)
+- `ui-showcase.bsn` — mundo de demonstração da UI, também estático (inclui
   módulos partilhados de `world/**/*.bsn`)
 
 ## Editar

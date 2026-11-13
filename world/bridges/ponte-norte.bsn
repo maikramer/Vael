@@ -39,6 +39,9 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Auto,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Composition",
         attrs: [
@@ -46,7 +49,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "4 0 216.5" },
             bevy_world_xml::bsn::WorldProp { key: "seat", value: "none" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
@@ -398,12 +400,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 46.1754 172.5" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
@@ -417,7 +423,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -473,12 +478,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 46.1754 172.5" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
@@ -519,12 +524,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 42.7344 242.5" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
@@ -538,7 +547,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -594,12 +602,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 42.7344 242.5" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
@@ -640,12 +648,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.6 42.7344 240.5" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/torch_post_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
@@ -659,7 +671,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -715,12 +726,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.6 42.7344 240.5" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",

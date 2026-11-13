@@ -157,12 +157,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Composition",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "torre-quebrada" },
                 bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 100.2701 360" },
             ],
             text: "",
@@ -321,6 +323,7 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ColliderSpec
             bevy_world_xml::bsn::WorldNode {
                 tag: "Box",
                 attrs: [
@@ -328,7 +331,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.7 0.12" },
                     bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#2a2620" },
                     bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",

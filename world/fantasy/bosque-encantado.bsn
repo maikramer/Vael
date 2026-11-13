@@ -125,12 +125,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
             scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 72.5749 1426" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 12 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
             ],
@@ -146,7 +150,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -165,12 +168,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.477159, z: 0.0, w: 0.878817 },
             scale: glam::Vec3 { x: 1.35, y: 1.35, z: 1.35 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "218.4 72.393 1418.4" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 57 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.35" },
             ],
@@ -186,7 +193,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -205,12 +211,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.777146, z: 0.0, w: -0.62932 },
             scale: glam::Vec3 { x: 1.55, y: 1.55, z: 1.55 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "225.5 72.2048 1400" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 78 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.55" },
             ],
@@ -226,7 +236,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -245,12 +254,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.95882, z: 0.0, w: -0.284015 },
             scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "218.4 72.4747 1381.6" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 33 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
             ],
@@ -266,7 +279,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -285,12 +297,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.994522, z: 0.0, w: 0.104528 },
             scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 72.7062 1374" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -12 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
             ],
@@ -306,7 +322,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -325,12 +340,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.878817, z: 0.0, w: 0.477159 },
             scale: glam::Vec3 { x: 1.45, y: 1.45, z: 1.45 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "181.6 72.4293 1381.6" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -57 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.45" },
             ],
@@ -346,7 +365,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -365,12 +383,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.62932, z: 0.0, w: 0.777146 },
             scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "174.5 72.496 1400" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/props/stone_pillar_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -78 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
             ],
@@ -386,7 +408,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -405,12 +426,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.205833, y: 0.273149, z: 0.565521, w: 0.750472 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.2, y: 0.9, z: 0.9 }, offset_y: 0.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "186 72.7062 1420" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.2 0.9 0.9" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 74" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -426,7 +451,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -499,7 +523,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -540,7 +563,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -583,7 +605,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.943972, z: 0.0, w: 0.330025 },
                 scale: glam::Vec3 { x: 2.0755, y: 2.0755, z: 2.0755 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -609,7 +630,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.960146, z: 0.0, w: -0.279499 },
                 scale: glam::Vec3 { x: 2.455, y: 2.455, z: 2.455 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -635,7 +655,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.177616, z: 0.0, w: 0.9841 },
                 scale: glam::Vec3 { x: 2.8367, y: 2.8367, z: 2.8367 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -661,7 +680,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.742527, z: 0.0, w: 0.669816 },
                 scale: glam::Vec3 { x: 2.4873, y: 2.4873, z: 2.4873 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -687,7 +705,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.941455, z: 0.0, w: 0.33714 },
                 scale: glam::Vec3 { x: 2.8044, y: 2.8044, z: 2.8044 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -713,7 +730,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.995227, z: 0.0, w: -0.097586 },
                 scale: glam::Vec3 { x: 2.0356, y: 2.0356, z: 2.0356 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -739,7 +755,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.782448, z: 0.0, w: 0.622716 },
                 scale: glam::Vec3 { x: 3.1462, y: 3.1462, z: 3.1462 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -765,7 +780,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.694751, z: 0.0, w: 0.719251 },
                 scale: glam::Vec3 { x: 2.7296, y: 2.7296, z: 2.7296 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -791,7 +805,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.664783, z: 0.0, w: 0.747037 },
                 scale: glam::Vec3 { x: 2.9506, y: 2.9506, z: 2.9506 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -817,7 +830,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.384352, z: 0.0, w: 0.923187 },
                 scale: glam::Vec3 { x: 2.4406, y: 2.4406, z: 2.4406 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -843,7 +855,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.00285, y: 0.902291, z: -0.010797, w: 0.430982 },
                 scale: glam::Vec3 { x: 1.6775, y: 1.6775, z: 1.6775 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -869,7 +880,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.020318, y: 0.869606, z: 0.018308, w: -0.492989 },
                 scale: glam::Vec3 { x: 2.6927, y: 2.6927, z: 2.6927 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -895,7 +905,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.99257, z: 0.0, w: -0.121677 },
                 scale: glam::Vec3 { x: 1.8975, y: 1.8975, z: 1.8975 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -921,7 +930,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.004718, y: 0.914256, z: -0.008779, w: -0.405014 },
                 scale: glam::Vec3 { x: 2.0186, y: 2.0186, z: 2.0186 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -947,7 +955,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.042423, y: 0.570332, z: 0.000244, w: 0.820318 },
                 scale: glam::Vec3 { x: 1.8745, y: 1.8745, z: 1.8745 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -973,7 +980,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.966553, z: 0.0, w: 0.256467 },
                 scale: glam::Vec3 { x: 2.9295, y: 2.9295, z: 2.9295 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -999,7 +1005,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.833764, z: 0.0, w: -0.552121 },
                 scale: glam::Vec3 { x: 2.8096, y: 2.8096, z: 2.8096 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1025,7 +1030,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.725593, z: 0.0, w: 0.688124 },
                 scale: glam::Vec3 { x: 3.132, y: 3.132, z: 3.132 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1051,7 +1055,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.929086, z: 0.0, w: 0.369863 },
                 scale: glam::Vec3 { x: 2.4338, y: 2.4338, z: 2.4338 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1077,7 +1080,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.790302, z: 0.0, w: 0.612718 },
                 scale: glam::Vec3 { x: 2.8221, y: 2.8221, z: 2.8221 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1103,7 +1105,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.261069, z: 0.0, w: 0.96532 },
                 scale: glam::Vec3 { x: 2.9107, y: 2.9107, z: 2.9107 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1129,7 +1130,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.48746, z: 0.0, w: 0.873146 },
                 scale: glam::Vec3 { x: 2.7404, y: 2.7404, z: 2.7404 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1155,7 +1155,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.912716, z: 0.0, w: -0.408594 },
                 scale: glam::Vec3 { x: 2.4277, y: 2.4277, z: 2.4277 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1181,7 +1180,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.265795, z: 0.0, w: 0.96403 },
                 scale: glam::Vec3 { x: 2.4907, y: 2.4907, z: 2.4907 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1207,7 +1205,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.021472, y: -0.997035, z: -0.015218, w: -0.072314 },
                 scale: glam::Vec3 { x: 2.1121, y: 2.1121, z: 2.1121 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1233,7 +1230,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.000753, y: -0.423033, z: -0.001687, w: 0.906112 },
                 scale: glam::Vec3 { x: 3.1547, y: 3.1547, z: 3.1547 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1259,7 +1255,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.890945, z: 0.0, w: 0.454112 },
                 scale: glam::Vec3 { x: 2.0851, y: 2.0851, z: 2.0851 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1285,7 +1280,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.012016, y: 0.957143, z: 0.001587, w: 0.28936 },
                 scale: glam::Vec3 { x: 1.7435, y: 1.7435, z: 1.7435 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1311,7 +1305,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.9947, z: 0.0, w: 0.102818 },
                 scale: glam::Vec3 { x: 1.6234, y: 1.6234, z: 1.6234 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1337,7 +1330,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.881397, z: 0.0, w: -0.472377 },
                 scale: glam::Vec3 { x: 3.1416, y: 3.1416, z: 3.1416 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1363,7 +1355,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.683913, z: 0.0, w: 0.729564 },
                 scale: glam::Vec3 { x: 1.6979, y: 1.6979, z: 1.6979 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1389,7 +1380,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.039889, y: 0.955171, z: 0.009963, w: 0.293185 },
                 scale: glam::Vec3 { x: 2.1661, y: 2.1661, z: 2.1661 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1415,7 +1405,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.002255, y: 0.774669, z: -0.00656, w: 0.632329 },
                 scale: glam::Vec3 { x: 1.6874, y: 1.6874, z: 1.6874 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1441,7 +1430,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.995753, z: 0.0, w: 0.092067 },
                 scale: glam::Vec3 { x: 2.1089, y: 2.1089, z: 2.1089 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1467,7 +1455,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.461192, z: 0.0, w: 0.8873 },
                 scale: glam::Vec3 { x: 2.2652, y: 2.2652, z: 2.2652 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1493,7 +1480,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.817669, z: 0.0, w: 0.575688 },
                 scale: glam::Vec3 { x: 3.1378, y: 3.1378, z: 3.1378 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1519,7 +1505,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.979231, z: 0.0, w: -0.202745 },
                 scale: glam::Vec3 { x: 2.8678, y: 2.8678, z: 2.8678 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1545,7 +1530,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.899288, z: 0.0, w: -0.437357 },
                 scale: glam::Vec3 { x: 2.4505, y: 2.4505, z: 2.4505 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1571,7 +1555,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.001539, y: -0.899608, z: 0.008733, w: 0.436608 },
                 scale: glam::Vec3 { x: 2.7009, y: 2.7009, z: 2.7009 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1597,7 +1580,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.182067, z: 0.0, w: 0.983286 },
                 scale: glam::Vec3 { x: 3.1522, y: 3.1522, z: 3.1522 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1623,7 +1605,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.544656, z: 0.0, w: 0.83866 },
                 scale: glam::Vec3 { x: 2.7226, y: 2.7226, z: 2.7226 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1649,7 +1630,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.894117, z: 0.0, w: -0.447833 },
                 scale: glam::Vec3 { x: 2.6695, y: 2.6695, z: 2.6695 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1675,7 +1655,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.567845, z: 0.0, w: 0.823135 },
                 scale: glam::Vec3 { x: 1.8723, y: 1.8723, z: 1.8723 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1701,7 +1680,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.000384, y: -0.97817, z: -0.004841, w: 0.20775 },
                 scale: glam::Vec3 { x: 1.8088, y: 1.8088, z: 1.8088 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1727,7 +1705,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.619221, z: 0.0, w: 0.785216 },
                 scale: glam::Vec3 { x: 2.6525, y: 2.6525, z: 2.6525 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1753,7 +1730,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.006522, y: 0.871633, z: -0.030548, w: 0.489163 },
                 scale: glam::Vec3 { x: 2.0738, y: 2.0738, z: 2.0738 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1779,7 +1755,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.371138, z: 0.0, w: 0.928578 },
                 scale: glam::Vec3 { x: 2.0929, y: 2.0929, z: 2.0929 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1805,7 +1780,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.507477, z: 0.0, w: 0.861665 },
                 scale: glam::Vec3 { x: 2.5634, y: 2.5634, z: 2.5634 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1831,7 +1805,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.98521, z: 0.0, w: -0.171353 },
                 scale: glam::Vec3 { x: 2.4079, y: 2.4079, z: 2.4079 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1857,7 +1830,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.003681, y: -0.507053, z: 0.001341, w: 0.861906 },
                 scale: glam::Vec3 { x: 3.1645, y: 3.1645, z: 3.1645 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1883,7 +1855,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.017245, y: 0.919933, z: -0.021037, w: -0.39113 },
                 scale: glam::Vec3 { x: 1.6239, y: 1.6239, z: 1.6239 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1909,7 +1880,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.141131, z: 0.0, w: 0.989991 },
                 scale: glam::Vec3 { x: 1.7442, y: 1.7442, z: 1.7442 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1935,7 +1905,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.007216, y: 0.015022, z: -0.000576, w: 0.999861 },
                 scale: glam::Vec3 { x: 2.707, y: 2.707, z: 2.707 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1961,7 +1930,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.031278, y: -0.014138, z: 0.008071, w: 0.999378 },
                 scale: glam::Vec3 { x: 2.8662, y: 2.8662, z: 2.8662 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -1987,7 +1955,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.020854, y: 0.88209, z: 0.027129, w: -0.469837 },
                 scale: glam::Vec3 { x: 2.4396, y: 2.4396, z: 2.4396 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2013,7 +1980,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.998704, z: 0.0, w: 0.050891 },
                 scale: glam::Vec3 { x: 1.646, y: 1.646, z: 1.646 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2039,7 +2005,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.026463, y: 0.103207, z: -0.009775, w: 0.99426 },
                 scale: glam::Vec3 { x: 2.9642, y: 2.9642, z: 2.9642 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2065,7 +2030,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.261696, z: 0.0, w: 0.96515 },
                 scale: glam::Vec3 { x: 2.7861, y: 2.7861, z: 2.7861 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2091,7 +2055,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.00159, y: 0.47631, z: 0.002581, w: 0.879272 },
                 scale: glam::Vec3 { x: 2.3811, y: 2.3811, z: 2.3811 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2117,7 +2080,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.831496, z: 0.0, w: 0.555531 },
                 scale: glam::Vec3 { x: 3.1184, y: 3.1184, z: 3.1184 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2143,7 +2105,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.003854, y: 0.557585, z: -0.01631, w: 0.829951 },
                 scale: glam::Vec3 { x: 2.7665, y: 2.7665, z: 2.7665 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2169,7 +2130,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.018337, y: 0.960202, z: -0.03962, w: -0.275872 },
                 scale: glam::Vec3 { x: 2.4052, y: 2.4052, z: 2.4052 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2195,7 +2155,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.362198, z: 0.0, w: 0.932101 },
                 scale: glam::Vec3 { x: 2.0681, y: 2.0681, z: 2.0681 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2221,7 +2180,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.821447, z: 0.0, w: 0.570285 },
                 scale: glam::Vec3 { x: 2.5548, y: 2.5548, z: 2.5548 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2247,7 +2205,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.994497, z: 0.0, w: 0.104763 },
                 scale: glam::Vec3 { x: 1.6021, y: 1.6021, z: 1.6021 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2273,7 +2230,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.724154, z: 0.0, w: -0.689638 },
                 scale: glam::Vec3 { x: 2.6607, y: 2.6607, z: 2.6607 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2299,7 +2255,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.000914, y: 0.959873, z: -0.000487, w: 0.280432 },
                 scale: glam::Vec3 { x: 3.1763, y: 3.1763, z: 3.1763 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2325,7 +2280,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.58143, z: 0.0, w: 0.813596 },
                 scale: glam::Vec3 { x: 1.9839, y: 1.9839, z: 1.9839 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2351,7 +2305,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.034759, z: 0.0, w: 0.999396 },
                 scale: glam::Vec3 { x: 2.5355, y: 2.5355, z: 2.5355 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2377,7 +2330,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.795791, z: 0.0, w: 0.605572 },
                 scale: glam::Vec3 { x: 2.0587, y: 2.0587, z: 2.0587 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2403,7 +2355,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.651096, z: 0.0, w: 0.758996 },
                 scale: glam::Vec3 { x: 3.1319, y: 3.1319, z: 3.1319 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2429,7 +2380,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.017031, y: 0.288744, z: -0.007872, w: 0.957222 },
                 scale: glam::Vec3 { x: 1.673, y: 1.673, z: 1.673 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2455,7 +2405,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.219988, z: 0.0, w: 0.975503 },
                 scale: glam::Vec3 { x: 2.0037, y: 2.0037, z: 2.0037 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2481,7 +2430,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.017507, y: 0.980387, z: 0.043141, w: 0.191504 },
                 scale: glam::Vec3 { x: 2.7103, y: 2.7103, z: 2.7103 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2507,7 +2455,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.616772, z: 0.0, w: 0.787142 },
                 scale: glam::Vec3 { x: 2.7473, y: 2.7473, z: 2.7473 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2533,7 +2480,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.010211, z: 0.0, w: 0.999948 },
                 scale: glam::Vec3 { x: 1.9225, y: 1.9225, z: 1.9225 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2559,7 +2505,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.019523, y: -0.455749, z: -0.000444, w: 0.889894 },
                 scale: glam::Vec3 { x: 1.6306, y: 1.6306, z: 1.6306 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2585,7 +2530,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.803428, z: 0.0, w: -0.595402 },
                 scale: glam::Vec3 { x: 2.0925, y: 2.0925, z: 2.0925 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2611,7 +2555,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.236739, z: 0.0, w: 0.971573 },
                 scale: glam::Vec3 { x: 1.8725, y: 1.8725, z: 1.8725 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2637,7 +2580,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.641027, z: 0.0, w: 0.767518 },
                 scale: glam::Vec3 { x: 2.2202, y: 2.2202, z: 2.2202 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2663,7 +2605,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.003748, y: -0.94971, z: -0.01598, w: 0.3127 },
                 scale: glam::Vec3 { x: 1.8344, y: 1.8344, z: 1.8344 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2689,7 +2630,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.318808, z: 0.0, w: 0.947819 },
                 scale: glam::Vec3 { x: 2.565, y: 2.565, z: 2.565 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2715,7 +2655,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.996122, z: 0.0, w: 0.08798 },
                 scale: glam::Vec3 { x: 1.8736, y: 1.8736, z: 1.8736 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2741,7 +2680,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.939185, z: 0.0, w: -0.343412 },
                 scale: glam::Vec3 { x: 2.5653, y: 2.5653, z: 2.5653 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2767,7 +2705,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.259914, z: 0.0, w: 0.965632 },
                 scale: glam::Vec3 { x: 1.8401, y: 1.8401, z: 1.8401 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2793,7 +2730,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.119996, z: 0.0, w: 0.992774 },
                 scale: glam::Vec3 { x: 1.6612, y: 1.6612, z: 1.6612 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2819,7 +2755,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.887467, z: 0.0, w: 0.460871 },
                 scale: glam::Vec3 { x: 2.2448, y: 2.2448, z: 2.2448 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2845,7 +2780,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.021965, z: 0.0, w: 0.999759 },
                 scale: glam::Vec3 { x: 1.7476, y: 1.7476, z: 1.7476 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2871,7 +2805,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.001734, y: 0.996835, z: -0.035138, w: 0.071296 },
                 scale: glam::Vec3 { x: 1.8477, y: 1.8477, z: 1.8477 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2897,7 +2830,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.016557, y: -0.444201, z: 0.005315, w: 0.895759 },
                 scale: glam::Vec3 { x: 2.8879, y: 2.8879, z: 2.8879 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2923,7 +2855,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.010712, y: -0.903317, z: 0.00207, w: 0.428836 },
                 scale: glam::Vec3 { x: 1.7115, y: 1.7115, z: 1.7115 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2949,7 +2880,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.797457, z: 0.0, w: 0.603376 },
                 scale: glam::Vec3 { x: 2.5681, y: 2.5681, z: 2.5681 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -2975,7 +2905,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.009791, y: -0.886698, z: -0.021394, w: 0.46175 },
                 scale: glam::Vec3 { x: 1.6391, y: 1.6391, z: 1.6391 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3001,7 +2930,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.999644, z: 0.0, w: 0.026688 },
                 scale: glam::Vec3 { x: 2.7859, y: 2.7859, z: 2.7859 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3027,7 +2955,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.41267, z: 0.0, w: 0.91088 },
                 scale: glam::Vec3 { x: 1.6126, y: 1.6126, z: 1.6126 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3053,7 +2980,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.004434, y: 0.741135, z: 0.041505, w: 0.670057 },
                 scale: glam::Vec3 { x: 2.3704, y: 2.3704, z: 2.3704 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3079,7 +3005,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.925055, z: 0.0, w: 0.379833 },
                 scale: glam::Vec3 { x: 2.1177, y: 2.1177, z: 2.1177 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3105,7 +3030,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.723962, z: 0.0, w: -0.68984 },
                 scale: glam::Vec3 { x: 1.6924, y: 1.6924, z: 1.6924 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3131,7 +3055,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.241909, z: 0.0, w: 0.970299 },
                 scale: glam::Vec3 { x: 3.138, y: 3.138, z: 3.138 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3157,7 +3080,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.871344, z: 0.0, w: 0.490673 },
                 scale: glam::Vec3 { x: 2.4154, y: 2.4154, z: 2.4154 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3183,7 +3105,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.018826, y: -0.297631, z: -0.007256, w: 0.954468 },
                 scale: glam::Vec3 { x: 1.8765, y: 1.8765, z: 1.8765 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3209,7 +3130,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.675398, z: 0.0, w: 0.737453 },
                 scale: glam::Vec3 { x: 1.8318, y: 1.8318, z: 1.8318 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3235,7 +3155,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.590728, z: 0.0, w: 0.806871 },
                 scale: glam::Vec3 { x: 2.4276, y: 2.4276, z: 2.4276 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3261,7 +3180,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.957231, z: 0.0, w: 0.289325 },
                 scale: glam::Vec3 { x: 2.1057, y: 2.1057, z: 2.1057 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3287,7 +3205,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.998006, z: 0.0, w: 0.063112 },
                 scale: glam::Vec3 { x: 3.0617, y: 3.0617, z: 3.0617 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3313,7 +3230,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.00851, y: 0.99982, z: -0.016719, w: -0.002796 },
                 scale: glam::Vec3 { x: 2.669, y: 2.669, z: 2.669 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3339,7 +3255,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.006502, y: -0.354763, z: -0.067736, w: 0.932477 },
                 scale: glam::Vec3 { x: 1.6774, y: 1.6774, z: 1.6774 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3365,7 +3280,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.027182, z: 0.0, w: 0.999631 },
                 scale: glam::Vec3 { x: 2.9051, y: 2.9051, z: 2.9051 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3391,7 +3305,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.516287, z: 0.0, w: 0.856416 },
                 scale: glam::Vec3 { x: 2.672, y: 2.672, z: 2.672 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3417,7 +3330,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.404047, z: 0.0, w: 0.914738 },
                 scale: glam::Vec3 { x: 2.546, y: 2.546, z: 2.546 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3443,7 +3355,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.476076, z: 0.0, w: 0.879404 },
                 scale: glam::Vec3 { x: 2.5649, y: 2.5649, z: 2.5649 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3469,7 +3380,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.956928, z: 0.0, w: -0.290326 },
                 scale: glam::Vec3 { x: 1.7158, y: 1.7158, z: 1.7158 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3495,7 +3405,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.015029, y: -0.92258, z: -0.009411, w: -0.385399 },
                 scale: glam::Vec3 { x: 2.4213, y: 2.4213, z: 2.4213 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3521,7 +3430,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.030124, y: 0.970163, z: -0.020002, w: 0.239742 },
                 scale: glam::Vec3 { x: 3.0017, y: 3.0017, z: 3.0017 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3547,7 +3455,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.351429, z: 0.0, w: 0.936215 },
                 scale: glam::Vec3 { x: 2.5285, y: 2.5285, z: 2.5285 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3573,7 +3480,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.002708, y: 0.093662, z: 0.00659, w: 0.995579 },
                 scale: glam::Vec3 { x: 2.2632, y: 2.2632, z: 2.2632 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3599,7 +3505,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.154985, z: 0.0, w: 0.987917 },
                 scale: glam::Vec3 { x: 2.8497, y: 2.8497, z: 2.8497 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3625,7 +3530,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.484192, z: 0.0, w: 0.874962 },
                 scale: glam::Vec3 { x: 2.4434, y: 2.4434, z: 2.4434 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3651,7 +3555,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.035444, y: -0.340432, z: -0.000128, w: 0.939601 },
                 scale: glam::Vec3 { x: 2.4679, y: 2.4679, z: 2.4679 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3677,7 +3580,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.825574, z: 0.0, w: -0.564294 },
                 scale: glam::Vec3 { x: 3.1826, y: 3.1826, z: 3.1826 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3703,7 +3605,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.00729, y: 0.281569, z: -0.018927, w: 0.959327 },
                 scale: glam::Vec3 { x: 2.2582, y: 2.2582, z: 2.2582 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3729,7 +3630,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.014447, y: -0.279801, z: -0.00801, w: 0.959916 },
                 scale: glam::Vec3 { x: 2.6262, y: 2.6262, z: 2.6262 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3755,7 +3655,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.009947, y: 0.452123, z: -0.003664, w: 0.891893 },
                 scale: glam::Vec3 { x: 3.0439, y: 3.0439, z: 3.0439 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/mushroom_red_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3782,12 +3681,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
             scale: glam::Vec3 { x: 5.4, y: 5.4, z: 5.4 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "228 72.6564 1408" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/forest/mushroom_glow_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "5.4" },
             ],
@@ -3803,7 +3706,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3849,12 +3751,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.906308, z: 0.0, w: -0.422618 },
             scale: glam::Vec3 { x: 4.6, y: 4.6, z: 4.6 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "164 74.9863 1440" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/forest/mushroom_glow_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 50 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "4.6" },
             ],
@@ -3870,7 +3776,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3916,12 +3821,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.819152, z: 0.0, w: 0.573576 },
             scale: glam::Vec3 { x: 4.0, y: 4.0, z: 4.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "242 74.3869 1352" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/forest/mushroom_glow_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -70 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "4" },
             ],
@@ -3937,7 +3846,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -3983,12 +3891,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.573576, z: 0.0, w: 0.819152 },
             scale: glam::Vec3 { x: 3.4, y: 3.4, z: 3.4 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 74.098 1300" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/forest/mushroom_glow_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 70 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "3.4" },
             ],
@@ -4004,7 +3916,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -4023,12 +3934,16 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.422618, z: 0.0, w: 0.906308 },
             scale: glam::Vec3 { x: 3.0, y: 3.0, z: 3.0 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "285 71.7161 1420" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/forest/mushroom_glow_lod0.glb" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -50 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "3" },
             ],
@@ -4044,7 +3959,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -4081,13 +3995,17 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.9, y: 1.9, z: 1.9 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/druid_stone_altar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bosque-altar" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "150 74.1316 1300" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/terrain/druid_stone_altar_collision.glb; mesh-anchor: base" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.9" },
             ],
             text: "",
@@ -4102,7 +4020,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/druid_stone_altar_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -4188,7 +4105,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/props/stone_pillar_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GltfScene",
                     attrs: [
@@ -4224,7 +4140,6 @@ bevy_ecs::hierarchy::Children [
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                     }
-                    jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/wolf_lod0.glb", scene_index: 0 }
                     bevy_world_xml::bsn::WorldNode {
                         tag: "GltfScene",
                         attrs: [
@@ -4261,7 +4176,6 @@ bevy_ecs::hierarchy::Children [
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                     }
-                    jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/medieval_well_lod0.glb", scene_index: 0 }
                     bevy_world_xml::bsn::WorldNode {
                         tag: "GltfScene",
                         attrs: [
@@ -4298,7 +4212,6 @@ bevy_ecs::hierarchy::Children [
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                     }
-                    jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/torch_post_lod0.glb", scene_index: 0 }
                     bevy_world_xml::bsn::WorldNode {
                         tag: "GltfScene",
                         attrs: [
@@ -4377,7 +4290,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -4417,7 +4329,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -4457,7 +4368,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -4826,7 +4736,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bogling_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -4895,7 +4804,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/slime_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -4964,7 +4872,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/bogling_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -5015,14 +4922,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.406737, z: 0.0, w: 0.913545 },
             scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "136 74.27 1288" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 48 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.55; half-height: 2.2" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
@@ -5037,14 +4948,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.913545, z: 0.0, w: 0.406737 },
             scale: glam::Vec3 { x: 1.15, y: 1.15, z: 1.15 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "164 75.13 1288" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 132 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.15" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.55; half-height: 2.2" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
@@ -5059,14 +4974,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.406737, z: 0.0, w: 0.913545 },
             scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "136 73.46 1312" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 48 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.55; half-height: 2.2" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
@@ -5081,14 +5000,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.913545, z: 0.0, w: 0.406737 },
             scale: glam::Vec3 { x: 1.35, y: 1.35, z: 1.35 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "164 74.01 1312" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 132 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.35" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.55; half-height: 2.2" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
@@ -5103,14 +5026,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
             scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "150 74.97 1282" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.55; half-height: 2.2" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
@@ -5125,14 +5052,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
             scale: glam::Vec3 { x: 1.25, y: 1.25, z: 1.25 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.55, half_height: 2.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "150 73.23 1320" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.25" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.55; half-height: 2.2" },
                 bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
@@ -5147,14 +5078,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/forest/mushroom_glow_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "153 74.28 1297" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",
@@ -5168,7 +5103,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -5187,14 +5121,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
             scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/forest/mushroom_glow_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "147 73.96 1303" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",
@@ -5208,7 +5146,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -5227,14 +5164,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
             scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/forest/mushroom_glow_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "154 74.01 1305" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",
@@ -5248,7 +5189,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -5267,14 +5207,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: 0.5 },
             scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/forest/mushroom_glow_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "146 74.32 1295" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 120 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",
@@ -5288,7 +5232,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -5307,14 +5250,18 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: 0.173648 },
             scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.2 },
         }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/forest/mushroom_glow_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "150 73.86 1306" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 160 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2" },
-                bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/forest/mushroom_glow_collision.glb; mesh-anchor: base" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",
@@ -5328,7 +5275,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/mushroom_glow_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [

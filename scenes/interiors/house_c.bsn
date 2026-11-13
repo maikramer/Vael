@@ -98,12 +98,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -144,13 +144,15 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Auto,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Composition",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.shell" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -711,14 +713,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/fireplace_hearth_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.fireplace.hearth" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 6.2" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/fireplace_hearth_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -732,7 +738,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/fireplace_hearth_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -814,14 +819,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cauldron_iron_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.cauldron.iron" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.4 0 5" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/cauldron_iron_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -835,7 +844,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/cauldron_iron_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -891,14 +899,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cauldron_iron_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.cauldron.iron-2" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.4 0 5" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/cauldron_iron_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -912,7 +924,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/cauldron_iron_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -968,13 +979,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/tavern_bar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.tavern.bar" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/tavern_bar_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -988,7 +1003,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/tavern_bar_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1007,13 +1021,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/dining_table_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.dining.table" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -4.8" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/dining_table_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1027,7 +1045,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/dining_table_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1046,14 +1063,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.stool.wood" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.6 0 -4.8" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/stool_wood_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1067,7 +1088,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/stool_wood_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1086,14 +1106,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.stool.wood-2" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.6 0 -4.8" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/stool_wood_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1107,7 +1131,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/stool_wood_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1126,13 +1149,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.cupboard" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.6 0 4.6" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/cupboard_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1146,7 +1173,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/cupboard_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1165,14 +1191,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.cupboard-2" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.6 0 4.6" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/interiors/cupboard_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1186,7 +1216,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/interiors/cupboard_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1205,13 +1234,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.wooden.barrel" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.6 0 1" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1225,7 +1258,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1244,13 +1276,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.wooden.barrel-2" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.6 0 -0.6" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_barrel_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1264,7 +1300,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_barrel_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1283,13 +1318,17 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.wooden.crate" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.8 0 -1.2" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1303,7 +1342,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1322,14 +1360,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_c.wooden.crate-2" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.8 0 -3" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "rigidbody", value: "type: fixed; mass: 0; gravity-scale: 0" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: trimesh; mesh-url: /assets/meshes/village/wooden_crate_collision.glb; mesh-anchor: base" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",
@@ -1343,7 +1385,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/village/wooden_crate_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1388,7 +1429,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_cook_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1448,7 +1488,6 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw_scene_types::types::GltfSource { path: "assets/meshes/characters/npc_bard_lod0.glb", scene_index: 0 }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
@@ -1483,12 +1522,12 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ColliderSpec
     bevy_world_xml::bsn::WorldNode {
         tag: "Group",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "none" },
-            bevy_world_xml::bsn::WorldProp { key: "collider", value: "none" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_c.xml",

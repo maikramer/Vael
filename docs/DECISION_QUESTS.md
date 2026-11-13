@@ -26,7 +26,7 @@ determinístico. Em frases, o d1 resolve sinónimos e variações.
 
 ## 1. O Enviado de Vidro — `story_glass_envoy`
 
-**Onde:** longhouse da Cidadela (`npcs` em `world/cities/discordia/longhouse.xml`),
+**Onde:** longhouse da Cidadela (`npcs` em `world/cities/discordia/longhouse.bsn`),
 o enviado `npc_envoy_glass`.
 
 **Cenário:** o poço da praça foi envenenado. O enviado da Cidadela já tem uma
@@ -46,7 +46,7 @@ não veneno), `guarda` (lamparina vista). Três bastam.
 
 ## 2. O Dízimo dos Afogados — `swamp_drowned_bell`
 
-**Onde:** pântano, junto ao barco podre (`npc_bell_drowned`, `world/ai/npcs.xml`).
+**Onde:** pântano, junto ao barco podre (`npc_bell_drowned`, `world/ai/npcs.bsn`).
 
 **Cenário:** uma sineira afogada conta moedas que não existem. O rio leva um nome
 por cheia; para passar, o jogador tem de dizer **o que o rio guarda**. As pistas
@@ -64,7 +64,7 @@ da água”): o d1 escolhe a opção semanticamente mais próxima.
 ## 3. A Testemunha de Vidro — `forest_glass_witness`
 
 **Onde:** Círculo de Menires `(104, 236)`, no altar de vidro
-(`npc_glass_witness`, `world/ai/npcs.xml`). A vidente espera a sul do altar,
+(`npc_glass_witness`, `world/ai/npcs.bsn`). A vidente espera a sul do altar,
 onde o novo `GroundDecal` “glass.pool” faz o chão ler como um lago de vidro.
 
 **Cenário:** no Círculo de Menires, entre os menires e a luz azul do altar, a
@@ -93,8 +93,8 @@ A quest completa em qualquer uma; o desfecho muda o texto e os itens.
    `required`, `final_prompt`, `final_options`, `final_answer` (ou `endings`).
 3. Criar um NPC com `script="npc/decision-quest.lua"` e
    `prop-quest_id="<id>"` (mundo ou cena).
-4. O `vael-editor` e o lint já aceitam `objective.type = "decision"` e não exigem
-   `parley` (o relato é o puzzle).
+4. Os painéis do Jackdaw (`vael_content_jackdaw`) e o lint já aceitam
+   `objective.type = "decision"` e não exigem `parley` (o relato é o puzzle).
 
 ## Validado ao vivo
 

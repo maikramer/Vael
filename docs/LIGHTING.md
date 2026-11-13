@@ -29,11 +29,13 @@ tempo** mudaram de dono.
 ## Sombras
 
 O relógio é contínuo (sem saltos: um salto realoca o probe do céu), por isso
-o sol move-se ~0.3°/s. O `VaelShadowPlugin` (`src/lighting.rs`) desenha as
-sombras a **15 Hz** com as cascatas congeladas entre refreshes: a 15 Hz o
-passo do sol é ~0.02°, invisível. Força um render imediato em troca de cena,
-teleporte/viagem >50 m e na troca Sol↔Lua (o crate liga as sombras da Lua
-quando ela nasce).
+o sol move-se ~0.3°/s. O `VaelShadowPlugin` (`src/lighting.rs`) desenha o mapa
+de sombras em **todos os frames** (`VAEL_SHADOW_HZ=0`, o default). O modo de
+cadência (saltar o passe nos frames intermédios e congelar as cascatas) está
+**quebrado com o Bevy 0.20**: o mapa de profundidade não sobrevive aos frames
+saltados — o resultado é chão sem sombra e acne nas faces voltadas ao sol. O
+mecanismo ficou atrás de `VAEL_SHADOW_HZ` (> 0) só para A/B; não voltar a
+ligá-lo sem provar que o mapa persiste.
 
 ## Exposição
 
@@ -42,6 +44,17 @@ calculado da iluminância do sol/lua/nuvens. A exposição automática da engine
 está desligada em `config.yaml` (`postfx.disabled: auto-exposure`) — dois
 donos do mesmo `Exposure` davam flicker e a curva nocturna antiga branqueava
 o céu físico ao meio-dia.
+
+**Um só dono do EV:** a câmara do crate leva também a marca
+`viber::postfx::ExternalExposure`. Sem ela, o `drive_postfx` da engine
+continuava a escrever o EV base (`BASE_EV100`, EV100 ~10,2) por cima do EV
+físico do crate (~13,3 ao meio-dia) e o céu saía branco/cinza. O
+`drive_postfx` continua a conduzir o bloom, o grading e a vinheta; só não
+toca no `Exposure` dessas câmaras. O kick de juice (`viber.punch` →
+`PostFxState::kick`) é reaplicado pelo Vael, depois do `drive_postfx`
+(PostUpdate), e desfeito antes do `auto_exposure` do crate (PreUpdate) para
+não realimentar a adaptação. `env_info()` expõe `camera_ev100` e
+`elements_ev100` para QA.
 
 ## O que a engine continua a conduzir
 
@@ -95,9 +108,11 @@ silenciado.
 
 ## Performance
 
-- `VAEL_SHADOW_HZ` (default **15**; 0 = sombras em todos os frames). Medido
-  no Vael a 1280×720: 15 Hz ≈ 31 ms/frame; todos os frames ≈ **104 ms**
-  (10 fps). O céu é contínuo, mas as sombras só re-renderizam a 15 Hz.
+- `VAEL_SHADOW_HZ` (default **0** = sombras em todos os frames). O modo de
+  cadência (> 0) existe só para A/B e com o Bevy 0.20 produz sombras
+  ausentes/acne (ver **Sombras**); não usar em jogo. Medição antiga do modo a
+  15 Hz a 1280×720: ≈ 31 ms/frame vs ≈ 104 ms em todos os frames — foi feita
+  antes da mudança de câmara e serve só de ordem de grandeza.
 - `VAEL_ELEMENTS_QUALITY=low|medium|high|ultra` (default **medium**). O frame
   do Vael é CPU-bound: `low` não mudou o frame de forma mensurável; `medium`
   fica por causa da chuva (60k partículas vs 20k) e das nuvens.
@@ -107,12 +122,10 @@ silenciado.
 ## QA
 
 ```bash
-# Dia, crepúsculo, noite e chuva sem saltar o relógio. `qa-elements.bsn` é
-# uma cópia do world.bsn: corre-se como cena (sem `--scene`), com save
-# próprio, e o `--entry dev` salta prólogo/menu.
-VAEL_START_HOUR=19.85 ../Viber/target/release/vael qa-elements.bsn \
-  --entry dev --bridge 15706
-VAEL_START_WEATHER=Rain ...
+# Dia, crepúsculo, noite e chuva sem saltar o relógio. O run usa o save do
+# jogo: faz backup (ou usa um slot separado) antes de comparar.
+VAEL_START_HOUR=19.85 viber run --scene main --entry dev
+VAEL_START_WEATHER=Rain viber run --scene main --entry dev
 
 # Ao vivo:
 viber debug lua 'return viber.vael.env_info()'
@@ -120,18 +133,15 @@ viber debug lua 'viber.vael.env_pause(true)'
 viber debug lua 'viber.vael.env_set_weather("Thunderstorm")'
 ```
 
-`qa-elements.bsn` é uma **cópia** do `world.bsn` (mesmos `<Include>`) usada
-como cena do run: a identidade/save ficam em `qa-elements` e não se toca no
-save do jogo. Regerar com `cp world.bsn qa-elements.bsn` quando o mundo mudar. Os mundos `qa-*.bsn` antigos ainda declaram
-`<Sky>`/`<DayCycle>`; correr com `VAEL_ELEMENTS=0` para o céu da engine.
+`VAEL_ELEMENTS=0` desliga o crate e volta ao céu da engine.
 
 ## A/B e reverter
 
 `VAEL_ELEMENTS=0` desliga o crate (volta ao céu da engine). Nesse modo é
 preciso repor os elementos antigos no `world/environment.bsn` e no
 `scenes/menu.bsn`; a exposição automática também não está lá (foi desligada
-no `config.yaml`). O `VaelShadowPlugin` (sombras a 15 Hz do modo `day-night`)
-fica inactivo sem `<DayCycle>`.
+no `config.yaml`). O `VaelShadowPlugin` fica inactivo sem `<DayCycle>` e sem
+o crate.
 
 ## Limites conhecidos
 

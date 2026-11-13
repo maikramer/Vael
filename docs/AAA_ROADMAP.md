@@ -1,9 +1,15 @@
 # AAA_ROADMAP.md — Vael sobre uma engine generalista
 
+> **Documento histórico de planeamento (2026-10-21).** O pressuposto “as
+> regras de jogo continuam em Lua” foi substituído pela migração Rust/Bevy
+> ([`MIGRATION.md`](MIGRATION.md)): o objetivo passou a ser zero Lua no
+> runtime, com player/câmara, regras, HUD, mapa e UI já em Rust. Manter este
+> documento como registo das decisões de apresentação/performance; o estado
+> corrente da arquitetura está no `MIGRATION.md`.
+
 Este documento é o estudo de técnicas e o programa de melhorias acordado
 para levar o Vael a um nível de apresentação/produto “AAA” **sem** deixar de
-ter uma engine generalista. A engine só precisa de ser uma base sólida; as
-regras de jogo continuam em Lua.
+ter uma engine generalista. A engine só precisa de ser uma base sólida.
 
 ## Estado (2026-10-21)
 
@@ -64,8 +70,8 @@ SSR de água, partículas CPU, LOD de malha e streaming por anéis.
   `script_syntax`, `hud_contract` no Vael.
 - Baseline de `viber debug prof --tab frames`, série `--record 30 --hz 2`,
   `viber debug trace 10`, `viber debug hash` em vila, floresta e combate.
-- Correções baratas: include do `qa-map`, waypoint para objetivo, contagem
-  de sementes, som do baú, música `battle`/`boss`, docs 27/28.
+- Correções baratas: waypoint para objetivo, contagem de sementes, som do
+  baú, música `battle`/`boss`, docs 27/28.
 
 ### Fase 1 — Produto + primitivas de apresentação
 

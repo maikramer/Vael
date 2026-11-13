@@ -93,7 +93,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_outcrop_5_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -134,7 +133,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_outcrop_8_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -175,7 +173,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/sandstone_arch_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -218,7 +215,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.709998, z: 0.0, w: -0.704204 },
                 scale: glam::Vec3 { x: 3.4558, y: 3.4558, z: 3.4558 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/desert/sandstone_arch_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -244,7 +240,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.159289, z: 0.0, w: 0.987232 },
                 scale: glam::Vec3 { x: 1.8371, y: 1.8371, z: 1.8371 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_outcrop_8_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -270,7 +265,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.957169, z: 0.0, w: 0.289529 },
                 scale: glam::Vec3 { x: 2.6665, y: 2.6665, z: 2.6665 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/terrain/form_outcrop_8_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -351,7 +345,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/dead_willow_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -392,7 +385,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -435,6 +427,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.068101, z: 0.0, w: 0.997678 },
                 scale: glam::Vec3 { x: 1.8396, y: 1.8396, z: 1.8396 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -442,7 +437,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-840 149.9127 -374.3736" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 7.8099 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.8396" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "dead_willow" },
                 ],
                 text: "",
@@ -457,7 +451,6 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.892648, z: 0.0, w: -0.450754 },
                 scale: glam::Vec3 { x: 2.2531, y: 2.2531, z: 2.2531 },
             }
-            jackdaw_scene_types::types::GltfSource { path: "assets/meshes/swamp/moss_rock_lod0.glb", scene_index: 0 }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
@@ -538,7 +531,6 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                jackdaw_scene_types::types::GltfSource { path: "assets/meshes/forest/pine_dark_lod0.glb", scene_index: 0 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
@@ -581,6 +573,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.716891, z: 0.0, w: 0.697186 },
                 scale: glam::Vec3 { x: 2.3515, y: 2.3515, z: 2.3515 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -588,7 +583,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "608.696 153.6907 662.4529" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -88.4033 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.3515" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -603,6 +597,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.998596, z: 0.0, w: 0.052978 },
                 scale: glam::Vec3 { x: 1.8291, y: 1.8291, z: 1.8291 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -610,7 +607,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "638.5378 152.4244 446.5257" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -6.0737 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.8291" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -625,6 +621,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.746279, z: 0.0, w: -0.665634 },
                 scale: glam::Vec3 { x: 1.9943, y: 1.9943, z: 1.9943 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -632,7 +631,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "664.1795 155.1992 700.3054" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 83.4619 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.9943" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -647,6 +645,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.945177, z: 0.0, w: -0.326558 },
                 scale: glam::Vec3 { x: 1.9609, y: 1.9609, z: 1.9609 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -654,7 +655,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "598.6779 153.0741 474.5164" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 38.12 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.9609" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -669,6 +669,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.897518, z: 0.0, w: -0.440978 },
                 scale: glam::Vec3 { x: 2.2313, y: 2.2313, z: 2.2313 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -676,7 +679,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-265.9408 135.988 562.5786" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 52.3326 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.2313" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -691,6 +693,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.181299, z: 0.0, w: 0.983428 },
                 scale: glam::Vec3 { x: 1.4292, y: 1.4292, z: 1.4292 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -698,7 +703,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-396.2021 131.3643 569.778" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20.8909 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4292" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -713,6 +717,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.60607, z: 0.0, w: 0.795412 },
                 scale: glam::Vec3 { x: 1.6407, y: 1.6407, z: 1.6407 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -720,7 +727,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-377.0338 130.8502 535.9035" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 74.6117 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6407" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -735,6 +741,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.920508, z: 0.0, w: -0.390723 },
                 scale: glam::Vec3 { x: 1.6071, y: 1.6071, z: 1.6071 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -742,7 +751,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-521.1396 132.5288 651.5009" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 45.999 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6071" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -757,6 +765,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.345012, z: 0.0, w: 0.938598 },
                 scale: glam::Vec3 { x: 1.6051, y: 1.6051, z: 1.6051 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -764,7 +775,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-564.1442 135.4377 799.2554" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -40.3651 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6051" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -779,6 +789,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.790576, z: 0.0, w: -0.612364 },
                 scale: glam::Vec3 { x: 2.0986, y: 2.0986, z: 2.0986 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -786,7 +799,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-203.9358 138.1678 560.4437" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 75.5212 180" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.0986" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",
@@ -801,6 +813,9 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.424331, z: 0.0, w: 0.905507 },
                 scale: glam::Vec3 { x: 2.066, y: 2.066, z: 2.066 },
             }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
@@ -808,7 +823,6 @@ bevy_ecs::hierarchy::Children [
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "-383.3306 130.6272 619.4828" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 50.2167 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "2.066" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: cylinder; radius: 0.45; half-height: 2.2" },
                     bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "pine_dark" },
                 ],
                 text: "",

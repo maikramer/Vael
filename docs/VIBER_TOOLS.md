@@ -79,5 +79,7 @@ por 15702 (`VIBER_TOOLS_PORT`). Config de cliente:
 - `bake`, `tool scatter`, `scene` (exceto lint), `terrain`, `cinematic`,
   `trace`, `lua` e tabs de profiler de mundo/física/áudio continuam no
   `viber-engine`.
-- O engine `viber` não sai do `Cargo.toml` do Vael até player/câmara, Lua e
-  `build_app` serem portados.
+- O engine `viber` não sai do `Cargo.toml` do Vael até o Luau/AI e o
+  `build_app` serem portados para o Vael. Player/câmara já saíram (Onda 3) e
+  a autoridade de vitais é default (Onda 4a), mas o runtime ainda monta a App
+  da engine e os scripts correm em `Compat`.

@@ -139,7 +139,7 @@ meio do `Update` e o `harvest_input`/scripts que já tinham corrido não viam o
 ```bash
 cargo check --release && cargo test --release
 python3 tools/flora_migrate.py --check
-VIBER_NO_BUILD=1 viber analyze world.xml
+VIBER_NO_BUILD=1 viber analyze world.bsn
 ```
 
 Em jogo (`--scene main --entry dev --bridge 15706`): colher um pinheiro com

@@ -3,20 +3,23 @@
 Este documento é o estado da migração. O objetivo é o Viber ficar só com o que
 o Bevy não tem (terreno, navegação, física/Rapier, meshopt, partículas, IK,
 céu/água custom) e o Vael passar a ser um crate Rust que
-usa `bevy` diretamente. O Luau do jogo é transitório; o editor de conteúdo
-saiu do Viber e vive em `Vael/editor` (Jackdaw), sem Lua.
+usa `bevy` diretamente. O Luau do jogo é transitório. O editor oficial é o
+**Jackdaw 0.20 instalado** (`jd open .`) com as extensões `.jdext` do Vael; o
+crate `editor/` (`vael-editor`) é legado e já não é o fluxo de autoria.
 
-O plano de empacotamento — fases, DAG `bevy_*`, ordem de publicação e gates —
-está em [`PACKAGES.md`](PACKAGES.md). Este documento fica com o estado da
-migração do jogo; o `PACKAGES.md` manda nas fases e na fronteira
-engine/pacotes.
+O plano de empacotamento — fases, DAG, ordem de publicação e gates — está em
+[`PACKAGES.md`](PACKAGES.md), que aponta para o roadmap canónico em
+`../bevy_extensions/docs/PACKAGES.md`. Este documento fica com o estado da
+migração do jogo; o `PACKAGES.md` manda na fronteira engine/pacotes.
 
 ## Onde vive
 
 - O código e o jogo vivem no checkout principal do Vael, na `main` (o crate e
-  as ondas de migração estão fundidos; topo `c4a7d50`).
-- O worktree `../refactor/Vael` fica como backup do pool LFS do checkpoint;
-  o `refactor/Viber` foi integrado na `main` do Viber.
+  as ondas de migração estão fundidos; topo `4f108a6`, câmara livre/follow).
+- Os worktrees `refactor/Vael`/`refactor/Viber` já não existem neste checkout:
+  o `refactor/Viber` foi integrado na `main` do Viber e o pool atual está na
+  `main` do Vael. O worktree `vael-head-check` é efémero (HEAD limpo para
+  validar commits).
 - Checkpoint do Vael: `59a57ff`, tag `pre-bevy-migration`.
 - Commits: Viber `92c1f42` (reflection/ECS/UI/save), `e79c4fc`
   (`player_camera`), `f259627` (AiMode), `5cf9d8f` (apply_patch),
@@ -56,7 +59,7 @@ engine/pacotes.
   Arranque: `build_app(..., gameplay:false, player_camera:false,
   scripts:ScriptsMode::Compat)` + `VaelPlugin`: o corpo/collider ainda nascem
   no spawner da engine, mas quem os move é o Vael.
-- `src/content.rs`: loaders serde dos JSON actuais (22 itens, 17 skills, 8
+- `src/content.rs`: loaders serde dos JSON actuais (22 itens, 19 skills, 8
   receitas, 22 marcos, 3 enigmas, 1 veredicto, 3 puzzles, 37 quests, 6
   diálogos, locale). Os schemas não mudaram.
 - `src/save.rs`: `VaelSave` tipado, migração do `world_kv` plano e espelho
@@ -74,14 +77,15 @@ engine/pacotes.
   5 s, respawn). É opt-in (`VAEL_RULES_SHADOW=1`) e não escreve no jogo.
   Paridade ao vivo: veneno 100→92 nos dois; morte `death_pending`/`wait=5`;
   respawn `hp=100`.
-- `src/rules_authority.rs`: autoridade opt-in (`VAEL_RULES_RUST=1`). Lê o KV
-  do Lua depois de `luau_update`, corre o `shadow_tick` e escreve de volta
+- `src/rules_authority.rs`: autoridade das vitais/status/morte, **ligada por
+  omissão desde a Onda 4a** (`VAEL_RULES_RUST=0` devolve o tick ao Lua). Lê o
+  KV do Lua depois de `luau_update`, corre o `shadow_tick` e escreve de volta
   `hp`, `iframes`, estados, `dying`, `death_pending`, `death_wait` via
   `apply_patch`. O `rules.lua` salta só as secções portadas; dano/cura, o ecrã
   de morte e o respawn manual continuam no Lua. QA vivo: veneno 100→92 sem
   duplicar, respawn manual `hp=100`/iframes 2→0, `damage_player(10)` lido
-  como `hp=90`, HUD `0.9/90/100`. Default **off** até QA de combate,
-  interiores e save/load.
+  como `hp=90`, HUD `0.9/90/100`. O gate por omissão é `on`; só um valor
+  explícito de off (`0`/`false`/`off`/`no`) o desliga.
 - `src/hud_ui.rs`: o comportamento do `hud.lua` (outras missões, clique do
   DIÁRIO, TTL da barra de chefe, shake do combo) passou a sistemas Bevy com
   `UiWriter`; o `hud.lua` ficou só com `say.tick`.
@@ -97,7 +101,9 @@ engine/pacotes.
   estrelas, clima, nuvens, chuva/neve, névoa e relâmpagos. O `<Sky>`,
   `<DayCycle>` e `<Weather>` saíram do mundo (a engine já não é dona do céu);
   o `AtmosphereState` é sincronizado e a névoa por bioma continua na engine.
-  Ver `docs/LIGHTING.md`. `VAEL_ELEMENTS=0` volta ao céu antigo.
+  A câmara do crate leva `ExternalExposure` (a engine não escreve o EV por
+  cima) e o kick de `viber.punch` é reaplicado/desfeito pelo Vael. Ver
+  `docs/LIGHTING.md`. `VAEL_ELEMENTS=0` volta ao céu antigo.
 - `src/stats.rs`: atributos e stats do herói no `bevy_gauge` 0.6. Força,
   Agilidade, Vitalidade, Precisão e Espírito alimentam expressões
   (`Stat.damage`, `Stat.max_hp`, `Stat.crit`, `Stat.attack_speed`, …); os
@@ -160,41 +166,53 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
 - O bridge fica em `127.0.0.1:15706`; `curl` com `viber.lua`, `world.query`,
   `world.get_resources`, `viber.ecs`.
 - `VIBER_NO_BUILD=1 ./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
-- `CARGO_TARGET_DIR=../Viber/target cargo test` no Vael: **236 testes**.
+- `CARGO_TARGET_DIR=../Viber/target cargo test --lib` no Vael: gate da suite
+  do jogo (a contagem cresce por onda; usar o sumário da corrida, não um
+  número fixo neste doc).
 - Editor oficial: `jd open .`, `jd doctor --project .`; as extensões do Vael
-  (terreno voxel/painéis) vivem em `../bevy_extensions/extensions/` e entram
-  por `jd build` → `jd extension pack` → `jd extension install`.
+  vivem em `../bevy_extensions/extensions/` e `../viber-tools/extensions/` e
+  entram por `jd build` → `jd extension pack` → `jd extension install`.
   `cargo test -p vael-content` continua o gate dos esquemas; o crate
   `editor/` é legado (`cargo test -p vael-editor --test smoke`).
-- Mundo `.bsn`: `viber bsn convert --check ../Vael/world.xml` re-converte a
-  partir do XML legado; `viber analyze world.bsn` e `viber scene lint` são os
-  gates do formato novo.
-- `cargo test` no Viber: 1646 passam; a falha
-  `luau::decision::tests::lua_api_intent_pt_multi_question` é modelo/ambiente.
+- Mundo `.bsn`: `viber bsn check world.bsn`, `viber analyze world.bsn` e
+  `viber scene lint --world world.bsn` são os gates do formato novo. O
+  `world.xml` foi aposentado (2026-11-12) e já não existe no repo; não
+  regenerar com `viber bsn convert`.
+- `cargo test` no Viber: gate da engine. A contagem e a eventual falha de
+  modelo/ambiente mudam por sessão — ler o sumário da corrida em vez de um
+  número fixo.
 
 ## Mundo em `.bsn` (2026-11-12)
 
 O mundo passou a ser autorado em `.bsn` (Jackdaw), mas o runtime continua a
-usar o `parse_world`/spawner do Viber. Cada nó XML é uma entidade com
+usar o `parse_world`/spawner do Viber. Cada nó é uma entidade com
 `bevy_world_xml::bsn::WorldNode { tag, attrs, text, origin, pose }`; o loader
 `load_world` lê o `.bsn`, reconstrói os `XmlNode` e entrega-os ao parser.
-`Transform`/`Name`/`GltfSource`/luzes nativas são traduzidos de volta para
-atributos (pose/nome/url/cor/intensidade), para o editor poder mover e
-ajustar sem perder a semântica.
+`Transform`/`Name` e luzes nativas são traduzidos de volta para atributos
+(pose/nome/cor/intensidade), para o editor poder mover e ajustar sem perder a
+semântica.
 
-- `world.bsn` + `world/**/*.bsn` preservam os 64 `<Include>` via nós
+- `world.bsn` + `world/**/*.bsn` preservam os 43 `<Include>` via nós
   `Include` (o leitor prefere o irmão `.bsn`); `scenes/menu.bsn` e
   `scenes/interiors/*.bsn` são as cenas/áreas internas.
 - `world.data/` (`.ahgt`, `.paint`, `.vinst`, `bake.json`) fica como estava;
   os attrs `heightmap`/`instances` continuam a apontar para lá.
 - O conversor é `viber bsn convert [--check] [--force] [--no-preview]`; o
   `--check` compara XML e `.bsn` por pose/luz/cor com tolerância (não por
-  texto). O `.xml` fica no repo como fallback da CLI de cena.
-- `viber scene`, `viber tool settle/scatter` e `viber bake` continuam
-  XML-only nesta fase; `viber analyze` e `viber scene lint` já leem `.bsn`.
-- No editor, `Vael: Cenas` abre `world.bsn`, o menu e cada interior como abas;
-  o painel `WorldNode` mostra/edita tag e attrs. Terreno/composições/UI ainda
-  não têm preview no viewport.
+  texto). O `.xml` já não existe no repo (aposentado a 2026-11-12); o
+  `convert` só serve para importar material antigo.
+- O emissor já **não grava `GltfSource`** (o loader do editor não lê
+  meshopt/KTX2 e cada modelo era uma leitura falhada do GLB inteiro); o
+  caminho do GLB vem do `WorldNode`. Documentos antigos com `GltfSource`
+  continuam a carregar.
+- `viber scene` (exceto lint), `viber tool settle/scatter` e `viber bake`
+  continuam XML-only nesta fase e são legado; `viber analyze`,
+  `viber bsn check` e `viber scene lint` já leem `.bsn`.
+- No editor, os painéis de conteúdo vivem em `vael_content_jackdaw` (Itens,
+  Marcos, Progressão, Diálogos, Missões, Conteúdo, Cenas); `Vael: Cenas` abre
+  `world.bsn`, o menu e cada interior como abas, e o painel `WorldNode`
+  mostra/edita tag e attrs. Terreno/composições/UI ainda não têm preview no
+  viewport.
 
 ## Estado e próximo
 
@@ -204,31 +222,35 @@ ajustar sem perder a semântica.
 | Fase 1 — reflection, ECS, AppOptions, widgets, culling, save | feito (profiler/atmosfera adiados) |
 | Fase 2 — crate Vael, conteúdo, save, attach, arranque | feito |
 | Onda 2a — state sync + HUD Rust | feito |
-| Onda 2b — vitais/status/morte autoritativos em Rust | autoridade opt-in validada ao vivo; default off |
+| Onda 2b — vitais/status/morte autoritativos em Rust | feito; autoridade **default** desde a Onda 4a (`VAEL_RULES_RUST=0` volta ao Lua) |
 | Onda 3 — player/câmara no Vael (`src/player.rs`, `src/camera.rs`) | feito e validado live; `Player` ainda é sincronizado para a animação da engine |
+| Onda 3b — câmara livre/follow/auto-orbit e borda | feito (`4f108a6`); `src/camera.rs` |
+| Onda 4a — autoridade de vitais default | feito; `VAEL_RULES_RUST=0` é o fallback Lua |
 | Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio, loja/forja | feito em Rust com ponte `viber.vael` |
 | Colheita, marcos e eventos de quest | feito em Rust (opt-in), validado live (colheita no pool atual; quests/marcos no pool anterior) |
+| Mapa e viagem — teleporte, marcadores, waypoint | feito em Rust (`src/ui/map.rs`, `src/ui/waypoint.rs`) |
 | UI do jogador — HUD, diário, mapa/viagem, título e morte em `bevy_pf` | feito em Rust (XAML + view-models + controlador M/G/F); barra de fala/NLU continua na engine |
-| Editor + mundo — Jackdaw oficial + extensões `.jdext` + `vael-content` + `.bsn` | feito; Grip adiado; CLI de cena continua XML |
-| Restante do jogo — FSM/inimigos/bosses, viagem/mapa (teleporte/marcadores), diálogo/NLU, story/áudio | pendente |
-| Fase 4 — mover AI/vitais e o resto do gameplay para o Vael; recipe extensions; docs | pendente (player/câmara já saíram na Onda 3) |
+| Editor + mundo — Jackdaw oficial + extensões `.jdext` + `vael-content` + `.bsn` | feito; Grip adiado; CLI de cena continua XML e é legado |
+| Restante do jogo — FSM/inimigos/bosses, diálogo/NLU, story/áudio | pendente |
+| Fase 4 — mover AI e o resto do gameplay para o Vael; recipe extensions; docs | em curso (4a feito; player/câmara já saíram na Onda 3) |
 
 ## QA no checkout principal
 
 O código migrado está na `main` do Vael e o jogo corre daqui, com o **pool
-atual** (`assets/public`, hero novo de 8,7 MB). O worktree `refactor/Vael`
-fica como backup do pool do checkpoint (hero antigo de 14,9 MB) e **não**
-serve para QA visual.
+atual** (`assets/public`, hero novo de 8,7 MB). Os worktrees antigos
+`refactor/*` já não existem; o worktree `vael-head-check` só serve para
+validar commits num HEAD limpo, não para QA visual.
 
-O Viber `main` (`5dc6b64`) inicializa o `IoTaskPool` com **32 MiB** antes do
-`TaskPoolPlugin`: os GLBs novos do text3d têm hierarquias mais fundas e o
-stack default de 2 MiB estourava no loader. Já não é preciso `RUST_MIN_STACK`;
-o jogo arranca com o pool atual (screenshot do hero novo, `item.stone=4` na
-colheita, gates `VAEL_*` ligados, 22 marcos).
+O Viber `main` (fix em `5dc6b64`, topo `b31dcdb`) inicializa o `IoTaskPool`
+com **32 MiB** antes do `TaskPoolPlugin`: os GLBs novos do text3d têm
+hierarquias mais fundas e o stack default de 2 MiB estourava no loader. Já
+não é preciso `RUST_MIN_STACK`; o jogo arranca com o pool atual (screenshot
+do hero novo, `item.stone=4` na colheita, gates `VAEL_*` ligados, 22 marcos).
 
 O pool atual está **commitado** em LFS (`1057171`, personagens na A-pose
-nova; hero de 8,7 MB). A `main` está um commit à frente da `origin/main`
-(este doc); nada do pool ficou por commitar.
+nova; hero de 8,7 MB). O WIP de 2026-11-12 é a limpeza de `.bsn`
+(`GltfSource` fora), `src/lighting.rs`/`src/environment.rs` (exposição e
+sombras) e os docs; o pool não mudou.
 
 ## Dívidas conhecidas
 
@@ -236,8 +258,6 @@ nova; hero de 8,7 MB). A `main` está um commit à frente da `origin/main`
   `game.vael` enquanto isto não for um merge (perde campos só do Rust).
 - `VaelSave` não serializa no BRP por `BTreeSet` sem `ReflectSerialize`;
   usar `Vec` ou registar o type data antes de expor o save no bridge.
-- O worktree `refactor/Vael` (backup) não tem LOD1/LOD2; o checkout principal
-  tem o pool atual. Os 404 de LODs no backup são esperados.
 - A câmara/player já são do Vael (`player_camera:false`), mas o `Player` da
   engine continua a ser escrito por frame: é ele que alimenta a animação, os
   passos e os sistemas de gameplay que ainda não migraram. O controller da
@@ -256,14 +276,15 @@ nova; hero de 8,7 MB). A `main` está um commit à frente da `origin/main`
   teleporte/refill para Rust é uma decisão da próxima onda.
 - `rules.lua` ainda tem `report_kill`/`scan_visits`/`sync_collect` como
   fallback, parley/decisão e o `award_kill`; `fsm.lua`/combate/inimigos,
-  viagem (teleporte/marcadores/mapa), diálogo/NLU e UI/story/áudio continuam
-  Lua. Colheita, marcos e eventos de quest já têm caminho Rust opt-in. A
-  loja/forja tem transações Rust, mas as listas/formatação continuam Lua.
+  diálogo/NLU e story/áudio continuam Lua. Colheita, marcos e eventos de quest
+  já têm caminho Rust opt-in; mapa/viagem (teleporte/marcadores/waypoint) já
+  são Rust. A loja/forja tem transações Rust, mas as listas/formatação
+  continuam Lua.
 - O `crystal-outpost` tem `destructible`/`resource-kind` num `<Entity>` com
   `<GltfScene>` filho; esses props não chegam a `ScriptProps`/`Harvestable`
   (o `player_nearby` também os não vê). O QA de colheita usou os nós de pedra
-  do `spawn/ring.xml`. Investigar o parser de recipes ou autorar os props no
-  filho.
+  do `world/spawn/ring.bsn`. Investigar o parser de recipes ou autorar os
+  props no filho.
 - `VAEL_HARVEST_RUST`, `VAEL_TRAVEL_RUST` e `VAEL_QUEST_EVENTS_RUST` são
   opt-in; o fallback Lua mantém-se. Ligar por default depois de QA com o pool
   atual.
@@ -272,9 +293,9 @@ nova; hero de 8,7 MB). A `main` está um commit à frente da `origin/main`
   status/quest/chefe/quests.others já são do `VaelHud`/`HudUiPlugin`.
 - O jogo passa a exigir o crate `vael` em runtime (`viber.vael`); `viber run`
   direto do checkout da engine já não serve para o mundo do Vael.
-- `VAEL_RULES_RUST` continua opt-in; o QA de combate/interiores/save ficou
-  pendente porque a regen ocupa o pool/GPU. O shadow (`VAEL_RULES_SHADOW=1`)
-  fica como ferramenta de paridade.
+- A autoridade (`VAEL_RULES_RUST`) é default desde a Onda 4a; falta QA de
+  combate/interiores/save no pool atual. O shadow (`VAEL_RULES_SHADOW=1`)
+  continua independente e é a ferramenta de paridade.
 
 ## UI do jogador em bevy_pf
 
@@ -288,7 +309,7 @@ templates e comandos.
 | Plugin e HUD | `src/ui/mod.rs`, `ui/hud.xaml` |
 | Menu, título, morte | `src/ui/screens.rs`, `ui/{menu,title,death}.xaml` |
 | View-models | `HudVm`, `ScreensVm` (`#[derive(Reflect)]` + `Bindable`) |
-| Barra de fala/NLU | `world/say.xml` + `scripts/ui/say.lua` (ainda engine) |
+| Barra de fala/NLU | `world/say.bsn` + `scripts/ui/say.lua` (ainda engine) |
 | Mapa/viagem | `src/ui/map.rs` + `src/ui/waypoint.rs` (Rust; `ui/map.xaml`) |
 
 - O HUD lê `VaelSave`, `VaelContent`, `UiData` e os binds de script; as
@@ -302,12 +323,13 @@ templates e comandos.
   `viber.game()` com `apply_patch`. Não há `dispatch` de Lua: os antigos
   `scripts/ui/{menu,journal,title,death}.lua` deixaram de ser carregados
   pelos roots (o `journal.lua` fica como ficheiro legado).
-- `world/menu.xml`, `title.xml` e `death.xml` continuam no autoload apenas
-  para o estado dos modais (`UiModalsOpen`/`MenusOpen`), `UiTabs` e para o
-  `viber.ui.is_open("title"/"death")` dos scripts de jogo; os roots estão
-  escondidos por `screens::hide_legacy_roots` e perderam `script=`.
-- `VAEL_UI_PF=0` desliga a UI bevy_pf (o HUD declarativo de `world/hud.xml`
-  foi removido; o autoload usa `world/say.xml` e o HUD é `ui/hud.xaml`).
+- Os nós legados de menu/título/morte em `world/autoload/ui.bsn` continuam
+  no autoload apenas para o estado dos modais (`UiModalsOpen`/`MenusOpen`),
+  `UiTabs` e para o `viber.ui.is_open("title"/"death")` dos scripts de jogo;
+  os roots estão escondidos por `screens::hide_legacy_roots` e perderam
+  `script=`.
+- `VAEL_UI_PF=0` desliga a UI bevy_pf (o antigo HUD declarativo foi
+  removido; o autoload usa `world/say.bsn` e o HUD é `ui/hud.xaml`).
 - O título abre no arranque em `main`/`menu` (salvo `--entry dev`), fecha
   depois do load e reabre após as Definições; o Novo Jogo limpa o KV
   preservando `ui_scale`/`lang`/`a11y.*`/`vol.*`, incrementa `session_id`,
@@ -336,8 +358,6 @@ templates e comandos.
 
 - Barra de fala/NLU: o runtime (`viber.nlu`/`viber.decision`) só existe no
   Luau; portá-lo ou manter a barra na engine até lá.
-- Barra de fala/NLU: o `viber.nlu`/`viber.decision` só existe em Lua; portar
-  o runtime ou manter a barra na engine até lá.
 - Profiler/showcase continuam ferramentas de dev da engine.
 
 ## Mapa e viagem em Rust
@@ -365,9 +385,9 @@ O mapa regional e a viagem rápida passaram para `src/ui/map.rs` +
   pronta → dador; ativa → objetivo kill/visit/collect; sem quest → dador
   novo mais próximo). Hostis vêm de `Hostile` + `VaelScriptTags`, recursos
   de `Harvestable` e NPCs de `Name`.
-- `world/explore.xml`, `scripts/ui/map.lua`, `scripts/game/travel.lua` e
-  `travel_host.lua` foram removidos; o host `game-lua-travel` saiu de
-  `world/gameplay.xml`. O diálogo "Perguntar por um lugar" usa
+- Os antigos `world/explore.xml`, `scripts/ui/map.lua`, `scripts/game/travel.lua`
+  e `travel_host.lua` foram removidos; o host `game-lua-travel` saiu de
+  `world/gameplay.bsn`. O diálogo "Perguntar por um lugar" usa
   `viber.vael.travel_pin`.
 
 Validação: XAML de HUD/menu/título/morte/mapa instancia headless com
@@ -435,7 +455,6 @@ A UI deixou de ser “WPF por omissão” e passa a ter uma identidade própria:
   prefixadas, sem as voltar a prefixar.
 
 Validação: todos os XAML instanciam headless com `warnings=0`, os testes
-`ui::` passam (28) e a skin foi capturada ao vivo no mundo `qa-hud.bsn`
-(título, HUD, menu/tabs, morte). O `qa-hud.data/terrain.ahgt` em falta é
-esperado nesse mundo; o render pode abortar por OOM quando há builds
-concorrentes.
+`ui::` passam (28) e a skin foi capturada ao vivo no antigo mundo
+`qa-hud.bsn` (título, HUD, menu/tabs, morte), removido a 2026-11-12. O
+render pode abortar por OOM quando há builds concorrentes.

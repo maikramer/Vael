@@ -1,5 +1,10 @@
 # Estudo: migrar o terreno do Vael para `voxel-framework`
 
+> **Estudo histórico (2026-11-11), decisão tomada: não migrar.** O veredito e
+> os bloqueios (Bevy 0.18 vs 0.20, LGPL-3.0, streaming esférico) continuam a
+> ser a referência; o terreno actual está descrito no
+> [`../AGENTS.md`](../AGENTS.md).
+
 Data: 2026-11-11. Âmbito: substituir o terreno do Viber (`src/terrain/`) pelo
 crate [`voxel-framework`](https://crates.io/crates/voxel-framework) 0.9.1.
 Método: leitura do código dos dois lados (Viber `main`, tarball do crate) e

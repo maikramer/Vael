@@ -96,7 +96,7 @@ acima o "blast" repete a cada loop. Re-rola a seed +1000 até 6 tentativas em
 BGM e 5 em ambiência. Para efeitos one-shot usa `-16 LUFS`/`-1 dBTP`; música e
 ambiência ficam no tier. Entradas `legacy: true` (corrida) ficam fora do lote.
 
-As layers novas exigem `world/environment.xml` com `<MusicLayer>` homónima do
+As layers novas exigem `world/environment.bsn` com `<MusicLayer>` homónima do
 `BiomeRegion.id`. Os loops de bioma correm em `scripts/game/ambience.lua`.
 
 Verificação: `viber analyze world.bsn` e, com a engine viva,
