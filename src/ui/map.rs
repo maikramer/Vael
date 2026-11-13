@@ -14,7 +14,7 @@ use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::MenusOpen;
 use bevy_ext_core::{Player, TeleportSettle};
-use viber::terrain::runtime::TerrainRuntime;
+use bevy_ext_terrain_runtime::runtime::TerrainRuntime;
 use bevy_ext_ui::ui::UiModalsOpen;
 use bevy_ext_ui::ui::widgets::UiFocusedInput;
 
@@ -234,7 +234,7 @@ fn pin_mark(world: &mut World, name: &str) {
         return;
     };
     let scene = world
-        .get_resource::<viber::scene_loader::CurrentScene>()
+        .get_resource::<bevy_ext_scene_runtime::scene_loader::CurrentScene>()
         .and_then(|scene| scene.id.clone());
     let in_main = scene.as_deref().is_none_or(|id| id == "main");
     if in_main && mark_position(world, name).is_none() {

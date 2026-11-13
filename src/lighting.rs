@@ -31,7 +31,7 @@ use bevy::render::RenderApp;
 use bevy::render::extract_resource::{ExtractResource, ExtractResourcePlugin};
 use bevy::render::render_phase::ViewBinnedRenderPhases;
 use bevy::render::view::ExtractedView;
-use viber::scene_loader::SceneEpoch;
+use bevy_ext_scene_runtime::scene_loader::SceneEpoch;
 use viber::worldsys::DayCycleState;
 
 /// Cadência das sombras com o relógio contínuo do `bevy_elements`.

@@ -17,7 +17,7 @@
 //! Limites desta primeira versão:
 //! - o golpe é imediato (sem o atraso de impacto/cooldown de animação do Lua);
 //!   o cooldown de 0,4 s entre golpes mantém-se;
-//! - o topple usa [`viber::physics_fx::Falling`] para `break-style: fall`;
+//! - o topple usa [`bevy_ext_core::Falling`] para `break-style: fall`;
 //!   os bursts/FX de partículas ficam para uma passagem posterior;
 //! - o substituto (`berry-bush-bare`) é spawnado sem a escala original (o
 //!   pedido de spawn não transporta escala);
@@ -41,12 +41,12 @@ use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
 use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
-use viber::menus::MenusOpen;
-use viber::physics_fx::Falling;
-use viber::player::Player;
-use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
+use bevy_ext_core::MenusOpen;
+use bevy_ext_core::Falling;
+use bevy_ext_core::Player;
+use bevy_ext_scene_runtime::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
 use viber::scene::SceneSource;
-use viber::scene_loader::CurrentScene;
+use bevy_ext_scene_runtime::scene_loader::CurrentScene;
 use bevy_ext_ui::ui::ScriptBindValue;
 use bevy_ext_ui::ui::script::UiScriptBinds;
 use bevy_ext_ui::ui::widgets::UiFocusedInput;
@@ -571,10 +571,10 @@ impl Plugin for VaelHarvestPlugin {
             // (`flora-fell.*`). O foco/golpe Rust continuam atrás do gate.
             .add_systems(PostStartup, (attach_harvestables, reap_on_load).chain())
             .add_systems(
-                viber::scene_loader::SceneLoad,
+                bevy_ext_scene_runtime::scene_loader::SceneLoad,
                 (attach_harvestables, reap_on_load)
                     .chain()
-                    .after(viber::recipes::spawn::startup),
+                    .after(bevy_ext_scene_runtime::recipes::spawn::startup),
             )
             .add_systems(
                 Update,
@@ -1926,7 +1926,7 @@ mod tests {
     use bevy::input::ButtonInput;
     use std::path::PathBuf;
     use std::sync::Arc;
-    use viber::xml::NodeOrigin;
+    use bevy_ext_world::NodeOrigin;
 
     fn props(pairs: &[(&str, &str)]) -> Vec<(String, String)> {
         pairs

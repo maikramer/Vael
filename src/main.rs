@@ -98,7 +98,7 @@ fn main() -> Result<()> {
         .map_err(|err| anyhow::anyhow!("mundo inválido: {} ({err})", world.display()))?;
     // `--scene` escolhe outra cena do projeto; sem ele, a cena principal cede
     // ao `start-scene` (o acampamento atrás do título), como o `viber run`.
-    let world = viber::scene_loader::resolve_run_path(&requested, scene.as_deref())?;
+    let world = bevy_ext_scene_runtime::scene_loader::resolve_run_path(&requested, scene.as_deref())?;
     let root = viber::app::world_base_dir(&world)
         .or_else(|| world.parent().map(Path::to_path_buf))
         .ok_or_else(|| anyhow::anyhow!("não foi possível resolver a raiz do projeto"))?;

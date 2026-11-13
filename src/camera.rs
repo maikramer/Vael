@@ -13,7 +13,7 @@ use viber::camera::{
     auto_camera_yaw, behind_yaw_deg, camera_offset, interior_camera_pose, kick_spring_step,
     low_pass_factor, noise_pm1, shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
 };
-use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
+use bevy_ext_scene_runtime::recipes::spawn::{AutoOrbit, OrbitCamera};
 use bevy_ext_core::InteriorSceneConfig;
 
 use crate::player::PlayerMovementSet;
@@ -60,7 +60,7 @@ fn orbit_camera_follow(
     names: Query<(Entity, &Name)>,
     globals: Query<&GlobalTransform>,
     players: Query<&GlobalTransform, With<Player>>,
-    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+    runtime: Option<Res<bevy_ext_terrain_runtime::runtime::TerrainRuntime>>,
 ) {
     let has_player = players.iter().next().is_some();
     for (mut cam, settings) in &mut cameras {
@@ -122,7 +122,7 @@ fn third_person_camera(
     mut cameras: Query<(&mut Transform, &mut OrbitCamera), Without<Player>>,
     players: Query<(&Transform, Option<&ChildOf>, &Player), Without<OrbitCamera>>,
     parents: Query<&GlobalTransform>,
-    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+    runtime: Option<Res<bevy_ext_terrain_runtime::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
     a11y: Option<Res<viber::a11y::A11y>>,
 ) {

@@ -10,7 +10,7 @@ use serde_json::Value;
 use bevy_ext_core::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::Player;
-use viber::scene_loader::CurrentScene;
+use bevy_ext_scene_runtime::scene_loader::CurrentScene;
 use viber::vitals::{Health, Hostile};
 
 use crate::attach::VaelScriptTags;

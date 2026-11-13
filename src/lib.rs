@@ -176,7 +176,7 @@ impl Plugin for VaelPlugin {
             VaelWorldTextPlugin,
             // Falas no mundo (`bevy_speech_bubbles`): o `viber.say` deixa de
             // escrever no balão do HUD e passa a ser um balão sobre o NPC.
-            VaelSpeechPlugin::<viber::recipes::spawn::OrbitCamera>::default(),
+            VaelSpeechPlugin::<bevy_ext_scene_runtime::recipes::spawn::OrbitCamera>::default(),
             // Árvores procedurais (`bevy_flora`) na entrada da cidade: teste
             // A/B contra os GLB, atrás do gate `VAEL_FLORA`.
             VaelFloraPlugin,

@@ -13,7 +13,7 @@ use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
-use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use bevy_ext_scene_runtime::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use bevy_ext_ui::ui::UiWriter;
 
 use crate::save::VaelSave;
@@ -26,7 +26,7 @@ pub const TELEPORT_MAX_DROP: f32 = 400.0;
 pub const TELEPORT_SKIN: f32 = 0.02;
 
 fn landing_position(
-    terrain: Option<&viber::terrain::runtime::TerrainRuntime>,
+    terrain: Option<&bevy_ext_terrain_runtime::runtime::TerrainRuntime>,
     requested: Vec3,
 ) -> Vec3 {
     let Some(terrain) = terrain else {
@@ -109,7 +109,7 @@ pub fn teleport_landing(
     ) {
         return Vec3::new(requested.x, surface + TELEPORT_SKIN, requested.z);
     }
-    let terrain = world.get_resource::<viber::terrain::runtime::TerrainRuntime>();
+    let terrain = world.get_resource::<bevy_ext_terrain_runtime::runtime::TerrainRuntime>();
     landing_position(terrain, requested)
 }
 

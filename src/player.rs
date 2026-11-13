@@ -18,7 +18,7 @@ use bevy_ext_core::{
 use bevy_rapier3d::prelude::{KinematicCharacterController, KinematicCharacterControllerOutput};
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
-use viber::recipes::spawn::OrbitCamera;
+use bevy_ext_scene_runtime::recipes::spawn::OrbitCamera;
 
 use crate::components::VaelPlayer;
 
@@ -301,8 +301,8 @@ impl Plugin for VaelPlayerPlugin {
             )
             .add_systems(PostStartup, attach_controllers)
             .add_systems(
-                viber::scene_loader::SceneLoad,
-                attach_controllers.after(viber::recipes::spawn::startup),
+                bevy_ext_scene_runtime::scene_loader::SceneLoad,
+                attach_controllers.after(bevy_ext_scene_runtime::recipes::spawn::startup),
             )
             .add_systems(
                 Update,
@@ -457,7 +457,7 @@ fn player_movement(
     typing: Option<Res<bevy_ext_ui::ui::widgets::UiFocusedInput>>,
     actions: Option<Res<viber::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
-    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+    runtime: Option<Res<bevy_ext_terrain_runtime::runtime::TerrainRuntime>>,
     collision: Option<Res<viber::physics::TerrainCollisionStatus>>,
     interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     interior_state: Option<Res<bevy_ext_core::InteriorLighting>>,
@@ -472,7 +472,7 @@ fn player_movement(
         Option<&KinematicCharacterControllerOutput>,
         Option<&mut TeleportSettle>,
         Option<&mut Knockback>,
-        Option<&viber::spawn_gate::SpawnGated>,
+        Option<&bevy_ext_scene_runtime::spawn_gate::SpawnGated>,
     )>,
     mut sfx: MessageWriter<bevy_ext_core::SfxEvent>,
 ) {

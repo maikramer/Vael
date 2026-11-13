@@ -34,7 +34,7 @@ use serde_json::Value;
 use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::MenusOpen;
-use viber::scene_loader::CurrentScene;
+use bevy_ext_scene_runtime::scene_loader::CurrentScene;
 use bevy_ext_ui::ui::modal::UiModalsOpen;
 use viber::worldsys::WeatherState;
 
@@ -225,7 +225,7 @@ impl Plugin for VaelRulesAuthorityPlugin {
                     // as vitais de volta para o `viber.game()`.
                     .after(viber::luau::luau_update)
                     .run_if(viber::app::scripts_enabled)
-                    .run_if(viber::scene_loader::scene_settled),
+                    .run_if(bevy_ext_scene_runtime::scene_loader::scene_settled),
             );
     }
 }

@@ -37,7 +37,7 @@ use mlua::{Lua, Value};
 use bevy_ext_core::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::Player;
-use viber::postfx::{ExternalExposure, PostFxState};
+use bevy_ext_postfx::runtime::{ExternalExposure, PostFxState};
 use viber::worldsys::{
     AtmosphereState, BiomeRegions, InteriorLighting, WeatherState, rain_scale_at,
 };
@@ -368,7 +368,7 @@ impl VaelEnvControl {
 /// `config.yaml`.
 fn attach_elements_camera(
     mut commands: Commands,
-    cameras: Query<(Entity, &Camera), (With<Camera3d>, With<viber::recipes::spawn::OrbitCamera>)>,
+    cameras: Query<(Entity, &Camera), (With<Camera3d>, With<bevy_ext_scene_runtime::recipes::spawn::OrbitCamera>)>,
     marked: Query<Entity, With<ElementsCamera>>,
     mut candidate: Local<Option<Entity>>,
     mut streak: Local<u32>,

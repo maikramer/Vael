@@ -22,10 +22,10 @@ use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::locale::Locale;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
-use viber::music::AudioMixerSettings;
+use bevy_ext_core::AudioMixerSettings;
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use viber::save::SaveRequest;
-use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use bevy_ext_scene_runtime::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use bevy_ext_ui::ui::scale::UiUserScale;
 use bevy_ext_ui::ui::{UiData, UiModalsOpen, UiTabs, UiWriter};
 

@@ -29,7 +29,7 @@ use bevy_speech_bubbles::{
 use viber::dialogue::ExternalSayPresenter;
 use viber::interact::InteractionFocus;
 use viber::luau::{ScriptSay, ScriptToast};
-use viber::recipes::spawn::OrbitCamera;
+use bevy_ext_scene_runtime::recipes::spawn::OrbitCamera;
 
 /// A fonte de display da casa (Cinzel Bold, a mesma do HUD e do texto de
 /// dano) — os balões falam com a voz tipográfica do jogo.

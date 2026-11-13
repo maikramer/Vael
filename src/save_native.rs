@@ -22,11 +22,11 @@ use viber::input_map::{Action, ActionMap};
 use viber::locale::Locale;
 use viber::luau::game::{game_to_json, json_to_game};
 use viber::luau::host::LuaScriptHost;
-use viber::music::AudioMixerSettings;
+use bevy_ext_core::AudioMixerSettings;
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use viber::save::SaveRequest;
-use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
-use viber::terrain::runtime::TerrainRuntime;
+use bevy_ext_scene_runtime::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
+use bevy_ext_terrain_runtime::runtime::TerrainRuntime;
 use bevy_ext_ui::ui::UiWriter;
 
 use crate::save::{VAEL_SAVE_VERSION, VaelSave};
@@ -53,7 +53,7 @@ pub struct VaelSaveFile {
     pub came_from_scene: Option<String>,
     pub came_from_portal: Option<String>,
     pub locale: String,
-    pub terrain_patches: Vec<viber::terrain::delta::DeltaPatch>,
+    pub terrain_patches: Vec<bevy_ext_world::DeltaPatch>,
     pub action_keys_json: String,
     pub world_kv_json: String,
     pub save_json: String,
@@ -90,7 +90,7 @@ fn register_save_types(app: &mut App) {
     app.register_type::<VaelSaveFile>()
         .register_type::<Vec3>()
         .register_type::<Vec2>()
-        .register_type::<viber::terrain::delta::DeltaPatch>();
+        .register_type::<bevy_ext_world::DeltaPatch>();
 }
 
 impl Plugin for VaelNativeSavePlugin {
@@ -127,7 +127,7 @@ fn process_save_requests(world: &mut World) {
     // o loader está ocupado). O pedido fica em `SaveRequest` e volta a ser
     // tentado no frame seguinte.
     if world
-        .get_resource::<viber::scene_loader::SceneLoader>()
+        .get_resource::<bevy_ext_scene_runtime::scene_loader::SceneLoader>()
         .is_some_and(|loader| loader.busy())
     {
         return;

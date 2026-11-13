@@ -73,11 +73,11 @@ fn apply_postfx_settings(natives: Option<Res<SceneNatives>>, mut seen: Local<Opt
     }
     *seen = Some(natives.generation);
     match native_value::<PostFxSettings>(&natives.natives) {
-        Some(settings) => viber::postfx::set_scene_profile(
+        Some(settings) => bevy_ext_postfx::runtime::set_scene_profile(
             &settings.disabled_keys(),
             settings.ssao.then_some(settings.ssao_quality.name()),
         ),
-        None => viber::postfx::clear_scene_profile(),
+        None => bevy_ext_postfx::runtime::clear_scene_profile(),
     }
 }
 
