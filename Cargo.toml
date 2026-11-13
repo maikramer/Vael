@@ -62,6 +62,9 @@ serde_json = "1"
 # Esquemas e validação do conteúdo (sem Bevy), partilhados com o editor.
 vael-content = { path = "content" }
 viber = { path = "../Viber", features = ["ai"] }
+# Runtime de debug/ferramentas: regista `viber-tools/*` no `bevy_remote` do
+# jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
+viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

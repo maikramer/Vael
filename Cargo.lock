@@ -9401,6 +9401,7 @@ dependencies = [
  "serde_json",
  "vael-content",
  "viber",
+ "viber_tools_runtime",
 ]
 
 [[package]]
@@ -9498,6 +9499,27 @@ dependencies = [
  "serde_json",
  "serde_yaml",
  "transvoxel",
+]
+
+[[package]]
+name = "viber_tools_protocol"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "base64 0.22.1",
+ "dirs 7.0.0",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "viber_tools_runtime"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "serde",
+ "serde_json",
+ "viber_tools_protocol",
 ]
 
 [[package]]

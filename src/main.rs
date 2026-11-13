@@ -150,6 +150,13 @@ fn main() -> Result<()> {
     // UI do jogo em XAML (bevy_pf): precisa do `DefaultPlugins` e dos
     // resources do Vael já registados.
     app.add_plugins(VaelUiPlugin);
+    // Runtime de ferramentas: acrescenta `viber-tools/*` ao `bevy_remote` que
+    // o `build_app` já abriu (ou abre o seu, quando não há --bridge). O
+    // bridge legacy `viber.*` continua no mesmo servidor para compatibilidade.
+    if bridge.is_some() || tools_enabled() {
+        let port = bridge.unwrap_or(default_tools_port());
+        app.add_plugins(viber_tools_runtime::ViberToolsPlugin { port });
+    }
 
     info!(
         world = %world.display(),
@@ -172,6 +179,25 @@ fn main() -> Result<()> {
 /// sessão sem janela (`JACKDAW_PIE_WINDOWLESS`); sem PIE é o grupo da engine.
 fn jackdaw_plugins(plugins: bevy::app::PluginGroupBuilder) -> bevy::app::PluginGroupBuilder {
     jackdaw_runtime::maybe_windowless(plugins)
+}
+
+/// Porta do runtime de ferramentas quando o jogo não pede `--bridge`.
+fn default_tools_port() -> u16 {
+    // A mesma porta histórica da bridge; o namespace separa os métodos.
+    15702
+}
+
+/// `VAEL_TOOLS=1` ou PIE ligam o runtime sem `--bridge`.
+fn tools_enabled() -> bool {
+    let flag = std::env::var("VAEL_TOOLS")
+        .map(|raw| {
+            !matches!(
+                raw.trim().to_ascii_lowercase().as_str(),
+                "0" | "false" | "off" | "no"
+            )
+        })
+        .unwrap_or(false);
+    flag || std::env::var_os("JACKDAW_PIE").is_some()
 }
 
 /// `viber.ecs` por frame é opt-in no Vael (default off).
