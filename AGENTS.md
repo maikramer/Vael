@@ -33,12 +33,12 @@ CARGO_TARGET_DIR=../Viber/target cargo run --release -- \
   world.bsn --scene main --entry dev --bridge 15706
 ```
 
-`gameplay:false` desliga IA/vitais/projéteis da engine; `player_camera:true`
-mantém o movimento/câmara da engine enquanto o Vael não os substitui. O
-`viber.game()` ainda é a fonte de verdade; `VaelStateSync` espelha-o e
-`VaelHud` publica o HUD. O estado, gates e dívidas estão em
-[`docs/MIGRATION.md`](docs/MIGRATION.md). O checkout principal pode ter
-trabalho em curso (regen/assets); não o tocar por arrasto.
+`gameplay:false` desliga IA/vitais/projéteis da engine; `player_camera:false`
+dá o corpo e a câmara ao Vael (`src/player.rs`/`src/camera.rs`; a engine ainda
+spawna o `PlayerGLTF` e o collider). O `viber.game()` ainda é a fonte de
+verdade; `VaelStateSync` espelha-o e `VaelHud` publica o HUD. O estado, gates
+e dívidas estão em [`docs/MIGRATION.md`](docs/MIGRATION.md). O checkout
+principal pode ter trabalho em curso (regen/assets); não o tocar por arrasto.
 
 ## Só estático
 

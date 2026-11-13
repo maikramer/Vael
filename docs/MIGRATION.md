@@ -14,7 +14,7 @@ engine/pacotes.
 ## Onde vive
 
 - O código e o jogo vivem no checkout principal do Vael, na `main` (o crate e
-  as ondas de migração estão fundidos; topo `2da39e0`).
+  as ondas de migração estão fundidos; topo `c4a7d50`).
 - O worktree `../refactor/Vael` fica como backup do pool LFS do checkpoint;
   o `refactor/Viber` foi integrado na `main` do Viber.
 - Checkpoint do Vael: `59a57ff`, tag `pre-bevy-migration`.
@@ -53,8 +53,9 @@ engine/pacotes.
 ## O que mudou no Vael
 
 - `Cargo.toml` + `src/main.rs`: crate `vael`, Bevy `=0.20.1`, `viber` por path.
-  Arranque: `build_app(..., gameplay:false, player_camera:true,
-  scripts:ScriptsMode::Compat)` + `VaelPlugin`.
+  Arranque: `build_app(..., gameplay:false, player_camera:false,
+  scripts:ScriptsMode::Compat)` + `VaelPlugin`: o corpo/collider ainda nascem
+  no spawner da engine, mas quem os move é o Vael.
 - `src/content.rs`: loaders serde dos JSON actuais (22 itens, 17 skills, 8
   receitas, 22 marcos, 3 enigmas, 1 veredicto, 3 puzzles, 37 quests, 6
   diálogos, locale). Os schemas não mudaram.
@@ -204,12 +205,13 @@ ajustar sem perder a semântica.
 | Fase 2 — crate Vael, conteúdo, save, attach, arranque | feito |
 | Onda 2a — state sync + HUD Rust | feito |
 | Onda 2b — vitais/status/morte autoritativos em Rust | autoridade opt-in validada ao vivo; default off |
+| Onda 3 — player/câmara no Vael (`src/player.rs`, `src/camera.rs`) | feito e validado live; `Player` ainda é sincronizado para a animação da engine |
 | Regras/hub — HUD, cofre, XP, equipamento/stats, quests, combate do jogador, relógio, loja/forja | feito em Rust com ponte `viber.vael` |
 | Colheita, marcos e eventos de quest | feito em Rust (opt-in), validado live (colheita no pool atual; quests/marcos no pool anterior) |
 | UI do jogador — HUD, diário, mapa/viagem, título e morte em `bevy_pf` | feito em Rust (XAML + view-models + controlador M/G/F); barra de fala/NLU continua na engine |
 | Editor + mundo — Jackdaw oficial + extensões `.jdext` + `vael-content` + `.bsn` | feito; Grip adiado; CLI de cena continua XML |
 | Restante do jogo — FSM/inimigos/bosses, viagem/mapa (teleporte/marcadores), diálogo/NLU, story/áudio | pendente |
-| Fase 4 — mover player/câmera/AI/vitais para o Vael; recipe extensions; docs | pendente |
+| Fase 4 — mover AI/vitais e o resto do gameplay para o Vael; recipe extensions; docs | pendente (player/câmara já saíram na Onda 3) |
 
 ## QA no checkout principal
 
@@ -236,8 +238,13 @@ nova; hero de 8,7 MB). A `main` está um commit à frente da `origin/main`
   usar `Vec` ou registar o type data antes de expor o save no bridge.
 - O worktree `refactor/Vael` (backup) não tem LOD1/LOD2; o checkout principal
   tem o pool atual. Os 404 de LODs no backup são esperados.
-- A câmara/player ainda são da engine (`player_camera:true`). O Vael só os
-  desliga quando tiver o seu controller/câmara; sem isso o render vai a OOM.
+- A câmara/player já são do Vael (`player_camera:false`), mas o `Player` da
+  engine continua a ser escrito por frame: é ele que alimenta a animação, os
+  passos e os sistemas de gameplay que ainda não migraram. O controller da
+  engine não corre; o collider/corpo continuam a nascer no `PlayerGLTF`.
+- O chão analítico e o `TeleportSettle` são obrigatórios com o streaming de
+  colunas voxel: o gate de spawn solta o herói antes de a coluna assentar e
+  sem eles ele atravessa o mundo (repro da Onda 3).
 - O dano/cura já são Rust (`src/combat.rs`), mas os portões de menu/título/
   god, os FX/toasts/shake e o `start_death` continuam no wrapper Lua. A
   autoridade das vitais lê/escreve as mesmas chaves depois do `luau_update`.
