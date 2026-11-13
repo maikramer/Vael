@@ -8,8 +8,8 @@
 > dia); este documento não repete esse material. As contagens levam a data
 > (main de 2026-11-13) e foram medidas na altura da escrita. As decisões de
 > adopção de crates vivem no
-> [`../Viber/docs/CRATES.md`](../../Viber/docs/CRATES.md) e não são
-> re-litigadas aqui; o estado da migração é da
+> [`../bevy_extensions/docs/CRATES.md`](../../bevy_extensions/docs/CRATES.md)
+> e não são re-litigadas aqui; o estado da migração é da
 > [`MIGRATION.md`](MIGRATION.md) e o das publicações é do
 > [`PACKAGES.md`](PACKAGES.md) — este estudo referencia, não copia.
 
@@ -38,6 +38,13 @@
   exit (`29c270a`) e compila hoje com o `0.5.1` limpo do registry, enquanto
   a engine standalone usa o `0.5.0` com 2 fixes de robustez de navmesh
   (`[patch]` não atravessa path-deps). Correcção catalogada como **F0**.
+- **F0 aplicado a 2026-11-13** (código + doc): patch `rerecast` reposto,
+  `ui_bind`/`lighting`/`journal.lua` removidos, `attach` dobrado no waypoint,
+  workspace dos `bevy_extensions` limpo (26→17 members) e o `viber_engine`
+  excluído para correr standalone; falta só o QA vivo de navmesh. No mesmo
+  dia o checkout `Viber` foi aposentado — o runtime vive no
+  `bevy_ext_viber_engine`, e o `CRATES.md`/contrato foram salvos no
+  `bevy_extensions`.
 
 ## Âmbito e números (2026-11-13)
 
@@ -46,7 +53,7 @@
 | `Vael` | 29 686 (`src/`, 338 `#[test]` em 35 ficheiros) + `content/` | o jogo: regras, HUD/UI, ponte `viber.vael` (61 fn) |
 | `Vael` (Lua) | 13 182 (`scripts/`, 83 ficheiros) | o que a Fase 4 vai aposentar |
 | `bevy_extensions` | ~258 000, dos quais: `bevy_ext_viber_engine` ~161 000; ~67 000 em 8 crates extraídos sem consumidor; ~16 700 nos 6 publicáveis 0.1.0 | família `bevy_ext_*` + o monólito em transição |
-| `Viber` | engine de gameplay transitória (consome os extraídos por path) | bug/API em falta |
+| `Viber` | **aposentado a 2026-11-13**; o runtime vive no `bevy_ext_viber_engine` e os docs no `bevy_extensions` | — |
 | `viber-tools` | 4 crates + extensões Jackdaw | CLI `viber`, debug |
 | `CelerAI` | 2 crates (NLU/d1) | modelos + inferência; já publicáveis |
 
@@ -86,7 +93,8 @@ medida: `spawn` primeiro (já divergiu), depois postfx, nav, ui, roads.
 
 `bevy_ext_{ai,audio,luau,nav,physics,engine,terrain_runtime,scene_runtime}`
 foram extraídos mas nenhum checkout os consome ainda; os três últimos nem
-compilam dentro do workspace (path-dep ao monólito / ao Viber). Isto não é
+compilam dentro do workspace (path-dep ao monólito / ao checkout Viber, agora
+aposentado — ficam sem compilar até apontarem ao `bevy_ext_viber_engine`). Isto não é
 overengineering no código — é **processo codificado**: o custo aparece na
 divergência (achado 1), nas versões transitórias e nos aliases (achado 7).
 A decisão aqui é de calendário: ou as waves de consumo acontecem em sequência
@@ -135,7 +143,7 @@ correspondentes corta já a metade mais barata da duplicação (F2 no plano).
 | `src/world_text.rs` | 424 | Pool genérico de texto 3D sobre `bevy_rich_text3d` — candidato a PR upstream (terceiro, mintlu8); baixa prioridade |
 | `src/speech.rs` | 496 | Fica — presenter do jogo |
 | `src/stats.rs` | 679 | Smell: um `World` Bevy próprio dentro do `StatEngine` só para as closures Luau síncronas — desaparece naturalmente na 4e |
-| `src/lighting.rs` | 336 | Modo de cadência de sombras **partido em Bevy 0.20** e off por omissão — F0: apagar o modo ou consertar |
+| `src/lighting.rs` | 336 | **Removido no F0 (2026-11-13)**: o default era inerte e o modo de cadência (> 0) estava partido em Bevy 0.20; as sombras são as do `bevy_elements` |
 | `src/settings.rs` | 225 | Fica — releitura viva dos `.bsn` do editor |
 
 ### 6. Wrappers e placeholders
@@ -151,23 +159,31 @@ correspondentes corta já a metade mais barata da duplicação (F2 no plano).
   *Atenção ao mover: conferir o `type_path` reflectido dos structs — o
   `.bsn` e o BRP citam-no.*
 - **`src/ui_bind.rs` (22)**: recurso `VaelHud` vazio de propósito, **sem
-  leitores** (`hud.rs` usa `VaelHudConfig`/`UiScriptBinds`) — morto; F0.
-- **`src/attach.rs` (54)**: tem um consumidor real (`ui/waypoint.rs`) — não
-  é morto; F0: reavaliar dobra, não apagar às cegas.
+  leitores** (`hud.rs` usa `VaelHudConfig`/`UiScriptBinds`) — **removido**
+  (F0, 2026-11-13).
+- **`src/attach.rs` (54)**: tinha um consumidor real (`ui/waypoint.rs`) —
+  **dobrado** nesse módulo (F0), sem mudança de comportamento.
 - **`scripts/ui/journal.lua` (322)**: sem loader que o carregue (a UI do
-  jogador já é `bevy_pf`) — F0: confirmar e apagar.
+  jogador já é `bevy_pf`) — **removido** (F0; analyze e lint verdes).
 
 ### 7. Aparato de transição nos manifests
 
-- `bevy_extensions/Cargo.toml`: 8 members **duplicados** na lista, exclude
-  stale (`crates/bevy_voxel_terrain_jackdaw` — foi para `extensions/`), 6
+- `bevy_extensions/Cargo.toml`: **9** members duplicados (26 entradas → 17
+  únicas; dedupe aplicado no F0), exclude stale
+  (`crates/bevy_voxel_terrain_jackdaw` — removido no F0), 6
   crates em `0.1.1` transitório com `TODO(viber-exit)`.
 - Aliases de pacote replicados em 3 consumidores (`bevy_world_xml`,
   `bevy_engine_core`, `bevy_save_slots`) — morrem quando o consumo passar a
   ser do registry.
 - `.worktrees/` no repo com **duas cópias integrais** (`exit2-hubs`,
-  `exit2-scene`) — dois grafos de build paralelos no disco.
-- `.jdext` binários versionados comitados no git (11+8+6 bundles).
+  `exit2-scene`) — dois grafos de build paralelos no disco. Auditadas no F0:
+  mantidas (a `exit2/hubs` tem 4 commits únicos e está em uso; a
+  `exit2/scene` tem 3 commits únicos + WIP); remover só quando ambas
+  estiverem limpas e contidas na `main`.
+- `.jdext`: **não estão versionados** (correcção ao levantamento inicial —
+  o agente de exploração errou): 25 bundles, 433 MB locais, ignorados pelo
+  `.gitignore` (vão para assets de Release). Higiene: retenção de 1 bundle
+  por extensão (≈ 62 MB) — decisão local, sem git.
 
 Tudo documentado e intencional — mas é estado processual codificado; a lista
 acima é a checklist de limpeza quando as waves fecharem (F0/F1/F3).
@@ -192,6 +208,10 @@ acima é a checklist de limpeza quando as waves fecharem (F0/F1/F3).
   o comentário — só vale se os fixes forem irrelevantes para o jogo; o
   `VIBER_PATCH.md` diz o contrário.)* Como muda comportamento de navegação,
   o F0 leva QA de criaturas a perseguir o herói, não só `cargo test`.
+- **Aplicado a 2026-11-13:** a tabela foi reposta a apontar ao vendor do
+  `bevy_extensions`, o lock resolve `rerecast 0.5.0` (path) e `cargo check` /
+  `cargo test --lib` (332 testes) ficaram verdes; falta o QA vivo de
+  criaturas (navmesh).
 
 ## Oportunidades crates.io (mesmo com trabalho)
 
@@ -223,13 +243,14 @@ Dexterous Developer.
 
 ## Plano faseado (para rondas futuras; donos citados, não duplicados)
 
-- **F0 — triviais com QA dirigido** (uma sessão): repor o patch `rerecast`
-  apontando ao `bevy_extensions` + QA de navmesh vivo; apagar
-  `src/ui_bind.rs`; decidir `src/lighting.rs` (apagar o modo partido ou
-  consertar); confirmar e apagar `scripts/ui/journal.lua`; limpar members
-  duplicados/exclude stale do workspace dos `bevy_extensions`; decidir
-  `.worktrees/` e `.jdext` no git (LFS ou fora). Gates: `cargo test --lib`,
-  boot `--entry dev`, QA vivo de criaturas (o patch muda nav).
+- **F0 — aplicado a 2026-11-13** (código e doc): patch `rerecast` reposto a
+  apontar ao vendor do `bevy_extensions` (lock `0.5.0` path; `cargo check` e
+  `cargo test --lib` com 332 verdes); `ui_bind.rs` e `lighting.rs` apagados,
+  `attach.rs` dobrado no `ui/waypoint.rs`, `journal.lua` removido (analyze e
+  lint verdes); members duplicados (26→17) e exclude stale limpos;
+  `bevy_ext_viber_engine` excluído do workspace para `cargo test`/`metadata`
+  standalone. **Pendente:** QA vivo de navmesh (criaturas a perseguir), boot
+  `--entry dev`, e a retenção local dos `.jdext` (1 bundle por extensão).
 - **F1 — crates.io** (dono: `PACKAGES.md`): fundir os 3 wrappers no
   `bevy_ext_scene`; publicar os 6; quando o Viber/viber-tools consumirem do
   registry, apagar aliases e versões transitórias.
