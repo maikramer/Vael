@@ -260,7 +260,7 @@ fn third_person_camera(
                             rt.surface_below(
                                 desired.x,
                                 desired.z,
-                                desired.y + viber::player::GROUND_PROBE,
+                                desired.y + bevy_ext_core::GROUND_PROBE,
                             )
                             .unwrap_or(f32::NEG_INFINITY)
                         } else {

@@ -10,8 +10,8 @@
 
 use bevy::prelude::*;
 use bevy_ext_core::{
-    KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle, knockback_decay_factor,
-    knockback_travel_factor,
+    GROUND_PROBE, KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle,
+    footstep_due, knockback_decay_factor, knockback_travel_factor,
 };
 use bevy_rapier3d::prelude::{KinematicCharacterController, KinematicCharacterControllerOutput};
 use viber::recipes::spawn::OrbitCamera;
@@ -28,9 +28,6 @@ pub const JUMP_COOLDOWN: f32 = 0.2;
 pub const ACCEL_TAU: f32 = 0.08;
 pub const DECEL_TAU: f32 = 0.14;
 pub const AIR_TAU: f32 = 0.3;
-/// Sonda acima dos pés ao perguntar `surface_below` pelo chão: tem de
-/// exceder a skin do character controller (0.02).
-pub const GROUND_PROBE: f32 = 0.05;
 /// Queda abaixo do topo do mundo que já não é gruta: o herói furou o
 /// collider e é resgatado para a superfície.
 pub const VOID_RESCUE_DEPTH: f32 = 250.0;
@@ -542,7 +539,7 @@ fn player_movement(
         let planar =
             (controller.vel_x * controller.vel_x + controller.vel_z * controller.vel_z).sqrt();
         let grounded = controller.grounded;
-        if viber::player::footstep_due(&mut engine_player.step_timer, grounded, planar, dt)
+        if footstep_due(&mut engine_player.step_timer, grounded, planar, dt)
             .is_some()
         {
             let clip = if runtime.is_some_and(|rt| rt.in_water(px, pz)) {

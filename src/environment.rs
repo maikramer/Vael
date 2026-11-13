@@ -36,7 +36,7 @@ use bevy_elements::{
 use mlua::{Lua, Value};
 use viber::ambient::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use viber::luau::host::LuaScriptHost;
-use viber::player::Player;
+use bevy_ext_core::Player;
 use viber::postfx::{ExternalExposure, PostFxState};
 use viber::worldsys::{
     AtmosphereState, BiomeRegions, InteriorLighting, WeatherState, rain_scale_at,

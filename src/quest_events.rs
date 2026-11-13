@@ -811,7 +811,7 @@ fn drain_quest_events(
     queue: Res<QuestEventQueue>,
     host: Option<Res<LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
-    player: Query<&GlobalTransform, Or<(With<viber::player::Player>, With<VaelPlayer>)>>,
+    player: Query<&GlobalTransform, Or<(With<bevy_ext_core::Player>, With<VaelPlayer>)>>,
     mut toasts: Option<MessageWriter<ScriptToast>>,
     mut quests: Option<ResMut<QuestLog>>,
     // Regras construídas uma vez por carregamento de conteúdo, não por lote.
@@ -882,7 +882,7 @@ fn scan_visits_system(
     queue: Res<QuestEventQueue>,
     host: Option<Res<LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
-    player: Query<&GlobalTransform, Or<(With<viber::player::Player>, With<VaelPlayer>)>>,
+    player: Query<&GlobalTransform, Or<(With<bevy_ext_core::Player>, With<VaelPlayer>)>>,
     names: Query<(&Name, &GlobalTransform)>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
     mut toasts: Option<MessageWriter<ScriptToast>>,

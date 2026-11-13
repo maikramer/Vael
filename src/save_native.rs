@@ -251,7 +251,7 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
     let world_kv_json = serde_json::to_string(&kv).unwrap_or_default();
     let save_json = serde_json::to_string(&save).unwrap_or_default();
     let position = world
-        .query_filtered::<&GlobalTransform, With<viber::player::Player>>()
+        .query_filtered::<&GlobalTransform, With<bevy_ext_core::Player>>()
         .iter(world)
         .next()
         .map(|transform| transform.translation());

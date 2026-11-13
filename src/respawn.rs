@@ -12,11 +12,106 @@ use serde_json::{Value, json};
 use viber::ambient::{SfxClip, SfxEvent};
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
-use viber::player::{Player, TeleportSettle};
+use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::UiWriter;
 
 use crate::save::VaelSave;
+
+/// Altura da sonda de aterragem acima do ponto pedido.
+pub const TELEPORT_PROBE_HEIGHT: f32 = 2.0;
+/// Queda máxima procurada por colliders abaixo do destino (m).
+pub const TELEPORT_MAX_DROP: f32 = 400.0;
+/// Folga acima da superfície encontrada.
+pub const TELEPORT_SKIN: f32 = 0.02;
+
+fn landing_position(
+    terrain: Option<&viber::terrain::runtime::TerrainRuntime>,
+    requested: Vec3,
+) -> Vec3 {
+    let Some(terrain) = terrain else {
+        return requested;
+    };
+    if !terrain.in_field(requested.x, requested.z) {
+        return requested;
+    }
+    let surface = terrain
+        .surface_below(requested.x, requested.z, requested.y + GROUND_PROBE)
+        .unwrap_or_else(|| terrain.sample(requested.x, requested.z));
+    Vec3::new(requested.x, surface, requested.z)
+}
+
+/// Primeira superfície de física abaixo de `(x, z)` (props, plataformas,
+/// pontes e o trimesh do terreno), de `from_y` para baixo.
+pub fn physics_ground_below(
+    world: &mut World,
+    x: f32,
+    z: f32,
+    from_y: f32,
+    max_drop: f32,
+    exclude: &[bevy::ecs::entity::Entity],
+) -> Option<f32> {
+    use bevy_rapier3d::prelude::{
+        QueryFilter, RapierContextColliders, RapierContextSimulation, RapierQueryPipeline,
+        RapierRigidBodySet,
+    };
+    use bevy_rapier3d::rapier::parry::query::DefaultQueryDispatcher;
+    let context = world
+        .iter_entities()
+        .find(|e| e.contains::<RapierContextSimulation>())
+        .map(|e| e.id())?;
+    let simulation = world.get::<RapierContextSimulation>(context)?;
+    let colliders = world.get::<RapierContextColliders>(context)?;
+    let bodies = world.get::<RapierRigidBodySet>(context)?;
+    let mut skip = exclude.to_vec();
+    let mut stack = exclude.to_vec();
+    while let Some(entity) = stack.pop() {
+        if let Some(children) = world.get::<Children>(entity) {
+            for child in children.iter() {
+                if !skip.contains(&child) {
+                    stack.push(child);
+                    skip.push(child);
+                }
+            }
+        }
+    }
+    let keep = |entity: bevy::ecs::entity::Entity,
+                _collider: &bevy_rapier3d::rapier::geometry::Collider| { !skip.contains(&entity) };
+    let filter = QueryFilter::default().exclude_sensors().predicate(&keep);
+    let origin = Vec3::new(x, from_y, z);
+    let distance = RapierQueryPipeline::new_scoped(
+        &simulation.broad_phase,
+        colliders,
+        bodies,
+        &filter,
+        &DefaultQueryDispatcher,
+        |pipeline| pipeline.cast_ray(origin, Vec3::NEG_Y, max_drop, true),
+    )
+    .map(|(_, toi)| toi)?;
+    (distance > 0.01).then_some(from_y - distance)
+}
+
+/// Y de aterragem de um teleporte resolvido contra a física, com o terreno
+/// analítico como plano B.
+pub fn teleport_landing(
+    world: &mut World,
+    requested: Vec3,
+    exclude: &[bevy::ecs::entity::Entity],
+) -> Vec3 {
+    let from_y = requested.y + TELEPORT_PROBE_HEIGHT;
+    if let Some(surface) = physics_ground_below(
+        world,
+        requested.x,
+        requested.z,
+        from_y,
+        TELEPORT_PROBE_HEIGHT + TELEPORT_MAX_DROP,
+        exclude,
+    ) {
+        return Vec3::new(requested.x, surface + TELEPORT_SKIN, requested.z);
+    }
+    let terrain = world.get_resource::<viber::terrain::runtime::TerrainRuntime>();
+    landing_position(terrain, requested)
+}
 
 /// I-frames depois de renascer (o mesmo valor do `M.respawn` do Lua).
 pub const RESPAWN_IFRAMES: f32 = 2.0;
@@ -68,7 +163,7 @@ pub fn teleport_player(world: &mut World, requested: Vec3) {
     else {
         return;
     };
-    let landing = viber::player::teleport_landing(world, requested, &[entity]);
+    let landing = teleport_landing(world, requested, &[entity]);
     if let Some(mut transform) = world.get_mut::<Transform>(entity) {
         transform.translation = landing;
     }

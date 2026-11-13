@@ -13,7 +13,7 @@ use bevy_ext_core::HudMarkers;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::MenusOpen;
-use viber::player::{Player, TeleportSettle};
+use bevy_ext_core::{Player, TeleportSettle};
 use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiModalsOpen;
 use viber::ui::widgets::UiFocusedInput;
@@ -265,7 +265,7 @@ fn go_mark(world: &mut World, name: &str) {
         }
     }
     let requested = Vec3::new(position[0], position[1] + 1.0, position[2]);
-    let landing = viber::player::teleport_landing(world, requested, &exclude);
+    let landing = crate::respawn::teleport_landing(world, requested, &exclude);
     if let Some(entity) = world
         .query_filtered::<Entity, With<Player>>()
         .iter(world)
