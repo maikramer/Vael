@@ -61,11 +61,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 484.0, y: -70.0 },
+            radius: 26.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "484 -70" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "26" },
             ],
             text: "",
             origin_file: "world/scenes/pilgrims-camp.xml",
@@ -267,12 +269,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 46.0, shape_radius: core::option::Option::Some(0.3), start_life: glam::Vec2 { x: 0.5, y: 1.4 }, start_speed: glam::Vec2 { x: 1.3, y: 2.8 }, start_size: glam::Vec2 { x: 0.32, y: 0.66 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 46; shape-radius: 0.3; start-life-min: 0.5; start-life-max: 1.4; start-speed-min: 1.3; start-speed-max: 2.8; start-size-min: 0.32; start-size-max: 0.66; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/scenes/pilgrims-camp.xml",
@@ -350,12 +354,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("smoke"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "smoke", emission_rate: 5.0, shape_radius: core::option::Option::None, start_life: glam::Vec2 { x: 2.6, y: 4.6 }, start_speed: glam::Vec2 { x: 0.3, y: 0.9 }, start_size: glam::Vec2 { x: 0.4, y: 0.9 }, start_color: core::option::Option::Some("#9a9a9a"), looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 5; start-life-min: 2.6; start-life-max: 4.6; start-speed-min: 0.3; start-speed-max: 0.9; start-size-min: 0.4; start-size-max: 0.9; start-color: #9a9a9a; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/scenes/pilgrims-camp.xml",
@@ -842,12 +848,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/scenes/pilgrims-camp.xml",
@@ -1065,14 +1073,20 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "pilgrimage_vael" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_pilgrim_master" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "482 0 -66" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "pilgrimage_vael" },
             ],
             text: "",
             origin_file: "world/scenes/pilgrims-camp.xml",
@@ -1120,15 +1134,21 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: -0.173648 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "townsfolk.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "banter", value: "“Caminhamos até ao santuário desde o amanhecer.”|“Partilhas o nosso lume?”" },
+                bevy_ext_scene::AuthoredProp { key: "speed", value: "0.8" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "pilgrim-folk-a" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "489 0 -73" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 200 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“Caminhamos até ao santuário desde o amanhecer.”|“Partilhas o nosso lume?”" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-speed", value: "0.8" },
             ],
             text: "",
             origin_file: "world/scenes/pilgrims-camp.xml",
@@ -1176,15 +1196,21 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: 0.5 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "townsfolk.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "banter", value: "“A estrada é longa, mas a fé é mais.”|“Ouvi passos na noite passada...”" },
+                bevy_ext_scene::AuthoredProp { key: "speed", value: "0.8" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "pilgrim-folk-b" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "477 0 -72" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 120 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“A estrada é longa, mas a fé é mais.”|“Ouvi passos na noite passada...”" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-speed", value: "0.8" },
             ],
             text: "",
             origin_file: "world/scenes/pilgrims-camp.xml",
@@ -1299,10 +1325,12 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("magic"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.4 0" },
                 ],
                 text: "",
@@ -1525,6 +1553,752 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v2.pilgrim-sanctuary-arch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 478.0, y: -0.0001, z: -64.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.pilgrim-sanctuary-arch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "478.00 -0.00 -64.00" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -35 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [60],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.08 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.50 0.09 1.80" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c4ab85" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.95, y: 1.55, z: -0.35 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.95 1.55 -0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 1.55 0.36" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#b5a387" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.95, y: 1.55, z: -0.35 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.95 1.55 -0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 1.55 0.36" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#b5a387" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.25, z: -0.35 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 3.25 -0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.45 0.28 0.42" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#baa88b" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 3.65, z: -0.35 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 3.65 -0.35" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.35 0.16 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#ccb590" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 4],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.95, y: 2.05, z: 0.06 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.95 2.05 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.72 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c89438" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 5],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.95, y: 2.05, z: 0.06 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.95 2.05 0.06" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.72 0.03" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#35486e" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 6],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.55, z: 0.25 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.839216, blue: 0.6, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.45,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.55 0.25" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd699" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [60, 7],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.pilgrim-wagon"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 493.8, y: -0.0001, z: -61.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.953717, z: 0.0, w: 0.300706 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.pilgrim-wagon" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "493.80 -0.00 -61.50" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 145 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [61],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.65 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.05 0.08 1.85" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#826748" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.98, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.98 1.05 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 0.35 1.80" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#735b3f" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.98, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.98 1.05 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 0.35 1.80" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#735b3f" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 2],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.12, y: 0.48, z: -1.15 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.12 0.48 -1.15" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.48" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#594530" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 3],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.12, y: 0.48, z: -1.15 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.12 0.48 -1.15" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.48" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#594530" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 4],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.12, y: 0.48, z: 1.15 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.12 0.48 1.15" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.48" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#594530" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 5],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.12, y: 0.48, z: 1.15 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.12 0.48 1.15" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.48" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#594530" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 6],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.54, y: 2.02, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.224951, w: 0.97437 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.54 2.02 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 26" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.68 0.05 1.75" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d6c29d" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 7],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.54, y: 2.02, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.224951, w: 0.97437 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.54 2.02 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -26" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.68 0.05 1.75" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d6c29d" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 8],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.42, y: 0.56, z: -2.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.42 0.56 -2.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.78" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b543a" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 9],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 0.56, z: -2.55 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 0.56 -2.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.05 0.78" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b543a" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [61, 10],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.pilgrim-milepost-cairn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 468.5, y: -0.0001, z: -70.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.pilgrim-milepost-cairn" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "468.50 -0.00 -70.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [62],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [62, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.pilgrim-milepost-torch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 468.5, y: -0.0001, z: -67.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.pilgrim-milepost-torch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "468.50 -0.00 -67.80" },
+            ],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [63],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [63, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [63, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.713725, blue: 0.392157, alpha: 1.0 }),
+                intensity: 3500.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb664" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3500" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [63, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.pilgrim-cauldron"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 482.5, y: -0.0001, z: -69.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cauldron_iron_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/interiors/cauldron_iron_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/interiors/cauldron_iron_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.pilgrim-cauldron" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "482.50 -0.00 -69.50" },
+            ],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [64],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene cauldron_iron"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cauldron_iron_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [64, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [64, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.pilgrim-rug"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 484.0, y: 0.0149, z: -67.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.pilgrim-rug" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "484.00 0.01 -67.60" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [65],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rug_woven"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/pilgrims-camp.xml",
+                origin_path: [65, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-

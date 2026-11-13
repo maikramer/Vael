@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -34,84 +34,59 @@ bevy_ecs::hierarchy::Children [
     }
     bevy_ecs::hierarchy::Children [
         #"escada-no-sela"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "escada-no-sela" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "-130 350 -172 353 -205 362" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "10" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "20" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "columnar" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.22" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "91" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.2" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "escada-no-sela",
+            path: [
+                [-130.0, 350.0],
+                [-172.0, 353.0],
+                [-205.0, 362.0],
             ],
-            text: "",
-            origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 0],
-            pose: false,
+            width: 10.0,
+            height: core::option::Option::Some(20.0),
+            profile: "columnar",
+            side: "left",
+            noise: 0.22,
+            gullies: 0.2,
+            talus: true,
+            seed: 91,
         }
         --
         #"escada-no-meio"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "escada-no-meio" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "-218 372 -252 378 -282 384" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "12" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "26" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "terraced" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "92" },
-                bevy_world_xml::bsn::WorldProp { key: "notches", value: "0.12" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "escada-no-meio",
+            path: [
+                [-218.0, 372.0],
+                [-252.0, 378.0],
+                [-282.0, 384.0],
             ],
-            text: "",
-            origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 1],
-            pose: false,
+            width: 12.0,
+            height: core::option::Option::Some(26.0),
+            profile: "terraced",
+            side: "left",
+            noise: 0.25,
+            notches: 0.12,
+            talus: true,
+            seed: 92,
         }
         --
         #"escada-no-alto"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "escada-no-alto" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "-295 390 -318 396" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "14" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "32" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "columnar" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.2" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "93" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.25" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "escada-no-alto",
+            path: [
+                [-295.0, 390.0],
+                [-318.0, 396.0],
             ],
-            text: "",
-            origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 2],
-            pose: false,
+            width: 14.0,
+            height: core::option::Option::Some(32.0),
+            profile: "columnar",
+            side: "left",
+            noise: 0.2,
+            gullies: 0.25,
+            talus: true,
+            seed: 93,
         }
         --
-        #"TerrainPad"
+        #TerrainPad
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -133,18 +108,19 @@ bevy_ecs::hierarchy::Children [
             pose: false,
         }
         --
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 140.0, y: 360.0 },
+            radius: 18.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "140 360" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "18" },
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/landforms/rampart.xml",
             origin_path: [0, 4],
@@ -173,23 +149,25 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         bevy_ecs::hierarchy::Children [
-            #"Cylinder"
+            #"torre-corpo"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.6, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
+                tag: "Lathe",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "3.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "torre-corpo" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "3.2 0 3.2 1.2 2.7 1.4 2.7 4.4 2.55 4.6 2.55 8 2.4 8.2 2.4 12.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "segments", value: "32" },
                     bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
                     bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
                     bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
                     bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a948a" },
                     bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",
@@ -197,79 +175,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.8, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.8 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.7" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.7" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#948e84" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 1],
-                pose: true,
-            }
-            --
-            #"Cylinder"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.35, y: 6.3, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.35 6.3 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.55" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.9" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e887e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 2],
-                pose: true,
-            }
-            --
-            #"Cylinder"
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.9, y: 10.2, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.9 10.2 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "2.1" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a847a" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 3],
-                pose: true,
-            }
-            --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.7, y: 13.1, z: 0.4 },
                 rotation: glam::Quat { x: 0.009562, y: 0.121494, z: 0.077874, w: 0.989486 },
@@ -293,7 +199,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.6, y: 12.4, z: -1.7 },
                 rotation: glam::Quat { x: 0.019945, y: -0.189764, z: -0.102608, w: 0.97625 },
@@ -317,7 +223,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.2, y: 11.6, z: 2.28 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -338,7 +244,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.6, y: 13.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -360,7 +266,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.6, y: 14.5, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -387,7 +293,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.4, y: 0.5, z: 4.6 },
                 rotation: glam::Quat { x: 0.039677, y: 0.323141, z: 0.11523, w: 0.938471 },
@@ -410,7 +316,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.8, y: 0.4, z: 5.4 },
                 rotation: glam::Quat { x: 0.018054, y: -0.258189, z: -0.06738, w: 0.963573 },
@@ -433,7 +339,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 3.2, y: 0.45, z: 3.4 },
                 rotation: glam::Quat { x: 0.098274, y: 0.505575, z: 0.163555, w: 0.841419 },
@@ -456,7 +362,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.6, y: 0.4, z: 3.0 },
                 rotation: glam::Quat { x: 0.100967, y: -0.027054, z: 0.257401, w: 0.960634 },
@@ -482,106 +388,1154 @@ bevy_ecs::hierarchy::Children [
         ]
         --
         #"crescente-do-ermo"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "crescente-do-ermo" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "396 100 416 94 434 104 444 124 440 148" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "12" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "24" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "columnar" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.24" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "94" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.2" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "crescente-do-ermo",
+            path: [
+                [396.0, 100.0],
+                [416.0, 94.0],
+                [434.0, 104.0],
+                [444.0, 124.0],
+                [440.0, 148.0],
             ],
-            text: "",
-            origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 6],
-            pose: false,
+            width: 12.0,
+            height: core::option::Option::Some(24.0),
+            profile: "columnar",
+            side: "left",
+            noise: 0.24,
+            gullies: 0.2,
+            talus: true,
+            seed: 94,
         }
         --
         #"arco-do-ermo"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Arch",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "arco-do-ermo" },
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "352 96" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "natural" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "20" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "12" },
-                bevy_world_xml::bsn::WorldProp { key: "thickness", value: "6" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "7" },
-                bevy_world_xml::bsn::WorldProp { key: "yaw", value: "40" },
-            ],
-            text: "",
-            origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 7],
-            pose: false,
+        bevy_ext_terrain::voxel::VoxelArch {
+            name: "arco-do-ermo",
+            at: [352.0, 96.0],
+            span: core::option::Option::Some(20.0),
+            height: 12.0,
+            thickness: 6.0,
+            depth: 7.0,
+            yaw: 40.0,
+            profile: bevy_ext_terrain::voxel::VoxelArchProfile::Natural,
         }
         --
         #"parede-pantano-sul"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "parede-pantano-sul" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "-334 -8 -337 -70 -331 -128" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "10" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "18" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.28" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "95" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.3" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "parede-pantano-sul",
+            path: [
+                [-334.0, -8.0],
+                [-337.0, -70.0],
+                [-331.0, -128.0],
             ],
-            text: "",
-            origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 8],
-            pose: false,
+            width: 10.0,
+            height: core::option::Option::Some(18.0),
+            profile: "concave",
+            side: "left",
+            noise: 0.28,
+            gullies: 0.3,
+            talus: true,
+            seed: 95,
         }
         --
         #"parede-pantano-norte"
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "parede-pantano-norte",
+            path: [
+                [-342.0, 128.0],
+                [-347.0, 72.0],
+                [-344.0, 52.0],
+            ],
+            width: 12.0,
+            height: core::option::Option::Some(22.0),
+            profile: "concave",
+            side: "left",
+            noise: 0.24,
+            gullies: 0.25,
+            talus: true,
+            seed: 96,
+        }
+        --
+        #"sceneref.v2.rampart-wall-n"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            translation: glam::Vec3 { x: 140.0, y: 100.270134, z: 366.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-wall-n" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "140.00 100.27 366.00" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [30],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.90 0.55 0.36" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#857c6f" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [30, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.45, y: 1.38, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.45 1.38 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.30 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a7266" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [30, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.4, y: 1.28, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.40 1.28 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.22 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e8578" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [30, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-wall-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 146.0, y: 100.270134, z: 360.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-wall-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "146.00 100.27 360.00" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [31],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.80 0.55 0.36" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#857c6f" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [31, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.35, y: 1.38, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.35 1.38 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.30 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a7266" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [31, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.3, y: 1.28, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.30 1.28 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.22 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e8578" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [31, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-wall-se"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 144.4, y: 100.270134, z: 355.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-wall-se" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "144.40 100.27 355.50" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [32],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.30 0.55 0.36" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#857c6f" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [32, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.85, y: 1.38, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.85 1.38 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.30 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a7266" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [32, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.8, y: 1.28, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.80 1.28 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.22 0.34" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e8578" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [32, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-pillar-sw1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 135.2, y: 100.120134, z: 356.2 },
+            rotation: glam::Quat { x: 0.021776, y: 0.216779, z: -0.022698, w: 0.975714 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-pillar-sw1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "135.20 100.12 356.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 3 25 -2" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [33],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [33, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-pillar-sw2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 137.4, y: 100.120134, z: 354.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.05, y: 1.15, z: 1.05 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-pillar-sw2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "137.40 100.12 354.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0; scale: 1.05 1.15 1.05" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [34],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [34, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-pillar-fallen"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 142.8, y: 100.520134, z: 354.8 },
+            rotation: glam::Quat { x: 0.574174, y: -0.252035, z: 0.228049, w: 0.744846 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-pillar-fallen" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "142.80 100.52 354.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 76 -28 12" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [35],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [35, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-gate-torch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 135.5, y: 100.26997, z: 355.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-gate-torch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "135.50 100.27 355.00" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [36],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [36, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5400.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5400" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [36, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [36, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-campfire"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 135.4, y: 100.270134, z: 361.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/campfire_pit_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/campfire_pit_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/campfire_pit_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-campfire" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "135.40 100.27 361.40" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [37],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [37, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.611765, blue: 0.282353, alpha: 1.0 }),
+                intensity: 6800.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff9c48" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6800" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [37, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.45 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [37, 2],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [37, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-bench"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 136.6, y: 100.270134, z: 363.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-bench" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "136.60 100.27 363.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [38],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [38, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-logs"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 134.4, y: 100.270134, z: 363.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/log_pile_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/log_pile_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-logs" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "134.40 100.27 363.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [39],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [39, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-rack"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 137.2, y: 100.270134, z: 364.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/weapon_rack_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/weapon_rack_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/weapon_rack_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-rack" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "137.20 100.27 364.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -15 0" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene weapon_rack"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [40, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 138.2, y: 100.270134, z: 364.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-barrel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "138.20 100.27 364.60" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [41, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 138.9, y: 100.270134, z: 364.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-crate" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "138.90 100.27 364.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-rock-ne"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 145.4, y: 100.090603, z: 364.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.358368, z: 0.0, w: 0.93358 },
+            scale: glam::Vec3 { x: 1.2, y: 1.0, z: 1.2 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_mossy_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-rock-ne" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "145.40 100.09 364.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 42 0; scale: 1.2 1 1.2" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_mossy"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [43, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-rock-s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 141.4, y: 100.090134, z: 354.6 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.1, y: 0.9, z: 1.1 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_mossy_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-rock-s" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "141.40 100.09 354.60" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0; scale: 1.1 0.9 1.1" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_mossy"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [44, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.rampart-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 140.0, y: 102.470134, z: 360.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
+            tag: "Composition",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "parede-pantano-norte" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "-342 128 -347 72 -344 52" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "12" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "22" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.24" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "96" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.25" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "140.00 102.47 360.00" },
             ],
             text: "",
             origin_file: "world/landforms/rampart.xml",
-            origin_path: [0, 9],
-            pose: false,
+            origin_path: [45],
+            pose: true,
         }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [45, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.chest-torre-quebrada"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 144.2, y: 100.270134, z: 363.6 },
+            rotation: glam::Quat { x: 0.0, y: -0.92388, z: 0.0, w: 0.382683 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "40" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+            ],
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.chest-torre-quebrada" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "144.20 100.27 363.60" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -135 0" },
+            ],
+            text: "",
+            origin_file: "world/landforms/rampart.xml",
+            origin_path: [46],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landforms/rampart.xml",
+                origin_path: [46, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-

@@ -166,12 +166,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("smoke"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "smoke", emission_rate: 14.0, shape_radius: core::option::Option::Some(0.2), start_life: glam::Vec2 { x: 2.5, y: 5.0 }, start_speed: glam::Vec2 { x: 1.2, y: 2.2 }, start_size: glam::Vec2 { x: 0.6, y: 1.2 }, start_color: core::option::Option::Some("#aaaaaa"), looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 5.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 14; shape-radius: 0.2; start-life-min: 2.5; start-life-max: 5; start-speed-min: 1.2; start-speed-max: 2.2; start-size-min: 0.6; start-size-max: 1.2; start-color: #aaaaaa; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/forge.xml",
@@ -192,12 +194,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "anvil.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "anvil" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-31.8 0 -28.2" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "anvil.lua" },
             ],
             text: "",
             origin_file: "world/cities/discordia/forge.xml",
@@ -478,14 +482,20 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.069756, z: 0.0, w: 0.997564 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "city_stone" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_blacksmith" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-31.8 0 -26.2" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 8 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "city_stone" },
             ],
             text: "",
             origin_file: "world/cities/discordia/forge.xml",
@@ -526,6 +536,288 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v3.forge-weapon-rack"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.2, y: 0.0, z: -30.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/weapon_rack_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/weapon_rack_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/weapon_rack_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.forge-weapon-rack" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.20 0.00 -30.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/forge.xml",
+            origin_path: [40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene weapon_rack"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [40, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.forge-trough"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.2, y: 0.0, z: -30.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/quench_trough_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/quench_trough_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/quench_trough_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.forge-trough" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.20 0.00 -30.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/forge.xml",
+            origin_path: [41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene quench_trough"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/quench_trough_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [41, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.forge-logs"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -35.4, y: 0.0, z: -32.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/log_pile_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/log_pile_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.forge-logs" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-35.40 0.00 -32.60" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/forge.xml",
+            origin_path: [42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.forge-brazier"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.5, y: 0.0, z: -26.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.forge-brazier" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.50 0.00 -26.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/forge.xml",
+            origin_path: [43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [43, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.85 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [43, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.54902, blue: 0.235294, alpha: 1.0 }),
+                intensity: 5400.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8c3c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5400" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [43, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.forge-chimney-smoke"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -27.1, y: 0.0, z: -33.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.forge-chimney-smoke" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27.10 0.00 -33.40" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/forge.xml",
+            origin_path: [44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 6.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 6.4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/forge.xml",
+                origin_path: [44, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-

@@ -2661,14 +2661,16 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/farm/fence_gate_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/farm/fence_gate_lod2.glb"),
+                near: core::option::Option::Some(40.0),
+                mid: core::option::Option::Some(110.0),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_gate_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/farm/fence_gate_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/farm/fence_gate_lod2.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "40" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "110" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/approach.xml",
@@ -2956,6 +2958,1247 @@ bevy_ecs::hierarchy::Children [
             origin_path: [7, 59],
             pose: true,
         }
+        --
+        #"barril-portao-a"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.6, y: 0.62, z: 14.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Lathe",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "barril-portao-a" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.6 0.62 14.4" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.42 -0.55 0.5 -0.45 0.56 -0.2 0.58 0 0.56 0.2 0.5 0.45 0.42 0.55" },
+                bevy_world_xml::bsn::WorldProp { key: "segments", value: "24" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a5c3a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.82" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 60],
+            pose: true,
+        }
+        --
+        #"barril-portao-b"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.8, y: 0.62, z: 13.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Lathe",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "barril-portao-b" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.8 0.62 13.5" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.42 -0.55 0.5 -0.45 0.56 -0.2 0.58 0 0.56 0.2 0.5 0.45 0.42 0.55" },
+                bevy_world_xml::bsn::WorldProp { key: "segments", value: "24" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a5c3a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.82" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 60],
+            pose: true,
+        }
+        --
+        #"barril-portao-c"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.4, y: 0.62, z: 15.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Lathe",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "barril-portao-c" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.4 0.62 15.2" },
+                bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.42 -0.55 0.5 -0.45 0.56 -0.2 0.58 0 0.56 0.2 0.5 0.45 0.42 0.55" },
+                bevy_world_xml::bsn::WorldProp { key: "segments", value: "24" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a5c3a" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.82" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [7, 60],
+            pose: true,
+        }
+        --
+        #"sceneref.v3.approach-n-torch-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.4, y: 0.0045, z: 44.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-torch-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.40 0.00 44.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [80],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [80, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [80, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [80, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-torch-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.4, y: 0.0045, z: 44.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-torch-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.40 0.00 44.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [81],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [81, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [81, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [81, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-cairn-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.8, y: 0.2326, z: 48.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-cairn-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.80 0.23 48.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [82],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [82, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-cairn-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.8, y: 0.2326, z: 48.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-cairn-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.80 0.23 48.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [83],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [83, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-bench-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.4, y: 0.0583, z: 46.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-bench-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.40 0.06 46.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [84],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [84, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-bench-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.2, y: 0.0689, z: 46.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-bench-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.20 0.07 46.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [85],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [85, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-crate-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.3873, z: 49.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.156434, z: 0.0, w: 0.987688 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-crate-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.80 0.39 49.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [86],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [86, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-crate-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.3731, z: 49.4 },
+            rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-crate-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.80 0.37 49.40" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [87],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [87, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-barrel-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -7.2, y: 0.4014, z: 49.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-barrel-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.20 0.40 49.60" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [88],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [88, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-n-barrel-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 7.2, y: 0.3868, z: 49.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-n-barrel-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.20 0.39 49.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [89],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [89, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-torch-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.4, y: 0.0048, z: -44.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-torch-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.40 0.00 -44.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [90],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [90, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [90, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [90, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-torch-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.4, y: 0.0048, z: -44.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-torch-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.40 0.00 -44.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [91],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [91, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [91, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [91, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-cairn-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.8, y: 0.2816, z: -48.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-cairn-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.80 0.28 -48.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -15 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [92],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [92, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-cairn-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.8, y: 0.2898, z: -48.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-cairn-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.80 0.29 -48.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [93],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [93, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-bench-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.2, y: 0.0827, z: -46.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-bench-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.20 0.08 -46.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [94],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [94, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-bench-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.4, y: 0.0847, z: -46.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-bench-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.40 0.08 -46.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [95],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [95, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-crate-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.8, y: 0.4752, z: -49.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.190809, z: 0.0, w: 0.981627 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-crate-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.80 0.48 -49.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -22 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [96],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [96, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-crate-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.8, y: 0.464, z: -49.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-crate-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.80 0.46 -49.40" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [97],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [97, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-barrel-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -7.2, y: 0.4823, z: -49.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-barrel-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.20 0.48 -49.60" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [98],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [98, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.approach-s-barrel-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 7.2, y: 0.4812, z: -49.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.approach-s-barrel-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.20 0.48 -49.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/approach.xml",
+            origin_path: [99],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [99, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-

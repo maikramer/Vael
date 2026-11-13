@@ -62,12 +62,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/audio_zone.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-audio-zone" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/audio_zone.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
         ],
         text: "",
@@ -82,12 +84,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/rules_host.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-rules" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/rules_host.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
         ],
         text: "",
@@ -102,12 +106,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/devmode.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-dev" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/devmode.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
         ],
         text: "",
@@ -122,12 +128,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/abilities.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-controller" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/abilities.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
         ],
         text: "",
@@ -142,12 +150,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/combat.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-combat" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/combat.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
         ],
         text: "",
@@ -162,12 +172,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/hotbar.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-hotbar" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/hotbar.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
         ],
         text: "",
@@ -182,19 +194,47 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "game/equipment.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "tocha-x", value: "-0.002" },
+            bevy_ext_scene::AuthoredProp { key: "tocha-y", value: "0.241" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-equipment-interior" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "game/equipment.lua" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-tocha-x", value: "-0.002" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-tocha-y", value: "0.241" },
         ],
         text: "",
         origin_file: "world/autoload/player.xml",
         origin_path: [8],
+        pose: true,
+    }
+    --
+    #"game-lua-voice"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "game/voice_host.lua",
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "game-lua-voice" },
+            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
+        ],
+        text: "",
+        origin_file: "world/autoload/player.xml",
+        origin_path: [9],
         pose: true,
     }
 ]

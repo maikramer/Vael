@@ -68,9 +68,33 @@ Editar no **Jackdaw oficial** (`jd open .`). Estrutura do `world.bsn`:
   atributos; o componente ganha a um atributo homónimo. Migrar mais ficheiros:
   `cargo run -p bevy_ext_world --example bsn_migrate -- <ficheiros.bsn>` (só
   move o que volta igual; idempotente) + `bsn_equiv` contra a cópia de antes;
+  a 2026-11-13 juntaram-se `ModelLod` (lod1/lod2/limiares), `FloraStation`
+  (`prop-flora`), `ScriptRef` (`script`), `AuthoredProps` (`prop-*`),
+  `ParticleSpec`, `SpawnExclusionSpec` e `PortalSpec` (+4.5k nós). O jogo lê
+  colheita/destrutível tipados (`harvest.rs::from_specs`, paridade testada);
+- `assets/public/world` é um **symlink** para `world/`: o Jackdaw grava os
+  `IsA.source` relativos à pasta de assets (`jackdaw.toml assets_dir`); sem o
+  link o `scene.save` recusa o `world.bsn` ("absolute path"). Gravar no editor
+  acrescenta `SceneNodeId`/`PrefabEntityId` (equivalente para o loader);
   Precedência: cena > `config.yaml`/constantes; `VAEL_START_*`, `VIBER_NO_*`
   e `VAEL_FLORA_*` ganham (QA). `vael --export-settings [--force]` reescreve
   os ficheiros com os valores de origem.
+- **terreno voxel como componentes** (`bevy_ext_terrain`): a âncora
+  `VoxelTerrain` no `<Terrain>` do `world.bsn` e as features — `<Cave>`
+  (salas/chaminés dentro do componente), `<Arch>` e `<Cliff>` — são
+  componentes; o loader devolve-os à vista DSL e o runtime do Viber não sabe
+  a diferença. O editor Jackdaw cria-as assim (painel *Voxel Terrain*,
+  incl. cliff); as features filhas da âncora **sobem a irmãs** na vista
+  (o parser trata features de solo como folhas e ignora filhos do
+  `<Terrain>`). Os parâmetros de render (LOD, splat, `layers`) continuam no
+  nó DSL `<Terrain>`. Migrar mais ficheiros:
+  `cargo run -p bevy_ext_world --features terrain --example bsn_migrate --
+  --terrain <ficheiros.bsn>` (só move o que volta igual por valor;
+  idempotente) e o gate é `cargo run -p bevy_ext_world --features terrain
+  --example bsn_equiv -- <antes.bsn> <depois.bsn>` (features comparam
+  ausente ⇔ default do spec, bools por valor e `width`/`span` do arco são o
+  mesmo attr). O binário de release tem de ser posterior à migração — um
+  binário velho não conhece os componentes.
 
 Hand-editar uma pose à espera que a engine a ajuste não funciona.
 Depois de pincéis: `viber tool settle`. Árvores e dressing:
@@ -234,8 +258,13 @@ o wrapper por um binário fixo. O editor oficial: `jd open .` (abre
 (`../bevy_extensions/extensions/` e `../viber-tools/extensions/`):
 `bevy_voxel_terrain_jackdaw` (terreno + paint, preview progressivo de
 props/terreno, regista o `WorldNode`), `vael_scene_jackdaw` (ícones do Outliner, categorias Physics/Gameplay/DSL
-no inspector, gizmos de colisores/exclusões/spawners/portais/luzes e painel
-**Vael: Cena** com problemas), `vael_jackdaw` (painéis **Ambiente**, **PostFX** e **Flora**:
+no inspector, gizmos de colisores/exclusões/spawners/portais/luzes, painel
+**Vael: Cena** com problemas e File → "Vael: validar e gravar", e painel
+**Vael: Assets**: modelos da cena por categoria, "Colocar" (um por clique) e
+"Pincel" (espalha no raio). Cada cópia é um `entity.duplicate` de uma
+instância `GltfScene` existente — herda colisor/colheita/LOD — assente no
+`.ahgt`; um traço = um undo. Para agentes: operador `vael.assets.place_at`
+(`url`, `x`, `z`, `count`, `radius`)), `vael_jackdaw` (painéis **Ambiente**, **PostFX** e **Flora**:
 hora/clima com sol de preview, efeitos com "lente do jogo" no viewport,
 espécies com preview real do `bevy_flora` e árvores nas estações) e
 `vael_content_jackdaw` (painéis **Itens**, **Marcos**, **Progressão**,

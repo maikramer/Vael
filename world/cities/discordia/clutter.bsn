@@ -1011,12 +1011,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -1089,12 +1091,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -1460,12 +1464,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -1538,12 +1544,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -1909,12 +1917,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -1987,12 +1997,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -2271,12 +2283,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -2349,12 +2363,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -2719,12 +2735,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -2797,12 +2815,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -2875,12 +2895,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -2953,12 +2975,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -3031,12 +3055,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -3109,12 +3135,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/clutter.xml",
@@ -3424,12 +3452,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "tree_pine",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "33.4 0 6.2" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_pine" },
             ],
             text: "",
             origin_file: "world/cities/discordia/clutter.xml",
@@ -3449,12 +3479,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "tree_pine",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-31.2 0 -8.4" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -55 0" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_pine" },
             ],
             text: "",
             origin_file: "world/cities/discordia/clutter.xml",
@@ -3474,12 +3506,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "tree_oak",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "31.4 0 -14.2" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
             origin_file: "world/cities/discordia/clutter.xml",
@@ -3499,12 +3533,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "tree_oak",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-14.2 0 31.4" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -100 0" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "tree_oak" },
             ],
             text: "",
             origin_file: "world/cities/discordia/clutter.xml",

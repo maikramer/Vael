@@ -152,11 +152,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 190.0, y: 64.0 },
+            radius: 24.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "190 64" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "24" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -520,11 +522,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 216.0, y: -36.0 },
+            radius: 18.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "216 -36" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "18" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -632,12 +636,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/sun-relic.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "desert-sun-relic" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "248 50.9511 74" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/sun-relic.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -686,10 +692,12 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("sparkle"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 8.4 0" },
                 ],
                 text: "",
@@ -705,11 +713,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 240.0, y: 80.0 },
+            radius: 20.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "240 80" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "20" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -801,11 +811,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 156.0, y: -116.0 },
+            radius: 14.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "156 -116" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "14" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -1019,14 +1031,16 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/infra/river_bridge_stone_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/infra/river_bridge_stone_lod2.glb"),
+                near: core::option::Option::Some(55.0),
+                mid: core::option::Option::Some(130.0),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_stone_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/infra/river_bridge_stone_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/infra/river_bridge_stone_lod2.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "55" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "130" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -1093,11 +1107,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 300.0, y: 122.0 },
+            radius: 22.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "300 122" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -1191,13 +1207,15 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/moss_rock_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/moss_rock_lod2.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",
@@ -1229,13 +1247,15 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",
@@ -1270,12 +1290,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.002515, y: -0.691444, z: -0.00261, w: 0.722421 },
                 scale: glam::Vec3 { x: 1.3442, y: 1.3442, z: 1.3442 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/moss_rock_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/moss_rock_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0000" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "121.812 49.2203 98.5541" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "-9.3899 -87.4556 -9.3976" },
@@ -1293,12 +1315,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.027962, y: -0.969191, z: 0.244695, w: -0.003429 },
                 scale: glam::Vec3 { x: 1.713, y: 1.713, z: 1.713 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/moss_rock_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/moss_rock_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0001" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "130.0629 49.7996 108.4405" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "151.6915 1.165 176.9886" },
@@ -1316,12 +1340,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.008609, y: 0.950777, z: 0.046618, w: 0.306227 },
                 scale: glam::Vec3 { x: 1.3466, y: 1.3466, z: 1.3466 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0002" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "143.594 48.1245 79.8894" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "-174.1094 35.6696 179.1408" },
@@ -1339,12 +1365,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.99327, z: 0.0, w: -0.115826 },
                 scale: glam::Vec3 { x: 1.6034, y: 1.6034, z: 1.6034 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0003" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "120.2177 49.552 86.2581" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 13.3025 180" },
@@ -1362,12 +1390,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.013216, y: -0.32203, z: 0.010056, w: 0.946584 },
                 scale: glam::Vec3 { x: 0.9541, y: 0.9541, z: 0.9541 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/moss_rock_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/moss_rock_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0004" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "154.2824 50.8795 104.6179" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "-1.3408 -37.5839 0.761" },
@@ -1385,12 +1415,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.039077, y: 0.706541, z: 0.015587, w: 0.70642 },
                 scale: glam::Vec3 { x: 1.6206, y: 1.6206, z: 1.6206 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0005" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "155.9615 48.9635 95.9488" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "-91.079 85.5695 89.1741" },
@@ -1408,12 +1440,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: -0.034079, y: -0.809665, z: 0.246733, w: 0.531417 },
                 scale: glam::Vec3 { x: 1.4851, y: 1.4851, z: 1.4851 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/moss_rock_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/moss_rock_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/moss_rock_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0006" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "144.5266 50.3561 107.6367" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "130.7842 -61.3251 154.437" },
@@ -1431,12 +1465,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.033167, y: -0.417396, z: 0.025463, w: 0.907762 },
                 scale: glam::Vec3 { x: 1.2361, y: 1.2361, z: 1.2361 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/props/rock_mossy_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/props/rock_mossy_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-51-0007" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "155.9939 48.8811 86.866" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "7.1512 -49.1219 6.485" },
@@ -1503,13 +1539,15 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",
@@ -1544,12 +1582,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.647126, z: 0.0, w: 0.762383 },
                 scale: glam::Vec3 { x: 0.3773, y: 0.3773, z: 0.3773 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0000" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "128.2487 48.8219 90.7187" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -80.6505 0" },
@@ -1567,12 +1607,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.856401, z: 0.0, w: 0.516311 },
                 scale: glam::Vec3 { x: 0.5902, y: 0.5902, z: 0.5902 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0001" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "131.3688 48.8219 89.8533" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -62.1702 180" },
@@ -1590,12 +1632,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.016419, z: 0.0, w: 0.999865 },
                 scale: glam::Vec3 { x: 0.5906, y: 0.5906, z: 0.5906 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0002" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "136.6867 48.8219 101.2375" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -1.8816 0" },
@@ -1613,12 +1657,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.356686, z: 0.0, w: 0.934224 },
                 scale: glam::Vec3 { x: 0.4753, y: 0.4753, z: 0.4753 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0003" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "131.9821 48.8219 87.6253" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -41.7936 0" },
@@ -1636,12 +1682,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.068283, z: 0.0, w: 0.997666 },
                 scale: glam::Vec3 { x: 0.5228, y: 0.5228, z: 0.5228 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0004" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "128.7373 48.8219 100.7853" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 7.8307 0" },
@@ -1659,12 +1707,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.666609, z: 0.0, w: 0.745407 },
                 scale: glam::Vec3 { x: 0.6071, y: 0.6071, z: 0.6071 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0005" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "133.7213 48.8219 81.0844" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 83.6118 0" },
@@ -1682,12 +1732,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.061342, z: 0.0, w: 0.998117 },
                 scale: glam::Vec3 { x: 0.6071, y: 0.6071, z: 0.6071 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0006" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "131.8319 48.8219 85.202" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 7.0337 0" },
@@ -1705,12 +1757,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.998318, z: 0.0, w: 0.057981 },
                 scale: glam::Vec3 { x: 0.6048, y: 0.6048, z: 0.6048 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0007" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "143.3444 48.8219 101.6028" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -6.6479 180" },
@@ -1728,12 +1782,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.763165, z: 0.0, w: -0.646203 },
                 scale: glam::Vec3 { x: 0.4629, y: 0.4629, z: 0.4629 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0008" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "147.6056 49.0854 102.2397" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 80.5119 180" },
@@ -1751,12 +1807,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.370548, z: 0.0, w: 0.928813 },
                 scale: glam::Vec3 { x: 0.4008, y: 0.4008, z: 0.4008 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0009" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "148.7905 48.8219 90.5121" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -43.4988 0" },
@@ -1774,12 +1832,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.422632, z: 0.0, w: 0.906301 },
                 scale: glam::Vec3 { x: 0.4172, y: 0.4172, z: 0.4172 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0010" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "151.3771 48.8219 92.7742" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -50.0017 0" },
@@ -1797,12 +1857,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.57059, z: 0.0, w: 0.821235 },
                 scale: glam::Vec3 { x: 0.5552, y: 0.5552, z: 0.5552 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0011" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "137.2004 48.8219 90.2604" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69.5828 0" },
@@ -1820,12 +1882,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.939771, z: 0.0, w: -0.341804 },
                 scale: glam::Vec3 { x: 0.3866, y: 0.3866, z: 0.3866 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0012" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "149.0961 48.8219 80.0727" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 39.9736 180" },
@@ -1843,12 +1907,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.961097, z: 0.0, w: 0.276209 },
                 scale: glam::Vec3 { x: 0.417, y: 0.417, z: 0.417 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0013" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "140.6402 48.8219 86.741" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -32.0682 180" },
@@ -1866,12 +1932,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.798564, z: 0.0, w: -0.60191 },
                 scale: glam::Vec3 { x: 0.403, y: 0.403, z: 0.403 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0014" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "148.9674 48.8219 94.2051" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 74.0136 180" },
@@ -1889,12 +1957,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.955044, z: 0.0, w: 0.296463 },
                 scale: glam::Vec3 { x: 0.3692, y: 0.3692, z: 0.3692 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0015" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "129.9715 48.8219 95.7986" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -34.4906 180" },
@@ -1912,12 +1982,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: -0.315344, z: 0.0, w: 0.948977 },
                 scale: glam::Vec3 { x: 0.6293, y: 0.6293, z: 0.6293 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0016" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "136.4301 48.8219 97.4442" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -36.7632 0" },
@@ -1935,12 +2007,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.425654, z: 0.0, w: 0.904886 },
                 scale: glam::Vec3 { x: 0.3712, y: 0.3712, z: 0.3712 },
             }
+            bevy_ext_scene::ModelLod {
+                lod1: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod1.glb"),
+                lod2: core::option::Option::Some("/assets/meshes/swamp/lily_pad_lod2.glb"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "GltfScene",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/lily_pad_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/swamp/lily_pad_lod1.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/swamp/lily_pad_lod2.glb" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-52-0017" },
                     bevy_world_xml::bsn::WorldProp { key: "translation", value: "148.8211 49.5174 103.8951" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 50.3841 0" },
@@ -2018,12 +2092,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 42.0, shape_radius: core::option::Option::Some(0.32), start_life: glam::Vec2 { x: 0.45, y: 1.25 }, start_speed: glam::Vec2 { x: 1.2, y: 2.7 }, start_size: glam::Vec2 { x: 0.3, y: 0.62 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.30 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 42; shape-radius: 0.32; start-life-min: 0.45; start-life-max: 1.25; start-speed-min: 1.2; start-speed-max: 2.7; start-size-min: 0.3; start-size-max: 0.62; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -2124,11 +2200,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 170.0, y: -70.0 },
+            radius: 18.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "170 -70" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "18" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -2202,10 +2280,12 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("ground-dust"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "ground-dust" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.3 0" },
                 ],
                 text: "",
@@ -2221,11 +2301,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 260.0, y: 16.0 },
+            radius: 14.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "260 16" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "14" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 38.7304 0" },
             ],
             text: "",
@@ -2240,12 +2322,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "ambient-water.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "ambient_water_oasis" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 46.8761 92" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "ambient-water.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2265,19 +2349,25 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "70" },
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "45" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "bombas" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Revistar o cofre da caravana" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "caravana-cofre" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "219.20 44.417 -33.60" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 200 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "70" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "45" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bombas" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Revistar o cofre da caravana" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2315,19 +2405,25 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "80" },
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "55" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "bomba" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o tesouro do obelisco" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "obelisco-tesouro" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "243.40 50.735 78.20" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 160 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "80" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "55" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bomba" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o tesouro do obelisco" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2365,13 +2461,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "126 49.31 84" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2391,13 +2489,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "154 49.1 100" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -70 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.35" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2417,13 +2517,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "128 48.47 102" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 120 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2443,13 +2545,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "150 48.93 80" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2469,13 +2573,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "136 49.3 106" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.25" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/desert.xml",
@@ -2875,12 +2981,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.28 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -2953,12 +3061,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.28 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.28; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -3631,10 +3741,12 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("magic"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.4 0" },
                 ],
                 text: "",
@@ -3643,6 +3755,1172 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v3.desert-arch-cairn-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 183.5, y: 50.9779, z: 62.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.190809, z: 0.0, w: 0.981627 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-arch-cairn-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "183.50 50.98 62.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 22 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [300],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [300, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [300, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-arch-cairn-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 196.2, y: 51.4521, z: 66.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-arch-cairn-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "196.20 51.45 66.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [301],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [301, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [301, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-arch-pillar"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 193.0, y: 51.3905, z: 68.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.406737, z: 0.0, w: 0.913545 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-arch-pillar" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "193.00 51.39 68.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 48 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [302],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [302, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-caravan-pillar"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 221.5, y: 44.4839, z: -37.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.207912, z: 0.0, w: 0.978148 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-caravan-pillar" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "221.50 44.48 -37.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -24 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [303],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [303, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-caravan-crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 217.5, y: 44.3228, z: -31.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.156434, z: 0.0, w: 0.987688 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-caravan-crate" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "217.50 44.32 -31.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [304],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [304, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-caravan-barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 210.5, y: 43.2437, z: -35.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.087156, z: 0.0, w: 0.996195 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-caravan-barrel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "210.50 43.24 -35.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -10 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [305],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [305, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-obelisk-brazier-n"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 240.0, y: 50.993, z: 74.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-obelisk-brazier-n" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "240.00 50.99 74.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [306],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [306, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [306, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.705882, blue: 0.360784, alpha: 1.0 }),
+                intensity: 5000.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5000" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [306, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-obelisk-brazier-s"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 240.0, y: 50.3727, z: 85.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-obelisk-brazier-s" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "240.00 50.37 85.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [307],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [307, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [307, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.705882, blue: 0.360784, alpha: 1.0 }),
+                intensity: 5000.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5000" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [307, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-obelisk-cairn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 236.2, y: 50.9584, z: 76.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-obelisk-cairn" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "236.20 50.96 76.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [308],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_cairn"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [308, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [308, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-obelisk-sparkle"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 240.0, y: 50.7952, z: 78.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-obelisk-sparkle" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "240.00 50.80 78.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [309],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.35, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.35 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [309, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.chest-desert-obelisk"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 236.5, y: 50.5633, z: 83.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "45" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+            ],
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.chest-desert-obelisk" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "236.50 50.56 83.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [310],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [310, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-cistern-pillar-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 151.5, y: 51.1119, z: -114.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-cistern-pillar-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "151.50 51.11 -114.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [311],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [311, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-cistern-pillar-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 159.5, y: 50.9384, z: -112.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-cistern-pillar-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "159.50 50.94 -112.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -40 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [312],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [312, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-cistern-crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 153.5, y: 53.1114, z: -119.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.241922, z: 0.0, w: 0.970296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-cistern-crate" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "153.50 53.11 -119.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 28 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [313],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [313, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.desert-cistern-barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 154.6, y: 53.2657, z: -119.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.104528, z: 0.0, w: 0.994522 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.desert-cistern-barrel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "154.60 53.27 -119.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -12 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/desert.xml",
+            origin_path: [314],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/desert.xml",
+                origin_path: [314, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"judge-desert"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 224.0, y: 50.8094, z: 86.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/druid_stone_altar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/druid_stone_altar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/druid_stone_altar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "judge-site.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "verdict_id", value: "desert_ascetic" },
+            ],
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "judge-desert" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "224.0 50.8094 86.0" },
+            ],
+            text: "",
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene druid_stone_altar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/druid_stone_altar_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.745098, blue: 0.333333, alpha: 1.0 }),
+                intensity: 2400.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffbe55" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2400" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                pose: true,
+            }
+        ]
+        --
+        #"desert-venom-shrine"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 186.0, y: 58.0406, z: -132.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "crystal-shrine.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "riddle_id", value: "desert_venom" },
+            ],
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "desert-venom-shrine" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "186.0 58.0406 -132.0" },
+            ],
+            text: "",
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.9 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.4, green: 0.85098, blue: 0.721569, alpha: 1.0 }),
+                intensity: 2600.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x66d9b8" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2600" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                pose: true,
+            }
+        ]
+        --
+        #"echo-stone-desert"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 232.0, y: 51.1317, z: 74.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 0.7, y: 0.7, z: 0.7 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/stone_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/stone_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/echo-stone.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "chord", value: "brasa" },
+            ],
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "echo-stone-desert" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "232.0 51.1317 74.0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7" },
+            ],
+            text: "",
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.580392, blue: 0.301961, alpha: 1.0 }),
+                intensity: 2200.0,
+                radius: 0.35,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff944d" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+                ],
+                text: "",
+                pose: true,
+            }
+        ]
     ]
 ]
-

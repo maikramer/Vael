@@ -75,6 +75,483 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v3.barn-hay-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.5, y: 0.0, z: 27.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.156434, z: 0.0, w: 0.987688 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/hay_bale_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-hay-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.50 0.00 27.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene hay_bale"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [40, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-hay-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.2, y: 0.0, z: 28.4 },
+            rotation: glam::Quat { x: 0.0, y: -0.207912, z: 0.0, w: 0.978148 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/hay_bale_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-hay-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.20 0.00 28.40" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -24 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene hay_bale"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [41, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-trough"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -28.5, y: 0.0, z: 26.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/quench_trough_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/quench_trough_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/quench_trough_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-trough" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.50 0.00 26.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene quench_trough"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/quench_trough_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -29.9, y: 0.0, z: 25.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-barrel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-29.90 0.00 25.80" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [43, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -31.0, y: 0.0, z: 25.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-crate" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-31.00 0.00 25.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [44, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-logs"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -34.8, y: 0.0, z: 25.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.069756, z: 0.0, w: 0.997564 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/log_pile_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/log_pile_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-logs" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34.80 0.00 25.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 8 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [45],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [45, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-chopping-block"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -33.1, y: 0.0, z: 25.6 },
+            rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/chopping_block_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/chopping_block_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/chopping_block_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-chopping-block" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-33.10 0.00 25.60" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -30 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [46],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene chopping_block"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/chopping_block_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [46, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-torch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -27.5, y: 0.0, z: 32.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-torch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-27.50 0.00 32.80" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [47],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [47, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [47, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [47, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.barn-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -32.2, y: 0.0, z: 26.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.barn-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-32.20 0.00 26.60" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/barn.xml",
+            origin_path: [48],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/barn.xml",
+                origin_path: [48, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-

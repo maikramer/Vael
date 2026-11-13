@@ -181,7 +181,7 @@ bevy_ecs::hierarchy::Children [
         tag: "Composition",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.shell" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.00 0.00" },
             bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
         ],
         text: "",
@@ -192,7 +192,7 @@ bevy_ecs::hierarchy::Children [
     bevy_ecs::hierarchy::Children [
         #"Box"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.06, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: -0.06, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -200,9 +200,9 @@ bevy_ecs::hierarchy::Children [
             tag: "Box",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.0" },
                 bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.06 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 -0.06 0.00" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "9.60 0.06 7.60" },
             ],
             text: "",
@@ -210,29 +210,1138 @@ bevy_ecs::hierarchy::Children [
             origin_path: [4, 0],
             pose: true,
         }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.4, y: 1.2, z: 7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.40 1.20 7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.60 1.20 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 1],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.4, y: 1.2, z: 7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.40 1.20 7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.60 1.20 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 2],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.45, z: 7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.45 7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.80 0.45 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 3],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.22, z: 7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.22 7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.80 0.18 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 4],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.15, y: 1.2, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.15 1.20 -7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.85 1.20 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 5],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.25, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.25 -7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.30 0.15 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 6],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.15, y: 1.2, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.15 1.20 -7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.85 1.20 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 7],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 1.2, z: -5.12 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 1.20 -5.12" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 1.20 1.88" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 8],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 0.45, z: -2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 0.45 -2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.45 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 9],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 2.15, z: -2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 2.15 -2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.25 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 10],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 1.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 1.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 1.20 1.65" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 11],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 0.45, z: 2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 0.45 2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.45 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 12],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 2.15, z: 2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 2.15 2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.25 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 13],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 9.0, y: 1.2, z: 5.12 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.00 1.20 5.12" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 1.20 1.88" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 14],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 1.2, z: -5.12 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 1.20 -5.12" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 1.20 1.88" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 15],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 0.45, z: -2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 0.45 -2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.45 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 16],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 2.15, z: -2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 2.15 -2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.25 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 17],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 1.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 1.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 1.20 1.65" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 18],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 0.45, z: 2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 0.45 2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.45 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 19],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 2.15, z: 2.45 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 2.15 2.45" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.25 0.80" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 20],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 1.2, z: 5.12 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wall_plaster/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.4" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wall_plaster/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 1.20 5.12" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 1.20 1.88" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 21],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.82, y: 1.2, z: -6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.82 1.20 -6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 22],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.82, y: 1.2, z: 6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.82 1.20 6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 23],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.82, y: 1.2, z: -6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.82 1.20 -6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 24],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.82, y: 1.2, z: 6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.82 1.20 6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 25],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.86, y: 1.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.86 1.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 26],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.86, y: 1.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.86 1.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 27],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -4.5, y: 1.2, z: 6.86 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.50 1.20 6.86" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 28],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 4.5, y: 1.2, z: 6.86 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.50 1.20 6.86" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.18 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 29],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1.46, y: 1.05, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.46 1.05 -7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.16 1.05 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 30],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1.46, y: 1.05, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.46 1.05 -7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.16 1.05 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 31],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.19, z: -7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.19 -7.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.60 0.09 0.20" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 32],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -1.86, y: 1.2, z: 6.96 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.86 1.20 6.96" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.10 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 33],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1.86, y: 1.2, z: 6.96 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.86 1.20 6.96" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.10 1.20 0.18" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 34],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.92, z: 6.94 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.92 6.94" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.84 0.05 0.22" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 35],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.06, z: 6.96 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.06 6.96" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.84 0.08 0.20" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 36],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.84, y: 0.14, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.84 0.14 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.14 6.40" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 37],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.84, y: 0.14, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.84 0.14 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.05 0.14 6.40" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 38],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.14, z: 6.84 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.14 6.84" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "8.40 0.14 0.05" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 39],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -5.15, y: 0.14, z: -6.84 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.15 0.14 -6.84" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.45 0.14 0.05" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 40],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 5.15, y: 0.14, z: -6.84 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.15 0.14 -6.84" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "3.45 0.14 0.05" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 41],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.78, y: 2.34, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.78 2.34 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.10 6.84" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 42],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.78, y: 2.34, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.78 2.34 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.14 0.10 6.84" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 43],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.34, z: 6.78 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.34 6.78" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "8.80 0.10 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 44],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.34, z: -6.78 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.34 -6.78" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "8.80 0.10 0.14" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 45],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.62, y: 2.18, z: -3.9 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.62 2.18 -3.90" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.05 0.06" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 46],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.62, y: 2.18, z: -3.9 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.62 2.18 -3.90" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.05 0.06" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 47],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -8.62, y: 2.18, z: 3.9 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.62 2.18 3.90" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.05 0.06" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 48],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 8.62, y: 2.18, z: 3.9 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.62 2.18 3.90" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.05 0.06" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 49],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -3.2, y: 1.55, z: 6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.20 1.55 6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.72 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a3e2e" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 50],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.2, y: 1.55, z: 6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.20 1.55 6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.72 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 51],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.4, y: 1.55, z: 6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.40 1.55 6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.44 0.65 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#35556e" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 52],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 6.4, y: 1.55, z: 6.82 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.40 1.55 6.82" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.44 0.65 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a3e2e" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "cloth" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [4, 53],
+            pose: true,
+        }
     ]
     --
-    #"interior.market.market.stall"
+    #"interior.market.rug.entry"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.0, y: 0.0, z: -2.0 },
-        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-    }
-    bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/market_stall_collision.glb", base: true },
+        translation: glam::Vec3 { x: 0.0, y: 0.005, z: -3.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.15, y: 1.0, z: 1.15 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.market.stall" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -2" },
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "merchant.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Ver a banca" },
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.rug.entry" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.01 -3.50" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1.15 1 1.15" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -240,7 +1349,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"GltfScene market_stall"
+        #"GltfScene rug_woven"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -249,7 +1358,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/market.xml",
@@ -258,24 +1367,27 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"interior.market.medieval.well"
+    #"interior.market.rug.center"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -6.4, y: 0.0, z: 3.6 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
-    }
-    bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/medieval_well_collision.glb", base: true },
+        translation: glam::Vec3 { x: 0.0, y: 0.005, z: -1.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.15, y: 1.0, z: 1.15 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.medieval.well" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.4 0 3.6" },
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 0.9 0.9 0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.rug.center" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.01 -1.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 1.15 1 1.15" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -283,7 +1395,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"GltfScene medieval_well"
+        #"GltfScene rug_woven"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -292,7 +1404,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/medieval_well_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/market.xml",
@@ -301,23 +1413,27 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"interior.market.wooden.crate"
+    #"interior.market.rug.study"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 6.4, y: 0.0, z: 4.2 },
+        translation: glam::Vec3 { x: 5.8, y: 0.005, z: 1.4 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-    }
-    bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        scale: glam::Vec3 { x: 1.05, y: 1.0, z: 1.05 },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.4 0 4.2" },
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.rug.study" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.80 0.01 1.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.05 1 1.05" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -325,7 +1441,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"GltfScene wooden_crate"
+        #"GltfScene rug_woven"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -334,7 +1450,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/market.xml",
@@ -343,24 +1459,30 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"interior.market.wooden.crate-2"
+    #"interior.market.counter"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 7.4, y: 0.0, z: 3.2 },
-        rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
+        translation: glam::Vec3 { x: -1.5, y: 0.0, z: 0.45 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/tavern_bar_collision.glb", base: true },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/tavern_bar_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/tavern_bar_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate-2" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.4 0 3.2" },
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0; scale: 1.0 1.0 1.0" },
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.counter" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.50 0.00 0.45" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -368,7 +1490,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"GltfScene wooden_crate"
+        #"GltfScene tavern_bar"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -377,7 +1499,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/tavern_bar_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/market.xml",
@@ -386,23 +1508,30 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"interior.market.wooden.barrel"
+    #"interior.market.display.chest"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 6.8, y: 0.0, z: 1.2 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        translation: glam::Vec3 { x: 0.4, y: 0.0, z: 3.2 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
     }
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.barrel" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.8 0 1.2" },
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.display.chest" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.40 0.00 3.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -410,7 +1539,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"GltfScene wooden_barrel"
+        #"GltfScene treasure_chest"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -419,7 +1548,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/market.xml",
@@ -428,11 +1557,11 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"interior.market.market.stall-2"
+    #"interior.market.market.stall"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 5.4, y: 0.0, z: -4.6 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+        translation: glam::Vec3 { x: -5.6, y: 0.0, z: -2.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
         shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/market_stall_collision.glb", base: true },
@@ -440,12 +1569,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/market_stall_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/market_stall_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.market.stall-2" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.4 0 -4.6" },
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 0.85 0.85 0.85" },
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.market.stall" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.60 0.00 -2.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -471,11 +1606,1431 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
+    #"interior.market.market.stall-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 5.4, y: 0.0, z: -4.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/market_stall_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/market_stall_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/market_stall_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.market.stall-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.40 0.00 -4.60" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [11],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene market_stall"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [11, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.market.stall-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -5.6, y: 0.0, z: 2.2 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/market_stall_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/market_stall_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/market_stall_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.market.stall-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.60 0.00 2.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [12],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene market_stall"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [12, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.bookshelf"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.8, y: 0.0, z: 6.45 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/bookshelf_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/bookshelf_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/bookshelf_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.bookshelf" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.80 0.00 6.45" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [13],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bookshelf"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/bookshelf_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [13, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.bookshelf-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -3.0, y: 0.0, z: 6.45 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/bookshelf_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/bookshelf_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/bookshelf_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.bookshelf-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.00 0.00 6.45" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [14],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bookshelf"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/bookshelf_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [14, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.cupboard"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 3.2, y: 0.0, z: 6.42 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.cupboard" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.20 0.00 6.42" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [15],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene cupboard"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cupboard_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [15, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.cupboard-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 5.0, y: 0.0, z: 6.42 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.cupboard-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.00 0.00 6.42" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [16],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene cupboard"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cupboard_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [16, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.dining.table"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 5.8, y: 0.0, z: 1.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/dining_table_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/dining_table_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/dining_table_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.dining.table" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.80 0.00 1.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [17],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene dining_table"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/dining_table_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [17, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.chair"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 4.7, y: 0.0, z: 1.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/wooden_chair_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/wooden_chair_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/wooden_chair_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.chair" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.70 0.00 1.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [18],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_chair"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/wooden_chair_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [18, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.stool.wood"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 6.9, y: 0.0, z: 1.0 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.stool.wood" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.90 0.00 1.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [19],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene stool_wood"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/stool_wood_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [19, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.stool.wood-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -1.5, y: 0.0, z: 2.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.stool.wood-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.50 0.00 2.50" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [20],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene stool_wood"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/stool_wood_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [20, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.candelabra.tall"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -3.6, y: 0.0, z: 0.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/candelabra_tall_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/candelabra_tall_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/candelabra_tall_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.candelabra.tall" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.60 0.00 0.50" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [21],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene candelabra_tall"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/candelabra_tall_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [21, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.85, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.811765, blue: 0.541176, alpha: 1.0 }),
+            intensity: 6500.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.85 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffcf8a" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6500" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [21, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.candelabra.tall-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 3.8, y: 0.0, z: 3.2 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/candelabra_tall_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/candelabra_tall_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/candelabra_tall_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.candelabra.tall-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.80 0.00 3.20" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [22],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene candelabra_tall"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/candelabra_tall_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [22, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.85, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.811765, blue: 0.541176, alpha: 1.0 }),
+            intensity: 6500.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.85 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffcf8a" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6500" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [22, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.lantern.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -8.4, y: 1.38, z: -3.9 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.lantern.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.40 1.38 -3.90" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [23],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [23, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.831373, blue: 0.588235, alpha: 1.0 }),
+            intensity: 5500.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd496" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5500" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [23, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.lantern.2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.4, y: 1.38, z: -3.9 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.lantern.2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.40 1.38 -3.90" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [24],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [24, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.831373, blue: 0.588235, alpha: 1.0 }),
+            intensity: 5500.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd496" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5500" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [24, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.lantern.3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -8.4, y: 1.38, z: 3.9 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.lantern.3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.40 1.38 3.90" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [25],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [25, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.831373, blue: 0.588235, alpha: 1.0 }),
+            intensity: 5500.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd496" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5500" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [25, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.lantern.4"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.4, y: 1.38, z: 3.9 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.lantern.4" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.40 1.38 3.90" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [26],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [26, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.831373, blue: 0.588235, alpha: 1.0 }),
+            intensity: 5500.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd496" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5500" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [26, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.crate"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 6.8, y: 0.0, z: 4.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.069756, z: 0.0, w: 0.997564 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.80 0.00 4.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 8 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [27],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [27, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.crate-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 7.7, y: 0.0, z: 4.5 },
+        rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.70 0.00 4.50" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -18 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [28],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [28, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.crate-top"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 7.1, y: 0.8, z: 4.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.190809, z: 0.0, w: 0.981627 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate-top" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.10 0.80 4.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 22 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [29],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [29, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.barrel"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 7.6, y: 0.0, z: 5.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.barrel" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.60 0.00 5.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [30],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [30, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.barrel-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 6.7, y: 0.0, z: 5.9 },
+        rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.barrel-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.70 0.00 5.90" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [31],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [31, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.barrel-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.8, y: 0.0, z: 5.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.barrel-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.80 0.00 5.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [32],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [32, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.crate-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.6, y: 0.0, z: 4.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.60 0.00 4.50" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [33],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [33, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.crate-4"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.4, y: 0.0, z: -5.6 },
+        rotation: glam::Quat { x: 0.0, y: -0.087156, z: 0.0, w: 0.996195 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.crate-4" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.40 0.00 -5.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -10 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [34],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [34, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.barrel-4"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -6.2, y: 0.0, z: -5.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.barrel-4" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.20 0.00 -5.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [35],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [35, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.market.wooden.barrel-5"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 7.8, y: 0.0, z: -5.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.wooden.barrel-5" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.80 0.00 -5.50" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/market.xml",
+        origin_path: [36],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/market.xml",
+            origin_path: [36, 0],
+            pose: true,
+        }
+    ]
+    --
     #"interior.market.merchant"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -1.6, y: 0.0, z: 1.6 },
         rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: -0.173648 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "merchant.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Falar com a vendedora" },
+        ],
     }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
@@ -484,8 +3039,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.6 0 1.6" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 200 0" },
             bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "merchant.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Falar com a vendedora" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -533,17 +3086,23 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "townsfolk.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "banter", value: "“Estes sacos não se carregam sozinhos.”|“O mercado abre cedo, fecha tarde.”" },
+            bevy_ext_scene::AuthoredProp { key: "interact_range", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "radius", value: "1.6" },
+            bevy_ext_scene::AuthoredProp { key: "speed", value: "0.6" },
+            bevy_ext_scene::AuthoredProp { key: "talk_range", value: "3" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.market.farmhand" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "5 0 -3" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“Estes sacos não se carregam sozinhos.”|“O mercado abre cedo, fecha tarde.”" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-interact_range", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-speed", value: "0.6" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-talk_range", value: "3" },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -636,17 +3195,19 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::PortalSpec {
+        target: "main",
+        entry: core::option::Option::Some("@back"),
+        prompt: core::option::Option::Some("Sair"),
+        sound: core::option::Option::Some("door_close"),
+        toast: core::option::Option::Some("A porta devolve-te à vila."),
+        auto_radius: core::option::Option::Some(1.6),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "ScenePortal",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "exit" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -8" },
-            bevy_world_xml::bsn::WorldProp { key: "target", value: "main" },
-            bevy_world_xml::bsn::WorldProp { key: "entry", value: "@back" },
-            bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Sair" },
-            bevy_world_xml::bsn::WorldProp { key: "auto-radius", value: "1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_close" },
-            bevy_world_xml::bsn::WorldProp { key: "toast", value: "A porta devolve-te à vila." },
         ],
         text: "",
         origin_file: "scenes/interiors/market.xml",
@@ -654,4 +3215,3 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
 ]
-

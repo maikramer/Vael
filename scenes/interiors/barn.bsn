@@ -1318,12 +1318,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "watch-guard.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.barn.guard" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "2 0 4.6" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "watch-guard.lua" },
         ],
         text: "",
         origin_file: "scenes/interiors/barn.xml",
@@ -1416,22 +1418,1173 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::PortalSpec {
+        target: "main",
+        entry: core::option::Option::Some("@back"),
+        prompt: core::option::Option::Some("Sair"),
+        sound: core::option::Option::Some("door_close"),
+        toast: core::option::Option::Some("A porta devolve-te à vila."),
+        auto_radius: core::option::Option::Some(1.6),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "ScenePortal",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "exit" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -11" },
-            bevy_world_xml::bsn::WorldProp { key: "target", value: "main" },
-            bevy_world_xml::bsn::WorldProp { key: "entry", value: "@back" },
-            bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Sair" },
-            bevy_world_xml::bsn::WorldProp { key: "auto-radius", value: "1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_close" },
-            bevy_world_xml::bsn::WorldProp { key: "toast", value: "A porta devolve-te à vila." },
         ],
         text: "",
         origin_file: "scenes/interiors/barn.xml",
         origin_path: [23],
         pose: true,
     }
+    --
+    #"interior.v2.barn.hay-e1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 10.4, y: 0.0, z: 3.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/hay_bale_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.hay-e1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.40 0.00 3.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [60],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene hay_bale"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [60, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.hay-e2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 10.2, y: 0.0, z: 6.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/hay_bale_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.hay-e2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.20 0.00 6.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -18 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [61],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene hay_bale"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [61, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.hay-top1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 8.0, y: 0.9, z: 5.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.241922, z: 0.0, w: 0.970296 },
+        scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/hay_bale_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.hay-top1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.00 0.90 5.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 28 0; scale: 0.9 0.9 0.9" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [62],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene hay_bale"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [62, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.hay-top2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 9.8, y: 0.9, z: 5.0 },
+        rotation: glam::Quat { x: 0.0, y: -0.087156, z: 0.0, w: 0.996195 },
+        scale: glam::Vec3 { x: 0.88, y: 0.88, z: 0.88 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/hay_bale_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/farm/hay_bale_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.hay-top2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.80 0.90 5.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -10 0; scale: 0.88 0.88 0.88" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [63],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene hay_bale"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/hay_bale_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [63, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.trough"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -10.4, y: 0.0, z: 3.2 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/quench_trough_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/quench_trough_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/quench_trough_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.trough" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-10.40 0.00 3.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [64],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene quench_trough"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/quench_trough_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [64, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.barrel-nw"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -11.8, y: 0.0, z: 6.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.barrel-nw" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-11.80 0.00 6.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [65],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [65, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.crate-nw"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -10.6, y: 0.0, z: 7.2 },
+        rotation: glam::Quat { x: 0.0, y: 0.190809, z: 0.0, w: 0.981627 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.crate-nw" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-10.60 0.00 7.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 22 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [66],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [66, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.worktable"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -5.8, y: 0.0, z: -6.2 },
+        rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/dining_table_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/dining_table_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/dining_table_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.worktable" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.80 0.00 -6.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 10 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [67],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene dining_table"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/dining_table_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [67, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.workstool"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.4, y: 0.0, z: -6.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.workstool" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.40 0.00 -6.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [68],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene stool_wood"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/stool_wood_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [68, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.cupboard"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 12.2, y: 0.0, z: 2.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.cupboard" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "12.20 0.00 2.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [69],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene cupboard"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cupboard_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [69, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.axe"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 5.8, y: 0.0, z: -6.3 },
+        rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/felling_axe_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/props/felling_axe_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/props/felling_axe_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.axe" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.80 0.00 -6.30" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [70],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene felling_axe"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/felling_axe_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [70, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.rug-entry"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.125, z: -6.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.rug-entry" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.12 -6.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [71],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene rug_woven"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [71, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.candelabra-n"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.2, y: 0.0, z: 7.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/candelabra_tall_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/candelabra_tall_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/candelabra_tall_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.candelabra-n" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.20 0.00 7.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [72],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene candelabra_tall"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/candelabra_tall_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [72, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.85, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.811765, blue: 0.541176, alpha: 1.0 }),
+            intensity: 5000.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.85 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffcf8a" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5000" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [72, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.post-w-stand"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.2, y: 0.0, z: -1.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Auto,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.post-w-stand" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.20 0.00 -1.00" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [73],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [73, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.28, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.28 2.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [73, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.post-w-lantern"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -6.75, y: 1.38, z: -1.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.post-w-lantern" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.75 1.38 -1.00" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [74],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [74, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.823529, blue: 0.556863, alpha: 1.0 }),
+            intensity: 5200.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd28e" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [74, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.post-e-stand"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 7.2, y: 0.0, z: -1.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Auto,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.post-e-stand" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.20 0.00 -1.00" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [75],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [75, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -0.28, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 2.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [75, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.post-e-lantern"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 6.75, y: 1.38, z: -1.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.post-e-lantern" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.75 1.38 -1.00" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [76],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [76, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.823529, blue: 0.556863, alpha: 1.0 }),
+            intensity: 5200.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd28e" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [76, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.banner-w"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -13.75, y: 0.0, z: 5.2 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.banner-w" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.75 0.00 5.20" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [77],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.96, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.96 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.62 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [77, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.52 0.01" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5b6e35" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [77, 1],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.04 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.95 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.07 0.02" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [77, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.banner-e"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 13.75, y: 0.0, z: 5.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.banner-e" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.75 0.00 5.20" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [78],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.96, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.96 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.62 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [78, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.52 0.01" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5b6e35" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [78, 1],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.04 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.95 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.07 0.02" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [78, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.barn.dust-motes"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: -1.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.dust-motes" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.00 -1.00" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/barn.xml",
+        origin_path: [79],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ParticleSpec {
+            preset: "fireflies",
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/barn.xml",
+            origin_path: [79, 0],
+            pose: true,
+        }
+    ]
 ]
-

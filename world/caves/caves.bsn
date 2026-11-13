@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -16,72 +16,28 @@ bevy_world_xml::bsn::WorldNode {
 }
 bevy_ecs::hierarchy::Children [
     #"covil-do-lobo"
-    bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-    }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "Cave",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "covil-do-lobo" },
-            bevy_world_xml::bsn::WorldProp { key: "path", value: "-140 180 -145 168 -148 152 -150 140" },
-            bevy_world_xml::bsn::WorldProp { key: "radius", value: "3.2" },
-            bevy_world_xml::bsn::WorldProp { key: "depth", value: "8" },
-            bevy_world_xml::bsn::WorldProp { key: "open-ends", value: "true" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-flare", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-fraction", value: "0.5" },
-            bevy_world_xml::bsn::WorldProp { key: "mound-height", value: "9" },
-            bevy_world_xml::bsn::WorldProp { key: "mound-radius", value: "15" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-lift", value: "true" },
+    bevy_ext_terrain::voxel::VoxelCave {
+        name: "covil-do-lobo",
+        path: [
+            [-140.0, 180.0],
+            [-145.0, 168.0],
+            [-148.0, 152.0],
+            [-150.0, 140.0],
         ],
-        text: "",
-        origin_file: "world/caves/caves.xml",
-        origin_path: [0],
-        pose: false,
+        radius: [3.2],
+        mouth_fraction: 0.5,
+        chambers: [
+            bevy_ext_terrain::voxel::VoxelChamber { at: [-146.0, 158.0], radius: 7.5, height: 7.0, depth: core::option::Option::Some(7.7) },
+        ],
+        shafts: [
+            bevy_ext_terrain::voxel::VoxelShaft { at: [-146.0, 158.0], radius: 2.0, depth: core::option::Option::Some(7.7) },
+        ],
+        mound_height: 9.0,
+        mound_radius: 15.0,
+        mouth_lift: true,
     }
-    bevy_ecs::hierarchy::Children [
-        #"Chamber"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Chamber",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-146 158" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "7.5" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "7" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "7.7" },
-            ],
-            text: "",
-            origin_file: "world/caves/caves.xml",
-            origin_path: [0, 0],
-            pose: false,
-        }
-        --
-        #"Shaft"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Shaft",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-146 158" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.0" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "7.7" },
-            ],
-            text: "",
-            origin_file: "world/caves/caves.xml",
-            origin_path: [0, 1],
-            pose: false,
-        }
-    ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -135.320007, y: 49.220001, z: 179.020004 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -122,7 +78,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -150,7 +106,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -135.320007, y: 49.220001, z: 179.020004 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -167,18 +123,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -187,7 +145,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -143.990005, y: 50.369999, z: 182.639999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -228,7 +186,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -256,7 +214,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -143.990005, y: 50.369999, z: 182.639999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -273,18 +231,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -293,7 +253,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -145.5, y: 43.380001, z: 138.440002 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -334,7 +294,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -362,7 +322,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -145.5, y: 43.380001, z: 138.440002 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -379,18 +339,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -399,7 +361,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -154.770004, y: 42.259998, z: 139.979996 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -440,7 +402,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -468,7 +430,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -154.770004, y: 42.259998, z: 139.979996 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -485,18 +447,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -505,7 +469,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -143.350006, y: 40.5, z: 165.279999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -546,7 +510,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -574,7 +538,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -143.350006, y: 40.5, z: 165.279999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -591,18 +555,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -611,7 +577,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -148.889999, y: 37.849998, z: 158.800003 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -652,7 +618,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -680,7 +646,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -148.889999, y: 37.849998, z: 158.800003 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -697,18 +663,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -717,7 +685,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -146.080002, y: 39.209999, z: 150.610001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -758,7 +726,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -786,7 +754,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -146.080002, y: 39.209999, z: 150.610001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -803,18 +771,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -823,7 +793,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Group"
+    #Group
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -146.0, y: 39.209999, z: 158.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -842,7 +812,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -870,7 +840,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -150.0, y: 36.610001, z: 158.0 },
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -912,7 +882,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -940,7 +910,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -142.0, y: 36.610001, z: 156.0 },
         rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
@@ -983,7 +953,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -149.0, y: 36.610001, z: 161.0 },
         rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
@@ -1026,7 +996,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -143.0, y: 36.610001, z: 161.0 },
         rotation: glam::Quat { x: 0.0, y: 0.866025, z: 0.0, w: 0.5 },
@@ -1038,18 +1008,24 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "60" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-143 36.61 161" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 120 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "60" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "40" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -1075,7 +1051,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -151.0, y: 36.610001, z: 155.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1116,7 +1092,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1144,7 +1120,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -151.0, y: 36.610001, z: 155.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1161,18 +1137,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -1181,7 +1159,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -141.0, y: 36.610001, z: 155.0 },
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -1224,72 +1202,29 @@ bevy_ecs::hierarchy::Children [
     ]
     --
     #"tumulo-do-ermo"
-    bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-    }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "Cave",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "tumulo-do-ermo" },
-            bevy_world_xml::bsn::WorldProp { key: "path", value: "330 60 345 70 360 80 370 90" },
-            bevy_world_xml::bsn::WorldProp { key: "radius", value: "3.6" },
-            bevy_world_xml::bsn::WorldProp { key: "depth", value: "9" },
-            bevy_world_xml::bsn::WorldProp { key: "open-ends", value: "true" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-flare", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-fraction", value: "0.5" },
-            bevy_world_xml::bsn::WorldProp { key: "mound-height", value: "10" },
-            bevy_world_xml::bsn::WorldProp { key: "mound-radius", value: "15" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-lift", value: "true" },
+    bevy_ext_terrain::voxel::VoxelCave {
+        name: "tumulo-do-ermo",
+        path: [
+            [330.0, 60.0],
+            [345.0, 70.0],
+            [360.0, 80.0],
+            [370.0, 90.0],
         ],
-        text: "",
-        origin_file: "world/caves/caves.xml",
-        origin_path: [23],
-        pose: false,
+        radius: [3.6],
+        depth: 9.0,
+        mouth_fraction: 0.5,
+        chambers: [
+            bevy_ext_terrain::voxel::VoxelChamber { at: [350.0, 75.0], height: 7.0, depth: core::option::Option::Some(9.1) },
+        ],
+        shafts: [
+            bevy_ext_terrain::voxel::VoxelShaft { at: [350.0, 75.0], radius: 2.2, depth: core::option::Option::Some(9.1) },
+        ],
+        mound_height: 10.0,
+        mound_radius: 15.0,
+        mouth_lift: true,
     }
-    bevy_ecs::hierarchy::Children [
-        #"Chamber"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Chamber",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "350 75" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "8.0" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "7" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "9.1" },
-            ],
-            text: "",
-            origin_file: "world/caves/caves.xml",
-            origin_path: [23, 0],
-            pose: false,
-        }
-        --
-        #"Shaft"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Shaft",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "350 75" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.2" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "9.1" },
-            ],
-            text: "",
-            origin_file: "world/caves/caves.xml",
-            origin_path: [23, 1],
-            pose: false,
-        }
-    ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 333.470001, y: 51.27, z: 65.620003 },
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
@@ -1311,7 +1246,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1334,7 +1269,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 336.519989, y: 51.27, z: 61.040001 },
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
@@ -1356,7 +1291,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1379,7 +1314,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 334.98999, y: 53.07, z: 63.330002 },
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
@@ -1401,7 +1336,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1424,7 +1359,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 334.98999, y: 53.82, z: 63.330002 },
         rotation: glam::Quat { x: 0.0, y: 0.471781, z: 0.0, w: 0.881715 },
@@ -1448,7 +1383,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1471,7 +1406,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 325.339996, y: 53.610001, z: 64.830002 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1514,7 +1449,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 332.660004, y: 54.560001, z: 53.84 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1557,7 +1492,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 332.049988, y: 49.509998, z: 65.209999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1597,7 +1532,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1625,7 +1560,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 332.049988, y: 49.509998, z: 65.209999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1642,18 +1577,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -1662,7 +1599,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 335.600006, y: 49.509998, z: 59.889999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1702,7 +1639,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1730,7 +1667,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 335.600006, y: 49.509998, z: 59.889999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1747,18 +1684,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -1767,7 +1706,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 366.959991, y: 53.720001, z: 94.169998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1808,7 +1747,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1836,7 +1775,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 366.959991, y: 53.720001, z: 94.169998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1853,18 +1792,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -1873,7 +1814,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 374.170013, y: 54.580002, z: 86.959999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1914,7 +1855,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1942,7 +1883,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 374.170013, y: 54.580002, z: 86.959999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1959,18 +1900,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -1979,7 +1922,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 343.679993, y: 43.77, z: 72.059998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2020,7 +1963,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2048,7 +1991,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 343.679993, y: 43.77, z: 72.059998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2065,18 +2008,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -2085,7 +2030,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 354.75, y: 42.380001, z: 73.559998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2126,7 +2071,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2154,7 +2099,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 354.75, y: 42.380001, z: 73.559998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2171,18 +2116,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -2191,7 +2138,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 358.700012, y: 45.959999, z: 82.099998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2232,7 +2179,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2260,7 +2207,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 358.700012, y: 45.959999, z: 82.099998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2277,18 +2224,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -2297,7 +2246,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Group"
+    #Group
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 350.0, y: 43.529999, z: 75.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2316,7 +2265,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2344,7 +2293,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 347.0, y: 40.93, z: 75.0 },
         rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
@@ -2387,7 +2336,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 353.0, y: 40.93, z: 75.0 },
         rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
@@ -2430,7 +2379,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 350.0, y: 41.43, z: 75.0 },
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -2452,7 +2401,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2475,7 +2424,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 344.0, y: 40.93, z: 79.0 },
         rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
@@ -2487,18 +2436,24 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "60" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "344 40.93 79" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -30 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "60" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "40" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -2524,7 +2479,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 356.0, y: 40.93, z: 79.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2564,7 +2519,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2592,7 +2547,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 356.0, y: 40.93, z: 79.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2609,18 +2564,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -2629,7 +2586,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 346.0, y: 40.93, z: 71.0 },
         rotation: glam::Quat { x: 0.0, y: 0.843391, z: 0.0, w: 0.5373 },
@@ -2670,7 +2627,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2698,7 +2655,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 355.0, y: 40.93, z: 71.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2739,7 +2696,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2767,7 +2724,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 355.0, y: 40.93, z: 71.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2784,18 +2741,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -2805,72 +2764,30 @@ bevy_ecs::hierarchy::Children [
     ]
     --
     #"gruta-de-gelo"
-    bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-    }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "Cave",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "name", value: "gruta-de-gelo" },
-            bevy_world_xml::bsn::WorldProp { key: "path", value: "44 -236 43 -248 44 -260 47 -270 53 -278 60 -285" },
-            bevy_world_xml::bsn::WorldProp { key: "radius", value: "3.4" },
-            bevy_world_xml::bsn::WorldProp { key: "depth", value: "8" },
-            bevy_world_xml::bsn::WorldProp { key: "open-ends", value: "true" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-flare", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-fraction", value: "0.5" },
-            bevy_world_xml::bsn::WorldProp { key: "mound-height", value: "10" },
-            bevy_world_xml::bsn::WorldProp { key: "mound-radius", value: "15" },
-            bevy_world_xml::bsn::WorldProp { key: "mouth-lift", value: "true" },
+    bevy_ext_terrain::voxel::VoxelCave {
+        name: "gruta-de-gelo",
+        path: [
+            [44.0, -236.0],
+            [43.0, -248.0],
+            [44.0, -260.0],
+            [47.0, -270.0],
+            [53.0, -278.0],
+            [60.0, -285.0],
         ],
-        text: "",
-        origin_file: "world/caves/caves.xml",
-        origin_path: [54],
-        pose: false,
+        radius: [3.4],
+        mouth_fraction: 0.5,
+        chambers: [
+            bevy_ext_terrain::voxel::VoxelChamber { at: [45.0, -270.0], radius: 7.5, height: 7.0, depth: core::option::Option::Some(7.9) },
+        ],
+        shafts: [
+            bevy_ext_terrain::voxel::VoxelShaft { at: [45.0, -270.0], radius: 2.0, depth: core::option::Option::Some(7.9) },
+        ],
+        mound_height: 10.0,
+        mound_radius: 15.0,
+        mouth_lift: true,
     }
-    bevy_ecs::hierarchy::Children [
-        #"Chamber"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Chamber",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "45 -270" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "7.5" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "7" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "7.9" },
-            ],
-            text: "",
-            origin_file: "world/caves/caves.xml",
-            origin_path: [54, 0],
-            pose: false,
-        }
-        --
-        #"Shaft"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Shaft",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "45 -270" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.0" },
-                bevy_world_xml::bsn::WorldProp { key: "depth", value: "7.9" },
-            ],
-            text: "",
-            origin_file: "world/caves/caves.xml",
-            origin_path: [54, 1],
-            pose: false,
-        }
-    ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 48.82, y: 106.400002, z: -237.199997 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2911,7 +2828,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2939,7 +2856,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 48.82, y: 106.400002, z: -237.199997 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2956,18 +2873,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -2976,7 +2895,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 39.049999, y: 109.32, z: -236.389999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3017,7 +2936,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3045,7 +2964,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 39.049999, y: 109.32, z: -236.389999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3062,18 +2981,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -3082,7 +3003,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 64.029999, y: 114.82, z: -282.100006 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3123,7 +3044,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3151,7 +3072,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 64.029999, y: 114.82, z: -282.100006 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3168,18 +3089,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -3188,7 +3111,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 57.099998, y: 112.309998, z: -289.029999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3229,7 +3152,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3257,7 +3180,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 57.099998, y: 112.309998, z: -289.029999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3274,18 +3197,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -3294,7 +3219,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 45.93, y: 99.449997, z: -255.720001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3335,7 +3260,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3363,7 +3288,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 45.93, y: 99.449997, z: -255.720001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3380,18 +3305,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -3400,7 +3327,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 43.529999, y: 99.660004, z: -265.929993 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3441,7 +3368,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3469,7 +3396,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 43.529999, y: 99.660004, z: -265.929993 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3486,18 +3413,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -3506,7 +3435,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 52.099998, y: 100.089996, z: -273.920013 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3547,7 +3476,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3575,7 +3504,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 52.099998, y: 100.089996, z: -273.920013 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3592,18 +3521,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -3612,7 +3543,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Group"
+    #Group
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 45.0, y: 101.379997, z: -270.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3631,7 +3562,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3659,7 +3590,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 41.0, y: 98.779999, z: -270.0 },
         rotation: glam::Quat { x: 0.0, y: 0.147809, z: 0.0, w: 0.989016 },
@@ -3700,7 +3631,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3728,7 +3659,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 49.0, y: 98.779999, z: -272.0 },
         rotation: glam::Quat { x: 0.0, y: 0.551937, z: 0.0, w: 0.833886 },
@@ -3769,7 +3700,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3797,7 +3728,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 45.0, y: 98.779999, z: -266.0 },
         rotation: glam::Quat { x: 0.0, y: 0.477159, z: 0.0, w: 0.878817 },
@@ -3838,7 +3769,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3866,7 +3797,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 49.0, y: 98.779999, z: -276.0 },
         rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
@@ -3878,18 +3809,24 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "60" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "49 98.78 -276" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "60" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "40" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -3915,7 +3852,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 41.0, y: 98.779999, z: -274.0 },
         rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
@@ -3957,7 +3894,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 45.0, y: 98.779999, z: -274.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -3997,7 +3934,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4025,7 +3962,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 45.0, y: 98.779999, z: -274.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4042,18 +3979,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -4062,7 +4001,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 41.0, y: 98.779999, z: -266.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4103,7 +4042,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4131,7 +4070,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 41.0, y: 98.779999, z: -266.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4148,18 +4087,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -4187,7 +4128,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"minecart"
+        #minecart
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4208,7 +4149,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4230,7 +4171,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.45 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4252,7 +4193,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.45 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4274,7 +4215,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.45, y: 0.32, z: 0.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -4297,7 +4238,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.45, y: 0.32, z: 0.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -4320,7 +4261,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.45, y: 0.32, z: -0.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -4343,7 +4284,7 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.45, y: 0.32, z: -0.5 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -4368,7 +4309,7 @@ bevy_ecs::hierarchy::Children [
         ]
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -63.0, y: -213.0, z: 98.400002 },
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -4410,7 +4351,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -57.0, y: -219.0, z: 98.400002 },
         rotation: glam::Quat { x: 0.0, y: -0.258819, z: 0.0, w: 0.965926 },
@@ -4452,7 +4393,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -62.0, y: -214.0, z: 98.400002 },
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
@@ -4494,7 +4435,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -92.0, y: 93.099998, z: -252.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4535,7 +4476,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4563,7 +4504,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -92.0, y: 93.099998, z: -252.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4580,18 +4521,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -4600,7 +4543,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -84.0, y: 93.099998, z: -260.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4641,7 +4584,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4669,7 +4612,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -84.0, y: 93.099998, z: -260.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4686,18 +4629,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -4706,7 +4651,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -92.0, y: 93.099998, z: -260.0 },
         rotation: glam::Quat { x: 0.0, y: 0.139173, z: 0.0, w: 0.990268 },
@@ -4747,7 +4692,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4775,7 +4720,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -84.0, y: 93.099998, z: -252.0 },
         rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -4817,7 +4762,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -92.0, y: 93.099998, z: -256.0 },
         rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
@@ -4859,7 +4804,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 499.339996, y: 81.029999, z: -53.599998 },
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
@@ -4883,7 +4828,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4905,7 +4850,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 500.660004, y: 80.900002, z: -62.400002 },
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
@@ -4929,7 +4874,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.77, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4951,7 +4896,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 500.0, y: 84.589996, z: -58.0 },
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
@@ -4975,7 +4920,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -4997,7 +4942,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 500.0, y: 84.93, z: -58.0 },
         rotation: glam::Quat { x: 0.0, y: 0.65276, z: 0.0, w: 0.757565 },
@@ -5015,7 +4960,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5036,7 +4981,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 499.190002, y: 81.0, z: -52.560001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5076,7 +5021,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5104,7 +5049,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 499.190002, y: 81.0, z: -52.560001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5121,18 +5066,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -5141,7 +5088,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 500.809998, y: 80.900002, z: -63.439999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5181,7 +5128,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5209,7 +5156,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 500.809998, y: 80.900002, z: -63.439999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5226,18 +5173,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -5246,7 +5195,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 500.769989, y: 80.900002, z: -63.139999 },
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
@@ -5288,7 +5237,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 719.409973, y: 174.960007, z: -60.41 },
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
@@ -5312,7 +5261,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5334,7 +5283,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 720.590027, y: 174.809998, z: -51.59 },
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
@@ -5358,7 +5307,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.78, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5380,7 +5329,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 720.0, y: 178.520004, z: -56.0 },
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
@@ -5404,7 +5353,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5426,7 +5375,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 720.0, y: 178.860001, z: -56.0 },
         rotation: glam::Quat { x: 0.0, y: -0.658689, z: 0.0, w: 0.752415 },
@@ -5444,7 +5393,7 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5465,7 +5414,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 719.27002, y: 175.0, z: -61.450001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5505,7 +5454,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5533,7 +5482,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 719.27002, y: 175.0, z: -61.450001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5550,18 +5499,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -5570,7 +5521,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 720.72998, y: 174.779999, z: -50.549999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5610,7 +5561,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5638,7 +5589,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 720.72998, y: 174.779999, z: -50.549999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5655,18 +5606,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -5675,7 +5628,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 720.690002, y: 174.789993, z: -50.849998 },
         rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
@@ -5717,7 +5670,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 586.0, y: 111.220001, z: -46.0 },
         rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
@@ -5760,7 +5713,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 594.0, y: 111.220001, z: -46.0 },
         rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
@@ -5803,7 +5756,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 590.0, y: 111.220001, z: -42.0 },
         rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
@@ -5815,18 +5768,24 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "60" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "590 111.22 -42" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 30 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "60" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "40" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú" },
         ],
         text: "",
         origin_file: "world/caves/caves.xml",
@@ -5852,7 +5811,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 585.0, y: 111.220001, z: -50.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5893,7 +5852,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5921,7 +5880,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 585.0, y: 111.220001, z: -50.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5938,18 +5897,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -5958,7 +5919,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 595.0, y: 111.220001, z: -42.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -5999,7 +5960,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6027,7 +5988,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 595.0, y: 111.220001, z: -42.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6044,18 +6005,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -6064,7 +6027,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 594.0, y: 111.220001, z: -50.0 },
         rotation: glam::Quat { x: 0.0, y: 0.406737, z: 0.0, w: 0.913545 },
@@ -6105,7 +6068,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6133,7 +6096,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 586.0, y: 111.220001, z: -42.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6173,7 +6136,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6201,7 +6164,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 586.0, y: 111.220001, z: -42.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6218,18 +6181,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -6238,7 +6203,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 331.859985, y: 54.5, z: 54.509998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6278,7 +6243,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6306,7 +6271,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 331.859985, y: 54.5, z: 54.509998 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6323,18 +6288,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -6343,7 +6310,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 325.640015, y: 53.689999, z: 63.830002 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6383,7 +6350,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6411,7 +6378,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 325.640015, y: 53.689999, z: 63.830002 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6428,18 +6395,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.12; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -6448,7 +6417,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 331.220001, y: 54.400002, z: 55.290001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6489,7 +6458,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6517,7 +6486,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 331.220001, y: 54.400002, z: 55.290001 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6534,18 +6503,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -6554,7 +6525,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 326.119995, y: 53.700001, z: 62.939999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6595,7 +6566,7 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
         --
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.1, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6623,7 +6594,7 @@ bevy_ecs::hierarchy::Children [
         }
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 326.119995, y: 53.700001, z: 62.939999 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -6640,18 +6611,20 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ParticleSpec {
+            preset: core::option::Option::Some("fire"),
+            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 16.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "ParticleSystem",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 16; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
@@ -6659,5 +6632,419 @@ bevy_ecs::hierarchy::Children [
             pose: true,
         }
     ]
+    --
+    #"sceneref.v2.cave-gelo-pillar-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 39.8, y: 108.7211, z: -235.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+        scale: glam::Vec3 { x: 1.1, y: 1.25, z: 1.1 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-gelo-pillar-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "39.80 108.72 -235.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0; scale: 1.1 1.25 1.1" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [200],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene ruin_pillar"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [200, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"sceneref.v2.cave-gelo-pillar-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 48.2, y: 105.954, z: -236.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+        scale: glam::Vec3 { x: 1.1, y: 1.15, z: 1.1 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-gelo-pillar-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "48.20 105.95 -236.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0; scale: 1.1 1.15 1.1" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [201],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene ruin_pillar"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [201, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"sceneref.v2.cave-gelo-crystal-w"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 40.9, y: 108.8009, z: -235.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.4, y: 1.6, z: 1.4 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-gelo-crystal-w" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "40.90 108.80 -235.80" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.4 1.6 1.4" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [202],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [202, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
+            intensity: 3200.0,
+            radius: 0.4,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [202, 1],
+            pose: true,
+        }
+        --
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.6, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ParticleSpec {
+            preset: "sparkle",
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.6 0" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [202, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"sceneref.v2.cave-gelo-crystal-e"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 47.0, y: 106.8307, z: -236.4 },
+        rotation: glam::Quat { x: 0.044379, y: 0.384601, z: -0.074892, w: 0.918969 },
+        scale: glam::Vec3 { x: 1.2, y: 1.35, z: 1.2 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-gelo-crystal-e" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "47.00 106.83 -236.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 8 45 -6; scale: 1.2 1.35 1.2" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [203],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene crystal_blue"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [203, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"sceneref.v2.cave-lobo-cairn"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -135.8, y: 49.2894, z: 181.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-lobo-cairn" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-135.80 49.29 181.60" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 30 0" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [204],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene stone_cairn"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [204, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"sceneref.v2.cave-lobo-boulder"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -144.2, y: 50.1804, z: 181.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.422618, z: 0.0, w: 0.906308 },
+        scale: glam::Vec3 { x: 1.4, y: 1.2, z: 1.4 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_mossy_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-lobo-boulder" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-144.20 50.18 181.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -50 0; scale: 1.4 1.2 1.4" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [205],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene rock_mossy"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [205, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"sceneref.v2.cave-lobo-shroom"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -136.8, y: 49.4378, z: 180.5 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.15, y: 1.15, z: 1.15 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.cave-lobo-shroom" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-136.80 49.44 180.50" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.15 1.15 1.15" },
+        ],
+        text: "",
+        origin_file: "world/caves/caves.xml",
+        origin_path: [206],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene mushroom_glow"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [206, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.419608, green: 0.878431, blue: 0.603922, alpha: 1.0 }),
+            intensity: 2200.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0x6be09a" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "world/caves/caves.xml",
+            origin_path: [206, 1],
+            pose: true,
+        }
+    ]
 ]
-

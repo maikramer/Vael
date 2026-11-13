@@ -802,13 +802,15 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "anvil.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.forge.anvil" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 2" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.0 1.0 1.0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "anvil.lua" },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
@@ -1306,15 +1308,21 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "townsfolk.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Falar" },
+            bevy_ext_scene::AuthoredProp { key: "banter", value: "“A forja lá fora é a de Bram. Aqui só se tempera o aço.”" },
+            bevy_ext_scene::AuthoredProp { key: "radius", value: "1.2" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.forge.blacksmith" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.2 0 3" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Falar" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“A forja lá fora é a de Bram. Aqui só se tempera o aço.”" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "1.2" },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
@@ -1574,22 +1582,1193 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::PortalSpec {
+        target: "main",
+        entry: core::option::Option::Some("@back"),
+        prompt: core::option::Option::Some("Sair"),
+        sound: core::option::Option::Some("door_close"),
+        toast: core::option::Option::Some("A porta devolve-te à vila."),
+        auto_radius: core::option::Option::Some(1.6),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "ScenePortal",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "exit" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -9" },
-            bevy_world_xml::bsn::WorldProp { key: "target", value: "main" },
-            bevy_world_xml::bsn::WorldProp { key: "entry", value: "@back" },
-            bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Sair" },
-            bevy_world_xml::bsn::WorldProp { key: "auto-radius", value: "1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_close" },
-            bevy_world_xml::bsn::WorldProp { key: "toast", value: "A porta devolve-te à vila." },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
         origin_path: [22],
         pose: true,
     }
+    --
+    #"interior.v2.forge.workbench"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.0, y: 0.0, z: 0.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/dining_table_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/dining_table_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/dining_table_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.workbench" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.00 0.00 0.80" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [60],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene dining_table"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/dining_table_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [60, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.bench-stool"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -5.7, y: 0.0, z: 0.8 },
+        rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.bench-stool" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.70 0.00 0.80" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [61],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene stool_wood"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/stool_wood_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [61, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.anvil-west"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.8, y: 0.0, z: 3.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/anvil_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/anvil_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/anvil_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.anvil-west" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.80 0.00 3.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [62],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene anvil"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/anvil_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [62, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.rack-west"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -9.4, y: 0.0, z: 3.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/weapon_rack_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/weapon_rack_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/weapon_rack_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.rack-west" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.40 0.00 3.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [63],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene weapon_rack"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [63, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.pickaxe"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -6.8, y: 0.0, z: -0.55 },
+        rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/pickaxe_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/props/pickaxe_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/props/pickaxe_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.pickaxe" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.80 0.00 -0.55" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [64],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene pickaxe"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/pickaxe_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [64, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.axe"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -7.4, y: 0.0, z: 2.2 },
+        rotation: glam::Quat { x: 0.0, y: -0.34202, z: 0.0, w: 0.939693 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/axe_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/props/axe_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/props/axe_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.axe" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.40 0.00 2.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -40 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [65],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene axe"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/axe_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [65, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.crate-nw"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -9.0, y: 0.0, z: 5.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.crate-nw" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 0.00 5.80" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 10 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [66],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [66, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.crate-nw-top"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -8.9, y: 0.72, z: 5.8 },
+        rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+        scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.crate-nw-top" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-8.90 0.72 5.80" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0; scale: 0.82 0.82 0.82" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [67],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [67, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.barrel-w"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -9.2, y: 0.0, z: -1.6 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.barrel-w" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.20 0.00 -1.60" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [68],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [68, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.rug-entry"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.125, z: -4.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.rug-entry" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.12 -4.80" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [69],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene rug_woven"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [69, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.brazier-sw"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.8, y: 0.0, z: -5.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.brazier-sw" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.80 0.00 -5.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [70],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene iron_brazier"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [70, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.603922, blue: 0.266667, alpha: 1.0 }),
+            intensity: 4600.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff9a44" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [70, 1],
+            pose: true,
+        }
+        --
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ParticleSpec {
+            preset: "fire",
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.8 0" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [70, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.brazier-se"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 5.0, y: 0.0, z: -5.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.brazier-se" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.00 0.00 -5.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [71],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene iron_brazier"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [71, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.603922, blue: 0.266667, alpha: 1.0 }),
+            intensity: 4600.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff9a44" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [71, 1],
+            pose: true,
+        }
+        --
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.8, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ParticleSpec {
+            preset: "fire",
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.8 0" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [71, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.post-w-stand"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -10.0, y: 0.0, z: -4.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Auto,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.post-w-stand" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-10.00 0.00 -4.40" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [72],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [72, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.28, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.28 2.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [72, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.post-w-lantern"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -9.55, y: 1.38, z: -4.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.post-w-lantern" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.55 1.38 -4.40" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [73],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [73, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.823529, blue: 0.556863, alpha: 1.0 }),
+            intensity: 4600.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd28e" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [73, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.post-e-stand"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 10.0, y: 0.0, z: -4.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Auto,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.post-e-stand" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.00 0.00 -4.40" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [74],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [74, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -0.28, y: 2.2, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 2.20 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [74, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.post-e-lantern"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 9.55, y: 1.38, z: -4.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.post-e-lantern" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.55 1.38 -4.40" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [75],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [75, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.823529, blue: 0.556863, alpha: 1.0 }),
+            intensity: 4600.0,
+            radius: 0.35,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd28e" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [75, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.banner-nw"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.2, y: 0.0, z: 7.76 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.banner-nw" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.20 0.00 7.76" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [76],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.00 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.60 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [76, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.56 0.01" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [76, 1],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.91, z: 0.04 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.91 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.07 0.02" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [76, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.banner-ne"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 4.2, y: 0.0, z: 7.76 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.banner-ne" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.20 0.00 7.76" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [77],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 2.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.00 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.60 0.04 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [77, 0],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.56 0.01" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [77, 1],
+            pose: true,
+        }
+        --
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.91, z: 0.04 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.91 0.04" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.07 0.02" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
+                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [77, 2],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.forge.furnace-smoke"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 5.8 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.furnace-smoke" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.00 5.80" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/forge.xml",
+        origin_path: [78],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"ParticleSystem"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 1.65, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ParticleSpec {
+            preset: "smoke",
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "ParticleSystem",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.65 0" },
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/forge.xml",
+            origin_path: [78, 0],
+            pose: true,
+        }
+    ]
 ]
-

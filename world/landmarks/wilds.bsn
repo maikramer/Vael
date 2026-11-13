@@ -39,11 +39,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 1480.0, y: -700.0 },
+            radius: 46.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "1480 -700" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "46" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -512,12 +514,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/ruin-relic.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "orm-heart" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "1480 161.324 -700" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/ruin-relic.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -608,12 +612,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 40.0, shape_radius: core::option::Option::Some(0.28), start_life: glam::Vec2 { x: 0.5, y: 1.3 }, start_speed: glam::Vec2 { x: 1.3, y: 2.7 }, start_size: glam::Vec2 { x: 0.3, y: 0.62 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 40; shape-radius: 0.28; start-life-min: 0.5; start-life-max: 1.3; start-speed-min: 1.3; start-speed-max: 2.7; start-size-min: 0.3; start-size-max: 0.62; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/wilds.xml",
@@ -782,11 +788,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/bandit.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/wilds.xml",
@@ -800,15 +808,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/bandit_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/bandit_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/wilds.xml",
@@ -849,11 +859,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -540.0, y: 30.0 },
+            radius: 44.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-540 30" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "44" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -873,11 +885,13 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-574 63.6364 8" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -897,13 +911,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-508 60.7694 6" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -923,13 +939,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-566 63.2481 62" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 85 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -949,13 +967,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-510 60.222 58" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 20 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -975,13 +995,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::FloraStation {
+            species: "palm_tree",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-536 61.9568 -6" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -30 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-flora", value: "palm_tree" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -1001,11 +1023,13 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/paradise-spring.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-521 60.8075 44" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/paradise-spring.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -1162,11 +1186,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -605.0, y: -725.0 },
+            radius: 26.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-605 -725" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "26" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -1186,11 +1212,13 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/mirante-vista.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-605 185.1162 -725" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/mirante-vista.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -1280,12 +1308,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/wilds.xml",
@@ -1404,12 +1434,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.13; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/wilds.xml",
@@ -1506,6 +1538,1305 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v2.wilds-orm-crystal-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1477.8, y: 161.279373, z: -700.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.15, y: 1.25, z: 1.15 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-orm-crystal-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1477.80 161.28 -700.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.15 1.25 1.15" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [60],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [60, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.45,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [60, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [60, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-orm-crystal-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1482.2, y: 161.293454, z: -699.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.1, y: 1.2, z: 1.1 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-orm-crystal-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1482.20 161.29 -699.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.1 1.2 1.1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [61],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [61, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.45,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [61, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [61, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-orm-bench"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1510.2, y: 160.946369, z: -723.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-orm-bench" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1510.20 160.95 -723.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [62],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [62, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-orm-logs"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1514.5, y: 159.519127, z: -728.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/log_pile_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/log_pile_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-orm-logs" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1514.50 159.52 -728.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [63],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene log_pile"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [63, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-orm-torch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1514.0, y: 160.242029, z: -722.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-orm-torch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1514.00 160.24 -722.20" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [64],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [64, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
+                intensity: 5200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [64, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [64, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.chest-orm-heart"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1477.5, y: 161.397173, z: -695.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "55" },
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "45" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+            ],
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.chest-orm-heart" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1477.50 161.40 -695.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [65],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [65, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-lake-campfire"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -530.0, y: 61.791676, z: -9.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/campfire_pit_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/campfire_pit_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/campfire_pit_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-lake-campfire" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-530.00 61.79 -9.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [66],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [66, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.611765, blue: 0.282353, alpha: 1.0 }),
+                intensity: 6400.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff9c48" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6400" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [66, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.45 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [66, 2],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [66, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-lake-bench"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -527.5, y: 61.640777, z: -10.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-lake-bench" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-527.50 61.64 -10.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -45 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [67],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [67, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-lake-shroom"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -532.6, y: 61.899907, z: -8.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-lake-shroom" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-532.60 61.90 -8.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.2 1.2 1.2" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [68],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [68, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.419608, green: 0.878431, blue: 0.603922, alpha: 1.0 }),
+                intensity: 2400.0,
+                radius: 0.35,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x6be09a" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2400" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [68, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-lake-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -534.0, y: 63.039705, z: 2.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-lake-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-534.00 63.04 2.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [69],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [69, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-pillar-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -609.0, y: 184.890829, z: -728.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-pillar-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-609.00 184.89 -728.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [70],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [70, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-pillar-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -601.0, y: 185.345029, z: -728.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-pillar-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-601.00 185.35 -728.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -25 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [71],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [71, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-pillar-3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -609.0, y: 184.488738, z: -722.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-pillar-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-609.00 184.49 -722.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [72],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [72, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-pillar-4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -601.0, y: 184.825317, z: -722.0 },
+            rotation: glam::Quat { x: 0.0, y: -0.5, z: 0.0, w: 0.866025 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-pillar-4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-601.00 184.83 -722.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -60 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [73],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene ruin_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [73, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-crystal-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -607.2, y: 184.889963, z: -725.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.25, y: 1.35, z: 1.25 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-crystal-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-607.20 184.89 -725.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.25 1.35 1.25" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [74],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [74, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.45,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [74, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [74, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-crystal-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -602.8, y: 185.195314, z: -725.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.25, y: 1.35, z: 1.25 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/crystal_blue_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/crystal_blue_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-crystal-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-602.80 185.20 -725.00" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.25 1.35 1.25" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [75],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene crystal_blue"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [75, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
+                intensity: 3200.0,
+                radius: 0.45,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [75, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [75, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.wilds-peak-campfire"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -601.5, y: 184.972768, z: -721.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/campfire_pit_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/campfire_pit_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/campfire_pit_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.wilds-peak-campfire" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-601.50 184.97 -721.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [76],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene campfire_pit"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [76, 0],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.611765, blue: 0.282353, alpha: 1.0 }),
+                intensity: 6200.0,
+                radius: 0.5,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff9c48" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.5" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [76, 1],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.45 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [76, 2],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [76, 3],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.chest-wilds-cume"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -610.0, y: 184.663053, z: -722.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "60" },
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "50" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+            ],
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.chest-wilds-cume" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-610.00 184.66 -722.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/wilds.xml",
+            origin_path: [77],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/wilds.xml",
+                origin_path: [77, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-

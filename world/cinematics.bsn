@@ -1255,14 +1255,20 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "cinematic-trigger.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "cinematic", value: "campo-de-batalha" },
+            bevy_ext_scene::AuthoredProp { key: "radius", value: "22" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "trigger.campo-de-batalha" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-760 190.7264 -280" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "cinematic-trigger.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-cinematic", value: "campo-de-batalha" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "22" },
         ],
         text: "",
         origin_file: "world/cinematics.xml",

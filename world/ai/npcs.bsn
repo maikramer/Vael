@@ -39,12 +39,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/forest-wolves.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_forest_wolves" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-16 41.0902 60" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/forest-wolves.lua" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -92,13 +94,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_shades" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_forest_shades" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "16 43.4812 68" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "forest_shades" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -146,13 +154,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_darkwood" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_forest_darkwood" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 45.1835 100" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "forest_darkwood" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -200,13 +214,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_scorpions" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_desert_scorpions" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "60 39.5054 -16" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "desert_scorpions" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -254,13 +274,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_bandits" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_desert_bandits" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "68 40.4777 16" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "desert_bandits" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -308,13 +334,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_ruins" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_desert_ruins" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "284 50.1209 104" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "desert_ruins" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -362,13 +394,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_boglings" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_swamp_boglings" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-60 35.8047 -16" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "swamp_boglings" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -416,14 +454,20 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_bogwarden" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_swamp_bogwarden" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-80 42.67 86" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "swamp_bogwarden" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -471,13 +515,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_bogmoss" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_swamp_bogmoss" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100 30.7032 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "swamp_bogmoss" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -525,13 +575,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_goblins" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_peaks_goblins" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-16 40.4576 -60" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "peaks_goblins" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -579,13 +635,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_frost" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_peaks_frost" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "16 43.1227 -68" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "peaks_frost" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -633,13 +695,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_ogre" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_peaks_ogre" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 52.9699 -100" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "peaks_ogre" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -687,13 +755,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_survey" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_forest_survey" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "32 46.2482 80" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "forest_survey" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -741,13 +815,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_survey" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_desert_survey" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "80 40.2029 -32" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "desert_survey" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -795,13 +875,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_survey" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_swamp_survey" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-80 32.5922 32" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "swamp_survey" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -849,13 +935,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_survey" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_peaks_survey" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-32 38.7192 -80" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "peaks_survey" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -903,13 +995,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_witch" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_forest_witch" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-24 43.5072 82" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "forest_witch" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -957,13 +1055,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_worm" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_desert_worm" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "96 41.1808 10" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "desert_worm" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",
@@ -1011,13 +1115,19 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: -0.173648 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/decision-quest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "quest_id", value: "swamp_drowned_bell" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_bell_drowned" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-78 42.5227 84" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/decision-quest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-quest_id", value: "swamp_drowned_bell" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 20 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -1067,14 +1177,20 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: -0.173648 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/decision-quest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "quest_id", value: "forest_glass_witness" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_glass_witness" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.9 232.5" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 200 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/decision-quest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-quest_id", value: "forest_glass_witness" },
             ],
             text: "",
             origin_file: "world/ai/npcs.xml",

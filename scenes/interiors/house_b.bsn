@@ -999,7 +999,7 @@ bevy_ecs::hierarchy::Children [
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_b.dining.table" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1 0 -0.6" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1 0.125 -0.6" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_b.xml",
@@ -1224,7 +1224,7 @@ bevy_ecs::hierarchy::Children [
     --
     #"interior.house_b.rug.woven"
     bevy_transform::components::transform::Transform {
-        translation: glam::Vec3 { x: -1.0, y: 0.0, z: -0.6 },
+        translation: glam::Vec3 { x: -1.0, y: 0.125, z: -0.6 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
     }
@@ -1238,7 +1238,7 @@ bevy_ecs::hierarchy::Children [
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_b.rug.woven" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1 0 -0.6" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1 0.125 -0.6" },
             bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0; scale: 0.9 0.9 0.9" },
         ],
         text: "",
@@ -1313,18 +1313,24 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "townsfolk.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "house_b_scholar" },
+            bevy_ext_scene::AuthoredProp { key: "banter", value: "“Os mapas antigos falam de uma cidadela a oeste.”|“Silêncio, por favor. Estou a ler.”|“Os cristais do leste brilham à noite. Curioso.”" },
+            bevy_ext_scene::AuthoredProp { key: "gestures", value: "talk|yes|no|wave" },
+            bevy_ext_scene::AuthoredProp { key: "interact_range", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "radius", value: "0" },
+            bevy_ext_scene::AuthoredProp { key: "talk_range", value: "6" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.house_b.scholar" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1 0 0.6" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "townsfolk.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "house_b_scholar" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-banter", value: "“Os mapas antigos falam de uma cidadela a oeste.”|“Silêncio, por favor. Estou a ler.”|“Os cristais do leste brilham à noite. Curioso.”" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gestures", value: "talk|yes|no|wave" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-interact_range", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-radius", value: "0" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-talk_range", value: "6" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_b.xml",
@@ -1362,6 +1368,389 @@ bevy_ecs::hierarchy::Children [
             text: "",
             origin_file: "scenes/interiors/house_b.xml",
             origin_path: [18, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.rug-entry"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.125, z: -4.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+        scale: glam::Vec3 { x: 0.9, y: 1.0, z: 0.9 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/rug_woven_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.rug-entry" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.12 -4.40" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 0.9 1 0.9" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [90],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene rug_woven"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/rug_woven_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [90, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.cupboard"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -4.8, y: 0.0, z: 7.2 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.cupboard" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.80 0.00 7.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [91],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene cupboard"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cupboard_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [91, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.cupboard-e"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 4.8, y: 0.0, z: 7.2 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cupboard_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/cupboard_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.cupboard-e" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.80 0.00 7.20" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [92],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene cupboard"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cupboard_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [92, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.stool"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -6.2, y: 0.0, z: 4.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/stool_wood_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/stool_wood_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.stool" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.20 0.00 4.00" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [93],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene stool_wood"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/stool_wood_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [93, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.barrel"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -9.0, y: 0.0, z: -4.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.barrel" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9.00 0.00 -4.40" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [94],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wooden_barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [94, 0],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.lantern-w"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -3.4, y: 1.45, z: -7.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.lantern-w" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.40 1.45 -7.40" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [95],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [95, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.823529, blue: 0.556863, alpha: 1.0 }),
+            intensity: 4800.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd28e" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [95, 1],
+            pose: true,
+        }
+    ]
+    --
+    #"interior.v2.house_b.lantern-e"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 3.4, y: 1.45, z: -7.4 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
+    }
+    bevy_ext_scene::ModelLod {
+        lod1: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod1.glb"),
+        lod2: core::option::Option::Some("/assets/meshes/interiors/lantern_hanging_lod2.glb"),
+        d1: 30.0,
+        d2: 80.0,
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_b.lantern-e" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.40 1.45 -7.40" },
+        ],
+        text: "",
+        origin_file: "scenes/interiors/house_b.xml",
+        origin_path: [96],
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene lantern_hanging"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/lantern_hanging_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [96, 0],
+            pose: true,
+        }
+        --
+        #"PointLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::point_light::PointLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.823529, blue: 0.556863, alpha: 1.0 }),
+            intensity: 4800.0,
+            radius: 0.0,
+            shadow_maps_enabled: false,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "PointLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd28e" },
+                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+            ],
+            text: "",
+            origin_file: "scenes/interiors/house_b.xml",
+            origin_path: [96, 1],
             pose: true,
         }
     ]
@@ -1417,17 +1806,19 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::PortalSpec {
+        target: "main",
+        entry: core::option::Option::Some("@back"),
+        prompt: core::option::Option::Some("Sair"),
+        sound: core::option::Option::Some("door_close"),
+        toast: core::option::Option::Some("A porta devolve-te à vila."),
+        auto_radius: core::option::Option::Some(1.6),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "ScenePortal",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "exit" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -9" },
-            bevy_world_xml::bsn::WorldProp { key: "target", value: "main" },
-            bevy_world_xml::bsn::WorldProp { key: "entry", value: "@back" },
-            bevy_world_xml::bsn::WorldProp { key: "prompt", value: "Sair" },
-            bevy_world_xml::bsn::WorldProp { key: "auto-radius", value: "1.6" },
-            bevy_world_xml::bsn::WorldProp { key: "sound", value: "door_close" },
-            bevy_world_xml::bsn::WorldProp { key: "toast", value: "A porta devolve-te à vila." },
         ],
         text: "",
         origin_file: "scenes/interiors/house_b.xml",
@@ -1435,4 +1826,3 @@ bevy_ecs::hierarchy::Children [
         pose: true,
     }
 ]
-

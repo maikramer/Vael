@@ -88,12 +88,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "chest" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "35.5 0 -33" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "connect-opened", value: "@discordia:notice" },
             ],
             text: "",
@@ -126,14 +128,20 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "story_notas" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_elder" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "22 0 -24" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "story_notas" },
             ],
             text: "",
             origin_file: "world/cities/discordia/longhouse.xml",
@@ -181,14 +189,20 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.92388, z: 0.0, w: -0.382683 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/decision-quest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "quest_id", value: "story_glass_envoy" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_envoy_glass" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "25 0 -24" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 225 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/decision-quest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-quest_id", value: "story_glass_envoy" },
             ],
             text: "",
             origin_file: "world/cities/discordia/longhouse.xml",
@@ -229,6 +243,661 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v3.longhouse-brazier-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 23.5, y: 0.0, z: -26.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-brazier-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "23.50 0.00 -26.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [40],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [40, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.85 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [40, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.666667, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4800.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffaa52" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [40, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-brazier-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 28.5, y: 0.0, z: -25.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-brazier-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "28.50 0.00 -25.50" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [41],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [41, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.85 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [41, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.666667, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4800.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffaa52" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [41, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-bench-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 20.5, y: 0.0, z: -25.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-bench-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "20.50 0.00 -25.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [42],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [42, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-bench-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 26.5, y: 0.0, z: -23.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_bench_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-bench-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.50 0.00 -23.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [43],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [43, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-barrel-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 21.2, y: 0.0, z: -29.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-barrel-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "21.20 0.00 -29.80" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [44],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [44, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-barrel-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 22.2, y: 0.0, z: -30.6 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-barrel-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "22.20 0.00 -30.60" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [45],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [45, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-banner-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 21.2, y: 0.0, z: -22.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-banner-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "21.20 0.00 -22.20" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [46],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.16 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.16 0.24" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [46, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.05 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.07 1.85 0.07" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [46, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 3.65 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.04 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [46, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.90 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.68 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8c342b" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [46, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.18 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.07 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d4a64a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [46, 4],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.longhouse-banner-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 28.8, y: 0.0, z: -23.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.longhouse-banner-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "28.80 0.00 -23.20" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 45 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [47],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.16 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.16 0.24" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [47, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.05 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.07 1.85 0.07" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [47, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 3.65 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.04 0.04" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [47, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.90 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.68 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8c342b" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [47, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.18 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.07 0.02" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d4a64a" },
+                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
+                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [47, 4],
+                pose: true,
+            }
+        ]
     ]
 ]
-

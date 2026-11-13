@@ -267,11 +267,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -184.0, y: -52.0 },
+            radius: 16.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-184 -52" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "16" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -408,11 +410,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -216.0, y: 56.0 },
+            radius: 18.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-216 56" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "18" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -605,12 +609,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/bog-idol.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "swamp-bog-idol" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-268 32.9 88" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/bog-idol.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -642,11 +648,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -264.0, y: 96.0 },
+            radius: 18.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-264 96" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "18" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -746,11 +754,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -248.0, y: -68.0 },
+            radius: 16.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-248 -68" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "16" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -986,11 +996,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -260.0, y: -20.0 },
+            radius: 18.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-260 -20" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "18" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -1147,12 +1159,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -1272,12 +1286,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 22; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.16; start-size-max: 0.34; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -1397,12 +1413,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 42.0, shape_radius: core::option::Option::Some(0.28), start_life: glam::Vec2 { x: 0.5, y: 1.3 }, start_speed: glam::Vec2 { x: 1.3, y: 2.7 }, start_size: glam::Vec2 { x: 0.3, y: 0.62 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.42 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 42; shape-radius: 0.28; start-life-min: 0.5; start-life-max: 1.3; start-speed-min: 1.3; start-speed-max: 2.7; start-size-min: 0.3; start-size-max: 0.62; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -1633,12 +1651,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "ambient-water.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "ambient_water_lagoon" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-190 23.962 -6" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "ambient-water.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -1652,12 +1672,14 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::ScriptRef {
+            path: "ambient-water.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "ambient_water_east_lagoon" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236 32.8225 -84" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "ambient-water.lua" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -1846,13 +1868,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-1" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236 27.4543 42" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 37 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -1889,13 +1913,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-2" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-248 29.4925 66" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 74 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -1932,13 +1958,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-3" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-224 28.1664 74" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 69 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -1975,13 +2003,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-4" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-256 29.6641 50" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 32 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2018,13 +2048,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-5" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-240 30.2981 88" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -5 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2061,13 +2093,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-6" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-212 26.6071 58" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -42 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2104,13 +2138,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-7" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-268 31.8096 78" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -79 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2147,13 +2183,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-8" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-282 33.7064 96" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -64 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2190,13 +2228,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-9" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-230 31.1513 102" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -27 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2233,13 +2273,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-10" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-196 26.7611 44" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2276,13 +2318,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-11" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-274 31.318 44" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 47 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2319,13 +2363,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-12" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-206 28.36 84" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 84 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2362,13 +2408,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-13" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-244 28.0093 36" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 59 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2405,13 +2453,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-14" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-232 30.3757 94" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 22 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2448,13 +2498,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-15" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-218 28.3285 80" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -15 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2491,13 +2543,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "bog-moss.lua",
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "bog-moss-16" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-282 32.2844 54" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: precompute; mesh-url: /assets/meshes/swamp/moss_rock_collision.glb; mesh-anchor: base" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "bog-moss.lua" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -52 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -2537,19 +2591,25 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "55" },
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "3" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir a arca do barco" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "barco-arca" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-183.60 25.90 -36.20" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "55" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "40" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "3" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir a arca do barco" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -2587,19 +2647,25 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "90" },
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "60" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o relicário do altar" },
+            ],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "altar-relicario" },
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-267.00 33.044 98.20" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 300 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "90" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "60" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o relicário do altar" },
             ],
             text: "",
             origin_file: "world/landmarks/swamp.xml",
@@ -3189,12 +3255,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("fire"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 18; shape-radius: 0.06; start-life-min: 0.3; start-life-max: 0.8; start-speed-min: 0.9; start-speed-max: 1.9; start-size-min: 0.14; start-size-max: 0.3; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
@@ -3286,6 +3354,1329 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v3.swamp-boat-torch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -184.5, y: 25.7273, z: -41.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-boat-torch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-184.50 25.73 -41.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [300],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [300, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [300, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4600.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa852" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [300, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-boat-crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -189.8, y: 24.8565, z: -37.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.275637, z: 0.0, w: 0.961262 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-boat-crate" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-189.80 24.86 -37.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 32 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [301],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [301, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-boat-barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -182.2, y: 25.8278, z: -39.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-boat-barrel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-182.20 25.83 -39.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [302],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [302, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-boat-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -186.5, y: 24.9096, z: -35.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-boat-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-186.50 24.91 -35.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [303],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [303, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-altar-brazier-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -266.2, y: 32.6606, z: 94.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-altar-brazier-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-266.20 32.66 94.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [304],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [304, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [304, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4800.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa852" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [304, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-altar-brazier-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -261.8, y: 32.3696, z: 94.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-altar-brazier-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-261.80 32.37 94.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [305],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [305, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [305, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4800.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa852" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [305, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-altar-shroom-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -261.5, y: 32.7338, z: 98.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-altar-shroom-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-261.50 32.73 98.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 25 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [306],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [306, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-altar-shroom-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -266.5, y: 32.4274, z: 90.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.461749, z: 0.0, w: 0.887011 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-altar-shroom-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-266.50 32.43 90.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -55 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [307],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [307, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-altar-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -264.0, y: 32.4405, z: 93.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-altar-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-264.00 32.44 93.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [308],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [308, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-shack-cauldron"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -256.5, y: 28.6618, z: -20.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/interiors/cauldron_iron_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/interiors/cauldron_iron_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/interiors/cauldron_iron_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-shack-cauldron" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-256.50 28.66 -20.20" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [309],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene cauldron_iron"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/cauldron_iron_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [309, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [309, 1],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-shack-brazier"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -262.8, y: 29.7251, z: -17.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/iron_brazier_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-shack-brazier" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-262.80 29.73 -17.20" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [310],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene iron_brazier"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [310, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.95 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [310, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.658824, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4800.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa852" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [310, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-shack-barrel"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -258.5, y: 29.2047, z: -24.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-shack-barrel" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-258.50 29.20 -24.50" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [311],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [311, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-shack-crate"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -254.2, y: 28.3376, z: -22.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.190809, z: 0.0, w: 0.981627 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-shack-crate" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-254.20 28.34 -22.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -22 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [312],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [312, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-shack-shroom"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -263.5, y: 29.9035, z: -19.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-shack-shroom" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-263.50 29.90 -19.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "scale: 1.1 1.1 1.1" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [313],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [313, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-shack-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -257.0, y: 28.6696, z: -16.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-shack-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-257.00 28.67 -16.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [314],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.15 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [314, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.chest-swamp-shack"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -257.5, y: 28.9209, z: -22.5 },
+            rotation: glam::Quat { x: 0.0, y: -0.34202, z: 0.0, w: 0.939693 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "40" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+            ],
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.chest-swamp-shack" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-257.50 28.92 -22.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -40 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [315],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [315, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-lagoon-torch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -185.5, y: 26.1367, z: 15.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/torch_post_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/torch_post_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-lagoon-torch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-185.50 26.14 15.80" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [316],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene torch_post"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [316, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [316, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 2.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.666667, blue: 0.321569, alpha: 1.0 }),
+                intensity: 4600.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffaa52" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4600" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [316, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-lagoon-shroom"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -191.5, y: 25.9532, z: 13.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/forest/mushroom_glow_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-lagoon-shroom" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-191.50 25.95 13.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [317],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene mushroom_glow"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [317, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v3.swamp-lagoon-fireflies"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -188.0, y: 25.747, z: 11.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.swamp-lagoon-fireflies" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-188.00 25.75 11.00" },
+            ],
+            text: "",
+            origin_file: "world/landmarks/swamp.xml",
+            origin_path: [318],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fireflies",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
+                ],
+                text: "",
+                origin_file: "world/landmarks/swamp.xml",
+                origin_path: [318, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"judge-swamp"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -162.5, y: 34.9924, z: 115.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/druid_stone_altar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/terrain/druid_stone_altar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/terrain/druid_stone_altar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "judge-site.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "verdict_id", value: "swamp_purifier" },
+            ],
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "judge-swamp" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-162.5 34.9924 115.5" },
+            ],
+            text: "",
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene druid_stone_altar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/druid_stone_altar_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.4, green: 0.909804, blue: 0.470588, alpha: 1.0 }),
+                intensity: 2400.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x66e878" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2400" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                pose: true,
+            }
+        ]
+        --
+        #"echo-stone-swamp"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -147.0, y: 35.0983, z: 107.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 0.7, y: 0.7, z: 0.7 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/stone_pillar_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/stone_pillar_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "poi/echo-stone.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "chord", value: "tempestade" },
+            ],
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "echo-stone-swamp" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-147.0 35.0983 107.0" },
+                bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7" },
+            ],
+            text: "",
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene stone_pillar"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "sparkle",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
+                ],
+                text: "",
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.368627, green: 0.784314, blue: 0.901961, alpha: 1.0 }),
+                intensity: 2200.0,
+                radius: 0.35,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.3 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x5ec8e6" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "2200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
+                ],
+                text: "",
+                pose: true,
+            }
+        ]
     ]
 ]
-

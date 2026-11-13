@@ -50,6 +50,9 @@ impl Plugin for VaelSettingsPlugin {
             ElementsSettingsPlugin,
             PostFxSettingsPlugin,
             FloraSettingsPlugin,
+            // Colisor/corpo/destrutível/colheita tipados nos `.bsn`: o
+            // schema do Jackdaw tem de os conhecer para os editar.
+            bevy_ext_scene::SceneSpecPlugin,
             SceneSettingsPlugin::new(settings_world(&root)),
         ))
         .add_scene_setting::<ElementsSettings>()

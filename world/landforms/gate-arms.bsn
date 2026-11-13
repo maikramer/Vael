@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -34,83 +34,58 @@ bevy_ecs::hierarchy::Children [
     }
     bevy_ecs::hierarchy::Children [
         #"braco-oeste"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "braco-oeste" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "-36 66 -42 90 -47 112" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "7" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "9" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "right" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "81" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.2" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "braco-oeste",
+            path: [
+                [-36.0, 66.0],
+                [-42.0, 90.0],
+                [-47.0, 112.0],
             ],
-            text: "",
-            origin_file: "world/landforms/gate-arms.xml",
-            origin_path: [0, 0],
-            pose: false,
+            width: 7.0,
+            height: core::option::Option::Some(9.0),
+            profile: "concave",
+            side: "right",
+            noise: 0.25,
+            gullies: 0.2,
+            talus: true,
+            seed: 81,
         }
         --
         #"ombro-capela-baixo"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "ombro-capela-baixo" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "30 54 36 66 41 82" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "6" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "5" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "convex" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.3" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "82" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "ombro-capela-baixo",
+            path: [
+                [30.0, 54.0],
+                [36.0, 66.0],
+                [41.0, 82.0],
             ],
-            text: "",
-            origin_file: "world/landforms/gate-arms.xml",
-            origin_path: [0, 1],
-            pose: false,
+            height: core::option::Option::Some(5.0),
+            profile: "convex",
+            side: "left",
+            noise: 0.3,
+            talus: true,
+            seed: 82,
         }
         --
         #"ombro-capela-alto"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Cliff",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "ombro-capela-alto" },
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "41 82 45 98 43 116" },
-                bevy_world_xml::bsn::WorldProp { key: "width", value: "8" },
-                bevy_world_xml::bsn::WorldProp { key: "height", value: "9" },
-                bevy_world_xml::bsn::WorldProp { key: "profile", value: "concave" },
-                bevy_world_xml::bsn::WorldProp { key: "side", value: "left" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.25" },
-                bevy_world_xml::bsn::WorldProp { key: "seed", value: "83" },
-                bevy_world_xml::bsn::WorldProp { key: "gullies", value: "0.18" },
-                bevy_world_xml::bsn::WorldProp { key: "talus", value: "1" },
+        bevy_ext_terrain::voxel::VoxelCliff {
+            name: "ombro-capela-alto",
+            path: [
+                [41.0, 82.0],
+                [45.0, 98.0],
+                [43.0, 116.0],
             ],
-            text: "",
-            origin_file: "world/landforms/gate-arms.xml",
-            origin_path: [0, 2],
-            pose: false,
+            width: 8.0,
+            height: core::option::Option::Some(9.0),
+            profile: "concave",
+            side: "left",
+            noise: 0.25,
+            gullies: 0.18,
+            talus: true,
+            seed: 83,
         }
         --
-        #"TerrainPad"
+        #TerrainPad
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -132,18 +107,19 @@ bevy_ecs::hierarchy::Children [
             pose: false,
         }
         --
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: 30.0, y: -104.0 },
+            radius: 10.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "30 -104" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "10" },
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/landforms/gate-arms.xml",
             origin_path: [0, 4],
@@ -260,4 +236,3 @@ bevy_ecs::hierarchy::Children [
         ]
     ]
 ]
-

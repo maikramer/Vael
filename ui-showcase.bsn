@@ -94,11 +94,13 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "ui/showcase.lua",
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "UiRoot",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "id", value: "showcase" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "ui/showcase.lua" },
         ],
         text: "",
         origin_file: "ui-showcase.xml",

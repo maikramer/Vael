@@ -64,11 +64,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/wolf.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -82,15 +84,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/wolf_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/wolf_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -131,11 +135,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/shade.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/shade.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -149,15 +155,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/shade_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/shade_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/shade_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/shade_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/shade_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -198,11 +206,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/scorpion.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/scorpion.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -216,15 +226,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/scorpion_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/scorpion_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/scorpion_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/scorpion_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/scorpion_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -265,11 +277,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/bandit.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -283,15 +297,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/bandit_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/bandit_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -332,11 +348,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/bandit-archer.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-archer.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -350,15 +368,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/bandit_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/bandit_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -399,11 +419,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/bogling.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bogling.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -417,15 +439,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/bogling_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/bogling_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bogling_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bogling_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bogling_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -466,11 +490,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/wolf.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -484,15 +510,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/wolf_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/wolf_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -533,11 +561,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/goblin.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -551,15 +581,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/goblin_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/goblin_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/goblin_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/goblin_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -600,11 +632,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/slime.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/slime.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -618,15 +652,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/slime_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/slime_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/slime_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/slime_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/slime_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -667,11 +703,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/wolf.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -685,15 +723,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/wolf_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/wolf_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/wolf_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/wolf_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -734,11 +774,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/bandit-shield.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-shield.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -752,15 +794,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/bandit_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/bandit_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bandit_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bandit_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -801,11 +845,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/bogling-hexer.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bogling-hexer.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -819,15 +865,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/bogling_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/bogling_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bogling_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/bogling_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/bogling_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",
@@ -868,11 +916,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/goblin-brute.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin-brute.lua" },
                 ],
                 text: "",
                 origin_file: "world/creatures/enemies.xml",
@@ -886,15 +936,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/goblin_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/goblin_lod2.glb"),
+                    near: core::option::Option::Some(18.0),
+                    mid: core::option::Option::Some(55.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/goblin_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/goblin_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "18" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "55" },
                     ],
                     text: "",
                     origin_file: "world/creatures/enemies.xml",

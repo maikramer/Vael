@@ -27,6 +27,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra junto à choupana" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -34,12 +46,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-34 50.0 282" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra junto à choupana" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -96,6 +102,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-bosque" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -103,12 +121,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-72.5 40.36 198.5" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-bosque" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -165,6 +177,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-bosque" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -172,12 +196,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-67.5 40.36 198.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-bosque" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -234,6 +252,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-bosque" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -241,12 +271,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-70.0 40.36 203.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-bosque" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -303,6 +327,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -310,12 +346,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "118 48.14 228" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -372,6 +402,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -379,12 +421,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-110 45.92 150" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -441,6 +477,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -448,12 +496,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "44 42.44 210" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -504,6 +546,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 0.9, y: 0.9, z: 0.9 },
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -511,12 +565,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 58.76 260" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -554,6 +602,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra do oásis" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -561,12 +621,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "128 49.18 84" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra do oásis" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -623,6 +677,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -630,12 +696,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "296 47.35 118" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -692,6 +752,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -699,12 +771,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "232 47.16 -20" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -761,6 +827,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -768,12 +846,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "250 52.45 30" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -830,6 +902,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -837,12 +921,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "166 49.84 -108" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -880,6 +958,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra da margem" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -887,12 +977,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-150 26.26 -30" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra da margem" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -949,6 +1033,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -956,12 +1052,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-244 27.03 24" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1018,6 +1108,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1025,12 +1127,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-272 31.68 -34" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1068,6 +1164,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-pantano" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1075,12 +1183,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-252.5 30.58 80.5" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-pantano" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1137,6 +1239,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-pantano" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1144,12 +1258,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-247.5 30.58 80.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-pantano" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1206,6 +1314,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-pantano" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1213,12 +1333,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-250.0 30.58 85.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-pantano" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1275,6 +1389,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1282,12 +1408,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-210 26.37 -40" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1344,6 +1464,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra gelada" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1351,12 +1483,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-30 53.64 -148" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra gelada" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1413,6 +1539,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1420,12 +1558,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-56 74.73 -184" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "odd" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a pedra que canta" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1482,6 +1614,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-picos" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1489,12 +1633,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-72.5 88.32 -204.5" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-picos" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1551,6 +1689,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-picos" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1558,12 +1708,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-67.5 88.32 -205.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-picos" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1620,6 +1764,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
+            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-picos" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1627,12 +1783,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-70.0 93.10 -210.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.55" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "ring" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "anel-picos" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Tocar a nota" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1689,6 +1839,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1696,12 +1858,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "84 78.88 -196" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1739,6 +1895,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1746,12 +1914,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "100 40.18 -24" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "hide" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Apanhar a semente" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1808,6 +1970,18 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "poi/song-seed.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
+            bevy_ext_scene::AuthoredProp { key: "group" },
+            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra" },
+            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
@@ -1815,12 +1989,6 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "18 45.0 78" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
             bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "poi/song-seed.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-mode", value: "rock" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-group", value: "" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-index", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Erguer a pedra" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-range", value: "3.0" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1877,19 +2045,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "120" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "60" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do miradouro da atalaia" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-atalaia-vale" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "75.9 52.17 -7.9" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 210 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "120" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "60" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do miradouro da atalaia" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1927,19 +2101,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "90" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "55" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do miradouro da atalaia" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-atalaia-bosque" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "16.0 61.13 140.3" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 30 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "90" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "55" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do miradouro da atalaia" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -1977,19 +2157,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "110" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Pescar o baú no fundo do oásis" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-oasis" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "137.0 47.47 86.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "110" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "50" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Pescar o baú no fundo do oásis" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2027,19 +2213,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "95" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bombas" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú entre as ruínas" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-ermo-ruinas" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "304.0 47.39 128.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 75 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "95" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "50" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bombas" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú entre as ruínas" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2077,19 +2269,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "85" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "45" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú sob o cais" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-pantano-cais" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-266.0 29.78 -12.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 260 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "85" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "45" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú sob o cais" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2127,19 +2325,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "75" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "45" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú à sombra da ponte" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-ponte-norte" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.0 38.91 202.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 95 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "75" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "45" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poção" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú à sombra da ponte" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2177,19 +2381,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "200" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "90" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bombas" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú da Cidadela Caída" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-cidadela" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-870.0 188.57 -290.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "200" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "90" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bombas" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú da Cidadela Caída" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2227,19 +2437,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "130" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "70" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú à boca da mina" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-mina-veio" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "-63.0 95.76 -213.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 160 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "130" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "70" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú à boca da mina" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2277,19 +2493,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "160" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "80" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "3" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do bosque encantado" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-bosque-encantado" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "228.0 72.48 1400.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "160" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "80" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "potion" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "3" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "poções" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do bosque encantado" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2327,19 +2549,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "150" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "75" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do Alto de Vael" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-vael" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "702.5 182.58 212.5" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 130 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "150" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "75" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "antidote" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "2" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "antídotos" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú do Alto de Vael" },
         ],
         text: "",
         origin_file: "world/koroks.xml",
@@ -2377,19 +2605,25 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::BodySpec {
         kind: bevy_ext_scene::BodyKind::Fixed,
     }
+    bevy_ext_scene::ScriptRef {
+        path: "chest.lua",
+    }
+    bevy_ext_scene::AuthoredProps {
+        props: [
+            bevy_ext_scene::AuthoredProp { key: "gold", value: "140" },
+            bevy_ext_scene::AuthoredProp { key: "xp", value: "70" },
+            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
+            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bomba" },
+            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú escondido na boca do Ermo" },
+        ],
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "bau-porta-ermo" },
             bevy_world_xml::bsn::WorldProp { key: "translation", value: "505.0 81.52 -57.0" },
             bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 190 0" },
-            bevy_world_xml::bsn::WorldProp { key: "script", value: "chest.lua" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-gold", value: "140" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-xp", value: "70" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item", value: "bomb" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_count", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-item_label", value: "bomba" },
-            bevy_world_xml::bsn::WorldProp { key: "prop-prompt", value: "Abrir o baú escondido na boca do Ermo" },
         ],
         text: "",
         origin_file: "world/koroks.xml",

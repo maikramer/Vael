@@ -39,11 +39,13 @@ bevy_ecs::hierarchy::Children [
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
+        bevy_ext_scene::SpawnExclusionSpec {
+            at: glam::Vec2 { x: -770.0, y: -265.0 },
+            radius: 40.0,
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "-770 -265" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "40" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -187,7 +189,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"battlefield-wreck"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -774.0, y: 0.0, z: -270.0 },
+            translation: glam::Vec3 { x: -774.0, y: -0.1575, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -201,7 +203,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "battlefield-wreck" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-774 0 -270" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-774 -0.16 -270" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 35 0" },
             ],
             text: "",
@@ -272,14 +274,14 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -774.0, y: 0.0, z: -270.0 },
+            translation: glam::Vec3 { x: -774.0, y: -0.1575, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-774 0 -270" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-774 -0.16 -270" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -309,7 +311,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -761.0, y: 0.0, z: -268.0 },
+            translation: glam::Vec3 { x: -761.0, y: -0.0587, z: -268.0 },
             rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -322,7 +324,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-761 0 -268" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-761 -0.06 -268" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
             ],
             text: "",
@@ -351,7 +353,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -778.0, y: 0.0, z: -274.0 },
+            translation: glam::Vec3 { x: -778.0, y: -0.3597, z: -274.0 },
             rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -364,7 +366,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-778 0 -274" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-778 -0.36 -274" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 80 0" },
             ],
             text: "",
@@ -393,7 +395,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -764.0, y: 0.0, z: -276.0 },
+            translation: glam::Vec3 { x: -764.0, y: -0.0821, z: -276.0 },
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -406,7 +408,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-764 0 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-764 -0.08 -276" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
             ],
             text: "",
@@ -435,7 +437,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -782.0, y: 0.0, z: -262.0 },
+            translation: glam::Vec3 { x: -782.0, y: -0.7599, z: -262.0 },
             rotation: glam::Quat { x: 0.224385, y: 0.258126, z: 0.616494, w: 0.709195 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -445,7 +447,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-782 0 -262" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-782 -0.76 -262" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 82" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.0 1.0" },
             ],
@@ -475,7 +477,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -758.0, y: 0.0, z: -258.0 },
+            translation: glam::Vec3 { x: -758.0, y: -0.6225, z: -258.0 },
             rotation: glam::Quat { x: 0.678192, y: 0.702289, z: -0.150352, w: -0.155694 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -485,7 +487,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-758 0 -258" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-758 -0.62 -258" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 205 88" },
                 bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.4 1.0 1.0" },
             ],
@@ -515,7 +517,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -768.0, y: 0.0, z: -256.0 },
+            translation: glam::Vec3 { x: -768.0, y: -0.3243, z: -256.0 },
             rotation: glam::Quat { x: 0.0, y: 0.743145, z: 0.0, w: 0.669131 },
             scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
         }
@@ -528,7 +530,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-768 0 -256" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-768 -0.32 -256" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 96 0; scale: 1.3 1.3 1.3" },
             ],
             text: "",
@@ -557,7 +559,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"battlefield-cairn"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -770.0, y: 0.0, z: -276.0 },
+            translation: glam::Vec3 { x: -770.0, y: -0.0442, z: -276.0 },
             rotation: glam::Quat { x: 0.0, y: 0.906308, z: 0.0, w: 0.422618 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -571,7 +573,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "battlefield-cairn" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 0 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 -0.04 -276" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 130 0" },
             ],
             text: "",
@@ -627,14 +629,14 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -770.0, y: 0.0, z: -276.0 },
+            translation: glam::Vec3 { x: -770.0, y: -0.0442, z: -276.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 0 -276" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 -0.04 -276" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -648,10 +650,12 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("sparkle"),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
                 ],
                 text: "",
@@ -663,7 +667,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -779.0, y: 0.0, z: -268.0 },
+            translation: glam::Vec3 { x: -779.0, y: -0.4412, z: -268.0 },
             rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -676,7 +680,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-779 0 -268" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-779 -0.44 -268" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0" },
             ],
             text: "",
@@ -705,7 +709,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -760.0, y: 0.0, z: -272.0 },
+            translation: glam::Vec3 { x: -760.0, y: -0.1416, z: -272.0 },
             rotation: glam::Quat { x: 0.210569, y: 0.269516, z: 0.578533, w: 0.740488 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -718,7 +722,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-760 0 -272" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-760 -0.14 -272" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 40 76" },
             ],
             text: "",
@@ -747,7 +751,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -763.0, y: 0.0, z: -264.0 },
+            translation: glam::Vec3 { x: -763.0, y: -0.0678, z: -264.0 },
             rotation: glam::Quat { x: 0.06719, y: 0.080073, z: 0.639266, w: 0.761848 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -760,7 +764,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-763 0 -264" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-763 -0.07 -264" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 12 80" },
             ],
             text: "",
@@ -789,7 +793,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -786.0, y: 0.0, z: -272.0 },
+            translation: glam::Vec3 { x: -786.0, y: -0.8513, z: -272.0 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: -0.866025 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -802,7 +806,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-786 0 -272" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-786 -0.85 -272" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 300 0" },
             ],
             text: "",
@@ -831,7 +835,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"Entity"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -754.0, y: 0.0, z: -270.0 },
+            translation: glam::Vec3 { x: -754.0, y: -0.4502, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.996195, z: 0.0, w: -0.087156 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -844,7 +848,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-754 0 -270" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-754 -0.45 -270" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 190 0" },
             ],
             text: "",
@@ -894,12 +898,14 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ParticleSpec {
+                preset: core::option::Option::Some("smoke"),
+                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "smoke", emission_rate: 2.0, shape_radius: core::option::Option::None, start_life: glam::Vec2 { x: 3.0, y: 6.0 }, start_speed: glam::Vec2 { x: 0.06, y: 0.22 }, start_size: glam::Vec2 { x: 0.7, y: 1.6 }, start_color: core::option::Option::Some("#8e8a84"), looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "ParticleSystem",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 2; start-life-min: 3; start-life-max: 6; start-speed-min: 0.06; start-speed-max: 0.22; start-size-min: 0.7; start-size-max: 1.6; start-color: #8e8a84; looping: 1; world-space: 1" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
@@ -941,11 +947,13 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef {
+                path: "enemies/shade.lua",
+            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Creature",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "role", value: "enemy" },
-                    bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/shade.lua" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
@@ -959,15 +967,17 @@ bevy_ecs::hierarchy::Children [
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
+                bevy_ext_scene::ModelLod {
+                    lod1: core::option::Option::Some("/assets/meshes/characters/shade_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/characters/shade_lod2.glb"),
+                    near: core::option::Option::Some(20.0),
+                    mid: core::option::Option::Some(60.0),
+                }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GLTFLoader",
                     attrs: [
                         bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
                         bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/shade_lod0.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod1-url", value: "/assets/meshes/characters/shade_lod1.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod2-url", value: "/assets/meshes/characters/shade_lod2.glb" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-near", value: "20" },
-                        bevy_world_xml::bsn::WorldProp { key: "lod-threshold-mid", value: "60" },
                     ],
                     text: "",
                     origin_file: "world/scenes/battlefield.xml",
@@ -979,18 +989,24 @@ bevy_ecs::hierarchy::Children [
         --
         #"npc_battle_survivor"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -766.0, y: 0.0, z: -260.0 },
+            translation: glam::Vec3 { x: -766.0, y: -0.1098, z: -260.0 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/dialogue.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "citadel_shades" },
+            ],
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_battle_survivor" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-766 0 -260" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-766 -0.11 -260" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
-                bevy_world_xml::bsn::WorldProp { key: "script", value: "npc/dialogue.lua" },
-                bevy_world_xml::bsn::WorldProp { key: "prop-dialogue_id", value: "citadel_shades" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
@@ -1803,6 +1819,1185 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
         ]
+        --
+        #"sceneref.v2.battlefield-bastion-w"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -781.5, y: -0.6366, z: -274.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-bastion-w" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-781.50 -0.64 -274.20" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [60],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.80 0.30 0.72" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6f6d68" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.15, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.15 0.95 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.45 0.55 0.44" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7c7870" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.3, y: 0.8, z: 0.05 },
+                rotation: glam::Quat { x: -0.001826, y: 0.052304, z: -0.034852, w: 0.998021 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.30 0.80 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 -4" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.10 0.42 0.44" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#747068" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.05, y: 1.72, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.043619, w: 0.999048 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.05 1.72 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 5" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.28 0.42" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#858178" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.55, y: 1.68, z: 0.0 },
+                rotation: glam::Quat { x: 0.002663, y: -0.043538, z: -0.06099, w: 0.997185 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.55 1.68 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -5 -7" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.24 0.40" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7970" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 4],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.78 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.75 0.78" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.50 0.08 0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#493c31" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 5],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.24159, y: 0.012661, z: -0.050781, w: 0.968966 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 6],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.241839, y: 0.006333, z: -0.025399, w: 0.969963 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -3" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 7],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.241922, y: 0.0, z: 0.0, w: 0.970296 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 8],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.241839, y: -0.006333, z: 0.025399, w: 0.969963 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 3" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 9],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 2.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.24159, y: -0.012661, z: 0.050781, w: 0.968966 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [60, 10],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-bastion-e"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -757.8, y: -0.3695, z: -274.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.241922, z: 0.0, w: 0.970296 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-bastion-e" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-757.80 -0.37 -274.80" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -28 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [61],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.80 0.30 0.72" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6f6d68" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.15, y: 0.95, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.15 0.95 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.45 0.55 0.44" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7c7870" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.3, y: 0.8, z: 0.05 },
+                rotation: glam::Quat { x: -0.001826, y: 0.052304, z: -0.034852, w: 0.998021 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.30 0.80 0.05" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 -4" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.10 0.42 0.44" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#747068" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 2],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.05, y: 1.72, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.043619, w: 0.999048 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.05 1.72 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 5" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.28 0.42" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#858178" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 3],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.55, y: 1.68, z: 0.0 },
+                rotation: glam::Quat { x: 0.002663, y: -0.043538, z: -0.06099, w: 0.997185 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.55 1.68 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -5 -7" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.24 0.40" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7970" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 4],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.78 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.75 0.78" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.50 0.08 0.08" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#493c31" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 5],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.24159, y: 0.012661, z: -0.050781, w: 0.968966 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 6],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -1.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.241839, y: 0.006333, z: -0.025399, w: 0.969963 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -3" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 7],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.241922, y: 0.0, z: 0.0, w: 0.970296 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 8],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 1.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.241839, y: -0.006333, z: 0.025399, w: 0.969963 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 3" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 9],
+                pose: true,
+            }
+            --
+            #"Cylinder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 2.0, y: 0.72, z: 0.92 },
+                rotation: glam::Quat { x: 0.24159, y: -0.012661, z: 0.050781, w: 0.968966 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Cylinder",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.00 0.72 0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 6" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [61, 10],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-arch"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -771.5, y: -0.4893, z: -254.8 },
+            rotation: glam::Quat { x: 0.0, y: 0.069756, z: 0.0, w: 0.997564 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Auto,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Composition",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-arch" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-771.50 -0.49 -254.80" },
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 8 0" },
+                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [62],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -2.2, y: 1.65, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.20 1.65 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 1.75 0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a766e" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [62, 0],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 2.2, y: 1.4, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.052336, w: 0.99863 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.20 1.40 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -6" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 1.45 0.55" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#736f67" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [62, 1],
+                pose: true,
+            }
+            --
+            #"Box"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: -0.35, y: 3.25, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.078459, w: 0.996917 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Box",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/cobblestone_road/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.35 3.25 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -9" },
+                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.05 0.42 0.58" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#69655f" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [62, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-ash"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GroundDecal",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-ash" },
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "-770 -270" },
+                bevy_world_xml::bsn::WorldProp { key: "size", value: "16 14" },
+                bevy_world_xml::bsn::WorldProp { key: "feather", value: "3.5" },
+                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.35" },
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "5" },
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a443e" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [63],
+            pose: false,
+        }
+        --
+        #"sceneref.v2.battlefield-embers-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -786.0, y: -0.8513, z: -272.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-embers-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-786.00 -0.85 -272.00" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [64],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [64, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.35, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.35 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [64, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.54902, blue: 0.235294, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.45 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8c3c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [64, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-embers-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -754.0, y: -0.4502, z: -270.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-embers-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-754.00 -0.45 -270.00" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [65],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "fire",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [65, 0],
+                pose: true,
+            }
+            --
+            #"ParticleSystem"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.35, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_ext_scene::ParticleSpec {
+                preset: "smoke",
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "ParticleSystem",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.35 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [65, 1],
+                pose: true,
+            }
+            --
+            #"PointLight"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_light::point_light::PointLight {
+                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.54902, blue: 0.235294, alpha: 1.0 }),
+                intensity: 4200.0,
+                radius: 0.4,
+                shadow_maps_enabled: false,
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "PointLight",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.45 0.00" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xff8c3c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4200" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [65, 2],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-sword"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -771.3, y: 0.0803, z: -275.4 },
+            rotation: glam::Quat { x: 0.231881, y: -0.123517, z: 0.951607, w: 0.159432 },
+            scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/sword_hero_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/sword_hero_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-sword" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-771.30 0.08 -275.40" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 18 25 165; scale: 1.2 1.2 1.2" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [66],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene sword_hero"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/sword_hero_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [66, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-debris-1"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -774.2, y: -0.1792, z: -263.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_boulder_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-debris-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-774.20 -0.18 -263.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [67],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_boulder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [67, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-debris-2"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -762.5, y: -0.2, z: -261.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.5373, z: 0.0, w: 0.843391 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/rock_boulder_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/props/rock_boulder_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-debris-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-762.50 -0.20 -261.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -65 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [68],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene rock_boulder"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [68, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-debris-3"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -782.4, y: -0.6327, z: -271.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_barrel_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_barrel_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-debris-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-782.40 -0.63 -271.50" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [69],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_barrel"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [69, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"sceneref.v2.battlefield-debris-4"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -756.5, y: -0.287, z: -271.2 },
+            rotation: glam::Quat { x: 0.0, y: -0.190809, z: 0.0, w: 0.981627 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_crate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/wooden_crate_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-debris-4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-756.50 -0.29 -271.20" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -22 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [70],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_crate"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [70, 0],
+                pose: true,
+            }
+        ]
+        --
+        #"chest-battlefield-bastion"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -783.2, y: -0.6442, z: -275.8 },
+            rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/treasure_chest_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "chest.lua",
+        }
+        bevy_ext_scene::AuthoredProps {
+            props: [
+                bevy_ext_scene::AuthoredProp { key: "gold", value: "35" },
+                bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
+                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
+                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
+                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
+                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+            ],
+        }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/village/treasure_chest_lod2.glb"),
+            d1: 30.0,
+            d2: 80.0,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "chest-battlefield-bastion" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-783.20 -0.64 -275.80" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -35 0" },
+            ],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [71],
+            pose: true,
+        }
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene treasure_chest"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/scenes/battlefield.xml",
+                origin_path: [71, 0],
+                pose: true,
+            }
+        ]
     ]
 ]
-
