@@ -47,9 +47,9 @@ use bevy_ext_core::Player;
 use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
 use viber::scene::SceneSource;
 use viber::scene_loader::CurrentScene;
-use bevy_ext_ui::ui::ScriptBindValue;
-use bevy_ext_ui::ui::script::UiScriptBinds;
-use bevy_ext_ui::ui::widgets::UiFocusedInput;
+use viber::ui::ScriptBindValue;
+use viber::ui::script::UiScriptBinds;
+use viber::ui::widgets::UiFocusedInput;
 use bevy_ext_core::vitals::Health;
 
 use crate::VaelProjectRoot;
@@ -1147,7 +1147,7 @@ fn update_harvest_focus(
     players: Query<&GlobalTransform, With<Player>>,
     harvestables: Query<(Entity, &GlobalTransform, &Harvestable, Option<&Health>), Without<Player>>,
     menus: Option<Res<MenusOpen>>,
-    modals: Option<Res<bevy_ext_ui::ui::modal::UiModalsOpen>>,
+    modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
     scene: Option<Res<CurrentScene>>,
     vitals: Option<Res<PlayerVitals>>,
     mut ui: Option<ResMut<UiScriptBinds>>,

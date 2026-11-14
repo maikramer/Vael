@@ -13,10 +13,10 @@ use bevy::prelude::*;
 use bevy::reflect::Reflect;
 use bevy_pf::prelude::*;
 use serde_json::Value;
-use bevy_ext_ui::ui::UiData;
-use bevy_ext_ui::ui::UiModalsOpen;
-use bevy_ext_ui::ui::script::UiScriptBinds;
-use bevy_ext_ui::ui::writer::UiWriter;
+use viber::ui::UiData;
+use viber::ui::UiModalsOpen;
+use viber::ui::script::UiScriptBinds;
+use viber::ui::writer::UiWriter;
 
 use crate::content::{VaelContent, label};
 use crate::hud::{OTHER_ROWS, best_quest, other_quest_rows, others_more_text};
@@ -183,12 +183,6 @@ impl Plugin for VaelUiPlugin {
             .insert_resource(VaelHudVm(Bindable::new(vm)))
             .insert_resource(screens::VaelScreensVm(Bindable::new(screens)))
             .insert_resource(map::VaelMapVm(Bindable::new(map)))
-            // Gémeos da UI do jogo (bevy_ext_ui): o build da engine
-            // inicializava os do `viber::ui`; estes são os que os sistemas
-            // daqui leem (Res<UiData>/ResMut<UiUserScale> falhavam a cada
-            // frame sem eles).
-            .init_resource::<UiData>()
-            .init_resource::<bevy_ext_ui::ui::scale::UiUserScale>()
             .init_resource::<map::MapTravelState>()
             .init_resource::<screens::SaveSlotsCache>()
             .init_resource::<screens::VaelScreensState>()

@@ -454,7 +454,7 @@ fn player_movement(
     keys: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
-    typing: Option<Res<bevy_ext_ui::ui::widgets::UiFocusedInput>>,
+    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
     actions: Option<Res<bevy_ext_core::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
