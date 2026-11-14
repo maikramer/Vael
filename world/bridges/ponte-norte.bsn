@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,8 +14,9 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216082468)
 bevy_ecs::hierarchy::Children [
-    #"SpawnExclusion"
+    #SpawnExclusion
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -27,15 +28,15 @@ bevy_ecs::hierarchy::Children [
     }
     bevy_world_xml::bsn::WorldNode {
         tag: "SpawnExclusion",
-        attrs: [
-        ],
+        attrs: [],
         text: "",
         origin_file: "world/bridges/ponte-norte.xml",
         origin_path: [0],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082469)
     --
-    #"ponte_norte"
+    #ponte_norte
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 4.0, y: 0.0, z: 216.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -57,8 +58,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082470)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 46.25, z: -33.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -72,15 +74,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
                 bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a9a94" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082471)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 44.220001, z: 0.0 },
             rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
@@ -95,15 +98,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
                 bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a9a94" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082472)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -3.35, y: 47.0, z: -37.25 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -115,15 +119,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 47.0 -37.25" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 12.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082473)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 3.35, y: 47.0, z: -37.25 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -135,15 +140,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 47.0 -37.25" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 12.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082474)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -3.35, y: 44.970001, z: -1.25 },
             rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
@@ -156,15 +162,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 24.25" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082475)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 3.35, y: 44.970001, z: -1.25 },
             rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
@@ -177,15 +184,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.45 24.25" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8a84" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082476)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -3.35, y: 47.529999, z: -37.25 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -197,15 +205,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 47.53 -37.25" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 12.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082477)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 3.35, y: 47.529999, z: -37.25 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -217,15 +226,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 47.53 -37.25" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 12.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082478)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -3.35, y: 45.5, z: -1.25 },
             rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
@@ -238,15 +248,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 24.25" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082479)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 3.35, y: 45.5, z: -1.25 },
             rotation: glam::Quat { x: 0.039696, y: 0.0, z: 0.0, w: 0.999212 },
@@ -259,15 +270,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.3 0.07 24.25" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "4.55 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7d78" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082480)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 46.049999, z: -45.75 },
             rotation: glam::Quat { x: -0.024956, y: 0.0, z: 0.0, w: 0.999689 },
@@ -282,15 +294,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
                 bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3.5" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a9a94" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082481)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -3.35, y: 47.150002, z: -49.5 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -302,15 +315,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 47.15 -49.5" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082482)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 3.35, y: 47.150002, z: -49.5 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -322,15 +336,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 47.15 -49.5" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 12],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082483)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -3.35, y: 43.099998, z: 23.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -342,15 +357,16 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3.35 43.1 23" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 13],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082484)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 3.35, y: 43.099998, z: 23.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -362,13 +378,14 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.35 43.1 23" },
                 bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.28 0.62 0.28" },
                 bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#76766f" },
-            
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },],
+                bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+            ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
             origin_path: [1, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082485)
         --
         #"pilar-oeste"
         bevy_transform::components::transform::Transform {
@@ -392,6 +409,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [1, 15],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082486)
         --
         #"pilar-leste"
         bevy_transform::components::transform::Transform {
@@ -415,9 +433,10 @@ bevy_ecs::hierarchy::Children [
             origin_path: [1, 16],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082487)
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 9.8, y: 46.1754, z: 172.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -439,26 +458,27 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082488)
     bevy_ecs::hierarchy::Children [
         #"GltfScene torch_post"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/torch-post.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [2, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [2, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082489)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 9.8, y: 46.1754, z: 172.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -474,30 +494,27 @@ bevy_ecs::hierarchy::Children [
         origin_path: [3],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082490)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire-r18.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: core::option::Option::Some("fire"),
-            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.7 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [3, 0],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [3, 0],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082491)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
-    #"Group"
+    #Group
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 9.8, y: 46.1754, z: 172.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -515,8 +532,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [4],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082492)
     bevy_ecs::hierarchy::Children [
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -541,9 +559,10 @@ bevy_ecs::hierarchy::Children [
             origin_path: [4, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082493)
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -0.6, y: 42.734402, z: 242.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -565,26 +584,27 @@ bevy_ecs::hierarchy::Children [
         origin_path: [5],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082494)
     bevy_ecs::hierarchy::Children [
         #"GltfScene torch_post"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/torch-post.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [5, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [5, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082495)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -0.6, y: 42.734402, z: 242.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -600,30 +620,27 @@ bevy_ecs::hierarchy::Children [
         origin_path: [6],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082496)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire-r18.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: core::option::Option::Some("fire"),
-            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.7 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [6, 0],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [6, 0],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082497)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
-    #"Group"
+    #Group
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -0.6, y: 42.734402, z: 242.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -641,8 +658,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [7],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082498)
     bevy_ecs::hierarchy::Children [
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -667,9 +685,10 @@ bevy_ecs::hierarchy::Children [
             origin_path: [7, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082499)
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 8.6, y: 42.734402, z: 240.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -691,26 +710,27 @@ bevy_ecs::hierarchy::Children [
         origin_path: [8],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082500)
     bevy_ecs::hierarchy::Children [
         #"GltfScene torch_post"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/torch-post.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [8, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [8, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082501)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
-    #"Entity"
+    #Entity
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 8.6, y: 42.734402, z: 240.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -726,30 +746,27 @@ bevy_ecs::hierarchy::Children [
         origin_path: [9],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082502)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire-r18.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: core::option::Option::Some("fire"),
-            emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.7 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [9, 0],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [9, 0],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082503)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
-    #"Group"
+    #Group
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 8.6, y: 42.734402, z: 240.5 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -767,8 +784,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [10],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082504)
     bevy_ecs::hierarchy::Children [
-        #"PointLight"
+        #PointLight
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -793,6 +811,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [10, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082505)
     ]
     --
     #"sceneref.v2.ponte-brazier-sw"
@@ -825,71 +844,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [30],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082506)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [30, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [30, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082507)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.34902, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [30, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.05 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb259" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [30, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082508)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [30, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.75 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [30, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082509)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-brazier-se"
@@ -922,71 +928,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [31],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082510)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [31, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [31, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082511)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.34902, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [31, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.05 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb259" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [31, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082512)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [31, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.75 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [31, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082513)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-brazier-nw"
@@ -1019,71 +1012,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [32],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082514)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [32, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [32, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082515)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.34902, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [32, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.05 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb259" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [32, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082516)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [32, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.75 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [32, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082517)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-brazier-ne"
@@ -1116,71 +1096,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [33],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082518)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [33, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [33, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082519)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.34902, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [33, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.05 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb259" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [33, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082520)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [33, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.75 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [33, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082521)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-brazier-mid-w"
@@ -1213,71 +1180,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [34],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082522)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [34, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [34, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082523)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.34902, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [34, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.05 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb259" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [34, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082524)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [34, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.75 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [34, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082525)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-brazier-mid-e"
@@ -1310,71 +1264,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [35],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082526)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [35, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [35, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082527)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.34902, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [35, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.05 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb259" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [35, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082528)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [35, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.75 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [35, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082529)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-banner-sw"
@@ -1399,8 +1340,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [36],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082530)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1422,8 +1364,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [36, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082531)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1445,8 +1388,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [36, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082532)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1468,8 +1412,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [36, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082533)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1489,8 +1434,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [36, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082534)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1510,6 +1456,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [36, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082535)
     ]
     --
     #"sceneref.v2.ponte-banner-se"
@@ -1534,8 +1481,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [37],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082536)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1557,8 +1505,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [37, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082537)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1580,8 +1529,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [37, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082538)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1603,8 +1553,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [37, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082539)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1624,8 +1575,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [37, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082540)
         --
-        #"Box"
+        #Box
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1645,6 +1597,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [37, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082541)
     ]
     --
     #"sceneref.v2.ponte-n-cairn"
@@ -1677,23 +1630,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [38],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082542)
     bevy_ecs::hierarchy::Children [
         #"GltfScene stone_cairn"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/terrain/stone-cairn.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [38, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [38, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082543)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-n-crate-w"
@@ -1726,23 +1680,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [39],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082544)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_crate"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-crate.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [39, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [39, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082545)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-n-barrel-w"
@@ -1774,23 +1729,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [40],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082546)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_barrel"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-barrel.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [40, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [40, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082547)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-n-bench-e"
@@ -1823,23 +1779,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [41],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082548)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_bench"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-bench.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [41, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [41, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082549)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-n-crate-e"
@@ -1872,23 +1829,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [42],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082550)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_crate"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-crate.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [42, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [42, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082551)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-n-rock-e"
@@ -1921,23 +1879,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [43],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082552)
     bevy_ecs::hierarchy::Children [
         #"GltfScene rock_mossy"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/rock-mossy-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [43, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [43, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082553)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v2.ponte-fireflies"
@@ -1957,26 +1916,23 @@ bevy_ecs::hierarchy::Children [
         origin_path: [44],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082554)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fireflies.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fireflies",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/bridges/ponte-norte.xml",
+            path: [44, 0],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [44, 0],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082555)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
 ]

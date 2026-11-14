@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,8 +14,9 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083153)
 bevy_ecs::hierarchy::Children [
-    #"city"
+    #city
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 0.0, y: 38.7304, z: 0.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083154)
     bevy_ecs::hierarchy::Children [
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -44,15 +46,15 @@ bevy_ecs::hierarchy::Children [
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/cities/discordia.xml",
             origin_path: [0, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083155)
         --
-        #"TerrainPad"
+        #TerrainPad
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -73,14 +75,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083156)
         --
-        #"walls"
+        #walls
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/walls.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/walls.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -91,14 +97,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083157)
         --
-        #"roads"
+        #roads
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/roads.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/roads.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -109,14 +119,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083158)
         --
-        #"utilities"
+        #utilities
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/utilities.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/utilities.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -127,14 +141,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083159)
         --
-        #"houses"
+        #houses
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/houses.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/houses.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -145,14 +163,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083160)
         --
-        #"forge"
+        #forge
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/forge.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/forge.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -163,14 +185,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083161)
         --
-        #"barn"
+        #barn
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/barn.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/barn.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -181,14 +207,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083162)
         --
-        #"watch"
+        #watch
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/watch.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/watch.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -199,14 +229,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083163)
         --
-        #"chapel"
+        #chapel
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/chapel.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/chapel.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -217,14 +251,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083164)
         --
-        #"market"
+        #market
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/market.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/market.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -235,14 +273,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083165)
         --
-        #"longhouse"
+        #longhouse
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/longhouse.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/longhouse.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -253,14 +295,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083166)
         --
-        #"portals"
+        #portals
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/portals.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/portals.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -271,14 +317,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 12],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083167)
         --
-        #"skirts"
+        #skirts
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/skirts.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/skirts.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -289,14 +339,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 13],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083168)
         --
-        #"clutter"
+        #clutter
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/clutter.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/clutter.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -307,14 +361,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083169)
         --
-        #"approach"
+        #approach
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/approach.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/approach.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -325,14 +383,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 15],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083170)
         --
-        #"grid"
+        #grid
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/grid.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/grid.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -343,14 +405,18 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 16],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083171)
         --
-        #"life"
+        #life
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        jackdaw::prefab::components::IsA { source: "discordia/life.bsn", deleted: [] }
+        jackdaw::prefab::components::IsA {
+            source: "discordia/life.bsn",
+            deleted: [],
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "Include",
             attrs: [
@@ -361,6 +427,6 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 17],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083172)
     ]
 ]
-

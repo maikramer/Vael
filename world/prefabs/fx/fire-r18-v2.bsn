@@ -1,0 +1,17 @@
+#"fire-r18-v2"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_ext_scene::ParticleSpec {
+    preset: core::option::Option::Some("fire"),
+    emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.12), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.28 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "ParticleSystem",
+    attrs: [],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008835)

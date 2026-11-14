@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083666)
 bevy_ecs::hierarchy::Children [
     #"city.portals"
     bevy_transform::components::transform::Transform {
@@ -32,6 +33,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083667)
     bevy_ecs::hierarchy::Children [
         #"portal.chapel"
         bevy_transform::components::transform::Transform {
@@ -57,25 +59,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083668)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 0, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 0, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083669)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.forge"
@@ -102,25 +103,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083670)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083671)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.house_a"
@@ -147,25 +147,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083672)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083673)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.house_b"
@@ -192,25 +191,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083674)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083675)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.house_c"
@@ -237,25 +235,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083676)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083677)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.shepherd"
@@ -282,25 +279,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083678)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083679)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.barn"
@@ -327,25 +323,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083680)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083681)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.longhouse"
@@ -372,25 +367,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083682)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/portals.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/portals.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083683)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"portal.market.stall_a"
@@ -417,8 +411,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083684)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -436,6 +431,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 8, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083685)
         ]
         --
         #"portal.market.stall_b"
@@ -462,8 +458,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083686)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -481,6 +478,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 9, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083687)
         ]
         --
         #"portal.market.stall_c"
@@ -507,8 +505,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083688)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -526,7 +525,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 10, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083689)
         ]
     ]
 ]
-

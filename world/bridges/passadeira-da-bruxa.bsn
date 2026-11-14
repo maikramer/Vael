@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216082408)
 bevy_ecs::hierarchy::Children [
     #"bridge.passadeira-da-bruxa"
     bevy_transform::components::transform::Transform {
@@ -32,6 +33,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082409)
     bevy_ecs::hierarchy::Children [
         #"passadeira-bruxa-bridge"
         bevy_transform::components::transform::Transform {
@@ -57,6 +59,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082410)
         bevy_ecs::hierarchy::Children [
             #"GltfScene river_bridge_wood"
             bevy_transform::components::transform::Transform {
@@ -80,6 +83,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082411)
         ]
         --
         #"Road -50"
@@ -107,6 +111,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082412)
         --
         #"Road -48"
         bevy_transform::components::transform::Transform {
@@ -133,6 +138,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082413)
         --
         #"sceneref.v2.passadeira-pillar-1"
         bevy_transform::components::transform::Transform {
@@ -155,8 +161,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [30],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082414)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -178,8 +185,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [30, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082415)
             --
-            #"Lathe"
+            #Lathe
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -202,8 +210,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [30, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082416)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -224,29 +233,26 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [30, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082417)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [30, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.15 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [30, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082418)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -272,6 +278,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [30, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082419)
         ]
         --
         #"sceneref.v2.passadeira-pillar-2"
@@ -295,8 +302,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [31],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082420)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -318,8 +326,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [31, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082421)
             --
-            #"Lathe"
+            #Lathe
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -342,8 +351,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [31, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082422)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -364,29 +374,26 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [31, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082423)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [31, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.15 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [31, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082424)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -412,6 +419,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [31, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082425)
         ]
         --
         #"sceneref.v2.passadeira-pillar-3"
@@ -435,8 +443,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [32],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082426)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -458,8 +467,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [32, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082427)
             --
-            #"Lathe"
+            #Lathe
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -482,8 +492,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [32, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082428)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -504,29 +515,26 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [32, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082429)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [32, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.15 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [32, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082430)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -552,6 +560,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [32, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082431)
         ]
         --
         #"sceneref.v2.passadeira-pillar-4"
@@ -575,8 +584,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [33],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082432)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -598,8 +608,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [33, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082433)
             --
-            #"Lathe"
+            #Lathe
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -622,8 +633,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [33, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082434)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -644,29 +656,26 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [33, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082435)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [33, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.15 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [33, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082436)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -692,6 +701,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [33, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082437)
         ]
         --
         #"sceneref.v2.passadeira-cairn"
@@ -724,25 +734,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [34],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082438)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_cairn"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/terrain/stone-cairn.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [34, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [34, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082439)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -768,27 +779,24 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [34, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082440)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fireflies.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.1, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fireflies",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [34, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [34, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082441)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-shroom-1"
@@ -818,23 +826,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [35],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082442)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_glow"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/forest/mushroom-glow-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [35, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [35, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082443)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-shroom-2"
@@ -864,23 +873,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [36],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082444)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_glow"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/forest/mushroom-glow-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [36, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [36, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082445)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-shroom-3"
@@ -910,23 +920,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [37],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082446)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_glow"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/forest/mushroom-glow-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [37, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [37, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082447)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-shroom-4"
@@ -956,23 +967,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [38],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082448)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_glow"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/forest/mushroom-glow-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [38, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [38, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082449)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-wreck"
@@ -1005,23 +1017,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [39],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082450)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wrecked_boat"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/swamp/wrecked-boat.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/wrecked_boat_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [39, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [39, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082451)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-prop-1"
@@ -1054,23 +1067,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [40],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082452)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [40, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [40, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082453)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-prop-2"
@@ -1103,23 +1117,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [41],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082454)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [41, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [41, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082455)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-prop-3"
@@ -1152,23 +1167,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [42],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082456)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [42, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [42, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082457)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-prop-4"
@@ -1201,23 +1217,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [43],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082458)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [43, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [43, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082459)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-prop-5"
@@ -1250,23 +1267,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [44],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082460)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [44, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [44, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082461)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-fireflies-1"
@@ -1286,27 +1304,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [45],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082462)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fireflies.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fireflies",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [45, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [45, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082463)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-fireflies-2"
@@ -1326,27 +1341,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [46],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082464)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fireflies.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fireflies",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/bridges/passadeira-da-bruxa.xml",
+                path: [46, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [46, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082465)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.passadeira-apron-s"
@@ -1372,6 +1384,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [47],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082466)
         --
         #"sceneref.v2.passadeira-apron-n"
         bevy_transform::components::transform::Transform {
@@ -1396,5 +1409,6 @@ bevy_ecs::hierarchy::Children [
             origin_path: [48],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082467)
     ]
 ]

@@ -1,0 +1,16 @@
+#emitter
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "ParticleSystem",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
+        bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008822)

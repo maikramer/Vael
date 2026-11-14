@@ -1,0 +1,16 @@
+#"emitter-v3"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "ParticleSystem",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "preset", value: "magic" },
+        bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: magic; start-color: #ffb35c; emission-rate: 16; shape-radius: 0.45; start-life-min: 0.7; start-life-max: 1.4; start-speed-min: 0.15; start-speed-max: 0.55; start-size-min: 0.1; start-size-max: 0.22; looping: 1; world-space: 1" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008871)

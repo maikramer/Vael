@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083417)
 bevy_ecs::hierarchy::Children [
     #"city.grid-district"
     bevy_transform::components::transform::Transform {
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083418)
     bevy_ecs::hierarchy::Children [
-        #"house_grid_a"
+        #house_grid_a
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -10.0, y: 0.0, z: 22.0 },
             rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
@@ -57,26 +59,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083419)
         bevy_ecs::hierarchy::Children [
             #"GltfScene village_house"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/village-house.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/village_house_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/grid.xml",
-                origin_path: [0, 0, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/grid.xml",
+                path: [0, 0, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083420)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -10.0, y: 0.0, z: 17.799999 },
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
@@ -99,26 +102,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083421)
         bevy_ecs::hierarchy::Children [
             #"GltfScene log_pile"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/log-pile.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/grid.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/grid.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083422)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -13.6, y: 0.0, z: 25.6 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -140,26 +144,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083423)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/grid.xml",
-                origin_path: [0, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/grid.xml",
+                path: [0, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083424)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -13.4, y: 0.0, z: 23.6 },
             rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
@@ -182,26 +187,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083425)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/grid.xml",
-                origin_path: [0, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/grid.xml",
+                path: [0, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083426)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -7.9, y: 0.0, z: 17.200001 },
             rotation: glam::Quat { x: 0.0, y: 0.5373, z: 0.0, w: 0.843391 },
@@ -224,26 +230,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083427)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/grid.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/grid.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083428)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -6.4, y: 0.0, z: 25.4 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -265,25 +272,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083429)
         bevy_ecs::hierarchy::Children [
             #"GltfScene torch_post"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/torch-post.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/grid.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/grid.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083430)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"Entity"
+            #Entity
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -291,36 +299,31 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/cities/discordia/grid.xml",
                 origin_path: [0, 5, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083431)
             bevy_ecs::hierarchy::Children [
-                #"ParticleSystem"
+                #ParticleSystem
+                jackdaw::prefab::components::IsA {
+                    source: "world/prefabs/fx/fire-r22.bsn",
+                    deleted: [],
+                }
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                bevy_ext_scene::ParticleSpec {
-                    preset: core::option::Option::Some("fire"),
-                    emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+                bevy_world_xml::bsn::WorldOrigin {
+                    file: "world/cities/discordia/grid.xml",
+                    path: [0, 5, 1, 0],
                 }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "ParticleSystem",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                    ],
-                    text: "",
-                    origin_file: "world/cities/discordia/grid.xml",
-                    origin_path: [0, 5, 1, 0],
-                    pose: true,
-                }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216083432)
+                jackdaw::prefab::components::PrefabEntityId(0)
             ]
         ]
     ]
 ]
-

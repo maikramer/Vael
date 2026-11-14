@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216086793)
 bevy_ecs::hierarchy::Children [
     #"UiStyle theme"
     bevy_transform::components::transform::Transform {
@@ -31,6 +32,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086794)
     --
     #"UiStyle menu"
     bevy_transform::components::transform::Transform {
@@ -48,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086795)
     --
     #"UiRoot menu-layer"
     bevy_transform::components::transform::Transform {
@@ -66,6 +69,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086796)
     bevy_ecs::hierarchy::Children [
         #"UiModal menu"
         bevy_transform::components::transform::Transform {
@@ -85,8 +89,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086797)
         bevy_ecs::hierarchy::Children [
-            #"UiColumn"
+            #UiColumn
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -102,8 +107,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 0, 0],
                 pose: false,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086798)
             bevy_ecs::hierarchy::Children [
-                #"UiRow"
+                #UiRow
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -119,8 +125,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 0],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086799)
                 bevy_ecs::hierarchy::Children [
-                    #"UiColumn"
+                    #UiColumn
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -136,8 +143,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 0, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086800)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -153,8 +161,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 0, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086801)
                         --
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -171,9 +180,10 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 0, 0, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086802)
                     ]
                     --
-                    #"UiSpacer"
+                    #UiSpacer
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -181,13 +191,13 @@ bevy_ecs::hierarchy::Children [
                     }
                     bevy_world_xml::bsn::WorldNode {
                         tag: "UiSpacer",
-                        attrs: [
-                        ],
+                        attrs: [],
                         text: "",
                         origin_file: "world/menu.xml",
                         origin_path: [2, 0, 0, 0, 1],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086803)
                     --
                     #"UiRow head-stats"
                     bevy_transform::components::transform::Transform {
@@ -206,8 +216,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 0, 2],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086804)
                     bevy_ecs::hierarchy::Children [
-                        #"UiPanel"
+                        #UiPanel
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -223,8 +234,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 0, 2, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086805)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -240,8 +252,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 0, 2, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086806)
                             --
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -258,9 +271,10 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 0, 2, 0, 1],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086807)
                         ]
                         --
-                        #"UiPanel"
+                        #UiPanel
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -276,8 +290,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 0, 2, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086808)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -293,8 +308,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 0, 2, 1, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086809)
                             --
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -311,9 +327,10 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 0, 2, 1, 1],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086810)
                         ]
                         --
-                        #"UiPanel"
+                        #UiPanel
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -329,8 +346,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 0, 2, 2],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086811)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -346,8 +364,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 0, 2, 2, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086812)
                             --
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -364,6 +383,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 0, 2, 2, 1],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086813)
                         ]
                     ]
                     --
@@ -384,8 +404,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 0, 3],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086814)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -393,17 +414,17 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "×",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 0, 3, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086815)
                     ]
                 ]
                 --
-                #"UiRow"
+                #UiRow
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -419,8 +440,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 1],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086816)
                 bevy_ecs::hierarchy::Children [
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -438,8 +460,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086817)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -447,16 +470,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.quests",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086818)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -474,8 +497,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 1],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086819)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -483,16 +507,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.bag",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 1, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086820)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -510,8 +534,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 2],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086821)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -519,16 +544,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.skills",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 2, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086822)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -546,8 +571,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 3],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086823)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -555,16 +581,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.shop",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 3, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086824)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -582,8 +608,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 4],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086825)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -591,16 +618,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.forge",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 4, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086826)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -618,8 +645,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 5],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086827)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -627,16 +655,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.controls",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 5, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086828)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -654,8 +682,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 6],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086829)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -663,16 +692,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.a11y",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 6, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086830)
                     ]
                     --
-                    #"UiButton"
+                    #UiButton
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -690,8 +719,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 1, 7],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086831)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -699,17 +729,17 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@menu.tab.system",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 1, 7, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086832)
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -727,8 +757,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 2],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086833)
                 bevy_ecs::hierarchy::Children [
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -746,8 +777,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 2, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086834)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -755,13 +787,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 2, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086835)
                         bevy_ecs::hierarchy::Children [
                             #"UiButton track-{id}"
                             bevy_transform::components::transform::Transform {
@@ -781,8 +813,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 2, 0, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086836)
                             bevy_ecs::hierarchy::Children [
-                                #"UiPanel"
+                                #UiPanel
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -798,8 +831,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 2, 0, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086837)
                                 --
-                                #"UiColumn"
+                                #UiColumn
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -815,8 +849,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 2, 0, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086838)
                                 bevy_ecs::hierarchy::Children [
-                                    #"UiRow"
+                                    #UiRow
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -832,8 +867,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 0],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086839)
                                     bevy_ecs::hierarchy::Children [
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -849,8 +885,9 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 0, 0],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086840)
                                         --
-                                        #"UiSpacer"
+                                        #UiSpacer
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -858,15 +895,15 @@ bevy_ecs::hierarchy::Children [
                                         }
                                         bevy_world_xml::bsn::WorldNode {
                                             tag: "UiSpacer",
-                                            attrs: [
-                                            ],
+                                            attrs: [],
                                             text: "",
                                             origin_file: "world/menu.xml",
                                             origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 0, 1],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086841)
                                         --
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -882,9 +919,10 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 0, 2],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086842)
                                     ]
                                     --
-                                    #"UiText"
+                                    #UiText
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -900,8 +938,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 1],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086843)
                                     --
-                                    #"UiRow"
+                                    #UiRow
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -917,8 +956,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 2],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086844)
                                     bevy_ecs::hierarchy::Children [
-                                        #"UiBar"
+                                        #UiBar
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -935,8 +975,9 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 2, 0],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086845)
                                         --
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -952,12 +993,13 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 2, 0, 0, 0, 1, 2, 1],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086846)
                                     ]
                                 ]
                             ]
                         ]
                         --
-                        #"UiEmpty"
+                        #UiEmpty
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -965,15 +1007,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiEmpty",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 2, 0, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086847)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -989,11 +1031,12 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 2, 0, 1, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086848)
                         ]
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1011,8 +1054,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 3],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086849)
                 bevy_ecs::hierarchy::Children [
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1030,8 +1074,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 3, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086850)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1039,13 +1084,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 3, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086851)
                         bevy_ecs::hierarchy::Children [
                             #"UiButton bag-{id}"
                             bevy_transform::components::transform::Transform {
@@ -1065,8 +1110,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 3, 0, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086852)
                             bevy_ecs::hierarchy::Children [
-                                #"UiPanel"
+                                #UiPanel
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1082,8 +1128,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 3, 0, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086853)
                                 --
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1099,8 +1146,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 3, 0, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086854)
                                 --
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1116,8 +1164,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 3, 0, 0, 0, 2],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086855)
                                 --
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1133,10 +1182,11 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 3, 0, 0, 0, 3],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086856)
                             ]
                         ]
                         --
-                        #"UiEmpty"
+                        #UiEmpty
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1144,15 +1194,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiEmpty",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 3, 0, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086857)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1168,11 +1218,12 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 3, 0, 1, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086858)
                         ]
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1190,8 +1241,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 4],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086859)
                 bevy_ecs::hierarchy::Children [
-                    #"UiRow"
+                    #UiRow
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1207,8 +1259,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086860)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1224,8 +1277,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 4, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086861)
                         --
-                        #"UiSpacer"
+                        #UiSpacer
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1233,15 +1287,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiSpacer",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 4, 0, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086862)
                         --
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1258,9 +1312,10 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 4, 0, 2],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086863)
                     ]
                     --
-                    #"UiRow"
+                    #UiRow
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1276,8 +1331,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 1],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086864)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1293,8 +1349,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 4, 1, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086865)
                         --
-                        #"UiSpacer"
+                        #UiSpacer
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1302,15 +1359,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiSpacer",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 4, 1, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086866)
                         --
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1326,9 +1383,10 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 4, 1, 2],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086867)
                     ]
                     --
-                    #"UiRow"
+                    #UiRow
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1344,8 +1402,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 2],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086868)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1361,8 +1420,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 4, 2, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086869)
                         --
-                        #"UiSpacer"
+                        #UiSpacer
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1370,15 +1430,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiSpacer",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 4, 2, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086870)
                         --
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1394,9 +1454,10 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 4, 2, 2],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086871)
                     ]
                     --
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1414,8 +1475,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 3],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086872)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1423,13 +1485,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 4, 3, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086873)
                         bevy_ecs::hierarchy::Children [
                             #"UiButton skill-{id}"
                             bevy_transform::components::transform::Transform {
@@ -1448,8 +1510,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 4, 3, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086874)
                             bevy_ecs::hierarchy::Children [
-                                #"UiPanel"
+                                #UiPanel
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1465,8 +1528,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 4, 3, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086875)
                                 --
-                                #"UiColumn"
+                                #UiColumn
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1482,8 +1546,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 4, 3, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086876)
                                 bevy_ecs::hierarchy::Children [
-                                    #"UiRow"
+                                    #UiRow
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1499,8 +1564,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 4, 3, 0, 0, 1, 0],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086877)
                                     bevy_ecs::hierarchy::Children [
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1516,8 +1582,9 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 4, 3, 0, 0, 1, 0, 0],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086878)
                                         --
-                                        #"UiSpacer"
+                                        #UiSpacer
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1525,15 +1592,15 @@ bevy_ecs::hierarchy::Children [
                                         }
                                         bevy_world_xml::bsn::WorldNode {
                                             tag: "UiSpacer",
-                                            attrs: [
-                                            ],
+                                            attrs: [],
                                             text: "",
                                             origin_file: "world/menu.xml",
                                             origin_path: [2, 0, 0, 4, 3, 0, 0, 1, 0, 1],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086879)
                                         --
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1549,9 +1616,10 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 4, 3, 0, 0, 1, 0, 2],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086880)
                                     ]
                                     --
-                                    #"UiText"
+                                    #UiText
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1567,13 +1635,14 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 4, 3, 0, 0, 1, 1],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086881)
                                 ]
                             ]
                         ]
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1591,8 +1660,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 5],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086882)
                 bevy_ecs::hierarchy::Children [
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1610,8 +1680,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 5, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086883)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1619,13 +1690,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 5, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086884)
                         bevy_ecs::hierarchy::Children [
                             #"UiButton shop-{id}"
                             bevy_transform::components::transform::Transform {
@@ -1644,8 +1715,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 5, 0, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086885)
                             bevy_ecs::hierarchy::Children [
-                                #"UiPanel"
+                                #UiPanel
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1661,8 +1733,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 5, 0, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086886)
                                 --
-                                #"UiColumn"
+                                #UiColumn
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1678,8 +1751,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 5, 0, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086887)
                                 bevy_ecs::hierarchy::Children [
-                                    #"UiRow"
+                                    #UiRow
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1695,8 +1769,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 5, 0, 0, 0, 1, 0],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086888)
                                     bevy_ecs::hierarchy::Children [
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1712,8 +1787,9 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 5, 0, 0, 0, 1, 0, 0],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086889)
                                         --
-                                        #"UiSpacer"
+                                        #UiSpacer
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1721,15 +1797,15 @@ bevy_ecs::hierarchy::Children [
                                         }
                                         bevy_world_xml::bsn::WorldNode {
                                             tag: "UiSpacer",
-                                            attrs: [
-                                            ],
+                                            attrs: [],
                                             text: "",
                                             origin_file: "world/menu.xml",
                                             origin_path: [2, 0, 0, 5, 0, 0, 0, 1, 0, 1],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086890)
                                         --
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1745,6 +1821,7 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 5, 0, 0, 0, 1, 0, 2],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086891)
                                     ]
                                 ]
                             ]
@@ -1752,7 +1829,7 @@ bevy_ecs::hierarchy::Children [
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1770,8 +1847,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 6],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086892)
                 bevy_ecs::hierarchy::Children [
-                    #"UiRow"
+                    #UiRow
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1787,8 +1865,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 6, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086893)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1804,9 +1883,10 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 6, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086894)
                     ]
                     --
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1824,8 +1904,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 6, 1],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086895)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1833,13 +1914,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 6, 1, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086896)
                         bevy_ecs::hierarchy::Children [
                             #"UiButton forge-{id}"
                             bevy_transform::components::transform::Transform {
@@ -1858,8 +1939,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 6, 1, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086897)
                             bevy_ecs::hierarchy::Children [
-                                #"UiPanel"
+                                #UiPanel
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1875,8 +1957,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 6, 1, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086898)
                                 --
-                                #"UiColumn"
+                                #UiColumn
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1892,8 +1975,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 6, 1, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086899)
                                 bevy_ecs::hierarchy::Children [
-                                    #"UiRow"
+                                    #UiRow
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1909,8 +1993,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 6, 1, 0, 0, 1, 0],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086900)
                                     bevy_ecs::hierarchy::Children [
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1926,8 +2011,9 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 6, 1, 0, 0, 1, 0, 0],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086901)
                                         --
-                                        #"UiSpacer"
+                                        #UiSpacer
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1935,15 +2021,15 @@ bevy_ecs::hierarchy::Children [
                                         }
                                         bevy_world_xml::bsn::WorldNode {
                                             tag: "UiSpacer",
-                                            attrs: [
-                                            ],
+                                            attrs: [],
                                             text: "",
                                             origin_file: "world/menu.xml",
                                             origin_path: [2, 0, 0, 6, 1, 0, 0, 1, 0, 1],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086902)
                                         --
-                                        #"UiText"
+                                        #UiText
                                         bevy_transform::components::transform::Transform {
                                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1959,9 +2045,10 @@ bevy_ecs::hierarchy::Children [
                                             origin_path: [2, 0, 0, 6, 1, 0, 0, 1, 0, 2],
                                             pose: false,
                                         }
+                                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086903)
                                     ]
                                     --
-                                    #"UiText"
+                                    #UiText
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1977,8 +2064,9 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 6, 1, 0, 0, 1, 1],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086904)
                                     --
-                                    #"UiText"
+                                    #UiText
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1994,13 +2082,14 @@ bevy_ecs::hierarchy::Children [
                                         origin_path: [2, 0, 0, 6, 1, 0, 0, 1, 2],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086905)
                                 ]
                             ]
                         ]
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2018,8 +2107,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 7],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086906)
                 bevy_ecs::hierarchy::Children [
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2037,8 +2127,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 7, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086907)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2046,15 +2137,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 7, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086908)
                         bevy_ecs::hierarchy::Children [
-                            #"UiRow"
+                            #UiRow
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2070,8 +2161,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 7, 0, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086909)
                             bevy_ecs::hierarchy::Children [
-                                #"UiPanel"
+                                #UiPanel
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2087,8 +2179,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 7, 0, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086910)
                                 bevy_ecs::hierarchy::Children [
-                                    #"UiText"
+                                    #UiText
                                     bevy_transform::components::transform::Transform {
                                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2096,16 +2189,16 @@ bevy_ecs::hierarchy::Children [
                                     }
                                     bevy_world_xml::bsn::WorldNode {
                                         tag: "UiText",
-                                        attrs: [
-                                        ],
+                                        attrs: [],
                                         text: "{key}",
                                         origin_file: "world/menu.xml",
                                         origin_path: [2, 0, 0, 7, 0, 0, 0, 0, 0],
                                         pose: false,
                                     }
+                                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086911)
                                 ]
                                 --
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2121,12 +2214,13 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 7, 0, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086912)
                             ]
                         ]
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2144,8 +2238,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 8],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086913)
                 bevy_ecs::hierarchy::Children [
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2163,8 +2258,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 8, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086914)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2172,13 +2268,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 8, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086915)
                         bevy_ecs::hierarchy::Children [
                             #"UiButton a11y-{id}"
                             bevy_transform::components::transform::Transform {
@@ -2197,8 +2293,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 8, 0, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086916)
                             bevy_ecs::hierarchy::Children [
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2214,8 +2311,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 8, 0, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086917)
                                 --
-                                #"UiSpacer"
+                                #UiSpacer
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2223,15 +2321,15 @@ bevy_ecs::hierarchy::Children [
                                 }
                                 bevy_world_xml::bsn::WorldNode {
                                     tag: "UiSpacer",
-                                    attrs: [
-                                    ],
+                                    attrs: [],
                                     text: "",
                                     origin_file: "world/menu.xml",
                                     origin_path: [2, 0, 0, 8, 0, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086918)
                                 --
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2247,12 +2345,13 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 8, 0, 0, 0, 2],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086919)
                             ]
                         ]
                     ]
                 ]
                 --
-                #"UiColumn"
+                #UiColumn
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2270,8 +2369,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 9],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086920)
                 bevy_ecs::hierarchy::Children [
-                    #"UiList"
+                    #UiList
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2289,8 +2389,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 9, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086921)
                     bevy_ecs::hierarchy::Children [
-                        #"UiTemplate"
+                        #UiTemplate
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2298,15 +2399,15 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiTemplate",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "",
                             origin_file: "world/menu.xml",
                             origin_path: [2, 0, 0, 9, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086922)
                         bevy_ecs::hierarchy::Children [
-                            #"UiRow"
+                            #UiRow
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2322,8 +2423,9 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 0, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086923)
                             bevy_ecs::hierarchy::Children [
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2339,8 +2441,9 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 9, 0, 0, 0, 0],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086924)
                                 --
-                                #"UiSpacer"
+                                #UiSpacer
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2348,15 +2451,15 @@ bevy_ecs::hierarchy::Children [
                                 }
                                 bevy_world_xml::bsn::WorldNode {
                                     tag: "UiSpacer",
-                                    attrs: [
-                                    ],
+                                    attrs: [],
                                     text: "",
                                     origin_file: "world/menu.xml",
                                     origin_path: [2, 0, 0, 9, 0, 0, 0, 1],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086925)
                                 --
-                                #"UiText"
+                                #UiText
                                 bevy_transform::components::transform::Transform {
                                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2372,11 +2475,12 @@ bevy_ecs::hierarchy::Children [
                                     origin_path: [2, 0, 0, 9, 0, 0, 0, 2],
                                     pose: false,
                                 }
+                                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086926)
                             ]
                         ]
                     ]
                     --
-                    #"UiRow"
+                    #UiRow
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2392,6 +2496,7 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 9, 1],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086927)
                     bevy_ecs::hierarchy::Children [
                         #"UiButton act-save-1"
                         bevy_transform::components::transform::Transform {
@@ -2410,6 +2515,7 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086928)
                         bevy_ecs::hierarchy::Children [
                             #"UiText act-save-1-label"
                             bevy_transform::components::transform::Transform {
@@ -2427,6 +2533,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 1, 0, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086929)
                         ]
                         --
                         #"UiButton act-save-2"
@@ -2446,6 +2553,7 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 1],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086930)
                         bevy_ecs::hierarchy::Children [
                             #"UiText act-save-2-label"
                             bevy_transform::components::transform::Transform {
@@ -2463,6 +2571,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 1, 1, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086931)
                         ]
                         --
                         #"UiButton act-save-3"
@@ -2482,6 +2591,7 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 2],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086932)
                         bevy_ecs::hierarchy::Children [
                             #"UiText act-save-3-label"
                             bevy_transform::components::transform::Transform {
@@ -2499,6 +2609,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 1, 2, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086933)
                         ]
                         --
                         #"UiButton act-load-1"
@@ -2518,6 +2629,7 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 3],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086934)
                         bevy_ecs::hierarchy::Children [
                             #"UiText act-load-1-label"
                             bevy_transform::components::transform::Transform {
@@ -2535,6 +2647,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 1, 3, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086935)
                         ]
                         --
                         #"UiButton act-load-2"
@@ -2554,6 +2667,7 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 4],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086936)
                         bevy_ecs::hierarchy::Children [
                             #"UiText act-load-2-label"
                             bevy_transform::components::transform::Transform {
@@ -2571,6 +2685,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 1, 4, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086937)
                         ]
                         --
                         #"UiButton act-load-3"
@@ -2590,6 +2705,7 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 5],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086938)
                         bevy_ecs::hierarchy::Children [
                             #"UiText act-load-3-label"
                             bevy_transform::components::transform::Transform {
@@ -2607,6 +2723,7 @@ bevy_ecs::hierarchy::Children [
                                 origin_path: [2, 0, 0, 9, 1, 5, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086939)
                         ]
                         --
                         #"UiButton act-title"
@@ -2626,8 +2743,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 6],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086940)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2635,13 +2753,13 @@ bevy_ecs::hierarchy::Children [
                             }
                             bevy_world_xml::bsn::WorldNode {
                                 tag: "UiText",
-                                attrs: [
-                                ],
+                                attrs: [],
                                 text: "@menu.to_title",
                                 origin_file: "world/menu.xml",
                                 origin_path: [2, 0, 0, 9, 1, 6, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086941)
                         ]
                         --
                         #"UiButton act-profiler"
@@ -2661,8 +2779,9 @@ bevy_ecs::hierarchy::Children [
                             origin_path: [2, 0, 0, 9, 1, 7],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086942)
                         bevy_ecs::hierarchy::Children [
-                            #"UiText"
+                            #UiText
                             bevy_transform::components::transform::Transform {
                                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2670,18 +2789,18 @@ bevy_ecs::hierarchy::Children [
                             }
                             bevy_world_xml::bsn::WorldNode {
                                 tag: "UiText",
-                                attrs: [
-                                ],
+                                attrs: [],
                                 text: "@menu.profiler",
                                 origin_file: "world/menu.xml",
                                 origin_path: [2, 0, 0, 9, 1, 7, 0],
                                 pose: false,
                             }
+                            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086943)
                         ]
                     ]
                 ]
                 --
-                #"UiRow"
+                #UiRow
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2697,8 +2816,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 10],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086944)
                 bevy_ecs::hierarchy::Children [
-                    #"UiText"
+                    #UiText
                     bevy_transform::components::transform::Transform {
                         translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2714,9 +2834,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 10, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086945)
                 ]
             ]
         ]
     ]
 ]
-

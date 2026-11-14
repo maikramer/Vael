@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216085468)
 bevy_ecs::hierarchy::Children [
     #"korok-bosque-pedra-1"
     bevy_transform::components::transform::Transform {
@@ -30,13 +31,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra junto à choupana" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra junto à choupana")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -52,42 +53,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085469)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [0, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [0, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085470)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [0, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [0, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085471)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-bosque-anel-a-1"
@@ -105,13 +105,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-bosque" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-bosque")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -127,42 +127,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085472)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [1, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [1, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085473)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [1, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [1, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085474)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-bosque-anel-a-2"
@@ -180,13 +179,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-bosque" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-bosque")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -202,42 +201,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085475)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [2, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [2, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085476)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [2, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [2, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085477)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-bosque-anel-a-3"
@@ -255,13 +253,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-bosque" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "3" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-bosque")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("3")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -277,42 +275,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [3],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085478)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [3, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [3, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085479)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [3, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [3, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085480)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-bosque-odd-1"
@@ -330,13 +327,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("odd")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a pedra que canta")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -352,42 +349,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [4],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085481)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [4, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [4, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085482)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [4, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [4, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085483)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-bosque-hide-1"
@@ -405,13 +401,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -427,42 +423,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [5],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085484)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [5, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [5, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085485)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [5, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [5, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085486)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-bosque-pedra-2"
@@ -480,13 +475,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -502,25 +497,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [6],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085487)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [6, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [6, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085488)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene flint_rock"
         bevy_transform::components::transform::Transform {
@@ -538,6 +532,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [6, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085489)
     ]
     --
     #"korok-bosque-hide-2"
@@ -549,13 +544,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -571,23 +566,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [7],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085490)
     bevy_ecs::hierarchy::Children [
         #"GltfScene mushroom_glow"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/forest/mushroom-glow-v3.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [7, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [7, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085491)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-ermo-pedra-1"
@@ -605,13 +601,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra do oásis" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra do oásis")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -627,42 +623,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [8],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085492)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [8, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [8, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085493)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene rock_boulder"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/rock-boulder.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [8, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [8, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085494)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-ermo-odd-1"
@@ -680,13 +675,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("odd")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a pedra que canta")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -702,42 +697,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [9],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085495)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [9, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [9, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085496)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [9, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [9, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085497)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-ermo-hide-1"
@@ -755,13 +749,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -777,42 +771,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [10],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085498)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [10, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [10, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085499)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [10, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [10, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085500)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-ermo-pedra-2"
@@ -830,13 +823,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -852,25 +845,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [11],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085501)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [11, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [11, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085502)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene flint_rock"
         bevy_transform::components::transform::Transform {
@@ -888,6 +880,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [11, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085503)
     ]
     --
     #"korok-ermo-hide-2"
@@ -905,13 +898,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -927,23 +920,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [12],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085504)
     bevy_ecs::hierarchy::Children [
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [12, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [12, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085505)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-pedra-1"
@@ -961,13 +955,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra da margem" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra da margem")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -983,42 +977,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [13],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085506)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [13, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [13, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085507)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [13, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [13, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085508)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-odd-1"
@@ -1036,13 +1029,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("odd")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a pedra que canta")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1058,42 +1051,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [14],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085509)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [14, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [14, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085510)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [14, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [14, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085511)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-hide-1"
@@ -1111,13 +1103,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1133,23 +1125,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [15],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085512)
     bevy_ecs::hierarchy::Children [
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [15, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [15, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085513)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-anel-b-1"
@@ -1167,13 +1160,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-pantano" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-pantano")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1189,42 +1182,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [16],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085514)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [16, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [16, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085515)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [16, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [16, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085516)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-anel-b-2"
@@ -1242,13 +1234,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-pantano" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-pantano")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1264,42 +1256,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [17],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085517)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [17, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [17, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085518)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [17, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [17, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085519)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-anel-b-3"
@@ -1317,13 +1308,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-pantano" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "3" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-pantano")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("3")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1339,42 +1330,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [18],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085520)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [18, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [18, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085521)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [18, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [18, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085522)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-pantano-hide-2"
@@ -1392,13 +1382,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1414,42 +1404,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [19],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085523)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [19, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [19, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085524)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [19, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [19, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085525)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-picos-pedra-1"
@@ -1467,13 +1456,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra gelada" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra gelada")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1489,42 +1478,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [20],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085526)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [20, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [20, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085527)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene rock_boulder"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/rock-boulder.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [20, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [20, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085528)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-picos-odd-1"
@@ -1542,13 +1530,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "odd" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a pedra que canta" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("odd")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a pedra que canta")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1564,42 +1552,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [21],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085529)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [21, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [21, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085530)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [21, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [21, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085531)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-picos-anel-c-1"
@@ -1617,13 +1604,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-picos" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-picos")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1639,42 +1626,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [22],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085532)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [22, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [22, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085533)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [22, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [22, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085534)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-picos-anel-c-2"
@@ -1692,13 +1678,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-picos" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-picos")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1714,42 +1700,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [23],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085535)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [23, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [23, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085536)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [23, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [23, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085537)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-picos-anel-c-3"
@@ -1767,13 +1752,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "ring" },
-            bevy_ext_scene::AuthoredProp { key: "group", value: "anel-picos" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "3" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Tocar a nota" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("anel-picos")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("3")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("ring")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Tocar a nota")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1789,42 +1774,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [24],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085538)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [24, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [24, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085539)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [24, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [24, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085540)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-picos-hide-1"
@@ -1842,13 +1826,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1864,23 +1848,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [25],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085541)
     bevy_ecs::hierarchy::Children [
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [25, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [25, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085542)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-vale-hide-1"
@@ -1898,13 +1883,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "hide" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Apanhar a semente" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("hide")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Apanhar a semente")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1920,42 +1905,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [26],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085543)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [26, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [26, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085544)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [26, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [26, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085545)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"korok-vale-pedra-1"
@@ -1973,13 +1957,13 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "poi/song-seed.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "mode", value: "rock" },
-            bevy_ext_scene::AuthoredProp { key: "group" },
-            bevy_ext_scene::AuthoredProp { key: "index", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Erguer a pedra" },
-            bevy_ext_scene::AuthoredProp { key: "range", value: "3.0" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("group", jackdaw_scene_types::types::PropertyValue::String("")),
+            ("index", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("mode", jackdaw_scene_types::types::PropertyValue::String("rock")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Erguer a pedra")),
+            ("range", jackdaw_scene_types::types::PropertyValue::String("3.0"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1995,42 +1979,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [27],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085546)
     bevy_ecs::hierarchy::Children [
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.7 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: smoke; emission-rate: 9; start-life-min: 5.5; start-life-max: 8.0; start-speed-min: 0.2; start-speed-max: 0.45; start-size-min: 0.84; start-size-max: 1.86; start-color: #cfe8de; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [27, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [27, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085547)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"GltfScene moss_rock"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/swamp/moss-rock.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/moss_rock_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [27, 1],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [27, 1],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085548)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-atalaia-vale"
@@ -2048,14 +2031,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "120" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "60" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do miradouro da atalaia" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("120")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("poções")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú do miradouro da atalaia")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("60"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2070,23 +2053,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [28],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085549)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [28, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [28, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085550)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-atalaia-bosque"
@@ -2104,14 +2088,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "90" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "55" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do miradouro da atalaia" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("90")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("antidote")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("antídotos")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú do miradouro da atalaia")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("55"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2126,23 +2110,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [29],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085551)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [29, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [29, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085552)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-oasis"
@@ -2160,14 +2145,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "110" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Pescar o baú no fundo do oásis" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("110")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("poção")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Pescar o baú no fundo do oásis")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("50"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2182,23 +2167,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [30],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085553)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [30, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [30, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085554)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-ermo-ruinas"
@@ -2216,14 +2202,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "95" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bombas" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú entre as ruínas" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("95")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("bomb")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("bombas")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú entre as ruínas")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("50"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2238,23 +2224,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [31],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085555)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [31, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [31, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085556)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-pantano-cais"
@@ -2272,14 +2259,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "85" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "45" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "3" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú sob o cais" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("85")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("antidote")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("3")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("antídotos")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú sob o cais")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("45"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2294,23 +2281,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [32],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085557)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [32, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [32, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085558)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-ponte-norte"
@@ -2328,14 +2316,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "75" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "45" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú à sombra da ponte" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("75")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("poção")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú à sombra da ponte")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("45"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2350,23 +2338,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [33],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085559)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [33, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [33, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085560)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-cidadela"
@@ -2384,14 +2373,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "200" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "90" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bombas" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú da Cidadela Caída" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("200")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("bomb")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("bombas")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú da Cidadela Caída")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("90"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2406,23 +2395,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [34],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085561)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [34, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [34, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085562)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-mina-veio"
@@ -2440,14 +2430,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "130" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "70" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú à boca da mina" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("130")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("poções")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú à boca da mina")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("70"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2462,23 +2452,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [35],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085563)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [35, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [35, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085564)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-bosque-encantado"
@@ -2496,14 +2487,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "160" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "80" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "3" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "poções" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do bosque encantado" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("160")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("3")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("poções")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú do bosque encantado")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("80"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2518,23 +2509,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [36],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085565)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [36, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [36, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085566)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-vael"
@@ -2552,14 +2544,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "150" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "75" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú do Alto de Vael" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("150")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("antidote")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("antídotos")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú do Alto de Vael")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("75"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2574,23 +2566,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [37],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085567)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [37, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [37, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085568)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"bau-porta-ermo"
@@ -2608,14 +2601,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "140" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "70" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bomba" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú escondido na boca do Ermo" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("140")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("bomb")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("bomba")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú escondido na boca do Ermo")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("70"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2630,23 +2623,23 @@ bevy_ecs::hierarchy::Children [
         origin_path: [38],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085569)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/koroks.xml",
-            origin_path: [38, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/koroks.xml",
+            path: [38, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085570)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
 ]
-

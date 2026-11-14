@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216084943)
 bevy_ecs::hierarchy::Children [
     #"mina-do-veio"
     bevy_ext_terrain::voxel::VoxelCave {
@@ -75,6 +76,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216084944)
     bevy_ecs::hierarchy::Children [
         #SpawnExclusion
         bevy_transform::components::transform::Transform {
@@ -94,6 +96,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084945)
         --
         #Entity
         bevy_transform::components::transform::Transform {
@@ -119,23 +122,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084946)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084947)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -160,23 +164,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084948)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084949)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -203,23 +208,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084950)
         bevy_ecs::hierarchy::Children [
             #"GltfScene log_pile"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/log-pile.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084951)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -246,23 +252,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084952)
         bevy_ecs::hierarchy::Children [
             #"GltfScene notice_board"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/notice-board.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/notice_board_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084953)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -289,23 +296,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084954)
         bevy_ecs::hierarchy::Children [
             #"GltfScene torch_post"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/torch-post.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084955)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -324,27 +332,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084956)
         bevy_ecs::hierarchy::Children [
             #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire-r22.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: core::option::Option::Some("fire"),
-                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 6, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 6, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084957)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Group
@@ -365,6 +370,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084958)
         bevy_ecs::hierarchy::Children [
             #PointLight
             bevy_transform::components::transform::Transform {
@@ -391,6 +397,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 7, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084959)
         ]
         --
         #Entity
@@ -415,23 +422,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084960)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 8, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 8, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084961)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -450,25 +458,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084962)
         bevy_ecs::hierarchy::Children [
             #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/emitter-v4.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.00 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 9, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 9, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084963)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Group
@@ -489,6 +496,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084964)
         bevy_ecs::hierarchy::Children [
             #PointLight
             bevy_transform::components::transform::Transform {
@@ -515,6 +523,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 10, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084965)
         ]
         --
         #Entity
@@ -535,23 +544,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084966)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 11, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 11, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084967)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #SpawnExclusion
@@ -572,6 +582,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 12],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084968)
         --
         #"Scatter grp-79"
         bevy_transform::components::transform::Transform {
@@ -608,6 +619,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 13],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084969)
         bevy_ecs::hierarchy::Children [
             #GameObject
             bevy_transform::components::transform::Transform {
@@ -625,30 +637,24 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 13, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084970)
             bevy_ecs::hierarchy::Children [
                 #"GLTFLoader rock_mossy"
+                jackdaw::prefab::components::IsA {
+                    source: "world/prefabs/props/rock-mossy-v4.bsn",
+                    deleted: [],
+                }
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                bevy_ext_scene::ModelLod {
-                    lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                    lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                    near: core::option::Option::Some(40.0),
-                    mid: core::option::Option::Some(110.0),
+                bevy_world_xml::bsn::WorldOrigin {
+                    file: "world/fantasy/grutas.xml",
+                    path: [2, 13, 0, 0],
                 }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "GLTFLoader",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/grutas.xml",
-                    origin_path: [2, 13, 0, 0],
-                    pose: true,
-                }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084971)
+                jackdaw::prefab::components::PrefabEntityId(0)
             ]
         ]
         --
@@ -669,379 +675,246 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084972)
         bevy_ecs::hierarchy::Children [
             #"inst-grp-79-0000"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 521.05188, y: 86.442001, z: -74.832703 },
                 rotation: glam::Quat { x: 0.023371, y: 0.252722, z: 0.048003, w: 0.966065 },
                 scale: glam::Vec3 { x: 0.8269, y: 0.8269, z: 0.8269 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0000" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "521.0519 86.442 -74.8327" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "1.3738 29.3758 5.3292" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8269" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084973)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0001"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 527.464172, y: 88.400703, z: -46.370201 },
                 rotation: glam::Quat { x: 0.0921, y: -0.851484, z: 0.097309, w: 0.506975 },
                 scale: glam::Vec3 { x: 1.3463, y: 1.3463, z: 1.3463 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0001" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "527.4642 88.4007 -46.3702" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "150.9785 -57.7189 151.4179" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3463" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084974)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0002"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 521.401917, y: 86.030098, z: -68.8228 },
                 rotation: glam::Quat { x: 0.109269, y: -0.871841, z: 0.058396, w: 0.473859 },
                 scale: glam::Vec3 { x: 1.0327, y: 1.0327, z: 1.0327 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0002" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "521.4019 86.0301 -68.8228" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "159.3199 -54.4392 154.9899" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0327" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084975)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0003"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 527.71228, y: 88.458298, z: -67.559601 },
                 rotation: glam::Quat { x: -0.134346, y: 0.411613, z: 0.049915, w: 0.900019 },
                 scale: glam::Vec3 { x: 1.6653, y: 1.6653, z: 1.6653 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0003" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "527.7123 88.4583 -67.5596" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-24.3531 46.6779 16.9869" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6653" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084976)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0004"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 525.186523, y: 87.797699, z: -51.264801 },
                 rotation: glam::Quat { x: -0.124669, y: 0.987105, z: 0.019936, w: 0.098404 },
                 scale: glam::Vec3 { x: 1.3901, y: 1.3901, z: 1.3901 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 4],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0004" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "525.1865 87.7977 -51.2648" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-176.2691 10.9119 165.2471" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.3901" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 4],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084977)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0005"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 514.44043, y: 85.100403, z: -74.273697 },
                 rotation: glam::Quat { x: -0.051327, y: 0.966779, z: 0.056712, w: -0.243902 },
                 scale: glam::Vec3 { x: 0.8178, y: 0.8178, z: 0.8178 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 5],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0005" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "514.4404 85.1004 -74.2737" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-174.4738 -28.5171 175.3273" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.8178" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 5],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084978)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0006"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 538.90863, y: 94.698303, z: -75.579697 },
                 rotation: glam::Quat { x: -0.126673, y: 0.949143, z: 0.027058, w: 0.286968 },
                 scale: glam::Vec3 { x: 1.1421, y: 1.1421, z: 1.1421 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 6],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0006" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "538.9086 94.6983 -75.5797" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-171.5371 32.5402 162.3224" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1421" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 6],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084979)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0007"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 538.334473, y: 94.918999, z: -62.237801 },
                 rotation: glam::Quat { x: 0.176376, y: -0.982852, z: 0.048462, w: -0.023341 },
                 scale: glam::Vec3 { x: 0.855, y: 0.855, z: 0.855 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 7],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0007" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "538.3345 94.919 -62.2378" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "174.9974 3.6107 159.8105" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.855" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 7],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084980)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0008"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 526.236511, y: 87.417702, z: -74.853699 },
                 rotation: glam::Quat { x: -0.115438, y: 0.737848, z: 0.106629, w: 0.656418 },
                 scale: glam::Vec3 { x: 0.751, y: 0.751, z: 0.751 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 8],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0008" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "526.2365 87.4177 -74.8537" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-110.4997 70.7442 109.7757" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.751" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 8],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084981)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0009"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 519.834229, y: 85.639503, z: -64.170601 },
                 rotation: glam::Quat { x: -0.132545, y: 0.980926, z: 0.027692, w: 0.139458 },
                 scale: glam::Vec3 { x: 0.7013, y: 0.7013, z: 0.7013 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 9],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0009" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "519.8342 85.6395 -64.1706" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "-174.5651 15.4416 163.8719" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7013" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 9],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084982)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0010"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 531.571716, y: 89.224503, z: -51.343498 },
                 rotation: glam::Quat { x: 0.08722, y: -0.465395, z: 0.085128, w: 0.876672 },
                 scale: glam::Vec3 { x: 0.7479, y: 0.7479, z: 0.7479 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 10],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0010" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "531.5717 89.2245 -51.3435" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "22.8256 -53.2398 22.647" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7479" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 10],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084983)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-79-0011"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 523.011292, y: 86.410599, z: -56.6707 },
                 rotation: glam::Quat { x: 0.093704, y: -0.55958, z: 0.139339, w: 0.811588 },
                 scale: glam::Vec3 { x: 1.1216, y: 1.1216, z: 1.1216 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 14, 11],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-79-0011" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "523.0113 86.4106 -56.6707" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "40.8548 -61.9068 44.6672" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1216" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 14, 11],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084984)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"ermo-pillar-a"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/misc/entity.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 500.700012, y: 80.898499, z: -62.900002 },
             rotation: glam::Quat { x: 0.0, y: -0.566406, z: 0.0, w: 0.824126 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [2, 15],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-a" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "500.7 80.8985 -62.9" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69 0" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [2, 15],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084985)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"ermo-pillar-b"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/misc/entity.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 499.299988, y: 81.028702, z: -53.099998 },
             rotation: glam::Quat { x: 0.0, y: -0.566406, z: 0.0, w: 0.824126 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [2, 16],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-b" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "499.3 81.0287 -53.1" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -69 0" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [2, 16],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084986)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #Entity
         bevy_transform::components::transform::Transform {
@@ -1065,23 +938,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 17],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084987)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 17, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 17, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084988)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1106,23 +980,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 18],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084989)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 18, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 18, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084990)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1147,23 +1022,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 19],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084991)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 19, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 19, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084992)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1182,6 +1058,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 20],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084993)
         bevy_ecs::hierarchy::Children [
             #ParticleSystem
             bevy_transform::components::transform::Transform {
@@ -1201,6 +1078,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 20, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084994)
         ]
         --
         #Group
@@ -1221,6 +1099,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 21],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084995)
         bevy_ecs::hierarchy::Children [
             #PointLight
             bevy_transform::components::transform::Transform {
@@ -1247,6 +1126,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 21, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084996)
         ]
         --
         #Entity
@@ -1273,23 +1153,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 22],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084997)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 22, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 22, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084998)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1310,23 +1191,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 23],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084999)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 23, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 23, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085000)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #SpawnExclusion
@@ -1347,6 +1229,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 24],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085001)
         --
         #"Scatter grp-80"
         bevy_transform::components::transform::Transform {
@@ -1383,6 +1266,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 25],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085002)
         bevy_ecs::hierarchy::Children [
             #GameObject
             bevy_transform::components::transform::Transform {
@@ -1400,30 +1284,24 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 25, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085003)
             bevy_ecs::hierarchy::Children [
                 #"GLTFLoader rock_mossy"
+                jackdaw::prefab::components::IsA {
+                    source: "world/prefabs/props/rock-mossy-v4.bsn",
+                    deleted: [],
+                }
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                bevy_ext_scene::ModelLod {
-                    lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                    lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                    near: core::option::Option::Some(40.0),
-                    mid: core::option::Option::Some(110.0),
+                bevy_world_xml::bsn::WorldOrigin {
+                    file: "world/fantasy/grutas.xml",
+                    path: [2, 25, 0, 0],
                 }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "GLTFLoader",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/grutas.xml",
-                    origin_path: [2, 25, 0, 0],
-                    pose: true,
-                }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085004)
+                jackdaw::prefab::components::PrefabEntityId(0)
             ]
         ]
         --
@@ -1444,379 +1322,246 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 26],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085005)
         bevy_ecs::hierarchy::Children [
             #"inst-grp-80-0000"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 744.153992, y: 175.475296, z: -49.5201 },
                 rotation: glam::Quat { x: 0.0, y: -0.624395, z: 0.0, w: 0.781109 },
                 scale: glam::Vec3 { x: 0.9395, y: 0.9395, z: 0.9395 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0000" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "744.154 175.4753 -49.5201" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -77.2756 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9395" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085006)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0001"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 740.163513, y: 175.485596, z: -54.119301 },
                 rotation: glam::Quat { x: 0.0, y: -0.206185, z: 0.0, w: 0.978513 },
                 scale: glam::Vec3 { x: 1.619, y: 1.619, z: 1.619 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0001" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "740.1635 175.4856 -54.1193" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -23.7977 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.619" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085007)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0002"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 738.063416, y: 175.727997, z: -67.0756 },
                 rotation: glam::Quat { x: 0.0, y: -0.999372, z: 0.0, w: 0.035434 },
                 scale: glam::Vec3 { x: 1.4033, y: 1.4033, z: 1.4033 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0002" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "738.0634 175.728 -67.0756" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -4.0613 180" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.4033" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085008)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0003"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 739.380615, y: 175.267197, z: -46.940102 },
                 rotation: glam::Quat { x: 0.0, y: -0.68957, z: 0.0, w: 0.724219 },
                 scale: glam::Vec3 { x: 1.2763, y: 1.2763, z: 1.2763 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0003" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "739.3806 175.2672 -46.9401" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -87.1921 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2763" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085009)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0004"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 755.714417, y: 175.8647, z: -46.883701 },
                 rotation: glam::Quat { x: 0.0, y: 0.402311, z: 0.0, w: 0.915503 },
                 scale: glam::Vec3 { x: 1.1389, y: 1.1389, z: 1.1389 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 4],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0004" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "755.7144 175.8647 -46.8837" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 47.4454 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.1389" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 4],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085010)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0005"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 741.389282, y: 175.759903, z: -61.688301 },
                 rotation: glam::Quat { x: 0.0, y: -0.762156, z: 0.0, w: -0.647394 },
                 scale: glam::Vec3 { x: 1.0525, y: 1.0525, z: 1.0525 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 5],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0005" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "741.3893 175.7599 -61.6883" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 80.6908 180" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.0525" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 5],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085011)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0006"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 745.900513, y: 176.128906, z: -63.990799 },
                 rotation: glam::Quat { x: 0.0, y: -0.823444, z: 0.0, w: 0.567397 },
                 scale: glam::Vec3 { x: 1.2858, y: 1.2858, z: 1.2858 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 6],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0006" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "745.9005 176.1289 -63.9908" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -69.1378 180" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2858" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 6],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085012)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0007"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 757.020081, y: 176.852997, z: -65.453598 },
                 rotation: glam::Quat { x: 0.0, y: -0.724363, z: 0.0, w: 0.689419 },
                 scale: glam::Vec3 { x: 1.6572, y: 1.6572, z: 1.6572 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 7],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0007" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "757.0201 176.853 -65.4536" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -87.1683 180" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6572" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 7],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085013)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0008"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 747.140198, y: 175.981598, z: -57.6558 },
                 rotation: glam::Quat { x: 0.0, y: -0.64423, z: 0.0, w: 0.764831 },
                 scale: glam::Vec3 { x: 0.9144, y: 0.9144, z: 0.9144 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 8],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0008" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "747.1402 175.9816 -57.6558" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -80.216 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.9144" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 8],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085014)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0009"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 751.730591, y: 176.309906, z: -60.852299 },
                 rotation: glam::Quat { x: 0.0, y: -0.207013, z: 0.0, w: 0.978338 },
                 scale: glam::Vec3 { x: 1.524, y: 1.524, z: 1.524 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 9],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0009" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "751.7306 176.3099 -60.8523" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -23.8947 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.524" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 9],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085015)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0010"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 748.611023, y: 176.491394, z: -68.295502 },
                 rotation: glam::Quat { x: 0.0, y: -0.793599, z: 0.0, w: -0.608441 },
                 scale: glam::Vec3 { x: 0.7715, y: 0.7715, z: 0.7715 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 10],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0010" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "748.611 176.4914 -68.2955" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 74.9537 180" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7715" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 10],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085016)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
             #"inst-grp-80-0011"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 748.747925, y: 175.737198, z: -51.715199 },
                 rotation: glam::Quat { x: 0.0, y: -0.772479, z: 0.0, w: 0.63504 },
                 scale: glam::Vec3 { x: 1.2669, y: 1.2669, z: 1.2669 },
             }
-            bevy_ext_scene::ModelLod {
-                lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
-                lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
-                near: core::option::Option::Some(40.0),
-                mid: core::option::Option::Some(110.0),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 26, 11],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "inst-grp-80-0011" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "748.7479 175.7372 -51.7152" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -78.8459 180" },
-                    bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.2669" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 26, 11],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085017)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"ermo-pillar-c"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/misc/entity.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 719.400024, y: 174.984894, z: -61.0 },
             rotation: glam::Quat { x: 0.0, y: -0.743145, z: 0.0, w: -0.669131 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [2, 27],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-c" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "719.4 174.9849 -61" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 84 180" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [2, 27],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085018)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #"ermo-pillar-d"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/misc/entity.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 720.599976, y: 174.788605, z: -51.0 },
             rotation: glam::Quat { x: 0.0, y: -0.743145, z: 0.0, w: -0.669131 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [2, 28],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "ermo-pillar-d" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "720.6 174.7886 -51" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.3 5.0 1.3; pos-offset-y: 2.5" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 84 180" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [2, 28],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085019)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
         #Entity
         bevy_transform::components::transform::Transform {
@@ -1840,23 +1585,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 29],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085020)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 29, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 29, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085021)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1881,23 +1627,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 30],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085022)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 30, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 30, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085023)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1922,23 +1669,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 31],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085024)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 31, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 31, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085025)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -1957,6 +1705,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 32],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085026)
         bevy_ecs::hierarchy::Children [
             #ParticleSystem
             bevy_transform::components::transform::Transform {
@@ -1976,6 +1725,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 32, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085027)
         ]
         --
         #Group
@@ -1996,6 +1746,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 33],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085028)
         bevy_ecs::hierarchy::Children [
             #PointLight
             bevy_transform::components::transform::Transform {
@@ -2022,6 +1773,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 33, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085029)
         ]
         --
         #Entity
@@ -2048,23 +1800,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 34],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085030)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 34, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 34, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085031)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #Entity
@@ -2085,23 +1838,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 35],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085032)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/fantasy/grutas.xml",
-                origin_path: [2, 35, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/fantasy/grutas.xml",
+                path: [2, 35, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085033)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
     --
@@ -2130,6 +1884,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [3],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085034)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2156,6 +1911,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [4],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085035)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2182,6 +1938,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [5],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085036)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2208,6 +1965,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [6],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085037)
     --
     #"mina-do-veio-hoard"
     bevy_transform::components::transform::Transform {
@@ -2224,14 +1982,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "80" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "bomb" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "bombas" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o tesouro da mina" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "60" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("80")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("bomb")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("bombas")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o tesouro da mina")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("60"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2245,23 +2003,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [7],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085038)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [7, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [7, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085039)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2287,23 +2046,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [8],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085040)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [8, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [8, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085041)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2329,23 +2089,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [9],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085042)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [9, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [9, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085043)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2371,23 +2132,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [10],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085044)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [10, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [10, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085045)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2413,23 +2175,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [11],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085046)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [11, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [11, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085047)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2455,44 +2218,42 @@ bevy_ecs::hierarchy::Children [
         origin_path: [12],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085048)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [12, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [12, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085049)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #ParticleSystem
+    jackdaw::prefab::components::IsA {
+        source: "world/prefabs/fx/sparkle-v2.bsn",
+        deleted: [],
+    }
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -88.0, y: 93.800003, z: -256.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
-    bevy_ext_scene::ParticleSpec {
-        preset: core::option::Option::Some("sparkle"),
+    bevy_world_xml::bsn::WorldOrigin {
+        file: "world/fantasy/grutas.xml",
+        path: [13],
     }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "ParticleSystem",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: -88 93.8 -256" },
-        ],
-        text: "",
-        origin_file: "world/fantasy/grutas.xml",
-        origin_path: [13],
-        pose: true,
-    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085050)
+    jackdaw::prefab::components::PrefabEntityId(0)
     --
     #ParticleSystem
     bevy_transform::components::transform::Transform {
@@ -2514,6 +2275,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [14],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085051)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2540,6 +2302,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [15],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085052)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2566,6 +2329,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [16],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085053)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2592,6 +2356,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [17],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085054)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2618,6 +2383,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [18],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085055)
     --
     #PointLight
     bevy_transform::components::transform::Transform {
@@ -2644,6 +2410,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [19],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085056)
     --
     #"porta-do-ermo-hoard"
     bevy_transform::components::transform::Transform {
@@ -2660,14 +2427,14 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "chest.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "gold", value: "60" },
-            bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
-            bevy_ext_scene::AuthoredProp { key: "item_count", value: "2" },
-            bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídotos" },
-            bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o tesouro" },
-            bevy_ext_scene::AuthoredProp { key: "xp", value: "50" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("gold", jackdaw_scene_types::types::PropertyValue::String("60")),
+            ("item", jackdaw_scene_types::types::PropertyValue::String("antidote")),
+            ("item_count", jackdaw_scene_types::types::PropertyValue::String("2")),
+            ("item_label", jackdaw_scene_types::types::PropertyValue::String("antídotos")),
+            ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o tesouro")),
+            ("xp", jackdaw_scene_types::types::PropertyValue::String("50"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -2681,23 +2448,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [20],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085057)
     bevy_ecs::hierarchy::Children [
         #"GltfScene treasure_chest"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/treasure-chest.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [20, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [20, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085058)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2723,23 +2491,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [21],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085059)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [21, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [21, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085060)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2765,23 +2534,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [22],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085061)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [22, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [22, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085062)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2801,23 +2571,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [23],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085063)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [23, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [23, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085064)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2842,23 +2613,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [24],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085065)
     bevy_ecs::hierarchy::Children [
         #"GltfScene iron_brazier"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/iron-brazier.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [24, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [24, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085066)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #Entity
@@ -2877,46 +2649,42 @@ bevy_ecs::hierarchy::Children [
         origin_path: [25],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085067)
     bevy_ecs::hierarchy::Children [
         #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/emitter-v4.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0 0" },
-                bevy_world_xml::bsn::WorldProp { key: "particle-emitter", value: "preset: fire; emission-rate: 30; shape-radius: 0.16; start-life-min: 0.4; start-life-max: 1.0; start-speed-min: 1.1; start-speed-max: 2.4; start-size-min: 0.24; start-size-max: 0.5; looping: 1; world-space: 1" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [25, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [25, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085068)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #ParticleSystem
+    jackdaw::prefab::components::IsA {
+        source: "world/prefabs/fx/sparkle-v2.bsn",
+        deleted: [],
+    }
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 590.0, y: 113.400002, z: -45.0 },
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
-    bevy_ext_scene::ParticleSpec {
-        preset: core::option::Option::Some("sparkle"),
+    bevy_world_xml::bsn::WorldOrigin {
+        file: "world/fantasy/grutas.xml",
+        path: [26],
     }
-    bevy_world_xml::bsn::WorldNode {
-        tag: "ParticleSystem",
-        attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 590 113.4 -45" },
-        ],
-        text: "",
-        origin_file: "world/fantasy/grutas.xml",
-        origin_path: [26],
-        pose: true,
-    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085069)
+    jackdaw::prefab::components::PrefabEntityId(0)
     --
     #ParticleSystem
     bevy_transform::components::transform::Transform {
@@ -2936,6 +2704,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [27],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085070)
     --
     #"sceneref.v3.grutas-mina-bench"
     bevy_transform::components::transform::Transform {
@@ -2967,23 +2736,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [100],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085071)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_bench"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-bench.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [100, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [100, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085072)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-mina-crate"
@@ -3016,23 +2786,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [101],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085073)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_crate"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-crate.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [101, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [101, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085074)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-mina-barrel"
@@ -3064,23 +2835,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [102],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085075)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_barrel"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-barrel.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [102, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [102, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085076)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-mina-pickaxe"
@@ -3110,23 +2882,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [103],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085077)
     bevy_ecs::hierarchy::Children [
         #"GltfScene pickaxe"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/pickaxe.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/pickaxe_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [103, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [103, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085078)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-mina-torch"
@@ -3158,71 +2931,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [104],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085079)
     bevy_ecs::hierarchy::Children [
         #"GltfScene torch_post"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/torch-post.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [104, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [104, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085080)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [104, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [104, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085081)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [104, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [104, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085082)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-mina-crystal"
@@ -3255,44 +3015,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [105],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085083)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [105, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [105, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085084)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/sparkle.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "sparkle",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [105, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [105, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085085)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-mina-cairn"
@@ -3325,23 +3082,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [106],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085086)
     bevy_ecs::hierarchy::Children [
         #"GltfScene stone_cairn"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/terrain/stone-cairn.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [106, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [106, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085087)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-bench"
@@ -3374,23 +3132,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [107],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085088)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_bench"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-bench.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [107, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [107, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085089)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-crate"
@@ -3423,23 +3182,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [108],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085090)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_crate"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-crate.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [108, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [108, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085091)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-barrel"
@@ -3471,23 +3231,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [109],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085092)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_barrel"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-barrel.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [109, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [109, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085093)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-pickaxe"
@@ -3517,23 +3278,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [110],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085094)
     bevy_ecs::hierarchy::Children [
         #"GltfScene pickaxe"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/pickaxe.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/pickaxe_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [110, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [110, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085095)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-torch"
@@ -3565,71 +3327,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [111],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085096)
     bevy_ecs::hierarchy::Children [
         #"GltfScene torch_post"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/torch-post.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [111, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [111, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085097)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [111, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [111, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085098)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [111, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [111, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085099)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-crystal"
@@ -3662,44 +3411,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [112],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085100)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [112, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [112, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085101)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/sparkle.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "sparkle",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [112, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [112, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085102)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-lo-cairn"
@@ -3732,23 +3478,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [113],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085103)
     bevy_ecs::hierarchy::Children [
         #"GltfScene stone_cairn"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/terrain/stone-cairn.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [113, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [113, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085104)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-bench"
@@ -3781,23 +3528,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [114],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085105)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_bench"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-bench.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [114, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [114, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085106)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-crate"
@@ -3830,23 +3578,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [115],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085107)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_crate"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-crate.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [115, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [115, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085108)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-barrel"
@@ -3878,23 +3627,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [116],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085109)
     bevy_ecs::hierarchy::Children [
         #"GltfScene wooden_barrel"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/wooden-barrel.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [116, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [116, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085110)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-pickaxe"
@@ -3924,23 +3674,24 @@ bevy_ecs::hierarchy::Children [
         origin_path: [117],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085111)
     bevy_ecs::hierarchy::Children [
         #"GltfScene pickaxe"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/pickaxe.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/pickaxe_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [117, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [117, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085112)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-torch"
@@ -3972,71 +3723,58 @@ bevy_ecs::hierarchy::Children [
         origin_path: [118],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085113)
     bevy_ecs::hierarchy::Children [
         #"GltfScene torch_post"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/village/torch-post.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [118, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [118, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085114)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"PointLight"
+        #PointLight
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/lights/point-warm-4800.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
-            intensity: 4800.0,
-            radius: 0.4,
-            shadow_maps_enabled: false,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [118, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "PointLight",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
-                bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [118, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085115)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/fire.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "fire",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [118, 2],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [118, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085116)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-crystal"
@@ -4069,44 +3807,41 @@ bevy_ecs::hierarchy::Children [
         origin_path: [119],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085117)
     bevy_ecs::hierarchy::Children [
         #"GltfScene crystal_blue"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/props/crystal-blue-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [119, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [119, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085118)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"ParticleSystem"
+        #ParticleSystem
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/fx/sparkle.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ParticleSpec {
-            preset: "sparkle",
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [119, 1],
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "ParticleSystem",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [119, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085119)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
     --
     #"sceneref.v3.grutas-ermo-hi-cairn"
@@ -4139,22 +3874,23 @@ bevy_ecs::hierarchy::Children [
         origin_path: [120],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085120)
     bevy_ecs::hierarchy::Children [
         #"GltfScene stone_cairn"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/terrain/stone-cairn.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/fantasy/grutas.xml",
-            origin_path: [120, 0],
-            pose: true,
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/fantasy/grutas.xml",
+            path: [120, 0],
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085121)
+        jackdaw::prefab::components::PrefabEntityId(0)
     ]
 ]

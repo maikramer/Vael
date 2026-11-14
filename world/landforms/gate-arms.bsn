@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216085571)
 bevy_ecs::hierarchy::Children [
     #"landforms.gate-arms"
     bevy_transform::components::transform::Transform {
@@ -32,6 +33,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085572)
     bevy_ecs::hierarchy::Children [
         #"braco-oeste"
         bevy_ext_terrain::voxel::VoxelCliff {
@@ -106,6 +108,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085573)
         --
         #SpawnExclusion
         bevy_transform::components::transform::Transform {
@@ -125,6 +128,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085574)
         --
         #"Road 2 -92 12 -97 21 -102"
         bevy_transform::components::transform::Transform {
@@ -148,6 +152,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085575)
         --
         #"outeiro-banco"
         bevy_transform::components::transform::Transform {
@@ -173,23 +178,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085576)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landforms/gate-arms.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landforms/gate-arms.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085577)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"outeiro-cairn"
@@ -216,23 +222,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085578)
         bevy_ecs::hierarchy::Children [
             #"GltfScene form_stack_6"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/terrain/form-stack-6-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_stack_6_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landforms/gate-arms.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landforms/gate-arms.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085579)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]

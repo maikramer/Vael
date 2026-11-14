@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083707)
 bevy_ecs::hierarchy::Children [
     #"city.skirts"
     bevy_transform::components::transform::Transform {
@@ -32,120 +33,77 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083708)
     bevy_ecs::hierarchy::Children [
-        #"city_oak_ne"
+        #city_oak_ne
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/tree-oak-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 15.0, y: 0.0, z: 13.0 },
             rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 1.4 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/skirts.xml",
+            path: [0, 0],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "tree_oak",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_ne" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0 13" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 24 0" },
-            ],
-            text: "",
-            origin_file: "world/cities/discordia/skirts.xml",
-            origin_path: [0, 0],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083709)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"city_oak_nw"
+        #city_oak_nw
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/tree-oak-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -13.0, y: 0.0, z: 11.0 },
             rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 1.4 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/skirts.xml",
+            path: [0, 1],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "tree_oak",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_nw" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13 0 11" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -70 0" },
-            ],
-            text: "",
-            origin_file: "world/cities/discordia/skirts.xml",
-            origin_path: [0, 1],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083710)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"city_oak_sw"
+        #city_oak_sw
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/tree-oak-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -15.0, y: 0.0, z: -11.0 },
             rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 1.4 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/skirts.xml",
+            path: [0, 2],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "tree_oak",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_sw" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-15 0 -11" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0" },
-            ],
-            text: "",
-            origin_file: "world/cities/discordia/skirts.xml",
-            origin_path: [0, 2],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083711)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"city_oak_se"
+        #city_oak_se
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/tree-oak-v2.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 17.0, y: 0.0, z: -7.0 },
             rotation: glam::Quat { x: 0.0, y: -0.939693, z: 0.0, w: 0.34202 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 1.4 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/skirts.xml",
+            path: [0, 3],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "tree_oak",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "city_oak_se" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17 0 -7" },
-                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -140 0" },
-            ],
-            text: "",
-            origin_file: "world/cities/discordia/skirts.xml",
-            origin_path: [0, 3],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083712)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -34.5, y: 0.0, z: -6.0 },
             rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
@@ -168,26 +126,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083713)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/skirts.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/skirts.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083714)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -34.5, y: 0.0, z: -8.4 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -209,26 +168,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083715)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/skirts.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/skirts.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083716)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 21.0, y: 0.0, z: 32.0 },
             rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
@@ -251,24 +211,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083717)
         bevy_ecs::hierarchy::Children [
             #"GltfScene chopping_block"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/chopping-block.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/chopping_block_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/skirts.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/skirts.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083718)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]
-

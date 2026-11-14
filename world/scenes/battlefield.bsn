@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216087965)
 bevy_ecs::hierarchy::Children [
     #"scene.battlefield"
     bevy_transform::components::transform::Transform {
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216087966)
     bevy_ecs::hierarchy::Children [
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -45,13 +47,13 @@ bevy_ecs::hierarchy::Children [
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087967)
         --
         #"battlefield-banner"
         bevy_transform::components::transform::Transform {
@@ -74,8 +76,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087968)
         bevy_ecs::hierarchy::Children [
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -96,8 +99,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 1, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087969)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -117,8 +121,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 1, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087970)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.85, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -138,8 +143,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 1, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087971)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -159,8 +165,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 1, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087972)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 4.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -185,6 +192,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 1, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087973)
         ]
         --
         #"battlefield-wreck"
@@ -211,26 +219,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087974)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wrecked_boat"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/swamp/wrecked-boat.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/wrecked_boat_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087975)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -766.0, y: 0.0, z: -272.0 },
             rotation: glam::Quat { x: 0.0, y: 0.819152, z: 0.0, w: -0.573576 },
@@ -253,26 +262,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087976)
         bevy_ecs::hierarchy::Children [
             #"GltfScene market_stall"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/market-stall.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087977)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -774.0, y: -0.1575, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -288,8 +298,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087978)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -307,9 +318,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 4, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087979)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -761.0, y: -0.0587, z: -268.0 },
             rotation: glam::Quat { x: 0.0, y: -0.300706, z: 0.0, w: 0.953717 },
@@ -332,26 +344,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087980)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087981)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -778.0, y: -0.3597, z: -274.0 },
             rotation: glam::Quat { x: 0.0, y: 0.642788, z: 0.0, w: 0.766044 },
@@ -374,26 +387,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087982)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087983)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -764.0, y: -0.0821, z: -276.0 },
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
@@ -416,26 +430,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087984)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087985)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -782.0, y: -0.7599, z: -262.0 },
             rotation: glam::Quat { x: 0.224385, y: 0.258126, z: 0.616494, w: 0.709195 },
@@ -456,26 +471,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087986)
         bevy_ecs::hierarchy::Children [
             #"GltfScene ruin_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/desert/ruin-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 8, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 8, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087987)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -758.0, y: -0.6225, z: -258.0 },
             rotation: glam::Quat { x: 0.678192, y: 0.702289, z: -0.150352, w: -0.155694 },
@@ -496,26 +512,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087988)
         bevy_ecs::hierarchy::Children [
             #"GltfScene ruin_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/desert/ruin-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 9, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 9, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087989)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -768.0, y: -0.3243, z: -256.0 },
             rotation: glam::Quat { x: 0.0, y: 0.743145, z: 0.0, w: 0.669131 },
@@ -538,23 +555,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087990)
         bevy_ecs::hierarchy::Children [
             #"GltfScene form_stack_11"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/terrain/form-stack-11-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_stack_11_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 10, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 10, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087991)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"battlefield-cairn"
@@ -581,25 +599,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087992)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bone_altar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/swamp/bone-altar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/bone_altar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 11, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 11, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087993)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -625,9 +644,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 11, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087994)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -770.0, y: -0.0442, z: -276.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -643,29 +663,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 12],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087995)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/sparkle-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: core::option::Option::Some("sparkle"),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 12, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.2 0" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 12, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087996)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -779.0, y: -0.4412, z: -268.0 },
             rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
@@ -688,26 +706,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 13],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087997)
         bevy_ecs::hierarchy::Children [
             #"GltfScene weapon_rack"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/weapon-rack.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 13, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 13, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087998)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -760.0, y: -0.1416, z: -272.0 },
             rotation: glam::Quat { x: 0.210569, y: 0.269516, z: 0.578533, w: 0.740488 },
@@ -730,26 +749,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087999)
         bevy_ecs::hierarchy::Children [
             #"GltfScene spear"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/spear.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 14, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 14, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088000)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -763.0, y: -0.0678, z: -264.0 },
             rotation: glam::Quat { x: 0.06719, y: 0.080073, z: 0.639266, w: 0.761848 },
@@ -772,26 +792,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 15],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088001)
         bevy_ecs::hierarchy::Children [
             #"GltfScene axe"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/axe.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/axe_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 15, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 15, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088002)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -786.0, y: -0.8513, z: -272.0 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: -0.866025 },
@@ -814,26 +835,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 16],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088003)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 16, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 16, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088004)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -754.0, y: -0.4502, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.996195, z: 0.0, w: -0.087156 },
@@ -856,26 +878,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 17],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088005)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 17, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 17, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088006)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -770.0, y: 0.0, z: -265.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -891,8 +914,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 18],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088007)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -912,9 +936,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 18, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088008)
         ]
         --
-        #"DynamicSpawner"
+        #DynamicSpawner
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -940,8 +965,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 19],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088009)
         bevy_ecs::hierarchy::Children [
-            #"Creature"
+            #Creature
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -960,6 +986,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 19, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088010)
             bevy_ecs::hierarchy::Children [
                 #"GLTFLoader shade"
                 bevy_transform::components::transform::Transform {
@@ -984,10 +1011,11 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [0, 19, 0, 0],
                     pose: true,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216088011)
             ]
         ]
         --
-        #"npc_battle_survivor"
+        #npc_battle_survivor
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -766.0, y: -0.1098, z: -260.0 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
@@ -996,9 +1024,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "citadel_shades" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("citadel_shades"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1013,25 +1041,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 20],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088012)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_guard"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-guard.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_guard_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 20, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 20, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088013)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1039,16 +1068,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 20, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088014)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -790.0, y: -1.43, z: -260.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1068,8 +1097,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 21],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088015)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1090,8 +1120,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 21, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088016)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1110,8 +1141,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 21, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088017)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1132,9 +1164,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 21, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088018)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -750.0, y: -0.77, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1154,8 +1187,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 22],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088019)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1176,8 +1210,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 22, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088020)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1196,8 +1231,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 22, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088021)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1218,9 +1254,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 22, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088022)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -770.0, y: -0.07, z: -285.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1240,8 +1277,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 23],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088023)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1262,8 +1300,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 23, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088024)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1282,8 +1321,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 23, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088025)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1304,9 +1344,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 23, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088026)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -790.0, y: -1.1, z: -275.0 },
             rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
@@ -1329,8 +1370,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 24],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088027)
         bevy_ecs::hierarchy::Children [
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1353,8 +1395,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 24, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088028)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1377,8 +1420,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 24, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088029)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1401,9 +1445,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 24, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088030)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -755.0, y: -0.58, z: -262.0 },
             rotation: glam::Quat { x: 0.0, y: 0.043619, z: 0.0, w: 0.999048 },
@@ -1426,8 +1471,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 25],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088031)
         bevy_ecs::hierarchy::Children [
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1450,8 +1496,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 25, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088032)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1474,8 +1521,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 25, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088033)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1498,9 +1546,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 25, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088034)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -765.0, y: -0.36, z: -290.0 },
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
@@ -1523,8 +1572,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 26],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088035)
         bevy_ecs::hierarchy::Children [
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1547,8 +1597,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 26, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088036)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1571,8 +1622,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 26, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088037)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1595,9 +1647,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 26, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088038)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -785.0, y: -0.65, z: -285.0 },
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
@@ -1620,8 +1673,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 27],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088039)
         bevy_ecs::hierarchy::Children [
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1644,8 +1698,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 27, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088040)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1668,8 +1723,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 27, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088041)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
@@ -1692,9 +1748,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 27, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088042)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -760.0, y: -0.1, z: -268.0 },
             rotation: glam::Quat { x: 0.176153, y: 0.293168, z: 0.483977, w: 0.805474 },
@@ -1717,26 +1774,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 28],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088043)
         bevy_ecs::hierarchy::Children [
             #"GltfScene spear"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/spear.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 28, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 28, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088044)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -778.0, y: -0.33, z: -278.0 },
             rotation: glam::Quat { x: 0.098274, y: 0.163555, z: 0.505575, w: 0.841419 },
@@ -1759,26 +1817,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 29],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088045)
         bevy_ecs::hierarchy::Children [
             #"GltfScene spear"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/spear.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 29, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 29, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088046)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -752.0, y: -0.51, z: -275.0 },
             rotation: glam::Quat { x: 0.209485, y: 0.348641, z: 0.470511, w: 0.783061 },
@@ -1801,23 +1860,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 30],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088047)
         bevy_ecs::hierarchy::Children [
             #"GltfScene spear"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/spear.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/spear_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 30, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [0, 30, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088048)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.battlefield-bastion-w"
@@ -1842,8 +1902,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [60],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088049)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1865,8 +1926,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088050)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.15, y: 0.95, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1888,8 +1950,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088051)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.3, y: 0.8, z: 0.05 },
                 rotation: glam::Quat { x: -0.001826, y: 0.052304, z: -0.034852, w: 0.998021 },
@@ -1912,8 +1975,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088052)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.05, y: 1.72, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.043619, w: 0.999048 },
@@ -1936,8 +2000,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088053)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.55, y: 1.68, z: 0.0 },
                 rotation: glam::Quat { x: 0.002663, y: -0.043538, z: -0.06099, w: 0.997185 },
@@ -1960,8 +2025,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088054)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.78 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1983,8 +2049,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 5],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088055)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.24159, y: 0.012661, z: -0.050781, w: 0.968966 },
@@ -2008,8 +2075,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 6],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088056)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.241839, y: 0.006333, z: -0.025399, w: 0.969963 },
@@ -2033,8 +2101,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 7],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088057)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.241922, y: 0.0, z: 0.0, w: 0.970296 },
@@ -2058,8 +2127,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 8],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088058)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.241839, y: -0.006333, z: 0.025399, w: 0.969963 },
@@ -2083,8 +2153,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 9],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088059)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.24159, y: -0.012661, z: 0.050781, w: 0.968966 },
@@ -2108,6 +2179,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [60, 10],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088060)
         ]
         --
         #"sceneref.v2.battlefield-bastion-e"
@@ -2132,8 +2204,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [61],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088061)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2155,8 +2228,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088062)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.15, y: 0.95, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2178,8 +2252,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088063)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.3, y: 0.8, z: 0.05 },
                 rotation: glam::Quat { x: -0.001826, y: 0.052304, z: -0.034852, w: 0.998021 },
@@ -2202,8 +2277,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088064)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.05, y: 1.72, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.043619, w: 0.999048 },
@@ -2226,8 +2302,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088065)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.55, y: 1.68, z: 0.0 },
                 rotation: glam::Quat { x: 0.002663, y: -0.043538, z: -0.06099, w: 0.997185 },
@@ -2250,8 +2327,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088066)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.78 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2273,8 +2351,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 5],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088067)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.24159, y: 0.012661, z: -0.050781, w: 0.968966 },
@@ -2298,8 +2377,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 6],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088068)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.241839, y: 0.006333, z: -0.025399, w: 0.969963 },
@@ -2323,8 +2403,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 7],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088069)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.241922, y: 0.0, z: 0.0, w: 0.970296 },
@@ -2348,8 +2429,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 8],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088070)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.241839, y: -0.006333, z: 0.025399, w: 0.969963 },
@@ -2373,8 +2455,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 9],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088071)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.0, y: 0.72, z: 0.92 },
                 rotation: glam::Quat { x: 0.24159, y: -0.012661, z: 0.050781, w: 0.968966 },
@@ -2398,6 +2481,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [61, 10],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088072)
         ]
         --
         #"sceneref.v2.battlefield-arch"
@@ -2422,8 +2506,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [62],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088073)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.2, y: 1.65, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2445,8 +2530,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [62, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088074)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.2, y: 1.4, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.052336, w: 0.99863 },
@@ -2469,8 +2555,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [62, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088075)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.35, y: 3.25, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.078459, w: 0.996917 },
@@ -2493,6 +2580,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [62, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088076)
         ]
         --
         #"sceneref.v2.battlefield-ash"
@@ -2519,6 +2607,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [63],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088077)
         --
         #"sceneref.v2.battlefield-embers-1"
         bevy_transform::components::transform::Transform {
@@ -2537,50 +2626,43 @@ bevy_ecs::hierarchy::Children [
             origin_path: [64],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088078)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [64, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [64, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088079)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/smoke.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "smoke",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [64, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [64, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088080)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2606,6 +2688,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [64, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088081)
         ]
         --
         #"sceneref.v2.battlefield-embers-2"
@@ -2625,50 +2708,43 @@ bevy_ecs::hierarchy::Children [
             origin_path: [65],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088082)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [65, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [65, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088083)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/smoke.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "smoke",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [65, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [65, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088084)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2694,6 +2770,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [65, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088085)
         ]
         --
         #"sceneref.v2.battlefield-sword"
@@ -2723,6 +2800,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [66],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088086)
         bevy_ecs::hierarchy::Children [
             #"GltfScene sword_hero"
             bevy_transform::components::transform::Transform {
@@ -2740,6 +2818,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [66, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088087)
         ]
         --
         #"sceneref.v2.battlefield-debris-1"
@@ -2772,23 +2851,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [67],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088088)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_boulder"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-boulder.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [67, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [67, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088089)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.battlefield-debris-2"
@@ -2821,23 +2901,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [68],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088090)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_boulder"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-boulder.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_boulder_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [68, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [68, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088091)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.battlefield-debris-3"
@@ -2870,23 +2951,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [69],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088092)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [69, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [69, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088093)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.battlefield-debris-4"
@@ -2919,23 +3001,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [70],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088094)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [70, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [70, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088095)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"chest-battlefield-bastion"
@@ -2953,14 +3036,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "chest.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "gold", value: "35" },
-                bevy_ext_scene::AuthoredProp { key: "xp", value: "40" },
-                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
-                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("gold", jackdaw_scene_types::types::PropertyValue::String("35")),
+                ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+                ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+                ("item_label", jackdaw_scene_types::types::PropertyValue::String("poção")),
+                ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú")),
+                ("xp", jackdaw_scene_types::types::PropertyValue::String("40"))
             ],
         }
         bevy_ext_scene::ModelLod {
@@ -2981,23 +3064,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [71],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088096)
         bevy_ecs::hierarchy::Children [
             #"GltfScene treasure_chest"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/treasure-chest.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [71, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/battlefield.xml",
+                path: [71, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088097)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]

@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083943)
 bevy_ecs::hierarchy::Children [
     #"creatures.bosses"
     bevy_transform::components::transform::Transform {
@@ -32,6 +33,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083944)
     bevy_ecs::hierarchy::Children [
         #"boss-witch"
         bevy_transform::components::transform::Transform {
@@ -56,6 +58,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083945)
         bevy_ecs::hierarchy::Children [
             #"GltfScene witch_boss"
             bevy_transform::components::transform::Transform {
@@ -73,6 +76,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083946)
         ]
         --
         #"boss-sandworm"
@@ -98,6 +102,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083947)
         bevy_ecs::hierarchy::Children [
             #"GltfScene sand_worm"
             bevy_transform::components::transform::Transform {
@@ -115,6 +120,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 1, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083948)
         ]
         --
         #"boss-bogwarden"
@@ -140,6 +146,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083949)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bog_warden_boss"
             bevy_transform::components::transform::Transform {
@@ -157,9 +164,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 2, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083950)
         ]
         --
-        #"boss"
+        #boss
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -12.0, y: 110.066399, z: -290.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -182,6 +190,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083951)
         bevy_ecs::hierarchy::Children [
             #"GltfScene boss_ogre"
             bevy_transform::components::transform::Transform {
@@ -199,7 +208,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 3, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083952)
         ]
     ]
 ]
-

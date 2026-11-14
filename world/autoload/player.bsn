@@ -13,6 +13,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216082386)
 bevy_ecs::hierarchy::Children [
     #"player"
     bevy_transform::components::transform::Transform {
@@ -32,6 +33,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082387)
     --
     #"OrbitCamera"
     bevy_transform::components::transform::Transform {
@@ -55,6 +57,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082388)
     --
     #"game-audio-zone"
     bevy_transform::components::transform::Transform {
@@ -77,6 +80,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082389)
     --
     #"game-rules"
     bevy_transform::components::transform::Transform {
@@ -99,6 +103,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [3],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082390)
     --
     #"game-dev"
     bevy_transform::components::transform::Transform {
@@ -121,6 +126,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [4],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082391)
     --
     #"game-lua-controller"
     bevy_transform::components::transform::Transform {
@@ -143,6 +149,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [5],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082392)
     --
     #"game-lua-combat"
     bevy_transform::components::transform::Transform {
@@ -165,6 +172,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [6],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082393)
     --
     #"game-lua-hotbar"
     bevy_transform::components::transform::Transform {
@@ -187,6 +195,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [7],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082394)
     --
     #"game-lua-equipment-interior"
     bevy_transform::components::transform::Transform {
@@ -197,10 +206,10 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "game/equipment.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "tocha-x", value: "-0.002" },
-            bevy_ext_scene::AuthoredProp { key: "tocha-y", value: "0.241" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("tocha-x", jackdaw_scene_types::types::PropertyValue::String("-0.002")),
+            ("tocha-y", jackdaw_scene_types::types::PropertyValue::String("0.241"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -215,6 +224,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [8],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082395)
     --
     #"game-lua-voice"
     bevy_transform::components::transform::Transform {
@@ -237,5 +247,6 @@ bevy_ecs::hierarchy::Children [
         origin_path: [9],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082396)
 ]
 

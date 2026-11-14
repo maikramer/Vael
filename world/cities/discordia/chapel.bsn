@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083173)
 bevy_ecs::hierarchy::Children [
     #"city.chapel"
     bevy_transform::components::transform::Transform {
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083174)
     bevy_ecs::hierarchy::Children [
-        #"chapel"
+        #chapel
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 10.0, y: 0.0, z: 25.0 },
             rotation: glam::Quat { x: 0.0, y: -0.92388, z: 0.0, w: 0.382683 },
@@ -57,6 +59,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083175)
         bevy_ecs::hierarchy::Children [
             #"GltfScene chapel"
             bevy_transform::components::transform::Transform {
@@ -74,9 +77,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083176)
         ]
         --
-        #"npc_healer"
+        #npc_healer
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 5.0, y: 0.0, z: 21.0 },
             rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
@@ -97,25 +101,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083177)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_healer"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-healer.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_healer_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083178)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -123,13 +128,13 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/cities/discordia/chapel.xml",
                 origin_path: [0, 1, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083179)
         ]
         --
         #"sceneref.v3.chapel-brazier-w"
@@ -161,71 +166,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [40],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083180)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [40, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [40, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083181)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [40, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.85 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [40, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083182)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-warm-4800-v5.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.666667, blue: 0.321569, alpha: 1.0 }),
-                intensity: 4800.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [40, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffaa52" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [40, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083183)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v3.chapel-brazier-e"
@@ -257,71 +249,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [41],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083184)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [41, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [41, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083185)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [41, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.85 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [41, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083186)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-warm-4800-v5.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.15, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.666667, blue: 0.321569, alpha: 1.0 }),
-                intensity: 4800.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [41, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.15 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffaa52" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4800" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [41, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083187)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v3.chapel-bench-w"
@@ -354,23 +333,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [42],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083188)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [42, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [42, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083189)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v3.chapel-bench-e"
@@ -403,23 +383,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [43],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083190)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [43, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [43, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083191)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v3.chapel-statue"
@@ -452,44 +433,41 @@ bevy_ecs::hierarchy::Children [
             origin_path: [44],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083192)
         bevy_ecs::hierarchy::Children [
             #"GltfScene chapel_statue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/interiors/chapel-statue.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/chapel_statue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [44, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [44, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083193)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/sparkle.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "sparkle",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [44, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [44, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083194)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v3.chapel-pillar-w"
@@ -522,23 +500,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [45],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083195)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [45, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [45, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083196)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v3.chapel-pillar-e"
@@ -571,23 +550,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [46],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083197)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/chapel.xml",
-                origin_path: [46, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/chapel.xml",
+                path: [46, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083198)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]

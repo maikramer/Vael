@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216086668)
 bevy_ecs::hierarchy::Children [
     #"biome.wilds.landmarks"
     bevy_transform::components::transform::Transform {
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216086669)
     bevy_ecs::hierarchy::Children [
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -45,15 +47,15 @@ bevy_ecs::hierarchy::Children [
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
             origin_path: [0, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086670)
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1502.0, y: 161.937103, z: -700.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -75,26 +77,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086671)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086672)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1495.599976, y: 162.343399, z: -684.400024 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -116,26 +119,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086673)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086674)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1480.0, y: 162.0439, z: -678.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -157,26 +161,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086675)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086676)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1464.400024, y: 161.569794, z: -684.400024 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -198,26 +203,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086677)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086678)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1458.0, y: 161.111694, z: -700.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -239,26 +245,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086679)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086680)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1464.400024, y: 161.177002, z: -715.599976 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -280,26 +287,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086681)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086682)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1480.0, y: 161.650696, z: -722.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -321,26 +329,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086683)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086684)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1495.599976, y: 161.676102, z: -715.599976 },
             rotation: glam::Quat { x: 0.338134, y: 0.41756, z: 0.530763, w: 0.655438 },
@@ -364,26 +373,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086685)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 8, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 8, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086686)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1472.0, y: 161.498398, z: -690.5 },
             rotation: glam::Quat { x: 0.116193, y: -0.129046, z: -0.658965, w: 0.731855 },
@@ -407,26 +417,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086687)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/stone-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 9, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 9, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086688)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1446.0, y: 160.368301, z: -686.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -448,26 +459,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086689)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 10, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 10, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086690)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1516.0, y: 161.844193, z: -712.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -489,23 +501,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086691)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 11, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 11, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086692)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"orm-heart"
@@ -528,23 +541,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 12],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086693)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 12, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 12, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086694)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"wilds-campfire"
@@ -570,26 +584,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 13],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086695)
         bevy_ecs::hierarchy::Children [
             #"GltfScene campfire_pit"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/campfire-pit.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 13, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 13, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086696)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1512.0, y: 160.154495, z: -726.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -605,8 +620,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086697)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -626,9 +642,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 14, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086698)
         ]
         --
-        #"Group"
+        #Group
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1512.0, y: 160.154495, z: -726.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -646,8 +663,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 15],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086699)
         bevy_ecs::hierarchy::Children [
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -672,9 +690,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 15, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086700)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1509.0, y: 160.0793, z: -730.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -696,26 +715,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 16],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086701)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 16, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 16, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086702)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 1516.0, y: 159.527298, z: -723.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -737,26 +757,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 17],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086703)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 17, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 17, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086704)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"DynamicSpawner"
+        #DynamicSpawner
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -781,8 +802,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 18],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086705)
         bevy_ecs::hierarchy::Children [
-            #"Creature"
+            #Creature
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -801,34 +823,28 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 18, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086706)
             bevy_ecs::hierarchy::Children [
                 #"GLTFLoader bandit"
+                jackdaw::prefab::components::IsA {
+                    source: "world/prefabs/characters/bandit.bsn",
+                    deleted: [],
+                }
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                bevy_ext_scene::ModelLod {
-                    lod1: core::option::Option::Some("/assets/meshes/characters/bandit_lod1.glb"),
-                    lod2: core::option::Option::Some("/assets/meshes/characters/bandit_lod2.glb"),
-                    near: core::option::Option::Some(18.0),
-                    mid: core::option::Option::Some(55.0),
+                bevy_world_xml::bsn::WorldOrigin {
+                    file: "world/landmarks/wilds.xml",
+                    path: [0, 18, 0, 0],
                 }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "GLTFLoader",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
-                    ],
-                    text: "",
-                    origin_file: "world/landmarks/wilds.xml",
-                    origin_path: [0, 18, 0, 0],
-                    pose: true,
-                }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086707)
+                jackdaw::prefab::components::PrefabEntityId(0)
             ]
         ]
         --
-        #"Lake"
+        #Lake
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -852,8 +868,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 19],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086708)
         --
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -865,153 +882,100 @@ bevy_ecs::hierarchy::Children [
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
             origin_path: [0, 20],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086709)
         --
-        #"Entity"
+        #Entity
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/palm-tree.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -574.0, y: 63.636398, z: 8.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/landmarks/wilds.xml",
+            path: [0, 21],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "palm_tree",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-574 63.6364 8" },
-            ],
-            text: "",
-            origin_file: "world/landmarks/wilds.xml",
-            origin_path: [0, 21],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086710)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"Entity"
+        #Entity
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/palm-tree.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -508.0, y: 60.769402, z: 6.0 },
             rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/landmarks/wilds.xml",
+            path: [0, 22],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "palm_tree",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-508 60.7694 6" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/landmarks/wilds.xml",
-            origin_path: [0, 22],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086711)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"Entity"
+        #Entity
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/palm-tree.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -566.0, y: 63.2481, z: 62.0 },
             rotation: glam::Quat { x: 0.0, y: -0.737277, z: 0.0, w: -0.67559 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/landmarks/wilds.xml",
+            path: [0, 23],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "palm_tree",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-566 63.2481 62" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 85 180" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/landmarks/wilds.xml",
-            origin_path: [0, 23],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086712)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"Entity"
+        #Entity
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/palm-tree.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -510.0, y: 60.222, z: 58.0 },
             rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: -0.173648 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/landmarks/wilds.xml",
+            path: [0, 24],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "palm_tree",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-510 60.222 58" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 20 180" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/landmarks/wilds.xml",
-            origin_path: [0, 24],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086713)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"Entity"
+        #Entity
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/flora/palm-tree.bsn",
+            deleted: [],
+        }
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -536.0, y: 61.956799, z: -6.0 },
             rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: 0.258819 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/landmarks/wilds.xml",
+            path: [0, 25],
         }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_ext_scene::FloraStation {
-            species: "palm_tree",
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Entity",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-536 61.9568 -6" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -30 180" },
-                bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
-            ],
-            text: "",
-            origin_file: "world/landmarks/wilds.xml",
-            origin_path: [0, 25],
-            pose: true,
-        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086714)
+        jackdaw::prefab::components::PrefabEntityId(0)
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -521.0, y: 60.807499, z: 44.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1036,26 +1000,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 26],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086715)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 26, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 26, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086716)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -556.0, y: 60.583801, z: 48.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1077,26 +1042,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 27],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086717)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 27, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 27, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086718)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -560.0, y: 61.1978, z: 16.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1119,26 +1085,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 28],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086719)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_red"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/mushroom-red-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/mushroom_red_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 28, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 28, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086720)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -514.0, y: 61.050701, z: 20.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1161,26 +1128,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 29],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086721)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_red"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/mushroom-red-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/mushroom_red_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 29, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 29, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086722)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1192,15 +1160,15 @@ bevy_ecs::hierarchy::Children [
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "SpawnExclusion",
-            attrs: [
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
             origin_path: [0, 30],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086723)
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -605.0, y: 185.116196, z: -725.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1225,26 +1193,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 31],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086724)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stone_cairn"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/terrain/stone-cairn.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 31, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 31, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086725)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -621.0, y: 183.884705, z: -715.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1266,26 +1235,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 32],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086726)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 32, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 32, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086727)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -621.0, y: 183.884705, z: -715.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1301,30 +1271,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 33],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086728)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire-r30.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: core::option::Option::Some("fire"),
-                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 33, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 33, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086729)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Group"
+        #Group
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -621.0, y: 183.884705, z: -715.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1342,8 +1309,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 34],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086730)
         bevy_ecs::hierarchy::Children [
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1368,9 +1336,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 34, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086731)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -589.0, y: 184.834198, z: -713.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1392,26 +1361,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 35],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086732)
         bevy_ecs::hierarchy::Children [
             #"GltfScene iron_brazier"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/iron-brazier.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/iron_brazier_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 35, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 35, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086733)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -589.0, y: 184.834198, z: -713.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1427,30 +1397,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 36],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086734)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire-r30.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.05, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: core::option::Option::Some("fire"),
-                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 30.0, shape_radius: core::option::Option::Some(0.13), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 36, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.05 0" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 36, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086735)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Group"
+        #Group
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -589.0, y: 184.834198, z: -713.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1468,8 +1435,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 37],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086736)
         bevy_ecs::hierarchy::Children [
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1494,9 +1462,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 37, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086737)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -605.0, y: 185.965103, z: -738.0 },
             rotation: glam::Quat { x: 0.0, y: -1.0, z: 0.0, w: 0.0 },
@@ -1520,23 +1489,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 38],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086738)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [0, 38, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [0, 38, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086739)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-orm-crystal-w"
@@ -1569,71 +1539,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [60],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086740)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [60, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [60, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086741)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-cool-3200.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
-                intensity: 3200.0,
-                radius: 0.45,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [60, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [60, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086742)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/sparkle.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "sparkle",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [60, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [60, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086743)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-orm-crystal-e"
@@ -1666,71 +1623,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [61],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086744)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [61, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [61, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086745)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-cool-3200.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
-                intensity: 3200.0,
-                radius: 0.45,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [61, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [61, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086746)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/sparkle.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "sparkle",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [61, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [61, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086747)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-orm-bench"
@@ -1763,23 +1707,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [62],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086748)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [62, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [62, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086749)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-orm-logs"
@@ -1812,23 +1757,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [63],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086750)
         bevy_ecs::hierarchy::Children [
             #"GltfScene log_pile"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/log-pile.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [63, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [63, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086751)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-orm-torch"
@@ -1860,71 +1806,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [64],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086752)
         bevy_ecs::hierarchy::Children [
             #"GltfScene torch_post"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/torch-post.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [64, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [64, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086753)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-warm-5200.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.647059, blue: 0.309804, alpha: 1.0 }),
-                intensity: 5200.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [64, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.20 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa54f" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "5200" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [64, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086754)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [64, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [64, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086755)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.chest-orm-heart"
@@ -1942,15 +1875,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "chest.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "xp", value: "55" },
-                bevy_ext_scene::AuthoredProp { key: "gold", value: "45" },
-                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
-                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
-                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("gold", jackdaw_scene_types::types::PropertyValue::String("45")),
+                ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+                ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+                ("item_label", jackdaw_scene_types::types::PropertyValue::String("poção")),
+                ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú")),
+                ("range", jackdaw_scene_types::types::PropertyValue::String("2.6")),
+                ("xp", jackdaw_scene_types::types::PropertyValue::String("55"))
             ],
         }
         bevy_ext_scene::ModelLod {
@@ -1971,23 +1904,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [65],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086756)
         bevy_ecs::hierarchy::Children [
             #"GltfScene treasure_chest"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/treasure-chest.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [65, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [65, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086757)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-lake-campfire"
@@ -2019,25 +1953,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [66],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086758)
         bevy_ecs::hierarchy::Children [
             #"GltfScene campfire_pit"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/campfire-pit.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [66, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [66, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086759)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2063,48 +1998,41 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [66, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086760)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [66, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.45 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [66, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086761)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/smoke.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "smoke",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [66, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.3 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [66, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086762)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-lake-bench"
@@ -2137,23 +2065,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [67],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086763)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [67, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [67, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086764)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-lake-shroom"
@@ -2183,25 +2112,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [68],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086765)
         bevy_ecs::hierarchy::Children [
             #"GltfScene mushroom_glow"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/forest/mushroom-glow-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/forest/mushroom_glow_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [68, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [68, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086766)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2227,6 +2157,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [68, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086767)
         ]
         --
         #"sceneref.v2.wilds-lake-fireflies"
@@ -2246,27 +2177,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [69],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086768)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fireflies.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fireflies",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [69, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [69, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086769)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-pillar-1"
@@ -2299,23 +2227,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [70],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086770)
         bevy_ecs::hierarchy::Children [
             #"GltfScene ruin_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/desert/ruin-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [70, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [70, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086771)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-pillar-2"
@@ -2348,23 +2277,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [71],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086772)
         bevy_ecs::hierarchy::Children [
             #"GltfScene ruin_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/desert/ruin-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [71, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [71, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086773)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-pillar-3"
@@ -2397,23 +2327,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [72],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086774)
         bevy_ecs::hierarchy::Children [
             #"GltfScene ruin_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/desert/ruin-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [72, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [72, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086775)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-pillar-4"
@@ -2446,23 +2377,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [73],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086776)
         bevy_ecs::hierarchy::Children [
             #"GltfScene ruin_pillar"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/desert/ruin-pillar.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/desert/ruin_pillar_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [73, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [73, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086777)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-crystal-1"
@@ -2495,71 +2427,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [74],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086778)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [74, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [74, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086779)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-cool-3200.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
-                intensity: 3200.0,
-                radius: 0.45,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [74, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [74, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086780)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/sparkle.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "sparkle",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [74, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [74, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086781)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-crystal-2"
@@ -2592,71 +2511,58 @@ bevy_ecs::hierarchy::Children [
             origin_path: [75],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086782)
         bevy_ecs::hierarchy::Children [
             #"GltfScene crystal_blue"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/crystal-blue-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/crystal_blue_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [75, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [75, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086783)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/lights/point-cool-3200.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.478431, green: 0.839216, blue: 1.0, alpha: 1.0 }),
-                intensity: 3200.0,
-                radius: 0.45,
-                shadow_maps_enabled: false,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [75, 1],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x7ad6ff" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3200" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.45" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [75, 1],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086784)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/sparkle.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "sparkle",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [75, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.65 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "sparkle" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [75, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086785)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.wilds-peak-campfire"
@@ -2688,25 +2594,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [76],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086786)
         bevy_ecs::hierarchy::Children [
             #"GltfScene campfire_pit"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/campfire-pit.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [76, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [76, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086787)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.25, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -2732,48 +2639,41 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [76, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086788)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [76, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 0.45 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [76, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086789)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/smoke.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.3, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "smoke",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [76, 3],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1.3 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "smoke" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [76, 3],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086790)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.chest-wilds-cume"
@@ -2791,15 +2691,15 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "chest.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "xp", value: "60" },
-                bevy_ext_scene::AuthoredProp { key: "gold", value: "50" },
-                bevy_ext_scene::AuthoredProp { key: "item", value: "potion" },
-                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-                bevy_ext_scene::AuthoredProp { key: "item_label", value: "poção" },
-                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Abrir o baú" },
-                bevy_ext_scene::AuthoredProp { key: "range", value: "2.6" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("gold", jackdaw_scene_types::types::PropertyValue::String("50")),
+                ("item", jackdaw_scene_types::types::PropertyValue::String("potion")),
+                ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+                ("item_label", jackdaw_scene_types::types::PropertyValue::String("poção")),
+                ("prompt", jackdaw_scene_types::types::PropertyValue::String("Abrir o baú")),
+                ("range", jackdaw_scene_types::types::PropertyValue::String("2.6")),
+                ("xp", jackdaw_scene_types::types::PropertyValue::String("60"))
             ],
         }
         bevy_ext_scene::ModelLod {
@@ -2820,23 +2720,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [77],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216086791)
         bevy_ecs::hierarchy::Children [
             #"GltfScene treasure_chest"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/treasure-chest.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/wilds.xml",
-                origin_path: [77, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/landmarks/wilds.xml",
+                path: [77, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086792)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]

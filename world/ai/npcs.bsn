@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216082254)
 bevy_ecs::hierarchy::Children [
     #"quest-npcs"
     bevy_transform::components::transform::Transform {
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216082255)
     bevy_ecs::hierarchy::Children [
-        #"npc_forest_wolves"
+        #npc_forest_wolves
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -16.0, y: 41.090199, z: 60.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -53,25 +55,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082256)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_guard"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-guard.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_guard_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 0, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 0, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082257)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -79,16 +82,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 0, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082258)
         ]
         --
-        #"npc_forest_shades"
+        #npc_forest_shades
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 16.0, y: 43.481201, z: 68.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -97,9 +100,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_shades" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("forest_shades"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -113,25 +116,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082259)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_healer"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-healer.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_healer_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082260)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -139,16 +143,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 1, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082261)
         ]
         --
-        #"npc_forest_darkwood"
+        #npc_forest_darkwood
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 45.183498, z: 100.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -157,9 +161,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_darkwood" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("forest_darkwood"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -173,25 +177,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082262)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_blacksmith"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-blacksmith.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_blacksmith_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082263)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -199,16 +204,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 2, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082264)
         ]
         --
-        #"npc_desert_scorpions"
+        #npc_desert_scorpions
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 60.0, y: 39.505402, z: -16.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -217,9 +222,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_scorpions" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("desert_scorpions"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -233,25 +238,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082265)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_guard"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-guard.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_guard_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082266)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -259,16 +265,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 3, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082267)
         ]
         --
-        #"npc_desert_bandits"
+        #npc_desert_bandits
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 68.0, y: 40.477699, z: 16.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -277,9 +283,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_bandits" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("desert_bandits"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -293,25 +299,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082268)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_blacksmith"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-blacksmith.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_blacksmith_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082269)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -319,16 +326,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 4, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082270)
         ]
         --
-        #"npc_desert_ruins"
+        #npc_desert_ruins
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 284.0, y: 50.120899, z: 104.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -337,9 +344,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_ruins" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("desert_ruins"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -353,25 +360,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082271)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_elder"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-elder.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_elder_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082272)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -379,16 +387,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 5, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082273)
         ]
         --
-        #"npc_swamp_boglings"
+        #npc_swamp_boglings
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -60.0, y: 35.804699, z: -16.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -397,9 +405,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_boglings" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("swamp_boglings"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -413,25 +421,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082274)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_healer"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-healer.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_healer_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082275)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -439,16 +448,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 6, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082276)
         ]
         --
-        #"npc_swamp_bogwarden"
+        #npc_swamp_bogwarden
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -80.0, y: 42.669998, z: 86.0 },
             rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
@@ -457,9 +466,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_bogwarden" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("swamp_bogwarden"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -474,25 +483,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082277)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_guard"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-guard.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_guard_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082278)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -500,16 +510,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 7, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082279)
         ]
         --
-        #"npc_swamp_bogmoss"
+        #npc_swamp_bogmoss
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -100.0, y: 30.703199, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -518,9 +528,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_bogmoss" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("swamp_bogmoss"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -534,25 +544,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082280)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_elder"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-elder.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_elder_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 8, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 8, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082281)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -560,16 +571,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 8, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082282)
         ]
         --
-        #"npc_peaks_goblins"
+        #npc_peaks_goblins
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -16.0, y: 40.4576, z: -60.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -578,9 +589,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_goblins" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("peaks_goblins"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -594,25 +605,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082283)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_guard"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-guard.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_guard_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 9, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 9, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082284)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -620,16 +632,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 9, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082285)
         ]
         --
-        #"npc_peaks_frost"
+        #npc_peaks_frost
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 16.0, y: 43.1227, z: -68.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -638,9 +650,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_frost" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("peaks_frost"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -654,25 +666,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082286)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_healer"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-healer.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_healer_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 10, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 10, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082287)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -680,16 +693,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 10, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082288)
         ]
         --
-        #"npc_peaks_ogre"
+        #npc_peaks_ogre
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 52.969898, z: -100.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -698,9 +711,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_ogre" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("peaks_ogre"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -714,25 +727,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082289)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_blacksmith"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-blacksmith.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_blacksmith_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 11, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 11, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082290)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -740,16 +754,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 11, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082291)
         ]
         --
-        #"npc_forest_survey"
+        #npc_forest_survey
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 32.0, y: 46.248199, z: 80.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -758,9 +772,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_survey" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("forest_survey"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -774,25 +788,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 12],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082292)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scout"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 12, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 12, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082293)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -800,16 +815,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 12, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082294)
         ]
         --
-        #"npc_desert_survey"
+        #npc_desert_survey
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 80.0, y: 40.2029, z: -32.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -818,9 +833,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_survey" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("desert_survey"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -834,25 +849,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 13],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082295)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scout"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 13, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 13, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082296)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -860,16 +876,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 13, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082297)
         ]
         --
-        #"npc_swamp_survey"
+        #npc_swamp_survey
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -80.0, y: 32.592201, z: 32.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -878,9 +894,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "swamp_survey" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("swamp_survey"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -894,25 +910,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082298)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scout"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 14, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 14, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082299)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -920,16 +937,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 14, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082300)
         ]
         --
-        #"npc_peaks_survey"
+        #npc_peaks_survey
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -32.0, y: 38.7192, z: -80.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -938,9 +955,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "peaks_survey" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("peaks_survey"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -954,25 +971,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 15],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082301)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scout"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 15, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 15, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082302)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -980,16 +998,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 15, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082303)
         ]
         --
-        #"npc_forest_witch"
+        #npc_forest_witch
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -24.0, y: 43.507198, z: 82.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -998,9 +1016,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "forest_witch" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("forest_witch"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1014,6 +1032,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 16],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082304)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scholar"
             bevy_transform::components::transform::Transform {
@@ -1031,8 +1050,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 16, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082305)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1040,16 +1060,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 16, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082306)
         ]
         --
-        #"npc_desert_worm"
+        #npc_desert_worm
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 96.0, y: 41.180801, z: 10.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1058,9 +1078,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "desert_worm" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("desert_worm"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1074,25 +1094,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 17],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082307)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scout"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 17, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 17, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082308)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1100,16 +1121,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 17, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082309)
         ]
         --
-        #"npc_bell_drowned"
+        #npc_bell_drowned
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -78.0, y: 42.522701, z: 84.0 },
             rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: -0.173648 },
@@ -1118,9 +1139,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/decision-quest.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "quest_id", value: "swamp_drowned_bell" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("quest_id", jackdaw_scene_types::types::PropertyValue::String("swamp_drowned_bell"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1136,25 +1157,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 18],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082310)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_healer"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-healer.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_healer_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/ai/npcs.xml",
-                origin_path: [0, 18, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/ai/npcs.xml",
+                path: [0, 18, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082311)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1162,16 +1184,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 18, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082312)
         ]
         --
-        #"npc_glass_witness"
+        #npc_glass_witness
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 104.0, y: 48.900002, z: 232.5 },
             rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: -0.173648 },
@@ -1180,9 +1202,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/decision-quest.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "quest_id", value: "forest_glass_witness" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("quest_id", jackdaw_scene_types::types::PropertyValue::String("forest_glass_witness"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1197,6 +1219,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 19],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082313)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scholar"
             bevy_transform::components::transform::Transform {
@@ -1214,8 +1237,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 19, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082314)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1223,14 +1247,13 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/ai/npcs.xml",
                 origin_path: [0, 19, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082315)
         ]
     ]
 ]
-

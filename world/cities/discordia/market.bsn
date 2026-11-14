@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083581)
 bevy_ecs::hierarchy::Children [
     #"city.market"
     bevy_transform::components::transform::Transform {
@@ -32,6 +33,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083582)
     bevy_ecs::hierarchy::Children [
         #"city.market.apron"
         bevy_transform::components::transform::Transform {
@@ -57,8 +59,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083583)
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 10.1, y: 0.0, z: -17.700001 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -78,26 +81,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083584)
         bevy_ecs::hierarchy::Children [
             #"GltfScene market_stall"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/market-stall.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083585)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 13.7, y: 0.0, z: -14.4 },
             rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
@@ -118,26 +122,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083586)
         bevy_ecs::hierarchy::Children [
             #"GltfScene market_stall"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/market-stall.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 2, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 2, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083587)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 18.9, y: 0.0, z: -18.299999 },
             rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
@@ -158,26 +163,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083588)
         bevy_ecs::hierarchy::Children [
             #"GltfScene market_stall"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/market-stall.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 3, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 3, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083589)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 11.75, y: 0.0, z: -18.299999 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -199,26 +205,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083590)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083591)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 12.66, y: 0.0, z: -20.1 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -240,26 +247,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083592)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083593)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 34.5, y: 0.0, z: -18.5 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -281,26 +289,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083594)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083595)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 35.299999, y: 0.0, z: -21.0 },
             rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
@@ -323,26 +332,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083596)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083597)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"merchant"
+        #merchant
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 16.299999, y: 0.0, z: -14.4 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -363,25 +373,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083598)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_blacksmith"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-blacksmith.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_blacksmith_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [0, 8, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [0, 8, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083599)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -389,13 +400,13 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/cities/discordia/market.xml",
                 origin_path: [0, 8, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083600)
         ]
         --
         #"sceneref.v2.market-gate-plaza"
@@ -419,8 +430,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [40],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083601)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.4, y: 0.17, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -442,8 +454,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083602)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.4, y: 1.895, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -465,8 +478,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083603)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.06, y: 3.13, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.382683, w: 0.92388 },
@@ -489,8 +503,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083604)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.4, y: 0.17, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -512,8 +527,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083605)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.4, y: 1.895, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -535,8 +551,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083606)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.06, y: 3.13, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.382683, w: 0.92388 },
@@ -559,8 +576,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 5],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083607)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 3.55, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -582,8 +600,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 6],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083608)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 3.19, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -605,8 +624,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 7],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083609)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.95, y: 2.93, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -626,8 +646,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 8],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083610)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.78, y: 2.93, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -647,8 +668,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 9],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083611)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.78, y: 2.93, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -668,8 +690,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 10],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083612)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.95, y: 2.93, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -689,6 +712,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [40, 11],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083613)
         ]
         --
         #"sceneref.v2.market-gate-lantern"
@@ -717,6 +741,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [41],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083614)
         bevy_ecs::hierarchy::Children [
             #"GltfScene lantern_hanging"
             bevy_transform::components::transform::Transform {
@@ -734,8 +759,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [41, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083615)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -761,6 +787,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [41, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083616)
         ]
         --
         #"sceneref.v2.market-arch-south"
@@ -784,8 +811,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [42],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083617)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.0, y: 0.17, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -807,8 +835,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083618)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -2.0, y: 1.795, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -830,8 +859,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083619)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.66, y: 2.93, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.382683, w: 0.92388 },
@@ -854,8 +884,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083620)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.0, y: 0.17, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -877,8 +908,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083621)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 2.0, y: 1.795, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -900,8 +932,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083622)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.66, y: 2.93, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.382683, w: 0.92388 },
@@ -924,8 +957,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 5],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083623)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 3.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -947,8 +981,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 6],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083624)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.99, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -970,8 +1005,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 7],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083625)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.55, y: 2.73, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -991,8 +1027,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 8],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083626)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.78, y: 2.73, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1012,8 +1049,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 9],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083627)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.78, y: 2.73, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1033,8 +1071,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 10],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083628)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.55, y: 2.73, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1054,6 +1093,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [42, 11],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083629)
         ]
         --
         #"sceneref.v2.market-south-lantern"
@@ -1082,6 +1122,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [43],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083630)
         bevy_ecs::hierarchy::Children [
             #"GltfScene lantern_hanging"
             bevy_transform::components::transform::Transform {
@@ -1099,8 +1140,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [43, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083631)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1126,6 +1168,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [43, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083632)
         ]
         --
         #"sceneref.v2.market-center-rug"
@@ -1155,6 +1198,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [44],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083633)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rug_woven"
             bevy_transform::components::transform::Transform {
@@ -1172,6 +1216,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [44, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083634)
         ]
         --
         #"sceneref.v2.market-ledger-table"
@@ -1204,23 +1249,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [45],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083635)
         bevy_ecs::hierarchy::Children [
             #"GltfScene dining_table"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/interiors/dining-table.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/dining_table_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [45, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [45, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083636)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-ledger-stool"
@@ -1253,23 +1299,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [46],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083637)
         bevy_ecs::hierarchy::Children [
             #"GltfScene stool_wood"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/interiors/stool-wood.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/interiors/stool_wood_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [46, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [46, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083638)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-ledger-barrel"
@@ -1301,23 +1348,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [47],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083639)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [47, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [47, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083640)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-ledger-crate"
@@ -1350,23 +1398,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [48],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083641)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [48, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [48, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083642)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-signpost"
@@ -1390,8 +1439,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [49],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083643)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1413,8 +1463,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [49, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083644)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.42, y: 2.74, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1436,8 +1487,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [49, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083645)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.36, y: 2.4, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1457,6 +1509,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [49, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083646)
         ]
         --
         #"sceneref.v2.market-signpost-lantern"
@@ -1485,6 +1538,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [50],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083647)
         bevy_ecs::hierarchy::Children [
             #"GltfScene lantern_hanging"
             bevy_transform::components::transform::Transform {
@@ -1502,8 +1556,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [50, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083648)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1529,6 +1584,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [50, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083649)
         ]
         --
         #"sceneref.v2.market-west-crate-1"
@@ -1561,23 +1617,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [51],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083650)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [51, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [51, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083651)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-west-crate-top"
@@ -1610,23 +1667,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [52],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083652)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [52, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [52, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083653)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-west-barrel"
@@ -1659,23 +1717,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [53],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083654)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [53, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [53, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083655)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-eastwall-barrel-1"
@@ -1707,23 +1766,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [54],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083656)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [54, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [54, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083657)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-eastwall-barrel-2"
@@ -1756,23 +1816,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [55],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083658)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [55, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [55, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083659)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-eastwall-crate-top"
@@ -1805,23 +1866,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [56],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083660)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [56, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [56, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083661)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.market-eastwall-torch"
@@ -1853,25 +1915,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [57],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083662)
         bevy_ecs::hierarchy::Children [
             #"GltfScene torch_post"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/torch-post.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [57, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [57, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083663)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1897,27 +1960,24 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [57, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083664)
             --
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.08, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fire",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/market.xml",
+                path: [57, 2],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.08 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fire" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [57, 2],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083665)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]

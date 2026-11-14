@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216085417)
 bevy_ecs::hierarchy::Children [
     #"Prototype bomb-lua"
     bevy_transform::components::transform::Transform {
@@ -31,6 +32,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085418)
     bevy_ecs::hierarchy::Children [
         #"bomb-lua"
         bevy_transform::components::transform::Transform {
@@ -51,8 +53,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085419)
         bevy_ecs::hierarchy::Children [
-            #"Sphere"
+            #Sphere
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -70,8 +73,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085420)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -95,6 +99,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 0, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085421)
         ]
     ]
     --
@@ -114,8 +119,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085422)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -129,13 +135,13 @@ bevy_ecs::hierarchy::Children [
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
-            attrs: [
-            ],
+            attrs: [],
             text: "",
             origin_file: "world/gameplay.xml",
             origin_path: [1, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085423)
         bevy_ecs::hierarchy::Children [
             #"GltfScene berry_bush_bare"
             bevy_transform::components::transform::Transform {
@@ -159,6 +165,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [1, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085424)
         ]
     ]
     --
@@ -178,8 +185,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085425)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -199,6 +207,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085426)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wolf"
             bevy_transform::components::transform::Transform {
@@ -222,6 +231,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085427)
         ]
     ]
     --
@@ -241,8 +251,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [3],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085428)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -262,6 +273,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [3, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085429)
         bevy_ecs::hierarchy::Children [
             #"GltfScene shade"
             bevy_transform::components::transform::Transform {
@@ -285,6 +297,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [3, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085430)
         ]
     ]
     --
@@ -304,8 +317,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [4],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085431)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -325,6 +339,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [4, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085432)
         bevy_ecs::hierarchy::Children [
             #"GltfScene scorpion"
             bevy_transform::components::transform::Transform {
@@ -348,6 +363,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [4, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085433)
         ]
     ]
     --
@@ -367,8 +383,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [5],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085434)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -388,6 +405,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [5, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085435)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bandit"
             bevy_transform::components::transform::Transform {
@@ -411,6 +429,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [5, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085436)
         ]
     ]
     --
@@ -430,8 +449,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [6],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085437)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -451,6 +471,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [6, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085438)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bandit"
             bevy_transform::components::transform::Transform {
@@ -474,6 +495,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [6, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085439)
         ]
     ]
     --
@@ -493,8 +515,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [7],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085440)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -514,6 +537,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [7, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085441)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bogling"
             bevy_transform::components::transform::Transform {
@@ -537,6 +561,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [7, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085442)
         ]
     ]
     --
@@ -556,8 +581,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [8],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085443)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -577,6 +603,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [8, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085444)
         bevy_ecs::hierarchy::Children [
             #"GltfScene goblin"
             bevy_transform::components::transform::Transform {
@@ -600,6 +627,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [8, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085445)
         ]
     ]
     --
@@ -619,8 +647,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [9],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085446)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -640,6 +669,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [9, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085447)
         bevy_ecs::hierarchy::Children [
             #"GltfScene slime"
             bevy_transform::components::transform::Transform {
@@ -663,6 +693,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [9, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085448)
         ]
     ]
     --
@@ -682,8 +713,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [10],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085449)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -703,6 +735,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [10, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085450)
         bevy_ecs::hierarchy::Children [
             #"GltfScene goblin"
             bevy_transform::components::transform::Transform {
@@ -726,6 +759,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [10, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085451)
         ]
     ]
     --
@@ -745,8 +779,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [11],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085452)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -766,6 +801,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [11, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085453)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bandit"
             bevy_transform::components::transform::Transform {
@@ -789,6 +825,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [11, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085454)
         ]
     ]
     --
@@ -808,8 +845,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [12],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085455)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -829,6 +867,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [12, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085456)
         bevy_ecs::hierarchy::Children [
             #"GltfScene bogling"
             bevy_transform::components::transform::Transform {
@@ -852,6 +891,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [12, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085457)
         ]
     ]
     --
@@ -871,8 +911,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [13],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085458)
     bevy_ecs::hierarchy::Children [
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -892,6 +933,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [13, 0],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085459)
         bevy_ecs::hierarchy::Children [
             #"GltfScene shade"
             bevy_transform::components::transform::Transform {
@@ -915,6 +957,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [13, 0, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085460)
         ]
     ]
     --
@@ -939,6 +982,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [14],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085461)
     --
     #"game-lua-audio"
     bevy_transform::components::transform::Transform {
@@ -961,6 +1005,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [15],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085462)
     --
     #"game-lua-ambience"
     bevy_transform::components::transform::Transform {
@@ -983,6 +1028,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [16],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085463)
     --
     #"game-lua-harvest"
     bevy_transform::components::transform::Transform {
@@ -1005,6 +1051,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [17],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085464)
     --
     #"game-lua-loot"
     bevy_transform::components::transform::Transform {
@@ -1027,6 +1074,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [18],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085465)
     --
     #"game-lua-story"
     bevy_transform::components::transform::Transform {
@@ -1049,6 +1097,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [19],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085466)
     --
     #"game-lua-equipment"
     bevy_transform::components::transform::Transform {
@@ -1059,11 +1108,11 @@ bevy_ecs::hierarchy::Children [
     bevy_ext_scene::ScriptRef {
         path: "game/equipment.lua",
     }
-    bevy_ext_scene::AuthoredProps {
-        props: [
-            bevy_ext_scene::AuthoredProp { key: "preview", value: "tocha" },
-            bevy_ext_scene::AuthoredProp { key: "tocha-x", value: "-0.002" },
-            bevy_ext_scene::AuthoredProp { key: "tocha-y", value: "0.241" },
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("preview", jackdaw_scene_types::types::PropertyValue::String("tocha")),
+            ("tocha-x", jackdaw_scene_types::types::PropertyValue::String("-0.002")),
+            ("tocha-y", jackdaw_scene_types::types::PropertyValue::String("0.241"))
         ],
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1079,5 +1128,5 @@ bevy_ecs::hierarchy::Children [
         origin_path: [20],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216085467)
 ]
-

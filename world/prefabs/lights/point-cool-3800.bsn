@@ -1,0 +1,24 @@
+#"point-cool-3800"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_light::point_light::PointLight {
+    color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.560784, green: 0.815686, blue: 1.0, alpha: 1.0 }),
+    intensity: 3800.0,
+    radius: 5.0,
+    shadow_maps_enabled: false,
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "PointLight",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "color", value: "0x8fd0ff" },
+        bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3800" },
+        bevy_world_xml::bsn::WorldProp { key: "radius", value: "5.0" },
+        bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008893)

@@ -1,0 +1,19 @@
+#"pine-dark"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::Cylinder { radius: 0.45, half_height: 2.2 },
+}
+bevy_ext_scene::FloraStation {
+    species: "pine_dark",
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "Entity",
+    attrs: [],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008838)

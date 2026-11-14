@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216088314)
 bevy_ecs::hierarchy::Children [
     #"scene.smugglers"
     bevy_transform::components::transform::Transform {
@@ -32,8 +33,9 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: true,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216088315)
     bevy_ecs::hierarchy::Children [
-        #"SpawnExclusion"
+        #SpawnExclusion
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -53,6 +55,7 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088316)
         --
         #"smugglers-campfire"
         bevy_transform::components::transform::Transform {
@@ -77,26 +80,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 1],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088317)
         bevy_ecs::hierarchy::Children [
             #"GltfScene campfire_pit"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/campfire-pit.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/campfire_pit_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 1, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 1, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088318)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -90.0, y: -0.5193, z: 240.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -112,8 +116,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 2],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088319)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.42, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -133,9 +138,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 2, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088320)
         ]
         --
-        #"Group"
+        #Group
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -90.0, y: -0.5193, z: 240.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -153,8 +159,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 3],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088321)
         bevy_ecs::hierarchy::Children [
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.7, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -179,9 +186,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 3, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088322)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -88.0, y: -0.4814, z: 237.600006 },
             rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
@@ -205,26 +213,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 4],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088323)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_bench"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-bench.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 4, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 4, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088324)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -95.0, y: -0.684, z: 244.0 },
             rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -248,26 +257,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 5],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088325)
         bevy_ecs::hierarchy::Children [
             #"GltfScene market_stall"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/market-stall.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 5, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 5, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088326)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -84.0, y: 0.5304, z: 245.0 },
             rotation: glam::Quat { x: 0.0, y: -0.984808, z: 0.0, w: 0.173648 },
@@ -291,23 +301,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 6],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088327)
         bevy_ecs::hierarchy::Children [
             #"GltfScene market_stall"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/market-stall.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/market_stall_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 6, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 6, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088328)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"smugglers-stash"
@@ -325,14 +336,14 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "chest.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "gold", value: "45" },
-                bevy_ext_scene::AuthoredProp { key: "item", value: "antidote" },
-                bevy_ext_scene::AuthoredProp { key: "item_count", value: "1" },
-                bevy_ext_scene::AuthoredProp { key: "item_label", value: "antídoto" },
-                bevy_ext_scene::AuthoredProp { key: "prompt", value: "Revistar o esconderijo" },
-                bevy_ext_scene::AuthoredProp { key: "xp", value: "20" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("gold", jackdaw_scene_types::types::PropertyValue::String("45")),
+                ("item", jackdaw_scene_types::types::PropertyValue::String("antidote")),
+                ("item_count", jackdaw_scene_types::types::PropertyValue::String("1")),
+                ("item_label", jackdaw_scene_types::types::PropertyValue::String("antídoto")),
+                ("prompt", jackdaw_scene_types::types::PropertyValue::String("Revistar o esconderijo")),
+                ("xp", jackdaw_scene_types::types::PropertyValue::String("20"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -348,26 +359,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 7],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088329)
         bevy_ecs::hierarchy::Children [
             #"GltfScene treasure_chest"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/treasure-chest.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/treasure_chest_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 7, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 7, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088330)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -97.0, y: -0.7355, z: 238.0 },
             rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
@@ -391,26 +403,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 8],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088331)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 8, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 8, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088332)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -98.0, y: -0.7141, z: 235.600006 },
             rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
@@ -434,26 +447,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 9],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088333)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 9, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 9, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088334)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -96.0, y: -0.6461, z: 233.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -475,26 +489,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 10],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088335)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 10, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 10, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088336)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -82.0, y: 0.2038, z: 240.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -516,26 +531,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 11],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088337)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 11, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 11, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088338)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -86.0, y: -0.4596, z: 234.0 },
             rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
@@ -559,26 +575,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 12],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088339)
         bevy_ecs::hierarchy::Children [
             #"GltfScene log_pile"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/log-pile.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 12, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 12, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088340)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -99.0, y: -0.7664, z: 249.0 },
             rotation: glam::Quat { x: 0.0, y: -0.953717, z: 0.0, w: -0.300706 },
@@ -602,25 +619,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 13],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088341)
         bevy_ecs::hierarchy::Children [
             #"GltfScene watchtower"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/watchtower.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/watchtower_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 13, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 13, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088342)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 3.6, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -646,9 +664,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 13, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088343)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -94.0, y: -0.1011, z: 251.0 },
             rotation: glam::Quat { x: 0.0, y: -0.819152, z: 0.0, w: -0.573576 },
@@ -672,26 +691,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 14],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088344)
         bevy_ecs::hierarchy::Children [
             #"GltfScene torch_post"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/torch-post.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 14, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 14, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088345)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -94.0, y: -0.1011, z: 251.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -707,30 +727,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 15],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088346)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire-r22.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: core::option::Option::Some("fire"),
-                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 22.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.16, y: 0.34 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 15, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 15, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088347)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Group"
+        #Group
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -94.0, y: -0.1011, z: 251.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -748,8 +765,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 16],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088348)
         bevy_ecs::hierarchy::Children [
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -774,9 +792,10 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 16, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088349)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -80.0, y: 0.9224, z: 246.0 },
             rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
@@ -800,26 +819,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 17],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088350)
         bevy_ecs::hierarchy::Children [
             #"GltfScene weapon_rack"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/weapon-rack.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/weapon_rack_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 17, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 17, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088351)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"DynamicSpawner"
+        #DynamicSpawner
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: -0.7696, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -846,8 +866,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 18],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088352)
         bevy_ecs::hierarchy::Children [
-            #"Creature"
+            #Creature
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -866,34 +887,28 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [0, 18, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088353)
             bevy_ecs::hierarchy::Children [
                 #"GLTFLoader bandit"
+                jackdaw::prefab::components::IsA {
+                    source: "world/prefabs/characters/bandit.bsn",
+                    deleted: [],
+                }
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
-                bevy_ext_scene::ModelLod {
-                    lod1: core::option::Option::Some("/assets/meshes/characters/bandit_lod1.glb"),
-                    lod2: core::option::Option::Some("/assets/meshes/characters/bandit_lod2.glb"),
-                    near: core::option::Option::Some(18.0),
-                    mid: core::option::Option::Some(55.0),
+                bevy_world_xml::bsn::WorldOrigin {
+                    file: "world/scenes/smugglers.xml",
+                    path: [0, 18, 0, 0],
                 }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "GLTFLoader",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
-                    ],
-                    text: "",
-                    origin_file: "world/scenes/smugglers.xml",
-                    origin_path: [0, 18, 0, 0],
-                    pose: true,
-                }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216088354)
+                jackdaw::prefab::components::PrefabEntityId(0)
             ]
         ]
         --
-        #"npc_ranger_mira"
+        #npc_ranger_mira
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -72.0, y: 0.0226, z: 222.0 },
             rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: 0.258819 },
@@ -902,9 +917,9 @@ bevy_ecs::hierarchy::Children [
         bevy_ext_scene::ScriptRef {
             path: "npc/dialogue.lua",
         }
-        bevy_ext_scene::AuthoredProps {
-            props: [
-                bevy_ext_scene::AuthoredProp { key: "dialogue_id", value: "smugglers_cache" },
+        jackdaw_scene_types::types::CustomProperties {
+            properties: map[
+                ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("smugglers_cache"))
             ],
         }
         bevy_world_xml::bsn::WorldNode {
@@ -920,25 +935,26 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 19],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088355)
         bevy_ecs::hierarchy::Children [
             #"GltfScene npc_scout"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scout_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 19, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 19, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088356)
+            jackdaw::prefab::components::PrefabEntityId(0)
             --
-            #"NpcBody"
+            #NpcBody
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -946,16 +962,16 @@ bevy_ecs::hierarchy::Children [
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "NpcBody",
-                attrs: [
-                ],
+                attrs: [],
                 text: "",
                 origin_file: "world/scenes/smugglers.xml",
                 origin_path: [0, 19, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088357)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -86.0, y: -0.0577, z: 242.0 },
             rotation: glam::Quat { x: 0.0, y: 0.21644, z: 0.0, w: 0.976296 },
@@ -979,26 +995,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 20],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088358)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 20, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 20, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088359)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -84.0, y: -0.172, z: 238.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1020,26 +1037,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 21],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088360)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 21, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 21, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088361)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -96.0, y: -0.6758, z: 246.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1061,26 +1079,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 22],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088362)
         bevy_ecs::hierarchy::Children [
             #"GltfScene torch_post"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/torch-post.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 22, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 22, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088363)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -96.0, y: -0.6758, z: 246.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1096,30 +1115,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 23],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088364)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fire-r18-v3.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 2.14, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: core::option::Option::Some("fire"),
-                emitter: core::option::Option::Some(bevy_ext_scene::ParticleEmitter { preset: "fire", emission_rate: 18.0, shape_radius: core::option::Option::Some(0.06), start_life: glam::Vec2 { x: 0.3, y: 0.8 }, start_speed: glam::Vec2 { x: 0.9, y: 1.9 }, start_size: glam::Vec2 { x: 0.14, y: 0.3 }, start_color: core::option::Option::None, looping: core::option::Option::Some(true), world_space: core::option::Option::Some(true) }),
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 23, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 2.14 0" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 23, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088365)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -96.0, y: -0.63, z: 232.0 },
             rotation: glam::Quat { x: 0.0, y: -0.939693, z: 0.0, w: -0.34202 },
@@ -1142,26 +1158,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 24],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088366)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wrecked_boat"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/swamp/wrecked-boat.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/swamp/wrecked_boat_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 24, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 24, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088367)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -98.0, y: -0.69, z: 234.0 },
             rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
@@ -1184,26 +1201,27 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 25],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088368)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 25, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 25, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088369)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"Entity"
+        #Entity
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -94.0, y: -0.63, z: 235.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1225,23 +1243,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [0, 26],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088370)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [0, 26, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [0, 26, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088371)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-jetty"
@@ -1266,8 +1285,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [45],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088372)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1289,8 +1309,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088373)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: -2.2 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1312,8 +1333,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088374)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1335,8 +1357,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088375)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.22, z: 2.2 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1358,8 +1381,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088376)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.15, y: -0.35, z: -2.6 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1382,8 +1406,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088377)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.15, y: -0.35, z: -2.6 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1406,8 +1431,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 5],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088378)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -1.15, y: -0.35, z: 2.6 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1430,8 +1456,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 6],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088379)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 1.15, y: -0.35, z: 2.6 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1454,8 +1481,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 7],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088380)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.95, y: 1.55, z: -2.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1478,8 +1506,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 8],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088381)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -0.15, y: 2.55, z: -2.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.104528, w: 0.994522 },
@@ -1502,8 +1531,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 9],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088382)
             --
-            #"PointLight"
+            #PointLight
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.65, y: 2.15, z: -2.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1529,6 +1559,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [45, 10],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088383)
         ]
         --
         #"sceneref.v2.smugglers-palisade"
@@ -1553,8 +1584,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [46],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088384)
         bevy_ecs::hierarchy::Children [
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1576,8 +1608,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 0],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088385)
             --
-            #"Box"
+            #Box
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.65, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -1599,8 +1632,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 1],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088386)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.08, z: -2.8 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.01309, w: 0.999914 },
@@ -1624,8 +1658,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 2],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088387)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.22, z: -2.1 },
                 rotation: glam::Quat { x: 0.001709, y: 0.130515, z: 0.012978, w: 0.99136 },
@@ -1649,8 +1684,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 3],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088388)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.36, z: -1.4 },
                 rotation: glam::Quat { x: -0.003388, y: 0.258797, z: -0.012644, w: 0.965843 },
@@ -1674,8 +1710,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 4],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088389)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.08, z: -0.7 },
                 rotation: glam::Quat { x: 0.005009, y: 0.382651, z: 0.012093, w: 0.9238 },
@@ -1699,8 +1736,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 5],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088390)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.22, z: 0.0 },
                 rotation: glam::Quat { x: -0.006545, y: 0.499957, z: -0.011336, w: 0.865951 },
@@ -1724,8 +1762,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 6],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088391)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.36, z: 0.7 },
                 rotation: glam::Quat { x: 0.007968, y: 0.608709, z: 0.010385, w: 0.793285 },
@@ -1749,8 +1788,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 7],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088392)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.08, z: 1.4 },
                 rotation: glam::Quat { x: -0.009256, y: 0.707046, z: -0.009256, w: 0.707046 },
@@ -1774,8 +1814,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 8],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088393)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.22, z: 2.1 },
                 rotation: glam::Quat { x: 0.010385, y: 0.793285, z: 0.007968, w: 0.608709 },
@@ -1799,8 +1840,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 9],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088394)
             --
-            #"Cylinder"
+            #Cylinder
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.36, z: 2.8 },
                 rotation: glam::Quat { x: -0.011336, y: 0.865951, z: -0.006545, w: 0.499957 },
@@ -1824,6 +1866,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [46, 10],
                 pose: true,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088395)
         ]
         --
         #"sceneref.v2.smugglers-cargo-1"
@@ -1856,23 +1899,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [47],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088396)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [47, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [47, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088397)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-cargo-2"
@@ -1904,23 +1948,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [48],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088398)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_barrel"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-barrel.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_barrel_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [48, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [48, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088399)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-cargo-3"
@@ -1953,23 +1998,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [49],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088400)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [49, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [49, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088401)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-cargo-4"
@@ -2002,23 +2048,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [50],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088402)
         bevy_ecs::hierarchy::Children [
             #"GltfScene rock_mossy"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/props/rock-mossy-v2.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [50, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [50, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088403)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-cargo-5"
@@ -2051,23 +2098,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [51],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088404)
         bevy_ecs::hierarchy::Children [
             #"GltfScene wooden_crate"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/village/wooden-crate.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "GltfScene",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_crate_lod0.glb" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [51, 0],
-                pose: true,
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [51, 0],
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088405)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-fireflies-1"
@@ -2087,27 +2135,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [52],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088406)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fireflies.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fireflies",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [52, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [52, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088407)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
         #"sceneref.v2.smugglers-fireflies-2"
@@ -2127,27 +2172,24 @@ bevy_ecs::hierarchy::Children [
             origin_path: [53],
             pose: true,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088408)
         bevy_ecs::hierarchy::Children [
-            #"ParticleSystem"
+            #ParticleSystem
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/fx/fireflies.bsn",
+                deleted: [],
+            }
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 1.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_ext_scene::ParticleSpec {
-                preset: "fireflies",
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/scenes/smugglers.xml",
+                path: [53, 0],
             }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "ParticleSystem",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "transform", value: "pos: 0 1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "fireflies" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [53, 0],
-                pose: true,
-            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088409)
+            jackdaw::prefab::components::PrefabEntityId(0)
         ]
     ]
 ]

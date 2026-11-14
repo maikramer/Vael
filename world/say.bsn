@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216087957)
 bevy_ecs::hierarchy::Children [
     #"UiStyle theme"
     bevy_transform::components::transform::Transform {
@@ -31,6 +32,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216087958)
     --
     #"UiStyle hud"
     bevy_transform::components::transform::Transform {
@@ -48,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216087959)
     --
     #"UiRoot hud"
     bevy_transform::components::transform::Transform {
@@ -68,6 +71,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216087960)
     bevy_ecs::hierarchy::Children [
         #"UiRow say"
         bevy_transform::components::transform::Transform {
@@ -88,8 +92,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087961)
         bevy_ecs::hierarchy::Children [
-            #"UiPanel"
+            #UiPanel
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -105,6 +110,7 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 0, 0],
                 pose: false,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087962)
             bevy_ecs::hierarchy::Children [
                 #"UiText say-prompt"
                 bevy_transform::components::transform::Transform {
@@ -124,6 +130,7 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 0],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087963)
                 --
                 #"UiInput say-input"
                 bevy_transform::components::transform::Transform {
@@ -144,8 +151,8 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 1],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087964)
             ]
         ]
     ]
 ]
-

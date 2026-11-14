@@ -1,0 +1,43 @@
+#"stone-pillar-breakable-solid-stone"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/stone_pillar_lod0.glb" },
+}
+bevy_ext_scene::BodySpec {
+    kind: bevy_ext_scene::BodyKind::Fixed,
+}
+bevy_ext_scene::Destructible {
+    popup_text: "Pedra",
+    popup_color: "#cccccc",
+    preset: "dust",
+    burst_count: core::option::Option::Some(22),
+    hits: 3,
+    spark_on_hit: true,
+    hit_preset: "rockshards",
+    hit_burst_count: 10,
+    crack_on_hit: core::option::Option::Some(true),
+    break_style: "shatter",
+}
+bevy_ext_scene::Harvestable {
+    kind: "stone",
+    amount: 4,
+}
+bevy_ext_scene::ModelLod {
+    lod1: core::option::Option::Some("/assets/meshes/props/stone_pillar_lod1.glb"),
+    lod2: core::option::Option::Some("/assets/meshes/props/stone_pillar_lod2.glb"),
+    near: core::option::Option::Some(36.0),
+    mid: core::option::Option::Some(110.0),
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "GltfScene",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008846)

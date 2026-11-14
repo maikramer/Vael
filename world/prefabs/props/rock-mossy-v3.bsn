@@ -1,0 +1,22 @@
+#"rock-mossy-v3"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_ext_scene::ModelLod {
+    lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
+    lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
+    near: core::option::Option::Some(36.0),
+    mid: core::option::Option::Some(110.0),
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "GLTFLoader",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "role", value: "visual" },
+        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/rock_mossy_lod0.glb" },
+    ],
+    text: "",
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(4025157800759008882)

@@ -1,4 +1,4 @@
-#"world"
+#world
 bevy_transform::components::transform::Transform {
     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -14,6 +14,7 @@ bevy_world_xml::bsn::WorldNode {
     origin_path: [0],
     pose: true,
 }
+jackdaw_scene_types::node_id::SceneNodeId(1551948037216083994)
 bevy_ecs::hierarchy::Children [
     #"UiStyle menu"
     bevy_transform::components::transform::Transform {
@@ -31,6 +32,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [0],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083995)
     --
     #"UiStyle title"
     bevy_transform::components::transform::Transform {
@@ -48,6 +50,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [1],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083996)
     --
     #"UiRoot death-layer"
     bevy_transform::components::transform::Transform {
@@ -65,6 +68,7 @@ bevy_ecs::hierarchy::Children [
         origin_path: [2],
         pose: false,
     }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037216083997)
     bevy_ecs::hierarchy::Children [
         #"UiModal death"
         bevy_transform::components::transform::Transform {
@@ -84,8 +88,9 @@ bevy_ecs::hierarchy::Children [
             origin_path: [2, 0],
             pose: false,
         }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083998)
         bevy_ecs::hierarchy::Children [
-            #"UiColumn"
+            #UiColumn
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -101,8 +106,9 @@ bevy_ecs::hierarchy::Children [
                 origin_path: [2, 0, 0],
                 pose: false,
             }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083999)
             bevy_ecs::hierarchy::Children [
-                #"UiText"
+                #UiText
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -118,8 +124,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 0],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084000)
                 --
-                #"UiText"
+                #UiText
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -135,8 +142,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 1],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084001)
                 --
-                #"UiText"
+                #UiText
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -152,6 +160,7 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 2],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084002)
                 --
                 #"UiText death-save-info"
                 bevy_transform::components::transform::Transform {
@@ -170,8 +179,9 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 3],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084003)
                 --
-                #"UiRow"
+                #UiRow
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -187,6 +197,7 @@ bevy_ecs::hierarchy::Children [
                     origin_path: [2, 0, 0, 4],
                     pose: false,
                 }
+                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084004)
                 bevy_ecs::hierarchy::Children [
                     #"UiButton death-retry"
                     bevy_transform::components::transform::Transform {
@@ -205,8 +216,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 0],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216084005)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -214,13 +226,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@death.retry",
                             origin_file: "world/death.xml",
                             origin_path: [2, 0, 0, 4, 0, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084006)
                     ]
                     --
                     #"UiButton death-load"
@@ -240,8 +252,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 1],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216084007)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -249,13 +262,13 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@death.load",
                             origin_file: "world/death.xml",
                             origin_path: [2, 0, 0, 4, 1, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084008)
                     ]
                     --
                     #"UiButton death-title"
@@ -275,8 +288,9 @@ bevy_ecs::hierarchy::Children [
                         origin_path: [2, 0, 0, 4, 2],
                         pose: false,
                     }
+                    jackdaw_scene_types::node_id::SceneNodeId(1551948037216084009)
                     bevy_ecs::hierarchy::Children [
-                        #"UiText"
+                        #UiText
                         bevy_transform::components::transform::Transform {
                             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
@@ -284,17 +298,16 @@ bevy_ecs::hierarchy::Children [
                         }
                         bevy_world_xml::bsn::WorldNode {
                             tag: "UiText",
-                            attrs: [
-                            ],
+                            attrs: [],
                             text: "@death.to_title",
                             origin_file: "world/death.xml",
                             origin_path: [2, 0, 0, 4, 2, 0],
                             pose: false,
                         }
+                        jackdaw_scene_types::node_id::SceneNodeId(1551948037216084010)
                     ]
                 ]
             ]
         ]
     ]
 ]
-
