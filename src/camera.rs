@@ -26,8 +26,10 @@ pub struct VaelCameraPlugin;
 
 impl Plugin for VaelCameraPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<viber::camera::ScriptCameraFree>()
-            .init_resource::<viber::camera::CameraSnapshot>();
+        // Os tipos que os sistemas deste módulo leem são os do CORE (os
+        // `viber::camera::*` são gémeos do monólito — outro TypeId).
+        app.init_resource::<ScriptCameraFree>()
+            .init_resource::<CameraSnapshot>();
         app.add_systems(
             Update,
             (orbit_camera_follow, auto_orbit)

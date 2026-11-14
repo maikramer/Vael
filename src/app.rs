@@ -436,12 +436,12 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::particles::BurstPlugin);
     app.add_plugins(viber::impact::ImpactFxPlugin);
     app.add_plugins(viber::terrain::water_fx::WaterFxPlugin);
-    // Trauma do shake + solavanco direcional; câmara de script publica o
-    // snapshot (`viber.camera_state`) mesmo sem modo livre.
+    // Trauma do shake + solavanco direcional. (O `ScriptCameraFree`/
+    // `CameraSnapshot` que os sistemas do Vael leem são os do CORE — o
+    // `VaelCameraPlugin` inicializa-os; os gémeos `viber::camera` só têm
+    // leitor nos sistemas `player_camera` da engine, fora do jogo.)
     app.init_resource::<viber::camera::CameraShake>();
     app.init_resource::<viber::camera::CameraKick>();
-    app.init_resource::<viber::camera::ScriptCameraFree>();
-    app.init_resource::<viber::camera::CameraSnapshot>();
     app.add_plugins(viber::cinematic::CinematicPlugin);
     // IA em modo serviço: sentidos + vitais das criaturas + o consumidor
     // ÚNICO do `AiLocomotion` (sem ele as criaturas atacam paradas).
