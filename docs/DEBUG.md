@@ -19,6 +19,36 @@ O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 | Jogador em `(0, 150, 0)` | Igual: a entrada `dev` usa a mesma pose e assenta no chão |
 | Regras, quests, loja, saves | Normais — é o jogo a sério |
 
+## Esperar pelo carregamento (agentes/QA)
+
+O ecrã de carregamento só sai com o mundo **inteiro**: todos os `<GltfScene>`
+com o GLB resolvido, as texturas subidas para a GPU, os albedos do terreno, os
+spawn groups e o herói assente (`world_ready.rs` na engine). O mesmo véu cobre
+cada troca de cena (`Settle` espera pela prontidão antes do fade de volta).
+Num portátil o carregamento leva dezenas de segundos — **mais ainda com
+compilações a correr ao lado**. Screenshots ou input antes disso apanham o
+véu, não o jogo.
+
+```bash
+cargo run --release -- world.bsn --scene main --entry dev --bridge 15731 &
+viber debug --port 15731 wait-ready --timeout 300   # exit 0 = pronto
+viber debug --port 15731 screenshot -o shot.png
+```
+
+- `viber.ping` e `viber.scene.current` devolvem `ready` e `loading`
+  (`status`, `progress`, `pending_models`, `gpu_uploading`, `last_load_secs`,
+  `timed_out`). Depois de `viber.scene.change`, voltar a esperar.
+- A bridge só responde entre frames: durante o carregamento um pedido pode
+  demorar segundos. Não é a engine pendurada — não matar o processo.
+- `mundo pronto em X s` no log é a medição do tempo de carregamento;
+  `RUST_LOG=bevy_ext_viber_engine::world_ready=debug` dá o rasto por segundo.
+- Teto: 240 s (`VIBER_LOADING_MAX_S`); depois o jogo mostra-se incompleto e o
+  `ready` vem com `timed_out: true`.
+- Afinação: `VIBER_IO_THREADS` (decode de GLB/KTX2; default cores−2) e
+  `VIBER_UPLOAD_MB` (subida para a GPU por frame, só atrás do véu; default
+  256, `off` desliga). Em jogo não há limite: o Bevy tira da GPU um asset
+  modificado quando o orçamento esgota e o mundo ficava negro.
+
 ## Ferramentas de debug ([F1]/[F2])
 
 Num run com `--entry dev`, `scripts/game/devmode.lua` (autoload

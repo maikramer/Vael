@@ -34,8 +34,14 @@ Uma engine por mundo. Não mates o processo.
 viber session status
 viber session up
 viber session claim --owner <tarefa>    # exit 3 = ocupado, não insistas
+viber debug --world <mundo> wait-ready --timeout 300   # véu de carregamento
 viber debug --world <mundo> screenshot -o shot.png
 viber session release --owner <tarefa>
 ```
 
-Doc: `../Viber/docs/BRIDGE.md`.
+O carregamento é lento (dezenas de segundos; mais com builds ao lado) e o
+ecrã fica tapado até o mundo estar inteiro. Esperar com `wait-ready` (ou
+`ready: true` no `viber.ping`) depois de arrancar e depois de cada
+`viber.scene.change`; sem isso o screenshot é o véu. A bridge responde só
+entre frames — pedidos lentos durante o carregamento são normais.
+Detalhe: `docs/DEBUG.md` ("Esperar pelo carregamento").
