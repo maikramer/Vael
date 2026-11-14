@@ -56,7 +56,20 @@ bevy_gauge = "0.6"
 # Runtime do editor Jackdaw: descoberta de componentes (o `jd` lança o jogo
 # com `--jackdaw-extract-schema`) e Play/PIE (`JACKDAW_PIE`). Sem PIE fica
 # inerte. A versão acompanha o `jackdaw.toml` ([jackdaw] version = "0.20.2").
-jackdaw_runtime = { version = "0.20", features = ["pie"] }
+jackdaw_runtime = { version = "0.20", features = ["pie", "animation"] }
+# Input do jogo avaliado pelo mesmo crate de acções do editor (`src/input.rs`):
+# contextos, prioridades e consumo; o `ActionMap` da engine continua a ser a
+# fonte dos binds.
+jackdaw_input = "0.20"
+# Métodos `jackdaw/*` no BRP do jogo (snapshot da cena, `entity_bsn`/
+# `apply_bsn`, pause/step, diagnósticos): o debugger remoto do editor.
+jackdaw_remote = "0.20"
+# `SceneNodeId`: a chave das edições do Play (`src/editor_link.rs`).
+jackdaw_scene_types = "0.20"
+# Aplica os componentes autorados que o DSL não transporta (`editor_link`).
+jackdaw_bsn = "0.20"
+# Estados de animação autorados no editor (`src/animation.rs`).
+jackdaw_animation_runtime = "0.20"
 # Mesma versão/features do Viber (o Cargo unifica): a bridge do cofre mexe
 # diretamente na tabela `viber_game` da VM partilhada.
 mlua = { version = "0.12", features = ["luau", "vendored", "send"] }
@@ -89,7 +102,11 @@ bevy_ext_elements = { path = "../bevy_extensions/crates/bevy_ext_elements" }
 bevy_ext_flora = { path = "../bevy_extensions/crates/bevy_ext_flora" }
 bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
 bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
-bevy_ext_ui = { path = "../bevy_extensions/crates/bevy_ext_ui" }
+# Sem `bevy_ext_ui`: a UI que a engine lê é a `viber::ui::*` (UiData,
+# UiWriter, UiModalsOpen…), e o mesmo para `viber::camera::{ScriptCameraFree,
+# CameraSnapshot}` e `viber::hud::markers::*`. As cópias do `bevy_ext_ui`/
+# `bevy_ext_core` são tipos DIFERENTES (2026-11-14: importá-las deixava o
+# HUD/modais/marcadores a escrever em recursos que ninguém lia).
 bevy_ext_save = { path = "../bevy_extensions/crates/bevy_ext_save" }
 # Render procedural dos objetos de primitivas (lathe/sweep/extruded/…): o
 # contrato Shape/MaterialSpec vem do `bevy_ext_scene`; este crate troca o

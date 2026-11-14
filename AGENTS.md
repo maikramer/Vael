@@ -72,7 +72,10 @@ Editar no **Jackdaw oficial** (`jd open .`). Estrutura do `world.bsn`:
   a 2026-11-13 juntaram-se `ModelLod` (lod1/lod2/limiares), `FloraStation`
   (`prop-flora`), `ScriptRef` (`script`), `AuthoredProps` (`prop-*`),
   `ParticleSpec`, `SpawnExclusionSpec` e `PortalSpec` (+4.5k nós). O jogo lê
-  colheita/destrutível tipados (`harvest.rs::from_specs`, paridade testada);
+  colheita/destrutível tipados (`harvest.rs::from_specs`, paridade testada).
+  As `prop-*` vivem no `CustomProperties` **do Jackdaw** (painel nativo do
+  inspector; 2026-11-14, `bsn_migrate --props`, 141 nós); o loader ainda lê
+  `AuthoredProps` antigos e, numa chave repetida, ganha o do Jackdaw;
 - `assets/public/world` é um **symlink** para `world/`: o Jackdaw grava os
   `IsA.source` relativos à pasta de assets (`jackdaw.toml assets_dir`); sem o
   link o `scene.save` recusa o `world.bsn` ("absolute path"). Gravar no editor
@@ -144,7 +147,51 @@ sem `--scene`, o `viber run` arranca nela em vez de `main`. É só o acampamento
 Jogo`/`Continuar` trocam para `main`, e a morte/botão "Ecrã de título" voltam
 a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 
+## Jackdaw no jogo
+
+- **Play**: `jackdaw.toml` → "Play" (`--scene main --entry dev`) e "Play
+  (título)". Embedded no Game panel (`.jackdaw/settings.json`
+  `play.separate_window: false`).
+- **Componentes nativos** (`src/editor_link.rs`): o que se autora num nó e o
+  DSL não conhece (`jackdaw_animation_runtime::*`, `jackdaw_camera_rig::*`,
+  `jackdaw_bind::*`, `vael::*`; mais `VAEL_NATIVE_ALLOW=prefixo,…`) chega à
+  entidade do jogo. O `bevy_ext_world` guarda-os por nó
+  (`specs::native_components_for`).
+- **Edições ao vivo no Play**: as entidades recebem o `SceneNodeId` do nó
+  (só sob `JACKDAW_PIE`; `VAEL_EDITOR_LINK=1` força) e o `jackdaw_runtime`
+  aplica-lhes o `Transform`/componentes que o editor envia. Só nós com id no
+  disco (o editor grava-os). `src/live_edit.rs`: `WorldNode`/specs mudados →
+  re-spawn do nó pela engine (mesmo pai, pose actual); só props
+  (`CustomProperties`) → patch do `ScriptProps` sem reiniciar o script; nó
+  novo debaixo de um nosso → montado pela engine; apagar/mover já chega pelo
+  runtime. Nós com filhos no mesmo ficheiro re-spawnam com a subárvore do
+  load; filhos noutro ficheiro (prefab) e tags só-de-load não. Sob o Play os
+  specs/props do nó são espelhados como componentes (`SpecsMirrored`), por
+  isso **remover** um spec no editor também chega.
+  **Internos de módulos**: o Jackdaw 0.20 não envia overrides de instância
+  (nós `PrefabEntityId` sem id) — para editar ao vivo um nó de
+  `world/**/*.bsn`, abre o módulo no seu separador (`scene.open`) durante o
+  Play. Todos os nós têm `SceneNodeId` no disco desde 2026-11-14
+  (`bsn_migrate --node-ids`, só acrescenta linhas; 11.6k nós) — nós novos
+  ganham id ao gravar no editor ou com a mesma opção.
+- **Animação** (`src/animation.rs`): um `AnimationSet` no nó do modelo tira o
+  rig à engine (`AnimatedScene`/`CharacterAnimator`, também num pai) e o
+  `jackdaw_animation_runtime` toca-o. `sources: []` usa o `url` do modelo;
+  `idle/walk/run` seguem a velocidade; `viber.gesture('x')` toca o estado
+  `x` (evento `UnboundGesture` da engine).
+- **Input** (`src/input.rs`): `jackdaw_input` com contextos UI (prioridade
+  10) e jogo (pára com `MenusOpen`); o `gather_actions` da engine não corre
+  (`ExternalActionState`). Debugger remoto: `jackdaw_remote` no BRP (15702).
+
 ## Gotchas
+
+- `Option<T>` em componentes do `.bsn`: o emissor do Jackdaw grava o valor
+  nu (`preset: "fire"`) e o `jackdaw_bsn` lia-o como `None` (todas as
+  partículas perdiam o preset). O leitor dos specs normaliza
+  (`specs::normalize_options`); um componente novo com `Option` passa por
+  aí — não confiar no `try_apply` directo do `jackdaw_bsn`.
+- `viber.gesture` antes de o rig ligar fica em `PendingGesture` (até 3 s) em
+  vez de se perder.
 
 - Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag.
   `viber scene insert` não tem este problema. O `analyze` não apanha.
@@ -212,6 +259,12 @@ execução (não grava modo nenhum); o autosave seguinte fica com
 `story_prologo` marcado. Detalhe: `docs/DEBUG.md`.
 
 QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
+**Esperar pelo carregamento**: o véu só sai com o mundo inteiro (GLBs, GPU,
+herói assente) e demora — dezenas de segundos, mais com builds ao lado.
+Depois de lançar (ou de `viber.scene.change`): `viber debug --port <p>
+wait-ready` antes de screenshot/input; `ready` vem no `viber.ping`. Uma bridge
+lenta a responder durante o carregamento é normal — não matar o jogo.
+Detalhe: `docs/DEBUG.md`.
 
 GPU remota (opcional): `source ~/.config/vramd/remote.env` aponta o `vramd` ao
 servidor (`VRAMD_REMOTE=192.168.0.100:8790`); o `gameassets resume` passa a

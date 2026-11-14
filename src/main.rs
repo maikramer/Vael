@@ -163,7 +163,19 @@ fn main() -> Result<()> {
         // ataque, interagir) entrar no `ActionState` no mesmo frame.
         app.configure_sets(
             PreUpdate,
-            viber_tools_runtime::ViberToolsInput.before(viber::input_map::gather_actions),
+            viber_tools_runtime::ViberToolsInput
+                .before(viber::input_map::gather_actions)
+                .before(jackdaw_input::ActionSystems),
+        );
+        // Debugger remoto do Jackdaw no mesmo servidor BRP: o `RemotePlugin`
+        // já existe, por isso o plugin só injeta os métodos `jackdaw/*` no
+        // `finish` (snapshot da cena, `entity_bsn`/`apply_bsn`, pause/step,
+        // diagnósticos, archetypes/schedules). O editor liga-se a 15702 por
+        // defeito — a porta do runtime quando o Play não passa `--bridge`.
+        app.add_plugins(
+            jackdaw_remote::JackdawRemotePlugin::default()
+                .with_port(port)
+                .with_app_name("Vael"),
         );
     }
 

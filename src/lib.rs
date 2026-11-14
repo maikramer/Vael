@@ -28,6 +28,7 @@ use std::path::PathBuf;
 
 use bevy::prelude::*;
 
+pub mod animation;
 pub mod camera;
 pub mod clock;
 pub mod combat;
@@ -35,6 +36,7 @@ mod compat;
 pub mod components;
 pub mod content;
 pub mod economy;
+pub mod editor_link;
 pub mod environment;
 pub mod flora;
 pub mod gear;
@@ -43,6 +45,8 @@ pub mod hanabi_fx;
 pub mod harvest;
 pub mod hud;
 pub mod hud_ui;
+pub mod input;
+pub mod live_edit;
 pub mod player;
 pub mod primitives;
 pub mod quest;
@@ -75,6 +79,7 @@ pub use gear::{GearRules, GearState, Stats, VaelGearPlugin, Weapon};
 pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
+pub use input::VaelInputPlugin;
 pub use primitives::VaelPrimitivesPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
 pub use quest_events::VaelQuestEventsPlugin;
@@ -186,9 +191,17 @@ impl Plugin for VaelPlugin {
             // Player/câmara do Vael: substitui os sistemas da engine
             // (`player_camera:false`) e mantém o `Player` sincronizado só
             // para a animação enquanto essa camada não é portada.
+            // Input sobre o `jackdaw_input` (escreve o `ActionState`).
+            VaelInputPlugin,
             player::VaelPlayerPlugin,
             camera::VaelCameraPlugin,
         ));
+        // Play do Jackdaw: `SceneNodeId` nas entidades para as edições ao vivo.
+        app.add_plugins(editor_link::VaelEditorLinkPlugin);
+        // Edições de atributos/specs/props do Jackdaw → re-spawn/patch.
+        app.add_plugins(live_edit::VaelLiveEditPlugin);
+        // `AnimationSet` autorado → rig do `jackdaw_animation_runtime`.
+        app.add_plugins(animation::VaelAnimationPlugin);
         #[cfg(feature = "hanabi")]
         app.add_plugins(hanabi_fx::VaelHanabiPlugin);
     }

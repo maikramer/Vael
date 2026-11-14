@@ -31,5 +31,14 @@ physics = false
 navmesh = false
 multiplayer = false
 
+# Play (o primeiro é o default do botão): directo ao mundo, sem cena de menu,
+# véu nem prólogo — como `viber run --scene main --entry dev`. O jogo vai para
+# o Game panel do editor (embedded) a não ser que o Play esteja em "janela
+# separada" (`.jackdaw/settings.json` → `play.separate_window`).
 [[run]]
 name = "Play"
+args = ["--scene", "main", "--entry", "dev"]
+
+# O arranque de um jogador: cena de menu, título e prólogo.
+[[run]]
+name = "Play (título)"
