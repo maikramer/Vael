@@ -36,7 +36,7 @@ use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
 use bevy_ext_core::{SfxClip, SfxEvent};
-use viber::feedback::DamageNumberEvent;
+use bevy_ext_engine::feedback::DamageNumberEvent;
 use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
 use viber::luau::game::{apply_patch, game_to_json};
@@ -50,7 +50,7 @@ use viber::scene_loader::CurrentScene;
 use bevy_ext_ui::ui::ScriptBindValue;
 use bevy_ext_ui::ui::script::UiScriptBinds;
 use bevy_ext_ui::ui::widgets::UiFocusedInput;
-use viber::vitals::Health;
+use bevy_ext_core::vitals::Health;
 
 use crate::VaelProjectRoot;
 use crate::compat::env_enabled;
@@ -462,7 +462,7 @@ fn process_pending_fell(
                 )>()
                 .remove::<PooledTree>()
                 .insert(FloraFellTree);
-            viber::physics::replace_with_stump_collider(
+            bevy_ext_physics::physics::replace_with_stump_collider(
                 &mut commands,
                 entity,
                 STUMP_RADIUS,
@@ -1452,7 +1452,7 @@ fn harvest_input(
                 )>()
                 .remove::<PooledTree>()
                 .insert(FloraFellTree);
-            viber::physics::replace_with_stump_collider(
+            bevy_ext_physics::physics::replace_with_stump_collider(
                 &mut commands,
                 entity,
                 STUMP_RADIUS,
@@ -1664,7 +1664,7 @@ fn reap_saved(
                 .try_remove::<(Harvestable, ScriptInteraction)>()
                 .remove::<PooledTree>()
                 .insert(FloraFellTree);
-            viber::physics::replace_with_stump_collider(
+            bevy_ext_physics::physics::replace_with_stump_collider(
                 commands,
                 entity,
                 STUMP_RADIUS,

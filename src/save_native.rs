@@ -18,13 +18,13 @@ use bevy::prelude::*;
 use moonshine_save::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-use viber::input_map::{Action, ActionMap};
-use viber::locale::Locale;
+use bevy_ext_core::input_map::{Action, ActionMap};
+use bevy_ext_core::locale::Locale;
 use viber::luau::game::{game_to_json, json_to_game};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::AudioMixerSettings;
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
-use viber::save::SaveRequest;
+use bevy_ext_save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::terrain::runtime::TerrainRuntime;
 use bevy_ext_ui::ui::UiWriter;
@@ -356,7 +356,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
             }
         }
     }
-    world.insert_resource(viber::save::PendingSavePatches(
+    world.insert_resource(bevy_ext_save::PendingSavePatches(
         payload.terrain_patches.clone(),
     ));
     let current = world.get_resource::<CurrentScene>().cloned();

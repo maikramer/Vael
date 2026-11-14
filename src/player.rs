@@ -4,7 +4,7 @@
 //! `KinematicCharacterController`), mas com `player_camera:false` os sistemas
 //! dela não correm. Este módulo anexa o [`VaelController`] e conduz o herói
 //! (WASD, salto, steering da `OrbitCamera`, chão analítico e teleportes); o
-//! estado do `viber::player::Player` é sincronizado para a animação da engine
+//! estado do `bevy_ext_core::Player` é sincronizado para a animação da engine
 //! continuar a ler velocidade/chão enquanto essa camada não é portada. A
 //! câmara de terceira pessoa vive em [`crate::camera`].
 
@@ -202,7 +202,7 @@ impl HeroMotionBus {
 pub const VOID_RESCUE_DEPTH: f32 = 250.0;
 
 /// Estado de movimento do herói. É a cópia local do subconjunto do
-/// `viber::player::Player` que o controlador usa.
+/// `bevy_ext_core::Player` que o controlador usa.
 #[derive(Component, Debug, Clone, Reflect)]
 #[reflect(Component)]
 pub struct VaelController {
@@ -281,7 +281,7 @@ fn attach_controllers(
     }
 }
 
-fn no_editor_camera(cameras: Query<(), With<viber::editor_camera::EditorCamera>>) -> bool {
+fn no_editor_camera(cameras: Query<(), With<bevy_ext_engine::editor_camera::EditorCamera>>) -> bool {
     cameras.is_empty()
 }
 
@@ -455,10 +455,10 @@ fn player_movement(
     time: Res<Time>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
     typing: Option<Res<bevy_ext_ui::ui::widgets::UiFocusedInput>>,
-    actions: Option<Res<viber::input_map::ActionState>>,
+    actions: Option<Res<bevy_ext_core::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
-    collision: Option<Res<viber::physics::TerrainCollisionStatus>>,
+    collision: Option<Res<bevy_ext_physics::physics::TerrainCollisionStatus>>,
     interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     interior_state: Option<Res<bevy_ext_core::InteriorLighting>>,
     mut cameras: Query<&mut OrbitCamera>,

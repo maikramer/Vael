@@ -181,7 +181,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     ));
     // O modo Game viaja como resource: os run conditions (`scripts_enabled`)
     // leem-no. (O modo Edit e a pausa de tempo ficaram no `viber run`.)
-    app.insert_resource(viber::app::RunMode::Game);
+    app.insert_resource(bevy_ext_core::RunMode::Game);
     // Fonte de assets multi-root + meshopt, ANTES do `AssetPlugin` (que
     // snapshot-a as fontes quando constrói).
     viber::meshopt::register_asset_source(&mut app, asset_roots.clone());
@@ -375,9 +375,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::ik::IkPlugin);
     app.add_plugins(viber::ragdoll::RagdollPlugin);
     app.add_plugins(viber::input_map::InputMapPlugin);
-    app.add_plugins(viber::a11y::A11yPlugin);
+    app.add_plugins(bevy_ext_core::a11y::A11yPlugin);
     app.add_plugins(viber::audio_space::AudioSpacePlugin);
-    app.add_plugins(viber::locale::LocalePlugin {
+    app.add_plugins(bevy_ext_core::locale::LocalePlugin {
         dir: world_dir_pre.join("locale"),
     });
     app.add_plugins(viber::streaming::StreamingPlugin);
@@ -385,7 +385,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::draw_diag::DrawDiagPlugin);
     app.add_plugins(viber::frame_pacing::FramePacingPlugin);
     app.add_plugins(viber::netplay::NetPlayPlugin);
-    app.add_plugins(viber::physics::PhysicsPlugin {
+    app.add_plugins(bevy_ext_physics::physics::PhysicsPlugin {
         debug: std::env::var_os("VIBER_PHYSICS_DEBUG").is_some(),
     });
     app.add_plugins(viber::postfx::PostFxPlugin);
@@ -415,18 +415,18 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // terreno; os slots/envelope são do Vael (`moonshine-save`). O
     // importador é genérico sobre o loader de cena (contrato
     // `SceneSwitchBusy`) — concretiza com o `SceneLoader` do runtime.
-    app.init_resource::<viber::save::SaveRequest>()
-        .init_resource::<viber::save::PendingSavePatches>()
+    app.init_resource::<bevy_ext_save::SaveRequest>()
+        .init_resource::<bevy_ext_save::PendingSavePatches>()
         .add_systems(
             bevy::app::Last,
-            viber::save::apply_pending_save_patches::<viber::scene_loader::SceneLoader>
+            bevy_ext_save::apply_pending_save_patches::<viber::scene_loader::SceneLoader>
                 .after(viber::scene_loader::drive_scene_loader),
         );
     // Props em ossos (`viber.attach`).
     app.add_plugins(viber::attachment::AttachmentPlugin);
     // FX puros sem preset RPG: kick de FOV e hit-stop.
-    app.init_resource::<viber::camera::CameraFx>();
-    app.add_systems(bevy::app::Update, viber::camera::fov_kick_system);
+    app.init_resource::<bevy_ext_engine::camera_glue::CameraFx>();
+    app.add_systems(bevy::app::Update, bevy_ext_engine::camera_glue::fov_kick_system);
     app.init_resource::<viber::time_fx::HitStop>();
     app.init_resource::<viber::time_fx::BaseTimeScale>();
     app.add_systems(bevy::app::Update, viber::time_fx::hit_stop_system);
@@ -440,10 +440,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::terrain::water_fx::WaterFxPlugin);
     // Trauma do shake + solavanco direcional. (O `ScriptCameraFree`/
     // `CameraSnapshot` que os sistemas do Vael leem são os do CORE — o
-    // `VaelCameraPlugin` inicializa-os; os gémeos `viber::camera` só têm
+    // `VaelCameraPlugin` inicializa-os; os gémeos `bevy_ext_engine::camera_glue` só têm
     // leitor nos sistemas `player_camera` da engine, fora do jogo.)
-    app.init_resource::<viber::camera::CameraShake>();
-    app.init_resource::<viber::camera::CameraKick>();
+    app.init_resource::<bevy_ext_engine::camera_glue::CameraShake>();
+    app.init_resource::<bevy_ext_engine::camera_glue::CameraKick>();
     app.add_plugins(viber::cinematic::CinematicPlugin);
     // IA em modo serviço: sentidos + vitais das criaturas + o consumidor
     // ÚNICO do `AiLocomotion` (sem ele as criaturas atacam paradas).
@@ -460,8 +460,8 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::ui::UiPlugin);
     // Feedback de impacto (números/mensagens); o pool 2D é decisão do jogo:
     // o Vael desenha o texto no mundo (bevy_rich_text3d).
-    app.add_plugins(viber::feedback::FeedbackPlugin);
-    app.insert_resource(viber::feedback::DamageNumbers2d(false));
+    app.add_plugins(bevy_ext_engine::feedback::FeedbackPlugin);
+    app.insert_resource(bevy_ext_engine::feedback::DamageNumbers2d(false));
     // `viber.ui` tem de ganhar ao runtime Luau (script do frame 1 via
     // `luau_on_add`): instalação antes, mutações enfileiradas depois, e a
     // UI PUBLICA antes dos scripts lerem (cliques no mesmo frame).
@@ -489,7 +489,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_systems(viber::scene_loader::SceneLoad, spawn::startup);
     app.add_plugins(viber::scene_loader::SceneLoaderPlugin);
     // Câmara de editor desligada no jogo (o Vael não usa `--camera free`).
-    app.add_plugins(viber::editor_camera::EditorCameraPlugin { enabled: false });
+    app.add_plugins(bevy_ext_engine::editor_camera::EditorCameraPlugin { enabled: false });
     // Spawn RUNTIME de prototypes: exclusivo no PostUpdate, antes da
     // propagação de transforms (senão nasce 1 frame na origem).
     app.add_systems(
