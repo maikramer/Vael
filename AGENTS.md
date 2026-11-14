@@ -198,11 +198,12 @@ viber scene lint --world world.bsn
 viber run --scene main --entry dev      # debug: directo ao jogo, sem título/prólogo
 ```
 
-`viber` é o router do `viber-tools`. O wrapper antigo (`viber-engine`) apontava
-ao checkout `Viber` aposentado — os comandos que delegavam nele (`trace`,
-`lua`, `scene --live`, `tool --live`) precisam do runtime novo. Para testar a
-engine sozinha: `cd ../bevy_extensions/crates/bevy_ext_viber_engine && cargo
-run -- run ../Vael/world.bsn`.
+`viber` é o router do `viber-tools`. O `viber-engine` aponta agora ao crate
+do monólito no `bevy_extensions` (recompila quando as fontes mudam); os
+comandos que delegam nele são `trace`, `lua`, `scene --live`, `tool --live`,
+`bake` e `scatter`. Para testar a engine sozinha: `cd
+../bevy_extensions/crates/bevy_ext_viber_engine && cargo run -- run
+../Vael/world.bsn`.
 
 Arranque directo: `--scene main` salta a cena de menu e `--entry dev` (a
 `<SceneEntry name="dev">` de `world.bsn`) faz `scripts/lib/dev.lua` marcar
@@ -250,11 +251,12 @@ Clone novo de qualquer um precisa dos cinco irmãos lado a lado; no Vael,
 correr `tools/fetch_models.sh` uma vez (cria os symlinks `assets/public/{nlu,d1}`).
 
 `~/.local/bin/viber` é agora um symlink para `viber-tools` (instalado por
-`../viber-tools/tools/install.sh`). O wrapper antigo do Viber
-(`~/.local/bin/viber-engine`) tirava um fingerprint das fontes do checkout
-`Viber` — **quebrado com a aposentação desse checkout (2026-11-13)**; a
-delegação antiga (`trace`/`lua`/`scene --live`/`tool --live`) precisa de ser
-migrada para o `viber_tools_runtime`. O editor oficial: `jd open .` (abre
+`../viber-tools/tools/install.sh`). O `~/.local/bin/viber-engine` é um wrapper
+que recompila o monólito em
+`../bevy_extensions/crates/bevy_ext_viber_engine` quando as fontes mudam (com
+fingerprint e último-bom; `VIBER_ENGINE_CHECKOUT=` muda o caminho). A
+delegação antiga (`trace`/`lua`/`scene --live`/`tool --live`) continua a
+precisar do `viber_tools_runtime` para sair do binário legado. O editor oficial: `jd open .` (abre
 `world.bsn`/as cenas `.bsn`; a CLI de cena continua XML). Extensões do Vael
 (`../bevy_extensions/extensions/` e `../viber-tools/extensions/`):
 `bevy_voxel_terrain_jackdaw` (terreno + paint, preview progressivo de

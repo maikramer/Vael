@@ -8,10 +8,11 @@ cd ../viber-tools && tools/install.sh
 which viber                 # ~/.local/bin/viber -> viber-tools
 ```
 
-O instalador preserva o wrapper antigo como `viber-engine` (usado por
-`bake`/`tool scatter`/`trace`/`lua` enquanto a extração não termina) e faz
-`viber` apontar para `viber-tools`. O engine `viber` continua a ser a
-dependência de gameplay do Vael; a remoção do engine é a fase seguinte.
+O instalador instala `viber-engine`, um wrapper que recompila o monólito quando
+as fontes mudam (`../bevy_extensions/crates/bevy_ext_viber_engine` desde a
+aposentação do checkout `../Viber`, 2026-11-13), e faz `viber` apontar para
+`viber-tools`. O engine `viber` continua a ser a dependência de gameplay do
+Vael; a remoção do engine é a fase seguinte.
 
 ## Comandos
 
@@ -78,7 +79,7 @@ por 15702 (`VIBER_TOOLS_PORT`). Config de cliente:
   `tools/lint_content.py` do Vael.
 - `bake`, `tool scatter`, `scene` (exceto lint), `terrain`, `cinematic`,
   `trace`, `lua` e tabs de profiler de mundo/física/áudio continuam no
-  `viber-engine`.
+  `viber-engine` (o crate do monólito no `bevy_extensions`).
 - O engine `viber` não sai do `Cargo.toml` do Vael até o Luau/AI e o
   `build_app` serem portados para o Vael. Player/câmara já saíram (Onda 3) e
   a autoridade de vitais é default (Onda 4a), mas o runtime ainda monta a App
