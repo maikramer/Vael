@@ -45,6 +45,16 @@ pub const AIR_TAU: f32 = 0.3;
 pub const LUNGE_SECS: f32 = 0.16;
 /// Multiplicador do giro do herói enquanto um golpe o vira para o alvo.
 pub const ATTACK_TURN_BOOST: f32 = 2.5;
+/// Raio horizontal de interação do herói com a água (m).
+pub const PLAYER_WATER_RADIUS: f32 = 0.42;
+/// Profundidade (m) acima da qual o arrasto hidrodinâmico começa a atuar.
+pub const WADE_DRAG_START_DEPTH: f32 = 0.15;
+/// Profundidade (m) acima da qual a flutuabilidade de Arquimedes sustenta o herói.
+pub const SWIM_DEPTH: f32 = 0.88;
+/// Profundidade de equilíbrio a nadar/flutuar sem afundar.
+pub const SWIM_IDLE_DEPTH: f32 = 1.00;
+/// Velocidade vertical mínima de queda (m/s) para amortecimento e salpico de entrada.
+pub const WATER_ENTRY_SPEED_MIN: f32 = 3.0;
 
 /// Esquiva do herói (`viber.vael.dodge()`), escolhida pelas teclas de
 /// movimento no momento do pedido.
@@ -237,6 +247,8 @@ pub struct VaelController {
     /// Já viu o [`viber::player::TeleportSettle`] corrente (distingue a
     /// CHEGADA de um teleporte da tutela a meio). Ver `player_movement`.
     pub settle_seen: bool,
+    /// Estava submerso no frame anterior (histerese de entrada/som na água).
+    pub in_water: bool,
 }
 
 impl Default for VaelController {
@@ -264,19 +276,33 @@ impl Default for VaelController {
             attack_slow: 1.0,
             attack_face: None,
             settle_seen: false,
+            in_water: false,
         }
     }
 }
 
-/// Anexa o controller às entidades que o spawner marcou com `Player`.
+/// Anexa o controller e a cinemática de água às entidades marcadas com `Player`.
 fn attach_controllers(
     mut commands: Commands,
-    players: Query<(Entity, Option<&VaelController>), With<Player>>,
+    players: Query<
+        (
+            Entity,
+            Option<&VaelController>,
+            Option<&viber::terrain::WaterKinematics>,
+        ),
+        With<Player>,
+    >,
 ) {
-    for (entity, controller) in &players {
+    for (entity, controller, kin) in &players {
         commands.entity(entity).insert((VaelPlayer, PlayerBody));
         if controller.is_none() {
             commands.entity(entity).insert(VaelController::default());
+        }
+        if kin.is_none() {
+            commands.entity(entity).insert(viber::terrain::WaterKinematics {
+                velocity: Vec3::ZERO,
+                body_radius: PLAYER_WATER_RADIUS,
+            });
         }
     }
 }
@@ -423,6 +449,67 @@ fn jump_velocity(height: f32) -> f32 {
     (2.0 * GRAVITY * height.max(0.0)).sqrt()
 }
 
+/// Fator de velocidade horizontal (0.58..1.0) em três regimes de profundidade:
+/// margem rasa (`<= 0.15 m`: sem trava), vau médio (`0.15..0.42 m`: resistência
+/// leve nos tornozelos) e nado/água profunda (`0.42..0.88 m`: arrasto pesado até 0.58).
+pub fn water_submersion_drag(submersion: f32) -> f32 {
+    if submersion <= WADE_DRAG_START_DEPTH {
+        return 1.0;
+    }
+    let knee_depth = 0.42_f32;
+    if submersion < knee_depth {
+        let t = ((submersion - WADE_DRAG_START_DEPTH) / (knee_depth - WADE_DRAG_START_DEPTH))
+            .clamp(0.0, 1.0);
+        let smooth = t * t * (3.0 - 2.0 * t);
+        return 1.0 - 0.13 * smooth;
+    }
+    let t = ((submersion - knee_depth) / (SWIM_DEPTH - knee_depth).max(0.1)).clamp(0.0, 1.0);
+    let smooth = t * t * (3.0 - 2.0 * t);
+    0.87 - 0.29 * smooth
+}
+
+/// Correnteza de rio aplicada ao jogador segundo a profundidade: em bordas rasas
+/// o atrito com o fundo segura o passo (`0.0`); em águas mais fundas a correnteza
+/// empurra suavemente rio abaixo.
+pub fn water_flow_drift(submersion: f32, flow: Vec2) -> Vec2 {
+    if submersion <= 0.18 || flow.length_squared() <= 1e-6 {
+        return Vec2::ZERO;
+    }
+    let t = ((submersion - 0.18) / (SWIM_DEPTH - 0.18)).clamp(0.0, 1.0);
+    let smooth = t * t * (3.0 - 2.0 * t);
+    flow * (0.24 * smooth)
+}
+
+/// Resultado da resposta vertical à água num passo: velocidade ajustada,
+/// estado de contacto atualizado e velocidade de mergulho (0 fora de entradas bruscas).
+pub fn integrate_water_vertical(
+    mut vel_y: f32,
+    submersion: f32,
+    was_in_water: bool,
+    grounded: bool,
+    dt: f32,
+) -> (f32, bool, f32) {
+    let mut plunge_speed = 0.0;
+    let in_water = if was_in_water {
+        submersion > 0.12
+    } else {
+        submersion > 0.18
+    };
+    if in_water && !was_in_water && vel_y < -WATER_ENTRY_SPEED_MIN {
+        plunge_speed = -vel_y;
+        // Amortecimento imediato de impacto na entrada da coluna de água.
+        vel_y *= 0.35;
+    }
+    let dt = dt.clamp(0.0, 0.05);
+    if submersion > SWIM_DEPTH {
+        let spring_accel = GRAVITY * (submersion - SWIM_IDLE_DEPTH) * 1.15;
+        vel_y = (vel_y + spring_accel * dt) * (-8.5 * dt).exp();
+    } else if !grounded || vel_y > 0.0 {
+        vel_y -= GRAVITY * dt;
+    }
+    (vel_y, in_water, plunge_speed)
+}
+
 fn can_perform_jump(
     now: f32,
     buffer_time: f32,
@@ -454,7 +541,7 @@ fn player_movement(
     keys: Res<ButtonInput<KeyCode>>,
     time: Res<Time>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
-    typing: Option<Res<bevy_ext_ui::ui::widgets::UiFocusedInput>>,
+    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
     actions: Option<Res<viber::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
@@ -473,10 +560,11 @@ fn player_movement(
         Option<&mut TeleportSettle>,
         Option<&mut Knockback>,
         Option<&viber::spawn_gate::SpawnGated>,
+        Option<&mut viber::terrain::WaterKinematics>,
     )>,
     mut sfx: MessageWriter<bevy_ext_core::SfxEvent>,
 ) {
-    let dt = time.delta_secs();
+    let dt = time.delta_secs().min(0.05);
     let now = time.elapsed_secs();
     let runtime = runtime.as_deref();
     // Um script reclamou o corpo (`viber.own_system("locomotion")` +
@@ -485,7 +573,7 @@ fn player_movement(
         .as_ref()
         .is_some_and(|owners| owners.owns(viber::luau::ownership::SYSTEM_LOCOMOTION))
     {
-        for (_, _, _, _, controller, _, _, _, _) in &mut players {
+        for (_, _, _, _, controller, _, _, _, _, _) in &mut players {
             if let Some(mut controller) = controller {
                 controller.translation = Some(Vec3::ZERO);
             }
@@ -497,7 +585,8 @@ fn player_movement(
     // com o menu aberto).
     let blocked = menus.as_ref().is_some_and(|menus| menus.any());
     if blocked {
-        for (_, _, mut controller, mut engine_player, rapier, _, _, _, _) in &mut players {
+        for (_, _, mut controller, mut engine_player, rapier, _, _, _, _, mut kin) in &mut players
+        {
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
@@ -505,6 +594,9 @@ fn player_movement(
             controller.lunge = None;
             if let Some(mut rapier) = rapier {
                 rapier.translation = Some(Vec3::ZERO);
+            }
+            if let Some(ref mut kin) = kin {
+                kin.velocity = Vec3::ZERO;
             }
             sync_engine_player(&mut engine_player, &controller);
         }
@@ -554,6 +646,7 @@ fn player_movement(
         mut settle,
         mut knockback,
         gated,
+        mut water_kin,
     ) in &mut players
     {
         if gated.is_some() {
@@ -564,6 +657,9 @@ fn player_movement(
             controller.lunge = None;
             if let Some(mut rapier) = rapier {
                 rapier.translation = Some(Vec3::ZERO);
+            }
+            if let Some(ref mut kin) = water_kin {
+                kin.velocity = Vec3::ZERO;
             }
             sync_engine_player(&mut engine_player, &controller);
             continue;
@@ -586,6 +682,7 @@ fn player_movement(
             controller.is_jumping = false;
             controller.jump_cooldown = 0.0;
             controller.can_jump = true;
+            controller.in_water = false;
             commands
                 .entity(entity)
                 .remove::<Knockback>();
@@ -627,6 +724,25 @@ fn player_movement(
         let interior_floor = (interior_mode
             && interior_state.as_deref().is_some_and(|state| state.active))
         .then_some(bevy_ext_core::INTERIOR_FLOOR_Y);
+        let water_y = (!interior_mode)
+            .then(|| {
+                runtime.and_then(|rt| {
+                    rt.water_surface_at(transform.translation.x, transform.translation.z)
+                })
+            })
+            .flatten();
+        let submersion = water_y
+            .map(|wy| (wy - transform.translation.y).max(0.0))
+            .unwrap_or(0.0);
+        let water_drag = water_submersion_drag(submersion);
+        let water_flow = if !interior_mode && submersion > 0.18 {
+            runtime
+                .and_then(|rt| rt.water_domain_at(transform.translation.x, transform.translation.z))
+                .map(|d| d.flow)
+                .unwrap_or(Vec2::ZERO)
+        } else {
+            Vec2::ZERO
+        };
         let (dir, input_mag, view_yaw_deg) = if interior_mode {
             let yaw = interior
                 .as_deref()
@@ -719,11 +835,13 @@ fn player_movement(
             1.0
         };
         let attack_slow = if attacking { controller.attack_slow } else { 1.0 };
-        let desired = dir * controller.speed * sprint_mult * input_mag * attack_slow;
+        let flow_drift = water_flow_drift(submersion, water_flow);
+        let desired = dir * controller.speed * sprint_mult * input_mag * attack_slow * water_drag
+            + Vec3::new(flow_drift.x, 0.0, flow_drift.y);
         let input_active = dir.length_squared() > 0.0;
         if let Some((_, burst)) = controller.dodge.as_mut() {
             // A esquiva manda na velocidade horizontal até assentar.
-            let speed = burst.speed();
+            let speed = burst.speed() * water_drag;
             let burst_dir = burst.dir;
             burst.t += dt;
             let done = burst.done();
@@ -740,7 +858,7 @@ fn player_movement(
                 controller.vel_x,
                 controller.vel_z,
                 desired,
-                controller.grounded,
+                controller.grounded || submersion > SWIM_DEPTH,
                 input_active,
                 dt,
             );
@@ -809,6 +927,22 @@ fn player_movement(
                 clip: bevy_ext_core::SfxClip::Jump,
                 position: Some(transform.translation),
             });
+        } else if !interior_mode
+            && controller.dodge.is_none()
+            && submersion >= SWIM_DEPTH
+            && controller.jump_cooldown <= 0.0
+            && now - controller.jump_buffer_time <= JUMP_BUFFER
+        {
+            // Impulso para subir à margem quando está a nadar em água funda.
+            controller.vel_y = jump_velocity(controller.jump_height) * 0.85;
+            controller.is_jumping = true;
+            controller.can_jump = false;
+            controller.jump_cooldown = JUMP_COOLDOWN;
+            controller.jump_buffer_time = f32::NEG_INFINITY;
+            sfx.write(bevy_ext_core::SfxEvent {
+                clip: bevy_ext_core::SfxClip::FootstepWater,
+                position: Some(transform.translation),
+            });
         }
 
         // Chão analítico: a superfície SÓLIDA SOB o herói (respeita grutas e
@@ -847,8 +981,22 @@ fn player_movement(
             f32::NEG_INFINITY
         };
 
-        if !controller.grounded || controller.vel_y > 0.0 {
-            controller.vel_y -= GRAVITY * dt;
+        let submersion = water_y.map(|wy| (wy - py).max(0.0)).unwrap_or(0.0);
+        let pre_entry_vel_y = controller.vel_y;
+        let (next_vy, now_in_water, plunge_speed) = integrate_water_vertical(
+            controller.vel_y,
+            submersion,
+            controller.in_water,
+            controller.grounded,
+            dt,
+        );
+        controller.vel_y = next_vy;
+        controller.in_water = now_in_water;
+        if plunge_speed >= WATER_ENTRY_SPEED_MIN {
+            sfx.write(bevy_ext_core::SfxEvent {
+                clip: bevy_ext_core::SfxClip::FootstepWater,
+                position: Some(Vec3::new(px, water_y.unwrap_or(py), pz)),
+            });
         }
         controller.vel_y = controller.vel_y.max(-TERMINAL_VELOCITY);
         motion.y += controller.vel_y * dt;
@@ -894,10 +1042,19 @@ fn player_movement(
         let planar =
             (controller.vel_x * controller.vel_x + controller.vel_z * controller.vel_z).sqrt();
         let grounded = controller.grounded;
-        if footstep_due(&mut engine_player.step_timer, grounded, planar, dt)
-            .is_some()
-        {
-            let clip = if runtime.is_some_and(|rt| rt.in_water(px, pz)) {
+        if submersion >= SWIM_DEPTH && !grounded {
+            if planar > 0.45 {
+                engine_player.step_timer -= dt;
+                if engine_player.step_timer <= 0.0 {
+                    engine_player.step_timer = 0.58;
+                    sfx.write(bevy_ext_core::SfxEvent {
+                        clip: bevy_ext_core::SfxClip::FootstepWater,
+                        position: Some(transform.translation),
+                    });
+                }
+            }
+        } else if footstep_due(&mut engine_player.step_timer, grounded, planar, dt).is_some() {
+            let clip = if submersion > 0.04 {
                 bevy_ext_core::SfxClip::FootstepWater
             } else {
                 bevy_ext_core::SfxClip::Footstep
@@ -906,6 +1063,15 @@ fn player_movement(
                 clip,
                 position: Some(transform.translation),
             });
+        }
+        if let Some(mut kin) = water_kin {
+            let impact_vy = if plunge_speed >= WATER_ENTRY_SPEED_MIN {
+                pre_entry_vel_y
+            } else {
+                controller.vel_y
+            };
+            kin.velocity = Vec3::new(controller.vel_x, impact_vy, controller.vel_z);
+            kin.body_radius = PLAYER_WATER_RADIUS;
         }
         sync_engine_player(&mut engine_player, &controller);
         if let Some(bus) = bus.as_deref() {
@@ -1098,5 +1264,51 @@ mod tests {
     fn input_yaw_zero_walks_negative_z() {
         let dir = process_input(1.0, 0.0, 0.0);
         assert!((dir - Vec3::NEG_Z).length() < 1e-5);
+    }
+
+    #[test]
+    fn water_drag_and_buoyancy_damp_entry_and_float_at_equilibrium() {
+        assert!((water_submersion_drag(0.05) - 1.0).abs() < 1e-6);
+        let waist = water_submersion_drag(0.65);
+        let chest = water_submersion_drag(1.4);
+        assert!(waist < 1.0 && waist > chest);
+        assert!((chest - 0.58).abs() < 1e-4);
+
+        // Queda forte na água é amortecida no frame de entrada.
+        let (vy_after, in_w, plunge) = integrate_water_vertical(-16.0, 0.45, false, false, 0.016);
+        assert!(in_w);
+        assert!((plunge - 16.0).abs() < 1e-4);
+        assert!(vy_after.abs() < 7.0, "amortecido na entrada: {vy_after}");
+
+        // Fundo mais baixo que SWIM_IDLE_DEPTH faz força de Arquimedes para cima.
+        let mut vy = 0.0;
+        let mut sub = 1.85;
+        for _ in 0..90 {
+            let (nv, _, _) = integrate_water_vertical(vy, sub, true, false, 0.016);
+            vy = nv;
+            sub -= vy * 0.016;
+        }
+        assert!(
+            (sub - SWIM_IDLE_DEPTH).abs() < 0.08,
+            "estabiliza na linha de nado: sub={sub}"
+        );
+    }
+
+    #[test]
+    fn water_flow_drift_respects_shallow_shore_friction_and_depth_regimes() {
+        let river_flow = Vec2::new(2.0, -1.0);
+        // Margem rasa: atrito com o fundo segura o passo (zero deriva).
+        assert_eq!(water_flow_drift(0.10, river_flow), Vec2::ZERO);
+        let shallow_ankle = water_submersion_drag(0.28);
+        let knee_wade = water_submersion_drag(0.55);
+        let deep_swim = water_submersion_drag(1.10);
+        assert!(shallow_ankle > knee_wade && knee_wade > deep_swim);
+
+        // Água média vs funda: correnteza cresce com a profundidade até o teto de nado.
+        let mid_drift = water_flow_drift(0.50, river_flow);
+        let deep_drift = water_flow_drift(1.10, river_flow);
+        assert!(mid_drift.length() > 0.01);
+        assert!(deep_drift.length() > mid_drift.length());
+        assert!((deep_drift - river_flow * 0.24).length() < 1e-4);
     }
 }
