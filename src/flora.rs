@@ -721,6 +721,10 @@ fn drop_leaves_on_gust(
 /// `SeeThroughTrees` na câmara do jogo: as árvores entre a câmara e o peito
 /// do herói fazem dither em vez de o taparem. Só a câmara da janela (as do
 /// bake de impostores são `RenderTarget::Image`).
+///
+/// O cone é **estreito** (raio 1 m no peito, ~1/3 junto à câmara): só o que
+/// tapa o corpo esbate. Um raio largo (4 m era o antigo) apagava árvores ao
+/// lado do herói, mesmo sem nada à frente.
 fn see_through_trees(
     mut commands: Commands,
     cameras: Query<(Entity, &Camera, &RenderTarget, Option<&SeeThroughTrees>), With<Camera3d>>,
@@ -739,10 +743,15 @@ fn see_through_trees(
         }
         let fade = SeeThroughTrees {
             target: chest,
-            radius: 4.0,
+            // O corpo do herói mede ~0,5 m de largura e ~1,8 m de altura: o
+            // raio cobre-o (e o `inner` deixa o corte cheio só no miolo);
+            // mais do que isso apaga o que está ao lado, não à frente.
+            radius: 1.0,
             keep: 0.35,
-            inner: 0.55,
-            in_front: Some(0.8),
+            inner: 0.6,
+            // Nada a menos de 0,9 m do peito esbate: mato encostado ao herói
+            // fica inteiro.
+            in_front: Some(0.9),
             floor: None,
         };
         if existing != Some(&fade) {

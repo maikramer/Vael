@@ -100,8 +100,10 @@ os meshes; mudam só os materiais.
 - **Folhas**: `FallingLeaves` (rajadas de shakes e embates) e `DropLeaves` até
   6 árvores num raio de 60 m quando o vento passa de 0.7 (cooldown 2 s).
 - **See-through**: `SeeThroughTrees` na câmara do jogo (alvo = peito do herói,
-  raio 4 m, `keep 0.35`); só a câmara da janela — as do bake são
-  `RenderTarget::Image`.
+  raio **1 m**, `keep 0.35`, `inner 0.6`, `in_front 0.9`); só a câmara da
+  janela — as do bake são `RenderTarget::Image`. O cone é estreito de
+  propósito: só o que está entre a câmara e o corpo esbate; um raio largo
+  apagava árvores ao lado do herói.
 - **Looks**: por altitude (ver acima).
 
 ## Gates
