@@ -44,7 +44,7 @@
   excluído para correr standalone; falta só o QA vivo de navmesh. No mesmo
   dia o checkout `Viber` foi aposentado — o runtime vive no
   `bevy_ext_viber_engine`, e o `CRATES.md`/contrato foram salvos no
-  `bevy_extensions`.
+  `bevy_extensions`; o `viber-engine` foi re-apontado ao crate.
 
 ## Âmbito e números (2026-11-13)
 
@@ -249,8 +249,12 @@ Dexterous Developer.
   `attach.rs` dobrado no `ui/waypoint.rs`, `journal.lua` removido (analyze e
   lint verdes); members duplicados (26→17) e exclude stale limpos;
   `bevy_ext_viber_engine` excluído do workspace para `cargo test`/`metadata`
-  standalone. **Pendente:** QA vivo de navmesh (criaturas a perseguir), boot
-  `--entry dev`, e a retenção local dos `.jdext` (1 bundle por extensão).
+  standalone; o wrapper `viber-engine` foi re-apontado ao crate (viber-tools
+  `2c85281`). QA vivo de navmesh feito no mesmo dia: boot com `--entry dev`,
+  bridge na 15706, **nav tiles #1/#2 prontos** (746 e 1344 obstáculos, 0
+  erros no log) e `viber.vael` vivo. `.jdext`: retenção aplicada (436 MB →
+  65 MB; 1 bundle por extensão). **Pendente:** comportamento de criaturas a
+  perseguir sob carga limpa (o QA correu com build concorrente, load ~20).
 - **F1 — crates.io** (dono: `PACKAGES.md`): fundir os 3 wrappers no
   `bevy_ext_scene`; publicar os 6; quando o Viber/viber-tools consumirem do
   registry, apagar aliases e versões transitórias.
