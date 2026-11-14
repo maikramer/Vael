@@ -126,10 +126,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     };
     let shader_entities = &main_world.as_ref().unwrap_or(&world).entities;
     let sky_config = viber::sky::SkyConfig::from_world(shader_entities).with_env_override();
-    let water_config =
-        viber::terrain::water_material::WaterSurfaceConfig::from_world(shader_entities);
-    let layers_config =
-        viber::terrain::layer_material::TerrainChunkConfig::from_world(shader_entities);
+    // As configs de água/camadas vêm do `terrain_host` (a extração do
+    // terreno para o `bevy_ext_terrain_runtime` mudou a assinatura).
+    let water_config = viber::terrain_host::water_surface_config_from_world(shader_entities);
+    let layers_config = viber::terrain_host::terrain_chunk_config_from_world(shader_entities);
     let shaders_dir = asset_root.join("shaders");
     let _ = std::fs::create_dir_all(&shaders_dir);
     for (name, contents) in [
@@ -435,7 +435,6 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::physics_fx::PhysicsFxPlugin);
     app.add_plugins(viber::particles::BurstPlugin);
     app.add_plugins(viber::impact::ImpactFxPlugin);
-    app.add_plugins(viber::terrain::water_waves::WaterWavePlugin);
     app.add_plugins(viber::terrain::water_fx::WaterFxPlugin);
     // Trauma do shake + solavanco direcional; câmara de script publica o
     // snapshot (`viber.camera_state`) mesmo sem modo livre.
