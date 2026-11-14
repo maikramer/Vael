@@ -178,11 +178,11 @@ correspondentes corta já a metade mais barata da duplicação (F2 no plano).
 - Aliases de pacote replicados em 3 consumidores (`bevy_world_xml`,
   `bevy_engine_core`, `bevy_save_slots`) — morrem quando o consumo passar a
   ser do registry.
-- `.worktrees/` no repo com **duas cópias integrais** (`exit2-hubs`,
-  `exit2-scene`) — dois grafos de build paralelos no disco. Auditadas no F0:
-  mantidas (a `exit2/hubs` tem 4 commits únicos e está em uso; a
-  `exit2/scene` tem 3 commits únicos + WIP); remover só quando ambas
-  estiverem limpas e contidas na `main`.
+- `.worktrees/` no repo com **cópias integrais** — a auditoria do F0 manteve
+  `exit2-hubs`/`exit2-scene` (commits únicos/WIP); na mesma tarde a onda
+  exit2 mergeou-as e **removeu as duas** (~27 GB de targets libertados).
+  Vivos: `exit2-integrate` (`integrate2/all`) e `exit2-luau2` (A1) — trabalho
+  concorrente; não tocar.
 - `.jdext`: **não estão versionados** (correcção ao levantamento inicial —
   o agente de exploração errou): 25 bundles, 433 MB locais, ignorados pelo
   `.gitignore` (vão para assets de Release). Higiene: retenção de 1 bundle
