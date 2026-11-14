@@ -244,7 +244,7 @@ fn activate_world_text(
     mut cursor: Local<usize>,
     pool: Res<WorldTextPool>,
     mut incoming: MessageReader<WorldTextEvent>,
-    camera: Query<&GlobalTransform, With<Camera3d>>,
+    camera: viber::editor_camera::EyeCameraQuery,
     mut slots: Query<(
         &mut WorldTextSlot,
         &mut Text3d,
@@ -262,8 +262,8 @@ fn activate_world_text(
     // de perfil.
     let rotation = camera
         .iter()
-        .next()
-        .map(|transform| transform.rotation())
+        .find(|(_, cam, target)| viber::editor_camera::is_window_camera(*cam, *target))
+        .map(|(transform, _, _)| transform.rotation())
         .unwrap_or(Quat::IDENTITY);
     for event in incoming.read() {
         if event.text.is_empty() {
@@ -305,7 +305,7 @@ fn activate_world_text(
 #[allow(clippy::type_complexity)]
 fn animate_world_text(
     time: Res<Time>,
-    camera: Query<&GlobalTransform, With<Camera3d>>,
+    camera: viber::editor_camera::EyeCameraQuery,
     mut slots: Query<(
         &mut WorldTextSlot,
         &mut Transform,
@@ -316,8 +316,8 @@ fn animate_world_text(
 ) {
     let rotation = camera
         .iter()
-        .next()
-        .map(|transform| transform.rotation())
+        .find(|(_, cam, target)| viber::editor_camera::is_window_camera(*cam, *target))
+        .map(|(transform, _, _)| transform.rotation())
         .unwrap_or(Quat::IDENTITY);
     let dt = time.delta_secs();
     for (mut slot, mut transform, mut visibility, material) in &mut slots {

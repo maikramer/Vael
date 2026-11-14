@@ -6,7 +6,10 @@
 //! sistemas da engine não correm; este módulo é o dono da vista.
 
 use bevy::prelude::*;
-use bevy_ext_core::{CameraSnapshot, LOOK_PIVOT_HEIGHT, Player, ScriptCameraFree};
+use bevy_ext_core::{LOOK_PIVOT_HEIGHT, Player};
+// `ScriptCameraFree`/`CameraSnapshot` são os da engine: o `viber.camera_*` do
+// Lua escreve neles. As cópias do `bevy_ext_core` ainda não são as mesmas.
+use viber::camera::{CameraSnapshot, ScriptCameraFree};
 
 use viber::camera::{
     AutoCameraInput, COLLISION_EYE_HEIGHT, CameraKick, CameraShake, INTERIOR_ROOM_LAG, SHAKE_DECAY,
@@ -26,8 +29,9 @@ pub struct VaelCameraPlugin;
 
 impl Plugin for VaelCameraPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<viber::camera::ScriptCameraFree>()
-            .init_resource::<viber::camera::CameraSnapshot>();
+        app.init_resource::<ScriptCameraFree>()
+            .init_resource::<CameraSnapshot>()
+            .add_observer(mark_shadow_lod_origin);
         app.add_systems(
             Update,
             (orbit_camera_follow, auto_orbit)
@@ -49,6 +53,17 @@ impl Plugin for VaelCameraPlugin {
                 .run_if(no_editor_camera),
         );
     }
+}
+
+/// A câmara de jogo é a origem do LOD das sombras das luzes pontuais/spot.
+/// Sem marca, o Bevy usa "a câmara que desenha para a janela" — no Play
+/// embutido do Jackdaw nenhuma desenha (vão para a imagem do stream) e caía
+/// na câmara de menor id (céu/sondas), com o LOD das sombras centrado no
+/// sítio errado.
+fn mark_shadow_lod_origin(add: On<Add<OrbitCamera>>, mut commands: Commands) {
+    commands
+        .entity(add.entity)
+        .try_insert(bevy::camera::ShadowLodOrigin);
 }
 
 /// Follow rígido das câmaras com `target` (ou sem jogador): a pose é

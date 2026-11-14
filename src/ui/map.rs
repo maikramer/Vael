@@ -9,14 +9,14 @@ use bevy::ui::GlobalZIndex;
 use bevy_pf::prelude::*;
 use serde_json::{Value, json};
 use bevy_ext_core::{SfxClip, SfxEvent};
-use bevy_ext_core::HudMarkers;
+use viber::hud::markers::HudMarkers;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::MenusOpen;
 use bevy_ext_core::{Player, TeleportSettle};
 use viber::terrain::runtime::TerrainRuntime;
-use bevy_ext_ui::ui::UiModalsOpen;
-use bevy_ext_ui::ui::widgets::UiFocusedInput;
+use viber::ui::UiModalsOpen;
+use viber::ui::widgets::UiFocusedInput;
 
 use crate::content::{VaelContent, label};
 use crate::save::VaelSave;
@@ -299,18 +299,25 @@ fn handle_map_action(world: &mut World, id: &str) {
 }
 
 /// Input M/G/F/Esc, exclusivo para poder teleportar e escrever no KV.
+///
+/// As teclas vêm do contexto de UI do `jackdaw_input` ([`VaelUiActions`]):
+/// com texto focado chegam já a falso. Sem o input do Vael montado (apps de
+/// teste) lê o teclado directamente.
 pub fn map_input(world: &mut World) {
-    let keys = world
-        .get_resource::<ButtonInput<KeyCode>>()
-        .map(|keys| {
-            (
-                keys.just_pressed(KeyCode::KeyM),
-                keys.just_pressed(KeyCode::KeyG),
-                keys.just_pressed(KeyCode::KeyF),
-                keys.just_pressed(KeyCode::Escape),
-            )
-        })
-        .unwrap_or((false, false, false, false));
+    let keys = match world.get_resource::<crate::input::VaelUiActions>() {
+        Some(ui) => (ui.map, ui.travel, ui.sign, ui.close),
+        None => world
+            .get_resource::<ButtonInput<KeyCode>>()
+            .map(|keys| {
+                (
+                    keys.just_pressed(KeyCode::KeyM),
+                    keys.just_pressed(KeyCode::KeyG),
+                    keys.just_pressed(KeyCode::KeyF),
+                    keys.just_pressed(KeyCode::Escape),
+                )
+            })
+            .unwrap_or((false, false, false, false)),
+    };
     let typing = world
         .get_resource::<UiFocusedInput>()
         .is_some_and(|focus| focus.0.is_some());

@@ -268,8 +268,8 @@ impl Plugin for VaelEnvironmentPlugin {
                 // antes do `UiSet::Bind`, para o HUD ler a hora NO MESMO frame.
                 bridge_ui_clock
                     .after(ElementsSystems::Clock)
-                    .after(bevy_ext_ui::ui::collect::collect_ui_data)
-                    .before(bevy_ext_ui::ui::UiSet::Bind),
+                    .after(viber::ui::collect::collect_ui_data)
+                    .before(viber::ui::UiSet::Bind),
             );
         info!(
             hour = start_hour_or(scene.start_hour),
@@ -721,7 +721,7 @@ struct VaelInteriorBlocker;
 /// estiver activo; fora é removido.
 fn interior_precipitation(
     interior: Option<Res<InteriorLighting>>,
-    cameras: Query<&GlobalTransform, With<Camera3d>>,
+    cameras: viber::editor_camera::EyeCameraQuery,
     mut commands: Commands,
     mut blockers: Query<
         (Entity, &mut Transform, &mut PrecipitationBlocker),
@@ -729,7 +729,11 @@ fn interior_precipitation(
     >,
 ) {
     let inside = interior.as_deref().is_some_and(|state| state.active);
-    let Some(center) = cameras.iter().next().map(GlobalTransform::translation) else {
+    let Some(center) = cameras
+        .iter()
+        .find(|(_, cam, target)| viber::editor_camera::is_window_camera(*cam, *target))
+        .map(|(tf, _, _)| tf.translation())
+    else {
         for (entity, _, _) in &blockers {
             commands.entity(entity).despawn();
         }
@@ -776,7 +780,7 @@ fn interior_precipitation(
 fn bridge_ui_clock(
     clock: Res<WorldClock>,
     weather: Res<Weather>,
-    mut data: ResMut<bevy_ext_ui::ui::UiData>,
+    mut data: ResMut<viber::ui::UiData>,
 ) {
     let minutes = (clock.hour * 60.0).rem_euclid(1440.0);
     let text = format!(

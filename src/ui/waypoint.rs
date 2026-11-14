@@ -13,7 +13,7 @@ use std::collections::BTreeMap;
 
 use bevy::prelude::*;
 use serde_json::Value;
-use bevy_ext_core::{HudBlip, HudMarkers, HudPoint};
+use viber::hud::markers::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::components::{LuaScriptRef, ScriptProps};
 use viber::luau::host::LuaScriptHost;
 use bevy_ext_core::Player;

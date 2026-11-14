@@ -47,9 +47,9 @@ use viber::player::Player;
 use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
 use viber::scene::SceneSource;
 use viber::scene_loader::CurrentScene;
-use bevy_ext_ui::ui::ScriptBindValue;
-use bevy_ext_ui::ui::script::UiScriptBinds;
-use bevy_ext_ui::ui::widgets::UiFocusedInput;
+use viber::ui::ScriptBindValue;
+use viber::ui::script::UiScriptBinds;
+use viber::ui::widgets::UiFocusedInput;
 use viber::vitals::Health;
 
 use crate::VaelProjectRoot;
@@ -1147,10 +1147,11 @@ fn update_harvest_focus(
     players: Query<&GlobalTransform, With<Player>>,
     harvestables: Query<(Entity, &GlobalTransform, &Harvestable, Option<&Health>), Without<Player>>,
     menus: Option<Res<MenusOpen>>,
-    modals: Option<Res<bevy_ext_ui::ui::modal::UiModalsOpen>>,
+    modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
     scene: Option<Res<CurrentScene>>,
     vitals: Option<Res<PlayerVitals>>,
     mut ui: Option<ResMut<UiScriptBinds>>,
+    map: Option<Res<viber::input_map::ActionMap>>,
 ) {
     focus.cooldown = (focus.cooldown - time.delta_secs()).max(0.0);
     let blocked = scene.as_deref().and_then(|scene| scene.id.as_deref()) == Some("menu")
@@ -1196,11 +1197,18 @@ fn update_harvest_focus(
         }
         commands.entity(entity).try_insert(ScriptInteraction {
             label: harvestable.label().to_string(),
-            key: KeyCode::KeyJ,
+            key: attack_key(map.as_deref()),
             range: harvestable.range * scale,
         });
     }
     set_tool(&mut focus, harvestable.tool(), ui.as_deref_mut());
+}
+
+/// A tecla de "atacar" do `ActionMap` (J por defeito): a do prompt `[J]` e
+/// a que o `InteractionFocus` arbitra entre alvos.
+fn attack_key(map: Option<&viber::input_map::ActionMap>) -> KeyCode {
+    map.and_then(|map| crate::input::action_key(map, viber::input_map::Action::Attack))
+        .unwrap_or(KeyCode::KeyJ)
 }
 
 /// Remove o prompt do alvo anterior e devolve a ferramenta às mãos.
@@ -1268,6 +1276,8 @@ fn spawn_felled_tree(
 fn harvest_input(
     mut commands: Commands,
     keys: Option<Res<ButtonInput<KeyCode>>>,
+    actions: Option<Res<viber::input_map::ActionState>>,
+    map: Option<Res<viber::input_map::ActionMap>>,
     mut focus: ResMut<HarvestFocus>,
     mut save: Option<ResMut<VaelSave>>,
     content: Option<Res<VaelContent>>,
@@ -1287,12 +1297,15 @@ fn harvest_input(
     players: Query<&GlobalTransform, With<Player>>,
     queue: Option<Res<QuestEventQueue>>,
 ) {
-    let Some(keys) = keys else {
-        return;
-    };
-    if !keys.just_pressed(KeyCode::KeyJ) || focus.blocked || focus.cooldown > 0.0 {
+    // "Atacar" (J por defeito) pelo input do Vael: segue o rebind e o
+    // contexto de jogo (parado com menus abertos).
+    if !crate::input::attack_just(actions.as_deref(), map.as_deref(), keys.as_deref())
+        || focus.blocked
+        || focus.cooldown > 0.0
+    {
         return;
     }
+    let attack_key = attack_key(map.as_deref());
     // Com um `UiInput` focado as teclas são texto (o `viber.input` da engine
     // também as bloqueia): o J do chat não pode partir uma árvore.
     if typing.as_deref().is_some_and(|typing| typing.0.is_some()) {
@@ -1303,7 +1316,7 @@ fn harvest_input(
     };
     // Outro [J] nativo mais próximo é dono do prompt (o `other_j_prompt`).
     if let Some(interaction) = interaction.as_deref()
-        && let Some(winner) = interaction.winner(KeyCode::KeyJ)
+        && let Some(winner) = interaction.winner(attack_key)
         && winner != entity
     {
         return;
@@ -1798,6 +1811,8 @@ fn tree_landed_feedback(
 fn buck_felled_trees(
     mut commands: Commands,
     keys: Option<Res<ButtonInput<KeyCode>>>,
+    actions: Option<Res<viber::input_map::ActionState>>,
+    map: Option<Res<viber::input_map::ActionMap>>,
     time: Res<Time>,
     mut focus: ResMut<BuckFocus>,
     interaction: Option<Res<InteractionFocus>>,
@@ -1815,9 +1830,7 @@ fn buck_felled_trees(
     >,
 ) {
     focus.cooldown = (focus.cooldown - time.delta_secs()).max(0.0);
-    let Some(keys) = keys else {
-        return;
-    };
+    let attack_key = attack_key(map.as_deref());
     let Some(player) = players.iter().next().map(GlobalTransform::translation) else {
         return;
     };
@@ -1842,7 +1855,7 @@ fn buck_felled_trees(
         if let Some(target) = target {
             commands.entity(target).try_insert(ScriptInteraction {
                 label: "Cortar em toros".to_string(),
-                key: KeyCode::KeyJ,
+                key: attack_key,
                 range: reach,
             });
         }
@@ -1851,12 +1864,14 @@ fn buck_felled_trees(
     let Some(target) = target else {
         return;
     };
-    if !keys.just_pressed(KeyCode::KeyJ) || focus.cooldown > 0.0 {
+    if !crate::input::attack_just(actions.as_deref(), map.as_deref(), keys.as_deref())
+        || focus.cooldown > 0.0
+    {
         return;
     }
     // Outro [J] nativo mais próximo (o prompt da colheita) tem prioridade.
     if let Some(interaction) = interaction.as_deref()
-        && let Some(winner) = interaction.winner(KeyCode::KeyJ)
+        && let Some(winner) = interaction.winner(attack_key)
         && winner != target
     {
         return;
