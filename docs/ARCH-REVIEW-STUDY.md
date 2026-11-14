@@ -44,7 +44,10 @@
   excluído para correr standalone; falta só o QA vivo de navmesh. No mesmo
   dia o checkout `Viber` foi aposentado — o runtime vive no
   `bevy_ext_viber_engine`, e o `CRATES.md`/contrato foram salvos no
-  `bevy_extensions`; o `viber-engine` foi re-apontado ao crate.
+  `bevy_extensions`; o `viber-engine` foi re-apontado ao crate e o bin do
+  monólito foi desbloqueado (`extern crate … as viber`, bevy_extensions
+  `7b5f720` — estava com 43 erros E0433 desde o exit; o jogo só compila a
+  lib).
 
 ## Âmbito e números (2026-11-13)
 
