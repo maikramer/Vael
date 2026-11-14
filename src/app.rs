@@ -412,12 +412,14 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.init_resource::<viber::music::ScriptSoundLoops>();
     app.add_plugins(viber::menus::MenusPlugin);
     // Save externo: recursos da ponte Lua + importador de recortes de
-    // terreno; os slots/envelope são do Vael (`moonshine-save`).
+    // terreno; os slots/envelope são do Vael (`moonshine-save`). O
+    // importador é genérico sobre o loader de cena (contrato
+    // `SceneSwitchBusy`) — concretiza com o `SceneLoader` do runtime.
     app.init_resource::<viber::save::SaveRequest>()
         .init_resource::<viber::save::PendingSavePatches>()
         .add_systems(
             bevy::app::Last,
-            viber::save::apply_pending_save_patches
+            viber::save::apply_pending_save_patches::<viber::scene_loader::SceneLoader>
                 .after(viber::scene_loader::drive_scene_loader),
         );
     // Props em ossos (`viber.attach`).
