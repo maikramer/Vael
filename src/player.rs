@@ -1,7 +1,7 @@
 //! Player do Vael — o primeiro corte da aposentadoria da engine.
 //!
 //! O spawner da engine ainda cria o `<PlayerGLTF>` (Gltf, collider e
-//! `KinematicCharacterController`), mas com `player_camera:false` os sistemas
+//! `TnuaController`), mas com `player_camera:false` os sistemas
 //! dela não correm. Este módulo anexa o [`VaelController`] e conduz o herói
 //! (WASD, salto, steering da `OrbitCamera`, chão analítico e teleportes); o
 //! estado do `viber::player::Player` é sincronizado para a animação da engine
@@ -10,14 +10,18 @@
 
 use std::sync::{Arc, Mutex};
 
+use avian3d::prelude::{LinearVelocity, Position, Rotation};
 use bevy::prelude::*;
 use bevy_ext_core::{
-    GROUND_PROBE, KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle,
-    footstep_due, knockback_decay_factor, knockback_travel_factor,
+    GROUND_PROBE, KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle, footstep_due,
+    knockback_decay_factor,
 };
-use bevy_rapier3d::prelude::{KinematicCharacterController, KinematicCharacterControllerOutput};
+use bevy_tnua::TnuaToggle;
+use bevy_tnua::builtins::TnuaBuiltinJump;
+use bevy_tnua::prelude::TnuaController;
 use mlua::{Lua, Table, Value};
 use viber::luau::host::LuaScriptHost;
+use viber::player::HeroScheme;
 use viber::recipes::spawn::OrbitCamera;
 
 use crate::components::VaelPlayer;
@@ -153,7 +157,11 @@ pub fn dodge_direction(
         DodgeKind::Roll if interior => process_input(move_forward, move_x, view_yaw_deg),
         DodgeKind::Roll => process_input(move_forward.signum(), 0.0, view_yaw_deg),
     };
-    if dir.length_squared() > 0.0 { dir } else { back }
+    if dir.length_squared() > 0.0 {
+        dir
+    } else {
+        back
+    }
 }
 
 /// Pedido de movimento de um golpe (`viber.vael.attack_motion`).
@@ -188,7 +196,9 @@ pub struct HeroMotionBus(pub Arc<Mutex<HeroMotionShared>>);
 
 impl HeroMotionBus {
     fn lock(&self) -> std::sync::MutexGuard<'_, HeroMotionShared> {
-        self.0.lock().unwrap_or_else(|poisoned| poisoned.into_inner())
+        self.0
+            .lock()
+            .unwrap_or_else(|poisoned| poisoned.into_inner())
     }
 
     /// `viber.vael.dodge()`: aceita se o herói está no chão e livre.
@@ -299,15 +309,20 @@ fn attach_controllers(
             commands.entity(entity).insert(VaelController::default());
         }
         if kin.is_none() {
-            commands.entity(entity).insert(viber::terrain::WaterKinematics {
-                velocity: Vec3::ZERO,
-                body_radius: PLAYER_WATER_RADIUS,
-            });
+            commands
+                .entity(entity)
+                .insert(viber::terrain::WaterKinematics {
+                    velocity: Vec3::ZERO,
+                    body_radius: PLAYER_WATER_RADIUS,
+                    contact_y_offset: 0.0,
+                });
         }
     }
 }
 
-fn no_editor_camera(cameras: Query<(), With<viber::editor_camera::EditorCamera>>) -> bool {
+pub(crate) fn no_editor_camera(
+    cameras: Query<(), With<viber::editor_camera::EditorCamera>>,
+) -> bool {
     cameras.is_empty()
 }
 
@@ -334,6 +349,10 @@ impl Plugin for VaelPlayerPlugin {
                 Update,
                 player_movement
                     .in_set(PlayerMovementSet)
+                    // A intenção (basis/salto) tem de estar escrita antes da
+                    // lógica do tnua — senão o controller usa a do frame
+                    // anterior.
+                    .before(bevy_tnua::prelude::TnuaPipelineSystems::Logic)
                     // O driver de animação da engine lê `grounded`/`vel_*`
                     // do `Player` que este sistema espelha; a ordem dele é
                     // contra o `player_movement` da ENGINE (desligado com
@@ -381,20 +400,26 @@ pub(crate) fn install_motion(lua: &Lua, bus: HeroMotionBus) -> mlua::Result<()> 
         Ok((kind.map(DodgeKind::name), kind.map(|kind| kind.profile().0)))
     });
     // viber.vael.attack_motion{ secs, slow, lunge, fx, fz }
-    vael_fn!(lua, vael, "attack_motion", [bus = bus.clone()], move |_, opts: Option<Table>| {
-        let Some(opts) = opts else {
-            return Ok(());
-        };
-        let (fx, fz) = (table_f32(&opts, "fx", 0.0), table_f32(&opts, "fz", 0.0));
-        let face = Vec2::new(fx, fz);
-        bus.request_attack(AttackMotion {
-            secs: table_f32(&opts, "secs", 0.3).clamp(0.0, 2.0),
-            slow: table_f32(&opts, "slow", 0.3).clamp(0.0, 1.0),
-            lunge: table_f32(&opts, "lunge", 0.0).clamp(0.0, 3.0),
-            face: (face.length_squared() > 1e-6).then(|| face.normalize()),
-        });
-        Ok(())
-    });
+    vael_fn!(
+        lua,
+        vael,
+        "attack_motion",
+        [bus = bus.clone()],
+        move |_, opts: Option<Table>| {
+            let Some(opts) = opts else {
+                return Ok(());
+            };
+            let (fx, fz) = (table_f32(&opts, "fx", 0.0), table_f32(&opts, "fz", 0.0));
+            let face = Vec2::new(fx, fz);
+            bus.request_attack(AttackMotion {
+                secs: table_f32(&opts, "secs", 0.3).clamp(0.0, 2.0),
+                slow: table_f32(&opts, "slow", 0.3).clamp(0.0, 1.0),
+                lunge: table_f32(&opts, "lunge", 0.0).clamp(0.0, 3.0),
+                face: (face.length_squared() > 1e-6).then(|| face.normalize()),
+            });
+            Ok(())
+        }
+    );
     Ok(())
 }
 
@@ -544,7 +569,14 @@ fn player_movement(
     typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
     actions: Option<Res<viber::input_map::ActionState>>,
     locomotion: Option<Res<viber::luau::ownership::ScriptSystemOwners>>,
-    runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+    rt_waves: (
+        Option<Res<viber::terrain::runtime::TerrainRuntime>>,
+        Option<Res<viber::terrain::WaterWaveWorld>>,
+        // Vento/amplitude das ondas: a cota da água que o herói sente é a
+        // cota DESENHADA (gerstner), não o espelho plano.
+        Option<Res<viber::worldsys::WeatherState>>,
+        Option<Res<viber::terrain::water_material::WaterConfigResource>>,
+    ),
     collision: Option<Res<viber::physics::TerrainCollisionStatus>>,
     interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     interior_state: Option<Res<bevy_ext_core::InteriorLighting>>,
@@ -555,45 +587,77 @@ fn player_movement(
         &mut Transform,
         &mut VaelController,
         &mut Player,
-        Option<&mut KinematicCharacterController>,
-        Option<&KinematicCharacterControllerOutput>,
+        Option<&mut TnuaController<HeroScheme>>,
+        Option<&mut LinearVelocity>,
+        Option<&mut TnuaToggle>,
+        Option<&mut Position>,
+        Option<&mut Rotation>,
         Option<&mut TeleportSettle>,
         Option<&mut Knockback>,
         Option<&viber::spawn_gate::SpawnGated>,
         Option<&mut viber::terrain::WaterKinematics>,
+        Option<&crate::boat::RidingBoat>,
     )>,
     mut sfx: MessageWriter<bevy_ext_core::SfxEvent>,
 ) {
     let dt = time.delta_secs().min(0.05);
     let now = time.elapsed_secs();
-    let runtime = runtime.as_deref();
+    let (runtime, waves) = (rt_waves.0.as_deref(), rt_waves.1.as_deref());
+    let (weather, water_cfg) = (rt_waves.2.as_deref(), rt_waves.3.as_deref());
+    // Env das ondas (mesma fonte do `sync_water_materials`).
+    let (wind, wind_strength) = weather
+        .map(|w| (w.wind, w.wind_strength))
+        .or_else(|| water_cfg.map(|c| (c.0.wind, c.0.wind_strength)))
+        .unwrap_or(([0.7, 0.25], 1.5));
+    let wave_amp = water_cfg.map_or(1.0, |c| c.0.wave_amp);
     // Um script reclamou o corpo (`viber.own_system("locomotion")` +
     // `viber.set_pose`): o controller a pé não escreve por cima.
     if locomotion
         .as_ref()
         .is_some_and(|owners| owners.owns(viber::luau::ownership::SYSTEM_LOCOMOTION))
     {
-        for (_, _, _, _, controller, _, _, _, _, _) in &mut players {
-            if let Some(mut controller) = controller {
-                controller.translation = Some(Vec3::ZERO);
+        for (_, _, _, _, tnua, velocity, _, _, _, _, _, _, _, _) in &mut players {
+            if let Some(mut tnua) = tnua {
+                tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk::default();
+            }
+            if let Some(mut velocity) = velocity {
+                velocity.0 = Vec3::ZERO;
             }
         }
         return;
     }
-    // Modal aberto consome o teclado — e limpa o `translation` pendente do
-    // character controller (persiste em bevy_rapier3d 0.36 e o herói desliza
-    // com o menu aberto).
+    // Modal aberto consome o teclado — e limpa a intenção pendente do
+    // controller (o tnua reaplicava o último `desired_motion` e o herói
+    // deslizava com o menu aberto).
     let blocked = menus.as_ref().is_some_and(|menus| menus.any());
     if blocked {
-        for (_, _, mut controller, mut engine_player, rapier, _, _, _, _, mut kin) in &mut players
+        for (
+            _,
+            _,
+            mut controller,
+            mut engine_player,
+            tnua,
+            velocity,
+            _,
+            _,
+            _,
+            _,
+            _,
+            _,
+            mut kin,
+            _,
+        ) in &mut players
         {
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
             controller.dodge = None;
             controller.lunge = None;
-            if let Some(mut rapier) = rapier {
-                rapier.translation = Some(Vec3::ZERO);
+            if let Some(mut tnua) = tnua {
+                tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk::default();
+            }
+            if let Some(mut velocity) = velocity {
+                velocity.0 = Vec3::ZERO;
             }
             if let Some(ref mut kin) = kin {
                 kin.velocity = Vec3::ZERO;
@@ -641,22 +705,56 @@ fn player_movement(
         mut transform,
         mut controller,
         mut engine_player,
-        rapier,
-        output,
+        mut tnua,
+        mut velocity,
+        mut toggle,
+        mut position,
+        mut rotation,
         mut settle,
         mut knockback,
         gated,
         mut water_kin,
+        riding,
     ) in &mut players
     {
+        // O tnua exige o reset da fila de ações em cada frame, ANTES de
+        // alimentar (salto) e de escrever a basis.
+        if let Some(tnua) = tnua.as_deref_mut() {
+            tnua.initiate_action_feeding();
+        }
         if gated.is_some() {
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
             controller.dodge = None;
             controller.lunge = None;
-            if let Some(mut rapier) = rapier {
-                rapier.translation = Some(Vec3::ZERO);
+            if let Some(tnua) = tnua.as_deref_mut() {
+                tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk::default();
+            }
+            if let Some(velocity) = velocity.as_deref_mut() {
+                velocity.0 = Vec3::ZERO;
+            }
+            if let Some(ref mut kin) = water_kin {
+                kin.velocity = Vec3::ZERO;
+            }
+            sync_engine_player(&mut engine_player, &controller);
+            continue;
+        }
+        // A bordo: quem conduz é o `boat.rs` (o leme e os remos escrevem no
+        // casco; o herói é assento). O controller a pé não pode puxar o corpo
+        // para o chão nem o solver empurrá-lo — o corpo é desligado no
+        // embarque (`RigidBodyDisabled`) e volta ao sair.
+        if riding.is_some() {
+            controller.vel_x = 0.0;
+            controller.vel_z = 0.0;
+            controller.vel_y = 0.0;
+            controller.dodge = None;
+            controller.lunge = None;
+            if let Some(tnua) = tnua.as_deref_mut() {
+                tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk::default();
+            }
+            if let Some(velocity) = velocity.as_deref_mut() {
+                velocity.0 = Vec3::ZERO;
             }
             if let Some(ref mut kin) = water_kin {
                 kin.velocity = Vec3::ZERO;
@@ -683,24 +781,18 @@ fn player_movement(
             controller.jump_cooldown = 0.0;
             controller.can_jump = true;
             controller.in_water = false;
-            commands
-                .entity(entity)
-                .remove::<Knockback>();
+            commands.entity(entity).remove::<Knockback>();
         }
         let settling = match settle.as_deref_mut() {
             Some(state) if state.frames > 0 => {
                 state.frames -= 1;
                 if state.frames == 0 {
-                    commands
-                        .entity(entity)
-                        .remove::<TeleportSettle>();
+                    commands.entity(entity).remove::<TeleportSettle>();
                 }
                 true
             }
             Some(_) => {
-                commands
-                    .entity(entity)
-                    .remove::<TeleportSettle>();
+                commands.entity(entity).remove::<TeleportSettle>();
                 false
             }
             None => false,
@@ -724,21 +816,38 @@ fn player_movement(
         let interior_floor = (interior_mode
             && interior_state.as_deref().is_some_and(|state| state.active))
         .then_some(bevy_ext_core::INTERIOR_FLOOR_Y);
-        let water_y = (!interior_mode)
+        // Uma única query de domínio por frame: superfície, profundidade
+        // (máscara de praia das ondas) e corrente saem daqui.
+        let water_domain = (!interior_mode)
             .then(|| {
                 runtime.and_then(|rt| {
-                    rt.water_surface_at(transform.translation.x, transform.translation.z)
+                    rt.water_domain_at(transform.translation.x, transform.translation.z)
                 })
             })
             .flatten();
+        // Cota DESENHADA: o vértice da água recebe o Gerstner; nadar acompanha.
+        let water_y = water_domain.map(|d| {
+            d.surface_y
+                + viber::terrain::surface_height_at(
+                    transform.translation.xz(),
+                    now,
+                    wind,
+                    wind_strength,
+                    wave_amp,
+                    d.depth,
+                )
+        });
         let submersion = water_y
             .map(|wy| (wy - transform.translation.y).max(0.0))
             .unwrap_or(0.0);
         let water_drag = water_submersion_drag(submersion);
         let water_flow = if !interior_mode && submersion > 0.18 {
-            runtime
-                .and_then(|rt| rt.water_domain_at(transform.translation.x, transform.translation.z))
-                .map(|d| d.flow)
+            water_domain
+                .map(|d| {
+                    waves.map_or(d.flow, |w| {
+                        w.effective_flow_at(transform.translation.xz(), d.flow)
+                    })
+                })
                 .unwrap_or(Vec2::ZERO)
         } else {
             Vec2::ZERO
@@ -757,9 +866,12 @@ fn player_movement(
             let mut camera_yaw_deg = 0.0f32;
             // Durante a esquiva o A/D é a DIREÇÃO do salto, não um giro: a
             // vista rodar a meio do salto lateral desfazia o movimento.
-            let steer_input = if controller.dodge.is_some() { 0.0 } else { move_x };
-            controller.steer +=
-                (steer_input - controller.steer) * low_pass_factor(dt, STEER_TAU);
+            let steer_input = if controller.dodge.is_some() {
+                0.0
+            } else {
+                move_x
+            };
+            controller.steer += (steer_input - controller.steer) * low_pass_factor(dt, STEER_TAU);
             if steer_input == 0.0 && controller.steer.abs() < 1e-3 {
                 controller.steer = 0.0;
             }
@@ -795,8 +907,14 @@ fn player_movement(
         if let Some(kind) = dodge_request
             && controller.dodge.is_none()
         {
-            let burst_dir =
-                dodge_direction(kind, move_x, move_forward, view_yaw_deg, facing, interior_mode);
+            let burst_dir = dodge_direction(
+                kind,
+                move_x,
+                move_forward,
+                view_yaw_deg,
+                facing,
+                interior_mode,
+            );
             let (duration, distance, hop) = kind.profile();
             controller.dodge = Some((kind, Burst::new(burst_dir, distance, duration)));
             if hop > 0.0 && !interior_mode {
@@ -834,7 +952,11 @@ fn player_movement(
         } else {
             1.0
         };
-        let attack_slow = if attacking { controller.attack_slow } else { 1.0 };
+        let attack_slow = if attacking {
+            controller.attack_slow
+        } else {
+            1.0
+        };
         let flow_drift = water_flow_drift(submersion, water_flow);
         let desired = dir * controller.speed * sprint_mult * input_mag * attack_slow * water_drag
             + Vec3::new(flow_drift.x, 0.0, flow_drift.y);
@@ -869,27 +991,26 @@ fn player_movement(
         if vel_x * vel_x + vel_z * vel_z > 0.25 {
             controller.last_moving_time = now;
         }
-        let mut motion = Vec3::new(controller.vel_x, 0.0, controller.vel_z) * dt;
+        // Lunge e empurrão entram na VELOCIDADE pedida (m/s): o tnua acelera
+        // até ela e o solver resolve paredes/props — escrito no Transform
+        // atravessava tudo.
+        let mut extra_motion = Vec3::ZERO;
         if let Some(lunge) = controller.lunge.as_mut() {
-            motion += lunge.dir * lunge.speed() * dt;
+            extra_motion += lunge.dir * lunge.speed();
             lunge.t += dt;
             if lunge.done() {
                 controller.lunge = None;
             }
         }
-        // O empurrão de um golpe entra no MESMO pedido ao character
-        // controller (escrito no Transform atravessava paredes e props).
         if let Some(knockback) = knockback.as_deref_mut() {
-            motion +=
-                knockback.velocity.with_y(0.0) * knockback_travel_factor(dt);
+            extra_motion += knockback.velocity.with_y(0.0);
             knockback.velocity *= knockback_decay_factor(dt);
             if knockback.velocity.length() < KNOCKBACK_EPSILON {
                 knockback.velocity = Vec3::ZERO;
-                commands
-                    .entity(entity)
-                    .remove::<Knockback>();
+                commands.entity(entity).remove::<Knockback>();
             }
         }
+        let desired_motion = Vec3::new(controller.vel_x, 0.0, controller.vel_z) + extra_motion;
 
         let dodge_keeps_facing = controller
             .dodge
@@ -903,6 +1024,11 @@ fn player_movement(
             let target = facing_rotation(face);
             let factor = facing_slerp_factor(transform.rotation, target, rate, dt);
             transform.rotation = transform.rotation.slerp(target, factor);
+            // O writeback do Avian reescreve o `Transform` a partir da
+            // `Rotation` do corpo: é aqui que o facing persiste.
+            if let Some(rotation) = rotation.as_deref_mut() {
+                rotation.0 = transform.rotation;
+            }
         }
 
         if jump_pressed {
@@ -918,7 +1044,13 @@ fn player_movement(
                 controller.grounded,
             )
         {
-            controller.vel_y = jump_velocity(controller.jump_height);
+            // Em terra o impulso é a AÇÃO do tnua (altura no asset); na água
+            // funda (controller desligado) e sem corpo é o `vel_y` manual.
+            if submersion >= SWIM_DEPTH || tnua.is_none() {
+                controller.vel_y = jump_velocity(controller.jump_height);
+            } else if let Some(tnua) = tnua.as_deref_mut() {
+                tnua.action(HeroScheme::Jump(TnuaBuiltinJump::default()));
+            }
             controller.is_jumping = true;
             controller.can_jump = false;
             controller.jump_cooldown = JUMP_COOLDOWN;
@@ -982,6 +1114,7 @@ fn player_movement(
         };
 
         let submersion = water_y.map(|wy| (wy - py).max(0.0)).unwrap_or(0.0);
+        let swimming = submersion >= SWIM_DEPTH;
         let pre_entry_vel_y = controller.vel_y;
         let (next_vy, now_in_water, plunge_speed) = integrate_water_vertical(
             controller.vel_y,
@@ -990,7 +1123,6 @@ fn player_movement(
             controller.grounded,
             dt,
         );
-        controller.vel_y = next_vy;
         controller.in_water = now_in_water;
         if plunge_speed >= WATER_ENTRY_SPEED_MIN {
             sfx.write(bevy_ext_core::SfxEvent {
@@ -998,36 +1130,72 @@ fn player_movement(
                 position: Some(Vec3::new(px, water_y.unwrap_or(py), pz)),
             });
         }
-        controller.vel_y = controller.vel_y.max(-TERMINAL_VELOCITY);
-        motion.y += controller.vel_y * dt;
+        if swimming {
+            // Água funda: a integração vertical é nossa (empuxo/corrente).
+            controller.vel_y = next_vy.max(-TERMINAL_VELOCITY);
+        } else if let Some(velocity) = velocity.as_deref() {
+            // Em terra a vertical é do tnua: `vel_y` é a leitura do corpo.
+            controller.vel_y = velocity.0.y;
+        }
 
-        match rapier {
-            Some(mut rapier) => {
-                rapier.translation = Some(motion);
-                let on_collider = output.is_some_and(|out| out.grounded);
-                if on_collider {
-                    controller.grounded = true;
-                    if controller.vel_y < 0.0 {
+        // O tnua fica DESLIGADO na água funda: aí conduzimos `LinearVelocity`
+        // à mão (empuxo, corrente e o impulso para a margem).
+        if let Some(toggle) = toggle.as_deref_mut() {
+            *toggle = if swimming {
+                TnuaToggle::Disabled
+            } else {
+                TnuaToggle::Enabled
+            };
+        }
+
+        match tnua.as_deref_mut() {
+            Some(tnua) => {
+                if swimming {
+                    if let Some(velocity) = velocity.as_deref_mut() {
+                        velocity.0 = desired_motion + Vec3::Y * controller.vel_y;
+                    }
+                    controller.grounded = false;
+                } else {
+                    tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk {
+                        desired_motion: desired_motion.with_y(0.0),
+                        desired_forward: None,
+                    };
+                    controller.grounded = !tnua.is_airborne().unwrap_or(true);
+                    if controller.grounded && controller.vel_y < 0.0 {
                         controller.vel_y = 0.0;
                     }
-                } else if interior_floor.is_some_and(|floor| transform.translation.y < floor) {
-                    transform.translation.y = interior_floor.unwrap_or(0.0);
+                }
+                // Redes analíticas: soalho da bolsa de interior e coluna voxel
+                // ainda por assar (a `Position` é a pose autoritativa).
+                if let Some(floor) = interior_floor.filter(|floor| py < *floor) {
+                    // A folga do `float_height` é OBRIGATÓRIA: com os pés
+                    // exactamente na superfície o disco do sensor fica
+                    // coplanar com o trimesh e o tnua deixa de ver o chão.
+                    if let Some(position) = position.as_deref_mut() {
+                        position.0.y = floor + viber::player::HERO_FLOAT_HEIGHT;
+                    }
+                    if let Some(velocity) = velocity.as_deref_mut() {
+                        velocity.0.y = 0.0;
+                    }
                     controller.vel_y = 0.0;
                     controller.grounded = true;
-                    rapier.translation = Some(Vec3::new(motion.x, 0.0, motion.z));
-                } else if (!terrain_ready || settling) && transform.translation.y <= ground {
-                    transform.translation.y = ground;
+                } else if (!terrain_ready || settling) && py <= ground {
+                    // Ver o comentário acima: o snap deixa a folga do sensor.
+                    if let Some(position) = position.as_deref_mut() {
+                        position.0.y = ground + viber::player::HERO_FLOAT_HEIGHT;
+                    }
+                    if let Some(velocity) = velocity.as_deref_mut() {
+                        velocity.0.y = velocity.0.y.max(0.0);
+                    }
                     controller.vel_y = 0.0;
                     controller.grounded = true;
-                    // A queda DESTE frame ainda está na fila do CCT: sem
-                    // isto o Rapier aplica `motion.y`, o herói fura o chão
-                    // analítico e `surface_below` deixa de o ver.
-                    rapier.translation = Some(Vec3::new(motion.x, 0.0, motion.z));
-                } else {
-                    controller.grounded = false;
                 }
             }
+            // Sem corpo (testes headless, ou herói antes do plugin): movimento
+            // direto como antes, com a gravidade integrada aqui.
             None => {
+                let mut motion = desired_motion * dt;
+                motion.y = controller.vel_y * dt;
                 transform.translation += motion;
                 if transform.translation.y <= ground {
                     transform.translation.y = ground;
@@ -1148,7 +1316,10 @@ mod tests {
     #[test]
     fn grounded_without_input_brakes_fast_then_stops() {
         let (x, z) = integrate_horizontal(3.0, -2.0, Vec3::ZERO, true, false, 0.016);
-        assert!(x > 0.0 && x < 3.0 && z < 0.0 && z > -2.0, "trava, não corta");
+        assert!(
+            x > 0.0 && x < 3.0 && z < 0.0 && z > -2.0,
+            "trava, não corta"
+        );
         let (mut x, mut z) = (4.0, 0.0);
         for _ in 0..30 {
             (x, z) = integrate_horizontal(x, z, Vec3::ZERO, true, false, 0.016);
@@ -1229,7 +1400,10 @@ mod tests {
     fn dodge_and_melee_scripts_compile() {
         let lua = Lua::new();
         for (name, source) in [
-            ("abilities.lua", include_str!("../scripts/game/abilities.lua")),
+            (
+                "abilities.lua",
+                include_str!("../scripts/game/abilities.lua"),
+            ),
             ("combat.lua", include_str!("../scripts/game/combat.lua")),
         ] {
             if let Err(err) = lua.load(source).set_name(name).into_function() {
@@ -1241,7 +1415,9 @@ mod tests {
     #[test]
     fn install_motion_exposes_dodge_to_lua() {
         let lua = Lua::new();
-        lua.globals().set("viber", lua.create_table().unwrap()).unwrap();
+        lua.globals()
+            .set("viber", lua.create_table().unwrap())
+            .unwrap();
         let bus = HeroMotionBus::default();
         install_motion(&lua, bus.clone()).unwrap();
         let (kind, _): (Option<String>, Option<f32>) =

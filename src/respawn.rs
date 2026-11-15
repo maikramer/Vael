@@ -8,11 +8,11 @@
 use std::collections::BTreeMap;
 
 use bevy::prelude::*;
-use serde_json::{Value, json};
+use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use bevy_ext_core::{SfxClip, SfxEvent};
+use serde_json::{Value, json};
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
-use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::UiWriter;
 
@@ -51,44 +51,10 @@ pub fn physics_ground_below(
     max_drop: f32,
     exclude: &[bevy::ecs::entity::Entity],
 ) -> Option<f32> {
-    use bevy_rapier3d::prelude::{
-        QueryFilter, RapierContextColliders, RapierContextSimulation, RapierQueryPipeline,
-        RapierRigidBodySet,
-    };
-    use bevy_rapier3d::rapier::parry::query::DefaultQueryDispatcher;
-    let context = world
-        .iter_entities()
-        .find(|e| e.contains::<RapierContextSimulation>())
-        .map(|e| e.id())?;
-    let simulation = world.get::<RapierContextSimulation>(context)?;
-    let colliders = world.get::<RapierContextColliders>(context)?;
-    let bodies = world.get::<RapierRigidBodySet>(context)?;
-    let mut skip = exclude.to_vec();
-    let mut stack = exclude.to_vec();
-    while let Some(entity) = stack.pop() {
-        if let Some(children) = world.get::<Children>(entity) {
-            for child in children.iter() {
-                if !skip.contains(&child) {
-                    stack.push(child);
-                    skip.push(child);
-                }
-            }
-        }
-    }
-    let keep = |entity: bevy::ecs::entity::Entity,
-                _collider: &bevy_rapier3d::rapier::geometry::Collider| { !skip.contains(&entity) };
-    let filter = QueryFilter::default().exclude_sensors().predicate(&keep);
-    let origin = Vec3::new(x, from_y, z);
-    let distance = RapierQueryPipeline::new_scoped(
-        &simulation.broad_phase,
-        colliders,
-        bodies,
-        &filter,
-        &DefaultQueryDispatcher,
-        |pipeline| pipeline.cast_ray(origin, Vec3::NEG_Y, max_drop, true),
-    )
-    .map(|(_, toi)| toi)?;
-    (distance > 0.01).then_some(from_y - distance)
+    // O `SpatialQuery` do Avian é um SystemParam: o raio (com a exclusão da
+    // hierarquia do prop e dos sensores) vive na engine, partilhado com o
+    // teleporte do `viber::player`.
+    viber::player::physics_ground_below(world, x, z, from_y, max_drop, exclude)
 }
 
 /// Y de aterragem de um teleporte resolvido contra a física, com o terreno

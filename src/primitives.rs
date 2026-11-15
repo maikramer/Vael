@@ -19,9 +19,9 @@
 
 use std::collections::HashMap;
 
+use avian3d::prelude::Collider;
 use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
-use bevy_rapier3d::prelude::Collider;
 
 use bevy_ext_gradmesh::{
     GradMeshMaterial, GradMeshPlugin, GradShape, PrimitivePart, ShapeDetail, VERTEX_GRADIENT_DARK,

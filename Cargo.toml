@@ -39,10 +39,22 @@ bevy_speech_bubbles = "0.3"
 # Partículas GPU (Bevy 0.20): simulação/sorting no GPU, efeito de brasas.
 # Opcional — o sistema CPU do Viber continua a ser o default.
 bevy_hanabi = { version = "=0.20.0", default-features = false, features = ["3d"], optional = true }
+# Relva GPU: o renderer `bevy_grass` e o bake de máscaras vivem no crate
+# reutilizável `bevy_ext_grass` (crates/bevy_ext_grass no monorepo); o Vael
+# fica só com o adaptador do terreno/biomas (`src/grass.rs`). A feature
+# `avian` liga o trampling pelo collider do herói.
+bevy_ext_grass = { path = "../bevy_extensions/crates/bevy_ext_grass" }
 # Árvores procedurais (teste): meshes gerados em runtime a partir de presets,
 # com LOD próprio (`TreeLod`). O crate fixa `bevy ^0.20`, a mesma versão da
 # engine, por isso as features unificam sem duplicar o Bevy.
 bevy_flora = "0.47"
+# Luzes práticas (fogueiras/lanternas): pool orçamentado com histerese e
+# cross-fade, flicker/fuel-bed e chama billboard. Mesmo Bevy (^0.20) e o
+# mesmo MSRV 1.97.1. PIN EXATO de propósito: o crate tem semanas, o README
+# declara-o "Vibe Coded" (sem revisão humana linha a linha) — subir de versão
+# é uma decisão consciente, não um `cargo update`. Ver src/lights.rs e o gate
+# `VAEL_PRACTICAL_LIGHTS`.
+bevy_lights = "=0.5.0"
 # UI do jogo: XAML/WPF-like sobre bevy_ui (bindings por reflexão, estilos,
 # controlos e comandos). O crate alvo é bevy ^0.20; o Vael fixa 0.20.1.
 bevy_pf = "0.5.2"
@@ -89,10 +101,10 @@ viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
 moonshine-save = "0.8" 
 # Character controller do herói (o controller/collider nascem no spawner da
 # engine; o movimento passa a ser nosso com `player_camera:false`).
-bevy_rapier3d = { version = "0.37", default-features = false, features = [
-    "dim3",
-    "async-collider",
-] }
+# Avian + tnua: o corpo do herói é dinâmico e o tnua resolve o movimento.
+avian3d = "0.8"
+bevy-tnua = "0.33"
+bevy-tnua-avian3d = "0.13"
 # Definições autoradas na cena (`world/settings/*.bsn`, editadas no Jackdaw):
 # o contrato partilhado com as extensões do editor. O `bevy_ext_world` é o
 # mesmo crate que o Viber usa como `bevy_world_xml` (path igual, unifica).
