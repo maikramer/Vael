@@ -45,10 +45,18 @@ impl Plugin for VaelPrimitivesPlugin {
     }
 }
 
+/// Valor de `VAEL_PRIMITIVES` aparado e em minúsculas (o gate e o detalhe
+/// comparam-no por igual — `VAEL_PRIMITIVES=OFF` desligava só no papel).
+fn env_value(name: &str) -> Option<String> {
+    std::env::var(name)
+        .ok()
+        .map(|raw| raw.trim().to_ascii_lowercase())
+}
+
 /// `VAEL_PRIMITIVES=standard|std|off|0|false|no` keeps the engine fallback.
 fn primitives_enabled() -> bool {
     !matches!(
-        std::env::var("VAEL_PRIMITIVES").ok().as_deref(),
+        env_value("VAEL_PRIMITIVES").as_deref(),
         Some("standard" | "std" | "off" | "0" | "false" | "no")
     )
 }
@@ -58,15 +66,13 @@ struct PrimitiveDetail(ShapeDetail);
 
 impl Default for PrimitiveDetail {
     fn default() -> Self {
-        Self(
-            match std::env::var("VAEL_PRIMITIVES_DETAIL").ok().as_deref() {
-                Some("minimal") => ShapeDetail::Minimal,
-                Some("low") => ShapeDetail::Low,
-                Some("medium") => ShapeDetail::Medium,
-                Some("extreme") => ShapeDetail::Extreme,
-                _ => ShapeDetail::High,
-            },
-        )
+        Self(match env_value("VAEL_PRIMITIVES_DETAIL").as_deref() {
+            Some("minimal") => ShapeDetail::Minimal,
+            Some("low") => ShapeDetail::Low,
+            Some("medium") => ShapeDetail::Medium,
+            Some("extreme") => ShapeDetail::Extreme,
+            _ => ShapeDetail::High,
+        })
     }
 }
 
