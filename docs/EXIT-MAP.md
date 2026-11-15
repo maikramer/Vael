@@ -9,7 +9,10 @@ Estado vivo do mapeamento **peça → destino → gap → onda** para o fim do
 monólito (162,5k LOC). Dono deste doc: o plano de saída; o estado da
 migração fica no [`MIGRATION.md`](MIGRATION.md), as fases F0–F4 no
 [`ARCH-REVIEW-STUDY.md`](ARCH-REVIEW-STUDY.md), as ondas/pacotes no
-`bevy_extensions/docs/PACKAGES.md`. Actualizado a 2026-11-14.
+`bevy_extensions/docs/PACKAGES.md`. Actualizado a 2026-11-15 (o hub
+`bevy_ext_scene_runtime` foi **apagado** — órfão, zero consumidores; as
+linhas que o tinham como destino foram re-mapeadas para crates de domínio,
+sem crate-hub novo; a carga de mundo é o formato bsn/Jackdaw).
 
 ## Decisões (locked-in, 2026-11-14)
 
@@ -48,19 +51,19 @@ incremental de gémeos parte o jogo em silêncio).
 |---|---|---|---|---|
 | app.rs `build_app` (1.162) | morre — `src/app.rs` do Vael | aterrar branch exit2 | **A** | ✅ validada, bloqueada na água |
 | gémeos vitals/input_map/a11y/locale/dialogue/camera-glue/save-bridge | core/engine/save | só aterrar | **A** | ✅ em `integrate2/all` (A1) |
-| streaming.rs | scene_runtime | fork ao nível; swap bloqueado no ciclo | **B** | ✅ fork pronto (`af65a86`) |
+| streaming.rs | domínio de cena na G (hub `scene_runtime` apagado 2026-11-15) | fork ao nível, reconciliado no monólito (`f565750`) | **B** | ✅ (`af65a86`) |
 | config.rs (594) | **`bevy_ext_engine::config`** | nenhum — shim COMPLETO nos dois lados | **B** | ✅ (`66d9224`) |
-| interact.rs (188) | scene_runtime | re-sync feito; swap no ciclo | **B** | ✅ (`77eb1b0`) |
-| spawn_gate.rs (422, monólito avian) | scene_runtime | **port avian feito**; swap no ciclo | **B** | ✅ (`10a62f9`) |
+| interact.rs (188) | domínio de interação na G (hub apagado) | re-sync feito; cópia única é o monólito | **B** | ✅ (`77eb1b0`) |
+| spawn_gate.rs (422, monólito avian) | **`bevy_ext_physics`** na G (hub apagado) | **port avian feito**, reconciliado no monólito (`f565750`) | **B** | ✅ (`10a62f9`) |
 | save `apply_save` | — só-binário | morre na H | **B** | ✅ documentado (`6365a4b`) |
-| attachment (288) | scene_runtime (`GltfScenePending`) | extraído; swap no ciclo | **B** | ✅ (`1c29919`) |
+| attachment (288) | **`bevy_ext_gltf`** na G (`GltfScenePending`) | extraído na B; cópia única é o monólito | **B** | ✅ (`1c29919`) |
 | audio_space (291) | `bevy_ext_audio` | nenhum — shim COMPLETO | **B** | ✅ (`e1173c2`) |
 | hud DISPLAY_FONT (313) | engine `hud_assets` | já feito (A3) | **B** | ✅ |
 | input_map `gather_actions` | morre com `ExternalActionState` | apagar na aterragem da wave A | **B** | ⏳ |
 | postfx fork (349) | `bevy_ext_postfx` | port semântico + shim | **C** | 🔄 |
 | nav fork (72) | `bevy_ext_nav` | re-sync + shim | **C** | 🔄 |
 | roads (4) / textures | `bevy_ext_terrain_runtime` | re-sync + shim | **C** | 🔄 |
-| recipes/spawn.rs (633 à frente: avian, 113 gradmesh) | `bevy_ext_scene_runtime` | port + swap (no ciclo) | **C** | 🔄 |
+| recipes/spawn.rs (633 à frente: avian, 113 gradmesh) | spawn → domínio de cena na G (hub apagado) | reconciliado no monólito (`f565750`) | **C** | ✅ no monólito |
 | ui data layer (UiData/UiWriter/UiScriptBinds/UiModalsOpen/UiFocusedInput) | `bevy_ext_ui` | **troca ATÓMICA** — só 234 lin de diff, zero ficheiros só-no-monólito | **C** | 🔄 |
 | ui presentation (~18k tree/style/tween) | morre (bevy_pf é o dono) | nenhum no jogo | **H** | — |
 | terrain runtime + water fork (1.275) + cliffs/shore + voxel avian | `bevy_ext_terrain_runtime` + `bevy_ext_water` (já avian) | portar pós-água; contratos do `host.rs` | **D** | 🚫 bloqueada na água |
@@ -70,7 +73,7 @@ incremental de gémeos parte o jogo em silêncio).
 | `viber.ecs` mirror (2.1k) | **morre** (0 usos no jogo) | remover módulo + gate `ecs_mirror` | **F** | ⏳ |
 | `viber.lua` REPL | adapter BRP no `viber_tools_runtime` | eval na VM do host novo | **F** | ⏳ |
 | `viber.scene --live` / `tool --live` | **reformados** (Jackdaw live-edit) | — | **F** | decisão ✅ |
-| **ponte do scene_runtime ao monólito (18 módulos)** | morre com o luau | **desbloqueia TODOS os swaps de B/C** | **F** | 🔑 |
+| ~~ponte do scene_runtime ao monólito (18 módulos)~~ | **crate apagado 2026-11-15** (órfão) | gémeos morreram com ele; módulos saem do monólito directo para domínio | **F/G** | ✅ obsoleta |
 | worldsys drivers (daycycle/sun/weather/atmosphere/interior) | `bevy_ext_engine::worldsys` (já lá) | UM dono p/ `AtmosphereState`/`BiomeRegions` (postfx::env vs engine); Vael troca 7 refs | **G** | ⏳ |
 | ambient.rs (1.665) | repartir: SFX→audio, névoa→postfx/elements, sombras→bevy_lights, gestos→animation | esvaziar | **G** | ⏳ |
 | music.rs cópia (946) | `bevy_ext_audio::music` | apagar cópia | **G** | ⏳ |
@@ -88,29 +91,31 @@ a default com a infra `qa.py` nova e apagar os caminhos Lua.
 - **A** — aterrar `integrate2/all` + `exit2/app-assembly` (bloqueada no
   WIP de água do monólito; runbook na memória).
 - **B** ✅ (`exit3/wave-b`, 7 commits) — streaming (forks ao nível),
-  config → **`bevy_ext_engine::config`** com shim COMPLETO no monólito e no
-  scene_runtime (um só `GameConfig` hoje), interact re-sync, spawn_gate
-  **portado a avian** no scene_runtime (espelha o WIP do monólito),
-  attachment extraído, audio_space → `bevy_ext_audio` com shim COMPLETO,
-  save `apply_save`/`SavePlugin` documentados só-binário (morrem na H),
-  hud font confirmado (A3). Gates: workspace **1081/0**, monólito
-  **1010/3-fixtures**, scene_runtime 63/0.
+  config → **`bevy_ext_engine::config`** com shim COMPLETO no monólito (um
+  só `GameConfig` hoje), interact re-sync, spawn_gate **portado a avian**
+  (espelhava o WIP do monólito), attachment extraído, audio_space →
+  `bevy_ext_audio` com shim COMPLETO, save `apply_save`/`SavePlugin`
+  documentados só-binário (morrem na H), hud font confirmado (A3). Gates:
+  workspace **1081/0**, monólito **1010/3-fixtures**, scene_runtime 63/0
+  (as cópias do scene_runtime foram apagadas com o crate, 2026-11-15).
 - **C** 🔄 (`exit3/wave-c`) — nav/roads/textures/postfx(349 semântico)/
   spawn(633 avian+gradmesh)/**ui data layer atómica** (234 lin de diff,
   zero ficheiros só-no-monólito).
 - **E** ✅ (`exit3/avian`, 3 commits) — `bevy_ext_physics` portado a
   **avian3d 0.8**, 50/50 testes; apanhou divergência real do monólito
   (`bounds_cuboid` a metade do AABB — validar na wave H).
-- **Descoberta estrutural (B):** o swap literal para o `scene_runtime` é
-  bloqueado por **ciclo** — o crate ainda dep do monólito pela ponte de 18
-  módulos (`viber::{luau, scene, xml, …}`). O desbloqueio é a **morte da
-  ponta do luau (wave F)**: depois disso, os forks sincronizados em B/C
-  trocam com 1 linha cada. Destinos sem ciclo (engine/audio/core/save/ui)
-  já têm shim completo.
+- **Descoberta estrutural (B), desfecho 2026-11-15:** o swap literal para o
+  `scene_runtime` estava bloqueado por **ciclo** — o crate dep do monólito
+  pela ponte de 18 módulos (`viber::{luau, scene, xml, …}`). O crate foi
+  **apagado** (órfão) e a via de swaps morreu com ele: a saída é directa,
+  monólito → crates de domínio nas fases D/F/G. Destinos sem ciclo
+  (engine/audio/core/save/ui) já têm shim completo.
 - **D** — portar o terreno/água para o `bevy_ext_terrain_runtime` DEPOIS
   de a água da sessão concorrente aterrar (não portar alvo em movimento).
 - **F** — morte do `viber.ecs` + famílias luau por call-sites no BMS +
-  adapter BRP do `viber.lua`; **é o desbloqueio dos swaps do scene_runtime**.
+  adapter BRP do `viber.lua`; **desbloqueia a saída do resto do runtime
+  para os crates de domínio** (o desbloqueio dos swaps do scene_runtime
+  ficou obsoleto — crate apagado a 2026-11-15).
 - **G** — worldsys/ambient/music/ai/animation (pós-C; o `d8d4db7` "gestos
   sem rig" do main já mata o `drive_player_animation`).
 - **H** — apagar a dep `viber`, arquivar o monólito; gate final
@@ -124,5 +129,6 @@ a default com a infra `qa.py` nova e apagar os caminhos Lua.
   worldsys 11). Lua: **1807 call sites**, 106 namespaces (viber.ui 256,
   load 149, toast 108, game 96, sound 87; `viber.vael` 80 é do próprio
   jogo). Monólito: **162.501 LOC**. Crates extraídos sem consumidor:
-  **54.691 LOC** (terrain_runtime 27,4k; engine 10,8k; scene_runtime 5,2k;
+  **54.691 LOC** na medida (terrain_runtime 27,4k; engine 10,8k;
+  scene_runtime 5,2k — **apagado a 2026-11-15**, fica ~49,5k hoje;
   physics 3k; luau-BMS 2,4k; ai 2,2k; audio 1,9k; nav 1,7k).

@@ -1,5 +1,9 @@
 # Estudo de padronização da arquitectura de desenvolvimento (2026-11-14)
 
+> **2026-11-15:** o crate `bevy_ext_scene_runtime` foi **apagado** (órfão,
+> zero consumidores; ver [`DELETE-MONOLITH.md`](DELETE-MONOLITH.md)). As
+> linhas B2/B4/E3 que o citam ficam como história da medida de 2026-11-14.
+
 > **Estudo de 2026-11-14.** Define o standard de engenharia para o **Vael** e o
 > **`bevy_extensions`**, mede o desvio actual e faseia a convergência
 > (S0–S4). Âmbito decidido: os dois checkouts do jogo/engine; `viber-tools`,

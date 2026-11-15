@@ -16,7 +16,7 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
 | Refs `viber::` no Vael (Rust) | **348** (era 257 — a composição própria passa a citar mais módulos, mas a maioria resolve a shims de crates) |
 | Módulos citados pelo `src/app.rs` do Vael | 55 (deles: 5 já só re-export de crates — config/audio_space/ik/render_lod/terrain_host; meshopt/project/textures/xml shims de 2–12 lin) |
 | Call-sites Lua | 1.807 em 106 namespaces (superfície: ~113 fns em `luau/api.rs` + grupos compostos input/events/timers/entity/game/props/terrain + `viber.ui.*` 256 + `viber.vael` 80 do próprio jogo) |
-| Ponte `bevy_ext_scene_runtime` → monólito | **3 lin** (era 18 módulos) — morre com o luau |
+| `bevy_ext_scene_runtime` | **APAGADO a 2026-11-15** — órfão (zero consumidores; o jogo corre nas cópias do monólito, reconciliadas em `f565750`) |
 | `luau/` no monólito | **15.947** (24 ficheiros; testes 2.860) |
 | `terrain/` no monólito | **27.592** — WIP de água da sessão concorrente aterra aqui primeiro |
 | `bridge/` + `session.rs` + `profiler/` | ~17.9k — infra do binário `viber run`/CLI |
@@ -32,15 +32,30 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
 - **Código morto compilável-off**: `nav/{backend,tile}.rs` (802 lin — o
   `nav/mod.rs` já é shim e não os declara), `dlss.rs` (a feature `dlss`
   não está no `[features]`), `scene/live.rs` (reformado). Morrem sem port.
-- **O ciclo trava ~22k lin de gémeos**: `bevy_ext_scene_runtime` tem cópias
-  prontas de animation/attachment/hud/interact/meshopt/particles/recipes/
-  scene_loader/spawn_gate/streaming — o swap de 1 linha de cada espera a
-  morte do `luau/` do monólito (32 ficheiros usam `crate::luau`).
+- **[obsoleto 2026-11-15] O ciclo travava ~22k lin de gémeos**: o
+  `bevy_ext_scene_runtime` tinha cópias prontas de
+  animation/attachment/hud/interact/meshopt/particles/recipes/scene_loader/
+  spawn_gate/streaming — o crate foi **APAGADO** (órfão, zero consumidores)
+  e o monólito voltou a ser a única cópia; a saída é directa para os crates
+  de domínio na G.
 - **`reflect.rs` (310) é o ÚLTIMO a sair** — regista no BRP os tipos de
   todos os módulos; sai quando o último módulo sair.
 - 0 refs do Vael: dialogue, dlss, fx_specs, glb_bounds, hot_reload, lint,
   placement, prune, scaffold, senses, script_kind, vinst, rng, audit, bake,
   bsn_cli, cinematic_cli — a maioria é bin-only ou morre direto.
+
+## O crate-hub morreu antes de receber (2026-11-15)
+
+O `bevy_ext_scene_runtime` — o "hub" das waves A–E, onde spawn/
+scene_loader/cinematic/hud iam aterrar — foi **apagado**: era órfão
+(nenhum `Cargo.toml` o dependia; o jogo vivo corre nas cópias gémeas do
+monólito, reconciliadas em `f565750`) e moldava o runtime ao DSL XML
+aposentado. Decisão do dono: **o formato manda** — a carga de mundo é
+`.bsn`/Jackdaw (`bevy_ext_world::bsn`: `WorldNode` + specs tipadas do
+`bevy_ext_scene` + `IsA` + `WorldOrigin`/`SceneNodeId`) e os pedaços de
+runtime saem do monólito DIRECTOS para os crates de domínio nas fases
+D/F/G. Nenhum crate novo volta a nascer moldado ao DSL; o sumário e as
+fases em baixo já reflectem isto.
 
 ## Sumário por destino (LOC calibrado — soma exacta 136.671)
 
@@ -49,7 +64,7 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
 | `bevy_ext_terrain_runtime` | **27.592** | terrain/ inteiro [WIP-água] + o glue `terrain_host` novo |
 | `bevy_ext_engine` | **22.545** | app-glue, cinematic, worldsys, ambient, sky, spawner, water_ssr, player, session, profiler/, hud-glue, menus, ibl, physics_fx, prop_tint, graphics, editor_camera, netplay, frame_pacing, foliage, decal_fx, draw_diag, probes, impact, time_fx… (maioria JÁ tem twin lá) |
 | `bevy_ext_luau` | **16.405** | luau/ 15.947 + hot_reload — o último grande bloco, destrava o resto |
-| `bevy_ext_scene_runtime` | **21.968** | recipes/, scene_loader, particles, animation, interact, attachment, streaming, spawn_gate, placement, hud/ — gémeos prontos, swap travado pelo luau |
+| distribuição G (sem hub — o `bevy_ext_scene_runtime` foi apagado a 2026-11-15) | **21.968** | recipes/→`bevy_ext_world` (formato bsn/Jackdaw) + spawn; scene_loader/hud→`bevy_ext_engine`; spawn_gate→`bevy_ext_physics`; attachment→`bevy_ext_gltf`; particles→crate pequeno; interact/streaming/animation/placement por domínio na G |
 | `viber-tools` (debug) | **14.056** | bridge/ inteiro (`viber.lua` REPL adapter incl.) |
 | **morre** | **12.588** | main.rs, lib.rs, audit, bake, bsn_cli, prune, scaffold, dlss, projectile, nav/{backend,tile}, scene/live |
 | `bevy_ext_world` | **10.301** | scene/ (autoria; só `doc::SceneDoc` é do jogo), lint, project, vinst, xml |
@@ -61,7 +76,7 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
 | shims finais (gltf/core/world/nav) | ~330 | apagar as linhas |
 
 **Ordem de desbloqueio pelo grafo:** (1) **luau → `bevy_ext_luau`** —
-destrava os swaps de engine/scene_runtime/postfx/audio/nav; (2) **reflect**
+destrava a saída de engine/postfx/audio/nav; (2) **reflect**
 para o fim (reflete tipos de todos); (3) **terrain** termina com a WIP de
 água (inclui criar o `terrain_host` que o Vael já referencia); (4)
 **bridge + bin** morrem juntos por último (o adapter BRP do `viber.lua`
@@ -115,12 +130,14 @@ menor risco):
 ~19, `game::{apply_patch,game_to_json,json_to_game}`, componentes,
 `luau_update`, ownership) religam às equivalentes BMS
 (`game_snapshot`/`publish_game_patch` existem; o handle cru mlua morre —
-o BMS gere contextos por entidade). **A ponte do `scene_runtime` (3 lin:
-`AuthoredShadowLight`, `player::{hero_collider,hero_controller,
-landing_position,player_movement}`, `pub use viber::{...}`) morre na F** —
-os tipos do player vão para o core; o `AuthoredShadowLight` para o
-postfx/engine. É isto que desbloqueia os swaps de 1 linha armados na B
-(spawn_gate/interact/attachment/streaming/config no scene_runtime).
+o BMS gere contextos por entidade). **O crate-hub `bevy_ext_scene_runtime`
+foi apagado (2026-11-15)** — os gémeos morreram com ele e o monólito é a
+fonte única (`AuthoredShadowLight`,
+`player::{hero_collider,hero_controller_bundle,landing_position,
+player_movement}`, os re-exports `pub use viber::{…}`). Na F os tipos do
+player vão para o core e o `AuthoredShadowLight` para o postfx/engine; os
+módulos que o hub ia receber saem daqui DIRECTOS para os crates de domínio
+na G (a via dos swaps de 1 linha morreu com o crate).
 
 Gate por onda: `rg 'viber\.[a-z]+' scripts/` a descer + `cargo test
 -p bevy_ext_luau` a subir + QA vivo dos scripts tocados.
@@ -130,15 +147,15 @@ Gate por onda: `rg 'viber\.[a-z]+' scripts/` a descer + `cargo test
 Destinos calibrados pelo inventário (a tabela completa por módulo está no
 sumário acima); os ajustes vs. o rascunho de 2026-11-14:
 
-- `cinematic.rs` (1.583) → **`bevy_ext_engine`** (twin lá; o scene_runtime
-  estava bloqueado pelo ciclo — com o luau morto, ambos resolvem).
+- `cinematic.rs` (1.583) → **`bevy_ext_engine`** (twin lá; a via
+  scene_runtime morreu com o crate apagado — destino directo).
 - `physics.rs` (2.138, KCC) → **reavaliar na hora**: o monólito já tem a
   versão avian e `spawner.rs`/`water_bridge.rs` podem consumi-la; morre só
   se o jogo confirmar que não regista o `PhysicsPlugin` da engine.
-- `hud/` (2.311) → **`bevy_ext_scene_runtime`** (twin pronto; o Vael usa
-  `spawn_hud`/compass/minimap/waypoint/`HudMarkers`), não "morre com
+- `hud/` (2.311) → **`bevy_ext_engine`** (hud-glue; o hub
+  `bevy_ext_scene_runtime` foi apagado a 2026-11-15), não "morre com
   bevy_pf" — o HUD do mundo é autoria `.bsn`, diferente do HUD XAML do
-  jogo.
+  jogo. O Vael usa `spawn_hud`/compass/minimap/waypoint/`HudMarkers`.
 - `scene/` (9k) → **`bevy_ext_world`** (doc/sync/tools/ops/…), exceto
   `live.rs` (morre, reformado) e `cli.rs` (morre com o bin).
 - `bridge/` (14k) → **`viber-tools`** (o crate de debug), não morre: é o
@@ -181,6 +198,7 @@ a autoria é o Jackdaw + `.bsn`.
   `viber debug prof` A/B.
 - **`viber.lua`/qa.py**: sem o adapter BRP, o QA morre antes do monólito —
   F0 do apagamento, não opcional.
-- **Fork-remanescente**: os módulos "shim pendente do ciclo" (spawn_gate/
-  interact/attachment/streaming no monólito) têm cópias vivas até à F — não
-  editar delas (só a cópia do crate).
+- **Fork-remanescente (obsoleto 2026-11-15)**: com o
+  `bevy_ext_scene_runtime` apagado, o monólito voltou a ser a única cópia de
+  spawn_gate/interact/attachment/streaming/… — editar directamente. A regra
+  "não editar o gémeo" volta a valer quando a wave D/F criar novos gémeos.

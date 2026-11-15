@@ -479,8 +479,10 @@ builder da engine**:
   só sobrevive no `viber run` (crate da engine).
 - **Geometria da extração**: os serviços vivem em crates `bevy_ext_*`
   (ui, audio, save, nav, ai, postfx, physics, engine, terrain_runtime,
-  elements, flora, gradmesh, scene, scene_runtime, luau/BMS, gltf, world,
-  core). O monólito re-exporta por shims o que já saiu (`viber::terrain`
+  elements, flora, gradmesh, scene, luau/BMS, gltf, world,
+  core — o `scene_runtime`, extraído nas waves A–E, foi **apagado a
+  2026-11-15**: órfão, zero consumidores; os seus módulos saem do monólito
+  directo para crates de domínio). O monólito re-exporta por shims o que já saiu (`viber::terrain`
   → `bevy_ext_terrain_runtime`, `viber::physics` → `bevy_ext_physics`,
   corpse/ik/ragdoll, render_lod, profiler::timed, RunMode, …) — o jogo
   continua a ver `viber::X` enquanto a troca de imports não for feita módulo

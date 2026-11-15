@@ -95,7 +95,8 @@ medida: `spawn` primeiro (já divergiu), depois postfx, nav, ui, roads.
 ### 2. Extração à frente do consumo: ~67k LOC sem consumidor
 
 `bevy_ext_{ai,audio,luau,nav,physics,engine,terrain_runtime,scene_runtime}`
-foram extraídos mas nenhum checkout os consome ainda; os três últimos nem
+foram extraídos mas nenhum checkout os consome ainda (o `scene_runtime`
+foi apagado a 2026-11-15 — o achado vale como lição); os três últimos nem
 compilam dentro do workspace (path-dep ao monólito / ao checkout Viber, agora
 aposentado — ficam sem compilar até apontarem ao `bevy_ext_viber_engine`). Isto não é
 overengineering no código — é **processo codificado**: o custo aparece na

@@ -137,8 +137,9 @@ reflexão e não precisa do módulo.
   `bevy_rapier3d`/`rapier3d`.
 - **Workspace**: `avian3d = "0.8"` acrescentado às dependências; o
   `bevy_rapier3d` fica só para os crates extraídos excluídos do workspace
-  (`bevy_ext_physics`, `bevy_ext_scene_runtime`, `bevy_ext_terrain_runtime`,
-  `bevy_ext_ai`, `bevy_ext_nav`, `bevy_ext_engine`), que não compilam nem
+  (`bevy_ext_physics`, `bevy_ext_terrain_runtime`,
+  `bevy_ext_ai`, `bevy_ext_nav`, `bevy_ext_engine`; o
+  `bevy_ext_scene_runtime` foi apagado a 2026-11-15), que não compilam nem
   entram em lock — portá-los é follow-up, não gate.
 - **`.jackdaw/components.json` é cache local** (não versionado): ainda lista
   `bevy_rapier3d` porque foi gerado antes; o `jd open .` regenera-o com os
