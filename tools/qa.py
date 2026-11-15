@@ -175,11 +175,14 @@ class Bridge:
         return bool(ready)
 
     def wait_ready(self, timeout: float) -> bool:
-        res = self._debug(
-            "wait-ready", "--timeout", str(int(timeout)), "--quiet",
-            check=False, timeout=timeout + 60,
-        )
-        return bool(res.get("ready"))
+        try:
+            res = self._debug(
+                "wait-ready", "--timeout", str(int(timeout)), "--quiet",
+                check=False, timeout=timeout + 60,
+            )
+        except Exception:  # noqa: BLE001 — bridge morto/sem JSON: não ficou pronto
+            return False
+        return isinstance(res, dict) and bool(res.get("ready"))
 
 
 def screenshot(port: int, out: Path) -> bool:
@@ -498,6 +501,9 @@ def merged(name: str, seen: set | None = None) -> dict:
     out.update({k: v for k, v in data.items() if k not in ("steps", "expect", "extends")})
     out["steps"] += data.get("steps", [])
     merge_expect(out["expect"], data.get("expect", {}))
+    # Só a cadeia actual conta para o ciclo: dois pais a herdar a MESMA base
+    # (losango) são válidos e não podem sair como "extends em ciclo".
+    seen.discard(name)
     return out
 
 
@@ -765,7 +771,10 @@ def build_scene(name: str, copies: list[str], enemies: list[str], size: float, i
     parsed_enemies = []
     for spec in enemies:
         kind, _, n = spec.partition(":")
-        parsed_enemies.append((kind, int(n or 3)))
+        try:
+            parsed_enemies.append((kind, int(n or 3)))
+        except ValueError:
+            die(f"--enemy inválido: {spec!r} (esperado kind:count)")
     SCENE_DIR.mkdir(parents=True, exist_ok=True)
     xml = SCENE_DIR / f"{name}.xml"
     xml.write_text(scene_xml(f"QA {name}", size, parsed_enemies, interior))
@@ -780,7 +789,10 @@ def build_scene(name: str, copies: list[str], enemies: list[str], size: float, i
     for i, spec in enumerate(copies):
         ent, _, at = spec.partition("@")
         if at:
-            x, z = (float(v) for v in at.split(","))
+            try:
+                x, z = (float(v) for v in at.split(","))
+            except ValueError:
+                die(f"--copy inválido: {spec!r} (esperado nome@x,z)")
         else:
             x, z = (i - (len(copies) - 1) / 2) * 4.0, 4.0
         found = find_block(ent)
