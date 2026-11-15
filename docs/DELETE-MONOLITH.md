@@ -62,24 +62,41 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
   engine/postfx/audio. `scene/` (9.1k) e o grupo spawner/recipes/
   scene_loader (~17.5k) ficaram para a última onda (bloqueados por
   physics/luau/contratos — documentado no relatório do agente).
-- **INTEGRAÇÃO do host** — construída (`bms_bridge.rs` 2.2k no monólito:
-  `apply_script_command` extraído 1:1 do `luau_update` [61 braços], dreno
-  dos comandos BMS, publisher `ScriptHostState` com TODAS as fontes) e a
-  **troca testada a vivo no Vael — NÃO passou**: compila, boota, renderiza
-  e o ping/screenshot funcionam, mas os scripts não correm (0 lin
-  `viber::luau` vs 23 no host antigo). Causa: o BMS carrega scripts como
-  **assets** (`ScriptComponent` + `ScriptAttachment` via AssetServer) e o
-  jogo semeia `LuaScriptRef` com os scripts FORA do asset root. Revert
-  seguro aplicado no Vael (1 commit; a troca é autocontida no app.rs).
-  **Peças que faltam na troca**: (1) espelho `LuaScriptRef` →
-  `ScriptComponent` com `EntityScript(entity, asset)` no BmsBridgePlugin;
-  (2) asset source para `scripts/` (symlink em assets/public OU source
-  extra no AssetPlugin); (3) dispatch do `on_update` com
-  `timers::seed_script_identity` (path/elapsed para os timers); (4)
-  publisher do `HostWaterBodies` (implementar `WaterBodies` sobre o água
-  do terrain_runtime); (5) adapter BRP do REPL `viber.lua` ANTES da troca
-  (o qa.py usa-o). Cada passo com QA vivo (fogueira/slime/ambiência nos
-  logs como prova de scripts).
+- **INTEGRAÇÃO do host** ✅ **PASSOU** (`exit5/F-int` monorepo `c6acb2a`+
+  `d595f62`, Vael `218423e`; 2026-11-15): o host BMS corre os scripts do
+  jogo. As 3 peças da lista abaixo: (1) espelho `LuaScriptRef` →
+  `ScriptComponent` (attach `EntityScript(entity, handle)`) no
+  BmsBridgePlugin, com remoção no streaming unload; (2) asset source —
+  **nada foi preciso**: o leitor multi-root do meshopt
+  (`register_asset_source`) já resolve `scripts/<path>` contra o
+  `world_dir`, primeira asset root; (3) dispatch `on_update(dt)`
+  (`send_on_update` + `event_handler` no set `VaelScripts`, antes do
+  dreno) com o seed de timers via `ContextPreHandlingInitializer`
+  (`seed_script_identity`). Sinais entregues como callbacks BMS; os
+  instaladores `viber.vael` dos plugins do jogo correm por contexto novo
+  via registo (`script_host.rs` no Vael + `add_context_installer` no
+  crate). Fixes ao vivo que a troca destapou: `viber.ui` nil nos
+  contextos (o snapshot do `UiScriptState` ia no build, antes do
+  `UiPlugin` — adiado para `Startup`; shop.lua rebentava ~883k×/boot) e
+  `viber.profiler` nunca instalado (exigia `ResMut<LuaScriptHost>` —
+  agora via o registo, Arcs partilhados com o recurso). QA vivo (15714):
+  36 lin `viber::luau`/boot (slimes FSM), boot sem panics, wait-ready OK,
+  KeyW move o herói, HUD/script-UI vivo (fogueira/quests/hotbar), F3
+  (FRAMES da engine) com dados reais — entidades 89k, **scripts 473**.
+  **Falta ainda**: (4) publisher do `HostWaterBodies` (o áudio de água
+  ambia com warn por frame — `bevy_ext_audio::ambience` exige o
+  recurso); (5) adapter BRP do REPL `viber.lua` (`qa.py`/`debug
+  state`/`until`/`expect` morreram com a VM); `qa.rs` (god/snapshot de QA
+  escrevia globals na VM); o fallback Lua das visitas
+  (`rules.scan_visits_lua`) e o registo no `lib/actions.lua` viviam na VM
+  partilhada; `cargo test --lib` do Vael com 2 falhas em `player.rs` de
+  WIP concorrente (não é da troca). **O `luau/` vivo continua no monólito
+  `viber run`** (host.rs/api.rs/runtime.rs/ctx.rs/… + bridge/lua.rs REPL +
+  hot_reload): a deleção exige re-rotear ~29 consumidores externos, ≥7
+  deles em WIP concorrente a_terrar (scene_loader, player, recipes,
+  menus, input_map, gltf_residency) + o binário da própria engine —
+  fica para quando esses ficheiros commitarem (ver o mapa de
+  consumidores no relatório do agente).
 
 ## Achados do inventário (2026-11-15, módulo-a-módulo)
 
