@@ -287,6 +287,12 @@ impl StatEngine {
         state: &mut GearState,
         learned: &BTreeSet<String>,
     ) -> &StatSnapshot {
+        // Valida os slots ANTES da assinatura: uma peça que saiu da mochila
+        // (vendida/entregue) tem de deixar de contar já nesta leitura. Com o
+        // digest a incluir o id da marca órfã, a assinatura não mudava e o
+        // grafo nunca era reconstruído — os efeitos do item vendido ficavam
+        // para sempre (e a marca `gear.<slot>` nunca era limpa).
+        let _ = crate::gear::effects(gear, state);
         let digest = digest_of(state, learned);
         if self.digest != Some(digest) {
             self.rebuild(gear, state, learned);
@@ -597,6 +603,29 @@ mod tests {
         assert_eq!(snap.stat("max_hp"), 20.0);
         assert_eq!(snap.stat("speed"), 0.025);
         assert_eq!(snap.stat("attack_speed"), 1.0075);
+    }
+
+    #[test]
+    fn peca_que_saiu_da_mochila_deixa_de_contar_na_leitura_seguinte() {
+        // O Lua validava os slots em CADA leitura (`M.equipped` limpava a
+        // marca órfã). Com o digest a incluir o id da marca, o grafo não era
+        // reconstruído e os efeitos do item vendido ficavam para sempre.
+        let mut engine = StatEngine::new(AttributeRules::default());
+        let rules = regras();
+        let mut state = estado(Some("amuleto"));
+        let snap = engine.snapshot(&rules, &mut state, &BTreeSet::new()).clone();
+        assert_eq!(snap.stat("damage"), 8.0);
+
+        // Vendido/entregue: a contagem sai e a marca `gear.charm` fica (é a
+        // leitura que tem de a limpar).
+        state.held.insert("amuleto".into(), 0.0);
+        let snap = engine.snapshot(&rules, &mut state, &BTreeSet::new()).clone();
+        assert_eq!(snap.stat("damage"), 0.0, "o amuleto vendido não conta");
+        assert_eq!(snap.stat("defense"), 0.0);
+        assert!(
+            !state.equipped.contains_key("charm"),
+            "a marca órfã tem de sair do save"
+        );
     }
 
     #[test]
