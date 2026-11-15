@@ -485,6 +485,14 @@ fn death_should_open(save: &VaelSave, modal_open: bool) -> bool {
     death_pending(save) && !modal_open
 }
 
+/// `death_pending` do store VIVO (`viber.game()`), mais fresco que o
+/// [`VaelSave`] (snapshot a 10 Hz). `None` quando a chave não existe.
+fn death_pending_live() -> Option<bool> {
+    viber::luau::game::game_to_json_process()
+        .get("death_pending")
+        .and_then(Value::as_bool)
+}
+
 /// Abre o ecrã de morte quando a autoridade o pede. Com a autoridade de
 /// vitais ligada, o `rules.lua` já não abre o modal (o bloco está dentro de
 /// `not rust_vitals()`); sem este sistema a morte caía no fallback sem UI.
@@ -499,7 +507,14 @@ pub(crate) fn drive_death_screen(
     };
     let open = modals.as_deref().is_some_and(|m| m.is_open("death"));
     let pending = death_pending(&save);
-    if death_should_open(&save, open) && !state.death_open_requested {
+    // O respawn (`death_retry`/`load`) escreve `death_pending=false` no store
+    // mas o snapshot tipado só chega ~100 ms depois: entre os dois, o modal
+    // reabria por alguns frames. Só se consulta o store quando o snapshot
+    // pede a abertura (é raro: morte nova ou essa janela curta).
+    let should_open = death_should_open(&save, open)
+        && !state.death_open_requested
+        && death_pending_live().unwrap_or(true);
+    if should_open {
         close_overlays(&writer);
         writer.open("death", true);
         state.death_open_requested = true;
@@ -1093,6 +1108,12 @@ fn title_new(world: &mut World) {
     patch.insert("session_id".to_string(), json!(session + 1));
     patch.insert("title_done".to_string(), json!(true));
     patch_game(world, patch);
+    // O `merge_world_kv` do espelho PRESERVA as chaves que desaparecem do KV
+    // (um snapshot pode ser parcial), por isso um jogo novo herdava o
+    // `VaelSave` da partida anterior: quests, `legacy` e o diário antigos
+    // ficavam no HUD até cada chave ser reescrita — e as quests nunca são
+    // re-semeadas em `not_taken`. O estado tipado recomeça com o store.
+    world.insert_resource(VaelSave::default());
     if let Some(writer) = world.get_resource::<UiWriter>() {
         writer.open("title", false);
         writer.open("credits", false);
@@ -2007,6 +2028,89 @@ pub fn close_map_on_menu(modals: Option<Res<UiModalsOpen>>, writer: Option<Res<U
     }
     writer.open("region-map", false);
     writer.open("travel", false);
+}
+
+/// O título e a morte são modais por cima de tudo: o [Q] do `<UiModal>`
+/// abria o diário POR BAIXO do véu (o `menu.lua` fechava-o; a porta perdeu o
+/// guarda). Com o diário aberto o foco de gamepad fica preso nele e a loja
+/// aceitava compras num jogo que não começou / num herói morto.
+pub fn close_journal_under_top_modals(
+    modals: Option<Res<UiModalsOpen>>,
+    writer: Option<Res<UiWriter>>,
+) {
+    let (Some(modals), Some(writer)) = (modals.as_deref(), writer.as_deref()) else {
+        return;
+    };
+    if !modals.is_open("menu") {
+        return;
+    }
+    if modals.is_open("title") || modals.is_open("death") {
+        writer.open("menu", false);
+    }
+}
+
+/// Separadores do diário na ordem da barra (`ui/menu.xaml`).
+const JOURNAL_TABS: [&str; 8] = [
+    "quests", "bag", "skills", "shop", "forge", "controls", "a11y", "system",
+];
+/// As teclas 1-8, na ordem de [`JOURNAL_TABS`] (o `menu.foot` promete-as).
+const JOURNAL_DIGITS: [KeyCode; 8] = [
+    KeyCode::Digit1,
+    KeyCode::Digit2,
+    KeyCode::Digit3,
+    KeyCode::Digit4,
+    KeyCode::Digit5,
+    KeyCode::Digit6,
+    KeyCode::Digit7,
+    KeyCode::Digit8,
+];
+
+/// Teclas do diário: `1`-`8` saltam para um separador e `,`/`.` percorrem,
+/// como o rodapé e a aba Controlos anunciam.
+///
+/// O `drive_ui_tab_keys` da engine fazia-o pelos `<UiTabButton>` do
+/// `world/menu.xml`, que deixou de existir: sem isto as teclas anunciadas não
+/// faziam nada no diário `bevy_pf`.
+pub fn journal_tab_keys(
+    keys: Option<Res<ButtonInput<KeyCode>>>,
+    modals: Option<Res<UiModalsOpen>>,
+    tabs: Option<Res<UiTabs>>,
+    focus: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    writer: Option<Res<UiWriter>>,
+) {
+    let (Some(keys), Some(modals), Some(writer)) = (keys, modals, writer) else {
+        return;
+    };
+    if !modals.is_open("menu") {
+        return;
+    }
+    // Digitar "1"/"," na barra de fala não troca de separador.
+    if focus.is_some_and(|focus| focus.0.is_some()) {
+        return;
+    }
+    let current = tabs
+        .as_deref()
+        .and_then(|tabs| tabs.selected("menu"))
+        .unwrap_or("quests");
+    let at = JOURNAL_TABS
+        .iter()
+        .position(|tab| *tab == current)
+        .unwrap_or(0);
+    let next = if let Some(index) = JOURNAL_DIGITS
+        .iter()
+        .position(|key| keys.just_pressed(*key))
+    {
+        JOURNAL_TABS.get(index).copied()
+    } else if keys.just_pressed(KeyCode::Period) || keys.just_pressed(KeyCode::BracketRight) {
+        Some(JOURNAL_TABS[(at + 1) % JOURNAL_TABS.len()])
+    } else if keys.just_pressed(KeyCode::Comma) || keys.just_pressed(KeyCode::BracketLeft) {
+        Some(JOURNAL_TABS[(at + JOURNAL_TABS.len() - 1) % JOURNAL_TABS.len()])
+    } else {
+        None
+    };
+    if let Some(tab) = next {
+        writer.select_tab("menu", tab);
+    }
 }
 
 #[allow(clippy::too_many_arguments)]

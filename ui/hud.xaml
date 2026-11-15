@@ -204,6 +204,7 @@
   <StackPanel HorizontalAlignment="Right" VerticalAlignment="Top"
               Margin="18" Spacing="10" Width="266" MaxWidth="300">
     <Button Content="{Binding lbl_journal}" Command="{Binding open_journal}"
+            IsEnabled="{Binding journal_enabled}"
             HorizontalAlignment="Right" Padding="12,7"
             Background="#ED171D20" Foreground="#FFE6D5AD"
             BorderBrush="#70B7A477" BorderThickness="1"/>

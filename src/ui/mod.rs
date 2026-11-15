@@ -43,6 +43,10 @@ pub struct QuestRowVm {
 pub struct HudVm {
     pub hud_visible: bool,
     pub vitals_visible: bool,
+    /// O botão DIÁRIO só aceita clique/foco sem overlay por cima (o
+    /// `menu.lua` desactivava-o quando havia véu: o foco de gamepad nascia
+    /// atrás do modal e o A abria o diário por baixo dele).
+    pub journal_enabled: bool,
 
     pub health: f64,
     pub health_text: String,
@@ -213,6 +217,8 @@ impl Plugin for VaelUiPlugin {
                     screens::apply_preferences,
                     screens::drive_title,
                     screens::close_map_on_menu,
+                    screens::close_journal_under_top_modals,
+                    screens::journal_tab_keys,
                     map::map_input,
                     map::sync_map.before(PfBindingSystems),
                 ),
@@ -314,6 +320,7 @@ fn sync_hud(
     binds: Option<Res<UiScriptBinds>>,
     ui: Option<Res<UiData>>,
     modals: Option<Res<UiModalsOpen>>,
+    travel: Option<Res<map::MapTravelState>>,
     time: Res<Time>,
     vm: Res<VaelHudVm>,
 ) {
@@ -366,16 +373,26 @@ fn sync_hud(
     let heal_ready = bind_flag(binds, "ab.heal.ready");
     let strike_ready = bind_flag(binds, "ab.strike.ready");
 
-    let edge = legacy_text(&save, "dmg.edge");
-    let edge_until = legacy_number(&save, "dmg.until");
+    // O `flash_damage_direction` do `rules.lua` publica `game.dmg_edge` e
+    // `game.dmg_until` (underscores): ler as formas com ponto deixava as
+    // quatro faixas de dano sempre apagadas.
+    let edge = legacy_text(&save, "dmg_edge");
+    let edge_until = legacy_number(&save, "dmg_until");
     let edge_live = edge_until > time.elapsed_secs_f64();
 
     let now_modals = modals.as_deref();
     let hud_visible = !now_modals.is_some_and(|m| m.is_open("title") || m.is_open("death"));
+    // Véu por cima do HUD (título/morte escondem-no; diário, profiler, mapa e
+    // viagem ficam por cima): o botão do diário sai dos candidatos do foco de
+    // gamepad, como o `set_disabled("open-journal")` do `menu.lua`.
+    let overlay_up = now_modals.is_some_and(|m| {
+        m.is_open("menu") || m.is_open("title") || m.is_open("death") || m.is_open("profiler-win")
+    }) || travel.as_deref().is_some_and(map::MapTravelState::any);
 
     vm.0.update(|m: &mut HudVm| {
         m.hud_visible = hud_visible;
         m.vitals_visible = true;
+        m.journal_enabled = !overlay_up;
 
         m.health = health;
         m.health_text = format!("{}/{}", round(hp), round(max_hp));
@@ -393,7 +410,10 @@ fn sync_hud(
         m.wood = save.inventory.wood.to_string();
         m.stone = save.inventory.stone.to_string();
         m.berry = save.inventory.berry.to_string();
-        m.seeds = save.inventory.get("korok_seed").to_string();
+        // A chave do KV/loja é `item.korok-seed` (o `Inventory::set` do
+        // `from_world_kv` guarda-a em `items`, não no campo `korok_seed`):
+        // ler o campo dava sempre 0 sementes no HUD.
+        m.seeds = save.inventory.get("korok-seed").to_string();
 
         m.flask = flasks.to_string();
         m.potion = potion.to_string();

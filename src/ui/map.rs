@@ -391,10 +391,15 @@ pub fn map_input(world: &mut World) {
     }
 }
 
+/// Projecção mundo→canvas. O marcador é desenhado com o seu CENTRO no ponto
+/// projectado (`margin` = canto superior esquerdo, `MARKER_R` de raio), por
+/// isso o limite é `CANVAS - 2·MARKER_R`: com `CANVAS - MARKER_R` o marcador
+/// saía 8 px pela borda direita/baixo.
 fn project(position: [f32; 3], world_size: f32) -> (f64, f64) {
     let half = world_size.max(1.0) * 0.5;
-    let left = ((position[0] + half) / world_size * CANVAS - MARKER_R).clamp(0.0, CANVAS - 12.0);
-    let top = ((position[2] + half) / world_size * CANVAS - MARKER_R).clamp(0.0, CANVAS - 12.0);
+    let max = CANVAS - 2.0 * MARKER_R;
+    let left = ((position[0] + half) / world_size * CANVAS - MARKER_R).clamp(0.0, max);
+    let top = ((position[2] + half) / world_size * CANVAS - MARKER_R).clamp(0.0, max);
     (left as f64, top as f64)
 }
 
@@ -579,6 +584,6 @@ mod tests {
         assert!((top - (CANVAS / 2.0 - MARKER_R) as f64).abs() < 0.01);
         let (left, top) = project([-4000.0, 0.0, 4000.0], 4000.0);
         assert_eq!(left, 0.0);
-        assert_eq!(top, (CANVAS - 12.0) as f64);
+        assert_eq!(top, (CANVAS - 2.0 * MARKER_R) as f64);
     }
 }
