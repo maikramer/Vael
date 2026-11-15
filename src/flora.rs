@@ -250,10 +250,16 @@ impl Plugin for VaelFloraPlugin {
     }
 }
 
+/// Gate ligado-por-omissão (`VAEL_FLORA`, `VAEL_FLORA_GROVE`): um valor
+/// `0`/`false`/`off`/`no` desliga. O valor é aparado e comparado sem
+/// distinguir maiúsculas — `VAEL_FLORA=OFF` desligava o plantio só no papel.
 fn env_on(name: &str) -> bool {
     !matches!(
-        std::env::var(name).ok().as_deref(),
-        Some("0" | "false" | "off")
+        std::env::var(name)
+            .ok()
+            .map(|raw| raw.trim().to_ascii_lowercase())
+            .as_deref(),
+        Some("0" | "false" | "off" | "no")
     )
 }
 
@@ -261,7 +267,7 @@ fn shadow_radius_or(default: f32) -> f32 {
     std::env::var("VAEL_FLORA_SHADOW_RADIUS")
         .ok()
         .and_then(|raw| raw.parse().ok())
-        .filter(|radius: &f32| *radius > 0.0)
+        .filter(|radius: &f32| radius.is_finite() && *radius > 0.0)
         .unwrap_or(default)
 }
 
@@ -271,6 +277,9 @@ fn impostor_distance_or(default: f32) -> f32 {
     match std::env::var("VAEL_FLORA_IMPOSTOR")
         .ok()
         .and_then(|raw| raw.trim().parse::<f32>().ok())
+        // `nan` parseia em `f32`: um impostor NaN compara sempre falso nas
+        // distâncias do LOD e apagava o impostor em silêncio.
+        .filter(|distance| distance.is_finite())
     {
         Some(distance) if distance <= 0.0 => f32::INFINITY,
         Some(distance) => distance,
