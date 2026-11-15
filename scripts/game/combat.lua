@@ -120,7 +120,10 @@ local function aim_target(st, px, py, pz, fx, fz, reach)
   local best, best_dist, best_score
   local limit = reach + SOFT_LOCK_EXTRA
   for _, h in ipairs(rules.hostiles(limit) or {}) do
-    if (h.hp or 0) > 0 and math.abs((h.y or py) - py) <= VERTICAL then
+    -- Intocável (chefe a mudar de fase, verme enterrado) não é alvo: sem
+    -- isto a mira suave virava o golpe para quem o `damage_enemy` recusa.
+    if (h.hp or 0) > 0 and not h.invuln
+        and math.abs((h.y or py) - py) <= VERTICAL then
       local dx, dz = (h.x or px) - px, (h.z or pz) - pz
       local dist = math.sqrt(dx * dx + dz * dz)
       local dot = dist > 1e-3 and (fx * dx + fz * dz) / dist or 1
@@ -236,7 +239,10 @@ local function resolve_swing(st, sw)
   local alert_x, alert_z
   for _, h in ipairs(rules.hostiles(range + 1.0) or {}) do
     local hp = h.hp or 0
-    if hp > 0 then
+    -- Invulnerável (chefe na pausa de fase, verme enterrado): o golpe não
+    -- entra. Sem o salto, o número/som/burst de dano apareciam como se
+    -- tivessem entrado (o `damage_enemy` recusa, mas o feedback não sabia).
+    if hp > 0 and not h.invuln then
       local dx, dz = (h.x or px) - px, (h.z or pz) - pz
       local dist = math.sqrt(dx * dx + dz * dz)
       if dist <= range and math.abs((h.y or py) - py) <= VERTICAL then
