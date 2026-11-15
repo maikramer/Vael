@@ -76,6 +76,12 @@ jackdaw_input = "0.20"
 # Métodos `jackdaw/*` no BRP do jogo (snapshot da cena, `entity_bsn`/
 # `apply_bsn`, pause/step, diagnósticos): o debugger remoto do editor.
 jackdaw_remote = "0.20"
+# Métodos `brp_extras/*` no mesmo BRP (screenshot, teclas/rato/gamepad,
+# diagnósticos, shutdown): são eles que o binário `bevy_brp_mcp` 0.23 expõe
+# como tools MCP (`src/main.rs`; `VAEL_BRP_EXTRAS=0` desliga). Vendorizado
+# em `vendor/bevy_brp_extras` só para relaxar o pin `image =0.25.9` que
+# conflitua com o do `jackdaw_editor_core` (ver README da pasta).
+bevy_brp_extras = { path = "vendor/bevy_brp_extras" }
 # `SceneNodeId`: a chave das edições do Play (`src/editor_link.rs`).
 jackdaw_scene_types = "0.20"
 # Aplica os componentes autorados que o DSL não transporta (`editor_link`).
@@ -105,6 +111,7 @@ moonshine-save = "0.8"
 avian3d = "0.8"
 bevy-tnua = "0.33"
 bevy-tnua-avian3d = "0.13"
+bevy-tnua-physics-integration-layer = "0.14"
 # Definições autoradas na cena (`world/settings/*.bsn`, editadas no Jackdaw):
 # o contrato partilhado com as extensões do editor. O `bevy_ext_world` é o
 # mesmo crate que o Viber usa como `bevy_world_xml` (path igual, unifica).
@@ -151,6 +158,21 @@ debug = "line-tables-only"
 [profile.dev.package."*"]
 opt-level = 3
 debug = false
+
+# O `release` é o perfil do dia-a-dia (`vael-tools run` lança
+# `target/release/vael`), não o de distribuição: incremental para os crates
+# locais (o Vael e as path-deps do bevy_extensions; o Cargo nunca usa
+# incremental nos crates do registo). Sem isto, mexer no `bevy_ext_core`
+# recompilava tudo de raiz (3m17s medidos a 2026-11-15). Distribuição:
+# `--profile dist`.
+[profile.release]
+incremental = true
+
+[profile.dist]
+inherits = "release"
+incremental = false
+codegen-units = 1
+lto = "thin"
 
 # O `[patch]` do `bevy_ext_viber_engine` NÃO atravessa as path-deps: sem
 # esta tabela o jogo (que compila o `viber` por path) resolveria o
