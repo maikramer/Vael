@@ -21,7 +21,8 @@ Cenas QA (`scenes/qa/*.bsn`, chão plano, sem terreno — carregam em segundos):
   qa.py scene find TEXTO             entidades com nome no mundo (para --copy)
   qa.py scene quest ID               cena + cenário prontos para a quest ID
 
-Sem dependências fora da stdlib. A bridge é o JSON-RPC do `--bridge`.
+Sem dependências fora da stdlib. O transporte da bridge vive no `vael-tools`
+(Rust) — este script só compõe cenários e passos.
 """
 
 from __future__ import annotations
@@ -37,7 +38,6 @@ import subprocess
 import sys
 import tempfile
 import time
-import urllib.request
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -94,58 +94,98 @@ def vael_cmd(*args: str, release: bool = True) -> list[str]:
     return [*cmd, "--", *args]
 
 
+def tools_bin() -> list[str]:
+    """Binário `vael-tools`: env, `target/{release,debug}` ou `cargo run`."""
+    exe = os.environ.get("VAEL_TOOLS_BIN")
+    if exe:
+        return [exe]
+    for profile in ("release", "debug"):
+        path = ROOT / "target" / profile / "vael-tools"
+        if path.is_file():
+            return [str(path)]
+    if shutil.which("vael-tools"):
+        return ["vael-tools"]
+    return ["cargo", "run", "--quiet", "-p", "vael-tools", "--"]
+
+
 # ── bridge ──────────────────────────────────────────────────────────────
 
 
 class Bridge:
-    def __init__(self, port: int, timeout: float = 30.0):
+    """Cliente do jogo vivo por cima do `vael-tools debug` (o transporte
+    JSON-RPC vive no Rust, com os mesmos fallbacks `viber.*`)."""
+
+    def __init__(self, port: int, timeout: float = 120.0):
         self.port = port
         self.timeout = timeout
 
-    def call(self, method: str, params: dict | None = None, timeout: float | None = None):
-        body = json.dumps(
-            {"jsonrpc": "2.0", "id": 0, "method": method, "params": params or {}}
-        ).encode()
-        req = urllib.request.Request(
-            f"http://127.0.0.1:{self.port}/",
-            data=body,
-            headers={"Content-Type": "application/json"},
+    def _debug(self, *args: str, check: bool = True, timeout: float | None = None):
+        """`vael-tools debug --port P --json <sub> [...]` → resposta JSON."""
+        cmd = [*tools_bin(), "debug", "--port", str(self.port), "--json", *args]
+        res = subprocess.run(
+            cmd, capture_output=True, text=True, timeout=timeout or self.timeout
         )
-        with urllib.request.urlopen(req, timeout=timeout or self.timeout) as resp:
-            data = json.loads(resp.read())
-        if "error" in data:
-            raise RuntimeError(f"{method}: {data['error']}")
-        return data.get("result")
+        if check and res.returncode != 0:
+            raise RuntimeError(
+                short(res.stderr.strip() or f"vael-tools exit {res.returncode}")
+            )
+        try:
+            return json.loads(res.stdout)
+        except json.JSONDecodeError as err:
+            raise RuntimeError(
+                f"saída do vael-tools não é JSON ({err}): {res.stdout[:200]}"
+            ) from err
+
+    def call(self, method: str, params: dict | None = None, timeout: float | None = None):
+        params = params or {}
+        if method == "viber.input.key":
+            args = ["key", params["key"]]
+            if "state" in params:
+                args += ["--state", params["state"]]
+            self._debug(*args, timeout=timeout)
+            return {}
+        if method == "viber.input.text":
+            self._debug("text", "--", params["text"], timeout=timeout)
+            return {}
+        if method == "viber.input.click":
+            self._debug(
+                "click", str(params["x"]), str(params["y"]),
+                "--state", params.get("state", "click"), timeout=timeout,
+            )
+            return {}
+        raise RuntimeError(f"método via vael-tools não suportado: {method}")
 
     def lua(self, code: str):
-        res = self.call("viber.lua", {"code": code})
+        res = self._debug("lua", "--", code)
         if not res or not res.get("ok"):
             raise RuntimeError((res or {}).get("error") or f"lua falhou: {res}")
         return res.get("result")
 
     def ready(self) -> bool:
         try:
-            ping = self.call("viber.ping", timeout=5)
+            probe = self._debug("probe", timeout=30)
         except Exception:
             return False
+        if not probe.get("listening"):
+            return False
+        ping = probe.get("ping") or {}
         ready = ping.get("ready") if isinstance(ping, dict) else None
         if isinstance(ready, dict):
             return bool(ready.get("ready"))
         return bool(ready)
 
     def wait_ready(self, timeout: float) -> bool:
-        end = time.time() + timeout
-        while time.time() < end:
-            if self.ready():
-                return True
-            time.sleep(1.0)
-        return False
+        res = self._debug(
+            "wait-ready", "--timeout", str(int(timeout)), "--quiet",
+            check=False, timeout=timeout + 60,
+        )
+        return bool(res.get("ready"))
 
 
 def screenshot(port: int, out: Path) -> bool:
-    """`viber debug screenshot` (faz o polling da captura)."""
+    """`vael-tools debug screenshot` (faz o polling da captura)."""
     res = subprocess.run(
-        ["viber", "debug", "--port", str(port), "screenshot", "-o", str(out)],
+        [*tools_bin(), "debug", "--port", str(port), "screenshot", "-o", str(out)],
         capture_output=True,
         text=True,
         timeout=90,
@@ -722,8 +762,6 @@ def build_scene(name: str, copies: list[str], enemies: list[str], size: float, i
     out = SCENE_DIR / f"{name}.bsn"
     if out.exists() and not force:
         die(f"{out.relative_to(ROOT)} já existe (--force)")
-    if not shutil.which("viber"):
-        die("`viber` não está no PATH (../viber-tools/tools/install.sh)")
     parsed_enemies = []
     for spec in enemies:
         kind, _, n = spec.partition(":")
@@ -732,7 +770,7 @@ def build_scene(name: str, copies: list[str], enemies: list[str], size: float, i
     xml = SCENE_DIR / f"{name}.xml"
     xml.write_text(scene_xml(f"QA {name}", size, parsed_enemies, interior))
     try:
-        subprocess.run(["viber", "bsn", "convert", "--force", str(xml)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
+        subprocess.run([*tools_bin(), "bsn", "convert", "--force", str(xml)], cwd=ROOT, check=True, stdout=subprocess.DEVNULL)
     finally:
         xml.unlink(missing_ok=True)
     lines = out.read_text().splitlines()

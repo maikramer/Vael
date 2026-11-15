@@ -103,6 +103,15 @@ biomas: o que não está no plano é apagado. Pela bridge:
 `viber.vael.qa_apply(nome?)`, `qa_check(json?)`, `qa_snapshot()`,
 `qa_plan(nome)`, `qa_name()`.
 
+O transporte dos passos vivos é o `vael-tools debug` (`--json`): o `qa.py`
+não tem cliente JSON-RPC próprio — compõe cenários, e o Rust fala com o jogo.
+Para agentes sem Python, os mesmos blocos existem como primitivas do CLI:
+`debug state` (qa_snapshot), `debug expect` (qa_check), `debug until`,
+`debug pause/step/play` e `debug playbook` (ver `docs/TOOLS.md`). O
+`qa.py steps <cenário>` corre os passos num jogo já aberto **na cena do
+cenário** — num jogo no mundo `main` os alvos de `interact` são outros e o
+`expect` falha por desenho.
+
 **Jackdaw**: `python3 tools/qa.py use city_forge/dialogue` e Play ▸ "Play
 (QA)". O cenário escolhe a cena; editar a cena no editor chega ao jogo pelas
 edições ao vivo do Jackdaw, e gravar o cenário reaplica o estado.

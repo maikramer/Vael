@@ -13,16 +13,15 @@ Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 
 | Checkout | Quando |
 |----------|--------|
-| `.` (Vael) | Mundo, scripts, quests, cenas, pool `assets/` |
-| `../viber-tools` | **CLI `viber`**, `analyze`/`lint`/`bsn`, runtime de debug e extensões Jackdaw (`vael_analyze/profiler/debugger/mcp`) |
+| `.` (Vael) | Mundo, scripts, quests, cenas, pool `assets/` e o CLI `vael-tools` (`cli/`) |
 | `../bevy_extensions/crates/bevy_ext_viber_engine` | Bug ou API em falta na engine. `cargo test` lá (excluído do workspace; corre standalone). O runtime de gameplay ainda é o monólito |
 | `editor/` | **Legado**: editor próprio sobre Jackdaw. O fluxo é o Jackdaw oficial (`jd open .`) + extensões `.jdext` |
-| `../bevy_extensions` | Crates `bevy_ext_*`/`bevy_voxel_terrain` e extensões genéricas em `extensions/` |
+| `../bevy_extensions` | Crates `bevy_ext_*`/`bevy_voxel_terrain`, o bridge (`bevy_ext_bridge_protocol`/`_runtime`) e extensões genéricas em `extensions/` |
 | `../AiGameKit` | Gerar ou corrigir uma tool. Não abras o monorepo no workspace por defeito |
 | `../CelerAI` | Modelos `models/{nlu,d1}` (LFS) e crates de inferência. Sem ele a engine não compila nem os scripts carregam IA |
 
 Workspace do dia-a-dia: `Vael.code-workspace` (esta pasta +
-`../bevy_extensions` + `../CelerAI` + `../viber-tools`).
+`../bevy_extensions` + `../CelerAI`).
 
 ## Crate Rust (migração)
 
@@ -46,7 +45,7 @@ principal pode ter trabalho em curso (regen/assets); não o tocar por arrasto.
 `world.bsn` (árvore `<world static="true">`) + `world/**/*.bsn` +
 `world.data/` são o mundo. **O `.bsn` é a única fonte**: os `.xml` foram
 aposentados a 2026-11-12 (estão na história do git; não regenerar com
-`viber bsn convert`). As poses do `.bsn` são finais. O runtime não assenta
+`vael-tools bsn convert`). As poses do `.bsn` são finais. O runtime não assenta
 props nem corre `<StaticSpawner>` / `place` (erro de parse). Única geração em
 runtime: `<DynamicSpawner>` (criaturas).
 
@@ -104,9 +103,10 @@ Editar no **Jackdaw oficial** (`jd open .`). Estrutura do `world.bsn`:
   binário velho não conhece os componentes.
 
 Hand-editar uma pose à espera que a engine a ajuste não funciona.
-Depois de pincéis: `viber tool settle`. Árvores e dressing:
-`viber tool scatter`, não um re-bake. Vegetação `.vinst` reescreve-se com
-`viber tool scatter` e não entra no undo — git ou re-scatter.
+O mundo `.bsn` é estático: o runtime não assenta props (`settle`/`scatter` de
+CLI eram XML-only e morreram com o `viber`). No editor, o painel **Vael:
+Assets** assenta o que colocas no `.ahgt` e o painel **Flora** mexe nas
+estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 
 `world.data/terrain.ahgt` e `.paint` são estado do mundo. Commita-os.
 
@@ -118,12 +118,14 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `world/**/*.bsn` | cidades, criaturas, landmarks, `spawn/…`, HUD (módulos; prefabs `IsA` no `world.bsn`) |
 | `world/settings/*.bsn` | definições editáveis no Jackdaw: ambiente, pós-processamento, espécies de flora (`src/settings.rs`) |
 | `tools/bsn_tidy.py` | organiza os filhos de topo de um mundo `.bsn` em pastas do Outliner (idempotente) |
+| `tools/make_map.py` | gera `ui/vael_map.png` (hillshade reproduzível do `world.data/terrain.ahgt`, sem GPU) |
+| `tools/make_menu_terrain.py` | gera o terreno da cena de menu (`scenes/menu.data/terrain.ahgt`) |
 | `scenes/menu.bsn` | cena de arranque: acampamento pequeno atrás do título |
 | `scenes/interiors/` | salas `.bsn` (cenas próprias, sem terreno) |
 | `quests/*.json` | 37 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
 | `dialogues/*.json` | grafos ambientais; lidos por `scripts/townsfolk.lua` |
 | `data/*.json` | itens/loja, marcos, progressão, enigmas (`riddles.json`) e regras do juiz (`verdicts.json`); lidos por `rules.lua`/`shop.lua`/`landmarks.lua`/`riddle.lua`/`judge.lua` |
-| `editor/` + `content/` | **Legado**: App própria `vael-editor` (testes/painéis antigos) e esquemas `vael-content`. O fluxo é o Jackdaw oficial (`jd open .`; `jackdaw.toml` fixa `package = "vael"`/`plugin = "VaelPlugin"`) com as extensões `.jdext` em `../bevy_extensions/extensions/` e `../viber-tools/extensions/`; os painéis de conteúdo vivem em `vael_content_jackdaw` |
+| `editor/` + `content/` | **Legado**: App própria `vael-editor` (testes/painéis antigos) e esquemas `vael-content`. O fluxo é o Jackdaw oficial (`jd open .`; `jackdaw.toml` fixa `package = "vael"`/`plugin = "VaelPlugin"`) com as extensões `.jdext` em `../bevy_extensions/extensions/` e `extensions/`; os painéis de conteúdo vivem em `vael_content_jackdaw` |
 | `scripts/**.lua` | comportamento. Hot-reload ao gravar |
 | `assets/public/nlu/` | **symlink** para `../CelerAI/models/nlu` (criado por `tools/fetch_models.sh`). `viber.nlu` na engine; relato de 1 palavra no fecho das quests. `assets/public/d1` idem para `models/d1` (`viber.decision`) |
 | `ui/*.xaml` | HUD, menu, título, morte e mapa (`bevy_pf`); os `*.css` que restam são legado de HUD/profiler/showcase |
@@ -143,12 +145,12 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 Cada sala é `scenes/interiors/<sala>.bsn` com `<SceneEntry name="from-town">`
 e `<ScenePortal name="exit" target="main" entry="@back" auto-radius="1.6">`.
 Portas da vila: `world/cities/discordia/portals.bsn`. Jogador, câmara e HUD
-são autoloads (`world/autoload/*.bsn`). Sala nova:
-`viber scene new-scene interiors/<nome> --interior "20 16"` mais um portal
-na vila. `viber scene lint` valida alvos.
+são autoloads (`world/autoload/*.bsn`). Sala nova: cria a cena no Jackdaw
+(`scenes/interiors/<nome>.bsn`, com chão próprio) e acrescenta um portal na
+vila; o painel **Vael: Cena** valida refs/portais no "Validar e gravar".
 
 A cena de menu (`scenes/menu.bsn`) é o `project.start-scene` do `config.yaml`:
-sem `--scene`, o `viber run` arranca nela em vez de `main`. É só o acampamento
+sem `--scene`, o `vael-tools run` arranca nela em vez de `main`. É só o acampamento
 (o terreno pequeno `scenes/menu.data/terrain.ahgt`) atrás do título; `Novo
 Jogo`/`Continuar` trocam para `main`, e a morte/botão "Ecrã de título" voltam
 a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
@@ -172,9 +174,9 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
   `type_path` (`vael_scene_jackdaw/src/trigger.rs`) para o editor o ver vivo —
   os campos dos dois têm de coincidir. A autoria das cinemáticas é o painel
   **Vael: Cinemáticas** da extensão `vael_scene_jackdaw` (lista planos,
-  toca/pára no jogo pelo bridge na 15702, cria plano da câmara do viewport);
-  `viber cinematic shot` é XML-only. Durante uma cena os sistemas de câmara
-  do Vael não correm — o `drive_camera` da engine é o dono.
+  toca/pára no jogo pelo bridge na 15702, cria plano da câmara do viewport e
+  grava-o no `.bsn`). Durante uma cena os sistemas de câmara do Vael não
+  correm — o `drive_camera` da engine é o dono.
 - **Edições ao vivo no Play**: as entidades recebem o `SceneNodeId` do nó
   (só sob `JACKDAW_PIE`; `VAEL_EDITOR_LINK=1` força) e o `jackdaw_runtime`
   aplica-lhes o `Transform`/componentes que o editor envia. Só nós com id no
@@ -235,6 +237,18 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
 
 ## Gotchas
 
+- **GLB por distância**: o mundo estático já não pede todos os `<GltfScene>` no
+  arranque. O `gltf_residency` (engine) deixa a âncora nascer e só pede o GLB
+  quando o herói entra no raio da instância — o corte que o `AutoCull` aprendeu
+  manda (um arbusto fica residente até ao piso do anel do véu + 60 m; uma
+  muralha, com corte no teto de 800 m, até ~860 m), e o *bootstrap* de 800 m
+  paga-se **uma vez por URL**. O véu espera só o anel de
+  `VIBER_GLTF_READY_RADIUS` (200 m) e o anel largo não corre durante o
+  carregamento (competia com o bake dos colliders: ~1 s por frame medido).
+  Nunca descarrega nós com `LuaScriptRef`, `CharacterAnimator` ou o herói — o
+  rig e o `viber.state` apontam para entidades da subárvore. A/B:
+  `VIBER_GLTF_STREAMING=0` volta ao tudo-no-arranque. Detalhe:
+  `docs/DEBUG.md`; a prontidão conta só os pendentes do anel (`world_ready.rs`).
 - **Relva**: o renderer é o crate `bevy_ext_grass` (em
   `../bevy_extensions/crates/bevy_ext_grass`) sobre `bevy_grass`; o Vael só
   tem o adaptador `src/grass.rs` (regras do `TerrainRuntime`, layout dos
@@ -251,8 +265,8 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
 - `viber.gesture` antes de o rig ligar fica em `PendingGesture` (até 3 s) em
   vez de se perder.
 
-- Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag.
-  `viber scene insert` não tem este problema. O `analyze` não apanha.
+- Acrescentar filhos a `<Entity … />` cria um irmão na origem. Abre a tag (no
+  Jackdaw acrescenta pelo Outliner). `analyze`/lint não apanham este erro.
 - `shaders/*.wesl` são reescritos em cada `run`. Não editar à mão.
 - Uma boca de `<Cave>` em terreno plano é sempre um poço: o tubo começa
   `radius` abaixo da cota. A engine aceita `mound-height`/`mound-radius` para
@@ -292,7 +306,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   **antes** do simplify; a 265k o unwrap fica ~160 s e o atlas limpo. O
   `to_paint` segue a fórmula (~270k a 2048); não baixar para 150k (ilhas
   minúsculas).
-- Depois de editar: `viber analyze` (exit 1 em erro).
+- Depois de editar: `vael-tools analyze` (exit 1 em erro).
 - O import do editor Jackdaw 0.20.x rejeita a requirement exata de Bevy: o
   gate sonda `0.20.0` e `0.20.MAX`, e `bevy = "=0.20.1"` não admite nenhum.
   Manter `bevy = "0.20.1"` (como no `bevy_ext_viber_engine`); o `jackdaw.toml` grava
@@ -308,17 +322,29 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
 ## Correr
 
 ```bash
-cd ../viber-tools && tools/install.sh   # uma vez; viber -> viber-tools
-cd ../Vael && viber run                 # lança o Vael
-viber analyze world.bsn                 # headless (core novo)
-viber scene lint --world world.bsn
-viber run --scene main --entry dev      # debug: directo ao jogo, sem título/prólogo
+jd build                      # build oficial: jogo (debug) + schema do editor
+jd run .                      # build + lança o jogo (cena de arranque)
+jd open .                     # editor oficial
+jd doctor .                   # setup: toolchain, plugin, dependências
+tools/install.sh              # uma vez: vael-tools no ~/.local/bin
+vael-tools run --scene main --entry dev   # debug com argumentos
+vael-tools analyze world.bsn              # headless
+vael-tools lint                           # lint estrutural
 ```
 
-`viber` é o router do `viber-tools`. O `viber-engine` aponta agora ao crate
-do monólito no `bevy_extensions` (recompila quando as fontes mudam); os
-comandos que delegam nele são `trace`, `lua`, `scene --live`, `tool --live`,
-`bake` e `scatter`. Para testar a engine sozinha: `cd
+**`jd build` e `jd run` são as formas oficiais de buildar e correr o jogo.**
+O `jd` compila numa pasta própria (`.jackdaw/target/game`, com o perfil `dev`
+deste workspace) e o `jd build` grava também `.jackdaw/{schema,components}.json`
+— o schema é o que o editor carrega, por isso é o que se corre depois de mexer
+em componentes. O `jd run` lança **sem argumentos**: só o Play do editor lê os
+`[[run]]` do `jackdaw.toml`, portanto arranca na cena de arranque
+(`scenes/menu.bsn`, atrás do título), não em `main`.
+
+Para `--scene/--entry/--bridge` o atalho é o `vael-tools run`, que lança
+`target/release/vael` (outro artefacto: release no `target/` do workspace) ou o
+`VAEL_BIN` — `VAEL_BIN=.jackdaw/target/game/debug/vael` reaproveita o build do
+`jd`. O `viber` foi aposentado: o CLI vive em `cli/` (`vael-tools`) e o bridge
+em `bevy_extensions` (`bevy_ext_bridge_*`). Para testar a engine sozinha: `cd
 ../bevy_extensions/crates/bevy_ext_viber_engine && cargo run -- run
 ../Vael/world.bsn`.
 
@@ -328,13 +354,19 @@ Arranque directo: `--scene main` salta a cena de menu e `--entry dev` (a
 execução (não grava modo nenhum); o autosave seguinte fica com
 `story_prologo` marcado. Detalhe: `docs/DEBUG.md`.
 
-QA vivo: skill `viber-engine` (sessão `viber session`, uma engine de cada vez).
-**Esperar pelo carregamento**: o véu só sai com o mundo inteiro (GLBs, GPU,
-herói assente) e demora — dezenas de segundos, mais com builds ao lado.
-Depois de lançar (ou de `viber.scene.change`): `viber debug --port <p>
-wait-ready` antes de screenshot/input; `ready` vem no `viber.ping`. Uma bridge
-lenta a responder durante o carregamento é normal — não matar o jogo.
-Detalhe: `docs/DEBUG.md`.
+QA vivo: uma instância do jogo de cada vez (o `vael-tools debug` fala com a
+porta). **Esperar pelo carregamento**: o véu sai com o anel próximo do herói
+(`VIBER_GLTF_READY_RADIUS`, 200 m), GPU, herói assente — o resto do mundo entra
+por distância depois (ver a *gotcha* dos GLB) e demora — dezenas de segundos,
+mais com builds ao lado.
+Depois de lançar (ou de `debug scene --wait`): `vael-tools debug --port <p>
+wait-ready` antes de screenshot/input; o `ready` vem do espelho
+`BridgeReadiness` (`src/bridge_ready.rs`) no ping novo (e do `viber.ping` em
+jogos velhos). Uma bridge lenta a responder durante o carregamento é normal —
+não matar o jogo. Para agentes: `debug --json` dá JSON em tudo e exit
+semântico; as primitivas de teste são `pause/step/play` (determinismo por
+frames), `state`, `expect`, `until`, `scene` e `playbook` (passos compostos
+com transcript) — detalhe e ressalvas do `scene`: `docs/TOOLS.md`.
 
 GPU remota (opcional): `source ~/.config/vramd/remote.env` aponta o `vramd` ao
 servidor (`VRAMD_REMOTE=192.168.0.100:8790`); o `gameassets resume` passa a
@@ -350,38 +382,31 @@ manifesto propaga-se ao pipeline). O **Hi3D refine** fica na GPU local (torch
 2.5+cu124, única exceção cu12; não entra nas sessões). Detalhe:
 `docs/REMOTE_GPU.md`.
 
-Profiling sem screenshots (jogo com `--bridge`): o runtime novo
-(`viber_tools_runtime`) responde a `viber debug prof --tab frames`
+Profiling sem screenshots (jogo com `--bridge`): o runtime
+(`bevy_ext_bridge_runtime`) responde a `vael-tools debug prof --tab frames`
 (p95/hitches/RSS), `--hitches`, `--record 30 --hz 2 -o perf.jsonl` e
-`viber debug key/text/click/move`. `trace`, `lua`, `scene --live` e
-`tool --live` ainda delegam no `viber-engine` legado. No jogo, **P → FRAMES**
-e **F3** continuam a ser o profiler da engine. Detalhe:
-[`docs/VIBER_TOOLS.md`](docs/VIBER_TOOLS.md).
+`vael-tools debug key/text/click/move` (todos com `input.*` no runtime novo).
+`debug lua`/`burst`/`scene` ainda usam os métodos legacy `viber.*` do
+monólito. No jogo, **P → FRAMES** e **F3** continuam a ser o profiler da
+engine. Detalhe: [`docs/TOOLS.md`](docs/TOOLS.md).
 
 ## Fluxo depois da separação
 
-Cinco checkouts irmãos, cada um com o seu remoto:
+Quatro checkouts irmãos, cada um com o seu remoto:
 
 | Repo | Papel |
 |------|--------|
-| `Vael` | Mundo, quests, scripts, pool `assets/`. Binários versionados vão em Git LFS |
-| `viber-tools` | CLI `viber`, core headless, runtime de debug e extensões Jackdaw |
-| `bevy_extensions` | Engine de gameplay (`crates/bevy_ext_viber_engine`) e os pacotes publicáveis `bevy_ext_*`. O checkout `Viber` foi aposentado a 2026-11-13 |
+| `Vael` | Mundo, quests, scripts, pool `assets/` e o CLI `vael-tools` (`cli/`). Binários versionados vão em Git LFS |
+| `bevy_extensions` | Engine de gameplay (`crates/bevy_ext_viber_engine`), o bridge (`bevy_ext_bridge_protocol`/`_runtime`) e os pacotes publicáveis `bevy_ext_*`. O checkout `Viber` foi aposentado a 2026-11-13 |
 | `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
-| `CelerAI` | Modelos NLU/d1 (`models/`, LFS) e crates de inferência. O Viber compila-as por path-dep `../CelerAI/crates/*` |
+| `CelerAI` | Modelos NLU/d1 (`models/`, LFS) e crates de inferência. A engine compila-as por path-dep `../CelerAI/crates/*` |
 
-Clone novo de qualquer um precisa dos cinco irmãos lado a lado; no Vael,
+Clone novo de qualquer um precisa dos quatro irmãos lado a lado; no Vael,
 correr `tools/fetch_models.sh` uma vez (cria os symlinks `assets/public/{nlu,d1}`).
 
-`~/.local/bin/viber` é agora um symlink para `viber-tools` (instalado por
-`../viber-tools/tools/install.sh`). O `~/.local/bin/viber-engine` é um wrapper
-que recompila o monólito em
-`../bevy_extensions/crates/bevy_ext_viber_engine` quando as fontes mudam (com
-fingerprint e último-bom; `VIBER_ENGINE_CHECKOUT=` muda o caminho). A
-delegação antiga (`trace`/`lua`/`scene --live`/`tool --live`) continua a
-precisar do `viber_tools_runtime` para sair do binário legado. O editor oficial: `jd open .` (abre
-`world.bsn`/as cenas `.bsn`; a CLI de cena continua XML). Extensões do Vael
-(`../bevy_extensions/extensions/` e `../viber-tools/extensions/`):
+`tools/install.sh` instala `vael-tools` em `~/.local/bin` (symlink para o
+release). O editor oficial: `jd open .` (abre `world.bsn`/as cenas `.bsn`).
+Extensões do Vael (`../bevy_extensions/extensions/` e `extensions/`):
 `bevy_voxel_terrain_jackdaw` (terreno + paint, preview progressivo de
 props/terreno, regista o `WorldNode`), `vael_scene_jackdaw` (ícones do Outliner, categorias Physics/Gameplay/DSL
 no inspector, gizmos de colisores/exclusões/spawners/portais/luzes, painel
@@ -397,11 +422,10 @@ espécies com preview real do `bevy_flora` e árvores nas estações) e
 **Diálogos**, **Missões**, **Conteúdo** e **Cenas**: edita os JSON de
 `data/`, `quests/` e `dialogues/` e valida-os; substitui os painéis do
 `editor/` legado), `vael_analyze_jackdaw` (painel **Vael: Problems**, operador
-`vael.analyze.run` sobre o `viber_tools_core`), `vael_profiler_jackdaw`
+`vael.analyze.run` sobre a lib `vael_tools`), `vael_profiler_jackdaw`
 (p95/hitches/RSS do runtime em polling), `vael_debugger_jackdaw`
 (play/pause/step/F3) e `vael_mcp_jackdaw` (operadores de
-grupo/input/screenshot visíveis no `jd mcp`; o servidor MCP tipado é
-`viber mcp`). Só UMA
+grupo/input/screenshot visíveis no `jd mcp`). Só UMA
 extensão pode registar um tipo partilhado (`WorldNode`): cada dylib tem a sua
 cópia e a última a registar rouba o type path às outras — as restantes leem-no
 por reflexão. Uma entidade autorada sem `Transform` não entra na hierarquia

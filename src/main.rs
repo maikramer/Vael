@@ -4,7 +4,7 @@
 //! runtime de gameplay (`viber`) fornece os plugins do mundo e os serviços,
 //! o crate do jogo traz o controller/câmara (`src/player.rs`) e as regras
 //! (autoridade Rust). O `--entry` continua a ser a entrada de cena do
-//! `viber run`.
+//! `vael-tools run`.
 
 use std::path::{Path, PathBuf};
 
@@ -154,7 +154,7 @@ fn main() -> Result<()> {
     let requested = std::path::absolute(&world)
         .map_err(|err| anyhow::anyhow!("mundo inválido: {} ({err})", world.display()))?;
     // `--scene` escolhe outra cena do projeto; sem ele, a cena principal cede
-    // ao `start-scene` (o acampamento atrás do título), como o `viber run`.
+    // ao `start-scene` (o acampamento atrás do título), como o `vael-tools run`.
     let world = viber::scene_loader::resolve_run_path(&requested, scene.as_deref())?;
     let root = viber::app::world_base_dir(&world)
         .or_else(|| world.parent().map(Path::to_path_buf))
@@ -168,10 +168,6 @@ fn main() -> Result<()> {
             // A identidade da bridge é o mundo que o utilizador pediu, não a
             // cena de arranque resolvida (senão `--scene main` respondia menu).
             identity: requested.clone(),
-            // O jogo não usa `viber.ecs`: o espelho refletido por frame é
-            // trabalho morto e exclusivo. QA/bridge pode reativá-lo com
-            // `VIBER_ECS_MIRROR=1`.
-            ecs_mirror: ecs_mirror_enabled(),
             // Play do Jackdaw em modo embedded: o runtime desliga a janela
             // quando o editor pede `JACKDAW_PIE_WINDOWLESS`. Fora do PIE o
             // wrapper devolve o grupo intacto.
@@ -203,18 +199,22 @@ fn main() -> Result<()> {
     // UI do jogo em XAML (bevy_pf): precisa do `DefaultPlugins` e dos
     // resources do Vael já registados.
     app.add_plugins(VaelUiPlugin);
-    // Runtime de ferramentas: acrescenta `viber-tools/*` ao `bevy_remote` que
+    // Runtime de ferramentas: acrescenta `vael-tools/*` ao `bevy_remote` que
     // o `build_app` já abriu (ou abre o seu, quando não há --bridge). O
     // bridge legacy `viber.*` continua no mesmo servidor para compatibilidade.
     if bridge.is_some() || tools_enabled() {
         let port = bridge.unwrap_or(default_tools_port());
-        app.add_plugins(viber_tools_runtime::ViberToolsPlugin { port });
+        app.add_plugins(bevy_ext_bridge_runtime::BridgeToolsPlugin { port });
+        // Prontidão do carregamento para o `vael-tools/ping` (sem isto, o
+        // pong do runtime novo não tinha `ready` e o `wait-ready` do CLI
+        // voltava cedo, com o véu em pé).
+        app.add_plugins(vael::bridge_ready::BridgeReadyPlugin);
         // O `input.key` sintético é aplicado no `PreUpdate`; tem de correr
         // ANTES do `gather_actions` do jogo para o `just_pressed` (salto,
         // ataque, interagir) entrar no `ActionState` no mesmo frame.
         app.configure_sets(
             PreUpdate,
-            viber_tools_runtime::ViberToolsInput
+            bevy_ext_bridge_runtime::BridgeToolsInput
                 .before(viber::input_map::gather_actions)
                 .before(jackdaw_input::ActionSystems),
         );
@@ -273,17 +273,6 @@ fn tools_enabled() -> bool {
     flag || std::env::var_os("JACKDAW_PIE").is_some()
 }
 
-/// `viber.ecs` por frame é opt-in no Vael (default off).
-fn ecs_mirror_enabled() -> bool {
-    matches!(
-        std::env::var("VIBER_ECS_MIRROR")
-            .ok()
-            .map(|raw| raw.trim().to_ascii_lowercase())
-            .as_deref(),
-        Some("1" | "true" | "on" | "yes")
-    )
-}
-
 /// `WxH` (ex.: `1280x720`) → tamanho físico da janela. Teto defensivo: um
 /// valor absurdo na env não pode abrir uma janela de 100000 px.
 fn parse_resolution(raw: &str) -> Option<(u32, u32)> {
@@ -303,7 +292,7 @@ fn parse_resolution_arg(raw: &str) -> Result<(u32, u32), String> {
 mod tests {
     use super::*;
 
-    /// O contrato com o `viber run`/wrapper: flags com valor separado por
+    /// O contrato com o `vael-tools run`: flags com valor separado por
     /// espaço e o mundo como posicional.
     #[test]
     fn flags_da_bridge_e_da_cena_parseiam() {

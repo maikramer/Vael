@@ -31,6 +31,7 @@ use bevy::prelude::*;
 pub mod animation;
 pub mod app;
 pub mod boat;
+pub mod bridge_ready;
 pub mod camera;
 pub mod cinematic_trigger;
 pub mod clock;

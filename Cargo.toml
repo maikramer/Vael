@@ -11,7 +11,7 @@ publish = false
 # O jogo é o membro por omissão (`default-members`): `cargo run`/`cargo test`
 # na raiz não compilam o editor nem o Jackdaw. O editor constrói-se
 # explicitamente com `-p vael-editor`; o conteúdo é partilhado por ambos.
-members = ["content", "editor"]
+members = ["cli", "content", "editor"]
 default-members = ["."]
 resolver = "3"
 
@@ -93,9 +93,9 @@ vael-content = { path = "content" }
 # bevy_extensions como crate transitório. O alias `viber` preserva todos
 # os imports `viber::` do jogo. TODO(viber-exit): dividir em pacotes finais.
 viber = { package = "bevy_ext_viber_engine", path = "../bevy_extensions/crates/bevy_ext_viber_engine", features = ["ai"] }
-# Runtime de debug/ferramentas: regista `viber-tools/*` no `bevy_remote` do
+# Runtime de debug/ferramentas: regista `vael-tools/*` no `bevy_remote` do
 # jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
-viber_tools_runtime = { path = "../viber-tools/crates/viber_tools_runtime" }
+bevy_ext_bridge_runtime = { path = "../bevy_extensions/crates/bevy_ext_bridge_runtime" }
 # Save/load próprio do Vael: mundo refletido (recursos + componentes) em RON
 # por slot. Substitui o `SavePlugin` do Viber quando `external_save: true`.
 moonshine-save = "0.8" 
@@ -129,7 +129,7 @@ bevy_ext_physics = { path = "../bevy_extensions/crates/bevy_ext_physics" }
 # Render procedural dos objetos de primitivas (lathe/sweep/extruded/…): o
 # contrato Shape/MaterialSpec vem do `bevy_ext_scene`; este crate troca o
 # fallback do spawner pelo mesh/material/colisor exatos. `physics` liga os
-# colisores Rapier exatos (trimesh para as formas procedurais).
+# colisores Avian exatos (trimesh para as formas procedurais).
 bevy_ext_gradmesh = { path = "../bevy_extensions/crates/bevy_ext_gradmesh", features = ["physics"] }
 # Usados directamente na composição da App (src/app.rs): os buses de áudio
 # do runtime e o plugin das primitivas procedurais.

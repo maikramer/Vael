@@ -6,8 +6,14 @@ primeira partida. Para iterar em gameplay isso é tempo perdido. O atalho é:
 
 ```bash
 cd Vael
-viber run --scene main --entry dev
+vael-tools run --scene main --entry dev
 ```
+
+(Build e run sem argumentos são os do editor — `jd build .` e `jd run .`; o
+`jd run` arranca no menu/título e não aceita `--scene/--entry`, ver
+[`docs/JACKDAW.md`](JACKDAW.md). Para reaproveitar o binário do `jd` neste
+atalho: `VAEL_BIN=.jackdaw/target/game/debug/vael vael-tools run --scene main
+--entry dev`.)
 
 O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 
@@ -21,30 +27,50 @@ O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 
 ## Esperar pelo carregamento (agentes/QA)
 
-O ecrã de carregamento só sai com o mundo **inteiro**: todos os `<GltfScene>`
-com o GLB resolvido, as texturas subidas para a GPU, os albedos do terreno, os
-spawn groups e o herói assente (`world_ready.rs` na engine). O mesmo véu cobre
-cada troca de cena (`Settle` espera pela prontidão antes do fade de volta).
+O ecrã de carregamento sai com o **anel próximo**: os `<GltfScene>` a menos de
+`VIBER_GLTF_READY_RADIUS` (default 200 m) do herói com o GLB resolvido, as
+texturas subidas para a GPU, os albedos do terreno, os spawn groups e o herói
+assente (`world_ready.rs` na engine). O resto do mundo entra **por distância**
+(`gltf_residency.rs`): cada instância pede o GLB quando o corte de render dela
+se aproxima e larga-o bem depois de sair de cena. O mesmo véu cobre cada troca
+de cena (`Settle` espera pela prontidão antes do fade de volta).
 Num portátil o carregamento leva dezenas de segundos — **mais ainda com
 compilações a correr ao lado**. Screenshots ou input antes disso apanham o
 véu, não o jogo.
 
 ```bash
 cargo run --release -- world.bsn --scene main --entry dev --bridge 15731 &
-viber debug --port 15731 wait-ready --timeout 300   # exit 0 = pronto
-viber debug --port 15731 screenshot -o shot.png
+vael-tools debug --port 15731 wait-ready --timeout 300   # exit 0 = pronto
+vael-tools debug --port 15731 screenshot -o shot.png
+# para agentes: JSON no stdout (ready/loading/elapsed) e exit semântico
+vael-tools debug --port 15731 --json wait-ready --timeout 300
 ```
 
-- `viber.ping` e `viber.scene.current` devolvem `ready` e `loading`
-  (`status`, `progress`, `pending_models`, `gpu_uploading`, `last_load_secs`,
-  `timed_out`). Depois de `viber.scene.change`, voltar a esperar.
-- A bridge só responde entre frames: durante o carregamento um pedido pode
-  demorar segundos. Não é a engine pendurada — não matar o processo.
+- `viber.ping`, `vael-tools/ping` e `viber.scene.current` devolvem `ready` e
+  `loading` (`status`, `progress`, `pending_models`, `gpu_uploading`,
+  `last_load_secs`, `timed_out`). O `vael-tools/ping` recebe a prontidão do
+  recurso `BridgeReadiness`, espelhado cada frame a partir do véu do monólito
+  por `vael::bridge_ready::BridgeReadyPlugin`; sem o espelho (jogo velho), o
+  `wait-ready` pergunta ao `viber.ping`. `pending_models` conta só o anel do
+  véu. Depois de `viber.scene.change` (ou `vael-tools debug scene --wait`),
+  voltar a esperar.
+- Um reload do mundo completo por `scene` pode esgotar o teto com
+  `spawn groups=false` e deixar o loader em `busy()` (quirk do monólito,
+  pré-existente) — os pedidos seguintes levam "já há uma troca de cena em
+  curso". Interiores e o fluxo por portais funcionam.
 - `mundo pronto em X s` no log é a medição do tempo de carregamento;
-  `RUST_LOG=bevy_ext_viber_engine::world_ready=debug` dá o rasto por segundo.
+  `RUST_LOG=bevy_ext_viber_engine::world_ready=debug` dá o rasto por segundo e
+  `RUST_LOG=bevy_ext_viber_engine::gltf_residency=info` o dos anéis
+  (`N residentes, M adiados, +X/-Y` a cada 5 s com trabalho).
+- Residência: `VIBER_GLTF_STREAMING=0` volta a carregar **todos** os GLB no
+  arranque (o braço de A/B); `VIBER_GLTF_READY_RADIUS` (200),
+  `VIBER_GLTF_LOAD_RADIUS` (800, o *bootstrap* de um modelo cujo corte de
+  render ainda não se conhece), `VIBER_GLTF_LOAD_BUDGET` (8 activações/frame
+  em jogo) e `VIBER_GLTF_UNLOAD_BUDGET` (8 descargas/frame) são os botões.
 - Teto: 240 s (`VIBER_LOADING_MAX_S`); depois o jogo mostra-se incompleto e o
   `ready` vem com `timed_out: true`.
-- Afinação: `VIBER_IO_THREADS` (decode de GLB/KTX2; default cores−2) e
+- Afinação: `VIBER_IO_THREADS` (decode de GLB/KTX2; default cores−2 — é o
+  número que a app do Vael passa ao pool) e
   `VIBER_UPLOAD_MB` (subida para a GPU por frame, só atrás do véu; default
   256, `off` desliga). Em jogo não há limite: o Bevy tira da GPU um asset
   modificado quando o orçamento esgota e o mundo ficava negro.
@@ -66,7 +92,7 @@ A voar: **WASD** move, **Space** sobe, **Ctrl** desce, **Shift** acelera ×3,
 (`release_system`) ao sair.
 
 O latch é de SESSÃO (`viber.state()`), não vai para o save. Num arranque
-normal (`viber run`, Continuar, Novo Jogo) o `devmode.lua` não faz nada — as
+normal (`vael-tools run`, Continuar, Novo Jogo) o `devmode.lua` não faz nada — as
 teclas não existem.
 
 QA pela bridge: o REPL não drena os comandos de script (um `change_scene` de
@@ -74,8 +100,8 @@ lá é um no-op), mas partilha a VM dos scripts — `_G.viber_dev = true` liga a
 ferramentas na sessão viva, sem reiniciar a engine:
 
 ```bash
-viber debug --world world.bsn lua '_G.viber_dev = true return true'
-viber debug --world world.bsn input key f1     # ou o MCP viber_input
+vael-tools debug --world world.bsn lua '_G.viber_dev = true return true'
+vael-tools debug --world world.bsn input key f1     # ou o MCP viber_input
 ```
 
 Não há save carregado: o estado começa limpo, como no **Novo Jogo** (o kit
@@ -131,12 +157,12 @@ save). Consequências:
 
 | Quero… | Comando |
 |--------|---------|
-| Só saltar a cena de menu, manter título e prólogo | `viber run --scene main` |
-| Só saltar o menu e o prólogo (debug) | `viber run --scene main --entry dev` |
-| Voltar ao fluxo normal | `viber run` |
+| Só saltar a cena de menu, manter título e prólogo | `vael-tools run --scene main` |
+| Só saltar o menu e o prólogo (debug) | `vael-tools run --scene main --entry dev` |
+| Voltar ao fluxo normal | `vael-tools run` |
 
-`viber run --scene main --entry dev` também aceita caminho explícito
-(`viber run world.bsn --scene main --entry dev`); o wrapper do CLI trata do
+`vael-tools run --scene main --entry dev` também aceita caminho explícito
+(`vael-tools run world.bsn --scene main --entry dev`); o wrapper do CLI trata do
 build.
 
 ## Onde está o código
