@@ -1,5 +1,12 @@
 # DELETE-MONOLITH — eliminar o `bevy_ext_viber_engine`
 
+> **2026-11-15 (pós-CLI):** o CLI `viber` e o checkout `../viber-tools` foram
+> aposentados — `analyze`/`lint`/`bsn`/`run`/`debug` vivem em `cli/`
+> (`vael-tools`, ver [`TOOLS.md`](TOOLS.md)) e o bridge em
+> `bevy_extensions` (`bevy_ext_bridge_protocol`/`_runtime`). O que resta no
+> monólito são os métodos legacy `viber.*` (`lua`, `burst`, `trace`,
+> `raycast`) e o runtime de gameplay.
+
 Estudo de 2026-11-15 para a **eliminação completa** do crate
 `crates/bevy_ext_viber_engine` (o monólito do runtime de gameplay). Sucede o
 [`EXIT-MAP.md`](EXIT-MAP.md) (que mapeou peça→destino) e o
@@ -8,19 +15,17 @@ A/B/C/E aterradas no `main` dos dois repos, o que resta é o inventário do
 que ainda vive no monólito, o destino de cada peça e a ordem até
 `rm -rf crates/bevy_ext_viber_engine`.
 
-## Estado medido (2026-11-15, pós-merges)
+## Estado medido (2026-11-15, fim do dia — pós K/D/G-1)
 
 | Métrica | Valor |
 |---|---|
-| LOC do monólito | **136.671** (era 162,5k no exit; −26k em shims/ports) |
-| Refs `viber::` no Vael (Rust) | **348** (era 257 — a composição própria passa a citar mais módulos, mas a maioria resolve a shims de crates) |
-| Módulos citados pelo `src/app.rs` do Vael | 55 (deles: 5 já só re-export de crates — config/audio_space/ik/render_lod/terrain_host; meshopt/project/textures/xml shims de 2–12 lin) |
-| Call-sites Lua | 1.807 em 106 namespaces (superfície: ~113 fns em `luau/api.rs` + grupos compostos input/events/timers/entity/game/props/terrain + `viber.ui.*` 256 + `viber.vael` 80 do próprio jogo) |
-| `bevy_ext_scene_runtime` | **APAGADO a 2026-11-15** — órfão (zero consumidores; o jogo corre nas cópias do monólito, reconciliadas em `f565750`) |
-| `luau/` no monólito | **15.947** (24 ficheiros; testes 2.860) |
-| `terrain/` no monólito | **27.592** — WIP de água da sessão concorrente aterra aqui primeiro |
-| `bridge/` + `session.rs` + `profiler/` | ~17.9k — infra do binário `viber run`/CLI |
-| Waves já aterradas | A (composição própria + gémeos), B (config/audio_space/spawn_gate avian/attachment/interact), C (nav/postfx-glue/spawn re-sync/**ui atómica**), E (physics a avian3d) |
+| LOC do monólito (integração `exit4/integrate`) | **105.520** (136.7k pós-água: −2k ecs, −27k terrain, −2.3k music/ai) |
+| Distribuição | luau/ 15.0k (F em curso) · bridge/ 14.0k (H, sessão concorrente) · recipes/ 11.1k + scene/ 9.1k (G-2) · raiz ~50.4k (G-2) · profiler/ 3.1k · hud/ 2.3k · terrain/ **297** · nav/ 147 |
+| Refs `viber::` no Vael (Rust) | 408 (maioria resolve a shims de crates) |
+| Call-sites Lua | 1.807 em 106 namespaces (~113 fns + grupos compostos; **os scripts não mudam no port** — muda o host) |
+| `bevy_ext_scene_runtime` | **APAGADO a 2026-11-15** (`3d11d27`) — órfão, gémeos reconciliados no monólito |
+| Waves aterradas | A (composição+gémeos) · B · C · E + **avian-total** (`e952f0c`) · água · **K** (`737eabf`: ecs −2k, dlss, nav-mortos) · **D** (`exit4/integrate`: terrain, 291 testes) · **G-1** (music 20 testes, ai 21) |
+| Fase H em curso | sessão concorrente: `viber_tools_runtime` → `bevy_ext_bridge_runtime` no monorepo, `cli/` novo no Vael, skills `vael-tools` |
 
 ## Achados do inventário (2026-11-15, módulo-a-módulo)
 
