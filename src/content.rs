@@ -220,11 +220,15 @@ fn load_quests(root: &Path, errors: &mut Vec<String>) -> BTreeMap<String, QuestD
                         warn!("vael: quest sem id em {rel} — ignorada");
                         continue;
                     }
+                    // O `load_defs` do `rules.lua` fica com a PRIMEIRA definição
+                    // de um id repetido; guardar a última fazia o Lua e o Rust
+                    // discordarem do objetivo/recompensa da quest.
                     if out.contains_key(&quest.id) {
                         warn!(
-                            "vael: quest `{}` repetida em {rel} — a última ganha",
+                            "vael: quest `{}` repetida em {rel} — a primeira ganha",
                             quest.id
                         );
+                        continue;
                     }
                     out.insert(quest.id.clone(), quest);
                 }
@@ -258,6 +262,48 @@ fn scan_quest_files(root: &Path, errors: &mut Vec<String>) -> Vec<String> {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn quest_repetida_fica_com_a_primeira_definicao() {
+        // O `load_defs` do `rules.lua` guarda a primeira definição de um id
+        // repetido; o loader tem de dizer o mesmo ou o Lua e o Rust passam a
+        // discordar do objetivo e da recompensa da mesma quest.
+        let root = std::env::temp_dir().join(format!(
+            "vael_content_dup_{}_{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|time| time.as_nanos())
+                .unwrap_or(0)
+        ));
+        let _ = std::fs::remove_dir_all(&root);
+        std::fs::create_dir_all(root.join("quests")).expect("pasta de quests");
+        std::fs::write(
+            root.join("quests/index.json"),
+            r#"["a_quests.json", "b_quests.json"]"#,
+        )
+        .expect("index");
+        std::fs::write(
+            root.join("quests/a_quests.json"),
+            r#"[{"id": "dup", "npc": "a", "title": "primeira",
+                 "objective": {"type": "kill", "target": "wolf", "count": 3}}]"#,
+        )
+        .expect("a_quests");
+        std::fs::write(
+            root.join("quests/b_quests.json"),
+            r#"[{"id": "dup", "npc": "b", "title": "segunda",
+                 "objective": {"type": "kill", "target": "boar", "count": 1}}]"#,
+        )
+        .expect("b_quests");
+
+        let content = VaelContent::load(&root);
+        let dup = content.quests.get("dup").expect("quest repetida");
+        assert_eq!(dup.title, "primeira");
+        assert_eq!(dup.npc, "a");
+        assert_eq!(dup.objective.target, "wolf");
+
+        let _ = std::fs::remove_dir_all(&root);
+    }
 
     #[test]
     fn carrega_todo_o_conteudo_do_projeto() {
