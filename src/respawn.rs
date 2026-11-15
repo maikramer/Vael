@@ -12,7 +12,6 @@ use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use bevy_ext_core::{SfxClip, SfxEvent};
 use serde_json::{Value, json};
 use viber::luau::components::ScriptToast;
-use viber::luau::host::LuaScriptHost;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::UiWriter;
 
@@ -157,9 +156,9 @@ pub fn respawn_now(world: &mut World, spawn: Vec3, flasks: u32) {
     if interior {
         patch.insert("pending_respawn".to_string(), json!(true));
     }
-    if let Some(host) = world.get_resource::<LuaScriptHost>() {
-        viber::luau::game::apply_patch(&host.lua, &patch);
-    }
+    // O patch vai para o STORE do processo — o `viber.game()` de todos os
+    // contextos BMS lê daqui (sem host, sem handle mlua).
+    viber::luau::game::apply_patch_json(&patch);
     if let Some(writer) = world.get_resource::<UiWriter>() {
         writer.open("death", false);
         writer.set_visible("hud", true);

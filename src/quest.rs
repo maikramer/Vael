@@ -32,7 +32,6 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
 
 use crate::compat::lua_tonumber;
 use crate::content::{Objective, Reward, VaelContent};
@@ -656,14 +655,7 @@ impl Plugin for VaelQuestPlugin {
 }
 
 /// Arranque: acrescenta as funções de quest à tabela `viber.vael`.
-pub(crate) fn install_quest_api(
-    host: Option<Res<LuaScriptHost>>,
-    content: Option<Res<VaelContent>>,
-) {
-    let Some(host) = host else {
-        warn!("vael: quests sem host Luau — `viber.vael` não estendido");
-        return;
-    };
+pub(crate) fn install_quest_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
         warn!("vael: quests sem conteúdo carregado — `viber.vael` não estendido");
         return;
@@ -671,13 +663,15 @@ pub(crate) fn install_quest_api(
     let rules = QuestRules::from_content(&content);
     let vault = VaultRules::from_items(&content.items);
     let xp = XpRules::from_progression(&content.progression);
-    match install(&host.lua, rules, vault, xp) {
-        Ok(()) => info!(
-            quests = content.quests.len(),
-            "vael: quests em Rust ligadas (`viber.vael`)"
-        ),
-        Err(err) => error!("vael: falha a instalar quests em `viber.vael`: {err}"),
-    }
+    let quests = content.quests.len();
+    // `Fn`: o closure possui as regras e clona por contexto novo.
+    crate::script_host::register_installer(move |lua| {
+        install(lua, rules.clone(), vault.clone(), xp.clone())
+    });
+    info!(
+        quests,
+        "vael: quests em Rust registadas nos contextos BMS (`viber.vael`)"
+    );
 }
 
 /// Acrescenta as funções `quest_*` a `viber.vael` sem substituir as que já lá
@@ -1423,7 +1417,12 @@ mod tests {
 
     #[test]
     fn bridge_le_e_escreve_o_estado_das_quests() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let (lua, game) = lua_com_bridge();
         game.raw_set("q.wolves", STATE_READY).expect("estado");
         game.raw_set("q.wolves.n", 3).expect("progresso");
@@ -1491,7 +1490,12 @@ mod tests {
 
     #[test]
     fn bridge_avanca_etapa_e_devolve_os_toasts() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let (lua, game) = lua_com_bridge();
         assert!(
             lua.load("return viber.vael.quest_accept('staged')")

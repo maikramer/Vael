@@ -121,6 +121,10 @@ bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
 # a escrever em recursos que ninguém lia); a wave C unificou a camada de dados
 # no crate, mas o Vael continua pelos shims `viber::ui`.
 bevy_ext_save = { path = "../bevy_extensions/crates/bevy_ext_save" }
+# Host de scripting do jogo (BMS 0.24): a superfície viber.* vive aqui
+# desde as ondas F2-F8; ui instala viber.ui nos contextos, nlu/decision
+# são os runtimes IA (path-deps CelerAI do próprio crate).
+bevy_ext_luau = { path = "../bevy_extensions/crates/bevy_ext_luau", features = ["ui", "nlu", "decision"] }
 # Glue do engine extraído: feedback, câmara de editor, camera-glue e HUD
 # assets. Type-idêntico aos gémeos `viber::*` via re-export.
 bevy_ext_engine = { path = "../bevy_extensions/crates/bevy_ext_engine" }

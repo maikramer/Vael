@@ -28,7 +28,6 @@ use std::sync::{Arc, Mutex};
 
 use bevy::prelude::*;
 use mlua::{Function, Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
 
 use crate::compat::{lua_number, truthy, write_number};
 use crate::vault::{vael_fn, vael_table};
@@ -293,15 +292,9 @@ impl Plugin for VaelCombatPlugin {
 /// Arranque: acrescenta as primitivas de combate à tabela `viber.vael`.
 ///
 /// Público dentro do crate para o plugin do relógio ordenar depois dele.
-pub(crate) fn install_combat_api(host: Option<Res<LuaScriptHost>>) {
-    let Some(host) = host else {
-        warn!("vael: combate sem host Luau — `viber.vael` não estendido");
-        return;
-    };
-    match install(&host.lua, CombatRules::default()) {
-        Ok(()) => info!("vael: combate em Rust ligado (`viber.vael`)"),
-        Err(err) => error!("vael: falha a instalar combate em `viber.vael`: {err}"),
-    }
+pub(crate) fn install_combat_api() {
+    crate::script_host::register_installer(|lua| install(lua, CombatRules::default()));
+    info!("vael: combate em Rust registado nos contextos BMS (`viber.vael`)");
 }
 
 /// Acrescenta `guard`, `damage_player`, `heal_player` e `grant_iframes` a
@@ -321,7 +314,7 @@ pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
         ],
         move |lua, now: Option<Value>| {
             let now = lua_number(now.unwrap_or(Value::Nil));
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = CombatKv::default();
             let mut session = lock_session(&session);
             session.load(&game, &mut kv)?;
@@ -342,7 +335,7 @@ pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
         move |lua, (amount, now): (Option<Value>, Option<Value>)| {
             let amount = lua_number(amount.unwrap_or(Value::Nil));
             let now = lua_number(now.unwrap_or(Value::Nil));
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_vitals(&game)?;
             {
                 let mut session = lock_session(&session);
@@ -365,7 +358,7 @@ pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
         "heal_player",
         move |lua, amount: Option<Value>| {
             let amount = lua_number(amount.unwrap_or(Value::Nil));
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_vitals(&game)?;
             let healed = heal(&mut kv, amount);
             write_vitals(&game, &kv)?;
@@ -385,7 +378,7 @@ pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
                 Value::Number(n) => n,
                 _ => 0.0,
             };
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_vitals(&game)?;
             grant_iframes(&mut kv, secs);
             write_iframes(&game, &kv)
@@ -410,7 +403,7 @@ fn read_vitals(game: &Table) -> mlua::Result<CombatKv> {
         // `num(chave, 0)` do Lua: o que não for número finito vale 0.
         iframes: read_number(game, KEY_IFRAMES, 0.0)?,
         dying: read_number(game, KEY_DYING, 0.0)?,
-        death_pending: truthy(game.raw_get::<Value>(KEY_DEATH_PENDING)?),
+        death_pending: truthy(game.get::<Value>(KEY_DEATH_PENDING)?),
         ..CombatKv::default()
     })
 }
@@ -429,7 +422,7 @@ fn write_iframes(game: &Table, kv: &CombatKv) -> mlua::Result<()> {
 
 /// Lê um número do jogo; chave ausente/não numérica cai em `missing`.
 fn read_number(game: &Table, key: &str, missing: f64) -> mlua::Result<f64> {
-    Ok(match game.raw_get::<Value>(key)? {
+    Ok(match game.get::<Value>(key)? {
         Value::Integer(n) => n as f64,
         Value::Number(n) if n.is_finite() => n,
         _ => missing,
@@ -761,8 +754,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install(&lua, regras()).expect("instalar viber.vael");
         (lua, game)
     }
@@ -890,8 +882,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
         install_xp(&lua, XpRules::default()).expect("xp");
 
@@ -929,8 +920,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game)
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
         install_xp(&lua, XpRules::default()).expect("xp");
         install_gear(&lua, GearRules::default()).expect("equipamento");
@@ -973,7 +963,6 @@ mod tests {
     fn startup_instala_combate_na_mesma_tabela() {
         let mut app = App::new();
         app.add_plugins(bevy::MinimalPlugins)
-            .insert_resource(LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host"))
             .init_resource::<crate::content::VaelContent>()
             .add_plugins((
                 crate::vault::VaelVaultPlugin,
@@ -984,9 +973,15 @@ mod tests {
             ));
         app.update();
 
-        let host = app.world().resource::<LuaScriptHost>();
-        let coexistem: bool = host
-            .lua
+        // Modelo BMS (contexto por entidade): os plugins registam
+        // instaladores; num contexto novo todos correm e as funções
+        // coexistem na MESMA tabela `viber.vael`.
+        let lua = mlua::Lua::new();
+        lua.globals()
+            .set("viber", lua.create_table().expect("tabela viber"))
+            .expect("global viber");
+        crate::script_host::run_installers(&lua).expect("instaladores");
+        let coexistem: bool = lua
             .load(
                 "return type(viber.vael.vault_add) == 'function' \
                  and type(viber.vael.add_xp) == 'function' \

@@ -22,11 +22,11 @@ use std::marker::PhantomData;
 use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy::time::Real;
+use bevy_ext_core::dialogue::ExternalSayPresenter;
 use bevy_speech_bubbles::{
     BalloonScale, Bubble, BubbleAssets, BubbleKind, BubblePx, BubbleStyle, DefaultBalloonSkin,
     Emotion, SpeechBubblesPlugin, build_bubble, dwell_secs, track_bubbles,
 };
-use bevy_ext_core::dialogue::ExternalSayPresenter;
 use viber::interact::InteractionFocus;
 use viber::luau::{ScriptSay, ScriptToast};
 use viber::recipes::spawn::OrbitCamera;
@@ -111,7 +111,7 @@ impl<C: Component> Plugin for VaelSpeechPlugin<C> {
                 Update,
                 (
                     present_spoken_lines
-                        .after(viber::luau::luau_update)
+                        .after(viber::luau::bms_bridge::apply_bms_commands)
                         .before(track_bubbles::<C>),
                     // Antes do `track_bubbles`: um balão velho nunca é
                     // despawnado pela crate com os assets ainda vivos.

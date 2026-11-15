@@ -20,7 +20,6 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
 
 use crate::compat::lua_count;
 use crate::content::{ItemsFile, VaelContent};
@@ -207,49 +206,31 @@ pub struct VaelVaultPlugin;
 
 impl Plugin for VaelVaultPlugin {
     fn build(&self, app: &mut App) {
-        // A tabela `viber.vael` nasce UMA vez, antes de qualquer instalador:
-        // o `vael_table` é ler-ou-criar e dois sistemas de `Startup` em
-        // paralelo sem ordem criavam cada um a sua — a última a gravar
-        // ganhava e as funções da outra sumiam (intermitente: dependia do
-        // escalonamento das threads).
-        app.add_systems(PreStartup, ensure_vael_table);
-        // `Startup` corre depois do `PreStartup` que carrega o `VaelContent`.
+        // `Startup` corre depois do sistema que carrega o `VaelContent`. O
+        // instalador vai para o REGISTO BMS (`crate::script_host`): cada
+        // contexto novo recebe o closure do cofre — a tabela `viber.vael`
+        // é ler-ou-criar dentro de cada contexto (o `vael_table`).
         app.add_systems(Startup, install_vault_api);
     }
 }
 
-/// `PreStartup`: cria a tabela `viber.vael` vazia (ver o `build`).
-fn ensure_vael_table(host: Option<Res<LuaScriptHost>>) {
-    if let Some(host) = host
-        && let Err(err) = vael_table(&host.lua)
-    {
-        error!("vael: falha a criar `viber.vael`: {err}");
-    }
-}
-
-/// Arranque: instala `viber.vael` na VM partilhada.
+/// Arranque: instala `viber.vael` nos contextos BMS (via registo).
 ///
 /// Público dentro do crate para o plugin do XP ordenar depois dele.
 pub(crate) fn install_vault_api(
-    host: Option<Res<LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
 ) {
-    let Some(host) = host else {
-        warn!("vael: cofre sem host Luau — `viber.vael` não instalado");
-        return;
-    };
     let Some(content) = content else {
         warn!("vael: cofre sem conteúdo carregado — `viber.vael` não instalado");
         return;
     };
     let rules = VaultRules::from_items(&content.items);
-    match install(&host.lua, rules) {
-        Ok(()) => info!(
-            itens = content.items.items.len(),
-            "vael: cofre em Rust ligado (`viber.vael`)"
-        ),
-        Err(err) => error!("vael: falha a instalar `viber.vael`: {err}"),
-    }
+    let itens = content.items.items.len();
+    crate::script_host::register_installer(move |lua| install(lua, rules.clone()));
+    info!(
+        itens,
+        "vael: cofre em Rust registado nos contextos BMS (`viber.vael`)"
+    );
 }
 
 /// Obtém a tabela `viber.vael` da VM partilhada, criando-a (dentro de
@@ -266,6 +247,35 @@ pub(crate) fn vael_table(lua: &Lua) -> mlua::Result<Table> {
             Ok(table)
         }
     }
+}
+
+/// (testes) Instala `viber.game()` a devolver a tabela dada.
+///
+/// Os módulos leem o jogo por `viber::luau::game::game_proxy` (o
+/// `viber_game` do registry morreu no exit4/F3), mas os testes montam a VM à
+/// mão em vez do `LuaScriptHost` — esta é a peça mínima para os helpers
+/// `lua_com_bridge` continuarem a semear um tabela limpa. Cria o global
+/// `viber` quando o teste ainda não o tem (os de colheita só querem a VM).
+#[cfg(test)]
+pub(crate) fn install_test_game(lua: &Lua, game: &Table) {
+    let viber: Table = match lua.globals().get::<Value>("viber").expect("global viber") {
+        Value::Table(table) => table,
+        _ => {
+            let table = lua.create_table().expect("tabela viber");
+            lua.globals()
+                .set("viber", table.clone())
+                .expect("global viber");
+            table
+        }
+    };
+    let game = game.clone();
+    viber
+        .set(
+            "game",
+            lua.create_function(move |_, ()| Ok(game.clone()))
+                .expect("fn viber.game"),
+        )
+        .expect("viber.game");
 }
 
 /// Regista uma função na tabela `viber.vael`.
@@ -305,7 +315,7 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
             if kind.is_empty() {
                 return Ok(0i64);
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = BTreeMap::new();
             if let Some(count) = read_item(&game, &kind)? {
                 kv.insert(item_key(&kind), count);
@@ -324,7 +334,7 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
             if kind.is_empty() {
                 return Ok(0i64);
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = BTreeMap::new();
             if let Some(count) = read_item(&game, &kind)? {
                 kv.insert(item_key(&kind), count);
@@ -333,7 +343,7 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
             if added > 0
                 && let Some(value) = kv.get(&item_key(&kind))
             {
-                game.raw_set(item_key(&kind), *value)?;
+                game.set(item_key(&kind), *value)?;
             }
             Ok(added)
         }
@@ -349,14 +359,14 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
             if kind.is_empty() {
                 return Ok(false);
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = BTreeMap::new();
             if let Some(count) = read_item(&game, &kind)? {
                 kv.insert(item_key(&kind), count);
             }
             let ok = vault_take(&rules, &mut kv, &kind, lua_amount(amount));
             if ok && let Some(value) = kv.get(&item_key(&kind)) {
-                game.raw_set(item_key(&kind), *value)?;
+                game.set(item_key(&kind), *value)?;
             }
             Ok(ok)
         }
@@ -368,7 +378,7 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
         "seed_starting",
         [rules = Arc::clone(&rules)],
         move |lua, ()| {
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             // Só o gate (`gold`/`potion`) e as chaves do kit: um valor
             // não numérico conta como PRESENTE, como no Lua.
             let mut keys: Vec<&str> = rules.starting.keys().map(String::as_str).collect();
@@ -386,7 +396,7 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
             let seeded = seed_starting(&rules, &mut kv);
             for (key, value) in &kv {
                 if before.get(key) != Some(value) {
-                    game.raw_set(key.as_str(), *value)?;
+                    game.set(key.as_str(), *value)?;
                 }
             }
             Ok(seeded as i64)
@@ -398,7 +408,7 @@ pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
 
 /// Lê `item.<kind>` do jogo: `None` = chave ausente.
 fn read_item(game: &Table, kind: &str) -> mlua::Result<Option<i64>> {
-    let value: Value = game.raw_get(item_key(kind))?;
+    let value: Value = game.get(item_key(kind))?;
     Ok(match value {
         Value::Nil => None,
         other => Some(lua_count(other)),
@@ -586,8 +596,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install(&lua, rules).expect("instalar viber.vael");
         (lua, game)
     }

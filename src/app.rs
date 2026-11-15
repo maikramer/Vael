@@ -102,6 +102,11 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         .unwrap_or_else(|| "Vael".to_string());
     let (world_dir, asset_roots) = viber::app::world_asset_dirs(path, &config);
     let asset_root = asset_roots[0].clone();
+    // Pasta `scripts/` do projeto para o `viber.load`/`load_json` (loader de
+    // módulos): em modo BMS o publisher só escreve o static do store quando
+    // o estado publicado traz `Some`, portanto semeia-se AQUI uma vez (o
+    // host antigo recebia o dir no plugin).
+    bevy_ext_luau::game::set_scripts_dir(Some(config.scripts_dir_on(&world_dir)));
     // Shaders ESPECIALIZADOS por mundo (céu/água/camadas): consts WGSL do
     // projeto — vêm SEMPRE da cena principal (contrato de conteúdo).
     let project = viber::project::Project::discover(path);
@@ -432,8 +437,14 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     });
     app.add_plugins(viber::physics::TerrainCollidersPlugin);
     // Controller do herói (tnua) e step assist. O `PhysicsPlugin` acima só
-    // faz colliders; o herói é do jogo (`viber::player`).
-    app.add_plugins(viber::player::HeroPhysicsPlugin);
+    // faz colliders; o herói é do JOGO: o scheme e o tuning do tnua vivem
+    // aqui (`VaelHeroScheme`/`vael_hero_config` em `src/player.rs`) — o
+    // plugin da engine é genérico sobre o scheme.
+    app.add_plugins(
+        viber::player::HeroPhysicsPlugin::<crate::player::VaelHeroScheme>::new(
+            crate::player::vael_hero_config,
+        ),
+    );
     app.add_plugins(viber::postfx::PostFxPlugin);
     app.add_plugins(viber::postfx_toggle::PostFxDebugTogglePlugin);
     app.add_plugins(viber::adaptive_quality::AdaptiveQualityPlugin);
@@ -449,8 +460,12 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // Host Luau (BMS 0.24): a superfície `viber.*` vive no bevy_ext_luau
     // (ondas F2-F8) e o `BmsBridgePlugin` do monólito publica o estado do
     // mundo (ScriptHostState) e aplica os comandos dos scripts com a
-    // maquinaria de sempre. Scripts correm no PreUpdate do BMS.
-    app.add_plugins(bevy_ext_luau::VaelScriptingPlugin);
+    // maquinaria de sempre. Os contextos são por entidade: os instaladores
+    // `viber.vael` do jogo (cofre/XP/quests/…) correm por contexto novo
+    // através do registo (`crate::script_host`).
+    app.add_plugins(bevy_ext_luau::VaelScriptingPlugin {
+        extra_initializers: crate::script_host::extra_initializers(),
+    });
     app.add_plugins(viber::luau::bms_bridge::BmsBridgePlugin);
     // Adaptadores de host da G-1: publicam o mundo para os crates de
     // áudio/IA (sem eles music_driver/script_sound_loops ficam mudos e a
@@ -542,20 +557,23 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         )
             .before(viber::ui::UiSet::Collect),
     );
-    // `viber.ui` tem de ganhar ao runtime Luau (script do frame 1 via
-    // `luau_on_add`): o handle da VM (`UiScriptHost`) sai ANTES do install —
-    // sem ele o `install_ui_script_api` do crate sai em silêncio e TODO o
-    // `viber.ui.*` dos scripts morre ("attempt to index nil": HUD-equipa-
-    // mento, habilidades, combate, profiler). Instalação antes, mutações
-    // enfileiradas depois, e a UI PUBLICA antes dos scripts lerem (cliques no
-    // mesmo frame).
-    // Scripts no PreUpdate do BMS: a UI (Collect/Build/Bind no Update)
-    // corre naturalmente depois das mutações enfileiradas; o dreno dos
-    // comandos BMS ordena a aplicação no monólito (`apply_bms_commands`).
-    app.add_systems(
+    // `viber.ui` e o runtime Luau (BMS): os scripts correm no Update
+    // (`viber::luau::bms_bridge::VaelScripts` — o handler `on_update`),
+    // enfileiram mutações `viber.ui.*`, e o `UiSet::Script` aplica-as
+    // DEPOIS — sem esta ordem o HUD (`combat.lua` combo, profiler) ficava
+    // um frame atrás e o `viber.ui.is_open` do mesmo frame mentia.
+    // O dreno dos comandos BMS corre entre os scripts e a aplicação
+    // (`apply_bms_commands`), também antes do set de UI.
+    //
+    // NÃO re-adicionar a system aqui: o `BmsBridgePlugin` já a regista no
+    // `Update` (com `.after(drain_commands)`), e uma 2.ª instância torna o
+    // `SystemTypeSet` ambíguo — o schedule `Update` inteiro falha a
+    // inicialização (e depois corre um executável vazio, em silêncio: sem
+    // movimento, sem portão de spawn, sem spawner de GLB). Aqui só liga a
+    // ORDEM: o set de UI é depois da instância única do plugin.
+    app.configure_sets(
         bevy::app::Update,
-        viber::luau::bms_bridge::apply_bms_commands
-            .after(bevy_ext_luau::commands::drain_commands),
+        viber::ui::UiSet::Script.after(viber::luau::bms_bridge::apply_bms_commands),
     );
     // Spawn do mundo: arranque e trocas de cena (o mesmo spawner). O spawn
     // junta-se ao set do contrato do nav crate: o `NavPlugin` aplica a

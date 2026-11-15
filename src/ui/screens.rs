@@ -22,7 +22,6 @@ use serde_json::{Value, json};
 use viber::a11y::A11y;
 use viber::locale::Locale;
 use viber::luau::components::ScriptToast;
-use viber::luau::host::LuaScriptHost;
 use viber::music::AudioMixerSettings;
 use viber::save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
@@ -290,20 +289,16 @@ impl ScreensVm {
 
 // ── helpers de estado ───────────────────────────────────────────────────
 
-fn game_kv(world: &World) -> BTreeMap<String, Value> {
-    world
-        .get_resource::<LuaScriptHost>()
-        .map(|host| viber::luau::game::game_to_json(&host.lua))
-        .unwrap_or_default()
+fn game_kv(_world: &World) -> BTreeMap<String, Value> {
+    // Store do processo: o `viber.game()` de todos os contextos BMS.
+    viber::luau::game::game_to_json_process()
 }
 
-fn patch_game(world: &mut World, patch: BTreeMap<String, Value>) {
+fn patch_game(_world: &mut World, patch: BTreeMap<String, Value>) {
     if patch.is_empty() {
         return;
     }
-    if let Some(host) = world.get_resource::<LuaScriptHost>() {
-        viber::luau::game::apply_patch(&host.lua, &patch);
-    }
+    viber::luau::game::apply_patch_json(&patch);
 }
 
 fn toast(world: &mut World, text: impl Into<String>) {
@@ -652,7 +647,7 @@ fn request_load(world: &mut World, slot: u32) {
         request.slot = Some(slot);
     }
     if let Some(writer) = world.get_resource::<UiWriter>() {
-        close_overlays(&writer);
+        close_overlays(writer);
         writer.set_visible("hud", true);
     }
     let mut state = world.resource_mut::<VaelScreensState>();
@@ -1041,7 +1036,7 @@ fn menu_to_title(world: &mut World) {
     }
     patch_game(world, patch);
     if let Some(writer) = world.get_resource::<UiWriter>() {
-        close_overlays(&writer);
+        close_overlays(writer);
         writer.set_visible("hud", false);
         writer.open("title", true);
     }

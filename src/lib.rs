@@ -29,6 +29,8 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod animation;
+pub mod head_look;
+pub mod spring;
 pub mod app;
 pub mod boat;
 pub mod bridge_ready;
@@ -63,6 +65,7 @@ pub mod respawn;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
+pub mod script_host;
 pub mod save_native;
 pub mod settings;
 pub mod speech;
@@ -231,6 +234,10 @@ impl Plugin for VaelPlugin {
         app.add_plugins(live_edit::VaelLiveEditPlugin);
         // `AnimationSet` autorado → rig do `jackdaw_animation_runtime`.
         app.add_plugins(animation::VaelAnimationPlugin);
+        // Look-at da cabeça: NPCs/criaturas viram-se para o herói no alcance.
+        app.add_plugins(head_look::VaelHeadLookPlugin);
+        // Spring bones: mola na crina dos lobos (demo do crate).
+        app.add_plugins(spring::VaelSpringPlugin);
         #[cfg(feature = "hanabi")]
         app.add_plugins(hanabi_fx::VaelHanabiPlugin);
     }

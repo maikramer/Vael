@@ -45,7 +45,7 @@ impl Plugin for VaelHudUiPlugin {
                 // `luau_update` (o `UiSet::Script` já corre depois dele).
                 combo_shake
                     .after(UiSet::Bind)
-                    .after(viber::luau::luau_update)
+                    .after(viber::luau::bms_bridge::apply_bms_commands)
                     .before(UiSet::Script),
             ),
         );

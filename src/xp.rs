@@ -28,7 +28,6 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
 
 use crate::compat::{lua_number, write_number};
 use crate::components::XpState;
@@ -223,28 +222,23 @@ impl Plugin for VaelXpPlugin {
     }
 }
 
-/// Arranque: acrescenta as funções de XP à tabela `viber.vael`.
+/// Arranque: acrescenta as funções de XP à tabela `viber.vael` dos
+/// contextos BMS (via registo — ver `crate::script_host`).
 ///
 /// Público dentro do crate para o plugin do equipamento ordenar depois dele.
-pub(crate) fn install_xp_api(host: Option<Res<LuaScriptHost>>, content: Option<Res<VaelContent>>) {
-    let Some(host) = host else {
-        warn!("vael: XP sem host Luau — `viber.vael` não estendido");
-        return;
-    };
+pub(crate) fn install_xp_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
         warn!("vael: XP sem conteúdo carregado — `viber.vael` não estendido");
         return;
     };
     let rules = XpRules::from_progression(&content.progression);
-    match install(&host.lua, rules) {
-        Ok(()) => info!(
-            base = rules.base,
-            crescimento = rules.growth,
-            pontos_por_nivel = rules.points_per_level,
-            "vael: XP em Rust ligado (`viber.vael`)"
-        ),
-        Err(err) => error!("vael: falha a instalar XP em `viber.vael`: {err}"),
-    }
+    info!(
+        base = rules.base,
+        crescimento = rules.growth,
+        pontos_por_nivel = rules.points_per_level,
+        "vael: XP em Rust registado nos contextos BMS (`viber.vael`)"
+    );
+    crate::script_host::register_installer(move |lua| install(lua, rules));
 }
 
 /// Acrescenta `ensure_xp`, `add_xp` e `add_skill_points` a `viber.vael`.
@@ -261,7 +255,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
         "ensure_xp",
         [rules = Arc::clone(&rules)],
         move |lua, ()| {
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_xp(&game)?;
             ensure_xp(&mut kv, &rules);
             write_xp(&game, &kv)
@@ -278,7 +272,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
             if !gain.is_finite() || gain <= 0.0 {
                 return Ok(());
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_xp(&game)?;
             add_xp(&mut kv, &rules, gain);
             write_xp(&game, &kv)
@@ -295,7 +289,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
             if !n.is_finite() || n <= 0.0 {
                 return Ok(());
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_xp(&game)?;
             // O Lua chama `ensure_xp()` antes de somar.
             ensure_xp(&mut kv, &rules);
@@ -312,7 +306,7 @@ pub(crate) fn install(lua: &Lua, rules: XpRules) -> mlua::Result<()> {
 fn read_xp(game: &Table) -> mlua::Result<XpMap> {
     let mut kv = XpMap::new();
     for key in XP_KEYS {
-        match game.raw_get::<Value>(key)? {
+        match game.get::<Value>(key)? {
             Value::Integer(n) => {
                 kv.insert(key.to_string(), n as f64);
             }
@@ -339,6 +333,7 @@ fn write_xp(game: &Table, kv: &XpMap) -> mlua::Result<()> {
 mod tests {
     use super::*;
     use crate::content::{ItemsFile, ProgressionFile};
+    use serde_json::Value as Json;
     use crate::vault::{VaultRules, install as install_vault};
 
     fn regras() -> XpRules {
@@ -561,8 +556,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         // Ordem de produção: cofre primeiro, XP depois.
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("instalar cofre");
         install(&lua, regras()).expect("instalar xp");
@@ -648,13 +642,20 @@ mod tests {
     fn startup_instala_xp_na_mesma_tabela_do_cofre() {
         let mut app = App::new();
         app.add_plugins(bevy::MinimalPlugins)
-            .insert_resource(LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host"))
             .init_resource::<VaelContent>()
             .add_plugins((crate::vault::VaelVaultPlugin, VaelXpPlugin));
         app.update();
 
-        let host = app.world().resource::<LuaScriptHost>();
-        let lua = &host.lua;
+        // Modelo BMS: instaladores registados → contexto novo tem tudo na
+        // mesma tabela. O ESTADO vai pelo PROXY da VM (`viber.game()` — o
+        // `game_proxy` do crate lê-o); o store do processo é outro canal.
+        let lua = mlua::Lua::new();
+        lua.globals()
+            .set("viber", lua.create_table().expect("tabela viber"))
+            .expect("global viber");
+        let game = lua.create_table().expect("tabela do jogo");
+        crate::vault::install_test_game(&lua, &game);
+        crate::script_host::run_installers(&lua).expect("instaladores");
         let coexistem: bool = lua
             .load(
                 "return type(viber.vael.vault_add) == 'function' \

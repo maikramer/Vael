@@ -21,8 +21,7 @@ use serde::{Deserialize, Serialize};
 use serde_json::Value;
 use viber::input_map::{Action, ActionMap};
 use viber::locale::Locale;
-use viber::luau::game::{game_to_json, json_to_game};
-use viber::luau::host::LuaScriptHost;
+use viber::luau::game::{game_to_json_process, restore_game_json};
 use viber::music::AudioMixerSettings;
 use viber::save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
@@ -104,7 +103,7 @@ impl Plugin for VaelNativeSavePlugin {
             .add_observer(on_native_loaded)
             .add_systems(
                 Update,
-                process_save_requests.after(viber::luau::luau_update),
+                process_save_requests.after(viber::luau::bms_bridge::apply_bms_commands),
             )
             .add_systems(PostUpdate, (finish_native_save, finish_native_load));
     }
@@ -245,10 +244,16 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
         .get_resource::<VaelSave>()
         .cloned()
         .unwrap_or_default();
-    let kv = world
-        .get_resource::<LuaScriptHost>()
-        .map(|host| game_to_json(&host.lua))
-        .unwrap_or_else(|| save.to_world_kv());
+    // Store do processo primeiro (o `viber.game()` dos contextos BMS); sem
+    // chaves (arranque), o save tipado.
+    let kv = {
+        let kv = game_to_json_process();
+        if kv.is_empty() {
+            save.to_world_kv()
+        } else {
+            kv
+        }
+    };
     let world_kv_json = serde_json::to_string(&kv).unwrap_or_default();
     let save_json = serde_json::to_string(&save).unwrap_or_default();
     let position = world
@@ -331,10 +336,10 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     } else {
         warn!("vael save: save_json inválido");
     }
-    if let Some(host) = world.get_resource::<LuaScriptHost>()
-        && let Ok(kv) = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json)
-    {
-        json_to_game(&host.lua, &kv);
+    // `restore_game_json` repõe o store do processo (o `viber.game()` de
+    // todos os contextos BMS lê daqui — já não depende de haver host).
+    if let Ok(kv) = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json) {
+        restore_game_json(&kv);
     }
     if let Some(mut mixer) = world.get_resource_mut::<AudioMixerSettings>() {
         mixer.master = payload.volumes.x.clamp(0.0, 1.0);

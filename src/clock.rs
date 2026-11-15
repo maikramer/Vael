@@ -16,7 +16,6 @@ use std::sync::{Arc, Mutex};
 use bevy::prelude::*;
 use bevy_elements::{Weather as ElementsWeather, WorldClock as ElementsWorldClock};
 use mlua::{Lua, Value};
-use viber::luau::host::LuaScriptHost;
 use viber::worldsys::{DayCycleState, WeatherState};
 
 use crate::vault::{vael_fn, vael_table};
@@ -187,15 +186,12 @@ impl Plugin for VaelClockPlugin {
 }
 
 /// Arranque: acrescenta as funções do relógio à tabela `viber.vael`.
-pub(crate) fn install_clock_api(host: Option<Res<LuaScriptHost>>, clock: Res<VaelClock>) {
-    let Some(host) = host else {
-        warn!("vael: relógio sem host Luau — `viber.vael` não estendido");
-        return;
-    };
-    match install(&host.lua, &clock) {
-        Ok(()) => info!("vael: relógio em Rust ligado (`viber.vael`)"),
-        Err(err) => error!("vael: falha a instalar relógio em `viber.vael`: {err}"),
-    }
+pub(crate) fn install_clock_api(clock: Res<VaelClock>) {
+    // `register_installer` exige `Fn` (corre por contexto novo): o snapshot
+    // é um `Arc` barato — o closure fica com um clone próprio.
+    let clock = clock.clone();
+    crate::script_host::register_installer(move |lua| install(lua, &clock));
+    info!("vael: relógio em Rust registado nos contextos BMS (`viber.vael`)");
 }
 
 /// Acrescenta `clock_hour`, `clock_is_night`, `clock_rain` e `clock_raining`

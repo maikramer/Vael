@@ -27,10 +27,10 @@ use std::sync::Arc;
 use bevy::color::Srgba;
 use bevy::material::AlphaMode;
 use bevy::prelude::*;
+use bevy_ext_engine::feedback::{DamageNumberEvent, damage_number_scale, number_font_size};
 use bevy_rich_text3d::{
     LoadFonts, Text3d, Text3dPlugin, Text3dStyle, TextAlign, TextAnchor, TextAtlas,
 };
-use bevy_ext_engine::feedback::{DamageNumberEvent, damage_number_scale, number_font_size};
 
 /// Vida útil de um número (s), igual ao feedback 2D da engine.
 pub const TEXT_LIFETIME: f32 = 0.9;
@@ -169,7 +169,7 @@ impl Plugin for VaelWorldTextPlugin {
                 (
                     // Os scripts escrevem `viber.damage_number` no
                     // `luau_update`; ler depois evita um frame de atraso.
-                    queue_damage_numbers.after(viber::luau::luau_update),
+                    queue_damage_numbers.after(viber::luau::bms_bridge::apply_bms_commands),
                     activate_world_text,
                     animate_world_text,
                 )

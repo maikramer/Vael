@@ -26,11 +26,11 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::sync::{Arc, Mutex, MutexGuard};
 
 use bevy::prelude::*;
-use mlua::{Function, Lua, Table, Value};
+use bevy_ext_core::{SfxClip, SfxEvent};
+use mlua::Lua;
 use serde_json::Value as Json;
 use viber::luau::components::ScriptToast;
-use viber::luau::game::{apply_patch, game_to_json};
-use viber::luau::host::LuaScriptHost;
+use viber::luau::game::{apply_patch_json, game_to_json_process};
 
 use crate::compat::env_enabled;
 use crate::components::{QuestLog, VaelPlayer};
@@ -592,9 +592,9 @@ pub fn quest_notices(rules: &QuestRules, before: &QuestKv, after: &QuestKv) -> V
 
 /// Toast + som do `mark_ready` (best-effort; sem HUD/Lua não faz nada).
 fn emit_notices(
-    lua: &Lua,
     notices: &[QuestNotice],
     toasts: &mut Option<MessageWriter<ScriptToast>>,
+    mut sfx: Option<&mut MessageWriter<SfxEvent>>,
     position: Option<[f32; 3]>,
 ) {
     for notice in notices {
@@ -609,29 +609,15 @@ fn emit_notices(
         if let Some(toasts) = toasts.as_mut() {
             toasts.write(ScriptToast(text));
         }
-        play_notification(lua, position);
-    }
-}
-
-/// `sound_at_player("notification")` do Lua, do lado Rust.
-fn play_notification(lua: &Lua, position: Option<[f32; 3]>) {
-    let result = (|| -> mlua::Result<()> {
-        let viber: Table = lua.globals().get("viber")?;
-        let Some(sound) = viber.get::<Option<Function>>("sound")? else {
-            return Ok(());
-        };
-        if let Some([x, y, z]) = position {
-            let opts = lua.create_table()?;
-            opts.set("x", x)?;
-            opts.set("y", y)?;
-            opts.set("z", z)?;
-            sound.call::<()>(("notification", opts))
-        } else {
-            sound.call::<()>("notification")
+        // O `viber.sound("notification", …)` corria na VM partilhada; a
+        // conversa de som agora é a mensagem SfxEvent (o mesmo caminho do
+        // dreno dos comandos BMS).
+        if let Some(sfx) = sfx.as_deref_mut() {
+            sfx.write(SfxEvent {
+                clip: SfxClip::Notification,
+                position: position.map(Vec3::from_array),
+            });
         }
-    })();
-    if let Err(err) = result {
-        debug!("vael: som de quest indisponível: {err}");
     }
 }
 
@@ -662,7 +648,7 @@ impl Plugin for VaelQuestEventsPlugin {
                     .chain()
                     // Os sistemas leem o que o Lua acabou de fazer no frame e
                     // escrevem o estado de voltar ao `viber.game()`.
-                    .after(viber::luau::luau_update)
+                    .after(viber::luau::bms_bridge::apply_bms_commands)
                     .run_if(viber::app::scripts_enabled),
             );
     }
@@ -671,32 +657,23 @@ impl Plugin for VaelQuestEventsPlugin {
 /// Instala `viber.vael.quest_report_kill`/`quest_sync_collect`/
 /// `quest_scan_visits` e o gate do arranque.
 pub(crate) fn install_quest_events_api(
-    host: Option<Res<LuaScriptHost>>,
     queue: Res<QuestEventQueue>,
     config: Res<VaelQuestEventsConfig>,
 ) {
-    let Some(host) = host else {
-        warn!("vael: eventos de quest sem host Luau — `viber.vael` não estendido");
-        return;
-    };
-    match install(&host.lua, &queue) {
-        Ok(()) => info!(
-            rust = config.rust,
-            "vael: eventos de quest em Rust ligados (`viber.vael`)"
-        ),
-        Err(err) => {
-            error!("vael: falha a instalar eventos de quest em `viber.vael`: {err}");
-            // Sem as funções, ligar o gate faria o Lua saltar os relatos e
-            // ficar sem alternativa: fica no caminho antigo.
-            return;
-        }
-    }
-    let kv = game_to_json(&host.lua);
+    let queue = queue.clone();
+    crate::script_host::register_installer(move |lua| install(lua, &queue));
+    // O gate (`vael_quest_events_rust`) vive no STORE do processo: escrito
+    // AQUI, uma vez — o Lua lê-o de `viber.game()` em qualquer contexto.
+    let kv = game_to_json_process();
     let mut patch = QuestKv::new();
     gate_patch(&kv, config.rust, &mut patch);
     if !patch.is_empty() {
-        apply_patch(&host.lua, &patch);
+        apply_patch_json(&patch);
     }
+    info!(
+        rust = config.rust,
+        "vael: eventos de quest em Rust registados nos contextos BMS (`viber.vael`)"
+    );
 }
 
 /// Acrescenta as três funções à tabela `viber.vael` existente.
@@ -761,13 +738,13 @@ fn gate_patch(kv: &QuestKv, rust: bool, patch: &mut QuestKv) {
 }
 
 /// Acerta o gate e deixa o KV local igual ao que ficou no Lua.
-fn ensure_gate(lua: &Lua, kv: &mut QuestKv, rust: bool) {
+fn ensure_gate(kv: &mut QuestKv, rust: bool) {
     let mut patch = QuestKv::new();
     gate_patch(kv, rust, &mut patch);
     if patch.is_empty() {
         return;
     }
-    apply_patch(lua, &patch);
+    apply_patch_json(&patch);
     for (key, value) in patch {
         match value {
             Json::Null => {
@@ -784,35 +761,31 @@ fn ensure_gate(lua: &Lua, kv: &mut QuestKv, rust: bool) {
 ///
 /// Lê só a chave (não clona o jogo): um save escrito com o gate ligado não
 /// pode deixar o Lua a saltar os relatos numa sessão sem Rust.
-fn enforce_quest_events_gate(config: Res<VaelQuestEventsConfig>, host: Option<Res<LuaScriptHost>>) {
-    let Some(host) = host else {
-        return;
-    };
-    let Ok(game) = host.lua.named_registry_value::<Table>("viber_game") else {
-        return;
-    };
+fn enforce_quest_events_gate(config: Res<VaelQuestEventsConfig>) {
+    // Store do processo: o `viber.game()` de todos os contextos BMS lê daqui.
     let current = matches!(
-        game.raw_get::<Value>(RUST_GATE_KEY),
-        Ok(Value::Boolean(true))
+        game_to_json_process().get(RUST_GATE_KEY),
+        Some(Json::Bool(true))
     );
     if config.rust == current {
         return;
     }
-    if config.rust {
-        let _ = game.raw_set(RUST_GATE_KEY, true);
-    } else {
-        let _ = game.raw_remove(RUST_GATE_KEY);
-    }
+    let mut patch = QuestKv::new();
+    patch.insert(
+        RUST_GATE_KEY.to_string(),
+        if config.rust { Json::Bool(true) } else { Json::Null },
+    );
+    apply_patch_json(&patch);
 }
 
 /// Drena os relatos de abate/recolha e aplica-os ao `viber.game()`.
 fn drain_quest_events(
     config: Res<VaelQuestEventsConfig>,
     queue: Res<QuestEventQueue>,
-    host: Option<Res<LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
     player: Query<&GlobalTransform, Or<(With<bevy_ext_core::Player>, With<VaelPlayer>)>>,
     mut toasts: Option<MessageWriter<ScriptToast>>,
+    mut sfx: Option<MessageWriter<SfxEvent>>,
     mut quests: Option<ResMut<QuestLog>>,
     // Regras construídas uma vez por carregamento de conteúdo, não por lote.
     mut rules_cache: Local<Option<QuestRules>>,
@@ -821,14 +794,12 @@ fn drain_quest_events(
     if events.is_empty() {
         return;
     }
-    let Some(host) = host else {
-        return;
-    };
     if !config.rust {
         return;
     }
-    // `before` é também o KV que as funções puras alteram.
-    let before = game_to_json(&host.lua);
+    // `before` é também o KV que as funções puras alteram (store do processo —
+    // o `viber.game()` de todos os contextos BMS).
+    let before = game_to_json_process();
     if before.is_empty() {
         // A tabela ainda não existe (arranque): não zerar nem escrever.
         return;
@@ -861,7 +832,7 @@ fn drain_quest_events(
         return;
     }
     let notices = quest_notices(rules, &before, &kv);
-    apply_patch(&host.lua, &patch);
+    apply_patch_json(&patch);
     if let Some(quests) = quests.as_deref_mut() {
         apply_quest_mirror(&before, &kv, quests);
     }
@@ -870,7 +841,7 @@ fn drain_quest_events(
             let position = transform.translation();
             [position.x, position.y, position.z]
         });
-        emit_notices(&host.lua, &notices, &mut toasts, position);
+        emit_notices(&notices, &mut toasts, sfx.as_mut(), position);
     }
 }
 
@@ -880,12 +851,12 @@ fn scan_visits_system(
     time: Res<Time>,
     config: Res<VaelQuestEventsConfig>,
     queue: Res<QuestEventQueue>,
-    host: Option<Res<LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
     player: Query<&GlobalTransform, Or<(With<bevy_ext_core::Player>, With<VaelPlayer>)>>,
     names: Query<(&Name, &GlobalTransform)>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
     mut toasts: Option<MessageWriter<ScriptToast>>,
+    mut sfx: Option<MessageWriter<SfxEvent>>,
     mut quests: Option<ResMut<QuestLog>>,
     mut timer: Local<Option<Timer>>,
     mut logged_missing: Local<BTreeSet<String>>,
@@ -902,14 +873,14 @@ fn scan_visits_system(
     if menus.as_ref().is_some_and(|menus| menus.any()) {
         return;
     }
-    let (Some(host), Some(content)) = (host, content) else {
+    let Some(content) = content else {
         return;
     };
-    let mut before = game_to_json(&host.lua);
+    let mut before = game_to_json_process();
     if before.is_empty() {
         return;
     }
-    ensure_gate(&host.lua, &mut before, true);
+    ensure_gate(&mut before, true);
     if content.is_changed() || rules_cache.is_none() {
         *rules_cache = Some(QuestRules::from_content(&content));
     }
@@ -947,10 +918,9 @@ fn scan_visits_system(
             warn!("vael: marco de visita sem posição no mundo: {token}");
         }
     }
-    if !missing.is_empty() && call_lua_scan(&host.lua) {
-        // O Lua resolveu tudo (incluindo a semântica do `viber.find`).
-        return;
-    }
+    // (o fallback Lua da varredura, `scan_visits_lua`, vivia na VM partilhada
+    // do host antigo — em modo BMS não há uma VM para o chamar; o Rust
+    // resolve exacto + substring e os restantes ficam com o warn acima.)
     let mut kv = before.clone();
     let hits = scan_visits(rules, &mut kv, player, &positions);
     if hits.is_empty() {
@@ -959,15 +929,15 @@ fn scan_visits_system(
     let patch = changed_patch(&before, &kv);
     if !patch.is_empty() {
         let notices = quest_notices(rules, &before, &kv);
-        apply_patch(&host.lua, &patch);
+        apply_patch_json(&patch);
         if let Some(quests) = quests.as_deref_mut() {
             apply_quest_mirror(&before, &kv, quests);
         }
         if !notices.is_empty() {
             emit_notices(
-                &host.lua,
                 &notices,
                 &mut toasts,
+                sfx.as_mut(),
                 Some([position.x, position.y, position.z]),
             );
         }
@@ -977,7 +947,8 @@ fn scan_visits_system(
         if let Some(toasts) = toasts.as_mut() {
             toasts.write(ScriptToast(format!("Marco visto: {label}")));
         }
-        record_visit_action(&host.lua, &hit.place);
+        // (o registo no `lib/actions.lua` era na VM partilhada; em modo BMS o
+        // log de ações vive por contexto — o juiz lê o store partilhado.)
     }
 }
 
@@ -991,42 +962,6 @@ fn landmark_label(content: &VaelContent, place: &str) -> String {
         .map(|landmark| landmark.label.clone())
         .filter(|label| !label.is_empty())
         .unwrap_or_else(|| place.to_string())
-}
-
-/// Corrida de segurança quando nenhuma entidade tem o nome do marco: usa a
-/// varredura do Lua (o `viber.find` também faz substring).
-fn call_lua_scan(lua: &Lua) -> bool {
-    let result = (|| -> mlua::Result<bool> {
-        let viber: Table = lua.globals().get("viber")?;
-        let load: Function = viber.get("load")?;
-        let rules: Table = load.call("lib/rules.lua")?;
-        let Some(scan) = rules.get::<Option<Function>>("scan_visits_lua")? else {
-            return Ok(false);
-        };
-        scan.call::<()>(())?;
-        Ok(true)
-    })();
-    match result {
-        Ok(done) => done,
-        Err(err) => {
-            debug!("vael: fallback Lua das visitas indisponível: {err}");
-            false
-        }
-    }
-}
-
-/// Registo da visita para o juiz (`lib/actions.lua`), best-effort.
-fn record_visit_action(lua: &Lua, place: &str) {
-    let result = (|| -> mlua::Result<()> {
-        let viber: Table = lua.globals().get("viber")?;
-        let load: Function = viber.get("load")?;
-        let actions: Table = load.call("lib/actions.lua")?;
-        let record: Function = actions.get("record")?;
-        record.call::<()>(("visitar", "local", place))
-    })();
-    if let Err(err) = result {
-        debug!("vael: registo da visita indisponível: {err}");
-    }
 }
 
 #[cfg(test)]
@@ -1392,9 +1327,6 @@ mod tests {
         );
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(
-                LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host Luau"),
-            )
             .insert_resource(content)
             .insert_resource(VaelQuestEventsConfig { rust: true })
             .init_resource::<QuestLog>()
@@ -1415,48 +1347,53 @@ mod tests {
 
     #[test]
     fn gate_do_save_e_corrigido_antes_dos_scripts() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(
-                LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host Luau"),
-            )
             .insert_resource(VaelQuestEventsConfig { rust: false })
             .add_plugins(VaelQuestEventsPlugin);
         app.update();
-        let game: Table = {
-            let host = app.world().resource::<LuaScriptHost>();
-            host.lua
-                .named_registry_value("viber_game")
-                .expect("viber_game")
-        };
 
         // Save escrito com o gate ligado: a sessão normal apaga a flag.
-        game.raw_set(RUST_GATE_KEY, true).expect("flag");
+        let mut patch = QuestKv::new();
+        patch.insert(RUST_GATE_KEY.to_string(), Json::Bool(true));
+        viber::luau::game::apply_patch_json(&patch);
         app.update();
-        assert!(!matches!(
-            game.raw_get::<Value>(RUST_GATE_KEY),
-            Ok(Value::Boolean(true))
-        ));
+        assert!(
+            !matches!(
+                game_to_json_process().get(RUST_GATE_KEY),
+                Some(Json::Bool(true))
+            ),
+            "gate a true num jogo sem Rust tem de sair"
+        );
 
         // A sessão com Rust volta a ligá-la.
         app.world_mut().resource_mut::<VaelQuestEventsConfig>().rust = true;
         app.update();
-        assert!(matches!(
-            game.raw_get::<Value>(RUST_GATE_KEY),
-            Ok(Value::Boolean(true))
-        ));
+        assert_eq!(
+            game_to_json_process().get(RUST_GATE_KEY),
+            Some(&Json::Bool(true))
+        );
     }
 
     #[test]
     fn sistema_drena_o_abate_e_escreve_no_viber_game() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_com_quests();
         {
-            let host = app.world().resource::<LuaScriptHost>();
-            let game: Table = host
-                .lua
-                .named_registry_value("viber_game")
-                .expect("viber_game");
-            game.raw_set("q.wolves", STATE_ACTIVE).expect("estado");
+            let mut patch = QuestKv::new();
+            patch.insert("q.wolves".to_string(), Json::String(STATE_ACTIVE.into()));
+            viber::luau::game::apply_patch_json(&patch);
         }
         app.world()
             .resource::<QuestEventQueue>()
@@ -1466,15 +1403,12 @@ mod tests {
             });
         app.update();
 
-        let host = app.world().resource::<LuaScriptHost>();
-        let game: Table = host
-            .lua
-            .named_registry_value("viber_game")
-            .expect("viber_game");
-        assert_eq!(game.raw_get::<i64>("q.wolves.n").expect("progresso"), 1);
-        assert!(
-            game.raw_get::<bool>(RUST_GATE_KEY).expect("gate"),
-            "o gate fica ligado no viber_game"
+        let kv = game_to_json_process();
+        assert_eq!(kv.get("q.wolves.n"), Some(&Json::from(1)));
+        assert_eq!(
+            kv.get(RUST_GATE_KEY),
+            Some(&Json::Bool(true)),
+            "o gate fica ligado no viber.game()"
         );
         let log = app.world().resource::<QuestLog>();
         assert_eq!(log.states.get("wolves").map(String::as_str), Some("active"));

@@ -24,7 +24,6 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
 
 use crate::compat::lua_count;
 use crate::content::{ItemsFile, RecipesFile, VaelContent};
@@ -604,14 +603,7 @@ impl Plugin for VaelEconomyPlugin {
 /// Arranque: acrescenta as funções da loja/forja à tabela `viber.vael`.
 ///
 /// Público dentro do crate para a viagem/marcos ordenar depois dele.
-pub(crate) fn install_economy_api(
-    host: Option<Res<LuaScriptHost>>,
-    content: Option<Res<VaelContent>>,
-) {
-    let Some(host) = host else {
-        warn!("vael: economia sem host Luau — `viber.vael` não estendido");
-        return;
-    };
+pub(crate) fn install_economy_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
         warn!("vael: economia sem conteúdo carregado — `viber.vael` não estendido");
         return;
@@ -619,13 +611,14 @@ pub(crate) fn install_economy_api(
     let shop = ShopRules::from_items(&content.items);
     let craft = CraftRules::from_content(&content.items, &content.recipes);
     let receitas = craft.recipes.len();
-    match install(&host.lua, shop, craft) {
-        Ok(()) => info!(
-            itens = content.items.items.len(),
-            receitas, "vael: loja/forja em Rust ligadas (`viber.vael`)"
-        ),
-        Err(err) => error!("vael: falha a instalar loja/forja em `viber.vael`: {err}"),
-    }
+    // `Fn`: o closure possui as regras e clona por contexto novo.
+    crate::script_host::register_installer(move |lua| {
+        install(lua, shop.clone(), craft.clone())
+    });
+    info!(
+        itens = content.items.items.len(),
+        receitas, "vael: loja/forja em Rust registadas nos contextos BMS (`viber.vael`)"
+    );
 }
 
 /// Acrescenta as funções da loja/forja a `viber.vael` sem substituir as que
@@ -655,7 +648,7 @@ pub(crate) fn install(lua: &Lua, shop: ShopRules, craft: CraftRules) -> mlua::Re
         "shop_rows",
         [shop = Arc::clone(&shop)],
         move |lua, ()| {
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kinds: Vec<&str> = Vec::with_capacity(shop.catalog.len() + 1);
             kinds.push("gold");
             kinds.extend(shop.catalog.keys().map(String::as_str));
@@ -690,7 +683,7 @@ pub(crate) fn install(lua: &Lua, shop: ShopRules, craft: CraftRules) -> mlua::Re
                     &trade_fail(TradeReason::UnknownAction, None, None, None),
                 );
             };
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = read_items(&game, &[id.as_str(), "gold"])?;
             let before = kv.clone();
             let out = shop_trade(&shop, &mut kv, action, &id);
@@ -732,7 +725,7 @@ pub(crate) fn install(lua: &Lua, shop: ShopRules, craft: CraftRules) -> mlua::Re
             let Some(recipe) = craft.get(&id) else {
                 return Ok(Value::Nil);
             };
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let kv = read_items(&game, &craft_keys(recipe))?;
             Ok(match craft_status(&craft, &kv, &id) {
                 Some(status) => Value::String(lua.create_string(status.as_str())?),
@@ -748,7 +741,7 @@ pub(crate) fn install(lua: &Lua, shop: ShopRules, craft: CraftRules) -> mlua::Re
         [craft = Arc::clone(&craft)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let mut kv = match craft.get(&id) {
                 Some(recipe) => read_items(&game, &craft_keys(recipe))?,
                 None => BTreeMap::new(),
@@ -793,7 +786,7 @@ fn read_items(game: &Table, kinds: &[&str]) -> mlua::Result<BTreeMap<String, i64
             continue;
         }
         let key = item_key(kind);
-        match game.raw_get::<Value>(key.as_str())? {
+        match game.get::<Value>(key.as_str())? {
             Value::Nil => {}
             value => {
                 kv.insert(key, lua_count(value));
@@ -811,7 +804,7 @@ fn write_items(
 ) -> mlua::Result<()> {
     for (key, value) in after {
         if before.get(key) != Some(value) {
-            game.raw_set(key.as_str(), *value)?;
+            game.set(key.as_str(), *value)?;
         }
     }
     Ok(())
@@ -1223,8 +1216,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install(&lua, shop(), craft()).expect("instalar viber.vael");
         (lua, game)
     }
@@ -1433,8 +1425,7 @@ viber.events = function() return events end
         lua.globals()
             .set("game", game.clone())
             .expect("global game");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install(&lua, shop(), craft()).expect("instalar viber.vael");
         lua.load(STUBS).set_name("stubs").exec().expect("stubs");
         (lua, game)

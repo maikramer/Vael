@@ -23,7 +23,6 @@ use bevy::prelude::*;
 use bevy_ext_core::Player;
 use mlua::{Lua, Table, Value};
 use serde_json::Value as JsonValue;
-use viber::luau::host::LuaScriptHost;
 
 use crate::components::VaelPlayer;
 use crate::content::{LandmarkDef, LandmarksFile, VaelContent};
@@ -501,65 +500,53 @@ fn insert_travel_rules(mut commands: Commands, content: Option<Res<VaelContent>>
 }
 
 /// Arranque: liga a chave do gate no `viber.game()` (default desligado).
-fn apply_travel_gate(config: Res<VaelTravelConfig>, host: Option<Res<LuaScriptHost>>) {
-    let Some(host) = host else {
-        if config.rust {
-            warn!("vael: VAEL_TRAVEL_RUST sem host Luau — gate inativo");
-        }
-        return;
-    };
-    write_gate(&host, config.rust);
+fn apply_travel_gate(config: Res<VaelTravelConfig>) {
+    write_gate(config.rust);
 }
 
 /// Corrige o gate a cada frame (save carregado, restart de scripts).
-fn enforce_travel_gate(config: Res<VaelTravelConfig>, host: Option<Res<LuaScriptHost>>) {
-    let Some(host) = host else {
-        return;
-    };
-    write_gate(&host, config.rust);
+fn enforce_travel_gate(config: Res<VaelTravelConfig>) {
+    write_gate(config.rust);
 }
 
-/// Escreve a chave só quando o valor guardado não corresponde ao modo.
-fn write_gate(host: &LuaScriptHost, rust: bool) {
-    let Ok(game) = host.lua.named_registry_value::<Table>("viber_game") else {
-        return;
-    };
+/// Escreve a chave só quando o valor guardado não corresponde ao modo — no
+/// STORE do processo, o `viber.game()` de todos os contextos BMS.
+fn write_gate(rust: bool) {
     let on = matches!(
-        game.raw_get::<Value>(RUST_GATE_KEY),
-        Ok(Value::Boolean(true))
+        viber::luau::game::game_to_json_process().get(RUST_GATE_KEY),
+        Some(JsonValue::Bool(true))
     );
-    let result = if rust && !on {
-        game.raw_set(RUST_GATE_KEY, true)
-    } else if !rust && on {
-        game.raw_set(RUST_GATE_KEY, Value::Nil)
-    } else {
-        Ok(())
-    };
-    if let Err(err) = result {
-        error!("vael: falha a escrever `{RUST_GATE_KEY}`: {err}");
+    if on != rust {
+        let mut patch = std::collections::BTreeMap::new();
+        patch.insert(
+            RUST_GATE_KEY.to_string(),
+            if rust {
+                JsonValue::Bool(true)
+            } else {
+                JsonValue::Null
+            },
+        );
+        viber::luau::game::apply_patch_json(&patch);
     }
 }
 
 /// Arranque: acrescenta as funções de viagem à tabela `viber.vael`.
 fn install_travel_api(
-    host: Option<Res<LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
     state: Res<TravelState>,
 ) {
-    let Some(host) = host else {
-        warn!("vael: viagem sem host Luau — `viber.vael` não estendido");
-        return;
-    };
     let Some(content) = content else {
         warn!("vael: viagem sem conteúdo carregado — `viber.vael` não estendido");
         return;
     };
-    let rules = LandmarkRules::from_file(&content.landmarks);
+    let rules = Arc::new(LandmarkRules::from_file(&content.landmarks));
     let marcos = rules.landmarks.len();
-    match install(&host.lua, Arc::new(rules), &state) {
-        Ok(()) => info!(marcos, "vael: marcos/viagem em Rust ligados (`viber.vael`)"),
-        Err(err) => error!("vael: falha a instalar viagem em `viber.vael`: {err}"),
-    }
+    let state = state.clone();
+    crate::script_host::register_installer(move |lua| install(lua, rules.clone(), &state));
+    info!(
+        marcos,
+        "vael: marcos/viagem em Rust registados nos contextos BMS (`viber.vael`)"
+    );
 }
 
 /// Acrescenta `travel_landmarks`, `travel_nearest`, `travel_reveal`,
@@ -578,7 +565,7 @@ pub(crate) fn install(
         "travel_landmarks",
         [rules = Arc::clone(&rules), state = state.clone()],
         move |lua, ()| {
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let snapshot = state.get();
             let rows = lua.create_table()?;
             for (index, mark) in rules.landmarks.iter().enumerate() {
@@ -615,7 +602,7 @@ pub(crate) fn install(
             let Some(mark) = rules.landmarks.get(nearest.index) else {
                 return Ok(Value::Nil);
             };
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let position = snapshot.positions.get(&mark.name).copied();
             let row = landmark_row(lua, &rules, &game, mark, position, Some(nearest.distance))?;
             Ok(Value::Table(row))
@@ -631,8 +618,8 @@ pub(crate) fn install(
             if biome.is_empty() {
                 return Ok(false);
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
-            game.raw_set(format!("{BIOME_KEY_PREFIX}{biome}"), true)?;
+            let game = viber::luau::game::game_proxy(lua)?;
+            game.set(format!("{BIOME_KEY_PREFIX}{biome}"), true)?;
             Ok(true)
         }
     );
@@ -645,9 +632,9 @@ pub(crate) fn install(
         if biome.is_empty() {
             return Ok(false);
         }
-        let game: Table = lua.named_registry_value("viber_game")?;
+        let game = viber::luau::game::game_proxy(lua)?;
         let key = format!("{BIOME_KEY_PREFIX}{biome}");
-        Ok(matches!(game.raw_get::<Value>(key)?, Value::Boolean(true)))
+        Ok(matches!(game.get::<Value>(key)?, Value::Boolean(true)))
     });
 
     vael_fn!(
@@ -676,8 +663,8 @@ pub(crate) fn install(
             if name.is_empty() || rules.get(&name).is_none() {
                 return Ok(false);
             }
-            let game: Table = lua.named_registry_value("viber_game")?;
-            game.raw_set("pin", name)?;
+            let game = viber::luau::game::game_proxy(lua)?;
+            game.set("pin", name)?;
             Ok(true)
         }
     );
@@ -731,7 +718,7 @@ fn landmark_row(
 
 /// `true` só para um booleano `true` (o `== true` do Lua).
 fn lua_true(game: &Table, key: &str) -> mlua::Result<bool> {
-    Ok(matches!(game.raw_get::<Value>(key)?, Value::Boolean(true)))
+    Ok(matches!(game.get::<Value>(key)?, Value::Boolean(true)))
 }
 
 #[cfg(test)]
@@ -987,8 +974,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         let state = TravelState::default();
         install(&lua, Arc::new(regras()), &state).expect("instalar travel_*");
         (lua, game, state)
@@ -1138,8 +1124,7 @@ mod tests {
             .set("viber", lua.create_table().expect("viber"))
             .expect("global");
         let game = lua.create_table().expect("jogo");
-        lua.set_named_registry_value("viber_game", game)
-            .expect("registar");
+        crate::vault::install_test_game(&lua, &game);
         lua.load("viber.vael = { vault_add = function() return 7 end }")
             .exec()
             .expect("tabela antiga");

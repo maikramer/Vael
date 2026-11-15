@@ -2,7 +2,8 @@
 use avian3d::prelude::*;
 use bevy::prelude::*;
 use bevy_tnua::prelude::TnuaController;
-use viber::player::HeroScheme;
+
+use crate::player::VaelHeroScheme;
 
 pub struct JumpTracePlugin;
 impl Plugin for JumpTracePlugin {
@@ -20,7 +21,7 @@ impl Plugin for JumpTracePlugin {
 
 fn fixed_trace(
     q: Query<
-        (&Position, &LinearVelocity, &TnuaController<HeroScheme>),
+        (&Position, &LinearVelocity, &TnuaController<VaelHeroScheme>),
         With<viber::player::Player>,
     >,
     sensors: Query<&bevy_tnua_avian3d::prelude::TnuaAvian3dSensorShape>,

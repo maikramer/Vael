@@ -1652,21 +1652,24 @@ fn in_front(transform: &GlobalTransform, distance: f32) -> Vec3 {
 
 /// `viber.vael.qa_*`.
 fn install_qa_api(
-    host: Option<Res<viber::luau::host::LuaScriptHost>>,
     content: Option<Res<VaelContent>>,
     shared: Res<QaShared>,
     root: Option<Res<crate::VaelProjectRoot>>,
 ) {
-    let (Some(host), Some(content)) = (host, content) else {
+    let Some(content) = content else {
         return;
     };
     let rules = Arc::new(QaRules::from_content(&content));
     let root = root
         .map(|root| root.0.clone())
         .unwrap_or_else(|| std::env::current_dir().unwrap_or_default());
-    if let Err(err) = install(&host.lua, rules, shared.clone(), root) {
-        error!("vael qa: falha a instalar `viber.vael.qa_*`: {err}");
-    }
+    let shared = shared.clone();
+    crate::script_host::register_installer(move |lua| {
+        if let Err(err) = install(lua, rules.clone(), shared.clone(), root.clone()) {
+            error!("vael qa: falha a instalar `viber.vael.qa_*`: {err}");
+        }
+        Ok(())
+    });
 }
 
 fn install(

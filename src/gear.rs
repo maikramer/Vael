@@ -35,7 +35,6 @@ use std::sync::{Arc, Mutex, MutexGuard};
 use bevy::prelude::*;
 use bevy_gauge::prelude::AttributesPlugin;
 use mlua::{Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
 
 use crate::content::{ItemsFile, VaelContent, WeaponDef};
 use crate::stats::{AttributeRules, StatEngine, StatSnapshot};
@@ -401,27 +400,20 @@ impl Plugin for VaelGearPlugin {
 /// Arranque: acrescenta as funções de equipamento à tabela `viber.vael`.
 ///
 /// Público dentro do crate para as quests ordenarem depois dele.
-pub(crate) fn install_gear_api(
-    host: Option<Res<LuaScriptHost>>,
-    content: Option<Res<VaelContent>>,
-) {
-    let Some(host) = host else {
-        warn!("vael: equipamento sem host Luau — `viber.vael` não estendido");
-        return;
-    };
+pub(crate) fn install_gear_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
         warn!("vael: equipamento sem conteúdo carregado — `viber.vael` não estendido");
         return;
     };
     let rules = GearRules::from_content(&content);
-    match install(&host.lua, rules) {
-        Ok(()) => info!(
-            itens = content.items.items.len(),
-            talentos = content.progression.skills.len(),
-            "vael: equipamento em Rust ligado (`viber.vael`)"
-        ),
-        Err(err) => error!("vael: falha a instalar equipamento em `viber.vael`: {err}"),
-    }
+    let itens = content.items.items.len();
+    let talentos = content.progression.skills.len();
+    // `Fn`: o closure possui as regras e clona por contexto novo.
+    crate::script_host::register_installer(move |lua| install(lua, rules.clone()));
+    info!(
+        itens,
+        talentos, "vael: equipamento em Rust registado nos contextos BMS (`viber.vael`)"
+    );
 }
 
 /// Acrescenta as funções de equipamento a `viber.vael`.
@@ -695,12 +687,13 @@ fn lock_stats(engine: &Arc<Mutex<StatEngine>>) -> MutexGuard<'_, StatEngine> {
 /// Lê os slots e as contagens que as funções puras precisam de validar.
 ///
 /// Só os `item.<id>` dos ids equipados são lidos; `gear_toggle` acrescenta a
-/// contagem do id pedido.
+/// contagem do id pedido. O estado vem de `viber.game()` (proxy do store
+/// partilhado): `get`/`set` com metamétodos, não `raw_*`.
 fn read_state(lua: &Lua) -> mlua::Result<(Table, GearState)> {
-    let game: Table = lua.named_registry_value("viber_game")?;
+    let game = viber::luau::game::game_proxy(lua)?;
     let mut state = GearState::default();
     for slot in SLOTS {
-        if let Value::String(text) = game.raw_get::<Value>(gear_key(slot))? {
+        if let Value::String(text) = game.get::<Value>(gear_key(slot))? {
             state
                 .equipped
                 .insert(slot.to_string(), text.to_str()?.to_string());
@@ -715,7 +708,7 @@ fn read_state(lua: &Lua) -> mlua::Result<(Table, GearState)> {
 
 /// Lê `item.<id>` do jogo; ausente/não numérico não entra no mapa.
 fn read_held(game: &Table, id: &str, state: &mut GearState) -> mlua::Result<()> {
-    match game.raw_get::<Value>(item_key(id))? {
+    match game.get::<Value>(item_key(id))? {
         Value::Integer(count) => {
             state.held.insert(id.to_string(), count as f64);
         }
@@ -732,7 +725,7 @@ fn read_learned(game: &Table, rules: &GearRules) -> mlua::Result<BTreeSet<String
     let mut learned = BTreeSet::new();
     for id in rules.skills.keys() {
         let key = format!("{SKILL_KEY_PREFIX}{id}");
-        if matches!(game.raw_get::<Value>(key)?, Value::Boolean(true)) {
+        if matches!(game.get::<Value>(key)?, Value::Boolean(true)) {
             learned.insert(id.clone());
         }
     }
@@ -744,8 +737,8 @@ fn read_learned(game: &Table, rules: &GearRules) -> mlua::Result<BTreeSet<String
 fn write_gear(game: &Table, state: &GearState) -> mlua::Result<()> {
     for slot in SLOTS {
         match state.equipped.get(slot) {
-            Some(id) => game.raw_set(gear_key(slot), id.as_str())?,
-            None => game.raw_set(gear_key(slot), Value::Nil)?,
+            Some(id) => game.set(gear_key(slot), id.as_str())?,
+            None => game.set(gear_key(slot), Value::Nil)?,
         }
     }
     Ok(())
@@ -1140,8 +1133,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install(&lua, rules).expect("instalar viber.vael");
         (lua, game)
     }
@@ -1156,10 +1148,7 @@ mod tests {
             .eval()
             .expect("gear_toggle");
         assert_eq!(result.as_deref(), Some("on"));
-        assert_eq!(
-            game.raw_get::<String>("gear.weapon").expect("slot"),
-            "machado"
-        );
+        assert_eq!(game.get::<String>("gear.weapon").expect("slot"), "machado");
         assert!(
             lua.load("return viber.vael.gear_is_equipped('machado')")
                 .eval::<bool>()
@@ -1389,37 +1378,33 @@ mod tests {
 
     #[test]
     fn gear_lua_delega_para_a_bridge() {
-        let host = LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host Luau");
-        install_vault(&host.lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
-        install_xp(&host.lua, XpRules::default()).expect("xp");
-        install(&host.lua, regras()).expect("gear");
-        let game: Table = host
-            .lua
-            .named_registry_value("viber_game")
-            .expect("viber_game");
-        game.raw_set("item.machado", 1).expect("machado");
+        let lua = Lua::new();
+        lua.globals()
+            .set("viber", lua.create_table().expect("tabela viber"))
+            .expect("global viber");
+        let game = lua.create_table().expect("tabela do jogo");
+        crate::vault::install_test_game(&lua, &game);
+        install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
+        install_xp(&lua, XpRules::default()).expect("xp");
+        install(&lua, regras()).expect("gear");
+        let game = viber::luau::game::game_proxy(&lua).expect("viber.game");
+        game.set("item.machado", 1).expect("machado");
 
-        let equipped: Option<String> = host
-            .lua
+        let state: String = lua
             .load(
                 r#"
-                local gear = viber.load("lib/gear.lua")
-                assert(gear.DEFAULT_WEAPON.damage == 25)
-                assert(gear.slot_of("machado") == "weapon")
-                assert(gear.toggle("machado") == "on")
-                assert(gear.is_equipped("machado"))
-                assert(gear.weapon().damage == 38)
-                assert(gear.effects().crit == 0.05)
-                return gear.equipped("weapon")
+                assert(viber.vael.gear_slot_of("machado") == "weapon")
+                local state = viber.vael.gear_toggle("machado")
+                assert(state == "on", state)
+                assert(viber.vael.gear_weapon().damage == 38)
+                assert(viber.vael.gear_effects().crit == 0.05)
+                return state
                 "#,
             )
             .eval()
-            .expect("gear.lua");
-        assert_eq!(equipped.as_deref(), Some("machado"));
-        assert_eq!(
-            game.raw_get::<String>("gear.weapon").expect("slot"),
-            "machado"
-        );
+            .expect("bridge do equipamento");
+        assert_eq!(state, "on");
+        assert_eq!(game.get::<String>("gear.weapon").expect("slot"), "machado");
     }
 
     #[test]
@@ -1429,8 +1414,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
         install_xp(&lua, XpRules::default()).expect("xp");
         install(&lua, regras()).expect("gear");
@@ -1461,7 +1445,6 @@ mod tests {
     fn startup_instala_equipamento_na_mesma_tabela() {
         let mut app = App::new();
         app.add_plugins(bevy::MinimalPlugins)
-            .insert_resource(LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host"))
             .init_resource::<VaelContent>()
             .add_plugins((
                 crate::vault::VaelVaultPlugin,
@@ -1470,8 +1453,13 @@ mod tests {
             ));
         app.update();
 
-        let host = app.world().resource::<LuaScriptHost>();
-        let lua = &host.lua;
+        // Modelo BMS: os plugins registam instaladores; num contexto novo
+        // todos correm e as funções coexistem na MESMA tabela `viber.vael`.
+        let lua = mlua::Lua::new();
+        lua.globals()
+            .set("viber", lua.create_table().expect("tabela viber"))
+            .expect("global viber");
+        crate::script_host::run_installers(&lua).expect("instaladores");
         let coexistem: bool = lua
             .load(
                 "return type(viber.vael.vault_add) == 'function' \

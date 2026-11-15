@@ -10,29 +10,182 @@
 
 use std::sync::{Arc, Mutex};
 
-use avian3d::prelude::{LinearVelocity, Position, Rotation};
+use avian3d::prelude::{CollisionLayers, Collider, LinearVelocity, Position, Rotation, Sensor};
 use bevy::prelude::*;
 use bevy_ext_core::{
     GROUND_PROBE, KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle, footstep_due,
     knockback_decay_factor,
 };
 use bevy_tnua::TnuaToggle;
-use bevy_tnua::builtins::TnuaBuiltinJump;
+use bevy_tnua::builtins::{
+    TnuaBuiltinClimb, TnuaBuiltinClimbConfig, TnuaBuiltinCrouch, TnuaBuiltinCrouchConfig,
+    TnuaBuiltinDash, TnuaBuiltinDashConfig, TnuaBuiltinJump, TnuaBuiltinJumpConfig,
+    TnuaBuiltinKnockback, TnuaBuiltinKnockbackConfig, TnuaBuiltinWallSlide,
+    TnuaBuiltinWallSlideConfig, TnuaBuiltinWalk, TnuaBuiltinWalkConfig, TnuaBuiltinWalkHeadroom,
+};
 use bevy_tnua::prelude::TnuaController;
+use bevy_tnua::radar_lens::{TnuaBlipSpatialRelation, TnuaRadarLens};
+use bevy_tnua::{TnuaAnimatingState, TnuaAnimatingStateDirective, TnuaObstacleRadar};
+use bevy_tnua::builtins::{TnuaBuiltinCrouchMemory, TnuaBuiltinJumpMemory};
+use bevy_tnua_physics_integration_layer::math::{AdjustPrecision, AsF32, Float, Vector3};
+use bevy_tnua_physics_integration_layer::spatial_ext::{TnuaPointProjectionResult, TnuaSpatialExt};
 use mlua::{Lua, Table, Value};
-use viber::luau::host::LuaScriptHost;
-use viber::player::HeroScheme;
+use viber::luau::components::ScriptProps;
 use viber::recipes::spawn::OrbitCamera;
 
 use crate::components::VaelPlayer;
+
+/// O scheme do herói do VAEL (a engine é genérica: `HeroPhysicsPlugin<S>`).
+///
+/// A base é a `TnuaBuiltinWalk` — a intenção horizontal entra em
+/// `desired_motion` e o `player_movement` deste módulo a escreve. As ações de
+/// gameplay entram como variants aqui (dash, knockback, crouch, paredes…);
+/// a engine standalone mantém o seu `HeroScheme` próprio.
+#[derive(bevy_tnua::prelude::TnuaScheme)]
+#[scheme(basis = TnuaBuiltinWalk)]
+pub enum VaelHeroScheme {
+    /// Salto (altura no asset).
+    Jump(TnuaBuiltinJump),
+    /// Esquiva (roll/side/back) e avanço curto do golpe: deslocação exata na
+    /// direção dada — o deslocamento VERTICAL do `displacement` é o hop da
+    /// esquiva lateral (sem efeito físico desde a migração Rapier→tnua).
+    Dash(TnuaBuiltinDash),
+    /// Empurrão (`viber.push_player`): impulso + boundary de Pushover que a
+    /// basis não anula. Via `action_interrupt` (incancelável até passar).
+    Knockback(TnuaBuiltinKnockback),
+    /// Agachar (feed contínuo `action_start`/`action_end`): desce o corpo
+    /// (`float_offset`) e só se levanta com headroom livre (sensor de teto).
+    Crouch(TnuaBuiltinCrouch),
+    /// Deslize numa parede (`TnuaObstacleRadar` dá o blip; o `Entity` é o
+    /// payload de gameplay — o tnua ignora-o).
+    WallSlide(TnuaBuiltinWallSlide, Entity),
+    /// Salto contra a parede: partilha o gatilho do salto (`same_trigger`)
+    /// e lança na normal via `horizontal_displacement`.
+    #[scheme(same_trigger(Jump))]
+    WallJump(TnuaBuiltinJump),
+    /// Trepar um prop marcado ([`Climbable`]): W/S sobem/descem; sair do
+    /// alcance (radar) solta. O terreno voxel NUNCA é trepável.
+    Climb(TnuaBuiltinClimb),
+}
+
+/// Prop marcado como trepável no `.bsn` (`climbable="1"` nos props): alvo do
+/// `Climb` do tnua. Insere-o [`attach_climbable`].
+#[derive(Component)]
+pub struct Climbable;
+
+/// Anexa [`Climbable`] aos props marcados com `climbable="1"`.
+fn attach_climbable(
+    mut commands: Commands,
+    props: Query<(Entity, &ScriptProps), (Added<ScriptProps>, Without<Climbable>)>,
+) {
+    for (entity, props) in &props {
+        let climbable = props.0.iter().any(|(key, value)| {
+            key.eq_ignore_ascii_case("climbable") && !value.is_empty() && value != "0"
+        });
+        if climbable {
+            commands.entity(entity).insert(Climbable);
+        }
+    }
+}
+
+/// Config do tnua do herói do Vael — o mesmo tuning da engine
+/// (`viber::player::hero_config`) enquanto as duas apps não divergirem.
+/// O asset é criado por altura de salto pelo `HeroPhysicsPlugin`.
+pub fn vael_hero_config(jump_height: f32) -> VaelHeroSchemeConfig {
+    VaelHeroSchemeConfig {
+        basis: TnuaBuiltinWalkConfig {
+            speed: 1.0,
+            // Medido a partir do disco elevado (HERO_SENSOR_LIFT na engine).
+            float_height: viber::player::HERO_FLOAT_HEIGHT
+                + viber::player::HERO_SENSOR_LIFT,
+            cling_distance: viber::player::HERO_CLING_DISTANCE,
+            spring_strength: 400.0,
+            spring_dampening: 1.2,
+            acceleration: 60.0,
+            air_acceleration: 20.0,
+            // Coyote do CRATE: o walk basis conta-o num timer interno quando
+            // o chão se perde (`is_airborne` só é true depois de expirar).
+            // O mesmo valor do antigo `COYOTE_TIME` do jogo.
+            coyote_time: 0.1,
+            free_fall_extra_gravity: 0.0,
+            max_slope: viber::player::HERO_MAX_SLOPE_DEG.to_radians(),
+            // Headroom (sensor de teto que o walk basis cria sozinho): o
+            // crouch precisa de saber se pode levantar. A distância é o topo
+            // da cápsula de pé (origem = pegada).
+            headroom: Some(TnuaBuiltinWalkHeadroom {
+                distance_to_collider_top: viber::player::HERO_CAPSULE_CENTER
+                    + viber::player::HERO_HALF_HEIGHT
+                    + viber::player::HERO_RADIUS,
+                sensor_extra_distance: 0.1,
+            }),
+            ..Default::default()
+        },
+        jump: TnuaBuiltinJumpConfig {
+            height: jump_height.max(0.1),
+            // Buffer do CRATE: a ação alimentada fica à espera de chão até
+            // esta janela fechar. O jogo alimenta durante `JUMP_BUFFER`.
+            input_buffer_time: 0.1,
+            ..Default::default()
+        },
+        // Esquiva/avanço: uma velocidade serve os três perfis de esquiva —
+        // 4.2/8.4 ≈ 0.50 s (roll), 3.4/8.4 ≈ 0.40 s (side), 2.6/8.4 ≈ 0.31 s
+        // (back), os mesmos do antigo `Burst` — e o `brake_to_speed` baixo
+        // faz o assentar final que o ease-out do Burst dava.
+        dash: TnuaBuiltinDashConfig {
+            speed: 8.4,
+            brake_to_speed: 2.0,
+            input_buffer_time: 0.0,
+            ..Default::default()
+        },
+        knockback: TnuaBuiltinKnockbackConfig::default(),
+        // Agachar: desce o corpo o mesmo que a cápsula encolhe
+        // ([`HERO_CROUCH_HEIGHT`]) — os pés continuam à mesma cota.
+        crouch: TnuaBuiltinCrouchConfig {
+            float_offset: -(viber::player::HERO_CAPSULE_CENTER
+                + viber::player::HERO_HALF_HEIGHT
+                + viber::player::HERO_RADIUS
+                - HERO_CROUCH_HEIGHT),
+            ..Default::default()
+        },
+        // Deslize: cola à parede a cair devagar, sem derrapar lateral.
+        wall_slide: TnuaBuiltinWallSlideConfig {
+            max_fall_speed: 2.0,
+            max_sideways_speed: 0.0,
+            ..Default::default()
+        },
+        // Salto de parede: mesma altura do salto, lançamento na normal.
+        wall_jump: TnuaBuiltinJumpConfig {
+            height: jump_height.max(0.1),
+            horizontal_distance: 2.0,
+            ..Default::default()
+        },
+        // Trepar: 3 m/s sobe/desce (o default do crate é 10 — rápido demais
+        // para escada).
+        climb: TnuaBuiltinClimbConfig {
+            climb_speed: 3.0,
+            ..Default::default()
+        },
+    }
+}
 
 pub const GRAVITY: f32 = 60.0;
 pub const TERMINAL_VELOCITY: f32 = 55.0;
 pub const CAMERA_TURN_SPEED: f32 = 2.5;
 pub const SIDE_MOVE_FACTOR: f32 = 0.6;
+/// Altura total da cápsula AGACHADA (m): `hero_crouch_collider` troca a
+/// cápsula por esta altura enquanto o `Crouch` está em curso — sem isto a
+/// cápsula de pé penetra o chão quando o `float_offset` desce o corpo.
+pub const HERO_CROUCH_HEIGHT: f32 = 1.15;
+/// Multiplicador do passo enquanto agachado.
+pub const CROUCH_SLOW: f32 = 0.45;
+/// Paredes (deslize + salto de parede) ativas por omissão;
+/// `VAEL_WALL_MOVES=0` desliga (A/B contra o comportamento antigo).
+static WALL_MOVES: std::sync::LazyLock<bool> =
+    std::sync::LazyLock::new(|| std::env::var("VAEL_WALL_MOVES").map(|v| v != "0").unwrap_or(true));
+/// Janela (s) do buffer de salto: o pedido alimenta a ação do tnua durante
+/// este tempo e o crate dispara quando o sensor de chão o permitir (na hora
+/// ou logo à frente da aterragem — `input_buffer_time` do asset).
 pub const JUMP_BUFFER: f32 = 0.1;
-pub const COYOTE_TIME: f32 = 0.1;
-pub const JUMP_COOLDOWN: f32 = 0.2;
 pub const ACCEL_TAU: f32 = 0.08;
 /// Travagem no chão sem input. Era um corte seco (velocidade 0 no frame em
 /// que se larga a tecla): o blend da animação saltava de marcha para idle
@@ -234,10 +387,8 @@ pub struct VaelController {
     pub vel_x: f32,
     pub vel_z: f32,
     pub grounded: bool,
-    pub can_jump: bool,
-    pub is_jumping: bool,
-    pub jump_cooldown: f32,
-    pub last_grounded_time: f32,
+    /// Timestamp do último pedido de salto: abre a janela de feed do `Jump`
+    /// (`JUMP_BUFFER`). O chão/coyote em si são do tnua.
     pub jump_buffer_time: f32,
     pub last_steer_time: f32,
     pub last_moving_time: f32,
@@ -272,10 +423,6 @@ impl Default for VaelController {
             vel_x: 0.0,
             vel_z: 0.0,
             grounded: true,
-            can_jump: true,
-            is_jumping: false,
-            jump_cooldown: 0.0,
-            last_grounded_time: f32::NEG_INFINITY,
             jump_buffer_time: f32::NEG_INFINITY,
             last_steer_time: f32::NEG_INFINITY,
             last_moving_time: f32::INFINITY,
@@ -308,6 +455,12 @@ fn attach_controllers(
         if controller.is_none() {
             commands.entity(entity).insert(VaelController::default());
         }
+        // Estados de animação pela ação do tnua → override para o driver da
+        // engine (o blending grounded continua do driver).
+        commands.entity(entity).insert((
+            TnuaAnimatingState::<VaelAnimState>::default(),
+            bevy_ext_core::animation::AnimStateOverride::default(),
+        ));
         if kin.is_none() {
             commands
                 .entity(entity)
@@ -317,6 +470,108 @@ fn attach_controllers(
                     contact_y_offset: 0.0,
                 });
         }
+    }
+}
+
+/// Radar de obstáculos para o deslize/salto de parede (só o herói; o
+/// adapter Avian do tnua marca os blips cada passo).
+fn attach_hero_radar(
+    mut commands: Commands,
+    heroes: Query<Entity, (With<Player>, Without<TnuaObstacleRadar>)>,
+) {
+    for entity in &heroes {
+        commands
+            .entity(entity)
+            .insert(TnuaObstacleRadar::new(0.5, 1.2));
+    }
+}
+
+/// Parâmetros da Fase paredes/trepar (`player_movement` já ia cheio — o
+/// Bevy implementa sistemas até 16 parâmetros; estes três vivem agrupados).
+#[derive(bevy::ecs::system::SystemParam)]
+pub struct WallProbe<'w, 's> {
+    radars: Query<'w, 's, &'static TnuaObstacleRadar>,
+    climbables: Query<'w, 's, &'static Climbable>,
+    spatial_ext: VaelSpatialExt<'w, 's>,
+    /// DIAGNÓSTICO da brecha de queda (o sistema já lotou os 16 params).
+    pub breach_log: Local<'s, bevy::time::Stopwatch>,
+}
+
+/// O `TnuaSpatialExtAvian3d` do crate lê `Position`/`Rotation` de TODOS os
+/// colliders — o herói entre eles. Com o `player_movement` a escrever
+/// `&mut Position`/`&mut Rotation` do herói no MESMO sistema, o B0001
+/// rebentava a inicialização da query e o frame inteiro morria (medido
+/// 2026-11-15). Esta cópia exclui o herói do conjunto de leitura: o radar
+/// de paredes nunca precisou do collider dele — os blips são de OUTROS corpos.
+#[derive(bevy::ecs::system::SystemParam)]
+pub struct VaelSpatialExt<'w, 's> {
+    colliders_query:
+        Query<'w, 's, (&'static Collider, &'static Position, &'static Rotation), Without<Player>>,
+    collision_configuration_query: Query<'w, 's, (Option<&'static CollisionLayers>, Has<Sensor>)>,
+}
+
+impl TnuaSpatialExt for VaelSpatialExt<'_, '_> {
+    type ColliderData<'a>
+        = (&'a Collider, &'a Position, &'a Rotation)
+    where
+        Self: 'a;
+
+    fn fetch_collider_data(&self, entity: Entity) -> Option<Self::ColliderData<'_>> {
+        self.colliders_query.get(entity).ok()
+    }
+
+    fn project_point<'a>(
+        &'a self,
+        point: Vector3,
+        solid: bool,
+        collider_data: &Self::ColliderData<'a>,
+    ) -> TnuaPointProjectionResult {
+        let (collider, position, rotation) = collider_data;
+        let (projected_point, is_inside) =
+            collider.project_point(position.0, **rotation, point, solid);
+        if is_inside {
+            TnuaPointProjectionResult::Inside(projected_point)
+        } else {
+            TnuaPointProjectionResult::Outside(projected_point)
+        }
+    }
+
+    fn cast_ray<'a>(
+        &'a self,
+        origin: Vector3,
+        direction: Vector3,
+        max_time_of_impact: Float,
+        collider_data: &Self::ColliderData<'a>,
+    ) -> Option<(Float, Vector3)> {
+        let (collider, position, rotation) = collider_data;
+        collider
+            .cast_ray(
+                position.0,
+                **rotation,
+                origin.adjust_precision(),
+                direction.f32(),
+                max_time_of_impact.f32(),
+                true,
+            )
+            .map(|(time_of_impact, normal)| {
+                (time_of_impact.adjust_precision(), normal.adjust_precision())
+            })
+    }
+
+    fn can_interact(&self, entity1: Entity, entity2: Entity) -> bool {
+        let Ok([(layers1, is_1_sensor), (layers2, is_2_sensor)]) = self
+            .collision_configuration_query
+            .get_many([entity1, entity2])
+        else {
+            return false;
+        };
+        if is_1_sensor || is_2_sensor {
+            return false;
+        }
+        layers1
+            .copied()
+            .unwrap_or_default()
+            .interacts_with(layers2.copied().unwrap_or_default())
     }
 }
 
@@ -340,10 +595,11 @@ impl Plugin for VaelPlayerPlugin {
                 Startup,
                 install_motion_api.after(crate::combat::install_combat_api),
             )
-            .add_systems(PostStartup, attach_controllers)
+            .add_systems(PostStartup, (attach_controllers, attach_hero_radar))
             .add_systems(
                 viber::scene_loader::SceneLoad,
-                attach_controllers.after(viber::recipes::spawn::startup),
+                (attach_controllers, attach_hero_radar, attach_climbable)
+                    .after(viber::recipes::spawn::startup),
             )
             .add_systems(
                 Update,
@@ -366,20 +622,30 @@ impl Plugin for VaelPlayerPlugin {
                 world_border_clamp
                     .after(PlayerMovementSet)
                     .run_if(no_editor_camera),
+            )
+            .add_systems(
+                FixedUpdate,
+                (
+                    // O SFX do salto reage ao arranque REAL da ação (o feed
+                    // pode ficar no buffer e nunca disparar — tocar no feed
+                    // daria um "whoosh" fantasma a cada press perdida).
+                    hero_jump_sfx,
+                    // A cápsula acompanha o crouch (segue o discriminante,
+                    // não a tecla — o levantar é da ação).
+                    hero_crouch_collider,
+                    // Estados de animação pela ação do tnua.
+                    hero_anim_state,
+                )
+                    .after(bevy_tnua::prelude::TnuaPipelineSystems::Logic),
             );
     }
 }
 
 /// Arranque: `viber.vael.dodge()` e `viber.vael.attack_motion{…}`.
-fn install_motion_api(host: Option<Res<LuaScriptHost>>, bus: Res<HeroMotionBus>) {
-    let Some(host) = host else {
-        warn!("vael: movimento sem host Luau — `viber.vael.dodge` não instalado");
-        return;
-    };
-    match install_motion(&host.lua, bus.clone()) {
-        Ok(()) => info!("vael: esquiva/golpe em Rust ligados (`viber.vael`)"),
-        Err(err) => error!("vael: falha a instalar `viber.vael.dodge`: {err}"),
-    }
+fn install_motion_api(bus: Res<HeroMotionBus>) {
+    let bus = bus.clone();
+    crate::script_host::register_installer(move |lua| install_motion(lua, bus.clone()));
+    info!("vael: esquiva/golpe em Rust registados nos contextos BMS (`viber.vael`)");
 }
 
 fn table_f32(table: &Table, key: &str, default: f32) -> f32 {
@@ -535,16 +801,150 @@ pub fn integrate_water_vertical(
     (vel_y, in_water, plunge_speed)
 }
 
-fn can_perform_jump(
-    now: f32,
-    buffer_time: f32,
-    last_grounded_time: f32,
-    can_jump: bool,
-    grounded: bool,
-) -> bool {
-    now - buffer_time <= JUMP_BUFFER
-        && can_jump
-        && (grounded || now - last_grounded_time <= COYOTE_TIME)
+/// SFX do salto: dispara no arranque REAL da ação do tnua (`ActionStarted`
+/// do `action_flow_status`, lido depois da lógica do crate no FixedUpdate).
+#[allow(clippy::type_complexity)]
+fn hero_jump_sfx(
+    mut sfx: MessageWriter<bevy_ext_core::SfxEvent>,
+    heroes: Query<(&Position, &TnuaController<VaelHeroScheme>)>,
+) {
+    for (position, tnua) in &heroes {
+        if tnua.action_flow_status().just_starting()
+            == Some(VaelHeroSchemeActionDiscriminant::Jump)
+        {
+            sfx.write(bevy_ext_core::SfxEvent {
+                clip: bevy_ext_core::SfxClip::Jump,
+                position: Some(position.0),
+            });
+        }
+    }
+}
+
+/// Marcador: a cápsula AGACHADA está aplicada.
+#[derive(Component)]
+struct CrouchedCollider;
+
+/// Cápsula agachada ([`HERO_CROUCH_HEIGHT`]), origem na pegada como a de pé.
+fn hero_crouch_collider_shape() -> avian3d::prelude::Collider {
+    use avian3d::prelude::Collider;
+    Collider::compound(vec![(
+        Vec3::Y * (HERO_CROUCH_HEIGHT / 2.0),
+        Quat::IDENTITY,
+        Collider::capsule(
+            viber::player::HERO_RADIUS,
+            HERO_CROUCH_HEIGHT - 2.0 * viber::player::HERO_RADIUS,
+        ),
+    )])
+}
+
+/// Troca a cápsula do herói enquanto o `Crouch` do tnua está em curso.///
+/// A cápsula de pé (1.8 m) penetra o chão quando o `float_offset` do crouch
+/// desce o corpo — o solver lutava contra a spring e o herói não descia. A
+/// agachada mantém os pés à mesma cota. O LEVANTAR só acontece quando o
+/// headroom liberta (a ação passa a `Rising` e só acaba limpa), por isso a
+/// troca segue o DISCRIMINANTE da ação, não a tecla.
+#[allow(clippy::type_complexity)]
+fn hero_crouch_collider(
+    mut commands: Commands,
+    heroes: Query<
+        (
+            Entity,
+            &TnuaController<VaelHeroScheme>,
+            Option<&CrouchedCollider>,
+        ),
+        With<Player>,
+    >,
+) {
+    for (entity, tnua, crouched) in &heroes {
+        let crouching = matches!(
+            tnua.action_discriminant(),
+            Some(VaelHeroSchemeActionDiscriminant::Crouch)
+        );
+        match (crouching, crouched.is_some()) {
+            (true, false) => {
+                commands
+                    .entity(entity)
+                    .insert((hero_crouch_collider_shape(), CrouchedCollider));
+            }
+            (false, true) => {
+                commands
+                    .entity(entity)
+                    .remove::<CrouchedCollider>()
+                    .insert(viber::player::hero_collider());
+            }
+            _ => {}
+        }
+    }
+}
+
+/// Estado de animação do herói visto do TNUA. `EngineDecides` devolve a
+/// decisão ao driver (idle/walk/run/água pelo deslocamento real); os restantes
+/// vêm da AÇÃO corrente — coisa que o movimento medido não revela.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
+enum VaelAnimState {
+    #[default]
+    EngineDecides,
+    Jumping,
+    Falling,
+    Dashing,
+    Knocked,
+    Crouching,
+    OnWall,
+    Climbing,
+}
+
+/// Mapeamento para os clips que o herói tem hoje (sem clip próprio para
+/// dash/crouch/parede: Run/Walk/Fall servem de fallback; clips novos no GLB
+/// do herói entram aqui).
+fn map_anim_state(state: VaelAnimState) -> Option<bevy_ext_core::animation::AnimState> {
+    use bevy_ext_core::animation::AnimState;
+    match state {
+        VaelAnimState::EngineDecides => None,
+        VaelAnimState::Jumping => Some(AnimState::Jump),
+        VaelAnimState::Falling | VaelAnimState::Knocked | VaelAnimState::OnWall => {
+            Some(AnimState::Fall)
+        }
+        VaelAnimState::Dashing => Some(AnimState::Run),
+        VaelAnimState::Crouching | VaelAnimState::Climbing => Some(AnimState::Walk),
+    }
+}
+
+/// Estados de animação pela AÇÃO corrente do tnua: o
+/// [`TnuaAnimatingState`] dá a transição (Maintain/Alter) e o driver da
+/// engine recebe o resultado via `AnimStateOverride`.
+#[allow(clippy::type_complexity)]
+fn hero_anim_state(
+    mut heroes: Query<(
+        &TnuaController<VaelHeroScheme>,
+        &mut TnuaAnimatingState<VaelAnimState>,
+        &mut bevy_ext_core::animation::AnimStateOverride,
+    )>,
+) {
+    for (tnua, mut animating, mut override_component) in &mut heroes {
+        let current = match tnua.current_action.as_ref() {
+            Some(VaelHeroSchemeActionState::Jump(state)) => match &state.memory {
+                TnuaBuiltinJumpMemory::NoJump => VaelAnimState::EngineDecides,
+                TnuaBuiltinJumpMemory::FallSection => VaelAnimState::Falling,
+                _ => VaelAnimState::Jumping,
+            },
+            Some(VaelHeroSchemeActionState::Dash(_)) => VaelAnimState::Dashing,
+            Some(VaelHeroSchemeActionState::Knockback(_)) => VaelAnimState::Knocked,
+            Some(VaelHeroSchemeActionState::Crouch(state)) => match state.memory {
+                TnuaBuiltinCrouchMemory::Rising => VaelAnimState::EngineDecides,
+                _ => VaelAnimState::Crouching,
+            },
+            Some(VaelHeroSchemeActionState::WallSlide(..))
+            | Some(VaelHeroSchemeActionState::WallJump(_)) => VaelAnimState::OnWall,
+            Some(VaelHeroSchemeActionState::Climb(_)) => VaelAnimState::Climbing,
+            None => VaelAnimState::EngineDecides,
+        };
+        let directive = animating.update_by_discriminant(current);
+        let forced = match directive {
+            TnuaAnimatingStateDirective::Maintain { state } => map_anim_state(*state),
+            TnuaAnimatingStateDirective::Alter { state, .. } => map_anim_state(*state),
+        };
+        override_component.0 = forced;
+    }
 }
 
 fn facing_rotation(dir: Vec3) -> Quat {
@@ -582,12 +982,13 @@ fn player_movement(
     interior_state: Option<Res<bevy_ext_core::InteriorLighting>>,
     mut cameras: Query<&mut OrbitCamera>,
     bus: Option<Res<HeroMotionBus>>,
+    mut walls: WallProbe,
     mut players: Query<(
         Entity,
         &mut Transform,
         &mut VaelController,
         &mut Player,
-        Option<&mut TnuaController<HeroScheme>>,
+        Option<&mut TnuaController<VaelHeroScheme>>,
         Option<&mut LinearVelocity>,
         Option<&mut TnuaToggle>,
         Option<&mut Position>,
@@ -632,7 +1033,7 @@ fn player_movement(
     let blocked = menus.as_ref().is_some_and(|menus| menus.any());
     if blocked {
         for (
-            _,
+            entity,
             _,
             mut controller,
             mut engine_player,
@@ -641,13 +1042,24 @@ fn player_movement(
             _,
             _,
             _,
-            _,
+            mut settle,
             _,
             _,
             mut kin,
             _,
         ) in &mut players
         {
+            // O settle TEM de correr com o menu aberto: o loader de cena
+            // espera `!settling` para fechar a fase Settle do load, e o
+            // título da cena de menu abre exatamente nesse momento — sem
+            // isto o véu ficava preso para sempre (medido 2026-11-15:
+            // `settling=1` durante 57 s com o menu aberto).
+            if let Some(state) = settle.as_deref_mut()
+                && state.frames > 0
+                && state.tick(time.delta_secs())
+            {
+                commands.entity(entity).remove::<TeleportSettle>();
+            }
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
@@ -690,6 +1102,14 @@ fn player_movement(
             keys.pressed(KeyCode::ShiftLeft) || keys.pressed(KeyCode::ShiftRight),
             keys.just_pressed(KeyCode::Space),
         )
+    };
+    // Agachar é HELD (ação contínua do tnua).
+    let crouch_held = if typing {
+        false
+    } else if let Some(actions) = actions.as_deref() {
+        actions.crouch_held
+    } else {
+        keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight)
     };
 
     let (dodge_request, attack_request) = bus
@@ -737,6 +1157,16 @@ fn player_movement(
             if let Some(ref mut kin) = water_kin {
                 kin.velocity = Vec3::ZERO;
             }
+            // O settle TEM de correr gated: a chegada da cena já o inseriu e
+            // a prontidão do mundo espera `!settling` — sem o tick, o véu
+            // não abria e o portão (que espera a época fechar) nunca soltava
+            // o herói (deadlock medido 2026-11-15: `settling=1 gated=1`).
+            if let Some(state) = settle.as_deref_mut()
+                && state.frames > 0
+                && state.tick(time.delta_secs())
+            {
+                commands.entity(entity).remove::<TeleportSettle>();
+            }
             sync_engine_player(&mut engine_player, &controller);
             continue;
         }
@@ -777,16 +1207,19 @@ fn player_movement(
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
-            controller.is_jumping = false;
-            controller.jump_cooldown = 0.0;
-            controller.can_jump = true;
+            controller.jump_buffer_time = f32::NEG_INFINITY;
             controller.in_water = false;
             commands.entity(entity).remove::<Knockback>();
+            // O Knockback do tnua é incancelável pelo feed; uma CHEGADA de
+            // teleporte limpa a ação corrente à mão (nada de aterrar ainda a
+            // ser empurrado do sítio antigo).
+            if let Some(tnua) = tnua.as_deref_mut() {
+                tnua.current_action = None;
+            }
         }
         let settling = match settle.as_deref_mut() {
-            Some(state) if state.frames > 0 => {
-                state.frames -= 1;
-                if state.frames == 0 {
+        Some(state) if state.frames > 0 => {
+                if state.tick(time.delta_secs()) {
                     commands.entity(entity).remove::<TeleportSettle>();
                 }
                 true
@@ -797,16 +1230,6 @@ fn player_movement(
             }
             None => false,
         };
-        if controller.grounded {
-            controller.last_grounded_time = now;
-            controller.is_jumping = false;
-        }
-        if controller.jump_cooldown > 0.0 {
-            controller.jump_cooldown = (controller.jump_cooldown - dt).max(0.0);
-            if controller.jump_cooldown == 0.0 {
-                controller.can_jump = true;
-            }
-        }
 
         // Numa bolsa de interior a câmara é FIXA: A/D andam nas 8 direções do
         // ecrã. Fora, A/D conduzem a câmara e o herói segue-a.
@@ -904,6 +1327,10 @@ fn player_movement(
         let facing = (transform.rotation * Vec3::Z)
             .with_y(0.0)
             .normalize_or(Vec3::Z);
+        // Com corpo e fora de água funda os movimentos especiais são AÇÕES
+        // do tnua (Dash/Knockback); sem corpo (testes headless) é o caminho
+        // manual de sempre.
+        let with_body = tnua.is_some() && submersion < SWIM_DEPTH;
         if let Some(kind) = dodge_request
             && controller.dodge.is_none()
         {
@@ -916,14 +1343,10 @@ fn player_movement(
                 interior_mode,
             );
             let (duration, distance, hop) = kind.profile();
+            // O Burst fica como REGISTO: a curva ease-out alimenta o espelho
+            // (animação/câmara) durante o dash do tnua, e move de facto no
+            // caminho sem corpo.
             controller.dodge = Some((kind, Burst::new(burst_dir, distance, duration)));
-            if hop > 0.0 && !interior_mode {
-                controller.vel_y = jump_velocity(hop);
-                controller.grounded = false;
-                controller.is_jumping = true;
-                controller.can_jump = false;
-                controller.jump_cooldown = JUMP_COOLDOWN;
-            }
             if !kind.keeps_facing() {
                 transform.rotation = facing_rotation(burst_dir);
             }
@@ -932,6 +1355,24 @@ fn player_movement(
             controller.attack_until = f32::NEG_INFINITY;
             controller.attack_face = None;
             controller.lunge = None;
+            if with_body && let Some(tnua) = tnua.as_deref_mut() {
+                // AÇÃO Dash: distância exata do perfil; o hop lateral entra
+                // como componente VERTICAL do `displacement` — efeito físico
+                // que se perdeu na migração (era só espelho).
+                let hop_y = (hop > 0.0 && !interior_mode).then_some(hop).unwrap_or(0.0);
+                tnua.action(VaelHeroScheme::Dash(TnuaBuiltinDash {
+                    displacement: burst_dir * distance + Vec3::Y * hop_y,
+                    desired_forward: None,
+                    allow_in_air: false,
+                }));
+                if hop > 0.0 {
+                    controller.grounded = false;
+                }
+            } else if hop > 0.0 && !interior_mode {
+                // Sem corpo: integração manual como antes.
+                controller.vel_y = jump_velocity(hop);
+                controller.grounded = false;
+            }
         }
         if let Some(attack) = attack_request
             && controller.dodge.is_none()
@@ -943,8 +1384,20 @@ fn player_movement(
                 .map(|f| Vec3::new(f.x, 0.0, f.y))
                 .unwrap_or(facing);
             controller.attack_face = Some(face);
-            controller.lunge =
-                (attack.lunge > 0.0).then(|| Burst::new(face, attack.lunge, LUNGE_SECS));
+            if attack.lunge > 0.0 {
+                if with_body && let Some(tnua) = tnua.as_deref_mut() {
+                    // Avanço do golpe como Dash (mesma ação da esquiva; o
+                    // Lua nunca pede os dois no mesmo frame).
+                    tnua.action(VaelHeroScheme::Dash(TnuaBuiltinDash {
+                        displacement: face * attack.lunge,
+                        desired_forward: None,
+                        allow_in_air: false,
+                    }));
+                } else {
+                    controller.lunge =
+                        (attack.lunge > 0.0).then(|| Burst::new(face, attack.lunge, LUNGE_SECS));
+                }
+            }
         }
         let attacking = now < controller.attack_until;
         let sprint_mult = if sprint {
@@ -958,11 +1411,28 @@ fn player_movement(
             1.0
         };
         let flow_drift = water_flow_drift(submersion, water_flow);
-        let desired = dir * controller.speed * sprint_mult * input_mag * attack_slow * water_drag
+        let crouch_slow = if crouch_held && with_body { CROUCH_SLOW } else { 1.0 };
+        let desired = dir
+            * controller.speed
+            * sprint_mult
+            * input_mag
+            * attack_slow
+            * crouch_slow
+            * water_drag
             + Vec3::new(flow_drift.x, 0.0, flow_drift.y);
         let input_active = dir.length_squared() > 0.0;
-        if let Some((_, burst)) = controller.dodge.as_mut() {
-            // A esquiva manda na velocidade horizontal até assentar.
+        // Dash em curso (a ação corrente do tnua — um frame atrás do pedido,
+        // que é coberto pelo ramo do `dodge`): o espelho segue a curva do
+        // Burst para a animação/câmara e quem manda no corpo é a ação.
+        let dash_ongoing = tnua.as_ref().is_some_and(|t| {
+            matches!(
+                t.action_discriminant(),
+                Some(VaelHeroSchemeActionDiscriminant::Dash)
+            )
+        });
+        if dash_ongoing && let Some((_, burst)) = controller.dodge.as_mut() {
+            // Esquiva via Dash: a velocidade aqui é SÓ espelho (animação/
+            // câmara) — a `desired_motion` é zerada abaixo.
             let speed = burst.speed() * water_drag;
             let burst_dir = burst.dir;
             burst.t += dt;
@@ -971,6 +1441,18 @@ fn player_movement(
             controller.vel_z = burst_dir.z * speed;
             // Conta como "a conduzir": a auto-câmara não persegue o heading
             // lateral do salto.
+            controller.last_steer_time = now;
+            if done {
+                controller.dodge = None;
+            }
+        } else if tnua.is_none() && let Some((_, burst)) = controller.dodge.as_mut() {
+            // Sem corpo: o Burst move de facto (integra no Transform).
+            let speed = burst.speed() * water_drag;
+            let burst_dir = burst.dir;
+            burst.t += dt;
+            let done = burst.done();
+            controller.vel_x = burst_dir.x * speed;
+            controller.vel_z = burst_dir.z * speed;
             controller.last_steer_time = now;
             if done {
                 controller.dodge = None;
@@ -991,9 +1473,8 @@ fn player_movement(
         if vel_x * vel_x + vel_z * vel_z > 0.25 {
             controller.last_moving_time = now;
         }
-        // Lunge e empurrão entram na VELOCIDADE pedida (m/s): o tnua acelera
-        // até ela e o solver resolve paredes/props — escrito no Transform
-        // atravessava tudo.
+        // Lunge/empurrão SEM corpo entram na VELOCIDADE pedida (m/s); com
+        // corpo o lunge já é um Dash e o empurrão é a ação Knockback abaixo.
         let mut extra_motion = Vec3::ZERO;
         if let Some(lunge) = controller.lunge.as_mut() {
             extra_motion += lunge.dir * lunge.speed();
@@ -1003,14 +1484,33 @@ fn player_movement(
             }
         }
         if let Some(knockback) = knockback.as_deref_mut() {
-            extra_motion += knockback.velocity.with_y(0.0);
-            knockback.velocity *= knockback_decay_factor(dt);
-            if knockback.velocity.length() < KNOCKBACK_EPSILON {
+            if with_body && let Some(tnua) = tnua.as_deref_mut() {
+                // AÇÃO Knockback: impulso + boundary de Pushover que a basis
+                // não anula nem deixa cancelar. O componente é a API externa
+                // (Lua `viber.push_player`); consome-o aqui.
+                let shove = knockback.velocity.with_y(0.0);
+                tnua.action_interrupt(VaelHeroScheme::Knockback(TnuaBuiltinKnockback {
+                    shove,
+                    force_forward: None,
+                }));
                 knockback.velocity = Vec3::ZERO;
                 commands.entity(entity).remove::<Knockback>();
+            } else {
+                extra_motion += knockback.velocity.with_y(0.0);
+                knockback.velocity *= knockback_decay_factor(dt);
+                if knockback.velocity.length() < KNOCKBACK_EPSILON {
+                    knockback.velocity = Vec3::ZERO;
+                    commands.entity(entity).remove::<Knockback>();
+                }
             }
         }
-        let desired_motion = Vec3::new(controller.vel_x, 0.0, controller.vel_z) + extra_motion;
+        let desired_motion = if dash_ongoing {
+            // A ação Dash formula o motor; a basis fica quiça (sem isto a
+            // aceleração do passeio lutava contra o brake do dash).
+            Vec3::ZERO
+        } else {
+            Vec3::new(vel_x, 0.0, vel_z) + extra_motion
+        };
 
         let dodge_keeps_facing = controller
             .dodge
@@ -1031,50 +1531,145 @@ fn player_movement(
             }
         }
 
+        // ── salto ──
+        // O chão, o coyote e o buffer de aterragem são do CRATE
+        // (`coyote_time`/`input_buffer_time` no asset). Aqui só se abre a
+        // janela de feed: alimentamos o `Jump` enquanto ela durar e o tnua
+        // dispara quando o sensor de chão o permitir. O SFX não é daqui —
+        // `hero_jump_sfx` reage ao arranque real da ação.
         if jump_pressed {
             controller.jump_buffer_time = now;
         }
-        if !interior_mode
-            && controller.dodge.is_none()
-            && can_perform_jump(
-                now,
-                controller.jump_buffer_time,
-                controller.last_grounded_time,
-                controller.can_jump,
-                controller.grounded,
+        let jump_buffered = now - controller.jump_buffer_time <= JUMP_BUFFER;
+        if !interior_mode && controller.dodge.is_none() && jump_buffered {
+            if submersion >= SWIM_DEPTH {
+                // Água funda (controller desligado): impulso manual para
+                // subir à margem.
+                controller.vel_y = jump_velocity(controller.jump_height) * 0.85;
+                controller.jump_buffer_time = f32::NEG_INFINITY;
+                sfx.write(bevy_ext_core::SfxEvent {
+                    clip: bevy_ext_core::SfxClip::FootstepWater,
+                    position: Some(transform.translation),
+                });
+            } else if let Some(tnua) = tnua.as_deref_mut() {
+                // Alimentar SEM consumir: a janela continua aberta e o tnua
+                // pode segurar o pedido até aterrar. Em deslize de parede o
+                // mesmo gatilho dispara o WallJump (lança contra a normal).
+                if let Some(VaelHeroSchemeActionState::WallSlide(state, _)) =
+                    &tnua.current_action
+                {
+                    let normal = *state.input.normal;
+                    tnua.action(VaelHeroScheme::WallJump(TnuaBuiltinJump {
+                        horizontal_displacement: Some(normal),
+                        allow_in_air: true,
+                        force_forward: None,
+                    }));
+                } else {
+                    tnua.action(VaelHeroScheme::Jump(TnuaBuiltinJump::default()));
+                }
+            } else {
+                // Sem corpo (testes headless): integração manual como antes.
+                controller.vel_y = jump_velocity(controller.jump_height);
+                controller.jump_buffer_time = f32::NEG_INFINITY;
+            }
+        }
+
+        // Agachar: feed CONTÍNUO (a ação não é one-shot — o `action_trigger`
+        // não serve). O levantar é da ação (`Rising` só com headroom livre);
+        // em água funda o toggle do tnua está desligado e não alimenta.
+        if with_body
+            && !interior_mode
+            && let Some(tnua) = tnua.as_deref_mut()
+        {
+            if crouch_held {
+                tnua.action_start(VaelHeroScheme::Crouch(TnuaBuiltinCrouch));
+            } else {
+                tnua.action_end(VaelHeroSchemeActionDiscriminant::Crouch);
+            }
+        }
+
+        // Paredes (VAEL_WALL_MOVES): em queda encostado a uma face — radar
+        // dá o blip "ao lado" na direção do input — alimenta o deslize. Sem
+        // input o deslize corrente mantém-se (a comparação do exemplo do
+        // crate: novo exige dot>0.5, corrente basta -0.5<dot).
+        if *WALL_MOVES
+            && with_body
+            && !controller.grounded
+            && let Some(radar) = walls.radars.get(entity).ok()
+            && let Some(tnua) = tnua.as_deref_mut()
+        {
+            let lens = TnuaRadarLens::new(radar, &walls.spatial_ext);
+            let mut currently_sliding_on = None;
+            if let Some(VaelHeroSchemeActionState::WallSlide(_, wall)) = &tnua.current_action {
+                currently_sliding_on = Some(*wall);
+            }
+            for blip in lens.iter_blips() {
+                if let TnuaBlipSpatialRelation::Aeside(blip_direction) =
+                    blip.spatial_relation(0.5)
+                {
+                    let should_slide = if currently_sliding_on == Some(blip.entity()) {
+                        -0.5 < blip_direction.dot(dir)
+                    } else {
+                        0.5 < blip_direction.dot(dir)
+                    };
+                    if should_slide
+                        && let Ok(normal) = Dir3::new(blip.normal_from_closest_point())
+                    {
+                        tnua.action(VaelHeroScheme::WallSlide(
+                            TnuaBuiltinWallSlide {
+                                contact_point_with_wall: blip.closest_point().get(),
+                                normal,
+                                force_forward: None,
+                            },
+                            blip.entity(),
+                        ));
+                        break;
+                    }
+                }
+            }
+        }
+
+        // Trepar (Fase climb): blip de um prop `Climbable` à frente alimenta
+        // o Climb — W/S sobem/descem (`desired_climb_motion`); sair do raio
+        // do radar solta (coyote do crate). Ações em curso (salto, dash,
+        // knockback) têm prioridade. O terreno voxel nunca é climbable.
+        if with_body
+            && let Some(radar) = walls.radars.get(entity).ok()
+            && let Some(tnua) = tnua.as_deref_mut()
+            && !matches!(
+                tnua.action_discriminant(),
+                Some(
+                    VaelHeroSchemeActionDiscriminant::Jump
+                        | VaelHeroSchemeActionDiscriminant::Dash
+                        | VaelHeroSchemeActionDiscriminant::Knockback
+                )
             )
         {
-            // Em terra o impulso é a AÇÃO do tnua (altura no asset); na água
-            // funda (controller desligado) e sem corpo é o `vel_y` manual.
-            if submersion >= SWIM_DEPTH || tnua.is_none() {
-                controller.vel_y = jump_velocity(controller.jump_height);
-            } else if let Some(tnua) = tnua.as_deref_mut() {
-                tnua.action(HeroScheme::Jump(TnuaBuiltinJump::default()));
+            let lens = TnuaRadarLens::new(radar, &walls.spatial_ext);
+            for blip in lens.iter_blips() {
+                if walls.climbables.get(blip.entity()).is_err() {
+                    continue;
+                }
+                if let TnuaBlipSpatialRelation::Aeside(blip_direction) =
+                    blip.spatial_relation(0.5)
+                    && blip_direction.dot(dir) < 0.3
+                {
+                    continue;
+                }
+                let anchor = blip.closest_point().get();
+                let to_anchor = anchor - transform.translation;
+                if to_anchor.length_squared() > 1e-6 {
+                    tnua.action(VaelHeroScheme::Climb(TnuaBuiltinClimb {
+                        anchor,
+                        desired_vec_to_anchor: to_anchor,
+                        desired_climb_motion: Vec3::Y * move_forward,
+                        desired_forward: None,
+                        hard_stop_up: None,
+                        hard_stop_down: None,
+                    }));
+                    break;
+                }
             }
-            controller.is_jumping = true;
-            controller.can_jump = false;
-            controller.jump_cooldown = JUMP_COOLDOWN;
-            controller.jump_buffer_time = f32::NEG_INFINITY;
-            sfx.write(bevy_ext_core::SfxEvent {
-                clip: bevy_ext_core::SfxClip::Jump,
-                position: Some(transform.translation),
-            });
-        } else if !interior_mode
-            && controller.dodge.is_none()
-            && submersion >= SWIM_DEPTH
-            && controller.jump_cooldown <= 0.0
-            && now - controller.jump_buffer_time <= JUMP_BUFFER
-        {
-            // Impulso para subir à margem quando está a nadar em água funda.
-            controller.vel_y = jump_velocity(controller.jump_height) * 0.85;
-            controller.is_jumping = true;
-            controller.can_jump = false;
-            controller.jump_cooldown = JUMP_COOLDOWN;
-            controller.jump_buffer_time = f32::NEG_INFINITY;
-            sfx.write(bevy_ext_core::SfxEvent {
-                clip: bevy_ext_core::SfxClip::FootstepWater,
-                position: Some(transform.translation),
-            });
         }
 
         // Chão analítico: a superfície SÓLIDA SOB o herói (respeita grutas e
@@ -1093,25 +1688,71 @@ fn player_movement(
         let top = field
             .map(|rt| rt.sample(px, pz))
             .unwrap_or(f32::NEG_INFINITY);
+        // Chão analítico ANTES do resgate: o warn da queda reporta o estado
+        // real (e o snap de segurança abaixo usa o mesmo valor).
+        //
+        // `surface_below` devolve None quando o herói está DENTRO da rocha do
+        // heightfield (enterrado — o corpo afundou numa coluna cujo collider
+        // ainda não assou) ou abaixo dela. Nesses estados a resposta honesta
+        // de "não há superfície abaixo" cegava a rede de segurança até ao
+        // resgate do vazio (medido 2026-11-15: brecha a 5 m da superfície com
+        // ground=-inf e queda livre até −250 m). O chão real nesses casos é o
+        // TOPO do heightfield — o snap de segurança devolve-lhe o topo.
+        // (Dentro de gruta com chão próprio a resposta é Some — este ramo não
+        // é atingido.)
+        let ground = if let Some(rt) = field {
+            rt.surface_below(px, pz, py + GROUND_PROBE)
+                .unwrap_or_else(|| rt.sample(px, pz))
+        } else {
+            f32::NEG_INFINITY
+        };
         if transform.translation.y < top - VOID_RESCUE_DEPTH {
             warn!(
-                "vael-player: herói caiu do mundo a y={:.1} (superfície {:.1}) — resgatado",
-                transform.translation.y, top
+                "vael-player: herói caiu do mundo a y={:.1} (superfície {:.1}) — resgatado \
+                 (terrain_ready={} settling={} ground={:.1})",
+                transform.translation.y,
+                top,
+                terrain_ready,
+                settling,
+                ground
             );
             transform.translation.y = top;
             py = top;
             controller.vel_y = 0.0;
             controller.grounded = true;
-        }
-        let ground = if let Some(rt) = field {
-            match rt.surface_below(px, pz, py + GROUND_PROBE) {
-                Some(surface) => surface,
-                None if settling => rt.sample(px, pz),
-                None => f32::NEG_INFINITY,
+            // O corpo é do Avian: a `Position` é a autoridade e o writeback
+            // desfazia o `Transform` no frame seguinte — o "resgate" era
+            // cosmético e o herói continuava a queda debaixo do mundo.
+            // Teleporta o CORPO, zera a velocidade e rearma a tutela
+            // analítica (a mesma chegada limpa de um teleporte).
+            if let Some(mut position) = position.as_deref_mut() {
+                position.0.y = top;
             }
-        } else {
-            f32::NEG_INFINITY
-        };
+            if let Some(mut velocity) = velocity.as_deref_mut() {
+                velocity.0.y = 0.0;
+            }
+            if settle.is_none() {
+                commands.entity(entity).insert(TeleportSettle::default());
+            }
+        }
+        // DIAGNÓSTICO da queda no arranque: o começo da brecha — o herói
+        // despenca perto da superfície com a rede analítica supostamente
+        // activa. 1/s no máximo.
+        if !controller.grounded && controller.vel_y < -8.0 && py > top - 40.0 && py <= top {
+            walls.breach_log.tick(time.delta());
+            if walls.breach_log.elapsed().as_secs_f32() >= 1.0 {
+                walls.breach_log.reset();
+                warn!(
+                    "vael-player: brecha perto da superfície: py={:.2} ground={:.2} \
+                     terrain_ready={} settling={} vel_y={:.1}",
+                    py,
+                    ground,
+                    terrain_ready,
+                    settling,
+                    controller.vel_y
+                );
+            }
+        }
 
         let submersion = water_y.map(|wy| (wy - py).max(0.0)).unwrap_or(0.0);
         let swimming = submersion >= SWIM_DEPTH;
@@ -1179,8 +1820,14 @@ fn player_movement(
                     }
                     controller.vel_y = 0.0;
                     controller.grounded = true;
-                } else if (!terrain_ready || settling) && py <= ground {
+                } else if (!terrain_ready || settling)
+                    && py <= ground + viber::player::HERO_FLOAT_HEIGHT
+                    && controller.vel_y <= 0.0
+                {
                     // Ver o comentário acima: o snap deixa a folga do sensor.
+                    // A banda inclui o float (e só apanha a DESCER): com a
+                    // coluna ainda sem collider o herói fica preso no float
+                    // em vez de oscilar entre o snap e a gravidade.
                     if let Some(position) = position.as_deref_mut() {
                         position.0.y = ground + viber::player::HERO_FLOAT_HEIGHT;
                     }
@@ -1247,7 +1894,7 @@ fn player_movement(
             shared.move_x = move_x;
             shared.move_forward = move_forward;
             shared.grounded = controller.grounded;
-            shared.dodging = controller.dodge.is_some();
+            shared.dodging = dash_ongoing || controller.dodge.is_some();
             shared.interior = interior_mode;
         }
     }
@@ -1300,10 +1947,9 @@ fn sync_engine_player(engine: &mut Player, controller: &VaelController) {
     engine.vel_z = controller.vel_z;
     engine.vel_y = controller.vel_y;
     engine.grounded = controller.grounded;
-    engine.can_jump = controller.can_jump;
-    engine.is_jumping = controller.is_jumping;
-    engine.jump_cooldown = controller.jump_cooldown;
-    engine.last_grounded_time = controller.last_grounded_time;
+    // `can_jump`/`is_jumping`/`jump_cooldown`/`last_grounded_time` da engine
+    // deixaram de ser espelhados: o chão/coyote/buffer do salto são do tnua
+    // e ninguém no jogo lia estas pontas.
     engine.jump_buffer_time = controller.jump_buffer_time;
     engine.last_steer_time = controller.last_steer_time;
     engine.last_moving_time = controller.last_moving_time;
@@ -1340,11 +1986,16 @@ mod tests {
     }
 
     #[test]
-    fn jump_needs_buffer_and_ground_or_coyote() {
-        assert!(can_perform_jump(1.05, 1.0, 1.0, true, false));
-        assert!(!can_perform_jump(1.5, 1.0, 0.0, true, false));
-        assert!(!can_perform_jump(1.05, 1.0, 0.0, false, true));
-        assert!(can_perform_jump(1.05, 1.0, 1.0, true, false));
+    fn jump_feed_window_matches_the_old_buffer() {
+        // A janela de feed do tnua tem a mesma largura do antigo
+        // `JUMP_BUFFER`: aberta até 0,1 s do pedido, fechada depois. O
+        // chão/coyote em si são decididos pelo crate (testados lá).
+        let now = 1.05;
+        let pressed_at = 1.0;
+        assert!(now - pressed_at <= JUMP_BUFFER, "dentro da janela alimenta");
+        assert!(now - f32::NEG_INFINITY > JUMP_BUFFER, "sem pedido: fechada");
+        let stale = now - JUMP_BUFFER - 1e-3;
+        assert!(now - stale > JUMP_BUFFER, "janela expirada não alimenta");
     }
 
     #[test]

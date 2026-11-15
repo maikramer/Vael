@@ -9,7 +9,6 @@ use std::collections::BTreeMap;
 use bevy::prelude::*;
 use bevy::time::Real;
 use serde_json::Value;
-use viber::luau::host::LuaScriptHost;
 
 use crate::components::{Inventory, PlayerVitals, QuestLog, XpState};
 use crate::rules_authority::{OwnedVitals, RUST_GATE_KEY, VaelRulesAuthority, VaelRulesConfig};
@@ -43,9 +42,6 @@ impl Plugin for VaelStateSyncPlugin {
 /// Snapshot periódico → [`VaelSave`] + componentes.
 pub(crate) fn sync_state_from_lua(
     time: Res<Time<Real>>,
-    // `Option`: um build com scripts desligados não tem host — sem ele o
-    // estado fica intacto (nunca um pânico).
-    host: Option<Res<LuaScriptHost>>,
     // `Option`: apps mínimas de teste não têm a autoridade das regras.
     config: Option<Res<VaelRulesConfig>>,
     authority: Option<Res<VaelRulesAuthority>>,
@@ -60,17 +56,16 @@ pub(crate) fn sync_state_from_lua(
     mut quests: ResMut<QuestLog>,
     mut save: ResMut<VaelSave>,
 ) {
-    let Some(host) = host else {
-        return;
-    };
     let timer =
         timer.get_or_insert_with(|| Timer::from_seconds(SYNC_PERIOD_SECS, TimerMode::Repeating));
     if !timer.tick(time.delta()).just_finished() {
         return;
     }
-    let kv = viber::luau::game::game_to_json(&host.lua);
+    // O store do processo É o `viber.game()` dos contextos BMS (o proxy lê
+    // daqui) — ler por cima, sem handle mlua.
+    let kv = viber::luau::game::game_to_json_process();
     if kv.is_empty() {
-        // A tabela `viber_game` ainda não existe (arranque): não zerar estado.
+        // O store ainda não tem chaves (arranque): não zerar estado.
         return;
     }
     if last.as_ref() == Some(&kv) {
@@ -78,7 +73,7 @@ pub(crate) fn sync_state_from_lua(
     }
     *last = Some(kv.clone());
     let rust = config.as_deref().is_some_and(|config| config.rust);
-    ensure_rust_gate(&host, rust, &kv);
+    ensure_rust_gate(rust, &kv);
     // Com a autoridade ligada, os campos dela ganham ao snapshot Lua (que
     // pode estar um tick atrasado); XP/inventário/quests/legacy continuam a
     // vir do Lua.
@@ -109,7 +104,7 @@ pub(crate) fn sync_state_from_lua(
 /// corresponde ao modo desta sessão. Um save escrito com `VAEL_RULES_RUST=1`
 /// traz `true`; sem esta correção o Lua saltava o tick portado num jogo
 /// normal (`VAEL_RULES_RUST=0`).
-fn ensure_rust_gate(host: &LuaScriptHost, rust: bool, kv: &BTreeMap<String, Value>) {
+fn ensure_rust_gate(rust: bool, kv: &BTreeMap<String, Value>) {
     let atual = kv.get(RUST_GATE_KEY);
     let mut patch = BTreeMap::new();
     if rust {
@@ -120,7 +115,7 @@ fn ensure_rust_gate(host: &LuaScriptHost, rust: bool, kv: &BTreeMap<String, Valu
         patch.insert(RUST_GATE_KEY.to_string(), Value::Null);
     }
     if !patch.is_empty() {
-        viber::luau::game::apply_patch(&host.lua, &patch);
+        viber::luau::game::apply_patch_json(&patch);
     }
 }
 
@@ -393,23 +388,27 @@ mod tests {
 
     #[test]
     fn gate_corrige_um_save_escrito_com_a_autoridade_ligada() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
-        let host = LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host Luau");
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut kv = BTreeMap::new();
         kv.insert(RUST_GATE_KEY.into(), json!(true));
 
         // Jogo normal: o gate que veio do save tem de sair.
-        ensure_rust_gate(&host, false, &kv);
-        let kv = viber::luau::game::game_to_json(&host.lua);
+        ensure_rust_gate(false, &kv);
+        let kv = viber::luau::game::game_to_json_process();
         assert!(
             !kv.contains_key(RUST_GATE_KEY),
             "VAEL_RULES_RUST=0 tem de devolver o tick ao Lua"
         );
 
         // Autoridade ligada: volta a escrevê-lo (uma vez, depois é no-op).
-        ensure_rust_gate(&host, true, &kv);
-        let kv = viber::luau::game::game_to_json(&host.lua);
+        ensure_rust_gate(true, &kv);
+        let kv = viber::luau::game::game_to_json_process();
         assert_eq!(kv.get(RUST_GATE_KEY), Some(&json!(true)));
-        ensure_rust_gate(&host, true, &kv);
+        ensure_rust_gate(true, &kv);
     }
 }

@@ -32,8 +32,7 @@ use std::collections::BTreeMap;
 use bevy::prelude::*;
 use bevy_ext_core::MenusOpen;
 use serde_json::Value;
-use viber::luau::game::{apply_patch, game_to_json};
-use viber::luau::host::LuaScriptHost;
+use viber::luau::game::{apply_patch_json, game_to_json_process};
 use viber::scene_loader::CurrentScene;
 use viber::ui::modal::UiModalsOpen;
 use viber::worldsys::WeatherState;
@@ -223,7 +222,7 @@ impl Plugin for VaelRulesAuthorityPlugin {
                     .in_set(VaelRulesSet)
                     // O tick LÊ o que o Lua acabou de fazer no frame e escreve
                     // as vitais de volta para o `viber.game()`.
-                    .after(viber::luau::luau_update)
+                    .after(viber::luau::bms_bridge::apply_bms_commands)
                     .run_if(viber::app::scripts_enabled)
                     .run_if(viber::scene_loader::scene_settled),
             );
@@ -232,17 +231,15 @@ impl Plugin for VaelRulesAuthorityPlugin {
 
 /// Arranque: liga o gate no `viber.game()` para o Lua saltar as secções
 /// portadas. Desligado, não escreve nada (o jogo fica igual).
-fn apply_rust_gate(config: Res<VaelRulesConfig>, host: Option<Res<LuaScriptHost>>) {
+fn apply_rust_gate(config: Res<VaelRulesConfig>) {
     if !config.rust {
         return;
     }
-    let Some(host) = host else {
-        warn!("vael: VAEL_RULES_RUST sem host Luau — autoridade inativa");
-        return;
-    };
+    // O gate vive no STORE do processo: o Lua de qualquer contexto lê-o em
+    // `viber.game()` (o store é o proxy de sempre).
     let mut patch = BTreeMap::new();
     patch.insert(RUST_GATE_KEY.to_string(), Value::Bool(true));
-    apply_patch(&host.lua, &patch);
+    viber::luau::game::apply_patch_json(&patch);
     info!(
         gate = RUST_GATE_KEY,
         "vael: autoridade Rust das vitais/status/morte ligada"
@@ -253,7 +250,6 @@ fn apply_rust_gate(config: Res<VaelRulesConfig>, host: Option<Res<LuaScriptHost>
 fn rules_authority_system(
     time: Res<Time>,
     config: Res<VaelRulesConfig>,
-    host: Option<Res<LuaScriptHost>>,
     weather: Option<Res<WeatherState>>,
     menus: Option<Res<MenusOpen>>,
     modals: Option<Res<UiModalsOpen>>,
@@ -266,12 +262,11 @@ fn rules_authority_system(
     if !config.rust {
         return;
     }
-    let Some(host) = host else {
-        return;
-    };
 
-    // Dano/cura/`respawn`/passivas do Lua no frame que acabou de correr.
-    let kv = game_to_json(&host.lua);
+    // Dano/cura/`respawn`/passivas do Lua no frame que acabou de correr —
+    // do STORE do processo (o `viber.game()` dos contextos BMS é este
+    // store; sem handle mlua, sem VM partilhada).
+    let kv = game_to_json_process();
     authority.seed(&kv);
 
     // O `rules_host` não corre `rules.tick` com o título/menu por cima (o
@@ -297,7 +292,7 @@ fn rules_authority_system(
     // Só as chaves que o Rust possui; `xp`, `item.*`, `q.*`, ouro, etc. não
     // entram no patch.
     if let Some(patch) = authority.pending_patch() {
-        apply_patch(&host.lua, &patch);
+        apply_patch_json(&patch);
     }
 
     // HUD/save: o `state_sync` preserva estes campos no merge.
@@ -579,22 +574,6 @@ mod tests {
         assert!(auth.pending_patch().is_some(), "iframes desceram no tick");
     }
 
-    #[test]
-    fn plugin_sem_host_nao_panica() {
-        let mut app = App::new();
-        app.add_plugins(bevy::MinimalPlugins)
-            .init_resource::<PlayerVitals>()
-            .init_resource::<VaelSave>()
-            .add_plugins(VaelRulesAuthorityPlugin);
-        app.insert_resource(VaelRulesConfig { rust: true });
-        for _ in 0..3 {
-            app.update();
-        }
-        let authority = app.world().resource::<VaelRulesAuthority>();
-        assert!(!authority.seeded, "sem host não semeia");
-        assert_eq!(authority.ticks(), 0);
-    }
-
     fn cena(id: &str) -> CurrentScene {
         CurrentScene {
             root: std::path::PathBuf::new(),
@@ -631,7 +610,6 @@ mod tests {
         let mut app = App::new();
         app.add_plugins(bevy::MinimalPlugins)
             .insert_resource(VaelRulesConfig { rust: true })
-            .insert_resource(LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host"))
             .insert_resource(cena("menu"))
             .init_resource::<UiModalsOpen>()
             .init_resource::<PlayerVitals>()

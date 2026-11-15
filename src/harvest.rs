@@ -32,15 +32,12 @@ use bevy_ext_world::xml::values::parse_color;
 use bevy_flora::{
     BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeShake, TreeShakes,
 };
-use mlua::{Lua, Table, Value as LuaValue};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
 use viber::feedback::DamageNumberEvent;
 use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
-use viber::luau::game::game_to_json;
-use viber::luau::host::LuaScriptHost;
 use viber::menus::MenusOpen;
 use viber::physics_fx::Falling;
 use viber::player::Player;
@@ -360,14 +357,10 @@ struct PendingFloraFell(std::sync::Arc<std::sync::Mutex<Vec<u64>>>);
 /// `break-style: fall` no lugar de `viber.topple`. Sem isto o caminho Lua
 /// (default) tombava a ESTAÇÃO com o `Falling` da engine e perdia o toco e o
 /// tronco deitado do `bevy_flora`.
-fn install_fell_api(host: Option<Res<LuaScriptHost>>, mut commands: Commands) {
-    let Some(host) = host else {
-        return;
-    };
+fn install_fell_api(mut commands: Commands) {
     let queue = PendingFloraFell::default();
     let shared = std::sync::Arc::clone(&queue.0);
-    let lua = &host.lua;
-    let installed = (|| -> mlua::Result<()> {
+    crate::script_host::register_installer(move |lua| -> mlua::Result<()> {
         let vael = vael_table(lua)?;
         vael_fn!(
             lua,
@@ -383,14 +376,9 @@ fn install_fell_api(host: Option<Res<LuaScriptHost>>, mut commands: Commands) {
             }
         );
         Ok(())
-    })();
-    match installed {
-        Ok(()) => {
-            commands.insert_resource(queue);
-            info!("vael: `viber.vael.fell_tree` ligado (tombo do bevy_flora no Lua)");
-        }
-        Err(err) => error!("vael: falha a instalar `viber.vael.fell_tree`: {err}"),
-    }
+    });
+    commands.insert_resource(queue);
+    info!("vael: `viber.vael.fell_tree` registado nos contextos BMS (tombo do bevy_flora no Lua)");
 }
 
 /// Processa os pedidos do Lua: árvore procedural → `FellTree` numa raiz com a
@@ -399,7 +387,6 @@ fn install_fell_api(host: Option<Res<LuaScriptHost>>, mut commands: Commands) {
 fn process_pending_fell(
     mut commands: Commands,
     pending: Option<Res<PendingFloraFell>>,
-    host: Option<Res<LuaScriptHost>>,
     mut save: Option<ResMut<VaelSave>>,
     props: Query<(
         &GlobalTransform,
@@ -422,7 +409,6 @@ fn process_pending_fell(
     if requests.is_empty() {
         return;
     }
-    let lua = host.as_deref().map(|host| &host.lua);
     let player = players
         .iter()
         .next()
@@ -451,7 +437,7 @@ fn process_pending_fell(
             );
             if let Some(key) = key.as_deref() {
                 commands.entity(tree).insert(FloraFellKey(key.to_string()));
-                store_flora_fell(lua, save.as_deref_mut(), key, direction, cut_height, false);
+                store_flora_fell(save.as_deref_mut(), key, direction, cut_height, false);
             }
             commands
                 .entity(entity)
@@ -792,24 +778,23 @@ fn provenance_label(source: &SceneSource, root: Option<&Path>) -> String {
     label
 }
 
-/// Marca a chave em `VaelSave::harvested` e no espelho Lua (`harvested.<chave>`).
-fn mark_harvested(lua: Option<&Lua>, save: Option<&mut VaelSave>, key: &str) {
+/// Marca a chave em `VaelSave::harvested` e no espelho do jogo
+/// (`harvested.<chave>` no store do processo — o `viber.game()` dos
+/// contextos BMS lê daqui).
+fn mark_harvested(save: Option<&mut VaelSave>, key: &str) {
     if key.is_empty() {
         return;
     }
     if let Some(save) = save {
         save.harvested.insert(key.to_string());
     }
-    if let Some(lua) = lua {
-        let mut patch = BTreeMap::new();
-        patch.insert(format!("harvested.{key}"), Json::Bool(true));
-        crate::compat::apply_game_patch(lua, &patch);
-    }
+    let mut patch = BTreeMap::new();
+    patch.insert(format!("harvested.{key}"), Json::Bool(true));
+    viber::luau::game::apply_patch_json(&patch);
 }
 
 /// Guarda a pose/escala do substituto (`stump.<chave>.*`), como o Lua.
 fn store_stump(
-    lua: Option<&Lua>,
     save: Option<&mut VaelSave>,
     key: &str,
     proto: &str,
@@ -834,16 +819,13 @@ fn store_stump(
             save.legacy.insert(name.clone(), value.clone());
         }
     }
-    if let Some(lua) = lua {
-        crate::compat::apply_game_patch(lua, &fields.into_iter().collect());
-    }
+    viber::luau::game::apply_patch_json(&fields.into_iter().collect::<BTreeMap<_, _>>());
 }
 
 /// Guarda o estado do tombo de uma árvore procedural (`flora-fell.<chave>.*`):
 /// direcção da queda, altura do corte e se já foi retalhada em toros. É o que
 /// o load usa para a deitar no sítio certo, sem a tombar outra vez.
 fn store_flora_fell(
-    lua: Option<&Lua>,
     save: Option<&mut VaelSave>,
     key: &str,
     direction: Vec3,
@@ -864,13 +846,11 @@ fn store_flora_fell(
             save.legacy.insert(name.clone(), value.clone());
         }
     }
-    if let Some(lua) = lua {
-        crate::compat::apply_game_patch(lua, &fields.into_iter().collect());
-    }
+    viber::luau::game::apply_patch_json(&fields.into_iter().collect::<BTreeMap<_, _>>());
 }
 
 /// Marca a árvore deitada como retalhada em toros (`flora-fell.<chave>.bucked`).
-fn store_flora_bucked(lua: Option<&Lua>, save: Option<&mut VaelSave>, key: &str) {
+fn store_flora_bucked(save: Option<&mut VaelSave>, key: &str) {
     if key.is_empty() {
         return;
     }
@@ -878,11 +858,9 @@ fn store_flora_bucked(lua: Option<&Lua>, save: Option<&mut VaelSave>, key: &str)
     if let Some(save) = save {
         save.legacy.insert(name.clone(), Json::Bool(true));
     }
-    if let Some(lua) = lua {
-        let mut patch = BTreeMap::new();
-        patch.insert(name, Json::Bool(true));
-        crate::compat::apply_game_patch(lua, &patch);
-    }
+    let mut patch = BTreeMap::new();
+    patch.insert(name, Json::Bool(true));
+    viber::luau::game::apply_patch_json(&patch);
 }
 
 /// Estado de uma árvore tombada com o `bevy_flora`, lido do save.
@@ -1069,33 +1047,26 @@ where
 // ── sistemas ────────────────────────────────────────────────────────────
 
 /// Arranque: fixa o gate no `viber.game()`.
-fn publish_harvest_gate(config: Res<VaelHarvestConfig>, host: Option<Res<LuaScriptHost>>) {
-    let Some(host) = host else {
-        return;
-    };
-    apply_gate(&host.lua, config.rust);
+fn publish_harvest_gate(config: Res<VaelHarvestConfig>) {
+    apply_gate(config.rust);
 }
 
 /// Corrige o gate enquanto o jogo corre (o load do menu pode repor o save).
 fn sync_harvest_gate(
     time: Res<Time>,
     config: Res<VaelHarvestConfig>,
-    host: Option<Res<LuaScriptHost>>,
     mut timer: Local<Option<Timer>>,
 ) {
-    let Some(host) = host else {
-        return;
-    };
     let timer =
         timer.get_or_insert_with(|| Timer::from_seconds(GATE_PERIOD_SECS, TimerMode::Repeating));
     if !timer.tick(time.delta()).just_finished() {
         return;
     }
-    apply_gate(&host.lua, config.rust);
+    apply_gate(config.rust);
 }
 
-fn apply_gate(lua: &Lua, rust: bool) {
-    let current = read_gate(lua);
+fn apply_gate(rust: bool) {
+    let current = read_gate();
     let mut patch = BTreeMap::new();
     match gate_patch(current, rust) {
         GatePatch::On => {
@@ -1107,16 +1078,15 @@ fn apply_gate(lua: &Lua, rust: bool) {
         GatePatch::Unchanged => {}
     }
     if !patch.is_empty() {
-        crate::compat::apply_game_patch(lua, &patch);
+        viber::luau::game::apply_patch_json(&patch);
     }
 }
 
-fn read_gate(lua: &Lua) -> Option<bool> {
-    let game = viber::luau::game::game_proxy(lua).ok()?;
-    match game.get::<LuaValue>(RUST_GATE_KEY).ok()? {
-        LuaValue::Boolean(value) => Some(value),
-        _ => None,
-    }
+fn read_gate() -> Option<bool> {
+    let kv = viber::luau::game::game_to_json_process();
+    kv.get(RUST_GATE_KEY)
+        .and_then(Json::as_bool)
+        .or_else(|| kv.contains_key(RUST_GATE_KEY).then_some(false))
 }
 
 /// Copia os props autorais para [`Harvestable`] (PostStartup + SceneLoad).
@@ -1289,7 +1259,6 @@ fn harvest_input(
     mut focus: ResMut<HarvestFocus>,
     mut save: Option<ResMut<VaelSave>>,
     content: Option<Res<VaelContent>>,
-    host: Option<Res<LuaScriptHost>>,
     typing: Option<Res<UiFocusedInput>>,
     interaction: Option<Res<InteractionFocus>>,
     time: Res<Time>,
@@ -1369,16 +1338,13 @@ fn harvest_input(
     // Loot e XP: o crédito é TENTADO antes de partir; com a bolsa cheia o
     // parcial é devolvido e o prop fica (uma mão-cheia de frutas não pode
     // pagar XP por nada).
-    let lua = host.as_deref().map(|host| &host.lua);
     let mut added = 0;
     let mut full = false;
     if let (Some(content), Some(save)) = (content.as_deref(), save.as_deref_mut()) {
         let vault = VaultRules::from_items(&content.items);
         let xp_rules = XpRules::from_progression(&content.progression);
-        if let Some(lua) = lua {
-            seed_inventory(lua, &mut save.inventory, &kind);
-            seed_xp(lua, &mut save.progression);
-        }
+        seed_inventory(&mut save.inventory, &kind);
+        seed_xp(&mut save.progression);
         let rewards = grant_break_rewards(
             &mut save.inventory,
             &mut save.progression,
@@ -1392,9 +1358,7 @@ fn harvest_input(
         if !full {
             // Escreve também o XP quando não há recurso (`added == 0`): o
             // ganho continua a ser pago e não pode perder-se no snapshot.
-            if let Some(lua) = lua {
-                patch_rewards(lua, &kind, &save.inventory, &save.progression);
-            }
+            patch_rewards(&kind, &save.inventory, &save.progression);
             if added > 0
                 && let Some(queue) = queue.as_deref()
             {
@@ -1423,16 +1387,9 @@ fn harvest_input(
     let popup = harvestable.popup.clone();
     let popup_color = harvestable.popup_color;
     if let Some(key) = key.as_deref() {
-        mark_harvested(lua, save.as_deref_mut(), key);
+        mark_harvested(save.as_deref_mut(), key);
         if let Some(proto) = replacement.as_deref() {
-            store_stump(
-                lua,
-                save.as_deref_mut(),
-                key,
-                proto,
-                position,
-                replace_scale,
-            );
+            store_stump(save.as_deref_mut(), key, proto, position, replace_scale);
         }
     }
     // Quebra: substituto, topple ou despawn.
@@ -1481,7 +1438,7 @@ fn harvest_input(
             );
             if let Some(key) = key.as_deref() {
                 commands.entity(tree).insert(FloraFellKey(key.to_string()));
-                store_flora_fell(lua, save.as_deref_mut(), key, direction, cut_height, false);
+                store_flora_fell(save.as_deref_mut(), key, direction, cut_height, false);
             }
         } else {
             // Prop antigo (era GLB): tombo da engine, como antes.
@@ -1513,28 +1470,28 @@ fn harvest_input(
     }
 }
 
-/// Lê o cofre Lua para o estado tipado antes de somar (o snapshot de 10 Hz
-/// pode estar atrasado).
-fn seed_inventory(lua: &Lua, inventory: &mut Inventory, kind: &str) {
+/// Lê o cofre (store do processo) para o estado tipado antes de somar (o
+/// snapshot de 10 Hz pode estar atrasado).
+fn seed_inventory(inventory: &mut Inventory, kind: &str) {
     if kind.is_empty() {
         return;
     }
-    if let Some(count) = read_game_i64(lua, &item_key(kind)) {
+    if let Some(count) = read_game_i64(&item_key(kind)) {
         inventory.set(kind, count);
     }
 }
 
-fn seed_xp(lua: &Lua, state: &mut XpState) {
+fn seed_xp(state: &mut XpState) {
     let mut kv = xp_map_from_state(state);
     for key in XP_KEYS {
-        if let Some(value) = read_game_f64(lua, key) {
+        if let Some(value) = read_game_f64(key) {
             kv.insert(key.to_string(), value);
         }
     }
     apply_xp_map(&kv, state);
 }
 
-fn patch_rewards(lua: &Lua, kind: &str, inventory: &Inventory, xp: &XpState) {
+fn patch_rewards(kind: &str, inventory: &Inventory, xp: &XpState) {
     let mut patch = BTreeMap::new();
     if !kind.is_empty() {
         patch.insert(item_key(kind), json!(inventory.get(kind)));
@@ -1549,25 +1506,22 @@ fn patch_rewards(lua: &Lua, kind: &str, inventory: &Inventory, xp: &XpState) {
         };
         patch.insert(key.to_string(), json!(value));
     }
-    crate::compat::apply_game_patch(lua, &patch);
+    viber::luau::game::apply_patch_json(&patch);
 }
 
-fn read_game_i64(lua: &Lua, key: &str) -> Option<i64> {
-    let game = viber::luau::game::game_proxy(lua).ok()?;
-    match game.get::<LuaValue>(key).ok()? {
-        LuaValue::Integer(value) => Some(value),
-        LuaValue::Number(value) if value.is_finite() => Some(value as i64),
-        _ => None,
-    }
+fn read_game_i64(key: &str) -> Option<i64> {
+    viber::luau::game::game_to_json_process()
+        .get(key)
+        .and_then(Json::as_f64)
+        .filter(|value| value.is_finite())
+        .map(|value| value as i64)
 }
 
-fn read_game_f64(lua: &Lua, key: &str) -> Option<f64> {
-    let game = viber::luau::game::game_proxy(lua).ok()?;
-    match game.get::<LuaValue>(key).ok()? {
-        LuaValue::Integer(value) => Some(value as f64),
-        LuaValue::Number(value) if value.is_finite() => Some(value),
-        _ => None,
-    }
+fn read_game_f64(key: &str) -> Option<f64> {
+    viber::luau::game::game_to_json_process()
+        .get(key)
+        .and_then(Json::as_f64)
+        .filter(|value| value.is_finite())
 }
 
 fn hit_clip(style: BreakStyle, kind: &str) -> SfxClip {
@@ -1614,19 +1568,18 @@ fn show_popup(commands: &mut Commands, position: Vec3, text: String, color: [f32
 
 // ── reap do save ────────────────────────────────────────────────────────
 
-fn kv_snapshot(lua: Option<&Lua>, save: Option<&VaelSave>) -> BTreeMap<String, Json> {
-    if let Some(lua) = lua {
-        let kv = game_to_json(lua);
-        if !kv.is_empty() {
-            return kv;
-        }
+fn kv_snapshot(save: Option<&VaelSave>) -> BTreeMap<String, Json> {
+    // Store do processo primeiro (o `viber.game()` dos contextos BMS); sem
+    // chaves (arranque), o legacy do save.
+    let kv = viber::luau::game::game_to_json_process();
+    if !kv.is_empty() {
+        return kv;
     }
     save.map(|save| save.legacy.clone()).unwrap_or_default()
 }
 
 fn reap_saved(
     commands: &mut Commands,
-    lua: Option<&Lua>,
     save: Option<&VaelSave>,
     mut spawns: Option<&mut PendingScriptSpawns>,
     harvestables: &Query<(
@@ -1638,9 +1591,9 @@ fn reap_saved(
         &GlobalTransform,
     )>,
 ) {
-    // Um só snapshot por varredura: `harvested.*` e `stump.*` saem da mesma
-    // tabela (o `game_to_json` clona o jogo inteiro).
-    let kv = kv_snapshot(lua, save);
+    // Um só snapshot por varredura: `harvested.*` e `stump.*` saem do mesmo
+    // mapa (o snapshot clona o jogo inteiro).
+    let kv = kv_snapshot(save);
     let mut harvested = save.map(|save| save.harvested.clone()).unwrap_or_default();
     for (key, value) in &kv {
         if let Some(name) = key.strip_prefix("harvested.")
@@ -1713,7 +1666,6 @@ fn reap_saved(
 /// PostStartup/SceneLoad: apaga já os props que o save diz estarem colhidos.
 fn reap_on_load(
     mut commands: Commands,
-    host: Option<Res<LuaScriptHost>>,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
     harvestables: Query<(
@@ -1727,7 +1679,6 @@ fn reap_on_load(
 ) {
     reap_saved(
         &mut commands,
-        host.as_deref().map(|host| &host.lua),
         save.as_deref(),
         spawns.as_deref_mut(),
         &harvestables,
@@ -1740,7 +1691,6 @@ fn reap_periodic(
     time: Res<Time>,
     mut timer: Local<Option<Timer>>,
     mut commands: Commands,
-    host: Option<Res<LuaScriptHost>>,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
     harvestables: Query<(
@@ -1759,7 +1709,6 @@ fn reap_periodic(
     }
     reap_saved(
         &mut commands,
-        host.as_deref().map(|host| &host.lua),
         save.as_deref(),
         spawns.as_deref_mut(),
         &harvestables,
@@ -1824,7 +1773,6 @@ fn buck_felled_trees(
     time: Res<Time>,
     mut focus: ResMut<BuckFocus>,
     interaction: Option<Res<InteractionFocus>>,
-    host: Option<Res<LuaScriptHost>>,
     mut save: Option<ResMut<VaelSave>>,
     players: Query<&GlobalTransform, With<Player>>,
     felled: Query<
@@ -1890,11 +1838,7 @@ fn buck_felled_trees(
     });
     // Persistência ANTES: o crate pode despawnar a entidade no mesmo frame.
     if let Ok((_, _, _, Some(key))) = felled.get(target) {
-        store_flora_bucked(
-            host.as_deref().map(|host| &host.lua),
-            save.as_deref_mut(),
-            &key.0,
-        );
+        store_flora_bucked(save.as_deref_mut(), &key.0);
     }
     focus.cooldown = BUCK_COOLDOWN;
     focus.entity = None;
@@ -2439,6 +2383,10 @@ mod tests {
 
     #[test]
     fn golpe_final_quebra_marca_e_despawna() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
         let _player = spawn_player(&mut app);
@@ -2487,7 +2435,6 @@ mod tests {
     fn flora_fell_ida_e_volta() {
         let mut save = VaelSave::default();
         store_flora_fell(
-            None,
             Some(&mut save),
             "arvore@world/forest.xml#1",
             Vec3::new(0.6, 0.0, -0.8),
@@ -2508,6 +2455,10 @@ mod tests {
     /// (o bevy_flora tomba e deixa o toco) e guarda a direcção no save.
     #[test]
     fn tombo_de_arvore_procedural_insere_fell_tree() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
         let _player = spawn_player(&mut app);
@@ -2573,7 +2524,6 @@ mod tests {
         {
             let mut save = app.world_mut().resource_mut::<VaelSave>();
             store_flora_fell(
-                None,
                 Some(&mut save),
                 "tree@world/forest.xml#1",
                 Vec3::new(0.6, 0.0, -0.8),
@@ -2671,6 +2621,10 @@ mod tests {
 
     #[test]
     fn reap_apaga_o_prop_do_save_e_preserva_os_outros() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = App::new();
         app.add_plugins(MinimalPlugins);
         let harvested_key = "tree@world/forest.xml#1";
@@ -2704,10 +2658,12 @@ mod tests {
 
     #[test]
     fn patch_rewards_escreve_o_xp_quando_nao_ha_recurso() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
-        let lua = Lua::new();
-        let game = lua.create_table().expect("tabela");
-        crate::vault::install_test_game(&lua, &game);
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let inventory = Inventory::default();
         let xp = XpState {
             xp: HARVEST_XP as i64,
@@ -2716,15 +2672,19 @@ mod tests {
             skill_points: 0,
             ..Default::default()
         };
-        patch_rewards(&lua, "", &inventory, &xp);
-        assert_eq!(game.raw_get::<f64>(KEY_XP).expect("xp"), HARVEST_XP);
+        patch_rewards("", &inventory, &xp);
+        let kv = viber::luau::game::game_to_json_process();
+        assert_eq!(
+            kv.get(KEY_XP).and_then(Json::as_f64),
+            Some(HARVEST_XP),
+            "integral sai como inteiro no JSON"
+        );
     }
 
     #[test]
     fn store_stump_grava_a_pose_no_legacy() {
         let mut save = VaelSave::default();
         store_stump(
-            None,
             Some(&mut save),
             "tree@forest.xml#1",
             "berry-bush-bare",
@@ -2747,20 +2707,19 @@ mod tests {
 
     #[test]
     fn gate_escreve_e_apaga_a_chave_no_viber_game() {
-        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
-        let lua = Lua::new();
-        let game = lua.create_table().expect("tabela");
-        crate::vault::install_test_game(&lua, &game);
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        // Isolar o store do processo: testes em paralelo partilham-no
+        // (o lock serializa; o restore limpa o que ficou de outros).
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
 
-        apply_gate(&lua, true);
-        assert_eq!(
-            game.raw_get::<LuaValue>(RUST_GATE_KEY).expect("gate"),
-            LuaValue::Boolean(true)
-        );
-        apply_gate(&lua, false);
-        assert!(matches!(
-            game.raw_get::<LuaValue>(RUST_GATE_KEY).expect("gate"),
-            LuaValue::Nil
-        ));
+        apply_gate(true);
+        let kv = viber::luau::game::game_to_json_process();
+        assert_eq!(kv.get(RUST_GATE_KEY), Some(&Json::Bool(true)));
+
+        apply_gate(false);
+        let kv = viber::luau::game::game_to_json_process();
+        assert!(!kv.contains_key(RUST_GATE_KEY), "gate desligado sai do store");
     }
 }

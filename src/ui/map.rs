@@ -13,7 +13,6 @@ use bevy_pf::prelude::*;
 use serde_json::{Value, json};
 use viber::hud::markers::HudMarkers;
 use viber::luau::components::ScriptToast;
-use viber::luau::host::LuaScriptHost;
 use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiModalsOpen;
 use viber::ui::widgets::UiFocusedInput;
@@ -96,10 +95,9 @@ fn sfx(world: &mut World, clip: SfxClip, position: Option<Vec3>) {
     }
 }
 
-fn patch_game(world: &mut World, patch: std::collections::BTreeMap<String, Value>) {
-    if let Some(host) = world.get_resource::<LuaScriptHost>() {
-        viber::luau::game::apply_patch(&host.lua, &patch);
-    }
+fn patch_game(_world: &mut World, patch: std::collections::BTreeMap<String, Value>) {
+    // Store do processo: o `viber.game()` de todos os contextos BMS.
+    viber::luau::game::apply_patch_json(&patch);
 }
 
 fn player_position(world: &mut World) -> Option<[f32; 3]> {

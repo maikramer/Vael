@@ -13,12 +13,11 @@ use std::collections::BTreeMap;
 
 use bevy::prelude::*;
 use bevy_ext_core::Player;
+use bevy_ext_core::vitals::{Health, Hostile};
 use serde_json::Value;
 use viber::hud::markers::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::components::{LuaScriptRef, ScriptProps};
-use viber::luau::host::LuaScriptHost;
 use viber::scene_loader::CurrentScene;
-use bevy_ext_core::vitals::{Health, Hostile};
 
 use crate::content::VaelContent;
 use crate::harvest::Harvestable;
@@ -86,7 +85,7 @@ pub struct VaelWaypointPlugin;
 impl Plugin for VaelWaypointPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<HudMarkers>()
-            .add_systems(Update, publish_markers.after(viber::luau::luau_update));
+            .add_systems(Update, publish_markers.after(viber::luau::bms_bridge::apply_bms_commands));
     }
 }
 
@@ -340,7 +339,6 @@ fn publish_markers(
     content: Option<Res<VaelContent>>,
     ui_rules: Option<Res<VaelUiRules>>,
     scene: Option<Res<CurrentScene>>,
-    host: Option<Res<LuaScriptHost>>,
     player: Query<&GlobalTransform, With<Player>>,
     names: Query<(&Name, &GlobalTransform)>,
     hostiles: Query<(&GlobalTransform, &VaelScriptTags, Option<&Health>), With<Hostile>>,
@@ -415,12 +413,11 @@ fn publish_markers(
             pin_patch = Some(("pin".to_string(), Value::Null));
         }
     }
-    if let Some((key, value)) = pin_patch
-        && let Some(host) = host.as_deref()
-    {
+    if let Some((key, value)) = pin_patch {
+        // Store do processo: o `viber.game()` dos contextos BMS lê daqui.
         let mut patch = std::collections::BTreeMap::new();
         patch.insert(key, value);
-        viber::luau::game::apply_patch(&host.lua, &patch);
+        viber::luau::game::apply_patch_json(&patch);
     }
     if waypoint.is_none()
         && let Some(player_pos) = player_pos

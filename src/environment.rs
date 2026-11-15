@@ -36,7 +36,6 @@ use bevy_elements::{
 use bevy_ext_core::Player;
 use bevy_ext_core::{EngineRainVisuals, SfxClip, SfxLoudEvent};
 use mlua::{Lua, Value};
-use viber::luau::host::LuaScriptHost;
 use viber::postfx::{ExternalExposure, PostFxState};
 use viber::worldsys::{
     AtmosphereState, BiomeRegions, InteriorLighting, WeatherState, rain_scale_at,
@@ -958,14 +957,9 @@ fn collect_env_info(
 
 /// Arranque: instala `env_set_hour`, `env_pause`, `env_set_weather` e
 /// `env_info` em `viber.vael` (depois do relógio, que cria a tabela).
-fn install_env_api(host: Option<Res<LuaScriptHost>>, control: Res<VaelEnvControl>) {
-    let Some(host) = host else {
-        warn!("vael: ambiente sem host Luau — API de QA não instalada");
-        return;
-    };
-    if let Err(err) = install_env_api_inner(&host.lua, &control) {
-        error!("vael: falha a instalar a API de ambiente: {err}");
-    }
+fn install_env_api(control: Res<VaelEnvControl>) {
+    let inner = control.clone();
+    crate::script_host::register_installer(move |lua| install_env_api_inner(lua, &inner));
 }
 
 fn install_env_api_inner(lua: &Lua, control: &VaelEnvControl) -> mlua::Result<()> {
