@@ -122,14 +122,15 @@ pub enum MoveDir {
 }
 
 /// Acções com rebind e o momento em que disparam: as "just" só no frame da
-/// tecla, a corrida enquanto estiver premida.
-const MAPPED: [(Action, Condition); 6] = [
+/// tecla, a corrida e o agachar enquanto estiverem premidos.
+const MAPPED: [(Action, Condition); 7] = [
     (Action::Jump, Condition::Press),
     (Action::Sprint, Condition::Down),
     (Action::Attack, Condition::Press),
     (Action::Interact, Condition::Press),
     (Action::Lock, Condition::Press),
     (Action::Menu, Condition::Press),
+    (Action::Crouch, Condition::Down),
 ];
 
 const MOVES: [(MoveDir, [KeyCode; 2]); 4] = [
@@ -192,6 +193,9 @@ fn pad_of(name: &str) -> Option<GamepadButton> {
         "west" => GamepadButton::West,
         "north" => GamepadButton::North,
         "start" => GamepadButton::Start,
+        // O bind por omissão do agachar (`ActionMap`) é `dpad_down`: sem esta
+        // entrada o `pad_of` devolvia `None` e o botão nunca disparava.
+        "dpad_down" => GamepadButton::DPadDown,
         "left_trigger" => GamepadButton::LeftTrigger,
         "left_trigger2" => GamepadButton::LeftTrigger2,
         "right_trigger" => GamepadButton::RightTrigger,
@@ -406,6 +410,7 @@ fn write_action_state(
         interact_just: get(Action::Interact, false),
         lock_just: get(Action::Lock, false),
         menu_just: get(Action::Menu, false),
+        crouch_held: get(Action::Crouch, true),
     };
 }
 
