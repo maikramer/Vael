@@ -1545,12 +1545,12 @@ fn qa_apply(world: &mut World) {
     let Some(mut pending) = world.resource_mut::<QaRuntime>().pending.take() else {
         return;
     };
-    let Some(host) = world.get_resource::<viber::luau::host::LuaScriptHost>() else {
-        world.resource_mut::<QaRuntime>().pending = Some(pending);
-        return;
-    };
-    let lua = host.lua.clone();
+    // A REPL dedicada do `bevy_ext_luau` (recurso da app, criado à pressa) —
+    // o host antigo (`viber::luau::host::LuaScriptHost`) morreu; o store do
+    // estado é do processo e a REPL existe desde o primeiro frame.
+    let lua = bevy_ext_luau::repl::repl_or_init(world);
     if !pending.kv_done {
+        seed_qa_globals(&pending.plan);
         apply_kv(&lua, &pending.plan);
         pending.kv_done = true;
     }
@@ -1614,6 +1614,35 @@ pub fn reset_patch(current: &QuestKv, plan: &QuestKv) -> QuestKv {
         }
     }
     patch
+}
+
+/// Globals de QA (`vael_qa_god`/`viber_dev`) para os contextos BMS.
+///
+/// A VM antiga era PARTILHADA — um `globals.set` chegava a todos os
+/// scripts; os contextos BMS têm globals próprias (um por entidade),
+/// portanto o valor viaja por INSTALADOR de contexto (o `bevy_ext_luau`
+/// corre-o em cada contexto novo; os valores vivem num static RwLock que
+/// o cenário actualiza — re-aplicar um cenário muda os globals a nascer).
+fn seed_qa_globals(plan: &Plan) {
+    static QA_GLOBALS: std::sync::RwLock<Option<(bool, bool)>> =
+        std::sync::RwLock::new(None);
+    if let Ok(mut guard) = QA_GLOBALS.write() {
+        *guard = Some((plan.god, plan.dev));
+    }
+    bevy_ext_luau::add_context_installer(|lua| {
+        let Some((god, dev)) = QA_GLOBALS
+            .read()
+            .ok()
+            .and_then(|guard| *guard)
+        else {
+            return Ok(());
+        };
+        let _ = lua.globals().set("vael_qa_god", god);
+        if dev {
+            let _ = lua.globals().set("viber_dev", true);
+        }
+        Ok(())
+    });
 }
 
 fn apply_kv(lua: &mlua::Lua, plan: &Plan) {
