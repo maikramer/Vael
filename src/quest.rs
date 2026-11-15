@@ -32,7 +32,6 @@ use std::sync::Arc;
 
 use bevy::prelude::*;
 use mlua::{Lua, Table, Value};
-use viber::luau::game::{apply_patch, game_to_json};
 use viber::luau::host::LuaScriptHost;
 
 use crate::compat::lua_tonumber;
@@ -701,7 +700,7 @@ pub(crate) fn install(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let kv = read_keys(&game, &[quest_key(&id)])?;
             Ok(quest_state(&rules, &kv, &id))
         }
@@ -714,7 +713,7 @@ pub(crate) fn install(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let kv = read_keys(
                 &game,
                 &[
@@ -738,7 +737,7 @@ pub(crate) fn install(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let kv = read_keys(&game, &[key_with(&id, "stage")])?;
             let view = quest_objective(&rules, &kv, &id);
             let obj = lua.create_table()?;
@@ -764,7 +763,7 @@ pub(crate) fn install(
             let Some(def) = rules.quests.get(&id) else {
                 return Ok(false);
             };
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             let keys: Vec<String> = def.requires.iter().map(|other| quest_key(other)).collect();
             let kv = read_keys(&game, &keys)?;
             Ok(quest_available(&rules, &kv, &id))
@@ -778,7 +777,7 @@ pub(crate) fn install(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let game: Table = lua.named_registry_value("viber_game")?;
+            let game = viber::luau::game::game_proxy(lua)?;
             // A cadeia é curta (máx. 16 saltos): só os estados percorridos.
             let mut keys = Vec::new();
             let mut current = id.as_str();
@@ -805,7 +804,7 @@ pub(crate) fn install(
         move |lua, (id, n): (Option<String>, Option<Value>)| {
             let id = id.unwrap_or_default();
             let n = lua_tonumber(n.unwrap_or(Value::Nil));
-            let before = game_to_json(lua);
+            let before = viber::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let out = quest_set_progress(&rules, &mut kv, &id, n);
             write_kv(lua, &before, &kv);
@@ -827,7 +826,7 @@ pub(crate) fn install(
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let before = game_to_json(lua);
+            let before = viber::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let ok = quest_accept(&rules, &mut kv, &id);
             write_kv(lua, &before, &kv);
@@ -846,7 +845,7 @@ pub(crate) fn install(
         ],
         move |lua, id: Option<String>| {
             let id = id.unwrap_or_default();
-            let before = game_to_json(lua);
+            let before = viber::luau::game::game_snapshot_vm(lua);
             let mut kv = before.clone();
             let out = quest_turn_in(&rules, &vault, &xp, &mut kv, &id);
             write_kv(lua, &before, &kv);
@@ -882,7 +881,7 @@ fn lua_to_json(value: Value) -> Option<serde_json::Value> {
 fn read_keys(game: &Table, keys: &[String]) -> mlua::Result<QuestKv> {
     let mut kv = QuestKv::new();
     for key in keys {
-        if let Some(value) = lua_to_json(game.raw_get::<Value>(key.as_str())?) {
+        if let Some(value) = lua_to_json(game.get::<Value>(key.as_str())?) {
             kv.insert(key.clone(), value);
         }
     }
@@ -903,7 +902,7 @@ fn write_kv(lua: &Lua, before: &QuestKv, after: &QuestKv) {
         }
     }
     if !patch.is_empty() {
-        apply_patch(lua, &patch);
+        crate::compat::apply_game_patch(lua, &patch);
     }
 }
 
@@ -1414,8 +1413,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         let vault = vault_rules();
         crate::vault::install(&lua, vault.clone()).expect("instalar cofre");
         crate::xp::install(&lua, XpRules::default()).expect("instalar xp");
@@ -1425,6 +1423,7 @@ mod tests {
 
     #[test]
     fn bridge_le_e_escreve_o_estado_das_quests() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
         let (lua, game) = lua_com_bridge();
         game.raw_set("q.wolves", STATE_READY).expect("estado");
         game.raw_set("q.wolves.n", 3).expect("progresso");
@@ -1492,6 +1491,7 @@ mod tests {
 
     #[test]
     fn bridge_avanca_etapa_e_devolve_os_toasts() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
         let (lua, game) = lua_com_bridge();
         assert!(
             lua.load("return viber.vael.quest_accept('staged')")
@@ -1535,8 +1535,7 @@ mod tests {
             .set("viber", lua.create_table().expect("tabela viber"))
             .expect("global viber");
         let game = lua.create_table().expect("tabela do jogo");
-        lua.set_named_registry_value("viber_game", game)
-            .expect("registar viber_game");
+        crate::vault::install_test_game(&lua, &game);
         let vault = vault_rules();
         crate::vault::install(&lua, vault.clone()).expect("cofre");
         crate::xp::install(&lua, XpRules::default()).expect("xp");

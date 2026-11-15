@@ -39,7 +39,7 @@ use std::path::{Component, Path};
 use viber::feedback::DamageNumberEvent;
 use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
-use viber::luau::game::{apply_patch, game_to_json};
+use viber::luau::game::game_to_json;
 use viber::luau::host::LuaScriptHost;
 use viber::menus::MenusOpen;
 use viber::physics_fx::Falling;
@@ -803,7 +803,7 @@ fn mark_harvested(lua: Option<&Lua>, save: Option<&mut VaelSave>, key: &str) {
     if let Some(lua) = lua {
         let mut patch = BTreeMap::new();
         patch.insert(format!("harvested.{key}"), Json::Bool(true));
-        apply_patch(lua, &patch);
+        crate::compat::apply_game_patch(lua, &patch);
     }
 }
 
@@ -835,7 +835,7 @@ fn store_stump(
         }
     }
     if let Some(lua) = lua {
-        apply_patch(lua, &fields.into_iter().collect());
+        crate::compat::apply_game_patch(lua, &fields.into_iter().collect());
     }
 }
 
@@ -865,7 +865,7 @@ fn store_flora_fell(
         }
     }
     if let Some(lua) = lua {
-        apply_patch(lua, &fields.into_iter().collect());
+        crate::compat::apply_game_patch(lua, &fields.into_iter().collect());
     }
 }
 
@@ -881,7 +881,7 @@ fn store_flora_bucked(lua: Option<&Lua>, save: Option<&mut VaelSave>, key: &str)
     if let Some(lua) = lua {
         let mut patch = BTreeMap::new();
         patch.insert(name, Json::Bool(true));
-        apply_patch(lua, &patch);
+        crate::compat::apply_game_patch(lua, &patch);
     }
 }
 
@@ -1107,13 +1107,13 @@ fn apply_gate(lua: &Lua, rust: bool) {
         GatePatch::Unchanged => {}
     }
     if !patch.is_empty() {
-        apply_patch(lua, &patch);
+        crate::compat::apply_game_patch(lua, &patch);
     }
 }
 
 fn read_gate(lua: &Lua) -> Option<bool> {
-    let game: Table = lua.named_registry_value("viber_game").ok()?;
-    match game.raw_get::<LuaValue>(RUST_GATE_KEY).ok()? {
+    let game = viber::luau::game::game_proxy(lua).ok()?;
+    match game.get::<LuaValue>(RUST_GATE_KEY).ok()? {
         LuaValue::Boolean(value) => Some(value),
         _ => None,
     }
@@ -1549,12 +1549,12 @@ fn patch_rewards(lua: &Lua, kind: &str, inventory: &Inventory, xp: &XpState) {
         };
         patch.insert(key.to_string(), json!(value));
     }
-    apply_patch(lua, &patch);
+    crate::compat::apply_game_patch(lua, &patch);
 }
 
 fn read_game_i64(lua: &Lua, key: &str) -> Option<i64> {
-    let game: Table = lua.named_registry_value("viber_game").ok()?;
-    match game.raw_get::<LuaValue>(key).ok()? {
+    let game = viber::luau::game::game_proxy(lua).ok()?;
+    match game.get::<LuaValue>(key).ok()? {
         LuaValue::Integer(value) => Some(value),
         LuaValue::Number(value) if value.is_finite() => Some(value as i64),
         _ => None,
@@ -1562,8 +1562,8 @@ fn read_game_i64(lua: &Lua, key: &str) -> Option<i64> {
 }
 
 fn read_game_f64(lua: &Lua, key: &str) -> Option<f64> {
-    let game: Table = lua.named_registry_value("viber_game").ok()?;
-    match game.raw_get::<LuaValue>(key).ok()? {
+    let game = viber::luau::game::game_proxy(lua).ok()?;
+    match game.get::<LuaValue>(key).ok()? {
         LuaValue::Integer(value) => Some(value as f64),
         LuaValue::Number(value) if value.is_finite() => Some(value),
         _ => None,
@@ -2704,10 +2704,10 @@ mod tests {
 
     #[test]
     fn patch_rewards_escreve_o_xp_quando_nao_ha_recurso() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
         let lua = Lua::new();
         let game = lua.create_table().expect("tabela");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registry");
+        crate::vault::install_test_game(&lua, &game);
         let inventory = Inventory::default();
         let xp = XpState {
             xp: HARVEST_XP as i64,
@@ -2747,10 +2747,10 @@ mod tests {
 
     #[test]
     fn gate_escreve_e_apaga_a_chave_no_viber_game() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
         let lua = Lua::new();
         let game = lua.create_table().expect("tabela");
-        lua.set_named_registry_value("viber_game", game.clone())
-            .expect("registry");
+        crate::vault::install_test_game(&lua, &game);
 
         apply_gate(&lua, true);
         assert_eq!(

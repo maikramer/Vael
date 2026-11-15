@@ -393,6 +393,7 @@ mod tests {
 
     #[test]
     fn gate_corrige_um_save_escrito_com_a_autoridade_ligada() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().expect("lock de teste do store");
         let host = LuaScriptHost::new(std::path::PathBuf::from("scripts")).expect("host Luau");
         let mut kv = BTreeMap::new();
         kv.insert(RUST_GATE_KEY.into(), json!(true));
