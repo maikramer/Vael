@@ -9,7 +9,7 @@
 //! estrito vs `tonumber` com strings), ambas têm nome próprio em vez de um
 //! parâmetro a escolher o comportamento às escondidas.
 
-use mlua::{Table, Value};
+use mlua::{Lua, Table, Value};
 
 // ── JSON do save legacy ─────────────────────────────────────────────────
 
@@ -27,12 +27,17 @@ pub(crate) fn json_i64(value: &Json) -> Option<i64> {
 }
 
 /// Número real do save legacy: número JSON ou string numérica.
+///
+/// Não finito cai (`"inf"`, `"NaN"` ou um número fora do alcance do `f32`):
+/// um `hp` infinito ou um `spawn_x` NaN de um save editado à mão estragavam
+/// a UI e a física em vez de ficarem pelo default.
 pub(crate) fn json_f32(value: &Json) -> Option<f32> {
-    match value {
+    let parsed = match value {
         Json::Number(n) => n.as_f64().map(|f| f as f32),
-        Json::String(s) => s.parse().ok(),
+        Json::String(s) => s.trim().parse().ok(),
         _ => None,
-    }
+    };
+    parsed.filter(|f| f.is_finite())
 }
 
 /// Booleano do save legacy: `true`/número ≠ 0/string "true"/"false".
@@ -104,9 +109,32 @@ pub(crate) fn write_number(game: &Table, key: &str, value: f64) -> mlua::Result<
         && value.fract() == 0.0
         && (i64::MIN as f64..=i64::MAX as f64).contains(&value)
     {
-        game.raw_set(key, value as i64)
+        game.set(key, value as i64)
     } else {
-        game.raw_set(key, value)
+        game.set(key, value)
+    }
+}
+
+/// Aplica um patch JSON ao `viber.game()` da VM — a MESMA fonte que as
+/// leituras do módulo usam.
+///
+/// O `apply_patch` COMPAT do host escreve sempre o store do PROCESSO; em
+/// produção o proxy da VM aponta para esse store, mas uma VM com o seu
+/// próprio store (testes) ficava com leituras e escritas desencontradas.
+/// Arrays/objetos não entram (o estado plano do save também não os
+/// persiste) e `null` remove a chave.
+pub(crate) fn apply_game_patch(lua: &Lua, patch: &std::collections::BTreeMap<String, Json>) {
+    let Ok(game) = viber::luau::game::game_proxy(lua) else {
+        return;
+    };
+    for (key, value) in patch {
+        if matches!(value, Json::Array(_) | Json::Object(_)) {
+            continue;
+        }
+        let Ok(lua_value) = viber::luau::game::json_to_lua(lua, value) else {
+            continue;
+        };
+        let _ = game.set(key.as_str(), lua_value);
     }
 }
 
@@ -208,6 +236,10 @@ mod tests {
         assert_eq!(json_i64(&json!(true)), None);
         assert_eq!(json_f32(&json!(1.5)), Some(1.5));
         assert_eq!(json_f32(&json!("2.5")), Some(2.5));
+        // Não finito não entra: o default fica melhor do que inf/NaN.
+        assert_eq!(json_f32(&json!("inf")), None);
+        assert_eq!(json_f32(&json!("NaN")), None);
+        assert_eq!(json_f32(&json!(1e300)), None);
         assert_eq!(json_bool(&json!(true)), Some(true));
         assert_eq!(json_bool(&json!(0)), Some(false));
         assert_eq!(json_bool(&json!(2)), Some(true));
