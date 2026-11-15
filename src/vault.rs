@@ -207,8 +207,23 @@ pub struct VaelVaultPlugin;
 
 impl Plugin for VaelVaultPlugin {
     fn build(&self, app: &mut App) {
+        // A tabela `viber.vael` nasce UMA vez, antes de qualquer instalador:
+        // o `vael_table` é ler-ou-criar e dois sistemas de `Startup` em
+        // paralelo sem ordem criavam cada um a sua — a última a gravar
+        // ganhava e as funções da outra sumiam (intermitente: dependia do
+        // escalonamento das threads).
+        app.add_systems(PreStartup, ensure_vael_table);
         // `Startup` corre depois do `PreStartup` que carrega o `VaelContent`.
         app.add_systems(Startup, install_vault_api);
+    }
+}
+
+/// `PreStartup`: cria a tabela `viber.vael` vazia (ver o `build`).
+fn ensure_vael_table(host: Option<Res<LuaScriptHost>>) {
+    if let Some(host) = host
+        && let Err(err) = vael_table(&host.lua)
+    {
+        error!("vael: falha a criar `viber.vael`: {err}");
     }
 }
 

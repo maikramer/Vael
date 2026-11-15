@@ -27,6 +27,7 @@
 
 use bevy::ecs::message::Messages;
 use bevy::prelude::*;
+use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_ext_world::xml::values::parse_color;
 use bevy_flora::{
     BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeShake, TreeShakes,
@@ -35,7 +36,6 @@ use mlua::{Lua, Table, Value as LuaValue};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
-use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::feedback::DamageNumberEvent;
 use viber::interact::{InteractionFocus, range_scale};
 use viber::luau::components::{ScriptInteraction, ScriptProps};
@@ -564,7 +564,15 @@ impl Plugin for VaelHarvestPlugin {
             .register_type::<BreakStyle>()
             // O gate vive fora do `run_if`: quando OFF também tem de apagar
             // um `true` que venha de um save antigo.
-            .add_systems(Startup, (publish_harvest_gate, install_fell_api).chain())
+            // Depois do cofre: o `vael_table` é ler-ou-criar, e dois
+            // instaladores em paralelo criavam cada um a sua `viber.vael` —
+            // a do cofre perdia-se (o `vault_add` nil do `rules.lua:919`).
+            .add_systems(
+                Startup,
+                (publish_harvest_gate, install_fell_api)
+                    .chain()
+                    .after(crate::vault::install_vault_api),
+            )
             .add_systems(Update, sync_harvest_gate)
             // `Harvestable` e o reap correm SEMPRE: o caminho Lua (default)
             // também precisa deles para o restauro das árvores tombadas
