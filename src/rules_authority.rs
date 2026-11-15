@@ -38,7 +38,8 @@ use viber::ui::modal::UiModalsOpen;
 use viber::worldsys::WeatherState;
 
 use crate::components::PlayerVitals;
-use crate::rules_shadow::{RAIN_HEAVY, VaelRulesShadow, seed_from_kv, shadow_tick};
+use crate::content::VaelContent;
+use crate::rules_shadow::{RAIN_HEAVY, StatusResists, VaelRulesShadow, seed_from_kv, shadow_tick};
 use crate::save::VaelSave;
 
 /// Variável de ambiente que liga a autoridade (`1`/`true`/`on`/`yes`).
@@ -95,8 +96,21 @@ impl VaelRulesAuthority {
     }
 
     /// Simula um frame com a mesma função do shadow.
-    pub fn tick(&mut self, dt: f32, rain: bool, frozen: bool, death_open: bool) {
-        shadow_tick(&mut self.state, dt, rain, frozen, death_open);
+    pub fn tick(
+        &mut self,
+        dt: f32,
+        rain: bool,
+        frozen: bool,
+        death_open: bool,
+        resists: StatusResists,
+    ) {
+        shadow_tick(&mut self.state, dt, rain, frozen, death_open, resists);
+    }
+
+    /// Há estados com DPS activos? Só nesse caso as resistências interessam
+    /// (e só nesse caso o tick lhes toca).
+    pub fn has_status_dot(&self) -> bool {
+        self.state.venom > 0.0 || self.state.burn > 0.0
     }
 
     /// Ticks aplicados (contador do shadow).
@@ -178,6 +192,31 @@ pub struct OwnedVitals {
 }
 
 impl OwnedVitals {
+    /// Os recursos já têm este estado?
+    ///
+    /// Compara antes de os escrever: um `ResMut` tocado marca o recurso como
+    /// `Changed` e o HUD (`publish_hud_binds`) re-publicava os binds todos os
+    /// frames — o `state_sync` evita a mesma armadilha a 10 Hz.
+    pub fn matches(&self, vitals: &PlayerVitals, save: &VaelSave) -> bool {
+        let legacy = &save.legacy;
+        vitals.hp == self.hp
+            && vitals.max_hp == self.max_hp
+            && save.vitals.hp == self.hp
+            && save.vitals.max_hp == self.max_hp
+            && legacy_num_is(legacy, "iframes", self.iframes)
+            && legacy_num_is(legacy, "venom", self.venom)
+            && legacy_num_is(legacy, "burn", self.burn)
+            && legacy_num_is(legacy, "frost", self.frost)
+            && legacy_num_is(legacy, "venom_tick", self.venom_tick)
+            && legacy_num_is(legacy, "burn_tick", self.burn_tick)
+            && legacy_num_is(legacy, "dying", self.dying)
+            && legacy_num_is(legacy, "death_wait", self.death_wait)
+            && matches!(
+                legacy.get("death_pending"),
+                Some(Value::Bool(flag)) if *flag == self.death_pending
+            )
+    }
+
     /// Repõe os campos do Rust no save tipado e no `legacy` que o HUD lê.
     /// O resto do save (XP, itens, quests, `max_hp` do Lua já aplicado) fica.
     pub fn write_state(&self, vitals: &mut PlayerVitals, save: &mut VaelSave) {
@@ -250,6 +289,7 @@ fn apply_rust_gate(config: Res<VaelRulesConfig>) {
 fn rules_authority_system(
     time: Res<Time>,
     config: Res<VaelRulesConfig>,
+    content: Option<Res<VaelContent>>,
     weather: Option<Res<WeatherState>>,
     menus: Option<Res<MenusOpen>>,
     modals: Option<Res<UiModalsOpen>>,
@@ -258,6 +298,8 @@ fn rules_authority_system(
     save: Option<ResMut<VaelSave>>,
     mut authority: ResMut<VaelRulesAuthority>,
     mut respawn: ResMut<crate::respawn::RespawnRequest>,
+    mut gear_rules: Local<Option<crate::gear::GearRules>>,
+    mut stat_engine: Local<Option<crate::stats::StatEngine>>,
 ) {
     if !config.rust {
         return;
@@ -279,7 +321,20 @@ fn rules_authority_system(
         // `frozen` é o portão dos estados: menu aberto ou god do DEV.
         let frozen = menus.as_deref().is_some_and(MenusOpen::any) || kv_flag(&kv, GOD_KEY);
         let death_open = modals.as_deref().is_some_and(|m| m.is_open("death"));
-        authority.tick(time.delta_secs(), rain, frozen, death_open);
+        // O Lua lia `venom_resist`/`burn_resist` de `M.stat(...)` no próprio
+        // tick; o Rust tem de as reconstruir do equipamento/talentos do KV.
+        // Só quando há DoT activo (é o único consumidor).
+        let resists = match content.as_ref() {
+            Some(content) if authority.has_status_dot() => {
+                if gear_rules.is_none() || content.is_changed() {
+                    *gear_rules = Some(crate::gear::GearRules::from_content(content));
+                }
+                let rules = gear_rules.as_ref().expect("acabou de ser preenchido");
+                status_resists(rules, &kv, &mut stat_engine)
+            }
+            _ => StatusResists::default(),
+        };
+        authority.tick(time.delta_secs(), rain, frozen, death_open, resists);
         if authority.respawned() {
             // O patch de vitais já vai a seguir; a UI consome este pedido para
             // fazer o que o `M.respawn` fazia e o Rust não possui: teleporte,
@@ -295,9 +350,59 @@ fn rules_authority_system(
         apply_patch_json(&patch);
     }
 
-    // HUD/save: o `state_sync` preserva estes campos no merge.
+    // HUD/save: o `state_sync` preserva estes campos no merge. Só se toca nos
+    // recursos quando há mudança — marcá-los a 60 Hz desligava o gate
+    // `save.is_changed()` do HUD (e re-publicava 37 quests por frame).
     if let (Some(mut vitals), Some(mut save)) = (vitals, save) {
-        authority.owned().write_state(&mut vitals, &mut save);
+        let owned = authority.owned();
+        if !owned.matches(&vitals, &save) {
+            owned.write_state(&mut vitals, &mut save);
+        }
+    }
+}
+
+/// Resistências de veneno/queimadura que o `rules.lua` lia de
+/// `M.stat("<estado>_resist")`: a soma dos `effects` das três peças equipadas
+/// com os talentos aprendidos, pelo mesmo grafo de atributos do diário.
+///
+/// O `gear.<slot>` só conta com o item na mochila (`item.<id>` > 0), como no
+/// `src/gear.rs`; a malha limpa marcas órfãs no estado local (não escreve no
+/// KV — isso é do módulo do equipamento).
+fn status_resists(
+    rules: &crate::gear::GearRules,
+    kv: &BTreeMap<String, Value>,
+    stat_engine: &mut Option<crate::stats::StatEngine>,
+) -> StatusResists {
+    let engine = stat_engine.get_or_insert_with(|| {
+        crate::stats::StatEngine::new(crate::stats::AttributeRules::default())
+    });
+
+    let mut state = crate::gear::GearState::default();
+    for slot in crate::gear::SLOTS {
+        if let Some(Value::String(id)) = kv.get(&crate::gear::gear_key(slot)) {
+            state.equipped.insert(slot.to_string(), id.clone());
+        }
+    }
+    let equipped: Vec<String> = state.equipped.values().cloned().collect();
+    for id in equipped {
+        if let Some(count) = kv
+            .get(&crate::gear::item_key(&id))
+            .and_then(Value::as_f64)
+        {
+            state.held.insert(id, count);
+        }
+    }
+    let mut learned = std::collections::BTreeSet::new();
+    for id in rules.skills.keys() {
+        let key = format!("{}{id}", crate::gear::SKILL_KEY_PREFIX);
+        if matches!(kv.get(&key), Some(Value::Bool(true))) {
+            learned.insert(id.clone());
+        }
+    }
+    let snapshot = engine.snapshot(rules, &mut state, &learned);
+    StatusResists {
+        venom: snapshot.stat(crate::gear::RESIST_VENOM) as f32,
+        burn: snapshot.stat(crate::gear::RESIST_BURN) as f32,
     }
 }
 
@@ -334,6 +439,17 @@ fn json_num(value: f32) -> Value {
     serde_json::Number::from_f64(value as f64)
         .map(Value::Number)
         .unwrap_or_else(|| Value::Number(0.into()))
+}
+
+/// O `legacy` já tem `value` em `key`? (leitura do [`OwnedVitals::matches`]).
+fn legacy_num_is(legacy: &BTreeMap<String, Value>, key: &str, value: f32) -> bool {
+    let expected = json_num(value);
+    match (legacy.get(key), &expected) {
+        (Some(Value::Number(current)), Value::Number(expected)) => {
+            current.as_f64() == expected.as_f64()
+        }
+        _ => false,
+    }
 }
 
 /// Gate `VAEL_RULES_RUST`: ligado por omissão, desligado só com um valor
@@ -413,10 +529,10 @@ mod tests {
             ("max_hp", json!(100)),
             ("venom", json!(10)),
         ]));
-        auth.tick(1.0, false, false, false);
+        auth.tick(1.0, false, false, false, StatusResists::default());
         assert!((auth.owned().hp - 96.0).abs() < 1e-4);
 
-        auth.tick(1.0, false, false, false);
+        auth.tick(1.0, false, false, false, StatusResists::default());
         let owned = auth.owned();
         assert!((owned.hp - 92.0).abs() < 1e-4, "hp={}", owned.hp);
         assert!((owned.venom - 8.0).abs() < 1e-4, "venom={}", owned.venom);
@@ -460,21 +576,21 @@ mod tests {
         ]));
 
         // O tick que inicia a morte desconta o próprio `dt` do `dying`.
-        auth.tick(0.1, false, false, false);
+        auth.tick(0.1, false, false, false, StatusResists::default());
         assert!((auth.owned().dying - 2.1).abs() < 1e-4);
 
-        auth.tick(2.2, false, false, false);
+        auth.tick(2.2, false, false, false, StatusResists::default());
         let patch = auth.patch();
         assert_eq!(patch.get("death_pending"), Some(&json!(true)));
         assert_eq!(patch.get("hp"), Some(&json!(0.0)));
         assert_eq!(patch.get("death_wait"), Some(&json!(5.0)));
 
         // Sem o modal aberto o fallback conta até ao respawn.
-        auth.tick(4.0, false, false, false);
+        auth.tick(4.0, false, false, false, StatusResists::default());
         assert_eq!(auth.patch().get("death_wait"), Some(&json!(1.0)));
         assert_eq!(auth.patch().get("death_pending"), Some(&json!(true)));
 
-        auth.tick(1.0, false, false, false);
+        auth.tick(1.0, false, false, false, StatusResists::default());
         let patch = auth.patch();
         assert_eq!(patch.get("hp"), Some(&json!(100.0)));
         assert_eq!(patch.get("death_pending"), Some(&json!(false)));
@@ -493,7 +609,7 @@ mod tests {
             ("max_hp", json!(100)),
             ("iframes", json!(0)),
         ]));
-        auth.tick(0.1, false, false, false);
+        auth.tick(0.1, false, false, false, StatusResists::default());
         assert!((auth.owned().iframes - 0.0).abs() < 1e-4);
 
         // `damage_player` do Lua: hp 60, i-frames 0.35, veneno 3.
@@ -504,7 +620,7 @@ mod tests {
             ("venom", json!(3)),
         ]));
         assert!((auth.owned().hp - 60.0).abs() < 1e-4);
-        auth.tick(0.1, false, false, false);
+        auth.tick(0.1, false, false, false, StatusResists::default());
         let owned = auth.owned();
         assert!((owned.iframes - 0.25).abs() < 1e-4, "{}", owned.iframes);
         assert!((owned.venom - 2.9).abs() < 1e-4, "{}", owned.venom);
@@ -519,7 +635,7 @@ mod tests {
             ("venom", json!(10)),
             ("vael_god", json!(true)),
         ]));
-        auth.tick(1.0, false, true, false);
+        auth.tick(1.0, false, true, false, StatusResists::default());
         let owned = auth.owned();
         assert!((owned.venom - 10.0).abs() < 1e-4, "god congela o DoT");
         assert!((owned.hp - 100.0).abs() < 1e-4);
@@ -561,6 +677,44 @@ mod tests {
     }
 
     #[test]
+    fn matches_nao_marca_os_recursos_sem_mudanca() {
+        let owned = OwnedVitals {
+            hp: 40.0,
+            max_hp: 100.0,
+            iframes: 0.35,
+            venom: 3.0,
+            burn: 0.0,
+            frost: 1.5,
+            venom_tick: 0.4,
+            burn_tick: 0.0,
+            dying: 0.0,
+            death_pending: false,
+            death_wait: 0.0,
+        };
+        let mut vitals = PlayerVitals::default();
+        let mut save = VaelSave::default();
+        assert!(!owned.matches(&vitals, &save), "estado ainda não escrito");
+        owned.write_state(&mut vitals, &mut save);
+        assert!(owned.matches(&vitals, &save), "depois de escrever, é igual");
+
+        // Qualquer campo diferente volta a pedir escrita.
+        let mut mais_lento = owned;
+        mais_lento.iframes = 0.34;
+        assert!(!mais_lento.matches(&vitals, &save));
+        let mut morto = owned;
+        morto.death_pending = true;
+        assert!(!morto.matches(&vitals, &save));
+        let mut outro_hp = owned;
+        outro_hp.hp = 39.0;
+        assert!(!outro_hp.matches(&vitals, &save));
+
+        // Um `legacy` com a chave em texto (save editado à mão) não conta.
+        save.legacy
+            .insert("venom".into(), Value::String("3".into()));
+        assert!(!owned.matches(&vitals, &save));
+    }
+
+    #[test]
     fn pending_patch_nao_reescreve_sem_mudanca() {
         let mut auth = VaelRulesAuthority::default();
         auth.seed(&kv(&[
@@ -570,8 +724,74 @@ mod tests {
         ]));
         assert!(auth.pending_patch().is_some(), "primeiro patch");
         assert!(auth.pending_patch().is_none(), "sem mudança não reescreve");
-        auth.tick(1.0, false, false, false);
+        auth.tick(1.0, false, false, false, StatusResists::default());
         assert!(auth.pending_patch().is_some(), "iframes desceram no tick");
+    }
+
+    #[test]
+    fn resistencias_do_equipamento_e_dos_talentos_chegam_ao_tick() {
+        let mut content = VaelContent::default();
+        content.items.items.push(crate::content::ItemDef {
+            id: "nature_amulet".into(),
+            slot: "charm".into(),
+            effects: BTreeMap::from([("venom_resist".to_string(), 0.5)]),
+            ..Default::default()
+        });
+        content.progression.skills.push(crate::content::SkillDef {
+            id: "burnward".into(),
+            effects: BTreeMap::from([("burn_resist".to_string(), 0.4)]),
+            ..Default::default()
+        });
+
+        let equipado = kv(&[
+            ("gear.charm", json!("nature_amulet")),
+            ("item.nature_amulet", json!(1)),
+            ("skill.burnward", json!(true)),
+        ]);
+        let rules = crate::gear::GearRules::from_content(&content);
+        let mut engine = None;
+        let resists = status_resists(&rules, &equipado, &mut engine);
+        assert!((resists.venom - 0.5).abs() < 1e-4, "venom={}", resists.venom);
+        assert!((resists.burn - 0.4).abs() < 1e-4, "burn={}", resists.burn);
+
+        // A peça saiu da mochila: o efeito dela não conta (marca órfã).
+        let sem_peca = kv(&[
+            ("gear.charm", json!("nature_amulet")),
+            ("skill.burnward", json!(true)),
+        ]);
+        let resists = status_resists(&rules, &sem_peca, &mut engine);
+        assert_eq!(resists.venom, 0.0);
+        assert!(
+            (resists.burn - 0.4).abs() < 1e-4,
+            "o talento continua aprendido"
+        );
+    }
+
+    #[test]
+    fn o_dot_da_autoridade_usa_a_resistencia_do_equipamento() {
+        let mut auth = VaelRulesAuthority::default();
+        auth.seed(&kv(&[
+            ("hp", json!(100)),
+            ("max_hp", json!(100)),
+            ("venom", json!(10)),
+        ]));
+        assert!(auth.has_status_dot());
+        auth.tick(
+            1.0,
+            false,
+            false,
+            false,
+            StatusResists {
+                venom: 0.5,
+                burn: 0.0,
+            },
+        );
+        assert!((auth.owned().hp - 98.0).abs() < 1e-4);
+
+        // Sem estados activos as resistências não são consultadas.
+        let mut limpo = VaelRulesAuthority::default();
+        limpo.seed(&kv(&[("hp", json!(100)), ("max_hp", json!(100))]));
+        assert!(!limpo.has_status_dot());
     }
 
     fn cena(id: &str) -> CurrentScene {

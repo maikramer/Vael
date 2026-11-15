@@ -15,6 +15,9 @@
 //!   `hp`).
 //! - O shadow não simula `sync_passives` (mudanças de `max_hp`), a bolsa
 //!   perdida, FX, som, UI, teleporte do respawn nem o refill dos frascos.
+//! - As resistências de estado (`venom_resist`/`burn_resist` do equipamento e
+//!   talentos) não entram no shadow: ele simula sempre o DoT sem resistência.
+//!   A [`StatusResists`] existe para a autoridade, que as reconstrói do KV.
 //!
 //! `VAEL_RULES_SHADOW=1` liga o sistema; por omissão não corre (é QA).
 
@@ -39,6 +42,39 @@ const VENOM_DPS: f32 = 4.0;
 const BURN_DPS: f32 = 6.0;
 /// A queimadura apaga-se ao dobro da velocidade à chuva.
 const BURN_RAIN_RATE: f32 = 2.0;
+/// Teto da resistência de um estado (`math.min(0.8, …)` do Lua).
+pub const STATUS_RESIST_CAP: f32 = 0.8;
+
+/// Resistências a veneno/queimadura do equipamento e dos talentos.
+///
+/// O Lua lê-as de `M.stat("<estado>_resist")` no próprio tick; a autoridade
+/// Rust tem de as receber, senão os itens com `venom_resist`/`burn_resist`
+/// (o amuleto da natureza, as faixas do nómada) perdiam o efeito.
+#[derive(Debug, Clone, Copy, Default, PartialEq)]
+pub struct StatusResists {
+    pub venom: f32,
+    pub burn: f32,
+}
+
+impl StatusResists {
+    /// Fração do dano que passa (`1 - resist`, o `min(0.8)` do Lua).
+    fn venom_factor(self) -> f32 {
+        1.0 - resist_clamped(self.venom)
+    }
+
+    fn burn_factor(self) -> f32 {
+        1.0 - resist_clamped(self.burn)
+    }
+}
+
+/// `math.max(0, math.min(0.8, valor))`; um valor não finito não é resistência.
+fn resist_clamped(value: f32) -> f32 {
+    if value.is_finite() {
+        value.clamp(0.0, STATUS_RESIST_CAP)
+    } else {
+        0.0
+    }
+}
 
 /// Tempo caído antes do ecrã de morte (`start_death`).
 const DEATH_FALL_SECS: f32 = 2.2;
@@ -303,13 +339,16 @@ impl VaelRulesShadow {
 ///
 /// `frozen` é o portão dos estados (`viber.menu_open()`, mais o título);
 /// `menu_open` é o ecrã de morte aberto (`ui.is_open("death")`), que repõe os
-/// 5 s do fallback. Não toca em ouro, FX, som, UI, save nem ECS.
+/// 5 s do fallback. `resists` são as resistências do equipamento/talentos
+/// (`venom_resist`/`burn_resist`). Não toca em ouro, FX, som, UI, save nem
+/// ECS.
 pub fn shadow_tick(
     state: &mut VaelRulesShadow,
     dt: f32,
     rain: bool,
     frozen: bool,
     menu_open: bool,
+    resists: StatusResists,
 ) {
     state.respawned = false;
     sanitize(state);
@@ -331,7 +370,9 @@ pub fn shadow_tick(
             let ticks = state.venom_tick.floor();
             if ticks > 0.0 {
                 state.venom_tick -= ticks;
-                apply_damage(state, ticks * VENOM_DPS);
+                // `math.floor(ticks * dps * (1 - resist) + 0.5)` do Lua.
+                let damage = (ticks * VENOM_DPS * resists.venom_factor() + 0.5).floor();
+                apply_damage(state, damage);
             }
         }
     } else if state.venom <= 0.0 {
@@ -347,7 +388,8 @@ pub fn shadow_tick(
             let ticks = state.burn_tick.floor();
             if ticks > 0.0 {
                 state.burn_tick -= ticks;
-                apply_damage(state, ticks * BURN_DPS);
+                let damage = (ticks * BURN_DPS * resists.burn_factor() + 0.5).floor();
+                apply_damage(state, damage);
             }
         }
     } else if state.burn <= 0.0 {
@@ -530,7 +572,18 @@ fn rules_shadow_system(
         || modals.as_deref().is_some_and(|m| m.is_open("title"));
     let death_open = modals.as_deref().is_some_and(|m| m.is_open("death"));
     let dt = time.delta_secs();
-    shadow_tick(&mut shadow, dt, rain, frozen, death_open);
+    // O shadow não reconstrói o equipamento do save (nem tem o conteúdo nem a
+    // malha de atributos): sem resistências, o DoT dele é o caso base. A
+    // comparação é ao Lua com a autoridade desligada — com peças de resistência
+    // equipadas o `hp` fica mais alto no Lua (limite conhecido).
+    shadow_tick(
+        &mut shadow,
+        dt,
+        rain,
+        frozen,
+        death_open,
+        StatusResists::default(),
+    );
 
     // Resumo de 1 Hz (sem spam). O flag cobre o último segundo, não só a
     // última comparação.
@@ -636,7 +689,7 @@ mod tests {
     use serde_json::json;
 
     fn tick(state: &mut VaelRulesShadow, dt: f32) {
-        shadow_tick(state, dt, false, false, false);
+        shadow_tick(state, dt, false, false, false, StatusResists::default());
     }
 
     #[test]
@@ -664,11 +717,11 @@ mod tests {
         let mut state = VaelRulesShadow::default();
         state.burn = 10.0;
 
-        shadow_tick(&mut state, 1.0, true, false, false);
+        shadow_tick(&mut state, 1.0, true, false, false, StatusResists::default());
         assert!((state.burn - 8.0).abs() < 1e-4, "burn={}", state.burn);
         assert!((state.hp - 94.0).abs() < 1e-4, "hp={}", state.hp);
 
-        shadow_tick(&mut state, 1.0, true, false, false);
+        shadow_tick(&mut state, 1.0, true, false, false, StatusResists::default());
         assert!((state.burn - 6.0).abs() < 1e-4, "burn={}", state.burn);
         assert!((state.hp - 88.0).abs() < 1e-4, "hp={}", state.hp);
 
@@ -677,6 +730,73 @@ mod tests {
         seco.burn = 10.0;
         tick(&mut seco, 1.0);
         assert!((seco.burn - 9.0).abs() < 1e-4, "burn={}", seco.burn);
+    }
+
+    #[test]
+    fn resistencias_de_estado_escalam_o_dano_do_dot() {
+        // 4 dps a 50% de resistência: `floor(4 * 0.5 + 0.5)` = 2 por tick.
+        let mut state = VaelRulesShadow::default();
+        state.venom = 10.0;
+        shadow_tick(
+            &mut state,
+            1.0,
+            false,
+            false,
+            false,
+            StatusResists {
+                venom: 0.5,
+                burn: 0.0,
+            },
+        );
+        assert!((state.hp - 98.0).abs() < 1e-4, "hp={}", state.hp);
+
+        // O teto é 80% (`math.min(0.8, …)`): 4 * 0.2 = 0,8 → `floor(1,3)` = 1.
+        let mut capped = VaelRulesShadow::default();
+        capped.venom = 10.0;
+        shadow_tick(
+            &mut capped,
+            1.0,
+            false,
+            false,
+            false,
+            StatusResists {
+                venom: 5.0,
+                burn: 0.0,
+            },
+        );
+        assert!((capped.hp - 99.0).abs() < 1e-4, "hp={}", capped.hp);
+
+        // Resistência não finita não é resistência (o DoT entra inteiro).
+        let mut invalida = VaelRulesShadow::default();
+        invalida.venom = 10.0;
+        shadow_tick(
+            &mut invalida,
+            1.0,
+            false,
+            false,
+            false,
+            StatusResists {
+                venom: f32::NAN,
+                burn: f32::INFINITY,
+            },
+        );
+        assert!((invalida.hp - 96.0).abs() < 1e-4, "hp={}", invalida.hp);
+
+        // A queimadura usa a sua própria resistência (6 dps a 50% → 3).
+        let mut queimadura = VaelRulesShadow::default();
+        queimadura.burn = 10.0;
+        shadow_tick(
+            &mut queimadura,
+            1.0,
+            false,
+            false,
+            false,
+            StatusResists {
+                venom: 0.5,
+                burn: 0.5,
+            },
+        );
+        assert!((queimadura.hp - 97.0).abs() < 1e-4, "hp={}", queimadura.hp);
     }
 
     #[test]
@@ -785,7 +905,7 @@ mod tests {
         // Um `dt` não finito não simula nem estraga o estado.
         let mut state = VaelRulesShadow::default();
         state.iframes = 1.0;
-        shadow_tick(&mut state, f32::NAN, false, false, false);
+        shadow_tick(&mut state, f32::NAN, false, false, false, StatusResists::default());
         assert_eq!(state.iframes, 1.0);
         assert_eq!(state.ticks, 0);
     }
@@ -799,7 +919,7 @@ mod tests {
         state.frost = 10.0;
 
         // O menu congela os estados, mas o `dying` arranca e conta.
-        shadow_tick(&mut state, 0.1, false, true, false);
+        shadow_tick(&mut state, 0.1, false, true, false, StatusResists::default());
         assert!((state.dying - 2.1).abs() < 1e-4, "dying={}", state.dying);
         assert_eq!(state.venom, 10.0);
         assert_eq!(state.burn, 10.0);
@@ -808,10 +928,10 @@ mod tests {
         assert_eq!(state.burn_tick, 0.0);
         assert_eq!(state.hp, 0.0);
 
-        shadow_tick(&mut state, 1.0, false, true, false);
+        shadow_tick(&mut state, 1.0, false, true, false, StatusResists::default());
         assert!((state.dying - 1.1).abs() < 1e-4, "dying={}", state.dying);
 
-        shadow_tick(&mut state, 1.2, false, true, false);
+        shadow_tick(&mut state, 1.2, false, true, false, StatusResists::default());
         assert!(state.death_pending);
         assert!(
             (state.death_wait - 5.0).abs() < 1e-4,
@@ -819,7 +939,7 @@ mod tests {
             state.death_wait
         );
 
-        shadow_tick(&mut state, 5.0, false, true, false);
+        shadow_tick(&mut state, 5.0, false, true, false, StatusResists::default());
         assert!(!state.death_pending);
         assert_eq!(state.hp, 100.0);
         assert_eq!(state.venom, 0.0);
@@ -834,7 +954,7 @@ mod tests {
         state.hp = 0.0;
         state.death_wait = 1.0;
 
-        shadow_tick(&mut state, 0.5, false, false, true);
+        shadow_tick(&mut state, 0.5, false, false, true, StatusResists::default());
         assert!(
             (state.death_wait - 5.0).abs() < 1e-4,
             "wait={}",

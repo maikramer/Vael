@@ -48,6 +48,12 @@ pub const ITEM_KEY_PREFIX: &str = "item.";
 pub const GEAR_KEY_PREFIX: &str = "gear.";
 pub const SKILL_KEY_PREFIX: &str = "skill.";
 
+/// Chaves das resistências de estado (`M.stat("<estado>_resist")` no
+/// `rules.lua`). Quem cobra o DoT por Rust (`src/rules_authority.rs`) lê-as
+/// desta malha.
+pub const RESIST_VENOM: &str = "venom_resist";
+pub const RESIST_BURN: &str = "burn_resist";
+
 /// Defaults da espada base (`M.DEFAULT_WEAPON` do Lua).
 pub const DEFAULT_DAMAGE: f64 = 25.0;
 pub const DEFAULT_SPEED: f64 = 1.4;
