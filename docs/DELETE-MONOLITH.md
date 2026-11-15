@@ -27,6 +27,36 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
 | Waves aterradas | A (composição+gémeos) · B · C · E + **avian-total** (`e952f0c`) · água · **K** (`737eabf`: ecs −2k, dlss, nav-mortos) · **D** (`exit4/integrate`: terrain, 291 testes) · **G-1** (music 20 testes, ai 21) |
 | Fase H em curso | sessão concorrente: `viber_tools_runtime` → `bevy_ext_bridge_runtime` no monorepo, `cli/` novo no Vael, skills `vael-tools` |
 
+## Execução 2026-11-15 (sessão de apagamento) — estado
+
+- **K** ✅ `737eabf` no main: tabela `viber.ecs` + espelho + pool morrem
+  (−2.011 lin); `patch_component`/`EcsValue` ficam (servem
+  set_scale/set_visible/set_position); `dlss.rs` + `nav/{backend,tile}.rs`
+  mortos. Falha do bridge "Static vs Fixed" = fallout avian pré-existente.
+- **D** ✅ `exit4/terrain` (3 commits): terrain/ 27.6k → **540 lin** no
+  monólito (shim + water_bridge + terrain_host); água/splat v7/shore_rocks/
+  caves portados ao twin; 291/291 testes.
+- **G-1** ✅ `exit4/g1` (2 commits): music.rs → `bevy_ext_audio` (twin em
+  paridade; adaptador `audio_host.rs`), ai.rs+senses.rs → `bevy_ext_ai`
+  (`ai_host.rs` publica o Ground sobre o TerrainRuntime); `LuaScriptRef`
+  → core com o TypePath certo (`viber::luau::components`); 41 testes.
+- **F2–F5+F8** ✅ `exit4/luau` (7 commits): `bevy_ext_luau` 2.4k → **8.0k**
+  (contratos de scripting no core — fecha o ciclo ui↔luau; núcleo+game
+  UNIFICADO com bump de geração; percepção/props com seam `SurfaceQueries`;
+  efeitos/áudio; nlu/decision com features CelerAI; wrappers de compat
+  apply_patch/game_to_json para o Vael). Monólito luau/ ~13.8k (host vivo).
+- **Integração** ✅ `exit4/integrate` @ `dbf0e0f` = K+D+G-1+F mergeados;
+  workspace check ✓, BMS 68 testes, monólito lib ✓. **FF no main do
+  monorepo quando o WIP da sessão concorrente aterrar.**
+- **H em curso** pela sessão concorrente: `bevy_ext_bridge_{runtime,protocol}`
+  no monorepo, `cli/` no Vael, `scene_runtime` APAGADO (`3d11d27` — os
+  gémeos spawn/recipes/scene_loader ficaram reconciliados NO monólito; a
+  G-2 deles precisa de novo destino).
+- **Falta**: F6/F7 (superfície Lua restante), a **INTEGRAÇÃO do host**
+  (publicar `ScriptHostState` a partir do runtime do monólito → consumir
+  BMS → apagar o `luau/` vivo), F9 (tests.rs 2.8k), G-2 (raiz ~35k + o
+  destino pós-scene_runtime), H (fecho do bridge + apagar a dep).
+
 ## Achados do inventário (2026-11-15, módulo-a-módulo)
 
 - **`viber::terrain_host` ainda NÃO EXISTE** — o `src/app.rs` do Vael chama
