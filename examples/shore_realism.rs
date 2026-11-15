@@ -646,6 +646,9 @@ fn walk_entities(
                         Shape::Cylinder { radius, .. }
                         | Shape::Capsule { radius, .. }
                         | Shape::Sphere { radius } => Vec2::splat(*radius * sx.max(sz)),
+                        // Formas sem footprint XZ barato: o AABB do gradmesh
+                        // cobre (aproximação suficiente para a margem).
+                        _ => Vec2::splat(2.0),
                     };
                     out.boxes.push(BoxZone {
                         _label: format!("prim:{label}"),

@@ -12,7 +12,7 @@ use bevy_ext_core::{LOOK_PIVOT_HEIGHT, Player};
 use viber::camera::{CameraSnapshot, ScriptCameraFree};
 
 use bevy_ext_core::InteriorSceneConfig;
-use viber::camera::{
+use bevy_ext_engine::camera_glue::{
     AutoCameraInput, COLLISION_EYE_HEIGHT, CameraKick, CameraShake, INTERIOR_ROOM_LAG, SHAKE_DECAY,
     auto_camera_yaw, behind_yaw_deg, camera_offset, interior_camera_pose, kick_spring_step,
     low_pass_factor, noise_pm1, shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
@@ -21,7 +21,7 @@ use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
 
 use crate::player::PlayerMovementSet;
 
-fn no_editor_camera(cameras: Query<(), With<viber::editor_camera::EditorCamera>>) -> bool {
+fn no_editor_camera(cameras: Query<(), With<bevy_ext_engine::editor_camera::EditorCamera>>) -> bool {
     cameras.is_empty()
 }
 
@@ -148,14 +148,14 @@ fn third_person_camera(
     parents: Query<&GlobalTransform>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
-    a11y: Option<Res<viber::a11y::A11y>>,
+    a11y: Option<Res<bevy_ext_core::a11y::A11y>>,
 ) {
     let dt = time.delta_secs();
     let now = time.elapsed_secs();
     // O shake decora em tempo REAL: durante o hit-stop a câmara continua a
     // tremer. Decai ANTES do early-return para não congelar no respawn.
     shake.trauma = (shake.trauma - SHAKE_DECAY * real.delta_secs()).max(0.0);
-    let shake_mul = a11y.as_deref().map(viber::a11y::shake_scale).unwrap_or(1.0);
+    let shake_mul = a11y.as_deref().map(bevy_ext_core::a11y::shake_scale).unwrap_or(1.0);
     let (mut shake_off, shake_roll) = shake_offset_roll(shake.trauma, real.elapsed_secs());
     shake_off *= shake_mul;
     let shake_roll = shake_roll * shake_mul;

@@ -116,15 +116,25 @@ bevy_ext_postfx = { path = "../bevy_extensions/crates/bevy_ext_postfx" }
 bevy_ext_scene = { path = "../bevy_extensions/crates/bevy_ext_scene" }
 # Sem `bevy_ext_ui`: a UI que a engine lê é a `viber::ui::*` (UiData,
 # UiWriter, UiModalsOpen…), e o mesmo para `viber::camera::{ScriptCameraFree,
-# CameraSnapshot}` e `viber::hud::markers::*`. As cópias do `bevy_ext_ui`/
-# `bevy_ext_core` são tipos DIFERENTES (2026-11-14: importá-las deixava o
-# HUD/modais/marcadores a escrever em recursos que ninguém lia).
+# CameraSnapshot}` e `viber::hud::markers::*`. A cópia do `bevy_ext_ui` era
+# de tipos DIFERENTES (2026-11-14: importá-los deixava o HUD/modais/marcadores
+# a escrever em recursos que ninguém lia); a wave C unificou a camada de dados
+# no crate, mas o Vael continua pelos shims `viber::ui`.
 bevy_ext_save = { path = "../bevy_extensions/crates/bevy_ext_save" }
+# Glue do engine extraído: feedback, câmara de editor, camera-glue e HUD
+# assets. Type-idêntico aos gémeos `viber::*` via re-export.
+bevy_ext_engine = { path = "../bevy_extensions/crates/bevy_ext_engine" }
+# Física extraída (plugin/colisores): type-idêntico a `viber::physics`.
+bevy_ext_physics = { path = "../bevy_extensions/crates/bevy_ext_physics" }
 # Render procedural dos objetos de primitivas (lathe/sweep/extruded/…): o
 # contrato Shape/MaterialSpec vem do `bevy_ext_scene`; este crate troca o
 # fallback do spawner pelo mesh/material/colisor exatos. `physics` liga os
 # colisores Rapier exatos (trimesh para as formas procedurais).
 bevy_ext_gradmesh = { path = "../bevy_extensions/crates/bevy_ext_gradmesh", features = ["physics"] }
+# Usados directamente na composição da App (src/app.rs): os buses de áudio
+# do runtime e o plugin das primitivas procedurais.
+bevy_kira_audio = { version = "0.27.1", features = ["ogg"] }
+bevy_gradmesh = "0.3.9"
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

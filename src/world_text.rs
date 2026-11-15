@@ -30,7 +30,7 @@ use bevy::prelude::*;
 use bevy_rich_text3d::{
     LoadFonts, Text3d, Text3dPlugin, Text3dStyle, TextAlign, TextAnchor, TextAtlas,
 };
-use viber::feedback::{DamageNumberEvent, damage_number_scale, number_font_size};
+use bevy_ext_engine::feedback::{DamageNumberEvent, damage_number_scale, number_font_size};
 
 /// Vida útil de um número (s), igual ao feedback 2D da engine.
 pub const TEXT_LIFETIME: f32 = 0.9;
@@ -46,7 +46,7 @@ pub const TEXT_WORLD_HEIGHT: f32 = 0.45;
 pub const GLYPH_SIZE: f32 = 64.0;
 /// Fonte de display do HUD (Cinzel Bold, OFL) já embutida na engine — o texto
 /// do mundo e a UI ficam com a mesma voz.
-pub const DISPLAY_FONT: &[u8] = viber::hud::assets::DISPLAY_FONT;
+pub const DISPLAY_FONT: &[u8] = bevy_ext_engine::hud_assets::DISPLAY_FONT;
 /// Família da fonte carregada de [`DISPLAY_FONT`].
 pub const FONT_FAMILY: &str = "Cinzel";
 

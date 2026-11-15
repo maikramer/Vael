@@ -29,6 +29,7 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod animation;
+pub mod app;
 pub mod boat;
 pub mod camera;
 pub mod cinematic_trigger;

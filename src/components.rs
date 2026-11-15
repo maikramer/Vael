@@ -10,7 +10,7 @@ use bevy::prelude::*;
 use serde::{Deserialize, Serialize};
 
 /// Marca do herói do Vael. Com `gameplay: false` a engine não cria o
-/// `viber::player::Player`; quem spawnar o herói (Wave 1) usa esta marca.
+/// `bevy_ext_core::Player`; quem spawnar o herói (Wave 1) usa esta marca.
 #[derive(Component, Debug, Clone, Copy, Default, Reflect)]
 #[reflect(Component)]
 pub struct VaelPlayer;

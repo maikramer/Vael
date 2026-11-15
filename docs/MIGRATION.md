@@ -178,9 +178,10 @@ cargo run --release -- \
   `viber scene lint --world world.bsn` são os gates do formato novo. O
   `world.xml` foi aposentado (2026-11-12) e já não existe no repo; não
   regenerar com `viber bsn convert`.
-- `cargo test` no Viber: gate da engine. A contagem e a eventual falha de
-  modelo/ambiente mudam por sessão — ler o sumário da corrida em vez de um
-  número fixo.
+- Gate da engine: `cargo test --workspace` no `../bevy_extensions` (o
+  runtime de gameplay é o crate `bevy_ext_viber_engine`, standalone com
+  testes à parte); o repo `../Viber` foi aposentado (removido a
+  2026-11-13).
 
 ## Mundo em `.bsn` (2026-11-12)
 
@@ -234,6 +235,7 @@ semântica.
 | Câmara/áudio/cinemáticas no Jackdaw | feito a 2026-11-14: specs tipadas (`CameraSpec`, `InteriorSceneSpec`, `AudioMixerSpec`, `MusicLayerSpec`, `BiomeRegionSpec`), painel **Vael: Cinemáticas** e gatilho `CinematicTrigger` em Rust — detalhe em [`JACKDAW.md`](JACKDAW.md); `viber cinematic shot` continua XML-only |
 | Restante do jogo — FSM/inimigos/bosses, diálogo/NLU, story/áudio | pendente (o gatilho de cinemática já saiu do Lua) |
 | Fase 4 — mover AI e o resto do gameplay para o Vael; recipe extensions; docs | em curso (4a feito; player/câmara já saíram na Onda 3) |
+| Saída do Viber — onda exit2: runtime no monorepo, App composta pelo jogo | feita no `exit2/app-assembly` (composição própria, 335 testes); extração do host Luau para BMS pendente |
 
 ## QA no checkout principal
 
@@ -459,3 +461,41 @@ Validação: todos os XAML instanciam headless com `warnings=0`, os testes
 `ui::` passam (28) e a skin foi capturada ao vivo no antigo mundo
 `qa-hud.bsn` (título, HUD, menu/tabs, morte), removido a 2026-11-12. O
 render pode abortar por OOM quando há builds concorrentes.
+
+## Saída do Viber — onda exit2 (2026-11-13)
+
+O repo `../Viber` foi aposentado (removido do disco por decisão do dono do
+projeto). O runtime de gameplay vive no monorepo `../bevy_extensions` como o
+crate `bevy_ext_viber_engine` (lib name histórico `viber`, standalone com
+CelerAI por path e vendor/rerecast próprio) e o jogo compõe a App **sem o
+builder da engine**:
+
+- **`src/app.rs` (novo)**: a composição directa — `DefaultPlugins` (janela,
+  asset root, wrapper do PIE do Jackdaw), shaders especializados do mundo,
+  buses kira, e os plugins do runtime na configuração fixa do Vael
+  (`gameplay:false`, sem controller/câmara da engine, save externo, IA em
+  serviço, scripts `Compat`). O que era opção morta do `AppOptions` não
+  existe aqui. `main.rs` chama `vael::app::build_app`; o `viber::app::AppOptions`
+  só sobrevive no `viber run` (crate da engine).
+- **Geometria da extração**: os serviços vivem em crates `bevy_ext_*`
+  (ui, audio, save, nav, ai, postfx, physics, engine, terrain_runtime,
+  elements, flora, gradmesh, scene, scene_runtime, luau/BMS, gltf, world,
+  core). O monólito re-exporta por shims o que já saiu (`viber::terrain`
+  → `bevy_ext_terrain_runtime`, `viber::physics` → `bevy_ext_physics`,
+  corpse/ik/ragdoll, render_lod, profiler::timed, RunMode, …) — o jogo
+  continua a ver `viber::X` enquanto a troca de imports não for feita módulo
+  a módulo com o runtime.
+- **Gémeos ≠ unificação**: as cópias extraídas têm `#[type_path = "viber::…"]`
+  congelados, mas são tipos Rust distintos. Trocar um import no jogo sem
+  trocar o plugin que corre cria dois recursos gémeos e queries
+  silenciosamente vazias. A unidade segura de troca é o stack inteiro.
+- **O que ficou no monólito** (runtime de scripting e mundo): o host Luau
+  (`viber::luau`), `scene_loader`, `recipes`/spawn, `worldsys` (drivers
+  dia/noite que a engine ainda conduz), `spawn_gate`, `interact`, `config`.
+  A extração do host Luau para o `bevy_ext_luau` (BMS) continua planeada —
+  exige resolver as seams de FX/projéteis/percepção que o runtime chama.
+
+Gates desta onda: workspace do monorepo `cargo test --workspace` verde
+(1032), monólito standalone 1072 (4 falhas conhecidas: fixtures do repo
+aposentado + 1 flaky do profiler), Vael `cargo test --lib` 335 verdes e QA
+vivo contra a árvore integrada.

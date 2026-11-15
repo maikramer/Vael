@@ -1,5 +1,10 @@
 # EXIT-MAP — saída do monólito `bevy_ext_viber_engine`
 
+> **2026-11-15:** o plano de execução da eliminação completa vive agora no
+> [`DELETE-MONOLITH.md`](DELETE-MONOLITH.md) (inventário medido pós-merges
+> das waves A/B/C/E + fases D/F/G/H). Este doc fica com o mapa
+> peça→destino→onda e os estados.
+
 Estado vivo do mapeamento **peça → destino → gap → onda** para o fim do
 monólito (162,5k LOC). Dono deste doc: o plano de saída; o estado da
 migração fica no [`MIGRATION.md`](MIGRATION.md), as fases F0–F4 no

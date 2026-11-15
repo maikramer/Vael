@@ -12,6 +12,8 @@ deve ser corrigido no mesmo commit.
 |---|---|---|
 | [`MIGRATION.md`](MIGRATION.md) | o que já saiu da engine, o que falta e as dívidas da migração Rust/Bevy | **vivo** |
 | [`PACKAGES.md`](PACKAGES.md) | ponte para o roadmap canónico no `bevy_extensions` e sequência da Fase 4 no Vael | **vivo** |
+| [`DELETE-MONOLITH.md`](DELETE-MONOLITH.md) | o estudo de eliminação do `bevy_ext_viber_engine`: inventário medido, fases D/F/G/H até `cargo tree -i viber` vazio | **vivo** |
+| [`EXIT-MAP.md`](EXIT-MAP.md) | o mapa peça→destino→onda da saída do monólito (precursor do DELETE-MONOLITH; estados das waves A/B/C/E) | vivo |
 | [`LIGHTING.md`](LIGHTING.md) | céu, exposição, névoa e sombras com o `bevy_elements` | **vivo** |
 | [`PHYSICS-AVIAN.md`](PHYSICS-AVIAN.md) | física Avian 0.8 + tnua, conversão do DSL, autostep do herói e gates | **vivo** |
 | [`WATER.md`](WATER.md) | camadas da água, espelho CPU do swell, flutuação (`FloatingBody`) e barcos a remos | **vivo** |

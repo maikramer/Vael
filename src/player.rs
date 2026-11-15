@@ -4,7 +4,7 @@
 //! `TnuaController`), mas com `player_camera:false` os sistemas
 //! dela não correm. Este módulo anexa o [`VaelController`] e conduz o herói
 //! (WASD, salto, steering da `OrbitCamera`, chão analítico e teleportes); o
-//! estado do `viber::player::Player` é sincronizado para a animação da engine
+//! estado do `bevy_ext_core::Player` é sincronizado para a animação da engine
 //! continuar a ler velocidade/chão enquanto essa camada não é portada. A
 //! câmara de terceira pessoa vive em [`crate::camera`].
 
@@ -222,7 +222,7 @@ impl HeroMotionBus {
 pub const VOID_RESCUE_DEPTH: f32 = 250.0;
 
 /// Estado de movimento do herói. É a cópia local do subconjunto do
-/// `viber::player::Player` que o controlador usa.
+/// `bevy_ext_core::Player` que o controlador usa.
 #[derive(Component, Debug, Clone, Reflect)]
 #[reflect(Component)]
 pub struct VaelController {

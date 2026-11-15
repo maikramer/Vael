@@ -18,7 +18,7 @@ use viber::hud::markers::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::components::{LuaScriptRef, ScriptProps};
 use viber::luau::host::LuaScriptHost;
 use viber::scene_loader::CurrentScene;
-use viber::vitals::{Health, Hostile};
+use bevy_ext_core::vitals::{Health, Hostile};
 
 use crate::content::VaelContent;
 use crate::harvest::Harvestable;

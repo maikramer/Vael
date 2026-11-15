@@ -26,14 +26,14 @@ use bevy_speech_bubbles::{
     BalloonScale, Bubble, BubbleAssets, BubbleKind, BubblePx, BubbleStyle, DefaultBalloonSkin,
     Emotion, SpeechBubblesPlugin, build_bubble, dwell_secs, track_bubbles,
 };
-use viber::dialogue::ExternalSayPresenter;
+use bevy_ext_core::dialogue::ExternalSayPresenter;
 use viber::interact::InteractionFocus;
 use viber::luau::{ScriptSay, ScriptToast};
 use viber::recipes::spawn::OrbitCamera;
 
 /// A fonte de display da casa (Cinzel Bold, a mesma do HUD e do texto de
 /// dano) — os balões falam com a voz tipográfica do jogo.
-const FONT: &[u8] = viber::hud::assets::DISPLAY_FONT;
+const FONT: &[u8] = bevy_ext_engine::hud_assets::DISPLAY_FONT;
 
 /// Mínimo/máximo de vida de um balão (s). O mínimo evita um flash ilegível;
 /// o máximo impede que uma fala longa fique presa depois de a conversa mudar.

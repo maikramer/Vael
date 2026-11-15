@@ -1,9 +1,10 @@
 //! Arranque do Vael: `vael [world.bsn] [--entry <nome>]`.
 //!
-//! A engine monta o mundo; o crate do jogo entra por cima com
-//! [`viber::app::AppOptions::gameplay`] desligado, a IA em
-//! [`viber::app::AiMode::Service`] e os scripts Luau em `Compat`. O `--entry`
-//! continua a ser a entrada de cena do `viber run`.
+//! A App é composta aqui e em [`vael::app`] (sem o builder da engine): o
+//! runtime de gameplay (`viber`) fornece os plugins do mundo e os serviços,
+//! o crate do jogo traz o controller/câmara (`src/player.rs`) e as regras
+//! (autoridade Rust). O `--entry` continua a ser a entrada de cena do
+//! `viber run`.
 
 use std::path::{Path, PathBuf};
 
@@ -63,10 +64,10 @@ fn main() -> Result<()> {
     // O IBL da engine pinta um cubemap a partir do `<Sky>`/`AtmosphereState`
     // antigos. Com o ambiente novo (`bevy_elements`) a luz do céu vem da
     // atmosfera do crate (`AtmosphereEnvironmentMapLight`); dois IBLs
-    // somavam luz do céu errado. `VIBER_NO_IBL` é lido no `build_app`, antes
-    // de qualquer thread dos `DefaultPlugins` nascer — daí o `set_var`.
+    // somavam luz do céu errado. `VIBER_NO_IBL` é lido no `SkyIblPlugin`,
+    // antes de qualquer thread dos `DefaultPlugins` nascer — daí o `set_var`.
     if vael::elements_enabled() {
-        // SAFETY: single-threaded, antes de `build_app`.
+        // SAFETY: single-threaded, antes da composição da App.
         unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
     }
     let args = Args::parse();
@@ -159,40 +160,22 @@ fn main() -> Result<()> {
         .or_else(|| world.parent().map(Path::to_path_buf))
         .ok_or_else(|| anyhow::anyhow!("não foi possível resolver a raiz do projeto"))?;
 
-    let mut app = viber::app::build_app(
+    let mut app = vael::app::build_app(
         &world,
-        viber::app::AppOptions {
-            gameplay: false,
-            // O texto de dano/cura/coleta/combo é do Vael desde a migração
-            // para `bevy_rich_text3d`; o pool 2D projectado da engine
-            // desenhava-o duas vezes e com outra fonte.
-            damage_numbers_2d: false,
-            // A FSM simples da engine fica desligada, mas o serviço de IA
-            // (sentidos + `AiLocomotion`) mantém-se para os scripts Luau
-            // moverem as criaturas via `viber.move_towards`.
-            ai: viber::app::AiMode::Service,
-            // O Vael já traz o controller/câmara em `src/player.rs`; a engine
-            // continua a spawnar o corpo e o collider, mas não o move.
-            player_camera: false,
-            // Slots e envelope são do Vael (`moonshine-save`); o SavePlugin
-            // da engine continua fora do caminho. `SaveRequest` fica vivo
-            // para o Lua pedir autosaves.
-            external_save: true,
-            scripts: viber::app::ScriptsMode::Compat,
-            // O jogo não usa `viber.ecs`: o espelho refletido por frame é
-            // trabalho morto e exclusivo. QA/bridge pode reativá-lo com
-            // `VIBER_ECS_MIRROR=1`.
-            ecs_mirror: ecs_mirror_enabled(),
+        vael::app::VaelAppOptions {
             start_entry: entry.clone(),
             bridge_port: bridge,
             // A identidade da bridge é o mundo que o utilizador pediu, não a
             // cena de arranque resolvida (senão `--scene main` respondia menu).
-            world_path: Some(requested.clone()),
+            identity: requested.clone(),
+            // O jogo não usa `viber.ecs`: o espelho refletido por frame é
+            // trabalho morto e exclusivo. QA/bridge pode reativá-lo com
+            // `VIBER_ECS_MIRROR=1`.
+            ecs_mirror: ecs_mirror_enabled(),
             // Play do Jackdaw em modo embedded: o runtime desliga a janela
             // quando o editor pede `JACKDAW_PIE_WINDOWLESS`. Fora do PIE o
-            // wrapper devolve o grupo da engine intacto.
+            // wrapper devolve o grupo intacto.
             default_plugins: Some(jackdaw_plugins),
-            ..Default::default()
         },
     )?;
     // A janela primária nasce no `WindowPlugin` (já no `build_app`): mudar a
