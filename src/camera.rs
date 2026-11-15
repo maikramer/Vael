@@ -21,7 +21,9 @@ use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
 
 use crate::player::PlayerMovementSet;
 
-fn no_editor_camera(cameras: Query<(), With<bevy_ext_engine::editor_camera::EditorCamera>>) -> bool {
+fn no_editor_camera(
+    cameras: Query<(), With<bevy_ext_engine::editor_camera::EditorCamera>>,
+) -> bool {
     cameras.is_empty()
 }
 
@@ -144,25 +146,40 @@ fn third_person_camera(
     mut shake: ResMut<CameraShake>,
     mut kick: ResMut<CameraKick>,
     mut cameras: Query<(&mut Transform, &mut OrbitCamera), Without<Player>>,
-    players: Query<(&Transform, Option<&ChildOf>, &Player), Without<OrbitCamera>>,
+    players: Query<
+        (
+            &Transform,
+            Option<&ChildOf>,
+            &Player,
+            Has<bevy_ext_core::TeleportSettle>,
+        ),
+        Without<OrbitCamera>,
+    >,
     parents: Query<&GlobalTransform>,
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
     a11y: Option<Res<bevy_ext_core::a11y::A11y>>,
 ) {
-    let dt = time.delta_secs();
+    // Clamp como no `player_movement`: o primeiro frame depois do véu (o
+    // `Time<Virtual>` despausa) traz um delta enorme, e a mola do pitch/do
+    // low-pass estourava para NaN — a câmera colapsava para dentro do chão
+    // no arranque (visto 2026-11-15).
+    let dt = time.delta_secs().min(0.05);
     let now = time.elapsed_secs();
     // O shake decora em tempo REAL: durante o hit-stop a câmara continua a
     // tremer. Decai ANTES do early-return para não congelar no respawn.
     shake.trauma = (shake.trauma - SHAKE_DECAY * real.delta_secs()).max(0.0);
-    let shake_mul = a11y.as_deref().map(bevy_ext_core::a11y::shake_scale).unwrap_or(1.0);
+    let shake_mul = a11y
+        .as_deref()
+        .map(bevy_ext_core::a11y::shake_scale)
+        .unwrap_or(1.0);
     let (mut shake_off, shake_roll) = shake_offset_roll(shake.trauma, real.elapsed_secs());
     shake_off *= shake_mul;
     let shake_roll = shake_roll * shake_mul;
     let (kick_off, kick_vel) = kick_spring_step(kick.offset, kick.vel, dt);
     kick.offset = kick_off;
     kick.vel = kick_vel;
-    let Some((local, parent, player)) = players.iter().next() else {
+    let Some((local, parent, player, teleporting)) = players.iter().next() else {
         return;
     };
     // Pose DESTE frame: o writeback do Avian acabou de a escrever no `Transform` e a
@@ -226,7 +243,11 @@ fn third_person_camera(
             },
             dt,
         );
-        if !cam.initialized {
+        // `TeleportSettle` fresco (portão de spawn, viagem, respawn): o
+        // herói SALTou — a câmara salta com ele. Com o low-pass, a chegada
+        // ao chão depois do portão mostrava a câmara a descer por cima do
+        // mapa a olhar para o chão durante um segundo.
+        if !cam.initialized || teleporting {
             cam.follow_point = target_pos;
             cam.smooth_yaw_deg = cam.yaw_deg;
             cam.current_pos = target_pos
@@ -311,7 +332,11 @@ fn third_person_camera(
 
         let sf = low_pass_factor(dt, 0.05);
         let cur = cam.current_pos;
-        cam.current_pos = cur + (safe - cur) * sf;
+        cam.current_pos = if teleporting {
+            safe
+        } else {
+            cur + (safe - cur) * sf
+        };
         // Respiração orgânica: ruído só na posição RENDERIZADA; o
         // `current_pos` fica limpo e o ruído nunca realimenta.
         let sway = Vec3::new(
