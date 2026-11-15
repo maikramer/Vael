@@ -651,11 +651,21 @@ function M.quest_turn_in_decision(id, text, answers)
   if type(report) ~= "table" then
     return M.quest_turn_in(id), nil
   end
-  for i = 1, #(report.expect or {}) do
+  -- O MESMO critério do relato por texto (`parley.match_expect`): basta UM
+  -- dos expects casar. As quests de visita têm 3-5 destinos possíveis e a
+  -- pergunta é "Onde estiveste?" — nomear um chega. Exigir todos tornava as
+  -- 5 quests de levantamento impossíveis de entregar com o d1 carregado.
+  local expect = report.expect or {}
+  local ok = #expect == 0
+  for i = 1, #expect do
     local a = answers and answers["r" .. i]
-    if not a or (tonumber(a.noul) or 0) < 0.5 then
-      return false, report.hint or "Não te ouvi dizer o nome."
+    if a and (tonumber(a.noul) or 0) >= 0.5 then
+      ok = true
+      break
     end
+  end
+  if not ok then
+    return false, report.hint or "Não te ouvi dizer o nome."
   end
   g()[qkey(id) .. ".said"] = text
   local turned = M.quest_turn_in(id)
@@ -673,13 +683,17 @@ function M.parley_matches_decision(id, answers)
     return false
   end
   local expect = def.parley.report.expect or {}
+  if #expect == 0 then
+    return true
+  end
+  -- Como o `match_expect` do relato por texto: QUALQUER expect serve.
   for i = 1, #expect do
     local a = answers and answers["r" .. i]
-    if not a or (tonumber(a.noul) or 0) < 0.5 then
-      return false
+    if a and (tonumber(a.noul) or 0) >= 0.5 then
+      return true
     end
   end
-  return true
+  return false
 end
 
 -- bandit-archer conta como bandit. Substring ao contrário ("a" dentro de
@@ -994,6 +1008,10 @@ function M.hostiles_near(cx, cz, range)
           forward_x = e.fx, forward_z = e.fz,
           -- Escudo erguido (lib/fsm.lua `shield`): o melee decide o bloqueio.
           shield = e.guard and e.shield or nil,
+          -- Intocável (chefe em transição de fase, verme enterrado): o
+          -- `damage_enemy` recusa o golpe e quem mostra números/sons de dano
+          -- tem de o saltar — senão a barra/feedback mentem.
+          invuln = e.invuln == true,
         }
       end
     end
@@ -1056,24 +1074,29 @@ function M.radial_damage(x, z, radius, damage, knockback)
   -- `h.distance` (distância ao herói): a bomba largada à frente atingia
   -- inimigos atrás do jogador e ignorava os que estavam na borda real.
   for _, h in ipairs(M.hostiles_near(x, z, radius)) do
-    local dx, dz = (h.x or x) - x, (h.z or z) - z
-    local dist = math.sqrt(dx * dx + dz * dz)
-    local falloff = 1.0 - 0.5 * (dist / math.max(radius, 1e-3))
-    local dmg = (damage or 0) * falloff
-    M.damage_enemy(h.id, dmg)
-    if viber.hit_flash then
-      viber.hit_flash(h.id)
-    end
-    if knockback and knockback > 0 and viber.entity_knockback then
-      local len = math.sqrt(dx * dx + dz * dz)
-      if len > 1e-3 then
-        viber.entity_knockback(h.id, dx / len, dz / len, knockback * falloff)
+    -- Intocável (chefe em transição, verme enterrado): o `damage_enemy`
+    -- recusa o golpe; sem este salto o número e o knockback apareciam na
+    -- mesma, como se a área tivesse entrado.
+    if not h.invuln then
+      local dx, dz = (h.x or x) - x, (h.z or z) - z
+      local dist = math.sqrt(dx * dx + dz * dz)
+      local falloff = 1.0 - 0.5 * (dist / math.max(radius, 1e-3))
+      local dmg = (damage or 0) * falloff
+      M.damage_enemy(h.id, dmg)
+      if viber.hit_flash then
+        viber.hit_flash(h.id)
       end
+      if knockback and knockback > 0 and viber.entity_knockback then
+        local len = math.sqrt(dx * dx + dz * dz)
+        if len > 1e-3 then
+          viber.entity_knockback(h.id, dx / len, dz / len, knockback * falloff)
+        end
+      end
+      viber.damage_number("-" .. math.floor(dmg), {
+        color = "#ffd35a", x = h.x, y = (h.y or 0) + 1.6, z = h.z,
+      })
+      hits = hits + 1
     end
-    viber.damage_number("-" .. math.floor(dmg), {
-      color = "#ffd35a", x = h.x, y = (h.y or 0) + 1.6, z = h.z,
-    })
-    hits = hits + 1
   end
   return hits
 end
@@ -1146,7 +1169,10 @@ end
 -- própria criatura (dano por segundo, lentidão, atordoamento).
 function M.enemy_status(id, kind, secs)
   local e = (g().enemies or {})[id]
-  if not e or (e.hp or 0) <= 0 or not finite(secs) or secs <= 0 then
+  -- Intocável (chefe a mudar de fase, verme enterrado) também não apanha
+  -- estados: o `tick_status` do FSM está congelado e o estado ficava a arder
+  -- à espera do fim da invulnerabilidade.
+  if not e or (e.hp or 0) <= 0 or e.invuln or not finite(secs) or secs <= 0 then
     return false
   end
   if kind ~= "burn" and kind ~= "frost" and kind ~= "shock" then
