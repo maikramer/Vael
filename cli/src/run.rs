@@ -24,6 +24,18 @@ pub fn run_vael(
     let root = project_root()?;
     let mut args = Vec::new();
     if let Some(path) = path {
+        // O cwd do jogo passa a ser a raiz do projeto. Um caminho relativo que
+        // existe relativo ao cwd de quem invoca tem de ser ancorado AGORA —
+        // senão era resolvido contra a raiz (ex.: `cli/../world.bsn`).
+        // Um caminho que só existe na raiz fica relativo, como antes.
+        let path = if path.is_absolute() || !path.exists() {
+            path
+        } else {
+            // `canonicalize` normaliza `..`/symlinks; o ficheiro existe.
+            std::fs::canonicalize(&path)
+                .or_else(|_| std::path::absolute(&path))
+                .with_context(|| format!("caminho inválido: {}", path.display()))?
+        };
         args.push(path.display().to_string());
     }
     if let Some(scene) = scene {
@@ -42,7 +54,7 @@ pub fn run_vael(
         args.push("--resolution".into());
         args.push(resolution);
     }
-    if let Some(bin) = vael_binary(&root) {
+    if let Some(bin) = vael_binary(&root)? {
         let status = Command::new(&bin)
             .args(&args)
             .current_dir(&root)
@@ -78,19 +90,25 @@ fn project_root() -> Result<PathBuf> {
     Ok(cwd)
 }
 
-fn vael_binary(root: &Path) -> Option<PathBuf> {
-    if let Ok(path) = std::env::var("VAEL_BIN") {
-        let path = PathBuf::from(path);
-        if path.is_file() {
-            return Some(path);
+fn vael_binary(root: &Path) -> Result<Option<PathBuf>> {
+    // `VAEL_BIN` é uma ordem explícita: se está definido e não aponta para um
+    // ficheiro, NÃO se cai em silêncio para outro binário/cargo (lançava o
+    // jogo errado — ex.: um caminho com gralha).
+    if let Some(raw) = std::env::var_os("VAEL_BIN").filter(|value| !value.is_empty()) {
+        let path = PathBuf::from(raw);
+        if !path.is_file() {
+            bail!("VAEL_BIN inválido: {} não é um ficheiro", path.display());
         }
+        // Absoluto: o filho corre com cwd na raiz e um caminho relativo
+        // resolveria contra ela.
+        return Ok(Some(std::path::absolute(&path).unwrap_or(path)));
     }
-    [
+    Ok([
         root.join("target/release/vael"),
         root.join("target/debug/vael"),
     ]
     .into_iter()
-    .find(|candidate| candidate.is_file())
+    .find(|candidate| candidate.is_file()))
 }
 
 fn exit_code(status: std::process::ExitStatus) -> ExitCode {

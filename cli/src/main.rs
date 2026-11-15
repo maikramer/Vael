@@ -31,6 +31,10 @@ enum CommandKind {
     /// Analisa um mundo `.bsn` sem abrir janela.
     Analyze {
         path: Option<PathBuf>,
+        /// Mundo alvo, equivalente ao positional (os gates dos docs usam
+        /// `--world`, como o `debug`).
+        #[arg(long, value_name = "PATH", conflicts_with = "path")]
+        world: Option<PathBuf>,
         #[arg(long)]
         strict: bool,
         #[arg(long)]
@@ -39,6 +43,9 @@ enum CommandKind {
     /// Lint estrutural do mundo (assets e scripts em falta).
     Lint {
         path: Option<PathBuf>,
+        /// Mundo alvo, equivalente ao positional.
+        #[arg(long, value_name = "PATH", conflicts_with = "path")]
+        world: Option<PathBuf>,
         #[arg(long)]
         strict: bool,
         #[arg(long)]
@@ -105,7 +112,8 @@ enum BsnCommand {
         #[arg(value_name = "PATH")]
         paths: Vec<PathBuf>,
     },
-    /// Compara XML e `.bsn` pelo significado (pose, luzes, includes).
+    /// Compara XML e `.bsn` pelo significado (pose, luzes, includes); um
+    /// `.bsn` passado sozinho é validado (carrega-o com os includes).
     Check {
         /// Raiz do projeto (default: a do primeiro ficheiro).
         #[arg(long)]
@@ -132,8 +140,13 @@ fn main() -> ExitCode {
 fn run() -> Result<ExitCode> {
     let cli = Cli::parse();
     match cli.command {
-        CommandKind::Analyze { path, strict, json } => {
-            let report = vael_tools::analyze(path.as_deref());
+        CommandKind::Analyze {
+            path,
+            world,
+            strict,
+            json,
+        } => {
+            let report = vael_tools::analyze(world.or(path).as_deref());
             if json {
                 println!("{}", serde_json::to_string_pretty(&report)?);
             } else {
@@ -147,8 +160,13 @@ fn run() -> Result<ExitCode> {
                 },
             )
         }
-        CommandKind::Lint { path, strict, json } => {
-            let report = vael_tools::lint(path.as_deref());
+        CommandKind::Lint {
+            path,
+            world,
+            strict,
+            json,
+        } => {
+            let report = vael_tools::lint(world.or(path).as_deref());
             if json {
                 println!("{}", serde_json::to_string_pretty(&report)?);
             } else {
@@ -184,7 +202,9 @@ fn run() -> Result<ExitCode> {
             }
             BsnCommand::Check { root, out, paths } => {
                 let checked = vael_tools::bsn::check(&paths, root.as_deref(), out.as_deref())?;
-                println!("bsn: {checked} ficheiro(s) iguais");
+                // `check` valida BSNs soltos e compara XML↔BSN; "verificado"
+                // cobre os dois (o anterior "iguais" mentia no 1.º caso).
+                println!("bsn: {checked} ficheiro(s) verificado(s)");
                 Ok(ExitCode::SUCCESS)
             }
         },
@@ -207,7 +227,9 @@ fn run() -> Result<ExitCode> {
 
 fn print_analyze(report: &vael_tools::AnalyzeReport) {
     if let Some(error) = &report.error {
-        println!("erro: {error}");
+        // Diagnóstico (exit 1) vai para o stderr, como os erros do `run()`:
+        // parsers de stdout (CI/agentes) não o podem confundir com o relatório.
+        eprintln!("erro: {error}");
         return;
     }
     println!("mundo: {}", report.world);

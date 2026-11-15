@@ -54,12 +54,15 @@ pub struct AssetStats {
 }
 
 impl AnalyzeReport {
-    /// `--strict`: qualquer warning falha o gate. (Os campos
-    /// `skipped_tags`/`unknown_prototypes` do contrato antigo saíram: eram
-    /// inicializados vazios e nunca preenchidos — as regras finas do audit
-    /// do Viber ainda não foram portadas e ninguém os consumia.)
+    /// `--strict`: qualquer warning (ou asset em falta) falha o gate. (Os
+    /// campos `skipped_tags`/`unknown_prototypes` do contrato antigo saíram:
+    /// eram inicializados vazios e nunca preenchidos — as regras finas do
+    /// audit do Viber ainda não foram portadas e ninguém os consumia.)
     pub fn strict_failed(&self) -> bool {
-        !self.warnings.is_empty() || self.error.is_some()
+        // Os assets em falta vivem em `assets.missing`, não em `warnings`:
+        // sem esta linha o `--strict` passava um mundo com assets partidos
+        // (o lint já os promove a aviso).
+        !self.assets.missing.is_empty() || !self.warnings.is_empty() || self.error.is_some()
     }
 }
 
@@ -70,6 +73,13 @@ pub fn resolve_world_path(input: Option<&Path>) -> Result<PathBuf> {
         .with_context(|| format!("caminho inválido: {}", base.display()))?;
     if absolute.is_file() {
         return Ok(absolute);
+    }
+    // Um caminho EXPLÍCITO que não existe não pode cair no mundo do diretório
+    // atual: um nome mal escrito no gate analisava outro mundo e dava exit 0.
+    if let Some(input) = input
+        && !absolute.is_dir()
+    {
+        bail!("caminho inexistente: {}", input.display());
     }
     let dir = if absolute.is_dir() {
         absolute
@@ -231,11 +241,14 @@ fn walk(
         let tag = node.tag.to_ascii_lowercase();
         report.entities.total += 1;
         *report.entities.by_tag.entry(tag.clone()).or_default() += 1;
-        if tag.starts_with("ui") || tag.contains("widget") || tag == "style" {
+        let is_ui = tag.starts_with("ui") || tag.contains("widget") || tag == "style";
+        if is_ui {
             report.ui.nodes += 1;
-        }
-        if node.attr("id").is_some() {
-            report.ui.ids += 1;
+            // `ui.ids` conta ids de UI; os ids de `<Prototype>` (e outros) não
+            // são nós de UI e inflavam a contagem.
+            if node.attr("id").is_some() {
+                report.ui.ids += 1;
+            }
         }
         if tag == "terrain" && report.terrain.is_none() {
             report.terrain = Some(attrs(node));
@@ -356,6 +369,53 @@ mod tests {
         assert_eq!(report.assets.missing, vec!["/assets/meshes/hero.glb"]);
         assert!(report.terrain.is_some());
         assert_eq!(report.ui.nodes, 1);
+    }
+
+    #[test]
+    fn explicit_missing_path_is_an_error_not_the_cwd_world() {
+        // Regressão: um caminho explícito inexistente caía no `current_dir` e
+        // analisava o mundo do cwd (exit 0 com um mundo que não foi pedido).
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(dir.path().join("world.bsn"), "").unwrap();
+        let missing = dir.path().join("typo.bsn");
+        let error = resolve_world_path(Some(&missing)).unwrap_err();
+        assert!(format!("{error:#}").contains("inexistente"), "{error:#}");
+        // Sem caminho, a pasta atual continua a resolver.
+        assert!(resolve_world_path(Some(dir.path())).is_ok());
+    }
+
+    #[test]
+    fn ui_ids_count_only_ui_nodes() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(
+            dir.path().join("world.xml"),
+            r#"<World static="true">
+                <Prototype id="mob-wolf" />
+                <UiText id="hint">Oi</UiText>
+            </World>"#,
+        )
+        .unwrap();
+        let report = analyze(Some(&dir.path().join("world.xml")));
+        assert!(report.error.is_none(), "{:?}", report.error);
+        // O id do <Prototype> não é um id de UI.
+        assert_eq!(report.ui.nodes, 1);
+        assert_eq!(report.ui.ids, 1);
+    }
+
+    #[test]
+    fn strict_fails_on_missing_assets() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::write(
+            dir.path().join("world.xml"),
+            r#"<World><Entity name="e" url="/assets/falta.glb" /></World>"#,
+        )
+        .unwrap();
+        let report = analyze(Some(&dir.path().join("world.xml")));
+        assert!(report.error.is_none(), "{:?}", report.error);
+        assert_eq!(report.assets.missing.len(), 1);
+        // Os assets em falta não entram em `warnings`; o `--strict` falhava.
+        assert!(report.warnings.is_empty());
+        assert!(report.strict_failed());
     }
 
     #[test]

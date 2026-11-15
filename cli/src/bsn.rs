@@ -29,13 +29,24 @@ pub fn convert(
 }
 
 /// Compara XML e `.bsn` pelo significado. Devolve quantos ficheiros conferiu.
+///
+/// Um `.bsn` passado explicitamente (o `world.bsn` do docs/MIGRATION.md) não
+/// tem XML com que comparar: nesse caso o check é **carregá-lo** — um BSN
+/// malformado falha o gate em vez de ser comparado consigo mesmo (exit 0
+/// sempre).
 pub fn check(paths: &[PathBuf], root: Option<&Path>, out: Option<&Path>) -> Result<usize> {
     let paths = default_paths(paths);
     let root = resolve_root(&paths, root)?;
     let mut checked = 0;
-    for xml in discover_xml(&paths)? {
-        let bsn = output_path(&xml, &root, out);
-        compare(&xml, &bsn, &root)?;
+    for path in discover_xml(&paths)? {
+        if is_bsn(&path) {
+            load_world_in(&path, &root)
+                .with_context(|| format!("validar BSN {}", path.display()))?;
+            checked += 1;
+            continue;
+        }
+        let bsn = output_path(&path, &root, out);
+        compare(&path, &bsn, &root)?;
         checked += 1;
     }
     Ok(checked)
@@ -129,7 +140,25 @@ fn discover_xml(paths: &[PathBuf]) -> Result<Vec<PathBuf>> {
     }
     out.sort();
     out.dedup();
+    // Zero ficheiros fazia o `convert`/`check` sair com 0 e imprimir
+    // "0 ficheiro(s) …": um gate que não verificou nada passava.
+    if out.is_empty() {
+        bail!(
+            "nenhum ficheiro .xml encontrado em {}",
+            paths
+                .iter()
+                .map(|path| path.display().to_string())
+                .collect::<Vec<_>>()
+                .join(", ")
+        );
+    }
     Ok(out)
+}
+
+fn is_bsn(path: &Path) -> bool {
+    path.extension()
+        .and_then(|ext| ext.to_str())
+        .is_some_and(|ext| ext.eq_ignore_ascii_case("bsn"))
 }
 
 fn walk_xml(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
@@ -195,9 +224,16 @@ fn collect_includes(
 }
 
 fn output_path(xml: &Path, root: &Path, out: Option<&Path>) -> PathBuf {
-    let relative = xml.strip_prefix(root).unwrap_or(xml);
     match out {
-        Some(dir) => dir.join(relative).with_extension("bsn"),
+        Some(dir) => {
+            // Fora da raiz, `strip_prefix` falha e o antigo `dir.join(abs)`
+            // devolvia o caminho absoluto: `--out` era ignorado em silêncio e
+            // o ficheiro era escrito ao lado do XML. Usar o nome resolve.
+            let relative = xml
+                .strip_prefix(root)
+                .unwrap_or_else(|_| Path::new(xml.file_name().unwrap_or_else(|| xml.as_os_str())));
+            dir.join(relative).with_extension("bsn")
+        }
         None => xml.with_extension("bsn"),
     }
 }
@@ -246,5 +282,48 @@ mod tests {
         );
 
         std::fs::remove_dir_all(&dir).expect("limpar");
+    }
+
+    #[test]
+    fn discover_sem_xml_falha_em_vez_de_verificar_zero() {
+        // Regressão: uma pasta sem XML dava "0 ficheiro(s)" e exit 0 — um gate
+        // que não verificou nada passava.
+        let dir = std::env::temp_dir().join(format!("vael-tools-bsn-empty-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("criar pasta");
+        let error = discover_xml(std::slice::from_ref(&dir)).unwrap_err();
+        assert!(
+            format!("{error:#}").contains("nenhum ficheiro"),
+            "{error:#}"
+        );
+        assert!(check(std::slice::from_ref(&dir), None, None).is_err());
+        std::fs::remove_dir_all(&dir).expect("limpar");
+    }
+
+    #[test]
+    fn check_de_bsn_valida_o_ficheiro_em_vez_de_o_comparar_consigo() {
+        // Regressão: `bsn check <ficheiro.bsn>` comparava o ficheiro consigo
+        // mesmo (sempre "iguais", exit 0) — um BSN malformado passava o gate.
+        let dir = std::env::temp_dir().join(format!("vael-tools-bsn-check-{}", std::process::id()));
+        let _ = std::fs::remove_dir_all(&dir);
+        std::fs::create_dir_all(&dir).expect("criar pasta");
+        let bsn = dir.join("world.bsn");
+        std::fs::write(&bsn, "World { Entity(").expect("escrever bsn");
+        let error = check(std::slice::from_ref(&bsn), None, None).unwrap_err();
+        assert!(format!("{error:#}").contains("BSN"), "{error:#}");
+        std::fs::remove_dir_all(&dir).expect("limpar");
+    }
+
+    #[test]
+    fn out_honrado_para_ficheiro_fora_da_raiz() {
+        // Regressão: `dir.join(absolute)` devolvia o absoluto e `--out` era
+        // ignorado, escrevendo ao lado do XML.
+        let root = Path::new("/projeto");
+        let xml = Path::new("/fora/docs/world.xml");
+        let out = Path::new("/saida");
+        assert_eq!(
+            output_path(xml, root, Some(out)),
+            Path::new("/saida/world.bsn")
+        );
     }
 }

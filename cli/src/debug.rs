@@ -250,6 +250,22 @@ pub fn run(
         println!("{}", serde_json::to_string_pretty(&probe)?);
         return Ok(ExitCode::SUCCESS);
     }
+    // `logs` do ficheiro da sessão NÃO precisa de bridge vivo — o log
+    // pós-crash (jogo morto) é precisamente o que se quer ler. Só o ring do
+    // jogo (`--source bridge` ou `auto` sem ficheiro) exige a porta ocupada.
+    if let DebugCommand::Logs { tail, grep, source } = &command {
+        let mode = log_source_mode(source)?;
+        if mode != "bridge" {
+            if logs_from_file(world.as_deref(), *tail, grep.as_deref(), json_out)? {
+                return Ok(ExitCode::SUCCESS);
+            }
+            if mode == "file" {
+                bail!(
+                    "--source file: sem ficheiro de log de sessão (lança com `vael-tools run --bridge`)"
+                );
+            }
+        }
+    }
     // Falha em 150 ms em vez dos 40 s de retry do cliente quando não há jogo.
     if !is_listening(port) {
         bail!("bridge desligado na porta {port}; arranca `vael-tools run --bridge {port}`");
@@ -327,49 +343,16 @@ pub fn run(
             )?;
             println!("{}", serde_json::to_string_pretty(&value)?);
         }
-        DebugCommand::Logs {
-            tail,
-            grep,
-            source,
-        } => {
-            let mode = match source.as_str() {
-                "auto" | "file" | "bridge" => source,
-                other => bail!("--source inválido `{other}` (auto | file | bridge)"),
-            };
-            let log_path = if mode == "bridge" {
-                None
-            } else {
-                session_log_path(world.as_deref())
-            };
-            match log_path {
-                Some(path) if mode != "bridge" => {
-                    let lines = read_log_lines(&path, tail, grep.as_deref())?;
-                    emit(
-                        json_out,
-                        lines.join("\n"),
-                        &json!({
-                            "source": "file",
-                            "path": path.display().to_string(),
-                            "lines": lines,
-                        }),
-                    )?;
-                }
-                _ => {
-                    if mode == "file" {
-                        bail!("--source file: sem ficheiro de log de sessão (lança com `vael-tools run --bridge`)");
-                    }
-                    // Ring do monólito (`viber.logs`): o runtime não serve
-                    // `vael-tools/logs` — o stub que devolvia `[]` mascarava
-                    // este ring real via fallback (que só dispara em erro).
-                    let value = client.call(LEGACY_LOGS, json!({ "limit": tail }))?;
-                    let entries = filter_log_entries(&value, grep.as_deref());
-                    emit(
-                        json_out,
-                        serde_json::to_string_pretty(&entries)?,
-                        &json!({ "source": "bridge", "entries": entries }),
-                    )?;
-                }
-            }
+        DebugCommand::Logs { tail, grep, .. } => {
+            // Só se chega aqui com `--source bridge` ou `auto` sem ficheiro
+            // de sessão (o ficheiro é servido antes do probe do bridge).
+            let value = client.call(LEGACY_LOGS, json!({ "limit": tail }))?;
+            let entries = filter_log_entries(&value, grep.as_deref());
+            emit(
+                json_out,
+                serde_json::to_string_pretty(&entries)?,
+                &json!({ "source": "bridge", "entries": entries }),
+            )?;
         }
         DebugCommand::Memory => {
             let value = client.call(METHOD_MEMORY, json!({}))?;
@@ -401,19 +384,37 @@ pub fn run(
                             .with_context(|| format!("a criar {}", path.display()))
                     })
                     .transpose()?;
-                for _ in 0..samples {
+                for sample in 0..samples {
                     let value = client
                         .call(METHOD_FRAME_STATS, json!({}))
                         .or_else(|_| client.call(LEGACY_PROFILER_TAB, json!({ "tab": tab })))?;
                     if let Some(file) = file.as_mut() {
                         writeln!(file, "{value}")?;
-                    } else if json {
+                    } else {
+                        // Sem `-o`, as amostras iam para o vazio (o comando
+                        // saía com 0 e sem output): JSONL no stdout.
                         println!("{value}");
                     }
-                    std::thread::sleep(std::time::Duration::from_secs_f64(1.0 / hz));
+                    // Sem `sleep` depois da última amostra (com `--hz` baixo
+                    // eram segundos a mais no fim do comando).
+                    if sample + 1 < samples {
+                        std::thread::sleep(std::time::Duration::from_secs_f64(1.0 / hz));
+                    }
                 }
                 if let Some(path) = &output {
-                    println!("perf: {} amostra(s) em {}", samples, path.display());
+                    if json {
+                        // `--json` = só JSON no stdout (o "perf:" era texto
+                        // solto que os agentes não conseguiam parsear).
+                        println!(
+                            "{}",
+                            serde_json::to_string_pretty(&json!({
+                                "samples": samples,
+                                "path": path.display().to_string(),
+                            }))?
+                        );
+                    } else {
+                        println!("perf: {} amostra(s) em {}", samples, path.display());
+                    }
                 }
             } else {
                 let value = client
@@ -483,7 +484,8 @@ pub fn run(
                 (Some(code), None) => code,
                 (None, Some(file)) => std::fs::read_to_string(&file)
                     .with_context(|| format!("a ler {}", file.display()))?,
-                _ => bail!("`debug lua` precisa de CODE ou --file"),
+                (Some(_), Some(_)) => bail!("usa CODE ou --file, não ambos"),
+                (None, None) => bail!("`debug lua` precisa de CODE ou --file"),
             };
             let value = client.call(LEGACY_LUA, json!({ "code": code }))?;
             println!("{}", serde_json::to_string_pretty(&value)?);
@@ -943,6 +945,38 @@ fn engines(prune: bool, json_out: bool) -> Result<ExitCode> {
     Ok(ExitCode::SUCCESS)
 }
 
+/// Valida `--source` (o erro de uso sai antes de qualquer probe à porta).
+fn log_source_mode(source: &str) -> Result<&str> {
+    match source {
+        "auto" | "file" | "bridge" => Ok(source),
+        other => bail!("--source inválido `{other}` (auto | file | bridge)"),
+    }
+}
+
+/// Serve os logs do ficheiro da sessão (não precisa do bridge vivo).
+/// `Ok(false)` quando não há ficheiro de sessão para ler.
+fn logs_from_file(
+    world: Option<&Path>,
+    tail: usize,
+    grep: Option<&str>,
+    json_out: bool,
+) -> Result<bool> {
+    let Some(path) = session_log_path(world) else {
+        return Ok(false);
+    };
+    let lines = read_log_lines(&path, tail, grep)?;
+    emit(
+        json_out,
+        lines.join("\n"),
+        &json!({
+            "source": "file",
+            "path": path.display().to_string(),
+            "lines": lines,
+        }),
+    )?;
+    Ok(true)
+}
+
 /// O ficheiro de log da sessão (`engine.json` → `log`). Com `--world`, a
 /// sessão desse mundo; sem, a única sessão viva (para não apanhar a errada
 /// quando há duas engines em portas diferentes).
@@ -970,6 +1004,10 @@ fn session_log_path(world: Option<&Path>) -> Option<PathBuf> {
 fn read_log_lines(path: &Path, tail: usize, grep: Option<&str>) -> Result<Vec<String>> {
     let raw = std::fs::read_to_string(path)
         .with_context(|| format!("a ler o log da sessão {}", path.display()))?;
+    // `--tail 0` = nenhuma linha; o `max(1)` antigo devolvia sempre a última.
+    if tail == 0 {
+        return Ok(Vec::new());
+    }
     let needle = grep.map(str::to_lowercase);
     let lines: Vec<String> = raw
         .lines()
@@ -981,34 +1019,46 @@ fn read_log_lines(path: &Path, tail: usize, grep: Option<&str>) -> Result<Vec<St
         })
         .map(str::to_string)
         .collect();
-    let start = lines.len().saturating_sub(tail.max(1));
+    let start = lines.len().saturating_sub(tail);
     Ok(lines[start..].to_vec())
 }
 
 /// Filtra as entradas do ring da bridge (`viber.logs`:
-/// `{time, level, target, message}[]`) por substring da mensagem.
+/// `{time, level, target, message}[]`) por substring. Procura em `message`,
+/// `level` e `target` (o `--grep` promete "linhas que contêm o texto"; só na
+/// mensagem, `--grep ERROR` não via nenhum erro).
 fn filter_log_entries(value: &Value, grep: Option<&str>) -> Value {
     let Some(grep) = grep else {
         return value.clone();
     };
     let needle = grep.to_lowercase();
-    let entries = value
-        .as_array()
-        .cloned()
-        .unwrap_or_default()
-        .into_iter()
+    let Some(entries) = value.as_array() else {
+        // Forma inesperada: devolver o que veio em vez de `[]` (mascarava).
+        return value.clone();
+    };
+    let filtered = entries
+        .iter()
         .filter(|entry| {
-            entry
-                .get("message")
-                .and_then(Value::as_str)
-                .map(|message| message.to_lowercase().contains(&needle))
-                .unwrap_or(false)
+            ["message", "level", "target"].iter().any(|key| {
+                entry
+                    .get(*key)
+                    .and_then(Value::as_str)
+                    .map(|field| field.to_lowercase().contains(&needle))
+                    .unwrap_or(false)
+            })
         })
+        .cloned()
         .collect::<Vec<_>>();
-    json!(entries)
+    json!(filtered)
 }
 
 fn pid_alive(pid: u32) -> bool {
+    // `/proc` só existe em Linux. Noutra plataforma não se pode provar que o
+    // pid morreu: assumir vivo evita o `engines --prune` apagar sessões
+    // válidas (e o `logs` deixar de encontrar o ficheiro da sessão).
+    if !cfg!(target_os = "linux") {
+        return true;
+    }
     Path::new("/proc").join(pid.to_string()).exists()
 }
 
@@ -1072,10 +1122,12 @@ mod tests {
         // O tail é DEPOIS do filtro: 2 linhas batem o grep, pede-se 1.
         let last = read_log_lines(&path, 1, Some("info")).unwrap();
         assert_eq!(last, vec!["INFO pronto".to_string()]);
+        // `--tail 0` não devolve a última linha (o `max(1)` fazia-o).
+        assert!(read_log_lines(&path, 0, None).unwrap().is_empty());
     }
 
     #[test]
-    fn filter_log_entries_matches_message_only() {
+    fn filter_log_entries_matches_message_level_or_target() {
         let value = json!([
             { "time": 1.0, "level": "INFO", "target": "vael", "message": "mundo pronto" },
             { "time": 2.0, "level": "ERROR", "target": "lua", "message": "quest falhou" }
@@ -1083,10 +1135,25 @@ mod tests {
         let filtered = filter_log_entries(&value, Some("pronto"));
         assert_eq!(filtered.as_array().unwrap().len(), 1);
         assert_eq!(filtered[0]["level"], "INFO");
+        // O nível também conta como "texto da linha" (`--grep ERROR`).
+        let errors = filter_log_entries(&value, Some("error"));
+        assert_eq!(errors.as_array().unwrap().len(), 1);
+        assert_eq!(errors[0]["target"], "lua");
+        // O target também.
+        assert_eq!(
+            filter_log_entries(&value, Some("VAEL"))
+                .as_array()
+                .unwrap()
+                .len(),
+            1
+        );
         // Sem grep devolve tudo.
         assert_eq!(
             filter_log_entries(&value, None).as_array().unwrap().len(),
             2
         );
+        // Forma inesperada: devolve o valor em vez de uma lista vazia.
+        let object = json!({ "entries": [] });
+        assert_eq!(filter_log_entries(&object, Some("x")), object);
     }
 }

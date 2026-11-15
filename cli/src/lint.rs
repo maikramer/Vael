@@ -84,6 +84,11 @@ pub fn lint(input: Option<&Path>) -> LintReport {
         }
     }
     for warning in report.warnings {
+        // O `analyze` já avisa dos scripts em falta; o lint promove-os a erro
+        // acima. Repetir o aviso duplicava o finding e inflava a contagem.
+        if warning.starts_with("script em falta: ") {
+            continue;
+        }
         findings.push(Finding {
             severity: Severity::Warning,
             kind: "world",
@@ -113,5 +118,9 @@ mod tests {
                 .iter()
                 .any(|finding| finding.kind == "script")
         );
+        // Regressão: o aviso do `analyze` repetia o mesmo script em falta
+        // como finding de "world" (2 avisos + 1 erro para o mesmo problema).
+        assert_eq!(report.errors(), 1);
+        assert_eq!(report.warnings(), 0);
     }
 }
