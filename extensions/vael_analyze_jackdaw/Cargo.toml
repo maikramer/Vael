@@ -1,0 +1,24 @@
+[package]
+name = "vael_analyze_jackdaw"
+version = "0.1.1"
+edition = "2024"
+rust-version = "1.97.1"
+description = "Jackdaw extension: Vael Problems panel and analyze operators"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/maikramer/Vael"
+authors = ["Maikeu Locatelli"]
+readme = "README.md"
+publish = false
+
+# Extensão oficial: projeto standalone, compilado pelo `jd build` contra o SDK.
+[workspace]
+
+[package.metadata.jackdaw]
+label = "Vael: Problems"
+
+[dependencies]
+bevy = "0.20"
+jackdaw_extension = "0.20"
+jackdaw_api = "0.20"
+vael-tools = { path = "../../cli" }
+serde_json = "1"

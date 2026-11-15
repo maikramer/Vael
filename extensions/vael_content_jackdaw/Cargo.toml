@@ -1,0 +1,37 @@
+[package]
+name = "vael_content_jackdaw"
+version = "0.1.6"
+edition = "2024"
+rust-version = "1.97.1"
+description = "Jackdaw editor extension for Vael: items, landmarks, progression, dialogues, quests, content validation and scenes"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/maikramer/Vael"
+authors = ["Maikeu Locatelli"]
+publish = false
+
+# Extensão oficial do Jackdaw: projeto standalone; `jd build` gera o shim em
+# `.jackdaw/` e compila contra o SDK do editor.
+[workspace]
+
+[package.metadata.jackdaw]
+label = "Vael: Conteúdo"
+
+[dependencies]
+# `jd` redireciona estes para o dylib partilhado do SDK do editor.
+bevy = "0.20"
+jackdaw_extension = "0.20"
+jackdaw_api = "0.20"
+# Widgets dos painéis (text_edit, combobox, scroll, botões), os mesmos que o
+# editor usa. A versão acompanha o SDK.
+jackdaw_feathers = "0.20"
+
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+
+# Esquemas e validação do conteúdo do Vael (sem Bevy): os mesmos tipos que o
+# jogo lê dos JSON. O checkout irmão tem de estar ao lado (padrão dos quatro
+# checkouts do Vael).
+vael-content = { path = "../../content" }
+# Índice de nomes do mundo/cenas `.bsn` para a validação cruzada (o mesmo
+# loader que o runtime usa, com expansão de `<Include>`).
+bevy_world_xml = { package = "bevy_ext_world", path = "../../../bevy_extensions/crates/bevy_ext_world" }

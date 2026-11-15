@@ -1,0 +1,23 @@
+[package]
+name = "vael_profiler_jackdaw"
+version = "0.1.1"
+edition = "2024"
+rust-version = "1.97.1"
+description = "Jackdaw extension: live Vael profiler panel over the game bridge"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/maikramer/Vael"
+authors = ["Maikeu Locatelli"]
+readme = "README.md"
+publish = false
+
+[workspace]
+
+[package.metadata.jackdaw]
+label = "Vael: Profiler"
+
+[dependencies]
+bevy = "0.20"
+jackdaw_extension = "0.20"
+jackdaw_api = "0.20"
+bevy_ext_bridge_protocol = { path = "../../../bevy_extensions/crates/bevy_ext_bridge_protocol" }
+serde_json = "1"
