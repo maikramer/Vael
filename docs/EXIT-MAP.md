@@ -43,33 +43,34 @@ incremental de gémeos parte o jogo em silêncio).
 |---|---|---|---|---|
 | app.rs `build_app` (1.162) | morre — `src/app.rs` do Vael | aterrar branch exit2 | **A** | ✅ validada, bloqueada na água |
 | gémeos vitals/input_map/a11y/locale/dialogue/camera-glue/save-bridge | core/engine/save | só aterrar | **A** | ✅ em `integrate2/all` (A1) |
-| streaming.rs | scene_runtime | re-sync 9 lin + shim | **B** | 🔄 em curso |
-| config.rs (594) | scene_runtime (A2 moveu) → decisão world vs scene_runtime | re-sync + shim | **B** | 🔄 |
-| interact.rs (188) | scene_runtime (A2 moveu) | re-sync + shim | **B** | 🔄 |
-| spawn_gate.rs (422, monólito avian) | scene_runtime | **port avian** + `chunk_edge` | **B** | 🔄 |
-| save `apply_save` | `bevy_ext_save` | só se consumidor fora do binário | **B** | 🔄 |
-| attachment (288) | scene_runtime (`GltfScenePending`) | extrair | **B** | 🔄 |
-| audio_space (291) | `bevy_ext_audio` | extrair | **B** | 🔄 |
-| hud DISPLAY_FONT (313) | engine `hud_assets` | já feito (A3); confirmar | **B** | ✅ |
+| streaming.rs | scene_runtime | fork ao nível; swap bloqueado no ciclo | **B** | ✅ fork pronto (`af65a86`) |
+| config.rs (594) | **`bevy_ext_engine::config`** | nenhum — shim COMPLETO nos dois lados | **B** | ✅ (`66d9224`) |
+| interact.rs (188) | scene_runtime | re-sync feito; swap no ciclo | **B** | ✅ (`77eb1b0`) |
+| spawn_gate.rs (422, monólito avian) | scene_runtime | **port avian feito**; swap no ciclo | **B** | ✅ (`10a62f9`) |
+| save `apply_save` | — só-binário | morre na H | **B** | ✅ documentado (`6365a4b`) |
+| attachment (288) | scene_runtime (`GltfScenePending`) | extraído; swap no ciclo | **B** | ✅ (`1c29919`) |
+| audio_space (291) | `bevy_ext_audio` | nenhum — shim COMPLETO | **B** | ✅ (`e1173c2`) |
+| hud DISPLAY_FONT (313) | engine `hud_assets` | já feito (A3) | **B** | ✅ |
 | input_map `gather_actions` | morre com `ExternalActionState` | apagar na aterragem da wave A | **B** | ⏳ |
-| postfx fork (349) | `bevy_ext_postfx` | re-sync + swap | **C** | ⏳ |
-| nav fork (72) | `bevy_ext_nav` | re-sync + swap | **C** | ⏳ |
-| roads (4) / textures | `bevy_ext_terrain_runtime` | re-sync + swap | **C** | ⏳ |
-| recipes/spawn.rs (633 à frente: avian, `gradmesh_style`, RoadSpec.flare) | `bevy_ext_scene_runtime` | re-sync + swap | **C** | ⏳ |
-| ui data layer (UiData/UiWriter/UiScriptBinds/UiModalsOpen/UiFocusedInput) | `bevy_ext_ui` | **troca ATÓMICA** (re-export no monólito, jogo não muda) | **C** | ⏳ |
+| postfx fork (349) | `bevy_ext_postfx` | port semântico + shim | **C** | 🔄 |
+| nav fork (72) | `bevy_ext_nav` | re-sync + shim | **C** | 🔄 |
+| roads (4) / textures | `bevy_ext_terrain_runtime` | re-sync + shim | **C** | 🔄 |
+| recipes/spawn.rs (633 à frente: avian, 113 gradmesh) | `bevy_ext_scene_runtime` | port + swap (no ciclo) | **C** | 🔄 |
+| ui data layer (UiData/UiWriter/UiScriptBinds/UiModalsOpen/UiFocusedInput) | `bevy_ext_ui` | **troca ATÓMICA** — só 234 lin de diff, zero ficheiros só-no-monólito | **C** | 🔄 |
 | ui presentation (~18k tree/style/tween) | morre (bevy_pf é o dono) | nenhum no jogo | **H** | — |
 | terrain runtime + water fork (1.275) + cliffs/shore + voxel avian | `bevy_ext_terrain_runtime` + `bevy_ext_water` (já avian) | portar pós-água; contratos do `host.rs` | **D** | 🚫 bloqueada na água |
-| physics.rs KCC (2.052) | morre (jogo é avian+tnua) | salvar `stump_collider` | **E** | 🔄 |
-| bevy_ext_physics (Rapier-era) | port a avian3d | port 3k + 50 testes | **E** | 🔄 |
+| physics.rs KCC (2.052) | morre (jogo é avian+tnua) | salvar `stump_collider`; monólito tem `bounds_cuboid` errado | **E/H** | ✅ fix no crate |
+| bevy_ext_physics (Rapier-era) | **port a avian3d 0.8** | feito | **E** | ✅ (`exit3/avian`, 50/50) |
 | luau host (16.1k) | `bevy_ext_luau` (BMS) | famílias por call-sites (ui 256, load 149, toast 108, game 96, sound 87, prop 62, burst 53, interact 49…); `tests.rs` (2.8k); 13 ficheiros do Vael largam o `host.lua` cru | **F** | ⏳ |
 | `viber.ecs` mirror (2.1k) | **morre** (0 usos no jogo) | remover módulo + gate `ecs_mirror` | **F** | ⏳ |
 | `viber.lua` REPL | adapter BRP no `viber_tools_runtime` | eval na VM do host novo | **F** | ⏳ |
 | `viber.scene --live` / `tool --live` | **reformados** (Jackdaw live-edit) | — | **F** | decisão ✅ |
+| **ponte do scene_runtime ao monólito (18 módulos)** | morre com o luau | **desbloqueia TODOS os swaps de B/C** | **F** | 🔑 |
 | worldsys drivers (daycycle/sun/weather/atmosphere/interior) | `bevy_ext_engine::worldsys` (já lá) | UM dono p/ `AtmosphereState`/`BiomeRegions` (postfx::env vs engine); Vael troca 7 refs | **G** | ⏳ |
 | ambient.rs (1.665) | repartir: SFX→audio, névoa→postfx/elements, sombras→bevy_lights, gestos→animation | esvaziar | **G** | ⏳ |
 | music.rs cópia (946) | `bevy_ext_audio::music` | apagar cópia | **G** | ⏳ |
 | ai/senses (`features=["ai"]`) | `bevy_ext_nav` | trocar a feature para o crate | **G** | ⏳ |
-| `drive_player_animation` | morre (jackdaw AnimationSet) | gestos sem rig em curso | **G** | ⏳ |
+| `drive_player_animation` | morre (jackdaw AnimationSet) | `d8d4db7` gestos sem rig já no main | **G** | ⏳ |
 | bridge legacy / session.rs | `viber_tools_core` / morre com o binário | — | **H** | — |
 | dep `viber` no Cargo.toml + arquivar monólito | — | gate `cargo tree -i viber` vazio | **H** | 🚫 pós A+D+F |
 
@@ -81,12 +82,32 @@ a default com a infra `qa.py` nova e apagar os caminhos Lua.
 
 - **A** — aterrar `integrate2/all` + `exit2/app-assembly` (bloqueada no
   WIP de água do monólito; runbook na memória).
-- **B/C/E/F** — execução a 2026-11-14 em worktrees `exit3/*` sobre
-  `integrate2/all` @ `486b498` (mergeiam na ordem água → integrate2 →
-  exit3).
+- **B** ✅ (`exit3/wave-b`, 7 commits) — streaming (forks ao nível),
+  config → **`bevy_ext_engine::config`** com shim COMPLETO no monólito e no
+  scene_runtime (um só `GameConfig` hoje), interact re-sync, spawn_gate
+  **portado a avian** no scene_runtime (espelha o WIP do monólito),
+  attachment extraído, audio_space → `bevy_ext_audio` com shim COMPLETO,
+  save `apply_save`/`SavePlugin` documentados só-binário (morrem na H),
+  hud font confirmado (A3). Gates: workspace **1081/0**, monólito
+  **1010/3-fixtures**, scene_runtime 63/0.
+- **C** 🔄 (`exit3/wave-c`) — nav/roads/textures/postfx(349 semântico)/
+  spawn(633 avian+gradmesh)/**ui data layer atómica** (234 lin de diff,
+  zero ficheiros só-no-monólito).
+- **E** ✅ (`exit3/avian`, 3 commits) — `bevy_ext_physics` portado a
+  **avian3d 0.8**, 50/50 testes; apanhou divergência real do monólito
+  (`bounds_cuboid` a metade do AABB — validar na wave H).
+- **Descoberta estrutural (B):** o swap literal para o `scene_runtime` é
+  bloqueado por **ciclo** — o crate ainda dep do monólito pela ponte de 18
+  módulos (`viber::{luau, scene, xml, …}`). O desbloqueio é a **morte da
+  ponta do luau (wave F)**: depois disso, os forks sincronizados em B/C
+  trocam com 1 linha cada. Destinos sem ciclo (engine/audio/core/save/ui)
+  já têm shim completo.
 - **D** — portar o terreno/água para o `bevy_ext_terrain_runtime` DEPOIS
   de a água da sessão concorrente aterrar (não portar alvo em movimento).
-- **G** — worldsys/ambient/music/ai/animation (pós-C).
+- **F** — morte do `viber.ecs` + famílias luau por call-sites no BMS +
+  adapter BRP do `viber.lua`; **é o desbloqueio dos swaps do scene_runtime**.
+- **G** — worldsys/ambient/music/ai/animation (pós-C; o `d8d4db7` "gestos
+  sem rig" do main já mata o `drive_player_animation`).
 - **H** — apagar a dep `viber`, arquivar o monólito; gate final
   `cargo tree -i viber` vazio + QA vivo completo (boot/andar/save/morte/
   interiores/sessão longa).
