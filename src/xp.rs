@@ -145,6 +145,15 @@ pub fn ensure_xp(kv: &mut XpMap, rules: &XpRules) -> XpState {
     }
 }
 
+/// Segundo teto do `add_xp`: níveis que um único ganho pode pagar.
+///
+/// Com a curva a crescer (`growth > 1`) o `while` pára sempre em poucos
+/// passos; com um save à mão (`xp` a 1e18) e uma curva que não cresce
+/// (`growth: 1`, já validada como finita e ≠ 0) o ciclo corria biliões de
+/// vezes e o frame nunca voltava. O resto do XP fica no save para o ganho
+/// seguinte.
+pub const MAX_LEVELS_PER_GAIN: i64 = 1_000;
+
 /// Soma XP e sobe todos os níveis que o ganho atravessar.
 ///
 /// Ganho não finito ou ≤ 0 é ignorado sem tocar no mapa (o `return` do Lua
@@ -169,7 +178,7 @@ pub fn add_xp(kv: &mut XpMap, rules: &XpRules, gain: f64) -> XpGain {
     xp += gain;
 
     let mut levels = 0i64;
-    while xp >= xp_next {
+    while xp >= xp_next && levels < MAX_LEVELS_PER_GAIN {
         xp -= xp_next;
         xp_next = (xp_next * rules.growth).ceil().max(1.0);
         level = level.saturating_add(1);
@@ -525,6 +534,30 @@ mod tests {
         assert_eq!(out.points, 0);
         assert_eq!(kv[KEY_LEVEL], 3.0);
         assert_eq!(kv[KEY_SKILL_POINTS], 7.0);
+    }
+
+    #[test]
+    fn add_xp_com_curva_que_nao_cresce_nao_corre_sem_fim() {
+        // Curve plana (`growth: 1`) + save corrompido com `xp` gigante: o
+        // `while` sem teto corria biliões de vezes e o frame nunca voltava.
+        let rules = XpRules {
+            base: 10,
+            growth: 1.0,
+            points_per_level: 1,
+        };
+        let mut kv = mapa(&[
+            (KEY_XP, 1.0e18),
+            (KEY_XP_NEXT, 100.0),
+            (KEY_LEVEL, 1.0),
+            (KEY_SKILL_POINTS, 0.0),
+        ]);
+        let out = add_xp(&mut kv, &rules, 1.0);
+        assert_eq!(out.levels, MAX_LEVELS_PER_GAIN, "o teto trava o ciclo");
+        assert_eq!(kv[KEY_LEVEL], 1.0 + MAX_LEVELS_PER_GAIN as f64);
+        // O resto do XP fica no save (o próximo ganho volta a subir).
+        assert!(kv[KEY_XP] >= kv[KEY_XP_NEXT]);
+        let out = add_xp(&mut kv, &rules, 1.0);
+        assert_eq!(out.levels, MAX_LEVELS_PER_GAIN);
     }
 
     #[test]
