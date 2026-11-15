@@ -14,7 +14,7 @@
 //! Kelvin chega ao solver de ondas.
 
 use std::f32::consts::PI;
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use avian3d::prelude::RigidBodyDisabled;
 use bevy::prelude::*;
@@ -425,6 +425,8 @@ fn spawn_boats(
     mut spawned: ResMut<BoatsSpawned>,
     assets: Option<Res<BoatAssets>>,
     terrain: Option<Res<TerrainRuntime>>,
+    scene: Option<Res<viber::scene_loader::CurrentScene>>,
+    root: Option<Res<crate::VaelProjectRoot>>,
 ) {
     if spawned.0 {
         return;
@@ -432,9 +434,27 @@ fn spawn_boats(
     let (Some(assets), Some(terrain)) = (assets, terrain) else {
         return;
     };
+    // Os barcos de `data/boats.json` são do MAPA PRINCIPAL: as coordenadas são
+    // do `world.bsn`. No menu e nos interiores não há essa água — sem este
+    // portão cada cena leve avisava "barco sem água" para pontos que nem
+    // existem no seu terreno.
+    if scene
+        .as_ref()
+        .and_then(|scene| scene.id.as_deref())
+        .is_some_and(|id| id != viber::project::MAIN_SCENE)
+    {
+        spawned.0 = true;
+        return;
+    }
     spawned.0 = true;
 
-    let config = BoatsConfig::load("data/boats.json");
+    // A raiz do projeto, não o cwd: `vael-tools run`/`jd` mudam de pasta e o
+    // contrato dos loaders é lerem `data/` de `VaelProjectRoot`.
+    let config_path = root
+        .as_deref()
+        .map(|root| root.0.join("data/boats.json"))
+        .unwrap_or_else(|| PathBuf::from("data/boats.json"));
+    let config = BoatsConfig::load(&config_path);
     for spawn in &config.boats {
         let Some(surface) = terrain.water_surface_at(spawn.x, spawn.z) else {
             warn!(
@@ -582,7 +602,7 @@ fn board_or_leave_boat(
             Transform {
                 translation: drop,
                 rotation,
-                ..player_tf.clone()
+                ..*player_tf
             },
             // O corpo é dinâmico: a `Position` é a pose autoritativa e o
             // `Transform` sozinho só chegaria no frame seguinte.
