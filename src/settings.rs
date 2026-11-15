@@ -179,13 +179,21 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     ];
 
     let dir = root.join(SETTINGS_DIR);
+    // Confere os quatro ANTES de escrever: um `--force` a menos não pode
+    // deixar a pasta com metade dos ficheiros reescritos e a outra metade
+    // intacta (o bail a meio de um export anterior fazia isso).
+    if !force {
+        for (name, _) in &files {
+            let path = dir.join(name);
+            if path.exists() {
+                anyhow::bail!("{} já existe (usa --force)", path.display());
+            }
+        }
+    }
     std::fs::create_dir_all(&dir).with_context(|| format!("criar {}", dir.display()))?;
     let mut written = Vec::new();
     for (name, body) in files {
         let path = dir.join(name);
-        if path.exists() && !force {
-            anyhow::bail!("{} já existe (usa --force)", path.display());
-        }
         let text = format!(
             "// Definições do Vael ({name}). Editar no Jackdaw (`jd open .`):\n\
              // o inspector e os painéis da extensão vael_jackdaw gravam aqui.\n\n{body}"
@@ -238,6 +246,28 @@ mod tests {
         );
         let styles = bevy_ext_world::bsn::settings::native_values::<GrassStyleSpec>(&natives);
         assert_eq!(styles, crate::grass::legacy_grass_styles());
+        let _ = std::fs::remove_dir_all(dir);
+    }
+
+    /// Um ficheiro já existente aborta o export ANTES de escrever os outros:
+    /// nada de uma pasta com metade dos ficheiros reescritos.
+    #[test]
+    fn export_sem_force_nao_escreve_nada_a_meio() {
+        let dir = tempfile_dir();
+        let settings = dir.join(SETTINGS_DIR);
+        std::fs::create_dir_all(&settings).expect("settings");
+        std::fs::write(settings.join("postfx.bsn"), "// já existe").expect("postfx");
+
+        let err = export_settings(&dir, false).expect_err("devia recusar");
+        assert!(err.to_string().contains("já existe"), "{err}");
+        assert!(
+            !settings.join("environment.bsn").exists(),
+            "nenhum ficheiro se perde nem se escreve a meio"
+        );
+        assert_eq!(
+            std::fs::read_to_string(settings.join("postfx.bsn")).expect("postfx"),
+            "// já existe"
+        );
         let _ = std::fs::remove_dir_all(dir);
     }
 
