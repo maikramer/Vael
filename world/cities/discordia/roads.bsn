@@ -45,6 +45,8 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.plaza.floor" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "paving-priority", value: "20" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "34 34" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3.5" },
@@ -72,6 +74,8 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.n" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "paving-priority", value: "10" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "0 27.5" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "7 21" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
@@ -99,6 +103,8 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.s" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "paving-priority", value: "10" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "0 -27.5" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "7 21" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
@@ -126,6 +132,8 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.e" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "paving-priority", value: "10" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "27.5 0" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "21 7" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
@@ -153,6 +161,8 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.street.w" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
+                bevy_world_xml::bsn::WorldProp { key: "paving-priority", value: "10" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-27.5 0" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "21 7" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "2" },
@@ -180,6 +190,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.ne" },
+                bevy_world_xml::bsn::WorldProp { key: "on-paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "15 13" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
@@ -207,6 +218,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.nw" },
+                bevy_world_xml::bsn::WorldProp { key: "on-paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-13 11" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
@@ -234,6 +246,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.se" },
+                bevy_world_xml::bsn::WorldProp { key: "on-paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "17 -7" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
@@ -261,6 +274,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "oak.pit.sw" },
+                bevy_world_xml::bsn::WorldProp { key: "on-paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-15 -11" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "2.8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "1.2" },
@@ -288,6 +302,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.n.w" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-7.5 48" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "8 18" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
@@ -315,6 +330,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.n.e" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "7.5 48" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "8 18" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
@@ -342,6 +358,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.e.n" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "48 7.5" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
@@ -369,6 +386,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.e.s" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "48 -7.5" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
@@ -396,6 +414,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.w.n" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-48 7.5" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
@@ -423,6 +442,7 @@ bevy_ecs::hierarchy::Children [
             tag: "GroundDecal",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "city.gate.w.s" },
+                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-48 -7.5" },
                 bevy_world_xml::bsn::WorldProp { key: "size", value: "18 8" },
                 bevy_world_xml::bsn::WorldProp { key: "feather", value: "3" },
