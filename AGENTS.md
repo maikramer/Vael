@@ -71,8 +71,11 @@ Editar no **Jackdaw oficial** (`jd open .`). Estrutura do `world.bsn`:
   move o que volta igual; idempotente) + `bsn_equiv` contra a cópia de antes;
   a 2026-11-13 juntaram-se `ModelLod` (lod1/lod2/limiares), `FloraStation`
   (`prop-flora`), `ScriptRef` (`script`), `AuthoredProps` (`prop-*`),
-  `ParticleSpec`, `SpawnExclusionSpec` e `PortalSpec` (+4.5k nós). O jogo lê
-  colheita/destrutível tipados (`harvest.rs::from_specs`, paridade testada).
+  `ParticleSpec`, `SpawnExclusionSpec` e `PortalSpec` (+4.5k nós); a
+  2026-11-14 `CameraSpec` (`<OrbitCamera>`), `InteriorSceneSpec` (as 9 salas),
+  `AudioMixerSpec`/`MusicLayerSpec`/`BiomeRegionSpec` (`environment.bsn` e
+  `menu.bsn`). O jogo lê colheita/destrutível tipados
+  (`harvest.rs::from_specs`, paridade testada).
   As `prop-*` vivem no `CustomProperties` **do Jackdaw** (painel nativo do
   inspector; 2026-11-14, `bsn_migrate --props`, 141 nós); o loader ainda lê
   `AuthoredProps` antigos e, numa chave repetida, ganha o do Jackdaw;
@@ -131,6 +134,9 @@ Depois de pincéis: `viber tool settle`. Árvores e dressing:
 | `config.yaml` | `assets.roots: assets/public` |
 | `src/environment.rs` | **dono do céu/tempo** (`bevy_elements`): relógio astronómico, sol/lua/estrelas, clima, nuvens, chuva/neve e relâmpagos. Ponte `Weather` → `WeatherState` (chão molhado, áudio de chuva, vento das árvores), trovão → SFX, visibilidade → névoa e queries em `viber.vael.env_info()`. Gate `VAEL_ELEMENTS=0`. QA: `VAEL_START_HOUR`/`VAEL_START_WEATHER` |
 | `docs/LIGHTING.md` | como o céu/exposição/névoa se ligam hoje e o que ficou na engine |
+| `docs/JACKDAW.md` | matriz sistema→onde se autora no Jackdaw, componentes tipados, painel de cinemáticas e gatilhos |
+| `src/lights.rs` | **luzes práticas** (`bevy_lights` 0.5, pin `=0.5.0`): as luzes de fogo viram `PoolCandidate` (pool orçamentado + flicker + chama billboard); as de preenchimento/cristais ficam autorais. Gate `VAEL_PRACTICAL_LIGHTS=0`. Ver `docs/LIGHTING.md` |
+| `docs/WATER.md` | camadas da água (solver iWave, domínio, espelho CPU do swell), flutuação `FloatingBody` (crate `bevy_ext_water`, adapter avian) e barcos a remos (`src/boat.rs`, `data/boats.json`; **E** entra/sai, W/S rema, A/D leme) |
 
 ## Cenas
 
@@ -150,13 +156,25 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
 ## Jackdaw no jogo
 
 - **Play**: `jackdaw.toml` → "Play" (`--scene main --entry dev`) e "Play
-  (título)". Embedded no Game panel (`.jackdaw/settings.json`
-  `play.separate_window: false`).
+  (título)". Onde o jogo aparece é preferência local
+  (`.jackdaw/settings.json` → `play.separate_window`; hoje em janela
+  separada).
 - **Componentes nativos** (`src/editor_link.rs`): o que se autora num nó e o
   DSL não conhece (`jackdaw_animation_runtime::*`, `jackdaw_camera_rig::*`,
   `jackdaw_bind::*`, `vael::*`; mais `VAEL_NATIVE_ALLOW=prefixo,…`) chega à
   entidade do jogo. O `bevy_ext_world` guarda-os por nó
   (`specs::native_components_for`).
+- **Câmara, áudio e cinemáticas** (`docs/JACKDAW.md`): `CameraSpec`/
+  `InteriorSceneSpec` e `AudioMixerSpec`/`MusicLayerSpec`/`BiomeRegionSpec`
+  são specs tipadas (inspector *Câmara*/*Áudio*, gizmos no viewport). O
+  gatilho de área é o componente `vael::cinematic_trigger::CinematicTrigger`
+  (`src/cinematic_trigger.rs`); a extensão tem um **espelho** com o mesmo
+  `type_path` (`vael_scene_jackdaw/src/trigger.rs`) para o editor o ver vivo —
+  os campos dos dois têm de coincidir. A autoria das cinemáticas é o painel
+  **Vael: Cinemáticas** da extensão `vael_scene_jackdaw` (lista planos,
+  toca/pára no jogo pelo bridge na 15702, cria plano da câmara do viewport);
+  `viber cinematic shot` é XML-only. Durante uma cena os sistemas de câmara
+  do Vael não correm — o `drive_camera` da engine é o dono.
 - **Edições ao vivo no Play**: as entidades recebem o `SceneNodeId` do nó
   (só sob `JACKDAW_PIE`; `VAEL_EDITOR_LINK=1` força) e o `jackdaw_runtime`
   aplica-lhes o `Transform`/componentes que o editor envia. Só nós com id no
@@ -183,8 +201,48 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
   10) e jogo (pára com `MenusOpen`); o `gather_actions` da engine não corre
   (`ExternalActionState`). Debugger remoto: `jackdaw_remote` no BRP (15702).
 
+## Prefabs e organização do mundo
+
+- **Prefabs** em `world/prefabs/<categoria>/<modelo>.bsn` (158, gerados a
+  2026-11-14 a partir dos 6.1k objectos repetidos): `village/torch-post`,
+  `flora/pine-dark-breakable-dark-wood`, `lights/point-warm-4800`,
+  `fx/fire-r18`… A variante mais simples de cada modelo tem o nome simples;
+  as outras levam o que acrescentam (`-solid`, `-breakable`, `-<recurso>`).
+  Uma instância guarda só nome, `Transform`, `SceneNodeId` e a identidade
+  (`WorldOrigin`). Editar o prefab muda todas as cópias (ao recarregar).
+- **Identidade** = `WorldOrigin { file, path }` (ou o legado
+  `WorldNode.origin_file/path`): é a chave dos saves (`harvest::stable_key`).
+  Um `WorldNode` na raiz de uma instância SUBSTITUI o do prefab inteiro —
+  nunca pôr um para guardar só a origem.
+- **Células** (World Partition): grupos com ≥60 filhos têm pastas
+  `célula x<i> z<j>` (128 m). Pastas são transparentes para o loader.
+- Ferramentas (`../bevy_extensions`, `-p bevy_ext_world --example`):
+  `bsn_prefab_report` (candidatos), `bsn_prefabify --root . [--min 4]`,
+  `bsn_organize --root . [--drop-empty-overrides] [--world world.bsn --cells
+  128]`, gates `bsn_equiv` (ignora ordem) e `bsn_origin_equiv` (identidades,
+  tem de dar 0). Correr os dois gates depois de qualquer reorganização.
+
+## QA: cenas leves e cenários
+
+Testar sem carregar o mundo: `qa/scenarios/**/*.json` (estado de partida —
+quest com a cadeia anterior entregue, itens, gear, talentos, nível, hora,
+posição — + `steps` + `expect`) e `scenes/qa/*.bsn` (chão plano + entidades
+copiadas do mundo; ~10 s). `python3 tools/qa.py sim all` (regras reais, ms;
+gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
+(cena + cenários), `qa.py run <cenário>` (jogo vivo, PASS/FAIL), Jackdaw
+"Play (QA)" com `qa.py use <cenário>` (gravar o JSON reaplica). Detalhe:
+[`docs/QA.md`](docs/QA.md); skill `vael-qa`.
+
 ## Gotchas
 
+- **Relva**: o renderer é o crate `bevy_ext_grass` (em
+  `../bevy_extensions/crates/bevy_ext_grass`) sobre `bevy_grass`; o Vael só
+  tem o adaptador `src/grass.rs` (regras do `TerrainRuntime`, layout dos
+  quadrantes + Vale, vento/tinta/trampling). Paletas e settings são
+  `world/settings/grass.bsn` (`GrassSettingsSpec`/`GrassStyleSpec`, editáveis
+  no painel "Relva" do Jackdaw). `VIBER_GRASS=0`, `VIBER_GRASS_DENSITY`,
+  `GRASS_DEBUG=1` (PGMs em `/tmp`); `graphics:` escolhe o tier. GPU sem
+  compute/indirect não desenha relva nenhuma (aviso único no log).
 - `Option<T>` em componentes do `.bsn`: o emissor do Jackdaw grava o valor
   nu (`preset: "fire"`) e o `jackdaw_bsn` lia-o como `None` (todas as
   partículas perdiam o preset). O leitor dos specs normaliza
@@ -201,10 +259,22 @@ a `menu`. Declara `<NavMesh enabled="0">` — não há navegação no menu.
   levantar um maciço de rocha com face vertical na boca; o túnel subtractivo
   corta o arco na face. O monte é um mod voxel `Union` e tem de vir antes dos
   tubos `Subtract`. Sem monte, uma boca horizontal só existe em encosta.
-- Luzes de fogo/partículas são `PointLight` SEM `shadows="true"`: o cube
-  shadow map custa 6 vistas por luz e pisca no chão. A luz simples ilumina
-  igual; o pool noturno fica em `WARM_FILL_NIGHT_GAIN` (×2), não no ×8 das
-  tochas com sombra.
+- Luzes de fogo/partículas são `PointLight` SEM `shadows="true"` **no `.bsn`**:
+  o cube shadow map custa 6 vistas por luz e pisca no chão. Desde 2026-11-14 as
+  luzes de fogo já não ficam autorais: o `src/lights.rs` adota a `PointLight`
+  quente mais próxima de cada emissor de fogo como `PoolCandidate` do
+  `bevy_lights` (pool de `VAEL_POOL_SIZE`, default 24, flicker + chama
+  billboard) e é o pool que decide as sombras (`VAEL_POOL_SHADOWS`, default 2,
+  só de noite). As quentes de **preenchimento** (janelas/vila) e os cristais
+  frios continuam autorais no `torch_pool_drive` da engine (×8; ×64 só com
+  sombra autoral). As luzes que o pool spawna levam `NightGainExempt`, senão a
+  base 0 delas (nascem a 0) congelava no ganho nocturno. Os **248** emissores
+  `preset: "fire"` também já não correm no sistema de partículas da engine: a
+  entidade perde o `AmbientFx`/`ParticleEmitter` e fica com a chama billboard
+  do crate (`VAEL_FIRE_MIGRATE=0` mantém as duas para A/B); os outros presets
+  (poeira, folhas, fumo, pirilampos) não são tocados. Detalhe:
+  `docs/LIGHTING.md`; `VAEL_PRACTICAL_LIGHTS=0` devolve o comportamento
+  anterior.
 - Com um `<UiInput>` focado (barra de fala do NLU), a engine bloqueia
   `viber.input.*`, `viber.interacted` e o movimento: as letras são texto, não
   acções. O `scripts/ui/say.lua` abre/fecha o foco.

@@ -1,7 +1,7 @@
 # Primitivas procedurais
 
 O mundo autora props como **primitivas** dentro de `<Composition>` (ou soltas
-num grupo). Os colisores Rapier são derivados da mesma geometria.
+num grupo). Os colisores Avian são derivados da mesma geometria.
 
 ## Arquitetura (sem o Viber)
 
@@ -10,7 +10,7 @@ O Viber está a sair; o sistema está dividido de forma a sobreviver-lhe:
 | Camada | Onde | Papel |
 |---|---|---|
 | **Contrato** | [`bevy_ext_scene::primitives`](../../bevy_extensions/crates/bevy_ext_scene/src/primitives) | `Shape`, `MaterialSpec`, `Preset`, parser de atributos, bounds e o marcador `PrimitivePart`. Sem render. |
-| **Render** | [`bevy_ext_gradmesh`](../../bevy_extensions/crates/bevy_ext_gradmesh) | `gradmesh_shape`, `build_mesh` (gradiente por vértices), `style` (presets) e, com a feature `physics`, o colisor Rapier exato (trimesh para as formas procedurais). |
+| **Render** | [`bevy_ext_gradmesh`](../../bevy_extensions/crates/bevy_ext_gradmesh) | `gradmesh_shape`, `build_mesh` (gradiente por vértices), `style` (presets) e, com a feature `physics`, o colisor Avian exato (trimesh para as formas procedurais). |
 | **Jogo** | [`src/primitives.rs`](../src/primitives.rs) | `VaelPrimitivesPlugin`: consome o `PrimitivePart`, troca malha/material/colisor e regista o `GradMeshPlugin`. |
 | **Editor** | `vael_jackdaw` 0.1.7, `src/primitives.rs` | Lê os `WorldNode` por reflexão e cria previews `EditorHidden` com o mesmo crate. |
 | **Viber (transitório)** | `recipes`/`spawn` | Só faz o parse da DSL e deixa um fallback `StandardMaterial` + `PrimitivePart`; já não depende de `bevy_gradmesh`. Sai quando o Vael tiver o spawner do mundo. |

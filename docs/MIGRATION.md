@@ -1,7 +1,7 @@
 # Migração do Vael para Rust/Bevy
 
 Este documento é o estado da migração. O objetivo é o Viber ficar só com o que
-o Bevy não tem (terreno, navegação, física/Rapier, meshopt, partículas, IK,
+o Bevy não tem (terreno, navegação, física/Avian, meshopt, partículas, IK,
 céu/água custom) e o Vael passar a ser um crate Rust que
 usa `bevy` diretamente. O Luau do jogo é transitório. O editor oficial é o
 **Jackdaw 0.20 instalado** (`jd open .`) com as extensões `.jdext` do Vael; o
@@ -231,7 +231,8 @@ semântica.
 | Mapa e viagem — teleporte, marcadores, waypoint | feito em Rust (`src/ui/map.rs`, `src/ui/waypoint.rs`) |
 | UI do jogador — HUD, diário, mapa/viagem, título e morte em `bevy_pf` | feito em Rust (XAML + view-models + controlador M/G/F); barra de fala/NLU continua na engine |
 | Editor + mundo — Jackdaw oficial + extensões `.jdext` + `vael-content` + `.bsn` | feito; Grip adiado; CLI de cena continua XML e é legado |
-| Restante do jogo — FSM/inimigos/bosses, diálogo/NLU, story/áudio | pendente |
+| Câmara/áudio/cinemáticas no Jackdaw | feito a 2026-11-14: specs tipadas (`CameraSpec`, `InteriorSceneSpec`, `AudioMixerSpec`, `MusicLayerSpec`, `BiomeRegionSpec`), painel **Vael: Cinemáticas** e gatilho `CinematicTrigger` em Rust — detalhe em [`JACKDAW.md`](JACKDAW.md); `viber cinematic shot` continua XML-only |
+| Restante do jogo — FSM/inimigos/bosses, diálogo/NLU, story/áudio | pendente (o gatilho de cinemática já saiu do Lua) |
 | Fase 4 — mover AI e o resto do gameplay para o Vael; recipe extensions; docs | em curso (4a feito; player/câmara já saíram na Onda 3) |
 
 ## QA no checkout principal

@@ -27,7 +27,7 @@
 | `bevy_speech_bubbles 0.3` | falas no mundo (`src/speech.rs`) |
 | `bevy_rich_text3d 0.8.1` | texto 3D de dano/cura/combo (`src/world_text.rs`) |
 | `bevy_gauge 0.6` | atributos/stats (`src/stats.rs`) |
-| `bevy_rapier3d 0.37` | controller/collider do herói |
+| `avian3d 0.8` + `bevy-tnua 0.33` | corpo, colliders e controller do herói (ver `PHYSICS-AVIAN.md`) |
 | `jackdaw_runtime 0.20` | descoberta de componentes e PIE do Jackdaw |
 | `vael-content` (path) | esquemas/validação do conteúdo, partilhado com o editor |
 

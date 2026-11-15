@@ -13,8 +13,13 @@ deve ser corrigido no mesmo commit.
 | [`MIGRATION.md`](MIGRATION.md) | o que já saiu da engine, o que falta e as dívidas da migração Rust/Bevy | **vivo** |
 | [`PACKAGES.md`](PACKAGES.md) | ponte para o roadmap canónico no `bevy_extensions` e sequência da Fase 4 no Vael | **vivo** |
 | [`LIGHTING.md`](LIGHTING.md) | céu, exposição, névoa e sombras com o `bevy_elements` | **vivo** |
+| [`PHYSICS-AVIAN.md`](PHYSICS-AVIAN.md) | física Avian 0.8 + tnua, conversão do DSL, autostep do herói e gates | **vivo** |
+| [`WATER.md`](WATER.md) | camadas da água, espelho CPU do swell, flutuação (`FloatingBody`) e barcos a remos | **vivo** |
 | [`VIBER_TOOLS.md`](VIBER_TOOLS.md) | CLI `viber`, runtime de debug e extensões Jackdaw | **vivo** |
+| [`JACKDAW.md`](JACKDAW.md) | o que se autora no Jackdaw (matriz por sistema), componentes tipados, painel de cinemáticas e gatilhos | **vivo** |
+| [`SAVE.md`](SAVE.md) | save nativo (`moonshine-save`), slots, merge do estado e o que persiste | **vivo** |
 | [`DEBUG.md`](DEBUG.md) | arranque directo (`--scene main --entry dev`), F1/F2 e efeitos no save | **vivo** |
+| [`QA.md`](QA.md) | cenas QA leves, cenários de teste (quests, itens, talentos, posição), simulação e `tools/qa.py` | **vivo** |
 | [`FLORA.md`](FLORA.md) | árvores procedurais, estações, pools, colheita e gates | **vivo** |
 | [`PRIMITIVES.md`](PRIMITIVES.md) | tags de primitivas (lathe/sweep/extruded/…), presets de material, colisores e preview no Jackdaw | **vivo** |
 | [`AUDIO.md`](AUDIO.md) | direção sonora, layers por bioma, manifests e regen | **vivo** |
