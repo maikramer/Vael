@@ -1,0 +1,120 @@
+# Jackdaw: o que se autora e onde
+
+O editor oficial é o **Jackdaw 0.20 instalado** (`jd open .`); o mundo é
+`.bsn` e o `AGENTS.md` é o contrato. Este doc responde a uma pergunta só:
+**para cada sistema do jogo, onde está hoje a autoria** — no editor (com
+campos e gizmos), em dados do jogo (`world/…`, `data/…`) ou em código.
+
+## Matriz
+
+| Sistema | Onde se autora | Como se vê no editor |
+|---|---|---|
+| Geometria, hierarquia, prefabs | `.bsn` (Outliner/viewport) | directo |
+| Colisores, corpos, destrutíveis, colheita | `ColliderSpec`/`BodySpec`/`Destructible`/`Harvestable` | inspector *Physics*/*Gameplay* + gizmos |
+| LOD, flora, partículas, portais, exclusões, scripts | `ModelLod`/`FloraStation`/`ParticleSpec`/`PortalSpec`/`SpawnExclusionSpec`/`ScriptRef` | inspector + gizmos |
+| Terreno, caves, arcos, falésias, paint | `VoxelTerrain`/`Cave`/`Arch`/`Cliff` + `world.data/` | painel *Voxel Terrain* |
+| Ambiente, PostFX, flora (definições) | `world/settings/*.bsn` | painéis *Ambiente*, *PostFX*, *Flora* |
+| **Câmara do jogo** | `CameraSpec` no `<OrbitCamera>` (`world/autoload/player.bsn`) | inspector *Câmara* + frustum no viewport |
+| **Câmara de interior** | `InteriorSceneSpec` nas salas (`scenes/interiors/*.bsn`) | inspector *Câmara* + rectângulo da sala e pose da câmara |
+| **Áudio e biomas** | `AudioMixerSpec`/`MusicLayerSpec`/`BiomeRegionSpec` (`world/environment.bsn`, `scenes/menu.bsn`) | inspector *Áudio* + contorno do bioma |
+| **Cinemáticas** | `<Cinematic>`/`<Shot>` em `world/cinematics.bsn` | painel **Vael: Cinemáticas** + trajecto dos planos |
+| **Gatilhos de cinemática** | `vael::cinematic_trigger::CinematicTrigger` na entidade | inspector *Câmara* + anel do raio |
+| Quests, diálogos, itens, marcos, progressão | `quests/*.json`, `dialogues/*.json`, `data/*.json` | painéis *Missões*, *Diálogos*, *Itens*, *Marcos*, *Progressão* |
+| Regras de combate/economia/vitais, IA, HUD | Rust (`src/*.rs`)/Lua | — (não autorável) |
+
+As contagens vivem nos painéis, não aqui.
+
+## Componentes tipados (o mecanismo)
+
+O runtime continua a ser o parser do Viber; o que muda é onde o dado mora.
+Cada tipo do `bevy_ext_scene` implementa `AttrSpec`: ida e volta **exacta**
+com os atributos do DSL (números comparam-se por valor, para `"1.0"` poder
+voltar como `"1"`). O loader escreve-os de volta nos atributos antes de
+derivar nomes/poses, por isso o jogo não sabe a diferença.
+
+- Migrar: `cargo run -p bevy_ext_world --example bsn_migrate -- <ficheiros.bsn>`
+  (idempotente; só move o que volta igual).
+- Gate: `cargo run -p bevy_ext_world --example bsn_equiv -- antes.bsn depois.bsn`
+  (tem de dizer `equivalentes`).
+- O lift é **por tag**: `at`, `size`, `id`, `radius` e `height` existem em
+  muitas tags e um lift global mudava o significado do atributo.
+- Um tipo que o nó **já tem** como componente não é levantado outra vez (um
+  ficheiro gravado pelo editor pode ter o componente e o atributo homónimo ao
+  mesmo tempo; duplicar o componente mudava o documento).
+- `Option<T>`: o emissor grava `Option::Some(…)` ou o valor nu; o leitor dos
+  specs normaliza (`specs::normalize_options`). Não confiar no `try_apply`.
+
+Um componente **do jogo** (`vael::…`) não passa pelo `AttrSpec`: o
+`editor_link` aplica-o como *componente nativo* a partir do patch do
+documento. É assim que o `CinematicTrigger` chega à entidade.
+
+## Câmara
+
+`CameraSpec` cobre `distance/height/pitch/fov/follow-lag/turn-lag/
+min-terrain-distance/target/mouse-sensitivity`. O comportamento (follow com
+low-pass, colisão com o terreno, auto-câmara, shake/kick) continua no
+`src/camera.rs`; os campos não mudam a física, só os valores autorados.
+
+`InteriorSceneSpec` cobre `at/size` (sala) e `camera-distance/camera-pitch/
+camera-yaw` (pose fixa por ecrã). Uma câmara de interior não é um nó: é a
+configuração que o `third_person_camera` lê quando o herói entra no `at/size`.
+
+Durante uma cinemática os sistemas de câmara do Vael **não correm**
+(`no_cinematic`): o `drive_camera` da engine é o único dono do `OrbitCamera`.
+
+## Cinemáticas
+
+Autoria no painel **Vael: Cinemáticas** (janela nova; por omissão na doca de
+baixo, abre pelo menu de janelas do editor):
+
+- lista os filmes e os planos com o tempo **acumulado** (o parser encadeia
+  planos por ordem de documento; não há `start` autoral);
+- `◀/▶` filme e plano, "Seleccionar plano" (Outliner + frame);
+- **Tocar no jogo** / **Parar**: JSON-RPC para o bridge do jogo
+  (`VIBER_TOOLS_PORT`, por omissão 15702). O jogo tem de estar no Play;
+- **Novo plano (viewport)**: cria um `<Shot>` no fim do filme com
+  `from`/`look` da câmara do viewport (`duration=4`), como um passo de undo.
+  Se a escrita do componente falhar, a pose fica no painel como texto para
+  colar no inspector;
+- **Pose da câmara**: só mostra `from="…" look="…"` (para afinar à mão).
+
+Gizmos: trajecto `from→to` (âmbar), alvos `look` (azul), planos em foco
+destacados; o filme em foco sempre, os outros no modo "perto".
+
+O `viber cinematic list/show/play` continua a funcionar pela bridge (lê a
+`CinematicLibrary` carregada do `.bsn`); `viber cinematic shot` é **XML-only**
+(`SceneDoc`/`world.xml`) e não serve este mundo.
+
+### Gatilhos
+
+Uma entidade com `CinematicTrigger { cinematic, radius, once }` dispara na
+**entrada** do raio (não enquanto fica dentro), respeita menus e cenas a
+tocar e, com `once`, grava `cine.<id>` em `VaelSave.markers` (lê também o
+`cine_<id>` legado dos saves antigos). O script antigo
+(`scripts/cinematic-trigger.lua`) foi removido.
+
+No editor o tipo é um **espelho** compilado na extensão
+(`../bevy_extensions/extensions/vael_scene_jackdaw/src/trigger.rs`) com o mesmo caminho de tipo:
+os tipos que só vêm no schema do jogo ficam no documento e não se leem por
+ECS — sem espelho não haveria ícone, anel do raio nem verificação do id. Os
+campos dos dois lados têm de coincidir.
+
+## Edição ao vivo
+
+O contrato completo está no `AGENTS.md` ("Jackdaw no jogo"). Em resumo: sob
+o Play (`JACKDAW_PIE`) as entidades levam `SceneNodeId`; `Transform` e
+componentes reflectidos aplicam-se directo; mudar `WorldNode`/specs re-spawna
+o nó pela engine (`live_edit.rs`); só props (`CustomProperties`) faz patch do
+`ScriptProps` sem reiniciar. Nós internos de módulos precisam do separador do
+módulo aberto.
+
+## QA
+
+1. `jd build && jd extension pack && jd extension install --trust-publisher
+   vael_scene_jackdaw-<versão>-*.jdext` (subir a versão para o instalador
+   aceitar; ele compara versões, não conteúdo).
+2. `jd open .`: inspector com *Câmara*/*Áudio*; gizmos de câmara, sala,
+   bioma, gatilho e planos; painel lista os filmes do `cinematics.bsn`.
+3. Play + "Tocar no jogo": a cena corre sem brigar com a câmara do Vael.
+4. Gatilho: andar até ele uma vez (toca), sair e voltar (não repete);
+   o save fica com `cine.<id>` nos marcadores.

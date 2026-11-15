@@ -41,16 +41,18 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::CameraSpec {
+        distance: core::option::Option::Some(3.3),
+        height: core::option::Option::Some(1.55),
+        pitch: core::option::Option::Some(18.3),
+        fov: core::option::Option::Some(64.0),
+        follow_lag: core::option::Option::Some(0.18),
+        turn_lag: core::option::Option::Some(0.38),
+        min_terrain_distance: core::option::Option::Some(1.0),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "OrbitCamera",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "distance", value: "3.3" },
-            bevy_world_xml::bsn::WorldProp { key: "height", value: "1.55" },
-            bevy_world_xml::bsn::WorldProp { key: "pitch", value: "18.3" },
-            bevy_world_xml::bsn::WorldProp { key: "fov", value: "64" },
-            bevy_world_xml::bsn::WorldProp { key: "follow-lag", value: "0.18" },
-            bevy_world_xml::bsn::WorldProp { key: "turn-lag", value: "0.38" },
-            bevy_world_xml::bsn::WorldProp { key: "min-terrain-distance", value: "1.0" },
         ],
         text: "",
         origin_file: "world/autoload/player.xml",

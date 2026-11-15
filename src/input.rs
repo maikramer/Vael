@@ -356,7 +356,11 @@ fn write_action_state(
     // Com o jogo inactivo só o botão do menu passa.
     let typing = !sources.keyboard;
     let playing = gameplay.iter().all(|activity| activity.0);
-    let pads: Vec<&Gamepad> = if typing { Vec::new() } else { pads.iter().collect() };
+    let pads: Vec<&Gamepad> = if typing {
+        Vec::new()
+    } else {
+        pads.iter().collect()
+    };
     let sticks: &[&Gamepad] = if playing { &pads } else { &[] };
     for pad in sticks {
         let x = pad.get(GamepadAxis::LeftStickX).unwrap_or(0.0);
@@ -534,7 +538,9 @@ mod tests {
     #[test]
     fn a_escrever_nada_dispara() {
         let mut app = app();
-        app.insert_resource(viber::ui::widgets::UiFocusedInput(Some(Entity::PLACEHOLDER)));
+        app.insert_resource(viber::ui::widgets::UiFocusedInput(Some(
+            Entity::PLACEHOLDER,
+        )));
         press(&mut app, KeyCode::KeyW);
         press(&mut app, KeyCode::KeyJ);
         press(&mut app, KeyCode::KeyM);

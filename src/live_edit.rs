@@ -74,6 +74,11 @@ pub fn mirror_specs(
     put!(particle);
     put!(exclusion);
     put!(portal);
+    put!(camera);
+    put!(interior);
+    put!(mixer);
+    put!(music_layer);
+    put!(biome);
     if let Some(props) = &specs.props {
         let mut custom = CustomProperties::default();
         for prop in &props.props {
@@ -115,6 +120,11 @@ impl Plugin for VaelLiveEditPlugin {
             .add_observer(mark::<ParticleSpec, false>)
             .add_observer(mark::<SpawnExclusionSpec, false>)
             .add_observer(mark::<PortalSpec, false>)
+            .add_observer(mark::<bevy_ext_scene::CameraSpec, false>)
+            .add_observer(mark::<bevy_ext_scene::InteriorSceneSpec, false>)
+            .add_observer(mark::<bevy_ext_scene::AudioMixerSpec, false>)
+            .add_observer(mark::<bevy_ext_scene::MusicLayerSpec, false>)
+            .add_observer(mark::<bevy_ext_scene::BiomeRegionSpec, false>)
             .add_observer(mark::<CustomProperties, true>)
             // Componente removido no editor (o `node_sync` tira-o da entidade).
             .add_observer(mark_removed::<ColliderSpec, false>)
@@ -127,6 +137,11 @@ impl Plugin for VaelLiveEditPlugin {
             .add_observer(mark_removed::<ParticleSpec, false>)
             .add_observer(mark_removed::<SpawnExclusionSpec, false>)
             .add_observer(mark_removed::<PortalSpec, false>)
+            .add_observer(mark_removed::<bevy_ext_scene::CameraSpec, false>)
+            .add_observer(mark_removed::<bevy_ext_scene::InteriorSceneSpec, false>)
+            .add_observer(mark_removed::<bevy_ext_scene::AudioMixerSpec, false>)
+            .add_observer(mark_removed::<bevy_ext_scene::MusicLayerSpec, false>)
+            .add_observer(mark_removed::<bevy_ext_scene::BiomeRegionSpec, false>)
             .add_observer(mark_removed::<CustomProperties, true>)
             // Depois do `node_sync` (PreUpdate) e antes da física do frame.
             .add_systems(Update, (adopt_new_nodes, apply_live_edits).chain());
@@ -159,7 +174,11 @@ fn mark_removed<T: Component, const PROPS_ONLY: bool>(
 
 /// Os specs do nó: os do load, substituídos pelos que estão na entidade
 /// (com o espelho, só os da entidade — um removido já não conta).
-fn current_specs(world: &World, entity: Entity, origin: &bevy_ext_world::xml::NodeOrigin) -> NodeSpecs {
+fn current_specs(
+    world: &World,
+    entity: Entity,
+    origin: &bevy_ext_world::xml::NodeOrigin,
+) -> NodeSpecs {
     let get = |e: Entity| world.get_entity(e).ok();
     let mirrored = get(entity).is_some_and(|e| e.contains::<SpecsMirrored>());
     let mut out = if mirrored {
@@ -189,6 +208,11 @@ fn current_specs(world: &World, entity: Entity, origin: &bevy_ext_world::xml::No
     take!(particle, ParticleSpec);
     take!(exclusion, SpawnExclusionSpec);
     take!(portal, PortalSpec);
+    take!(camera, bevy_ext_scene::CameraSpec);
+    take!(interior, bevy_ext_scene::InteriorSceneSpec);
+    take!(mixer, bevy_ext_scene::AudioMixerSpec);
+    take!(music_layer, bevy_ext_scene::MusicLayerSpec);
+    take!(biome, bevy_ext_scene::BiomeRegionSpec);
     if let Some(custom) = entity.get::<CustomProperties>() {
         out.props = specs::merged_props(None, Some(custom.clone()));
     }
@@ -225,7 +249,8 @@ pub fn play_origin(id: u64) -> Arc<bevy_ext_world::xml::NodeOrigin> {
 /// montados pela engine. Um de cada vez de cima para baixo: os filhos crus
 /// passam para a entidade montada e são adoptados nos frames seguintes.
 pub fn adopt_new_nodes(world: &mut World) {
-    let mut raw = world.query_filtered::<(Entity, &SceneNodeId, &WorldNode), Without<SceneSource>>();
+    let mut raw =
+        world.query_filtered::<(Entity, &SceneNodeId, &WorldNode), Without<SceneSource>>();
     let candidates: Vec<(Entity, u64, WorldNode)> = raw
         .iter(world)
         .map(|(entity, id, node)| (entity, id.0, node.clone()))
@@ -272,11 +297,13 @@ fn adopt_one(
         text: node.text.clone(),
         has_children: false,
     };
-    let pose = world.get::<Transform>(entity).map(|t| bevy_ext_world::bsn::Pose {
-        translation: t.translation,
-        rotation: t.rotation,
-        scale: t.scale,
-    });
+    let pose = world
+        .get::<Transform>(entity)
+        .map(|t| bevy_ext_world::bsn::Pose {
+            translation: t.translation,
+            rotation: t.rotation,
+            scale: t.scale,
+        });
     let node_specs = current_specs(world, entity, &origin);
     let attrs = specs::live_attrs(&recorded, None, &node_specs, pose);
     let xml = bevy_ext_world::xml::XmlNode {
@@ -313,7 +340,10 @@ fn adopt_one(
     }
     world.entity_mut(entity).despawn();
     world.entity_mut(adopted).insert(SceneNodeId(id));
-    info!("vael: nó novo <{}> do Jackdaw montado pela engine", node.tag);
+    info!(
+        "vael: nó novo <{}> do Jackdaw montado pela engine",
+        node.tag
+    );
     Ok(())
 }
 
@@ -418,9 +448,7 @@ fn apply_one(world: &mut World, entity: Entity, props_only: bool) -> Result<(), 
     let mut owned = world.query::<(Entity, &SceneSource)>();
     let doomed: Vec<Entity> = owned
         .iter(world)
-        .filter(|(_, other)| {
-            other.0.file == source.file && other.0.path.starts_with(&source.path)
-        })
+        .filter(|(_, other)| other.0.file == source.file && other.0.path.starts_with(&source.path))
         .map(|(e, _)| e)
         .collect();
     for doomed in doomed {

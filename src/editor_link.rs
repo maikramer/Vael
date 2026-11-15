@@ -81,7 +81,9 @@ fn tag_scene_node(
 }
 
 fn allowed(type_path: &str) -> bool {
-    NATIVE_ALLOW.iter().any(|prefix| type_path.starts_with(prefix))
+    NATIVE_ALLOW
+        .iter()
+        .any(|prefix| type_path.starts_with(prefix))
         || std::env::var("VAEL_NATIVE_ALLOW").is_ok_and(|extra| {
             extra
                 .split(',')
@@ -117,10 +119,7 @@ fn apply_native_components(
                 .resource::<AppTypeRegistry>()
                 .read()
                 .get_with_type_path(path)
-                .is_some_and(|reg| {
-                    reg.data::<bevy::ecs::reflect::ReflectComponent>()
-                        .is_some()
-                });
+                .is_some_and(|reg| reg.data::<bevy::ecs::reflect::ReflectComponent>().is_some());
             if !registered {
                 warn_once!("vael: componente autorado `{path}` não está registado no jogo");
                 continue;

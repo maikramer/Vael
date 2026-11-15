@@ -275,11 +275,12 @@ mod tests {
             ))
             .id();
         app.update();
-        app.world_mut().trigger(viber::luau::runtime::UnboundGesture {
-            entity: npc,
-            name: "talk".into(),
-            speed: 1.0,
-        });
+        app.world_mut()
+            .trigger(viber::luau::runtime::UnboundGesture {
+                entity: npc,
+                name: "talk".into(),
+                speed: 1.0,
+            });
         app.world_mut().flush();
         assert_eq!(app.world().get::<AnimationState>(model).unwrap().0, "Talk");
     }
