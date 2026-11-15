@@ -45,7 +45,7 @@ use viber::terrain::roads::RoadPath;
 use viber::terrain::runtime::TerrainRuntime;
 use viber::terrain::voxel::{HeightField, VoxelField};
 use viber::terrain::water::WaterBody;
-use viber::worldsys::{BiomeRegions, DayCycleState, WeatherState};
+use viber::worldsys::{AtmosphereState, BiomeRegions, DayCycleState, WeatherState};
 
 // ───────────────────────────────────────────────────────────── biomas
 
@@ -91,6 +91,9 @@ pub struct VaelTerrain {
     voxel: Arc<VoxelField>,
     water: Vec<WaterBody>,
     roads: Vec<RoadPath>,
+    /// Treliça do pavimento: a relva cresce nas juntas do decal antigo, mas não
+    /// por cima de uma praça ou de uma rua pavimentada.
+    paving: Arc<viber::terrain::paving::PavingGrid>,
     pads: Vec<ResolvedPad>,
     cliffs: CliffMask,
     exclusions: Vec<SpawnExclusion>,
@@ -105,21 +108,25 @@ impl VaelTerrain {
         }
     }
 
+    /// Molhado = dentro de um corpo de água **abaixo (ou na) linha de água**
+    /// (com 0,25 m de folga para a banda molhada). O `contains` do corpo é a
+    /// zona CARVADA, maior do que a lâmina: a margem seca do rio/lago fica
+    /// acima da superfície e leva relva. O `ground` tem de contar — era o que
+    /// faltava aqui (o ramo do `surface_y_at` era código morto e a margem
+    /// toda ficava careca).
     fn is_wet(&self, p: Vec2, ground: f32) -> bool {
-        for body in &self.water {
-            if body.contains(p) {
-                if let Some(surface) = body.surface_y_at(p)
-                    && ground <= surface + 0.25
-                {
-                    return true;
-                }
-                return true;
-            }
-        }
-        false
+        self.water.iter().any(|body| {
+            body.contains(p)
+                && body
+                    .surface_y_at(p)
+                    .is_some_and(|surface| ground <= surface + 0.25)
+        })
     }
 
     fn is_paved(&self, p: Vec2) -> bool {
+        if self.paving.covers(p) {
+            return true;
+        }
         self.roads.iter().any(|road| road.within(p, ROAD_CLEARANCE))
     }
 
@@ -305,12 +312,8 @@ pub struct VaelGrassPlugin;
 impl Plugin for VaelGrassPlugin {
     fn build(&self, app: &mut App) {
         let quality = quality();
-        let enabled = std::env::var("VIBER_GRASS").as_deref() != Ok("0");
-        let density = std::env::var("VIBER_GRASS_DENSITY")
-            .ok()
-            .and_then(|value| value.parse::<f32>().ok())
-            .unwrap_or_else(graphics::grass_density_scale)
-            .clamp(0.0, 4.0);
+        let enabled = gate_on("VIBER_GRASS");
+        let density = env_density().unwrap_or_else(graphics::grass_density_scale);
         app.insert_resource(GrassSettings {
             enabled,
             density_scale: density,
@@ -347,6 +350,18 @@ impl Plugin for VaelGrassPlugin {
     }
 }
 
+/// Gate ligado-por-omissão: `0`/`false`/`off`/`no` (sem distinguir
+/// maiúsculas nem espaços) desliga; ausente/qualquer outro valor liga.
+fn gate_on(name: &str) -> bool {
+    !matches!(
+        std::env::var(name)
+            .ok()
+            .map(|raw| raw.trim().to_ascii_lowercase())
+            .as_deref(),
+        Some("0" | "false" | "off" | "no")
+    )
+}
+
 fn quality() -> GrassQuality {
     match graphics::preset() {
         GraphicsPreset::Alto => GrassQuality::High,
@@ -378,6 +393,51 @@ fn slices_for(quality: GrassQuality) -> u32 {
     }
 }
 
+/// `VIBER_GRASS_DENSITY` (0..4), ou `None` quando ausente/inválido.
+fn env_density() -> Option<f32> {
+    std::env::var("VIBER_GRASS_DENSITY")
+        .ok()
+        .and_then(|value| value.parse::<f32>().ok())
+        .filter(|value| value.is_finite())
+        .map(|value| value.clamp(0.0, 4.0))
+}
+
+/// `GrassQuality` → o valor autorável (`GrassQualitySpec`).
+fn quality_spec(quality: GrassQuality) -> bevy_ext_grass::GrassQualitySpec {
+    use bevy_ext_grass::GrassQualitySpec;
+    match quality {
+        GrassQuality::Low | GrassQuality::Competitive => GrassQualitySpec::Low,
+        GrassQuality::Medium => GrassQualitySpec::Medium,
+        GrassQuality::High => GrassQualitySpec::High,
+        GrassQuality::Ultra => GrassQualitySpec::Ultra,
+    }
+}
+
+/// Spec do crate a partir da cena + os knobs do JOGO.
+///
+/// O `sync_settings_spec` do `bevy_ext_grass` **substitui** a `GrassSettings`
+/// pelo `GrassSettingsSpecValue` (e sem spec cai nos defaults do crate). Como
+/// o `world/settings/grass.bsn` ainda não autora campos, o spec era igual ao
+/// default e apagava no 1.º `Update` o `VIBER_GRASS=0`, o
+/// `VIBER_GRASS_DENSITY` e o tier dos `graphics:` (qualidade/sombras). Aqui a
+/// precedência é a do projeto: env de QA > cena (quando autorada) > tier.
+fn spec_with_runtime_knobs(spec: &GrassSettingsSpec) -> GrassSettingsSpec {
+    let mut out = spec.clone();
+    let authored = *spec != GrassSettingsSpec::default();
+    if !authored {
+        // Nada autorado: o tier dos `graphics:` manda, como o plugin parece
+        // (capacidade/fatias continuam a vir dele em qualquer caso).
+        out.quality = quality_spec(quality());
+        out.shadows = shadows_for(quality()) != bevy_ext_grass::GrassShadows::Off;
+    }
+    // `VIBER_GRASS=0` desliga mesmo (a cena pode desligar; não pode religar).
+    out.enabled &= gate_on("VIBER_GRASS");
+    if let Some(density) = env_density() {
+        out.density_scale = density;
+    }
+    out
+}
+
 /// Leva as definições autoradas (`SceneSetting`/`SceneSettingList`) para os
 /// recursos que o crate lê. No jogo as definições são recursos; no editor são
 /// componentes, e o crate aceita os dois (componentes ganham).
@@ -388,7 +448,7 @@ fn sync_grass_specs(
     mut out_styles: ResMut<GrassStyleSpecSet>,
 ) {
     if settings.is_changed() {
-        out_settings.0 = Some(settings.0.clone());
+        out_settings.0 = Some(spec_with_runtime_knobs(&settings.0));
     }
     if styles.is_changed() {
         out_styles.0 = styles.0.clone();
@@ -438,6 +498,7 @@ fn provide_vael_terrain(
         voxel: terrain.voxel.clone(),
         water: terrain.water.clone(),
         roads: terrain.roads.clone(),
+        paving: terrain.paving.clone(),
         pads: terrain.pads.clone(),
         cliffs: cliffs.as_deref().cloned().unwrap_or_default(),
         exclusions: exclusions
@@ -466,10 +527,21 @@ fn drive_wind(weather: Option<Res<WeatherState>>, mut wind: ResMut<GrassWind>) {
 }
 
 /// `DayCycleState` → `GrassTint`.
-fn drive_tint(clock: Option<Res<DayCycleState>>, mut tint: ResMut<GrassTint>) {
+///
+/// O `<DayCycle>` saiu do mundo quando o `bevy_elements` tomou o céu: o
+/// `DayCycleState` da engine já não existe no jogo e a tinta ficava presa no
+/// dia (a relva não acompanhava a noite). O `AtmosphereState` — escrito pelo
+/// `bridge_atmosphere` da cena a partir do sol astronómico — é o mesmo factor
+/// que o resto da iluminação lê.
+fn drive_tint(
+    clock: Option<Res<DayCycleState>>,
+    atmosphere: Option<Res<AtmosphereState>>,
+    mut tint: ResMut<GrassTint>,
+) {
     let day = clock
         .as_deref()
         .map(DayCycleState::visual_daylight)
+        .or_else(|| atmosphere.as_deref().map(|state| state.day.clamp(0.0, 1.0)))
         .unwrap_or(1.0);
     let next = day_tint(day);
     if (tint.0[0] - next[0]).abs() > 1e-3
@@ -797,6 +869,36 @@ mod tests {
             let hits = plans[..4].iter().filter(|plan| plan.contains(p)).count();
             assert_eq!(hits, 1, "canto ({x},{z}) caiu em {hits} quadrantes");
         }
+    }
+
+    /// Sem nada autorado no `grass.bsn`, o tier dos `graphics:` escolhe a
+    /// qualidade e as sombras (o crate substitui a `GrassSettings` pelo spec).
+    #[test]
+    fn spec_default_segue_o_tier_dos_graphics() {
+        let out = spec_with_runtime_knobs(&GrassSettingsSpec::default());
+        assert_eq!(out.quality, quality_spec(quality()));
+        assert_eq!(
+            out.shadows,
+            shadows_for(quality()) != bevy_ext_grass::GrassShadows::Off
+        );
+    }
+
+    /// Spec AUTORADO manda: o tier não reescreve qualidade/sombras/vento, e a
+    /// cena pode desligar a relva mesmo com o gate ligado.
+    #[test]
+    fn spec_autorado_nao_e_reescrito_pelo_tier() {
+        let spec = GrassSettingsSpec {
+            enabled: false,
+            quality: bevy_ext_grass::GrassQualitySpec::Low,
+            shadows: false,
+            wind_scale: 0.5,
+            ..GrassSettingsSpec::default()
+        };
+        let out = spec_with_runtime_knobs(&spec);
+        assert_eq!(out.quality, bevy_ext_grass::GrassQualitySpec::Low);
+        assert!(!out.shadows);
+        assert!((out.wind_scale - 0.5).abs() < 1e-6);
+        assert!(!out.enabled, "a cena pode desligar a relva");
     }
 
     #[test]
