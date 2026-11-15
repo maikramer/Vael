@@ -240,6 +240,20 @@ pub fn validate_items(file: &ItemsFile) -> Vec<Finding> {
             ));
         }
     }
+    let ids: BTreeSet<&str> = file
+        .items
+        .iter()
+        .map(|item| item.id.as_str())
+        .filter(|id| !id.is_empty())
+        .collect();
+    for id in file.starting.keys() {
+        if !ids.contains(id.as_str()) {
+            out.push(Finding::error(
+                "items",
+                format!("{id}: item do kit inicial não existe"),
+            ));
+        }
+    }
     out
 }
 
@@ -289,6 +303,24 @@ pub fn validate_progression(file: &ProgressionFile) -> Vec<Finding> {
                 "progression",
                 format!("{}: requires `{requires}` não existe", skill.id),
             ));
+        }
+        if let Some(excludes) = skill.excludes.as_deref().filter(|id| !id.is_empty()) {
+            match file.skills.iter().find(|other| other.id == excludes) {
+                None => out.push(Finding::warning(
+                    "progression",
+                    format!("{}: excludes `{excludes}` não existe", skill.id),
+                )),
+                Some(other) if other.excludes.as_deref() != Some(skill.id.as_str()) => {
+                    out.push(Finding::error(
+                        "progression",
+                        format!(
+                            "{} exclui {excludes}, mas {excludes} não exclui {}",
+                            skill.id, skill.id
+                        ),
+                    ));
+                }
+                Some(_) => {}
+            }
         }
     }
     out
@@ -368,10 +400,12 @@ pub fn validate_quests(
 ) -> Vec<Finding> {
     let mut out = Vec::new();
     let mut counts: BTreeMap<&str, usize> = BTreeMap::new();
+    let mut npcs: BTreeMap<&str, &str> = BTreeMap::new();
     for file in files {
         for quest in &file.quests {
             if !quest.id.is_empty() {
                 *counts.entry(quest.id.as_str()).or_default() += 1;
+                npcs.entry(quest.id.as_str()).or_insert(quest.npc.as_str());
             }
         }
     }
@@ -382,6 +416,7 @@ pub fn validate_quests(
                 &file.file,
                 quest,
                 &counts,
+                &npcs,
                 world,
                 item_ids,
                 landmark_names,
@@ -398,6 +433,7 @@ fn validate_quest(
     file: &str,
     quest: &QuestDef,
     counts: &BTreeMap<&str, usize>,
+    npcs: &BTreeMap<&str, &str>,
     world: &WorldNames,
     item_ids: &BTreeSet<&str>,
     landmark_names: &BTreeSet<&str>,
@@ -481,6 +517,15 @@ fn validate_quest(
                 "quest-ref",
                 at(&format!("next `{}` não é uma quest", quest.next)),
             ));
+        } else if let Some(npc) = npcs.get(quest.next.as_str())
+            && *npc != quest.npc
+        {
+            // A cadeia do dador (`quest_chain`) só avança no MESMO NPC; um
+            // `next` para outro dador nunca é oferecido.
+            out.push(Finding::warning(
+                "quest-ref",
+                at(&format!("next `{}` tem outro dador (`{npc}`)", quest.next)),
+            ));
         }
     }
 }
@@ -541,6 +586,21 @@ fn validate_rewards(
     item_ids: &BTreeSet<&str>,
     out: &mut Vec<Finding>,
 ) {
+    if quest.rewards.gold < 0 {
+        out.push(Finding::error(
+            "quest-ref",
+            at(&format!(
+                "recompensa de ouro negativa ({})",
+                quest.rewards.gold
+            )),
+        ));
+    }
+    if quest.rewards.xp < 0 {
+        out.push(Finding::error(
+            "quest-ref",
+            at(&format!("recompensa de XP negativa ({})", quest.rewards.xp)),
+        ));
+    }
     for entry in &quest.rewards.items {
         let (id, count) = match entry.split_once(':') {
             Some((id, count)) => (id.trim(), Some(count.trim())),

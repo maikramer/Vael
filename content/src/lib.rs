@@ -284,6 +284,10 @@ pub struct RiddleDef {
     pub site: String,
     pub interact: String,
     pub clue: RiddleClue,
+    /// Marcos que o jogador tem de ter medido com [F] antes de responder
+    /// (o enigma da rota do menir); vazio = sem pré-requisito.
+    #[serde(skip_serializing_if = "Vec::is_empty")]
+    pub require_marks: Vec<String>,
     pub prompt: String,
     pub example: String,
     pub expect: Vec<Expect>,
