@@ -40,6 +40,7 @@ deve ser corrigido no mesmo commit.
 | [`CODE-SLIM-STUDY.md`](CODE-SLIM-STUDY.md) | estudo de 2026-11-13 sobre enxugar o crate (crates existentes, repetição, compilação); a Fase 1 foi aplicada no mesmo dia |
 | [`ARCH-REVIEW-STUDY.md`](ARCH-REVIEW-STUDY.md) | estudo de 2026-11-13 sobre a arquitectura dos cinco checkouts: overengineering, camadas de abstração temporárias e oportunidades crates.io; o plano faseado (F0–F4) fica aqui |
 | [`DEV-STANDARD-STUDY.md`](DEV-STANDARD-STUDY.md) | estudo de 2026-11-14 com o standard de engenharia de Vael+bevy_extensions (tooling, fronteiras, contratos, QA, release, governança), gap analysis e plano S0–S4 |
+| [`JACKDAW-ALIGNMENT-STUDY.md`](JACKDAW-ALIGNMENT-STUDY.md) | estudo de 2026-11-15 sobre o que ainda autora fora do editor e o SDK do Jackdaw por aproveitar; backlog P1–P4 (migrações `.bsn`, painéis de conteúdo, alinhamento SDK, prefabs nativos) |
 | `perf-baseline-*.jsonl` | séries brutas do profiler que suportam o `PERF_BASELINE.md` |
 
 ## Convenções de manutenção

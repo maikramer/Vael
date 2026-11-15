@@ -224,8 +224,6 @@ descomprime meshopt/KTX2 à leitura.
 - `ui/*.xaml` + `ui/*.css` — HUD, menu, título, morte e mapa em bevy_pf;
   `world/menu.bsn`/`title.bsn`/`death.bsn` ficam só para o estado dos modais
   (os `.css` que restam são legado de HUD/profiler/showcase)
-- `ui-showcase.bsn` — mundo de demonstração da UI, também estático (inclui
-  módulos partilhados de `world/**/*.bsn`)
 
 ## Editar
 

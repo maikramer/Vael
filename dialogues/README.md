@@ -1,11 +1,12 @@
 # dialogues/ — grafos de diálogo nativos
 
-Um ficheiro por `dialogue-id` (o mesmo do `<DialogueNPC>`). Quem lê esta pasta
-é `scripts/townsfolk.lua` (o `[E]` avança o nó e os dígitos `1`..`9` escolhem);
-a engine só localiza o texto e desenha o balão. O editor edita estes grafos
-no painel **Vael: Diálogos** (`cargo run -p vael-editor -- --root .`).
+Um ficheiro por `dialogue-id` (o valor de `prop-dialogue_id`). Quem lê esta
+pasta é `scripts/townsfolk.lua` (o `[E]` avança o nó e os dígitos `1`..`9`
+escolhem); a engine só localiza o texto e desenha o balão. Editam-se no
+Jackdaw (`jd open .`), painel **Vael: Diálogos** da extensão
+`vael_content_jackdaw`.
 
-Sem ficheiro, o `<DialogueNPC>` cai no fluxo de quest nativo (linhas
+Sem ficheiro, o NPC cai no fluxo de quest nativo (linhas
 `intro/progress/complete` de `quests/*.json`). Com ficheiro, o grafo manda —
 por isso os NPCs de quest continuam no diálogo Lua (`scripts/npc/dialogue.lua`),
 que é sensível ao estado da missão. Os grafos daqui são para NPCs ambientais
