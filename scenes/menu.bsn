@@ -44,14 +44,16 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::AudioMixerSpec {
+        master: core::option::Option::Some(1.0),
+        music: core::option::Option::Some(0.7),
+        sfx: core::option::Option::Some(0.8),
+        voice: core::option::Option::Some(0.9),
+        ambience: core::option::Option::Some(0.7),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "AudioMixer",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "master", value: "1" },
-            bevy_world_xml::bsn::WorldProp { key: "music", value: "0.7" },
-            bevy_world_xml::bsn::WorldProp { key: "sfx", value: "0.8" },
-            bevy_world_xml::bsn::WorldProp { key: "voice", value: "0.9" },
-            bevy_world_xml::bsn::WorldProp { key: "ambience", value: "0.7" },
         ],
         text: "",
         origin_file: "scenes/menu.xml",
@@ -66,12 +68,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::MusicLayerSpec {
+        layer: "menu",
+        sound: core::option::Option::Some("bgm-menu"),
+        base_volume: core::option::Option::Some(0.24),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "MusicLayer",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "layer", value: "menu" },
-            bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-menu" },
-            bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.24" },
         ],
         text: "",
         origin_file: "scenes/menu.xml",
@@ -86,12 +90,14 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::MusicLayerSpec {
+        layer: "credits",
+        sound: core::option::Option::Some("bgm-credits"),
+        base_volume: core::option::Option::Some(0.22),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "MusicLayer",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "layer", value: "credits" },
-            bevy_world_xml::bsn::WorldProp { key: "sound", value: "bgm-credits" },
-            bevy_world_xml::bsn::WorldProp { key: "base-volume", value: "0.22" },
         ],
         text: "",
         origin_file: "scenes/menu.xml",

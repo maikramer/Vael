@@ -24,14 +24,15 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
+    bevy_ext_scene::InteriorSceneSpec {
+        size: glam::Vec2 { x: 60.0, y: 55.0 },
+        camera_distance: core::option::Option::Some(16.0),
+        camera_pitch: core::option::Option::Some(58.0),
+        camera_yaw: core::option::Option::Some(0.0),
+    }
     bevy_world_xml::bsn::WorldNode {
         tag: "InteriorScene",
         attrs: [
-            bevy_world_xml::bsn::WorldProp { key: "at", value: "0 0" },
-            bevy_world_xml::bsn::WorldProp { key: "size", value: "60 55" },
-            bevy_world_xml::bsn::WorldProp { key: "camera-distance", value: "16" },
-            bevy_world_xml::bsn::WorldProp { key: "camera-pitch", value: "58" },
-            bevy_world_xml::bsn::WorldProp { key: "camera-yaw", value: "0" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_a.xml",
