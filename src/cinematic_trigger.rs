@@ -30,7 +30,7 @@ const MARK_PREFIX: &str = "cine.";
 #[derive(Component, Reflect, Clone, Debug, PartialEq)]
 #[reflect(Component, Default, Debug, Clone)]
 pub struct CinematicTrigger {
-    /// `id` da `<Cinematic>` (o mesmo de `viber cinematic list`).
+    /// `id` da `<Cinematic>` (o mesmo do painel Vael: Cinemáticas).
     pub cinematic: String,
     /// Raio de entrada (m).
     pub radius: f32,
@@ -68,6 +68,7 @@ fn drive_cinematic_triggers(
     players: Query<&GlobalTransform, With<Player>>,
     playback: Option<Res<CinematicPlayback>>,
     menus: Option<Res<MenusOpen>>,
+    cinematics: Option<Res<viber::cinematic::CinematicLibrary>>,
     mut save: Option<ResMut<VaelSave>>,
     mut play: MessageWriter<PlayCinematic>,
 ) {
@@ -96,12 +97,22 @@ fn drive_cinematic_triggers(
         let dz = hero.z - at.z;
         let current = dx * dx + dz * dz <= radius * radius;
         let entering = current && !inside.is_some_and(|inside| inside.0);
-        if !inside.is_some_and(|inside| inside.0 == current) {
-            if let Ok(mut entity) = commands.get_entity(entity) {
-                entity.try_insert(Inside(current));
-            }
+        if !inside.is_some_and(|inside| inside.0 == current)
+            && let Ok(mut entity) = commands.get_entity(entity)
+        {
+            entity.try_insert(Inside(current));
         }
         if !entering {
+            continue;
+        }
+        // Um id sem `<Cinematic>` no mundo não pode queimar o `once`: o
+        // pedido é recusado e a marca ficava para sempre (o gatilho nunca
+        // mais tocava, nem depois de o autor corrigir o id).
+        if cinematics
+            .as_deref()
+            .is_some_and(|library| !library.0.contains_key(id))
+        {
+            warn_once!("vael: gatilho de cinemática `{id}` sem <Cinematic> — ignorado");
             continue;
         }
         if trigger.once && save.as_deref().is_some_and(|save| already_played(save, id)) {
@@ -292,6 +303,21 @@ mod tests {
             .insert("cine_campo".into(), serde_json::json!(true));
         assert!(already_played(&save, "campo"));
         assert!(!already_played(&save, "outra"));
+    }
+
+    #[test]
+    fn id_sem_cinematica_nao_dispara_nem_queima_o_once() {
+        let mut app = app();
+        // Biblioteca sem o id: o `<Cinematic>` não existe no mundo.
+        app.insert_resource(viber::cinematic::CinematicLibrary(Default::default()));
+        player(&mut app, Vec3::ZERO);
+        trigger(&mut app, "campo", Vec3::ZERO, 22.0, true);
+        app.update();
+        assert!(played(&mut app).is_empty(), "sem <Cinematic> não toca");
+        assert!(
+            app.world().resource::<VaelSave>().markers.is_empty(),
+            "e não grava a marca (o gatilho continua vivo)"
+        );
     }
 
     #[test]
