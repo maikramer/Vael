@@ -11,18 +11,25 @@ use bevy_ext_core::{LOOK_PIVOT_HEIGHT, Player};
 // Lua escreve neles. As cópias do `bevy_ext_core` ainda não são as mesmas.
 use viber::camera::{CameraSnapshot, ScriptCameraFree};
 
+use bevy_ext_core::InteriorSceneConfig;
 use viber::camera::{
     AutoCameraInput, COLLISION_EYE_HEIGHT, CameraKick, CameraShake, INTERIOR_ROOM_LAG, SHAKE_DECAY,
     auto_camera_yaw, behind_yaw_deg, camera_offset, interior_camera_pose, kick_spring_step,
     low_pass_factor, noise_pm1, shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
 };
 use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
-use bevy_ext_core::InteriorSceneConfig;
 
 use crate::player::PlayerMovementSet;
 
 fn no_editor_camera(cameras: Query<(), With<viber::editor_camera::EditorCamera>>) -> bool {
     cameras.is_empty()
+}
+
+/// Uma cinemática a tocar é dona da câmara: o `drive_camera` da engine
+/// escreve o mesmo `OrbitCamera` e, sem esta guarda, quem ganhava era o
+/// agendamento (os dois correm no `PostUpdate`, antes da propagação).
+fn no_cinematic(playback: Option<Res<viber::cinematic::CinematicPlayback>>) -> bool {
+    playback.is_none_or(|playback| playback.playing().is_none())
 }
 
 pub struct VaelCameraPlugin;
@@ -31,26 +38,28 @@ impl Plugin for VaelCameraPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<ScriptCameraFree>()
             .init_resource::<CameraSnapshot>()
+            // A engine inicializa-o sempre; o `init` aqui é para apps mínimas
+            // de teste que montem só esta parte.
+            .init_resource::<viber::cinematic::CinematicPlayback>()
             .add_observer(mark_shadow_lod_origin);
         app.add_systems(
             Update,
             (orbit_camera_follow, auto_orbit)
                 .before(PlayerMovementSet)
-                .run_if(no_editor_camera),
+                .run_if(no_editor_camera)
+                .run_if(no_cinematic),
         )
-        // A terceira pessoa corre no `PostUpdate`, DEPOIS do writeback do
-        // Rapier: o character controller só aplica o `translation` pedido no
-        // `PostUpdate`, por isso no `Update` a câmara lia a pose do frame
-        // ANTERIOR. O desvio câmara↔herói ficava `vel * dt` — com o dt a
-        // variar de frame para frame, o herói tremia no ecrã ("engasgos").
+        // A terceira pessoa corre no `PostUpdate`: o Avian corre no
+        // `FixedPostUpdate` (antes) e o writeback dele já escreveu o
+        // `Transform` do corpo — a câmara lê a pose DESTE frame.
         // Antes da propagação: o `GlobalTransform` da câmara sai deste frame.
         .add_systems(
             PostUpdate,
             (third_person_camera, script_camera)
                 .chain()
-                .after(bevy_rapier3d::prelude::PhysicsSet::Writeback)
                 .before(bevy::transform::TransformSystems::Propagate)
-                .run_if(no_editor_camera),
+                .run_if(no_editor_camera)
+                .run_if(no_cinematic),
         );
     }
 }
@@ -156,7 +165,7 @@ fn third_person_camera(
     let Some((local, parent, player)) = players.iter().next() else {
         return;
     };
-    // Pose DESTE frame: o Rapier acabou de a escrever no `Transform` e a
+    // Pose DESTE frame: o writeback do Avian acabou de a escrever no `Transform` e a
     // propagação ainda não correu (o pai é estático; o global dele serve).
     let target = match parent.and_then(|parent| parents.get(parent.parent()).ok()) {
         Some(parent) => parent.mul_transform(*local),
@@ -311,10 +320,7 @@ fn third_person_camera(
             noise_pm1(now * 0.35, 3) * 0.05 + noise_pm1(now * 1.1, 8) * 0.02,
         );
         transform.translation = cam.current_pos + sway + shake_off + kick.offset;
-        transform.look_at(
-            cam.follow_point + Vec3::Y * LOOK_PIVOT_HEIGHT,
-            Vec3::Y,
-        );
+        transform.look_at(cam.follow_point + Vec3::Y * LOOK_PIVOT_HEIGHT, Vec3::Y);
         if shake_roll.abs() > 1e-5 {
             let view = transform.forward();
             transform.rotate_axis(view, shake_roll);

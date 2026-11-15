@@ -87,8 +87,8 @@ logo o que o conselho não disse: quem mede a terra pode encontrar as quatro Not
 
 | Peça | Ficheiro |
 |------|----------|
-| Cinemáticas (XML) | `world/cinematics.xml` — `viber cinematic list/show/play/shot` |
+| Cinemáticas (`.bsn`) | `world/cinematics.bsn` — painel **Vael: Cinemáticas** no Jackdaw |
 | Controlador da história (Notas, prólogo, epílogo) | `scripts/game/story.lua` |
-| Gatilhos de área ("só uma vez") | `scripts/cinematic-trigger.lua` (`prop-cinematic`, `prop-radius`) |
+| Gatilhos de área ("só uma vez") | componente `CinematicTrigger` na entidade (`src/cinematic_trigger.rs`) |
 | Cena de despertar dos chefes | `lib/fsm.lua` (`intro = "guardiao-…"`) |
 | Missão-mãe | `quests/story_quests.json` |

@@ -1317,14 +1317,10 @@ bevy_ecs::hierarchy::Children [
         rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
-    bevy_ext_scene::ScriptRef {
-        path: "cinematic-trigger.lua",
-    }
-    jackdaw_scene_types::types::CustomProperties {
-        properties: map[
-            ("cinematic", jackdaw_scene_types::types::PropertyValue::String("campo-de-batalha")),
-            ("radius", jackdaw_scene_types::types::PropertyValue::String("22"))
-        ],
+    vael::cinematic_trigger::CinematicTrigger {
+        cinematic: "campo-de-batalha",
+        radius: 22.0,
+        once: true,
     }
     bevy_world_xml::bsn::WorldNode {
         tag: "Entity",
