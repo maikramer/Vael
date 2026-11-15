@@ -20,10 +20,10 @@ use std::collections::{BTreeMap, BTreeSet};
 use std::sync::{Arc, Mutex};
 
 use bevy::prelude::*;
+use bevy_ext_core::Player;
 use mlua::{Lua, Table, Value};
 use serde_json::Value as JsonValue;
 use viber::luau::host::LuaScriptHost;
-use bevy_ext_core::Player;
 
 use crate::components::VaelPlayer;
 use crate::content::{LandmarkDef, LandmarksFile, VaelContent};

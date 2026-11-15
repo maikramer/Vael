@@ -12,11 +12,11 @@
 use std::collections::BTreeMap;
 
 use bevy::prelude::*;
+use bevy_ext_core::Player;
 use serde_json::Value;
 use viber::hud::markers::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::components::{LuaScriptRef, ScriptProps};
 use viber::luau::host::LuaScriptHost;
-use bevy_ext_core::Player;
 use viber::scene_loader::CurrentScene;
 use viber::vitals::{Health, Hostile};
 

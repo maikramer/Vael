@@ -15,15 +15,15 @@ use std::collections::{BTreeMap, BTreeSet};
 use bevy::app::AppExit;
 use bevy::prelude::*;
 use bevy::ui::GlobalZIndex;
+use bevy_ext_core::{SfxClip, SfxEvent};
+use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use bevy_pf::prelude::*;
 use serde_json::{Value, json};
 use viber::a11y::A11y;
-use bevy_ext_core::{SfxClip, SfxEvent};
 use viber::locale::Locale;
 use viber::luau::components::ScriptToast;
 use viber::luau::host::LuaScriptHost;
 use viber::music::AudioMixerSettings;
-use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use viber::save::SaveRequest;
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::scale::UiUserScale;
@@ -1680,7 +1680,7 @@ fn system_rows(save: &VaelSave, ui: Option<&UiData>, scene: Option<&CurrentScene
     let zone = ui.map(|ui| ui.zone_name.clone()).unwrap_or_default();
     [
         ("Motor".to_string(), "Viber".to_string()),
-        ("Render".to_string(), "Bevy · Rapier".to_string()),
+        ("Render".to_string(), "Bevy · Avian".to_string()),
         ("Cena".to_string(), scene_id(scene)),
         (
             "Hora".to_string(),
