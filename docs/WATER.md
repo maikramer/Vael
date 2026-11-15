@@ -114,10 +114,10 @@ cargo check -p bevy_ext_water --no-default-features
 cd crates/bevy_ext_viber_engine && cargo test --lib -- terrain::water
 # Vael: solver + domínio + malhas + flutuação + esteira de barco + obstáculos avian
 cd ../../../Vael && cargo test --test water_overhaul
-viber analyze world.bsn
+vael-tools analyze world.bsn
 ```
 
 QA vivo: um barco no lago (-80, 104) e outro no rio (4, 215). Teleporta o herói
 para a beira, **E** para entrar, **W** para remar; a esteira deve aparecer no
-solver e o casco deve subir/descer com o swell. `viber debug wait-ready` antes de
+solver e o casco deve subir/descer com o swell. `vael-tools debug wait-ready` antes de
 capturar.

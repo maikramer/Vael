@@ -139,6 +139,7 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `docs/JACKDAW.md` | matriz sistema→onde se autora no Jackdaw, componentes tipados, painel de cinemáticas e gatilhos |
 | `src/lights.rs` | **luzes práticas** (`bevy_lights` 0.5, pin `=0.5.0`): as luzes de fogo viram `PoolCandidate` (pool orçamentado + flicker + chama billboard); as de preenchimento/cristais ficam autorais. Gate `VAEL_PRACTICAL_LIGHTS=0`. Ver `docs/LIGHTING.md` |
 | `docs/WATER.md` | camadas da água (solver iWave, domínio, espelho CPU do swell), flutuação `FloatingBody` (crate `bevy_ext_water`, adapter avian) e barcos a remos (`src/boat.rs`, `data/boats.json`; **E** entra/sai, W/S rema, A/D leme) |
+| `docs/PAVING.md` | **pavimento em grelha** (`bevy_ext_terrain_runtime::paving`): `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>` troca a elipse/ribbon por células com ocupação exclusiva, chanfro nos cantos convexos e filete nos côncavos, uma malha por material. Camadas fixas: `DECAL_LIFT 0.040 < PAVING_LIFT 0.064 < ON_PAVING 0.072`; um decal coberto pelo pavimento sobe sozinho. Gate `VIBER_PAVING=0` |
 
 ## Cenas
 
@@ -243,7 +244,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   manda (um arbusto fica residente até ao piso do anel do véu + 60 m; uma
   muralha, com corte no teto de 800 m, até ~860 m), e o *bootstrap* de 800 m
   paga-se **uma vez por URL**. O véu espera só o anel de
-  `VIBER_GLTF_READY_RADIUS` (200 m) e o anel largo não corre durante o
+  `VIBER_GLTF_READY_RADIUS` (150 m) e o anel largo não corre durante o
   carregamento (competia com o bake dos colliders: ~1 s por frame medido).
   Nunca descarrega nós com `LuaScriptRef`, `CharacterAnimator` ou o herói — o
   rig e o `viber.state` apontam para entidades da subárvore. A/B:
@@ -273,6 +274,13 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   levantar um maciço de rocha com face vertical na boca; o túnel subtractivo
   corta o arco na face. O monte é um mod voxel `Union` e tem de vir antes dos
   tubos `Subtract`. Sem monte, uma boca horizontal só existe em encosta.
+- **Pavimento**: `paving="1"` num `<GroundDecal>` faz dele uma **área** de
+  grelha, não um decal — as arestas snapam para fora e crescem ≤1 módulo
+  (7 m de rua → 8 m a 2 m de módulo). Um decal que caia por baixo do pavimento
+  **desaparece** (o pavimento é uma camada); o que tem o centro coberto sobe
+  sozinho para `on-paving`. As estradas pavimentadas mantêm o `RoadPath` (nav,
+  relva, `isPointOnRoad`) e só perdem a ribbon. Detalhe:
+  [`docs/PAVING.md`](docs/PAVING.md).
 - Luzes de fogo/partículas são `PointLight` SEM `shadows="true"` **no `.bsn`**:
   o cube shadow map custa 6 vistas por luz e pisca no chão. Desde 2026-11-14 as
   luzes de fogo já não ficam autorais: o `src/lights.rs` adota a `PointLight`
@@ -340,6 +348,15 @@ em componentes. O `jd run` lança **sem argumentos**: só o Play do editor lê o
 `[[run]]` do `jackdaw.toml`, portanto arranca na cena de arranque
 (`scenes/menu.bsn`, atrás do título), não em `main`.
 
+**Tempo de build** (medido a 2026-11-15, 16 cores): o `release` é
+incremental (`Cargo.toml`) — mexer num crate do `bevy_extensions` custa
+~20–35 s em vez de ~3m20s; a distribuição usa `--profile dist` (thin LTO,
+1 CGU, sem incremental). O `jd` compila sempre em `.jackdaw/target/game`;
+um symlink local `.jackdaw/target/game -> ../../target` (fora do git) faz o
+`jd build` e o `cargo build` partilharem o `target/debug` em vez de
+compilarem tudo duas vezes (`mkdir -p .jackdaw/target && ln -sfn
+../../target .jackdaw/target/game`; o `jd clean` apaga só o link).
+
 Para `--scene/--entry/--bridge` o atalho é o `vael-tools run`, que lança
 `target/release/vael` (outro artefacto: release no `target/` do workspace) ou o
 `VAEL_BIN` — `VAEL_BIN=.jackdaw/target/game/debug/vael` reaproveita o build do
@@ -356,7 +373,7 @@ execução (não grava modo nenhum); o autosave seguinte fica com
 
 QA vivo: uma instância do jogo de cada vez (o `vael-tools debug` fala com a
 porta). **Esperar pelo carregamento**: o véu sai com o anel próximo do herói
-(`VIBER_GLTF_READY_RADIUS`, 200 m), GPU, herói assente — o resto do mundo entra
+(`VIBER_GLTF_READY_RADIUS`, 150 m), GPU, herói assente — o resto do mundo entra
 por distância depois (ver a *gotcha* dos GLB) e demora — dezenas de segundos,
 mais com builds ao lado.
 Depois de lançar (ou de `debug scene --wait`): `vael-tools debug --port <p>
@@ -367,6 +384,13 @@ não matar o jogo. Para agentes: `debug --json` dá JSON em tudo e exit
 semântico; as primitivas de teste são `pause/step/play` (determinismo por
 frames), `state`, `expect`, `until`, `scene` e `playbook` (passos compostos
 com transcript) — detalhe e ressalvas do `scene`: `docs/TOOLS.md`.
+
+Tools MCP nativas (jogo com ferramentas ligadas): o servidor stdio `brp`
+(`bevy_brp_mcp` no config do ZCode) fala com o BRP da 15702 — query/insert/
+mutate/watch de ECS + `brp_extras/*` (screenshot inline, input, FPS,
+shutdown; plugin em `src/main.rs`, `VAEL_BRP_EXTRAS=0` desliga). O CLI fica
+para o determinístico (`wait-ready`/`expect`/playbooks); `brp_launch` não se
+usa no Vael.
 
 GPU remota (opcional): `source ~/.config/vramd/remote.env` aponta o `vramd` ao
 servidor (`VRAMD_REMOTE=192.168.0.100:8790`); o `gameassets resume` passa a

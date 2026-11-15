@@ -137,8 +137,35 @@ correm `analyze` em CI: isso é `vael-tools analyze`.
 
 ## MCP
 
-Não há servidor MCP no CLI. O editor expõe operadores por `jd mcp`; os agentes
-ZCode usam o plugin MCP do projeto (que envolve `vael-tools debug`/`analyze`).
+O jogo expõe o ECS e ferramentas práticas como **tools MCP nativas** para os
+agentes ZCode, em duas camadas sobre o mesmo servidor BRP da 15702:
+
+- **`bevy_brp_mcp` 0.23** (binário stdio, `~/.cargo/bin/bevy_brp_mcp`,
+  registado em `~/.zcode/cli/config.json` como `brp`): query/get/insert/
+  mutate/watch de componentes e recursos, spawn/despawn, `rpc_discover` e
+  `brp_type_guide`. A porta vai **por chamada** de cada tool (default 15702).
+  É o que a engine já serve: os builtin `world.*` do `bevy_remote` vivem ao
+  lado de `vael-tools/*`, `viber.*` e `jackdaw/*`.
+- **`brp_extras/*`** (crate `bevy_brp_extras` 0.23, vendorizado em
+  `vendor/bevy_brp_extras`; `src/main.rs`, off-switch `VAEL_BRP_EXTRAS=0`):
+  screenshot (imagem inline na conversa), teclas/rato/gamepad sintéticos,
+  `get_diagnostics` (FPS) e `shutdown`. O plugin só injeta métodos — deteta o
+  `RemoteHttpPlugin` do bridge e ignora a própria porta.
+
+Divisão de trabalho: **MCP é o caminho natural** (explorar o mundo vivo,
+mutar componentes, ver screenshots); **o CLI é o determinístico** —
+`wait-ready` com exit code, `expect`/`until` com timeout, playbooks e
+`step` por frames. Ressalvas:
+
+- teclas que precisam de `just_pressed` no mesmo frame continuam melhores
+  pelo `vael-tools debug key` (o `BridgeToolsInput` corre ordenado no
+  `PreUpdate`; as teclas do `brp_extras` injetam eventos sem essa ordem);
+- **não usar** `brp_launch`/`brp_list_bevy` para o Vael — lançar é
+  `vael-tools run --scene main --entry dev --bridge 15702`;
+- `brp_extras/shutdown` desliga o jogo (útil para ciclos de QA, mas não é
+  o `pause` do CLI).
+
+O editor continua a expor operadores por `jd mcp`; o CLI não tem servidor MCP.
 
 ## Limites desta fase
 

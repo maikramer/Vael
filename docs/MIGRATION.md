@@ -165,19 +165,19 @@ cargo run --release -- \
 - `--scene main` salta o menu/título; `--entry dev` salta o prólogo.
 - O bridge fica em `127.0.0.1:15706`; `curl` com `viber.lua`, `world.query`,
   `world.get_resources`, `viber.ecs`.
-- `VIBER_NO_BUILD=1 ./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
+- `./tools/check.sh` valida conteúdo/Lua/analyze/scene lint.
 - `cargo test --lib` no Vael: gate da suite
   do jogo (a contagem cresce por onda; usar o sumário da corrida, não um
   número fixo neste doc).
 - Editor oficial: `jd open .`, `jd doctor --project .`; as extensões do Vael
-  vivem em `../bevy_extensions/extensions/` e `../viber-tools/extensions/` e
+  vivem em `../bevy_extensions/extensions/` e `extensions/` e
   entram por `jd build` → `jd extension pack` → `jd extension install`.
   `cargo test -p vael-content` continua o gate dos esquemas; o crate
   `editor/` é legado (`cargo test -p vael-editor --test smoke`).
-- Mundo `.bsn`: `viber bsn check world.bsn`, `viber analyze world.bsn` e
-  `viber scene lint --world world.bsn` são os gates do formato novo. O
+- Mundo `.bsn`: `vael-tools bsn check world.bsn`, `vael-tools analyze world.bsn` e
+  `vael-tools lint --world world.bsn` são os gates do formato novo. O
   `world.xml` foi aposentado (2026-11-12) e já não existe no repo; não
-  regenerar com `viber bsn convert`.
+  regenerar com `vael-tools bsn convert`.
 - Gate da engine: `cargo test --workspace` no `../bevy_extensions` (o
   runtime de gameplay é o crate `bevy_ext_viber_engine`, standalone com
   testes à parte); o repo `../Viber` foi aposentado (removido a
@@ -198,7 +198,7 @@ semântica.
   `scenes/interiors/*.bsn` são as cenas/áreas internas.
 - `world.data/` (`.ahgt`, `.paint`, `.vinst`, `bake.json`) fica como estava;
   os attrs `heightmap`/`instances` continuam a apontar para lá.
-- O conversor é `viber bsn convert [--check] [--force] [--no-preview]`; o
+- O conversor é `vael-tools bsn convert [--check] [--force] [--no-preview]`; o
   `--check` compara XML e `.bsn` por pose/luz/cor com tolerância (não por
   texto). O `.xml` já não existe no repo (aposentado a 2026-11-12); o
   `convert` só serve para importar material antigo.
@@ -206,9 +206,10 @@ semântica.
   meshopt/KTX2 e cada modelo era uma leitura falhada do GLB inteiro); o
   caminho do GLB vem do `WorldNode`. Documentos antigos com `GltfSource`
   continuam a carregar.
-- `viber scene` (exceto lint), `viber tool settle/scatter` e `viber bake`
-  continuam XML-only nesta fase e são legado; `viber analyze`,
-  `viber bsn check` e `viber scene lint` já leem `.bsn`.
+- A CLI XML (`viber scene`, `viber tool settle/scatter`, `viber bake`,
+  `viber terrain`, `viber cinematic`) foi **aposentada** com o produto Viber;
+  a autoria é toda no Jackdaw. `vael-tools analyze`, `vael-tools bsn check` e
+  `vael-tools lint` leem `.bsn`.
 - No editor, os painéis de conteúdo vivem em `vael_content_jackdaw` (Itens,
   Marcos, Progressão, Diálogos, Missões, Conteúdo, Cenas); `Vael: Cenas` abre
   `world.bsn`, o menu e cada interior como abas, e o painel `WorldNode`
@@ -232,7 +233,7 @@ semântica.
 | Mapa e viagem — teleporte, marcadores, waypoint | feito em Rust (`src/ui/map.rs`, `src/ui/waypoint.rs`) |
 | UI do jogador — HUD, diário, mapa/viagem, título e morte em `bevy_pf` | feito em Rust (XAML + view-models + controlador M/G/F); barra de fala/NLU continua na engine |
 | Editor + mundo — Jackdaw oficial + extensões `.jdext` + `vael-content` + `.bsn` | feito; Grip adiado; CLI de cena continua XML e é legado |
-| Câmara/áudio/cinemáticas no Jackdaw | feito a 2026-11-14: specs tipadas (`CameraSpec`, `InteriorSceneSpec`, `AudioMixerSpec`, `MusicLayerSpec`, `BiomeRegionSpec`), painel **Vael: Cinemáticas** e gatilho `CinematicTrigger` em Rust — detalhe em [`JACKDAW.md`](JACKDAW.md); `viber cinematic shot` continua XML-only |
+| Câmara/áudio/cinemáticas no Jackdaw | feito a 2026-11-14: specs tipadas (`CameraSpec`, `InteriorSceneSpec`, `AudioMixerSpec`, `MusicLayerSpec`, `BiomeRegionSpec`), painel **Vael: Cinemáticas** e gatilho `CinematicTrigger` em Rust — detalhe em [`JACKDAW.md`](JACKDAW.md) |
 | Restante do jogo — FSM/inimigos/bosses, diálogo/NLU, story/áudio | pendente (o gatilho de cinemática já saiu do Lua) |
 | Fase 4 — mover AI e o resto do gameplay para o Vael; recipe extensions; docs | em curso (4a feito; player/câmara já saíram na Onda 3) |
 | Saída do Viber — onda exit2: runtime no monorepo, App composta pelo jogo | feita no `exit2/app-assembly` (composição própria, 335 testes); extração do host Luau para BMS pendente |
@@ -257,6 +258,13 @@ sombras) e os docs; o pool não mudou.
 
 ## Dívidas conhecidas
 
+- **Movimento (tnua, 2026-11-15)** — clips novos do herói (crouch, dodge-roll,
+  parede, trepar) não existem no GLB: `map_anim_state` usa Run/Walk/Fall como
+  fallback. O `Climb` está dormente até haver props com `climbable="1"`
+  autorados no `.bsn`. Fixtures de paridade (`tools/avian_baseline.py`)
+  continuam sem captura e a baseline do herói pré-integração ficou por
+  colher (VRAM ocupada por sessões paralelas; binário preservado em
+  `~/.cache/vael-baseline/vael`).
 - `VaelSave` é substituído inteiro pelo snapshot de 10 Hz; **não** gravar
   `game.vael` enquanto isto não for um merge (perde campos só do Rust).
 - `VaelSave` não serializa no BRP por `BTreeSet` sem `ReflectSerialize`;
@@ -294,7 +302,7 @@ sombras) e os docs; o pool não mudou.
 - `rules.publish` ainda publica netplay/alvo/combo/`abilities.active`/
   `vitals.active`/`xp.recent`/`quest.recent`; os binds de vida/XP/economia/
   status/quest/chefe/quests.others já são do `VaelHud`/`HudUiPlugin`.
-- O jogo passa a exigir o crate `vael` em runtime (`viber.vael`); `viber run`
+- O jogo passa a exigir o crate `vael` em runtime (`viber.vael`); `vael-tools run`
   direto do checkout da engine já não serve para o mundo do Vael.
 - A autoridade (`VAEL_RULES_RUST`) é default desde a Onda 4a; falta QA de
   combate/interiores/save no pool atual. O shadow (`VAEL_RULES_SHADOW=1`)
@@ -476,7 +484,7 @@ builder da engine**:
   (`gameplay:false`, sem controller/câmara da engine, save externo, IA em
   serviço, scripts `Compat`). O que era opção morta do `AppOptions` não
   existe aqui. `main.rs` chama `vael::app::build_app`; o `viber::app::AppOptions`
-  só sobrevive no `viber run` (crate da engine).
+  só sobrevive no `vael-tools run` (crate da engine).
 - **Geometria da extração**: os serviços vivem em crates `bevy_ext_*`
   (ui, audio, save, nav, ai, postfx, physics, engine, terrain_runtime,
   elements, flora, gradmesh, scene, luau/BMS, gltf, world,
@@ -501,3 +509,79 @@ Gates desta onda: workspace do monorepo `cargo test --workspace` verde
 (1032), monólito standalone 1072 (4 falhas conhecidas: fixtures do repo
 aposentado + 1 flaky do profiler), Vael `cargo test --lib` 335 verdes e QA
 vivo contra a árvore integrada.
+
+## Buracos da composição da App (2026-11-15)
+
+A App do Vael (`src/app.rs`) é uma porta do `build_app` do monólito, e o que
+fica de fora não falha alto: simplesmente não existe. Dois buracos
+encontrados ao pôr o `jd run .` a correr de ponta a ponta:
+
+- **`viber.ui` nil** — só o `install_ui_script_api` estava agendado. O do
+  crate lê o handle da VM do recurso `UiScriptHost`, que ninguém publicava
+  (`ui::publish_ui_script_host`): o install saía em silêncio e **todos** os
+  `viber.ui.*` dos scripts morriam com `attempt to index nil` (equipamento,
+  habilidades, combate, hud, profiler — 5 scripts). Agora a chain
+  `publish_ui_script_host → install_ui_script_api` corre antes do
+  `luau_on_add`/`luau_update`, e entram também `publish_ui_world_state` +
+  `publish_ui_font` (antes do `UiSet::Collect`), com o
+  `init_resource::<UiWorldState>` que o `UiPlugin` do crate não faz.
+- **Navmesh morta** — faltavam `nav::publish_nav_ground` (a seguir ao spawn,
+  dentro do set `nav::WorldSpawned`) e, no `viber::scene_loader::SceneLoad`,
+  o par `apply_navmesh_tag` + `spawn_archipelago`. O par do crate só entra no
+  `SceneLoad` do CORE e o runtime corre O SEU; sem a re-registação não há
+  `<NavMesh>` aplicada nem arquipélago (criaturas sem pathfinding).
+
+Regra ao portar mais alguma coisa para a App: comparar com
+`viber::app::build_app` **plugins e agendamentos de glue** (não só plugins) —
+os `publish_*`, os pares de `SceneLoad` e os `init_resource` de recursos que o
+crate lê por `Res`/`ResMut` são os que se perdem.
+
+Gate: `jd build .` verde; `jd run .` sem `ERROR` nem `attempt to index nil` no
+log, com `nav: <NavMesh> aplicada`; mundo `main` pronto em
+`VAEL_BIN=.jackdaw/target/game/debug/vael vael-tools run --scene main --entry
+dev --bridge` + `vael-tools debug --port <p> wait-ready`.
+
+## IK em `bevy_skeleton_modifiers` (2026-11-15)
+
+O IK de pés saiu do solver próprio (`bevy_ext_physics/src/ik.rs`,
+`solve_two_bone`/`solve_leg`) para a pilha de modificadores do fork vendored
+[bevy_skeleton_modifiers](https://github.com/jmwmulle/bevy_skeleton_modifiers)
+0.1.1 (MIT, port dos `SkeletonModifier3D` do Godot 4.7.2) — port local para
+Bevy 0.20/glam 0.33 em `../bevy_extensions/crates/bevy_ext_viber_engine/vendor/`
+(proveniência, diffs e gate da suíte golden em `VAEL_PATCH.md`; adoção em
+`../bevy_extensions/docs/CRATES.md`). A janela de scheduling é a mesma que o
+plugin velho já usava: PostUpdate depois da animação, antes da propagação.
+
+O que mudou:
+
+- **Pés** — `bind_animations` já não insere só o marker `FootIk`: o bind da
+  engine (`foot_ik_bind_system`) spawna um `TwoBoneIk` + entidade alvo por
+  perna e o driver (`foot_ik_target_system`) escreve os alvos com a mesma
+  matemática de terreno (amostra, delta clampado, fase de apoio, soft reach);
+  o peso de locomoção vai para `ModifierCommon.influence` e o blend é do
+  crate. Rigs cedidos ao Jackdaw (`AnimationSet`) passam a ter IK de pés pela
+  primeira vez (recebem `FootIk` no `cede_rig_to_jackdaw`; sem animator o
+  peso é 1.0). Rebind de tier/LOD: o rig é revalidado por frame e re-spawnado
+  quando os ossos morrem.
+- **Bone offsets** — o resource global só-do-herói (`PlayerBoneOffsets`) é
+  agora o componente `BoneOffsets` por entidade; `viber.bone_offset` mira a
+  entidade do script (NPCs/monstros podem usá-lo; assinatura igual,
+  `equipment.lua` intacto). Fora de `on_update` cai no herói (comportamento
+  histórico; a ponte BMS do editor continua a falar com o herói).
+- **Look-at da cabeça (novo)** — as constantes `HEAD_LOOK_WEIGHT`/`MAX`,
+  documentadas desde sempre sem implementação, são agora o componente
+  `viber::ik::HeadLookAt` (arco clampado 40°, slerp 0.35 por frame). O jogo
+  decide os alvos (`src/head_look.rs`): NPCs com script até 6 m e hostis até
+  10 m viram a cabeça para o herói — só rigs com pés ligados ao IK entram
+  (caixas/portas com script não têm cabeça).
+- **Spring bones (novo)** — a crina dos lobos (`HeadAccessory1→…→3_4`) ganha
+  uma `SpringBoneChain` com defaults do Godot (`src/spring.rs`, gate
+  `VAEL_SPRING_TAILS=0`). ChainIk/SplineIk ficam disponíveis no crate para
+  tentáculos/caudas futuras.
+- Jaw (`VoiceEnvelope`) intacto e ainda inerte (ninguém escreve o envelope).
+
+A/B: `VAEL_SKELETON_MODS=0` devolve o solver próprio (pés) + offsets
+componentes; `VAEL_SPRING_TAILS=0` desliga as molas. Os helpers de nome de
+osso (`is_head`, `is_left_hip`, …) continuam públicos — o ragdoll consome-os.
+A limpeza do caminho velho (apagar `foot_ik_system`/`solve_leg`) fica para
+depois da paridade viva ficar verificada.

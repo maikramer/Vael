@@ -5,6 +5,28 @@ O editor oficial é o **Jackdaw 0.20 instalado** (`jd open .`); o mundo é
 **para cada sistema do jogo, onde está hoje a autoria** — no editor (com
 campos e gizmos), em dados do jogo (`world/…`, `data/…`) ou em código.
 
+## Build e run
+
+As formas oficiais de buildar e correr o jogo são as do Jackdaw, corridas na
+raiz do projeto:
+
+| Comando | O que faz |
+|---|---|
+| `jd doctor .` | Verifica o setup: toolchain, `jackdaw.toml` (`package = "vael"`, `plugin = "VaelPlugin"`), `JackdawPlugin`, dependências |
+| `jd build .` | Compila o jogo com o perfil `dev` deste workspace em `.jackdaw/target/game` e regrava `.jackdaw/{schema,components}.json` — o schema é o que o editor carrega depois de mexer em componentes |
+| `jd run .` | `jd build` + lança o binário, **sem argumentos** |
+| `jd clean` | Apaga a cache de build do projeto (`.jackdaw/target`); `--cargo` limpa também o `target/` do workspace. Corre-se no projeto (não aceita path) e com o editor fechado |
+| `jd open .` | Editor; o Play/PIE corre o mesmo binário |
+
+Os `[[run]]` do `jackdaw.toml` (Play, Play (título), Play (QA)) são do botão
+Play do editor: o `jd run` da linha de comandos ignora-os e arranca na cena de
+arranque (`scenes/menu.bsn`, atrás do título), não em `main`. Para argumentos
+(`--scene main --entry dev --bridge`) usa-se o `vael-tools run`; com
+`VAEL_BIN=.jackdaw/target/game/debug/vael` esse atalho reaproveita o binário do
+`jd` em vez de exigir um build release em `target/`. Nota: `jd run` e o Play
+concorrem pela mesma pasta de build (`.jackdaw/target/game`) — não correr os
+dois ao mesmo tempo com código a mudar.
+
 ## Matriz
 
 | Sistema | Onde se autora | Como se vê no editor |
@@ -13,6 +35,7 @@ campos e gizmos), em dados do jogo (`world/…`, `data/…`) ou em código.
 | Colisores, corpos, destrutíveis, colheita | `ColliderSpec`/`BodySpec`/`Destructible`/`Harvestable` | inspector *Physics*/*Gameplay* + gizmos |
 | LOD, flora, partículas, portais, exclusões, scripts | `ModelLod`/`FloraStation`/`ParticleSpec`/`PortalSpec`/`SpawnExclusionSpec`/`ScriptRef` | inspector + gizmos |
 | Terreno, caves, arcos, falésias, paint | `VoxelTerrain`/`Cave`/`Arch`/`Cliff` + `world.data/` | painel *Voxel Terrain* |
+| **Pavimento (ruas, praças, largos)** | `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>`, com `paving-cell`/`-corner`/`-priority` (ver [`PAVING.md`](PAVING.md)) | inspector, nos atributos do nó — ainda sem gizmos da grelha |
 | Ambiente, PostFX, flora (definições) | `world/settings/*.bsn` | painéis *Ambiente*, *PostFX*, *Flora* |
 | **Câmara do jogo** | `CameraSpec` no `<OrbitCamera>` (`world/autoload/player.bsn`) | inspector *Câmara* + frustum no viewport |
 | **Câmara de interior** | `InteriorSceneSpec` nas salas (`scenes/interiors/*.bsn`) | inspector *Câmara* + rectângulo da sala e pose da câmara |
@@ -71,7 +94,7 @@ baixo, abre pelo menu de janelas do editor):
   planos por ordem de documento; não há `start` autoral);
 - `◀/▶` filme e plano, "Seleccionar plano" (Outliner + frame);
 - **Tocar no jogo** / **Parar**: JSON-RPC para o bridge do jogo
-  (`VIBER_TOOLS_PORT`, por omissão 15702). O jogo tem de estar no Play;
+  (`VAEL_TOOLS_PORT`, por omissão 15702). O jogo tem de estar no Play;
 - **Novo plano (viewport)**: cria um `<Shot>` no fim do filme com
   `from`/`look` da câmara do viewport (`duration=4`), como um passo de undo.
   Se a escrita do componente falhar, a pose fica no painel como texto para
@@ -81,9 +104,9 @@ baixo, abre pelo menu de janelas do editor):
 Gizmos: trajecto `from→to` (âmbar), alvos `look` (azul), planos em foco
 destacados; o filme em foco sempre, os outros no modo "perto".
 
-O `viber cinematic list/show/play` continua a funcionar pela bridge (lê a
-`CinematicLibrary` carregada do `.bsn`); `viber cinematic shot` é **XML-only**
-(`SceneDoc`/`world.xml`) e não serve este mundo.
+A autoria e o play/stop de cinemáticas são do painel **Vael: Cinemáticas**
+(lê a `CinematicLibrary` carregada do `.bsn`). O CLI `viber cinematic` foi
+aposentado; não há caminho XML para este mundo.
 
 ### Gatilhos
 

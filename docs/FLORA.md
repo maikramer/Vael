@@ -117,11 +117,11 @@ os meshes; mudam só os materiais.
 
 ## QA pela bridge
 
-As teclas sintéticas (`viber debug key j`) passaram a ser aplicadas no
+As teclas sintéticas (`vael-tools debug key j`) passaram a ser aplicadas no
 `PreUpdate` do frame seguinte, depois do input core: antes eram escritas a
 meio do `Update` e o `harvest_input`/scripts que já tinham corrido não viam o
 `just_pressed` (o `[J]` do QA não colhia). Funciona também com
-`viber debug step` (frames determinísticos).
+`vael-tools debug step` (frames determinísticos).
 
 ## Limitações
 
@@ -142,11 +142,11 @@ meio do `Update` e o `harvest_input`/scripts que já tinham corrido não viam o
 ```bash
 cargo check --release && cargo test --release
 python3 tools/flora_migrate.py --check
-VIBER_NO_BUILD=1 viber analyze world.bsn
+vael-tools analyze world.bsn
 ```
 
 Em jogo (`--scene main --entry dev --bridge 15706`): colher um pinheiro com
 `[J]`×3 → tomba com toco e som de queda; `[J]` na árvore deitada → toros;
 gravar e recarregar → a árvore volta deitada (sem tombar outra vez). O log não
 pode ter `water_ssr` (impostores ligados). Medir com
-`viber debug prof --tab frames` na mesma pose, sem builds concorrentes.
+`vael-tools debug prof --tab frames` na mesma pose, sem builds concorrentes.

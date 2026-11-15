@@ -105,4 +105,4 @@ A quest completa em qualquer uma; o desfecho muda o texto e os itens.
 - Lugar: “poço da encruzilhada” → `forest-crossroads-well` (23 opções).
 - Relatório: “lobos” → `noul` 0,695; juiz: `matar lobo` 0,592 contra 0,14/0,15
   das outras opções.
-- `viber analyze` OK.
+- `vael-tools analyze` OK.

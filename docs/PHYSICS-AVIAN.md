@@ -37,12 +37,43 @@ corpo a `float_height` do chão, com `cling_distance` a segurar descidas e
 - `speed: 1.0` no config faz `desired_motion` ser a **velocidade em m/s** — o
   `player_movement` do Vael continua a calcular `vel_x/vel_z` como antes.
 - O config é um **asset por altura de salto** (`Player.jump_height`, 2.3 m no
-  Vael): `attach_hero_config` cria-o e insere o `TnuaConfig`.
+  Vael): `attach_hero_controller` cria-o e insere o `TnuaConfig` + o
+  `TnuaController<S>` (a receita `<PlayerGLTF>` só traz o corpo — o scheme é
+  da app, ver "Integração profunda" abaixo).
 - Na **natação** o controller é desligado (`TnuaToggle::Disabled`) e o
-  `LinearVelocity` é nosso (empuxo, corrente, impulso para a margem). Lunge e
-  knockback somam-se à `desired_motion`.
-- O salto é a ação `HeroScheme::Jump` (altura no asset); o buffer/coyote/
-  cooldown continuam no `player_movement`.
+  `LinearVelocity` é nosso (empuxo, corrente, impulso para a margem); o salto
+  para a margem continua manual.
+- O salto é a ação `VaelHeroScheme::Jump` (altura no asset); o **buffer e o
+  coyote são do crate** (`input_buffer_time`/`coyote_time` no config; o walk
+  basis conta o coyote num timer interno). O jogo só abre a janela de feed
+  (`JUMP_BUFFER`) e alimenta; o SFX dispara no arranque real da ação
+  (`action_flow_status` em `hero_jump_sfx`).
+
+### Integração profunda (2026-11-15)
+
+O scheme vive no JOGO (`VaelHeroScheme` em `src/player.rs`); o
+`HeroPhysicsPlugin<S: TnuaScheme>` da engine ficou genérico e o
+`HeroSpatialExt` do adapter Avian deu lugar a um `VaelSpatialExt` local que
+exclui o herói da leitura de colliders (o `player_movement` escreve a
+`Position` dele no mesmo sistema — B0001). Ações do scheme:
+
+| Ação | Gatilho | Notas |
+|---|---|---|
+| `Jump` | Espaço (`just_pressed`; janela de feed `JUMP_BUFFER`) | coyote/buffer do crate; SFX no arranque real |
+| `Dash` | esquiva (`viber.vael.dodge`) e lunge (`attack_motion`) | `displacement` exato do perfil (8.4 m/s); o hop lateral entra no componente Y — efeito físico que se tinha perdido na migração |
+| `Knockback` | componente `Knockback` (Lua `viber.push_player`) → `action_interrupt` | incancelável; o settle fresco limpa `current_action` à mão |
+| `Crouch` | LeftCtrl/dpad_down (held: `action_start`/`action_end`) | exige `headroom` no walk config (sensor de teto automático); `hero_crouch_collider` troca a cápsula (1.8 → 1.15 m) enquanto o discriminante durar; passo ×0.45 |
+| `WallSlide`/`WallJump` | radar (`TnuaObstacleRadar` 0.5×1.2) + input para a parede | gate `VAEL_WALL_MOVES=0` desliga; `same_trigger(Jump)` partilha o Espaço; lança na normal (`horizontal_distance: 2.0`) |
+| `Climb` | blip de um prop com `climbable="1"` nos props (`Climbable`) | W/S sobem/descem (3 m/s); sair do raio do radar solta; terreno NUNCA é climbable |
+
+Animação: o `hero_anim_state` (Vael) lê a memória das ações com o
+`TnuaAnimatingState` e escreve `AnimStateOverride` (`bevy_ext_core::animation`)
+— o `drive_player_animation` da engine honra-o, mas o blending grounded
+(idle/walk/run/água) continua dele. Clips novos (crouch, dodge-roll, parede)
+entram no GLB do herói e mapeiam em `map_anim_state`.
+
+Sem corpo (apps de teste headless) o caminho manual de sempre continua: burst
+de esquiva, impulso de salto e knockback com decaimento próprios.
 
 ### O autostep é nosso (`probe_steps`/`apply_steps`)
 
@@ -56,6 +87,66 @@ Medido no spike do Gate 0 (`/home/maikeu/GitClones/.spikes/tnua_gate`):
 repouso sem deriva a `float_height`; escadas de 0.20/0.30/0.40 m sobem; rampas
 de 45°/55° sobem nativamente; 65° recusa; parede gera `CollisionStart` com a
 entidade; salto de 1.4 m aterra na folga.
+
+### Quem regista o quê (app própria)
+
+O Vael compõe a App em `src/app.rs` (fim do `build_app`). A física entra por
+três plugins, por esta ordem:
+
+1. `viber::physics::PhysicsPlugin` — **é o do `bevy_ext_physics`** (o caminho
+   reexporta o crate): Avian, o resolver de colliders pendentes e os gizmos.
+   **Não conhece o herói** (é reutilizável).
+2. `viber::physics::TerrainCollidersPlugin` — o streaming dos colliders das
+   colunas voxel. É o único pedaço host-side: lê o `TerrainRuntime` e os
+   `TerrainChunk`/`VoxelChunk` do monólito, por isso vive lá e não no crate.
+3. `viber::player::HeroPhysicsPlugin::<VaelHeroScheme>::new(vael_hero_config)`
+   — `TnuaControllerPlugin` + `TnuaAvian3dPlugin` (em `FixedUpdate`, o mesmo
+   horizonte do `PhysicsPlugins::default()`), o asset de config do herói e os
+   sistemas `attach_hero_controller`/`probe_steps`/`apply_steps`/
+   `recover_stuck_ground`.
+
+A engine standalone regista os mesmos três no `app.rs` dela, com o SEU scheme
+(`HeroPhysicsPlugin::<HeroScheme>::new(hero_config)`); qualquer app nova tem de
+fazer o mesmo com o scheme próprio, senão o herói fica sem controller (o
+`GravityScale` é 0 e o corpo não cai nem anda) ou o terreno fica sem collider.
+
+### Fim da duplicação (onda D, 2026-11-15)
+
+O `src/physics.rs` do monólito tem agora ~200 linhas: reexporta o crate e fica
+só com o streaming do terreno. Um só tipo de cada:
+
+| Tipo | Dono |
+|---|---|
+| `PendingCollider`, `ColliderResolved`, `ColliderCache`, `BakedCollider`, `RayQuery`/`RayHit`, `TerrainCollisionStatus` | `bevy_ext_physics` |
+| `VoxelCollider` | `bevy_ext_core` (o `bevy_ext_nav` filtra obstáculos pelo MESMO tipo que a física insere), re-exportado pelo `bevy_ext_physics` |
+| `ColumnColliderBake`, `PHYSICS_CHUNK_RADIUS`, `collision_keep_within`, `column_xz_distance`, `nearest_column_distance`, `mesh_vertices_indices` | `bevy_ext_terrain_runtime::host` (o contrato do host para a física do terreno) |
+| `ragdoll` | `bevy_ext_physics` (`pub use` no monólito) |
+
+O bug que motivou isto, medido a 2026-11-15: registar só o plugin do crate
+enquanto o spawn do monólito usava os tipos do monólito deixava o mundo sem
+collider de terreno — `colliders_trimesh: 25` em vez de ~1159,
+`terrain_collider_ready: false` para sempre e o `spawn_gate` a soltar o herói
+aos 0.00 s. O herói parecia de pé porque os snaps analíticos do `src/player.rs`
+o seguram à cota (andava na praça e saltava, mas atravessaria falésias).
+
+O que **fica** de propósito no monólito: `physics_fx` (lê o `TerrainRuntime` do
+monólito para `ground_near`, e o `apply_falling` usa os `WorldBorderConfig`/
+`InteriorSceneConfig` do host) e o `stream_voxel_colliders`. Ambos migram se e
+quando o terreno do monólito passar a usar o `bevy_ext_terrain_runtime`; nessa
+altura o `TerrainCollidersPlugin` desaparece e o plugin do crate fica sozinho.
+
+Correcção de arrasto: o `bevy_ext_terrain_runtime` declarava
+`avian3d = { default-features = false, features = ["3d"] }` e o `Collider`/
+`TrimeshFlags` do parry **não existem** sem `parry-f32` — compilado como
+dependência a unificação de features escondia-o; `cargo test` no crate
+sozinho rebentava. Passou a `["3d", "parry-f32"]`.
+
+Gate da onda D, medido no mundo principal com o binário de release
+2026-11-15 (o mesmo run que antes dava 25 trimeshes com os dois `physics`):
+`colliders_trimesh: 1159`, `colliders_compound: 326`, `colliders_cuboid: 679`,
+`rigidbodies: 4071`, `terrain_collider_ready: true`, herói grounded, andar
+2,2 m em 1,5 s e salto de +1,4 m na amostragem (2,3 autorados) com aterragem.
+Os raios de cima batem nos `chunk <x>-<z>` do terreno a y=38,73.
 
 ## Agenda
 
@@ -160,6 +251,38 @@ reflexão e não precisa do módulo.
 - Spike do Gate 0 (fora do jogo): escadas 0.2/0.3/0.4 m, rampas 45/55/65°,
   parede com `CollisionStart`, salto, repouso — com chão em cubo **e em
   trimesh**.
+
+**Verificado na revisão (2026-11-15, app própria composta):**
+- `cargo check --lib` do monólito, do `bevy_ext_physics` e do Vael.
+- Cena `menu` viva (`--scene menu --bridge`, `VAEL_ELEMENTS=0`):
+  `terrain_collider_ready: true`, `colliders_trimesh: 32` para 16 colunas,
+  herói `grounded=true`, e o `viber.raycast` (BRP) bate em `chunk 1-1` a
+  y≈8.2 em quatro pontos da clareira. Com o plugin do crate extraído (tipos
+  distintos) o mesmo run dava `terrain_collider_ready: false` e nenhum
+  trimesh de terreno — é o gate da onda D.
+- `viber.debug.physics()` devolve as fases do Avian (`step_ms` 3.2 ms na
+  cena leve, `ncontacts`/`nconstraints` > 0).
+
+**Verificado na onda D (2026-11-15, tipos unificados):**
+- `cargo test`: `bevy_ext_physics` 44, `bevy_ext_terrain_runtime` 5 (os
+  `ColumnColliderBake`/distâncias mudaram-se para o `host`), Vael 381 e
+  monólito **813** (as 4 falhas que restam são do `luau`/`bevy_ext_luau` da
+  wave F, não da física). A suite do `bridge::tests` não é paralela
+  (`--test-threads=1`): vários testes abrem a mesma porta/estado global.
+- Mundo principal (`--scene main --entry dev`, binário de release pós-merge
+  `exit4/integrate`): `colliders_trimesh: 1159`, `colliders_compound: 326`,
+  `colliders_cuboid: 679`, `rigidbodies: 4071`, `terrain_chunks: 739`,
+  `terrain_collider_ready: true`; herói a `38.7704` (superfície + 0.04) com
+  `grounded=true` e `vel_y≈0`; andar 6,0 m em 1,5 s; salto 38.77→40.79→38.77.
+- **Cuidado no arranque**: o `wait-ready` sai antes de as colunas sob o herói
+  estarem assadas. Nessa janela o `spawn_gate` larga-o com
+  `TerrainCollisionStatus.ready == false`, o chão analítico põe-no dentro do
+  collider e ele cai (o `src/player.rs` resgata-o; medido 5× na carga). Fica
+  bom sozinho em ~10 s. Gate de QA: poll de `viber.debug.stats()` até
+  `terrain_collider_ready: true` antes de andar.
+- Cena `menu`: `terrain_collider_ready: true`, 32 trimeshes para 16 colunas e
+  os mesmos hits de `chunk 1-1` — sem regressão face ao estado anterior ao
+  switch.
 
 **Pendente / bloqueado:**
 - `cargo test --lib` do engine: bloqueado pelo WIP de `terrain/water.rs` de

@@ -99,5 +99,5 @@ ambiência ficam no tier. Entradas `legacy: true` (corrida) ficam fora do lote.
 As layers novas exigem `world/environment.bsn` com `<MusicLayer>` homónima do
 `BiomeRegion.id`. Os loops de bioma correm em `scripts/game/ambience.lua`.
 
-Verificação: `viber analyze world.bsn` e, com a engine viva,
-`viber debug prof --tab audio` para confirmar quantos loops estão a tocar.
+Verificação: `vael-tools analyze world.bsn` e, com a engine viva,
+`vael-tools debug prof --tab audio` para confirmar quantos loops estão a tocar.

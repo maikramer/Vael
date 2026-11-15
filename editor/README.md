@@ -1,11 +1,13 @@
 # vael-editor — autoria do Vael sobre Jackdaw
 
 > **Legado.** O fluxo de autoria é o **Jackdaw oficial** (`jd open .`) com as
-> extensões `.jdext` em `../bevy_extensions/extensions/`; este crate próprio
-> mantém-se como referência e para os testes sem janela. Não é o editor do
-> dia-a-dia. Os painéis deste crate (Itens, Marcos, Progressão, Diálogos,
-> Missões, Conteúdo e Cenas) estão portados para a extensão
-> **`vael_content_jackdaw`**, ativa no `jackdaw.toml` do projeto.
+> extensões `.jdext` em `../bevy_extensions/extensions/` e `extensions/`; este
+> crate próprio mantém-se como referência e para os testes sem janela. Não é o
+> editor do dia-a-dia. Os painéis deste crate (Itens, Marcos, Progressão,
+> Diálogos, Missões, Conteúdo e Cenas) estão portados para a extensão
+> **`vael_content_jackdaw`**, ativa no `jackdaw.toml` do projeto. O CLI de
+> cena XML (`viber scene`/`tool`/`terrain`) foi aposentado; `vael-tools`
+> cobre analyze/lint/bsn.
 
 Editor do Vael. É uma App Bevy própria que regista uma extensão no
 [Jackdaw](https://crates.io/crates/jackdaw) 0.20 (a mesma linha do Bevy
@@ -54,8 +56,8 @@ O mundo é uma árvore `.bsn`:
 - `world/autoload/*.bsn` — jogador/câmara/HUD persistentes.
 
 O painel **Vael: Cenas** lista o mundo, o menu e cada interior; abre-os como
-abas de cena do Jackdaw (`scene.open`). O jogo lê os mesmos `.bsn` e o
-`viber scene`/`tool` continua a editar os `.xml` legados ao lado.
+abas de cena do Jackdaw (`scene.open`). O jogo lê os mesmos `.bsn`; a CLI XML
+foi aposentada e `vael-tools analyze`/`lint` leem `.bsn`.
 
 ### `WorldNode`
 
@@ -126,9 +128,8 @@ O índice do mundo é lido de `world.bsn` (ou `world.xml` legado) com o mesmo
   e attach ao osso. Os props `grip-*` continuam no XML/`equipment.lua`.
 - **Terreno, composições e UI não têm preview** no viewport: o editor mostra
   a hierarquia e os attrs; o jogo continua a ser a referência visual.
-- **CLI de cena XML-only**: `viber scene`, `viber tool settle/scatter` e
-  `viber bake` operam nos `.xml` legados. `viber analyze` e `viber scene lint`
-  já leem `.bsn`.
+- **Sem CLI de cena**: a CLI XML (`viber scene`/`tool`/`bake`) foi aposentada;
+  a autoria é no Jackdaw e `vael-tools analyze`/`lint` leem `.bsn`.
 - **Play/PIE**: configurado. O `main.rs` passa
   `jackdaw_runtime::maybe_windowless` ao `build_app` pelo hook
   `AppOptions::default_plugins`, por isso o modo *embedded* desenha no

@@ -174,9 +174,9 @@ regressão; o resto da tabela está no topo de `src/lights.rs`
 VAEL_SCENARIO=night_lanterns/night cargo run --release -- \
   world.bsn --scene main --entry dev --bridge 15706
 VAEL_PRACTICAL_LIGHTS=0 VAEL_SCENARIO=night_lanterns/night cargo run ...
-viber debug --port 15706 wait-ready
-viber debug --port 15706 prof --tab frames
-viber debug --port 15706 screenshot -o /tmp/noite.png
+vael-tools debug --port 15706 wait-ready
+vael-tools debug --port 15706 prof --tab frames
+vael-tools debug --port 15706 screenshot -o /tmp/noite.png
 
 # Visual: rua das lanternas, acampamento dos contrabandistas, tochas de
 # caverna e lareira de interior, com `VAEL_FLAME_BILLBOARDS=0/1`.
@@ -185,7 +185,7 @@ viber debug --port 15706 screenshot -o /tmp/noite.png
 Cenários em `qa/scenarios/night_lanterns/night.json` e
 `night_campfire/night.json` (hora 22, céu limpo, herói teleportado para o
 sítio). O veredicto numérico de flicker (luma por frame) é o `burst` do
-runtime — `viber-tools/burst` no BRP, como o resto do QA temporal.
+runtime — `vael-tools/burst` no BRP, como o resto do QA temporal.
 
 ### Limites conhecidos
 
@@ -226,13 +226,13 @@ runtime — `viber-tools/burst` no BRP, como o resto do QA temporal.
 ```bash
 # Dia, crepúsculo, noite e chuva sem saltar o relógio. O run usa o save do
 # jogo: faz backup (ou usa um slot separado) antes de comparar.
-VAEL_START_HOUR=19.85 viber run --scene main --entry dev
-VAEL_START_WEATHER=Rain viber run --scene main --entry dev
+VAEL_START_HOUR=19.85 vael-tools run --scene main --entry dev
+VAEL_START_WEATHER=Rain vael-tools run --scene main --entry dev
 
 # Ao vivo:
-viber debug lua 'return viber.vael.env_info()'
-viber debug lua 'viber.vael.env_pause(true)'
-viber debug lua 'viber.vael.env_set_weather("Thunderstorm")'
+vael-tools debug lua 'return viber.vael.env_info()'
+vael-tools debug lua 'viber.vael.env_pause(true)'
+vael-tools debug lua 'viber.vael.env_set_weather("Thunderstorm")'
 ```
 
 `VAEL_ELEMENTS=0` desliga o crate e volta ao céu da engine.

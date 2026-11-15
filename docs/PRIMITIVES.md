@@ -108,7 +108,7 @@ Corrimão contínuo (sweep):
 
 ## Gates
 
-- `viber analyze world.bsn` e `viber-engine analyze world.bsn`.
+- `vael-tools analyze world.bsn`.
 - Contrato/render: `cargo test -p bevy_ext_scene primitives`,
   `cargo test -p bevy_ext_gradmesh` e
   `cargo test -p bevy_ext_gradmesh --features physics` (no `../bevy_extensions`).
@@ -121,5 +121,5 @@ Corrimão contínuo (sweep):
   instalar a extensão.
 - A/B de render: `VAEL_PRIMITIVES=standard` mantém o fallback do engine;
   `VAEL_PRIMITIVES_DETAIL=minimal|low|medium|high|extreme` muda o detalhe.
-  Para o engine isolado (`viber run`), as formas procedurais aparecem como
+  Para o engine isolado (`vael-tools run`), as formas procedurais aparecem como
   caixas de bounds — o render é do jogo.

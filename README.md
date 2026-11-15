@@ -14,9 +14,9 @@ mundo original já têm runtime, incluindo as tags `EngineConfig`
 (`static="true"`), a fonte da verdade: terreno final pré-gerado
 (`world.data/terrain.ahgt`), geradores resolvidos em grupos `spawn/…`
 editáveis (receita `<Scatter>` ao lado), vegetação em `.vinst`. É o que corre
-e o que se edita no Jackdaw; `viber analyze`/`viber scene lint` e `viber bsn`
+e o que se edita no Jackdaw; `vael-tools analyze`/`vael-tools lint` e `vael-tools bsn`
 leem `.bsn`. Os `.xml` foram aposentados a 2026-11-12 (vivem no histórico do
-git; não regenerar com `viber bsn convert`). Não há fonte procedural:
+git; não regenerar com `vael-tools bsn convert`). Não há fonte procedural:
 foi convertida no sítio e apagada (2026-10-14; fica no histórico do git).
 
 Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
@@ -25,26 +25,34 @@ Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
 ## Correr
 
 ```bash
-cd ../viber-tools && tools/install.sh   # uma vez
-cd ../Vael && viber run                 # procura world.bsn
-viber analyze world.bsn                 # headless
-viber scene lint --world world.bsn
+jd build                     # build oficial: jogo (debug) + schema do editor
+jd run .                     # build + lança o jogo (cena de arranque)
+vael-tools run --scene main --entry dev   # atalho com argumentos (debug)
+vael-tools analyze world.bsn              # headless
+vael-tools lint                           # lint estrutural
 ```
 
-O comando `viber` é agora o router do **`viber-tools`** (`~/.local/bin/viber`
-→ `viber-tools`). O wrapper antigo do Viber fica preservado como
-`viber-engine` e só é usado para `bake`/`tool scatter`/`trace`/`lua` enquanto
-a extração não termina. `viber run` lança o binário do Vael; a engine `viber`
-continua a ser a dependência de gameplay nesta fase. Fluxo completo (LFS,
-assets, editor): [`AGENTS.md`](AGENTS.md); detalhe do CLI novo:
-[`docs/VIBER_TOOLS.md`](docs/VIBER_TOOLS.md).
+**`jd build` e `jd run` são as formas oficiais de buildar e correr o jogo.** O
+`jd` compila em `.jackdaw/target/game` (perfil `dev`, à parte do `target/` do
+workspace) e o `jd build` deixa também o schema que o editor carrega
+(`.jackdaw/schema.json`). O `jd run` lança sem argumentos — só o Play do editor
+lê os `[[run]]` do `jackdaw.toml` —, logo arranca no menu/título, não em `main`.
+`jd doctor .` confirma o setup.
+
+Os argumentos (`--scene`/`--entry`/`--bridge`/`--resolution`) são do
+`vael-tools run`, que lança `target/release/vael` (ou o `VAEL_BIN`;
+`VAEL_BIN=.jackdaw/target/game/debug/vael` reaproveita o build do `jd`). O CLI
+vive no próprio repo (`cli/`, pacote `vael-tools`); o antigo produto `viber` foi
+aposentado e o bridge de debug está em `bevy_extensions`
+(`bevy_ext_bridge_*`). Fluxo completo (LFS, assets, editor):
+[`AGENTS.md`](AGENTS.md); detalhe do CLI: [`docs/TOOLS.md`](docs/TOOLS.md).
 
 ### Arranque directo (debug)
 
 Para iterar em gameplay sem passar pelo menu e pelo prólogo de ~35 s:
 
 ```bash
-viber run --scene main --entry dev
+vael-tools run --scene main --entry dev
 ```
 
 Cai directo em `main`, com o HUD ligado e o estado de um **Novo Jogo** (sem
@@ -55,21 +63,19 @@ o que continua a tocar: [`docs/DEBUG.md`](docs/DEBUG.md).
 
 ## Profiling (sem screenshots)
 
-Com o jogo vivo (`viber run --bridge`), o runtime novo (`viber_tools_runtime`)
-responde a frames/p95/hitches/RSS e input; `viber tools mcp` expõe o mesmo aos
-agentes:
+Com o jogo vivo (`vael-tools run --bridge`), o runtime (`bevy_ext_bridge_runtime`)
+responde a frames/p95/hitches/RSS e input:
 
 ```bash
-viber debug prof --tab frames              # frame avg/p95/max, hitches, RSS
-viber debug prof --hitches                 # hitches recentes
-viber debug prof --record 30 --hz 2 -o perf.jsonl   # série para análise
-viber debug key f3 --hold-ms 120           # input sintético
+vael-tools debug prof --tab frames              # frame avg/p95/max, hitches, RSS
+vael-tools debug prof --hitches                 # hitches recentes
+vael-tools debug prof --record 30 --hz 2 -o perf.jsonl   # série para análise
+vael-tools debug key f3 --hold-ms 120           # input sintético
 ```
 
-`trace`, `lua`, `scene --live` e `tool --live` ainda são servidos pelo
-`viber-engine` legado durante a transição; `viber debug trace`/`lua` delegam
-nele. No jogo, **P → FRAMES** e **F3** continuam a mostrar o profiler da
-engine. Limiar de hitch do runtime novo: `VIBER_HITCH_MS` (default 50 ms).
+`debug lua`/`burst` ainda usam os métodos legacy `viber.*` do monólito. No
+jogo, **P → FRAMES** e **F3** continuam a mostrar o profiler da engine. Limiar
+de hitch: `VAEL_HITCH_MS` (default 50 ms).
 
 ## Estado atual
 
@@ -227,9 +233,8 @@ descomprime meshopt/KTX2 à leitura.
 
 ## Editar
 
-Por operações — `viber scene` / `viber tool` / `viber terrain` (offline ou
-`--live`). A autoria do mundo e das cenas é no **Jackdaw oficial**, com este
-projeto já preparado (`jackdaw.toml`):
+A autoria do mundo e das cenas é no **Jackdaw oficial**, com este projeto já
+preparado (`jackdaw.toml`):
 
 ```bash
 jd open .                 # abre o Vael no editor oficial
@@ -237,8 +242,8 @@ jd build                  # reconstrói o schema do jogo (Play/PIE)
 ```
 
 As extensões do Vael (terreno voxel, painéis de conteúdo) são projetos em
-`../bevy_extensions/extensions/`; empacotam-se e instalam-se como `.jdext`
-assinado:
+`../bevy_extensions/extensions/` e `extensions/`; empacotam-se e instalam-se
+como `.jdext` assinado:
 
 ```bash
 cd ../bevy_extensions/extensions/bevy_voxel_terrain_jackdaw
@@ -246,12 +251,11 @@ jd build && jd extension pack
 jd extension install bevy_voxel_terrain_jackdaw-*-x86_64-unknown-linux-gnu.jdext --trust-publisher
 ```
 
-O editor abre `world.bsn` e as cenas `scenes/**/*.bsn`; a CLI de cena
-(`viber scene`/`tool settle`/`scatter`) continua XML e edita os legados.
-Re-gerar a partir do exemplo original do motor TS deixou de ser o fluxo:
-produz um mundo procedural que teria de ser convertido (`viber bake`) e
-substituiria o estático editado. GLBs novos entram por `assets/`
-(`gameassets resume`); `viber analyze` confirma que os URLs resolvem.
+O editor abre `world.bsn` e as cenas `scenes/**/*.bsn`; a autoria de cena é
+toda no Jackdaw (o CLI XML foi aposentado). Re-gerar a partir do exemplo
+original do motor TS deixou de ser o fluxo: produziria um mundo procedural
+que substituiria o estático editado. GLBs novos entram por `assets/`
+(`gameassets resume`); `vael-tools analyze` confirma que os URLs resolvem.
 
 ## Fila aberta (na engine, não neste mundo)
 

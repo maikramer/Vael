@@ -18,7 +18,7 @@
 |---|---|
 | `bevy 0.20.1` | motor; o Vael fixa a versão e usa o lockfile |
 | `viber` (path) | fachada transitória: `build_app`, terreno, nav, física, AI, Luau `Compat` |
-| `viber_tools_runtime` (path) | namespace `viber-tools/*` no `bevy_remote` (debug/profiling) |
+| `bevy_ext_bridge_runtime` (path) | namespace `vael-tools/*` no `bevy_remote` (debug/profiling) |
 | `bevy_ext_world` (path) | `WorldNode`/`.bsn`, `XmlNode`, settings autorados |
 | `bevy_ext_elements` / `bevy_ext_flora` / `bevy_ext_postfx` (path) | definições `world/settings/*.bsn` (ambiente, flora, pós-processamento) |
 | `bevy_elements 0.8` | céu/tempo/clima (ver `LIGHTING.md`) |
@@ -75,8 +75,8 @@ baseline medido no HEAD.
 
 ## Gates
 
-- Vael: `cargo test --lib`, `VIBER_NO_BUILD=1 ./tools/check.sh`,
-  `viber analyze world.bsn`, `viber scene lint --world world.bsn`.
+- Vael: `cargo test --lib`, `./tools/check.sh`,
+  `vael-tools analyze world.bsn`, `vael-tools lint --world world.bsn`.
 - Pacotes: `cargo fmt --all -- --check`,
   `cargo clippy --workspace --all-targets -- -D warnings`,
   `cargo test --workspace`, `cargo package --list` e

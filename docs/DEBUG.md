@@ -28,7 +28,7 @@ O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 ## Esperar pelo carregamento (agentes/QA)
 
 O ecrã de carregamento sai com o **anel próximo**: os `<GltfScene>` a menos de
-`VIBER_GLTF_READY_RADIUS` (default 200 m) do herói com o GLB resolvido, as
+`VIBER_GLTF_READY_RADIUS` (default 150 m) do herói com o GLB resolvido, as
 texturas subidas para a GPU, os albedos do terreno, os spawn groups e o herói
 assente (`world_ready.rs` na engine). O resto do mundo entra **por distância**
 (`gltf_residency.rs`): cada instância pede o GLB quando o corte de render dela
@@ -63,7 +63,7 @@ vael-tools debug --port 15731 --json wait-ready --timeout 300
   `RUST_LOG=bevy_ext_viber_engine::gltf_residency=info` o dos anéis
   (`N residentes, M adiados, +X/-Y` a cada 5 s com trabalho).
 - Residência: `VIBER_GLTF_STREAMING=0` volta a carregar **todos** os GLB no
-  arranque (o braço de A/B); `VIBER_GLTF_READY_RADIUS` (200),
+  arranque (o braço de A/B); `VIBER_GLTF_READY_RADIUS` (150),
   `VIBER_GLTF_LOAD_RADIUS` (800, o *bootstrap* de um modelo cujo corte de
   render ainda não se conhece), `VIBER_GLTF_LOAD_BUDGET` (8 activações/frame
   em jogo) e `VIBER_GLTF_UNLOAD_BUDGET` (8 descargas/frame) são os botões.

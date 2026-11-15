@@ -17,7 +17,8 @@ deve ser corrigido no mesmo commit.
 | [`LIGHTING.md`](LIGHTING.md) | céu, exposição, névoa e sombras com o `bevy_elements` | **vivo** |
 | [`PHYSICS-AVIAN.md`](PHYSICS-AVIAN.md) | física Avian 0.8 + tnua, conversão do DSL, autostep do herói e gates | **vivo** |
 | [`WATER.md`](WATER.md) | camadas da água, espelho CPU do swell, flutuação (`FloatingBody`) e barcos a remos | **vivo** |
-| [`VIBER_TOOLS.md`](VIBER_TOOLS.md) | CLI `viber`, runtime de debug e extensões Jackdaw | **vivo** |
+| [`PAVING.md`](PAVING.md) | pavimento em grelha das estradas/praças: ocupação exclusiva, autotile de cantos, camadas de lift e migração | **vivo** |
+| [`TOOLS.md`](TOOLS.md) | CLI `vael-tools`, bridge de debug e extensões Jackdaw | **vivo** |
 | [`JACKDAW.md`](JACKDAW.md) | o que se autora no Jackdaw (matriz por sistema), componentes tipados, painel de cinemáticas e gatilhos | **vivo** |
 | [`SAVE.md`](SAVE.md) | save nativo (`moonshine-save`), slots, merge do estado e o que persiste | **vivo** |
 | [`DEBUG.md`](DEBUG.md) | arranque directo (`--scene main --entry dev`), F1/F2 e efeitos no save | **vivo** |
@@ -39,6 +40,7 @@ deve ser corrigido no mesmo commit.
 | [`TERRAIN-VOXEL-STUDY.md`](TERRAIN-VOXEL-STUDY.md) | estudo de 2026-11-11 que decidiu **não** migrar o terreno para `voxel-framework` |
 | [`CODE-SLIM-STUDY.md`](CODE-SLIM-STUDY.md) | estudo de 2026-11-13 sobre enxugar o crate (crates existentes, repetição, compilação); a Fase 1 foi aplicada no mesmo dia |
 | [`ARCH-REVIEW-STUDY.md`](ARCH-REVIEW-STUDY.md) | estudo de 2026-11-13 sobre a arquitectura dos cinco checkouts: overengineering, camadas de abstração temporárias e oportunidades crates.io; o plano faseado (F0–F4) fica aqui |
+| [`ARCH-REVIEW-2026-11-15.md`](ARCH-REVIEW-2026-11-15.md) | segundo levantamento (2026-11-15): tools repetidas (bridge ×4, validadores ×2, esqueleto Python do AiGameKit), seams mortos nos crates extraídos e CelerAI; onda 0 aplicada no dia |
 | [`DEV-STANDARD-STUDY.md`](DEV-STANDARD-STUDY.md) | estudo de 2026-11-14 com o standard de engenharia de Vael+bevy_extensions (tooling, fronteiras, contratos, QA, release, governança), gap analysis e plano S0–S4 |
 | [`JACKDAW-ALIGNMENT-STUDY.md`](JACKDAW-ALIGNMENT-STUDY.md) | estudo de 2026-11-15 sobre o que ainda autora fora do editor e o SDK do Jackdaw por aproveitar; backlog P1–P4 (migrações `.bsn`, painéis de conteúdo, alinhamento SDK, prefabs nativos) |
 | `perf-baseline-*.jsonl` | séries brutas do profiler que suportam o `PERF_BASELINE.md` |
@@ -56,6 +58,6 @@ deve ser corrigido no mesmo commit.
   Uma medição de performance leva sempre data e commit.
 - **Ficheiros históricos** começam com um aviso `> **Documento histórico…**`
   e dizem o que os substituiu.
-- **Validar antes de fechar:** `viber analyze world.bsn`, `viber scene lint
-  --world world.bsn` e `cargo test --lib` no Vael. Docs que citam flags devem
+- **Validar antes de fechar:** `vael-tools analyze world.bsn`, `vael-tools lint`
+  e `cargo test --lib` no Vael. Docs que citam flags devem
   confirmar o default no código (`src/*.rs`), não no doc anterior.

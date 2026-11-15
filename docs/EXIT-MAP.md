@@ -1,5 +1,10 @@
 # EXIT-MAP — saída do monólito `bevy_ext_viber_engine`
 
+> **2026-11-15 (pós-CLI):** o CLI `viber`/`../viber-tools` foi aposentado; o
+> CLI atual é `vael-tools` (`cli/`) e o bridge vive em `bevy_extensions` —
+> ver [`TOOLS.md`](TOOLS.md). As menções a `viber <cmd>` neste mapa são
+> históricas.
+>
 > **2026-11-15:** o plano de execução da eliminação completa vive agora no
 > [`DELETE-MONOLITH.md`](DELETE-MONOLITH.md) (inventário medido pós-merges
 > das waves A/B/C/E + fases D/F/G/H). Este doc fica com o mapa

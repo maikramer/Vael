@@ -88,15 +88,14 @@ reais com [F]. No fim, o jogador diz o nome de **um** dos lugares. O bloco
    `prompt`, `example`, `expect`, `all`, `hint`, `solved`, `reward`).
 2. Pôr `prop-riddle_id="<id>"` no santuário (ou noutra entidade com o script
    `crystal-shrine.lua`).
-3. Se a pista for visual, inserir os props com
-   `viber scene insert 'name=<santuário>' '<Entity…><GltfScene…/></Entity>'` e
-   assentar com `viber tool settle 'name=<prop>'`.
+3. Se a pista for visual, colocar os props no Jackdaw (painel **Vael:
+   Assets**, que assenta no `.ahgt`) sob o santuário.
 4. Testar o juiz no bridge:
    `viber.load("lib/riddle.lua").self_test()`.
 
 ## QA
 
-- `viber analyze world.bsn` — exit 0.
+- `vael-tools analyze world.bsn` — exit 0.
 - `riddle.self_test()` — `true` (lobos vs sombra, três oferendas completas e
   incompletas, ordem trocada).
 - Teste ao vivo dos três santuários requer a cena `main`; ficou pendente por
