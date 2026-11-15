@@ -39,7 +39,9 @@ fn dir_shadow_size() -> usize {
     std::env::var("VIBER_DIR_SHADOW_SIZE")
         .ok()
         .and_then(|raw| raw.parse::<usize>().ok())
-        .filter(|size| *size >= 256 && size % 2 == 0)
+        // Teto defensivo: uma env absurda não pode pedir uma textura acima
+        // do limite do wgpu (e ~1 GB de VRAM) e falhar a criação do renderer.
+        .filter(|size| (256..=8192).contains(size) && size % 2 == 0)
         .unwrap_or_else(viber::graphics::dir_shadow_size)
 }
 
@@ -49,7 +51,7 @@ fn point_shadow_size() -> usize {
     std::env::var("VIBER_POINT_SHADOW_SIZE")
         .ok()
         .and_then(|raw| raw.parse::<usize>().ok())
-        .filter(|size| *size >= 4 && size % 2 == 0)
+        .filter(|size| (4..=2048).contains(size) && size % 2 == 0)
         .unwrap_or(1024)
 }
 
