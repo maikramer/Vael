@@ -1,0 +1,16 @@
+{
+  "description": "Levantamento do bosque (visit): os três marcos contam pela ordem que forem visitados.",
+  "extends": ["_base"],
+  "scene": "qa/sandbox",
+  "quest": "forest_survey",
+  "state": "active",
+  "steps": [
+    { "visit": "forest-stone-circle" },
+    { "expect": { "progress": { "forest_survey": 1 } } },
+    { "visit": "forest-outpost-tower" },
+    { "visit": "forest-crossroads-well" },
+    { "expect": { "quests": { "forest_survey": "ready" } } },
+    { "turn_in": "forest_survey" }
+  ],
+  "expect": { "quests": { "forest_survey": "done" } }
+}

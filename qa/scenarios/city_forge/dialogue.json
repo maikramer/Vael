@@ -1,0 +1,23 @@
+{
+  "description": "Bram oferece a quest pelo diálogo [E]; entrega com o manto forjado na bigorna.",
+  "extends": ["_base"],
+  "scene": "qa/city-forge",
+  "quest": "city_forge",
+  "state": "not_taken",
+  "items": { "wolf_pelt": 3, "wood": 4 },
+  "player": { "near": "@giver" },
+  "steps": [
+    { "interact": "npc_blacksmith" },
+    { "wait": 1.0 },
+    { "expect": { "quests": { "city_forge": "active" }, "stage": { "city_forge": 2 } } },
+    { "craft": "hunter_cloak" },
+    { "expect": { "quests": { "city_forge": "ready" } } },
+    { "interact": "npc_blacksmith" },
+    { "wait": 1.0 },
+    { "screenshot": "entrega" }
+  ],
+  "expect": {
+    "quests": { "city_forge": "done" },
+    "items": { "hunter_cloak": 1, "gold": ">=150", "moss_potion": ">=2" }
+  }
+}

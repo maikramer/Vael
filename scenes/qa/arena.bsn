@@ -1,0 +1,447 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+        bevy_world_xml::bsn::WorldProp { key: "clear-color", value: "#9db7cf" },
+        bevy_world_xml::bsn::WorldProp { key: "title", value: "QA arena" },
+    ],
+    text: "",
+    origin_file: "scenes/qa/arena.xml",
+    origin_path: [0],
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(7238063002177646541)
+bevy_ecs::hierarchy::Children [
+    #"qa"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.6, z: -6.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "SceneEntry",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.6 -6" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646542)
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [1],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646543)
+    bevy_ecs::hierarchy::Children [
+        #"AmbientLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "AmbientLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xfff2e0" },
+                bevy_world_xml::bsn::WorldProp { key: "brightness", value: "500" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [1, 0],
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646544)
+        --
+        #"DirectionalLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: -0.325058, y: 0.325058, z: 0.0, w: 0.888074 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::directional_light::DirectionalLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0 }),
+            illuminance: 18000.0,
+            shadow_maps_enabled: true,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DirectionalLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "-55 35 0" },
+                bevy_world_xml::bsn::WorldProp { key: "illuminance", value: "18000" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "true" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [1, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646545)
+    ]
+    --
+    #"qa.ground"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.ground" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [2],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646546)
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: -0.1, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "4.0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 -0.1 0" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "35 0.1 35" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [2, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646547)
+    ]
+    --
+    #"qa.wolf.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -3.0, y: 0.0, z: 10.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.wolf.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3 0 10" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [3],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646548)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wolf"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [3, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646549)
+    ]
+    --
+    #"qa.wolf.2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 10.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.wolf.2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 10" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [4],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646550)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wolf"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [4, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646551)
+    ]
+    --
+    #"qa.wolf.3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 3.0, y: 0.0, z: 10.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.wolf.3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "3 0 10" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/wolf.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [5],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646552)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene wolf"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/wolf_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [5, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646553)
+    ]
+    --
+    #"qa.bandit.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -3.0, y: 0.0, z: 15.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-3 0 15" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [6],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646554)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [6, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646555)
+    ]
+    --
+    #"qa.bandit.2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 15.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit.2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 15" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646556)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646557)
+    ]
+    --
+    #"qa.bandit.3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 3.0, y: 0.0, z: 15.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit.3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "3 0 15" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [8],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646558)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [8, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646559)
+    ]
+    --
+    #"qa.goblin-brute.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 20.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.goblin-brute.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 20" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin-brute.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/arena.xml",
+        origin_path: [9],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(7238063002177646560)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene goblin"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/arena.xml",
+            origin_path: [9, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(7238063002177646561)
+    ]
+]
+

@@ -121,8 +121,8 @@ save). Consequências:
 ## O que NÃO é saltado
 
 - **Outras cinemáticas** (`guardiao-*`, `nota`, `campo-de-batalha`, `epilogo`)
-  e os gatilhos de `scripts/cinematic-trigger.lua` continuam a tocar. Todas
-  são `skippable="true"`; a tecla de skip da engine continua a valer.
+  e os gatilhos `CinematicTrigger` continuam a tocar. Todas são
+  `skippable="true"`; a tecla de skip da engine continua a valer.
 - **Diálogos, quests, economia, combate e saves** — é o jogo normal.
 - **A cena de menu** deixa de ser a primeira, mas continua a existir para o
   botão "Ecrã de título" (a morte e o diário usam-na).

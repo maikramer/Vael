@@ -112,7 +112,8 @@ end
 -- módulo (o HUD, o veneno e o `damage_player` leem o mesmo sinal).
 local function apply_god()
   local st = state()
-  rules.set_god(st.god == true or st.fly ~= nil)
+  -- `vael_qa_god`: o cenário de QA (`player.god`, `src/qa.rs`) pede-o.
+  rules.set_god(st.god == true or st.fly ~= nil or rawget(_G, "vael_qa_god") == true)
 end
 
 -- Forward da vista: a MESMA convenção do `viber.camera_pose`.

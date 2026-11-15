@@ -1,0 +1,22 @@
+{
+  "description": "Arena: herói de nível 8 com espada, talentos de força e 3 lobos, 3 bandidos e 1 bruto. Para combate, talentos e habilidades [C]/[R]/[B].",
+  "extends": ["_base"],
+  "scene": "qa/arena",
+  "level": 8,
+  "skills": ["strength2", "vitality2", "bloodthirst"],
+  "skill_points": 2,
+  "gear": { "weapon": "steel_sword", "armor": "hunter_cloak" },
+  "items": { "potion": 5, "bomb": 3 },
+  "flasks": 3,
+  "player": { "pos": [0, 0.5, -4] },
+  "steps": [
+    { "slay": { "kind": "wolf", "count": 3 } },
+    { "screenshot": "arena" }
+  ],
+  "expect": {
+    "skills": ["strength1", "strength2", "vitality1", "vitality2", "bloodthirst"],
+    "level": ">=8",
+    "items": { "steel_sword": 1, "hunter_cloak": 1 },
+    "flags": { "gear.weapon": "steel_sword" }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "description": "Mundo inteiro: Bram na forja de Discórdia com a city_forge na etapa 2 (forjar o manto). Lento a carregar — para bugs que dependem do mundo.",
+  "extends": ["_base"],
+  "scene": "main",
+  "quest": "city_forge",
+  "stage": 2,
+  "items": { "wood": 4 },
+  "player": { "near": "@giver" },
+  "steps": [
+    { "collect": { "item": "wolf_pelt", "count": 3 } },
+    { "craft": "hunter_cloak" },
+    { "interact": "@giver" }
+  ],
+  "expect": { "quests": { "city_forge": "done" } }
+}

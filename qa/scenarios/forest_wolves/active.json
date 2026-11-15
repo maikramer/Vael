@@ -1,0 +1,39 @@
+{
+  "description": "Hald, o do Gado — active",
+  "extends": [
+    "_base"
+  ],
+  "scene": "qa/forest-wolves",
+  "quest": "forest_wolves",
+  "state": "active",
+  "player": {
+    "near": "@giver",
+    "god": true
+  },
+  "steps": [
+    {
+      "slay": {
+        "kind": "wolf",
+        "count": 5
+      }
+    },
+    {
+      "expect": {
+        "quests": {
+          "forest_wolves": "ready"
+        }
+      }
+    },
+    {
+      "turn_in": "forest_wolves"
+    }
+  ],
+  "expect": {
+    "quests": {
+      "forest_wolves": "done"
+    },
+    "items": {
+      "gold": ">=200"
+    }
+  }
+}

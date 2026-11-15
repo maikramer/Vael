@@ -43,6 +43,16 @@ struct Args {
     /// Com `--export-settings`: reescreve mesmo sem mudanças.
     #[arg(long, requires = "export_settings")]
     force: bool,
+    /// Cenário de QA (`qa/scenarios/<nome>.json`, `@active` ou caminho):
+    /// estado do herói/quests/itens e posição; ganha a `VAEL_SCENARIO`.
+    #[arg(long)]
+    scenario: Option<String>,
+    /// Simula o cenário (ou `all`) sem janela e sai (exit 1 se falhar).
+    #[arg(long, value_name = "CENÁRIO")]
+    qa_sim: Option<String>,
+    /// Com `--qa-sim`: relatório em JSON.
+    #[arg(long, requires = "qa_sim")]
+    json: bool,
     /// Passada pelo `jd` para extrair o schema refletido; trata dela o
     /// `jackdaw_runtime::JackdawPlugin` no `VaelPlugin` — aqui só é aceite.
     #[arg(long, hide = true)]
@@ -71,6 +81,12 @@ fn main() -> Result<()> {
         return Ok(());
     }
 
+    // Simulação de cenários: só regras e conteúdo, sem engine nem GPU.
+    if let Some(name) = args.qa_sim.as_deref() {
+        let root = std::env::current_dir()?;
+        std::process::exit(vael::qa::run_cli(&root, name, args.json));
+    }
+
     // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos
     // checkouts ainda não convertidos.
     let world = args.world.unwrap_or_else(|| {
@@ -80,9 +96,49 @@ fn main() -> Result<()> {
             PathBuf::from("world.xml")
         }
     });
-    let entry = args.entry;
-    let scene = args.scene;
+    let mut entry = args.entry;
+    let mut scene = args.scene;
     let bridge = args.bridge;
+    // Cenário de QA: escolhe a cena/entrada/hora/clima quando a linha de
+    // comandos não as dá (o Play (QA) do Jackdaw só passa a env).
+    let scenario_name = args
+        .scenario
+        .clone()
+        .or_else(|| std::env::var("VAEL_SCENARIO").ok())
+        .filter(|name| !name.trim().is_empty());
+    let scenario = match scenario_name.as_deref() {
+        Some(name) => {
+            let base = std::path::absolute(&world)?
+                .parent()
+                .map(Path::to_path_buf)
+                .unwrap_or_default();
+            let loaded = vael::qa::load_scenario(&base, name)
+                .map_err(|err| anyhow::anyhow!("cenário {name}: {err}"))?;
+            let s = &loaded.scenario;
+            if scene.is_none() {
+                scene = s.scene.clone();
+            }
+            if entry.is_none() {
+                entry = s.entry.clone().or_else(|| {
+                    // Em `main`, `dev` salta título e prólogo.
+                    (scene.as_deref() == Some("main")).then(|| "dev".to_string())
+                });
+            }
+            // SAFETY: single-threaded, antes de `build_app`.
+            if let Some(hour) = s.hour
+                && std::env::var_os("VAEL_START_HOUR").is_none()
+            {
+                unsafe { std::env::set_var("VAEL_START_HOUR", hour.to_string()) };
+            }
+            if let Some(weather) = &s.weather
+                && std::env::var_os("VAEL_START_WEATHER").is_none()
+            {
+                unsafe { std::env::set_var("VAEL_START_WEATHER", weather) };
+            }
+            Some(loaded)
+        }
+        None => None,
+    };
     // Resolução da janela: `--resolution WxH` > `VAEL_RESOLUTION` > default
     // da engine (1280x720). Num portátil com a GPU no teto, é o corte de
     // fill-rate mais direto: a 1600x900 o frame é 100% GPU-bound. A env
@@ -148,6 +204,18 @@ fn main() -> Result<()> {
         }
     }
     app.insert_resource(VaelProjectRoot(root.clone()));
+    if let Some(loaded) = &scenario {
+        // Saves de QA à parte: um autosave do cenário não pode pisar o slot
+        // do jogador. `VAEL_QA_SAVE_DIR` muda a pasta.
+        let dir = std::env::var_os("VAEL_QA_SAVE_DIR")
+            .map(PathBuf::from)
+            .unwrap_or_else(|| std::env::temp_dir().join("vael-qa-saves"));
+        let _ = std::fs::create_dir_all(&dir);
+        app.insert_resource(bevy_ext_save::SaveDir(Some(dir)));
+        app.insert_resource(vael::qa::QaRequest {
+            name: scenario_name.clone().unwrap_or_else(|| loaded.name.clone()),
+        });
+    }
     app.add_plugins(VaelPlugin);
     // UI do jogo em XAML (bevy_pf): precisa do `DefaultPlugins` e dos
     // resources do Vael já registados.
@@ -185,6 +253,7 @@ fn main() -> Result<()> {
         root = %root.display(),
         scene = ?scene,
         entry = ?entry,
+        scenario = ?scenario.as_ref().map(|loaded| loaded.name.as_str()),
         bridge = ?bridge,
         gameplay = false,
         scripts = "compat",

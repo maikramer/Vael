@@ -12,6 +12,7 @@ assets_dir = "assets/public"
 # Editor extensions enabled for this project (the bundle is installed
 # globally by `jd extension install`).
 [extensions]
+bevy_ext_grass_jackdaw = true
 bevy_voxel_terrain_jackdaw = true
 vael_jackdaw = true
 vael_content_jackdaw = true
@@ -42,3 +43,10 @@ args = ["--scene", "main", "--entry", "dev"]
 # O arranque de um jogador: cena de menu, título e prólogo.
 [[run]]
 name = "Play (título)"
+
+# QA: o cenário activo (`tools/qa.py use <cenário>` escreve `qa/.active`)
+# escolhe a cena, o estado (quests/itens/talentos), a hora e a posição. Gravar
+# o JSON do cenário com o Play a correr reaplica-o (hot reload). Saves à parte.
+[[run]]
+name = "Play (QA)"
+env = { VAEL_SCENARIO = "@active" }

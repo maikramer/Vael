@@ -1,0 +1,50 @@
+{
+  "description": "Bram: a primeira têmpera — active",
+  "extends": [
+    "_base"
+  ],
+  "scene": "qa/city-forge",
+  "quest": "city_forge",
+  "state": "active",
+  "player": {
+    "near": "@giver"
+  },
+  "steps": [
+    {
+      "collect": {
+        "item": "wolf_pelt",
+        "count": 3
+      }
+    },
+    {
+      "collect": {
+        "item": "wood",
+        "count": 4
+      }
+    },
+    {
+      "craft": {
+        "item": "hunter_cloak",
+        "count": 1
+      }
+    },
+    {
+      "expect": {
+        "quests": {
+          "city_forge": "ready"
+        }
+      }
+    },
+    {
+      "turn_in": "city_forge"
+    }
+  ],
+  "expect": {
+    "quests": {
+      "city_forge": "done"
+    },
+    "items": {
+      "gold": ">=150"
+    }
+  }
+}

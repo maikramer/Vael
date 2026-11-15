@@ -1,0 +1,13 @@
+{
+  "description": "Quest de decisão: o puzzle resolvido marca o objectivo (progress) e a entrega fecha.",
+  "extends": ["_base"],
+  "scene": "qa/sandbox",
+  "quest": "story_glass_envoy",
+  "state": "active",
+  "steps": [
+    { "progress": { "quest": "story_glass_envoy", "n": 1 } },
+    { "expect": { "quests": { "story_glass_envoy": "ready" } } },
+    { "turn_in": "story_glass_envoy" }
+  ],
+  "expect": { "quests": { "story_glass_envoy": "done" } }
+}

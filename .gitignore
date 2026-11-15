@@ -5,7 +5,9 @@ shaders/
 *.bak
 *.pid
 .omo/
-.claude/
+.claude/*
+# Skills do projecto (link para .cursor/skills/) vão no repo.
+!.claude/skills/
 logs/
 __pycache__/
 
@@ -42,3 +44,6 @@ assets/__pycache__/
 # Build do crate Rust (o Cargo.lock FICA versionado).
 target/
 assets/public/.jackdaw-cache/
+
+# QA: cenário activo do "Play (QA)" (por máquina)
+qa/.active

@@ -29,7 +29,9 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod animation;
+pub mod boat;
 pub mod camera;
+pub mod cinematic_trigger;
 pub mod clock;
 pub mod combat;
 mod compat;
@@ -40,15 +42,19 @@ pub mod editor_link;
 pub mod environment;
 pub mod flora;
 pub mod gear;
+pub mod grass;
 #[cfg(feature = "hanabi")]
 pub mod hanabi_fx;
 pub mod harvest;
 pub mod hud;
 pub mod hud_ui;
 pub mod input;
+pub mod jump_trace;
+pub mod lights;
 pub mod live_edit;
 pub mod player;
 pub mod primitives;
+pub mod qa;
 pub mod quest;
 pub mod quest_events;
 pub mod respawn;
@@ -80,6 +86,7 @@ pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
 pub use input::VaelInputPlugin;
+pub use lights::VaelPracticalLightsPlugin;
 pub use primitives::VaelPrimitivesPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
 pub use quest_events::VaelQuestEventsPlugin;
@@ -194,10 +201,30 @@ impl Plugin for VaelPlugin {
             // Input sobre o `jackdaw_input` (escreve o `ActionState`).
             VaelInputPlugin,
             player::VaelPlayerPlugin,
+            jump_trace::JumpTracePlugin,
             camera::VaelCameraPlugin,
         ));
+        // Gatilho de área das cinemáticas (`CinematicTrigger` autorado no
+        // Jackdaw): substitui o `scripts/cinematic-trigger.lua`. Fora da tupla
+        // (15 é o teto do Bevy).
+        app.add_plugins(cinematic_trigger::VaelCinematicTriggerPlugin);
+        // Relva GPU (`bevy_grass`): campos por bioma, bake das máscaras a
+        // partir do `TerrainRuntime`, vento do `WeatherState` e trampling.
+        // Vive aqui, não na engine. Fora da tupla (15 é o teto do Bevy).
+        app.add_plugins(grass::VaelGrassPlugin);
+        // Barcos a remos: casco procedural, flutuação (engine), embarque/
+        // saída com E e condução com WASD. Fora da tupla acima (15 é o teto).
+        app.add_plugins(boat::VaelBoatPlugin);
+        // Luzes práticas (`bevy_lights`): as luzes de fogo viram candidatas de
+        // um pool orçamentado com flicker e chama, em vez da lavagem quente
+        // uniforme do ganho nocturno global. `VAEL_PRACTICAL_LIGHTS=0`
+        // devolve o comportamento anterior.
+        app.add_plugins(lights::VaelPracticalLightsPlugin);
         // Play do Jackdaw: `SceneNodeId` nas entidades para as edições ao vivo.
         app.add_plugins(editor_link::VaelEditorLinkPlugin);
+        // QA: cenários (`qa/scenarios/*.json`) aplicados no arranque e a
+        // cada gravação do ficheiro; `viber.vael.qa_*` para a bridge.
+        app.add_plugins(qa::VaelQaPlugin);
         // Edições de atributos/specs/props do Jackdaw → re-spawn/patch.
         app.add_plugins(live_edit::VaelLiveEditPlugin);
         // `AnimationSet` autorado → rig do `jackdaw_animation_runtime`.
