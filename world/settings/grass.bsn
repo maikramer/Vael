@@ -1,0 +1,106 @@
+// Definições do Vael (grass.bsn). Editar no Jackdaw (`jd open .`):
+// o inspector e os painéis da extensão vael_jackdaw gravam aqui.
+
+#Relva
+bevy_transform::components::transform::Transform
+bevy_ext_grass::GrassSettingsSpec
+bevy_ecs::hierarchy::Children [
+    #"Bioma 0"
+    bevy_transform::components::transform::Transform
+    bevy_ext_grass::GrassStyleSpec {
+        height: glam::Vec2 { x: 0.335, y: 0.621 },
+        lean: 0.138,
+        droop: 0.207,
+        ground_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.12, green: 0.106, blue: 0.045, alpha: 1.0 }),
+        species: [
+            bevy_ext_grass::GrassPlantSpec { height: glam::Vec2 { x: 0.35, y: 0.7 }, width: 0.01, lean: 0.08, root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.05, green: 0.11, blue: 0.03 }), tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.24, green: 0.42, blue: 0.12 }), share: 0.035, head_length: 0.12, head_width: 0.05, head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.92, green: 0.92, blue: 0.86 }) },
+            bevy_ext_grass::GrassPlantSpec { height: glam::Vec2 { x: 0.3, y: 0.6 }, width: 0.01, lean: 0.08, root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.05, green: 0.11, blue: 0.03 }), tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.24, green: 0.42, blue: 0.12 }), head_length: 0.1, head_width: 0.035, head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.95, green: 0.78, blue: 0.12 }) },
+            bevy_ext_grass::GrassPlantSpec { height: glam::Vec2 { x: 0.08, y: 0.2 }, width: 0.035, lean: 0.35, droop: 0.7, root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.04, green: 0.1, blue: 0.04 }), tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.16, green: 0.34, blue: 0.12 }), share: 0.05, head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.16, green: 0.34, blue: 0.12 }) },
+        ],
+    }
+    --
+    #"Bioma 1"
+    bevy_transform::components::transform::Transform
+    bevy_ext_grass::GrassStyleSpec {
+        biome: 1,
+        density: 21.6,
+        height: glam::Vec2 { x: 0.459, y: 0.851 },
+        width: 0.066,
+        lean: 0.156,
+        droop: 0.234,
+        root_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.024, green: 0.052, blue: 0.03, alpha: 1.0 }),
+        tip_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.14, green: 0.23, blue: 0.1, alpha: 1.0 }),
+        dry_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.235, green: 0.215, blue: 0.09, alpha: 1.0 }),
+        ground_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.073, green: 0.07, blue: 0.034, alpha: 1.0 }),
+        wind_scale: 0.72,
+        species: [
+            bevy_ext_grass::GrassPlantSpec {
+                height: glam::Vec2 { x: 0.35, y: 0.7 },
+                width: 0.01,
+                lean: 0.08,
+                root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.05, green: 0.11, blue: 0.03 }),
+                tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.24, green: 0.42, blue: 0.12 }),
+                share: 0.012,
+                clustering: 0.4,
+                head_length: 0.12,
+                head_width: 0.05,
+                head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.92, green: 0.92, blue: 0.86 }),
+            },
+            bevy_ext_grass::GrassPlantSpec { height: glam::Vec2 { x: 0.2, y: 0.45 }, width: 0.06, lean: 0.3, droop: 0.6, root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.04, green: 0.09, blue: 0.03 }), tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.2, green: 0.38, blue: 0.1 }), share: 0.04, head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.2, green: 0.38, blue: 0.1 }) },
+        ],
+    }
+    --
+    #"Bioma 2"
+    bevy_transform::components::transform::Transform
+    bevy_ext_grass::GrassStyleSpec {
+        biome: 2,
+        density: 5.4,
+        height: glam::Vec2 { x: 0.26, y: 0.483 },
+        width: 0.048,
+        lean: 0.078,
+        droop: 0.117,
+        root_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.14, green: 0.112, blue: 0.052, alpha: 1.0 }),
+        tip_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.505, green: 0.418, blue: 0.208, alpha: 1.0 }),
+        dry_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.6, green: 0.47, blue: 0.205, alpha: 1.0 }),
+        ground_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.245, green: 0.182, blue: 0.077, alpha: 1.0 }),
+        wind_scale: 1.12,
+    }
+    --
+    #"Bioma 3"
+    bevy_transform::components::transform::Transform
+    bevy_ext_grass::GrassStyleSpec {
+        biome: 3,
+        density: 18.9,
+        height: glam::Vec2 { x: 0.589, y: 1.093 },
+        width: 0.068,
+        lean: 0.12,
+        droop: 0.18,
+        root_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.038, green: 0.048, blue: 0.024, alpha: 1.0 }),
+        tip_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.215, green: 0.23, blue: 0.09, alpha: 1.0 }),
+        dry_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.33, green: 0.27, blue: 0.11, alpha: 1.0 }),
+        ground_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.101, green: 0.081, blue: 0.039, alpha: 1.0 }),
+        wind_scale: 0.9,
+        species: [
+            bevy_ext_grass::GrassPlantSpec { height: glam::Vec2 { x: 0.8, y: 1.4 }, width: 0.012, lean: 0.1, root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.07, green: 0.12, blue: 0.04 }), tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.4, green: 0.5, blue: 0.2 }), share: 0.05, head_length: 0.2, head_width: 0.022, head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.62, green: 0.56, blue: 0.36 }) },
+        ],
+    }
+    --
+    #"Bioma 4"
+    bevy_transform::components::transform::Transform
+    bevy_ext_grass::GrassStyleSpec {
+        biome: 4,
+        density: 9.0,
+        height: glam::Vec2 { x: 0.186, y: 0.345 },
+        width: 0.05,
+        lean: 0.102,
+        droop: 0.153,
+        root_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.06, green: 0.076, blue: 0.06, alpha: 1.0 }),
+        tip_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.225, green: 0.255, blue: 0.2, alpha: 1.0 }),
+        dry_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.31, green: 0.285, blue: 0.21, alpha: 1.0 }),
+        ground_color: bevy_color::color::Color::LinearRgba(bevy_color::linear_rgba::LinearRgba { red: 0.126, green: 0.115, blue: 0.081, alpha: 1.0 }),
+        wind_scale: 1.28,
+        species: [
+            bevy_ext_grass::GrassPlantSpec { height: glam::Vec2 { x: 0.35, y: 0.7 }, width: 0.01, lean: 0.08, root_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.05, green: 0.11, blue: 0.03 }), tip_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.24, green: 0.42, blue: 0.12 }), share: 0.012, head_length: 0.12, head_width: 0.05, head_color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.92, green: 0.92, blue: 0.86 }) },
+        ],
+    }
+]

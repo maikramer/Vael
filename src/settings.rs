@@ -17,6 +17,7 @@ use bevy::reflect::PartialReflect;
 use bevy::reflect::TypeRegistry;
 use bevy_ext_elements::{ElementsSettings, ElementsSettingsPlugin};
 use bevy_ext_flora::{FloraSettings, FloraSettingsPlugin, FloraSpecies};
+use bevy_ext_grass::{GrassSettingsSpec, GrassSettingsSpecPlugin, GrassStyleSpec};
 use bevy_ext_postfx::{PostFxSettings, PostFxSettingsPlugin, SsaoQuality};
 use bevy_ext_world::bsn::settings::{
     SceneNatives, SceneSettingsApp, SceneSettingsPlugin, emit_native_entity, emit_native_group,
@@ -50,6 +51,7 @@ impl Plugin for VaelSettingsPlugin {
             ElementsSettingsPlugin,
             PostFxSettingsPlugin,
             FloraSettingsPlugin,
+            GrassSettingsSpecPlugin,
             // Colisor/corpo/destrutível/colheita tipados nos `.bsn`: o
             // schema do Jackdaw tem de os conhecer para os editar.
             bevy_ext_scene::SceneSpecPlugin,
@@ -58,6 +60,8 @@ impl Plugin for VaelSettingsPlugin {
         .add_scene_setting::<ElementsSettings>()
         .add_scene_setting::<FloraSettings>()
         .add_scene_setting_list::<FloraSpecies>()
+        .add_scene_setting::<GrassSettingsSpec>()
+        .add_scene_setting_list::<GrassStyleSpec>()
         .add_systems(First, apply_postfx_settings);
     }
 }
@@ -105,6 +109,8 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     registry.register::<PostFxSettings>();
     registry.register::<FloraSpecies>();
     registry.register::<FloraSettings>();
+    registry.register::<GrassSettingsSpec>();
+    registry.register::<GrassStyleSpec>();
     // Sem `Transform` o Jackdaw não pendura a entidade na hierarquia.
     registry.register::<Transform>();
     let transform = Transform::default();
@@ -113,6 +119,8 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     let postfx = vael_postfx();
     let flora = FloraSettings::default();
     let species = crate::flora::legacy_species();
+    let grass = crate::grass::legacy_grass_settings();
+    let grass_styles = crate::grass::legacy_grass_styles();
 
     let files = [
         (
@@ -145,6 +153,23 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
                         (
                             species.key.clone(),
                             vec![transform.as_partial_reflect(), species.as_partial_reflect()],
+                        )
+                    })
+                    .collect::<Vec<_>>(),
+                &registry,
+            ),
+        ),
+        (
+            "grass.bsn",
+            emit_native_group(
+                "Relva",
+                &[transform.as_partial_reflect(), grass.as_partial_reflect()],
+                &grass_styles
+                    .iter()
+                    .map(|style| {
+                        (
+                            format!("Bioma {}", style.biome),
+                            vec![transform.as_partial_reflect(), style.as_partial_reflect()],
                         )
                     })
                     .collect::<Vec<_>>(),
@@ -185,11 +210,11 @@ mod tests {
     fn export_le_se_de_volta() {
         let dir = tempfile_dir();
         let written = export_settings(&dir, true).expect("export");
-        assert_eq!(written.len(), 3);
+        assert_eq!(written.len(), 4);
         let world = dir.join("world.bsn");
         std::fs::write(
             &world,
-            "#\"world\"\nbevy_ecs::hierarchy::Children [\n    #\"Ambiente\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/environment.bsn\", deleted: [] }\n    --\n    #\"Pós\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/postfx.bsn\", deleted: [] }\n    --\n    #\"Flora\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/flora.bsn\", deleted: [] }\n]\n",
+            "#\"world\"\nbevy_ecs::hierarchy::Children [\n    #\"Ambiente\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/environment.bsn\", deleted: [] }\n    --\n    #\"Pós\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/postfx.bsn\", deleted: [] }\n    --\n    #\"Flora\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/flora.bsn\", deleted: [] }\n    --\n    #\"Relva\"\n    jackdaw::prefab::components::IsA { source: \"world/settings/grass.bsn\", deleted: [] }\n]\n",
         )
         .expect("world");
         let (natives, _) = bevy_ext_world::bsn::settings::read_natives(&world).expect("ler");
@@ -207,6 +232,12 @@ mod tests {
         );
         let species = bevy_ext_world::bsn::settings::native_values::<FloraSpecies>(&natives);
         assert_eq!(species, crate::flora::legacy_species());
+        assert_eq!(
+            native_value::<GrassSettingsSpec>(&natives),
+            Some(crate::grass::legacy_grass_settings())
+        );
+        let styles = bevy_ext_world::bsn::settings::native_values::<GrassStyleSpec>(&natives);
+        assert_eq!(styles, crate::grass::legacy_grass_styles());
         let _ = std::fs::remove_dir_all(dir);
     }
 
