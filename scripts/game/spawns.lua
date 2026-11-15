@@ -61,7 +61,11 @@ local function tick_respawns(game, px, pz)
     if type(r) ~= "table" or not r.proto or not r.x or not r.z then
       drop = true
     elseif ogre_alive and in_peaks(r.x, r.z) then
-      drop = true
+      -- Enquanto o Ogro viver os Picos não renascem (o portão dele só abre
+      -- com a banda sul em silêncio) — mas a entrada FICA na fila: depois
+      -- de o chefe cair, a serra volta a povoar-se. Apagá-la aqui deixava-a
+      -- limpa para sempre, contra o que o README/boss.lua prometem.
+      -- (sem `drop`/`spawn`: o `i` avança no fim e reavalia-se no tick)
     elseif (r.at or 0) <= now then
       local dx, dz = r.x - px, r.z - pz
       if dx * dx + dz * dz > SIGHT * SIGHT then
