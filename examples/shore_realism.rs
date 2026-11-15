@@ -78,7 +78,12 @@ fn main() -> Result<()> {
         world_size / (hm.width.max(2) - 1) as f32,
         smoothing,
     );
-    println!("Biomes: wedges={} core={:.1} blend={:.1}", meta.biomes.wedges.len(), meta.biomes.core, meta.biomes.blend);
+    println!(
+        "Biomes: wedges={} core={:.1} blend={:.1}",
+        meta.biomes.wedges.len(),
+        meta.biomes.core,
+        meta.biomes.blend
+    );
 
     let orig_grid = BrushGrid::from_height_map(&hm, world_size, max_height, smoothing)?;
     let mut sim_grid = orig_grid.clone();
@@ -173,19 +178,18 @@ fn main() -> Result<()> {
     }
     println!(
         "  Worst cut @ ({:.1}, {:.1}) & worst raise @ ({:.1}, {:.1})",
-        stats.max_cut_pos.x,
-        stats.max_cut_pos.y,
-        stats.max_raise_pos.x,
-        stats.max_raise_pos.y
+        stats.max_cut_pos.x, stats.max_cut_pos.y, stats.max_raise_pos.x, stats.max_raise_pos.y
     );
 
     // Vegetation `.vinst` re-seating preview / execution.
     let vinst_paths = collect_vinst_paths(&parsed.entities);
     let mut vinst_updates = Vec::with_capacity(vinst_paths.len());
     for path in &vinst_paths {
-        let mut instances = vinst::read(path).with_context(|| format!("read {}", path.display()))?;
+        let mut instances =
+            vinst::read(path).with_context(|| format!("read {}", path.display()))?;
         let before = instances.len();
-        let (adjusted, pruned) = reseat_vinst(&mut instances, &orig_grid, &work_grid, &feat_result.water);
+        let (adjusted, pruned) =
+            reseat_vinst(&mut instances, &orig_grid, &work_grid, &feat_result.water);
         println!(
             "  Vinst {}: {before} -> {} (adjusted={adjusted}, pruned={pruned})",
             path.display(),
@@ -195,14 +199,11 @@ fn main() -> Result<()> {
     }
 
     // Generate shore rock entities for all water bodies.
-    let rocks = generate_shore_rocks(
-        &pending,
-        &feat_result,
-        &work_grid,
-        &protect,
-        &meta.biomes,
-    )?;
-    println!("Shore rocks generated: {} static GLB instances", rocks.len());
+    let rocks = generate_shore_rocks(&pending, &feat_result, &work_grid, &protect, &meta.biomes)?;
+    println!(
+        "Shore rocks generated: {} static GLB instances",
+        rocks.len()
+    );
     let mut by_asset: BTreeMap<&str, usize> = BTreeMap::new();
     let mut with_collider = 0usize;
     let mut half_submerged = 0usize;
@@ -218,7 +219,9 @@ fn main() -> Result<()> {
         let g = work_grid.sample(r.translation.x, r.translation.z);
         max_float_gap = max_float_gap.max(r.translation.y - g);
     }
-    println!("  Rock asset breakdown: {by_asset:?} colliders={with_collider} half_submerged={half_submerged} max_y_minus_center_ground={max_float_gap:.3}m");
+    println!(
+        "  Rock asset breakdown: {by_asset:?} colliders={with_collider} half_submerged={half_submerged} max_y_minus_center_ground={max_float_gap:.3}m"
+    );
 
     if mode == Mode::Apply {
         let updated_hm = HeightMapU16 {
@@ -408,7 +411,12 @@ impl ProtectField {
             }
         }
 
-        walk_entities(entities, GlobalTransform::IDENTITY, &feat_result.water, &mut out);
+        walk_entities(
+            entities,
+            GlobalTransform::IDENTITY,
+            &feat_result.water,
+            &mut out,
+        );
         out
     }
 
@@ -483,7 +491,10 @@ impl ProtectField {
         }
         for road in &self.roads {
             let (min_b, max_b) = road.bounds;
-            if p.x >= min_b.x - 6.0 && p.x <= max_b.x + 6.0 && p.y >= min_b.y - 6.0 && p.y <= max_b.y + 6.0
+            if p.x >= min_b.x - 6.0
+                && p.x <= max_b.x + 6.0
+                && p.y >= min_b.y - 6.0
+                && p.y <= max_b.y + 6.0
                 && road.distance_to_road(p) < 2.8 + extra_radius
             {
                 return true;
@@ -626,11 +637,15 @@ fn walk_entities(
                     let sx = world_t.scale.x.abs();
                     let sz = world_t.scale.z.abs();
                     let half = match shape {
-                        Shape::Cuboid { half_size } => Vec2::new(half_size[0] * sx, half_size[2] * sz),
-                        Shape::Plane { half_size } => Vec2::new(half_size[0] * sx, half_size[1] * sz),
-                        Shape::Cylinder { radius, .. } | Shape::Capsule { radius, .. } | Shape::Sphere { radius } => {
-                            Vec2::splat(*radius * sx.max(sz))
+                        Shape::Cuboid { half_size } => {
+                            Vec2::new(half_size[0] * sx, half_size[2] * sz)
                         }
+                        Shape::Plane { half_size } => {
+                            Vec2::new(half_size[0] * sx, half_size[1] * sz)
+                        }
+                        Shape::Cylinder { radius, .. }
+                        | Shape::Capsule { radius, .. }
+                        | Shape::Sphere { radius } => Vec2::splat(*radius * sx.max(sz)),
                     };
                     out.boxes.push(BoxZone {
                         _label: format!("prim:{label}"),
@@ -654,7 +669,12 @@ fn walk_entities(
                 } else if is_existing_rock {
                     out.existing_rocks.push(xz);
                 } else if near_any_water(xz, 50.0, waters) {
-                    let max_s = world_t.scale.x.abs().max(world_t.scale.z.abs()).clamp(0.6, 5.0);
+                    let max_s = world_t
+                        .scale
+                        .x
+                        .abs()
+                        .max(world_t.scale.z.abs())
+                        .clamp(0.6, 5.0);
                     let small_veg = url.contains("vegetation/")
                         || url.contains("fern")
                         || url.contains("bush")
@@ -665,7 +685,12 @@ fn walk_entities(
                         || url.contains("mushroom")
                         || url.contains("pebble")
                         || url.contains("moss_");
-                    let is_tree = url.contains("tree") || url.contains("pine") || url.contains("oak") || url.contains("birch") || url.contains("willow") || url.contains("cypress");
+                    let is_tree = url.contains("tree")
+                        || url.contains("pine")
+                        || url.contains("oak")
+                        || url.contains("birch")
+                        || url.contains("willow")
+                        || url.contains("cypress");
                     if small_veg {
                         out.circles.push(CircleZone {
                             label: format!("small_veg:{label}"),
@@ -691,7 +716,10 @@ fn walk_entities(
                     }
                 }
             }
-            EntityKind::NpcBody | EntityKind::PlayerGltf { .. } | EntityKind::ScenePortal { .. } | EntityKind::SceneEntry => {
+            EntityKind::NpcBody
+            | EntityKind::PlayerGltf { .. }
+            | EntityKind::ScenePortal { .. }
+            | EntityKind::SceneEntry => {
                 if near_any_water(xz, 50.0, waters) {
                     out.circles.push(CircleZone {
                         label: format!("actor:{label}"),
@@ -701,7 +729,9 @@ fn walk_entities(
                     });
                 }
             }
-            EntityKind::PointLight { .. } | EntityKind::ParticleSystem { .. } | EntityKind::Composition { .. } => {
+            EntityKind::PointLight { .. }
+            | EntityKind::ParticleSystem { .. }
+            | EntityKind::Composition { .. } => {
                 if near_any_water(xz, 55.0, waters) {
                     out.circles.push(CircleZone {
                         label: format!("prop:{label}"),
@@ -762,15 +792,28 @@ fn report_nearby_objects(waters: &[WaterBody], protect: &ProtectField) {
             actors.push(format!("{}@({:.1},{:.1})", c.label, c.center.x, c.center.y));
         }
     }
-    println!("Protected actors/landmarks near water ({}): {}", actors.len(), actors.into_iter().take(20).collect::<Vec<_>>().join(", "));
+    println!(
+        "Protected actors/landmarks near water ({}): {}",
+        actors.len(),
+        actors.into_iter().take(20).collect::<Vec<_>>().join(", ")
+    );
 }
 
 fn spec_to_transform(t: &TransformSpec) -> Transform {
     let rot = if let Some([x, y, z, w]) = t.rotation_quat {
         let q = Quat::from_xyzw(x, y, z, w);
-        if q.length_squared() > 1e-8 { q.normalize() } else { Quat::IDENTITY }
+        if q.length_squared() > 1e-8 {
+            q.normalize()
+        } else {
+            Quat::IDENTITY
+        }
     } else if let Some([rx, ry, rz]) = t.euler_deg {
-        Quat::from_euler(EulerRot::XYZ, rx.to_radians(), ry.to_radians(), rz.to_radians())
+        Quat::from_euler(
+            EulerRot::XYZ,
+            rx.to_radians(),
+            ry.to_radians(),
+            rz.to_radians(),
+        )
     } else {
         Quat::IDENTITY
     };
@@ -863,7 +906,12 @@ fn erode_river_banks(
                 // Inside water polygon: deepen outer cutbank scour pool AND create subtle
                 // cobble/point-bar tongues right along [0.87..1.0] ONLY on shallow shoals.
                 let lobe = fbm_macro * 0.65 + fbm_fine * 0.35;
-                if u >= 0.87 && outer_bias < 0.10 && lobe > 0.34 && prot < 0.15 && orig_h >= water_y - 0.45 {
+                if u >= 0.87
+                    && outer_bias < 0.10
+                    && lobe > 0.34
+                    && prot < 0.15
+                    && orig_h >= water_y - 0.45
+                {
                     let tongue = smoothstep(0.34, 0.78, lobe)
                         * smoothstep(0.87, 0.985, u)
                         * (0.45 + 0.55 * inner);
@@ -913,17 +961,16 @@ fn erode_river_banks(
                     * (1.0 - smoothstep(1.2, reach_out * 0.85, dist_out));
 
                 // Inner point bar: flatter scrolled cobble/sand shelf sloping softly down toward edge.
-                let point_bar = -inner
-                    * 0.48
-                    * (1.0 - smoothstep(1.0, bank_w * 1.15, dist_out))
+                let point_bar = -inner * 0.48 * (1.0 - smoothstep(1.0, bank_w * 1.15, dist_out))
                     + inner * ((dist_out * 1.15 - fbm_macro).sin() * 0.07);
 
                 // General macro/micro shoreline undulation + waterline edge pocket scallop
                 let edge_pocket = (1.0 - smoothstep(0.4, 3.0, dist_out)) * (0.20 * fbm_fine);
                 let organic = 0.28 * fbm_macro + 0.14 * fbm_fine;
 
-                let delta = (cut_brow + terrace_step - gully + point_bar + edge_pocket + organic * env)
-                    .clamp(-1.25, 0.95);
+                let delta =
+                    (cut_brow + terrace_step - gully + point_bar + edge_pocket + organic * env)
+                        .clamp(-1.25, 0.95);
 
                 // Never jump submerged fringes up +5m; only protect dry ground against our cuts.
                 let min_dry = orig_h.min(water_y + 0.05 + 0.03 * dist_out.clamp(0.0, 2.5));
@@ -996,7 +1043,8 @@ fn erode_lake_banks(
                     }
                 } else {
                     // Deepen scalloped coves right inside water edge without ever lifting deep bed
-                    let scour = 0.32 * (-lobe).max(0.0)
+                    let scour = 0.32
+                        * (-lobe).max(0.0)
                         * smoothstep(0.65, 0.92, u)
                         * (1.0 - smoothstep(0.92, 0.995, u));
                     raw_target = orig_h.min((orig_h - scour).min(body.water_y - 0.10));
@@ -1399,12 +1447,7 @@ fn generate_shore_rocks(
     Ok(out)
 }
 
-fn pick_rock_asset(
-    biome: Biome,
-    is_primary: bool,
-    is_cutbank_outcrop: bool,
-    h: u64,
-) -> RockAsset {
+fn pick_rock_asset(biome: Biome, is_primary: bool, is_cutbank_outcrop: bool, h: u64) -> RockAsset {
     if is_cutbank_outcrop {
         return match biome {
             Biome::Peaks => match h % 3 {
@@ -1652,8 +1695,7 @@ fn point_polyline_dist(p: Vec2, pts: &[Vec2]) -> f32 {
 }
 
 fn hash_u64(i: u64, p: Vec2) -> u64 {
-    let mut x = i
-        .wrapping_mul(0x9E37_79B9_7F4A_7C15)
+    let mut x = i.wrapping_mul(0x9E37_79B9_7F4A_7C15)
         ^ (p.x.to_bits() as u64).wrapping_mul(0xBF58_476D_1CE4_E5B9)
         ^ (p.y.to_bits() as u64).wrapping_mul(0x94D0_49BB_1331_11EB);
     x ^= x >> 30;
@@ -1666,4 +1708,3 @@ fn hash_u64(i: u64, p: Vec2) -> u64 {
 fn unit_f32(h: u64) -> f32 {
     ((h & 0xFFFF) as f32) / 65535.0
 }
-

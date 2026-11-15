@@ -21,7 +21,11 @@ use viber::terrain::water::{
     LakeSpec, RiverSpec, WaterBody, carve_lake, carve_river, lake_water_mesh_dense,
     river_water_mesh_dense,
 };
-use viber::terrain::water_fx::{WaterContact, WaterFxPlugin, WADE_ENTER_DEPTH, compute_entry_impulse, compute_wake_impulse, swept_entry_xz};
+use viber::terrain::water_buoyancy::{FloatState, FloatingBody, WaterBuoyancyPlugin};
+use viber::terrain::water_fx::{
+    WADE_ENTER_DEPTH, WaterContact, WaterFxPlugin, compute_entry_impulse, compute_wake_impulse,
+    swept_entry_xz,
+};
 use viber::terrain::water_material::{WATER_WGSL, WaterExtension, WaterMaterial, WaterUniforms};
 use viber::terrain::water_waves::{
     DOMAIN_GRID_SIZE, WATER_WAVES_WGSL, WaterKinematics, WaterWavePlugin, WaterWaveWorld,
@@ -99,7 +103,10 @@ fn dense_lake_and_river_meshes_carry_flow_velocity_and_domain_samples() {
         .iter()
         .map(|v| (v[0] * v[0] + v[1] * v[1]).sqrt())
         .fold(0.0_f32, f32::max);
-    assert!(max_flow_speed > 0.8, "river flow speed must be positive: {max_flow_speed}");
+    assert!(
+        max_flow_speed > 0.8,
+        "river flow speed must be positive: {max_flow_speed}"
+    );
 
     let sample_center = river_body
         .sample_domain(Vec2::new(14.0, -10.0), None, 2.0)
@@ -199,37 +206,52 @@ fn two_pass_water_materials_sync_with_atmosphere_weather_and_preserve_passes() {
         rain: 0.85,
         cycle: true,
     });
+    // A crate lê o ambiente neutro (o `WaterBridgePlugin` da engine é quem o
+    // escreve a partir do `WeatherState`/`AtmosphereState`).
+    app.insert_resource(viber::terrain::WaterEnvironment {
+        wind: [0.8, 0.6],
+        wind_strength: 1.25,
+        rain: 0.85,
+        sun_dir: Vec3::new(0.2, 0.7, -0.5).normalize(),
+        day: 1.0,
+        zenith: [0.12, 0.34, 0.78],
+        horizon: [0.48, 0.66, 0.85],
+        sun_tint: [1.0, 0.92, 0.78],
+        ..Default::default()
+    });
 
-    let absorb_handle = app
-        .world_mut()
-        .resource_mut::<Assets<WaterMaterial>>()
-        .add(WaterMaterial {
-            base: StandardMaterial {
-                alpha_mode: bevy::material::AlphaMode::Multiply,
-                depth_bias: 0.0,
-                ..Default::default()
-            },
-            extension: WaterExtension {
-                params: WaterUniforms::absorb_default(),
-                wave_tex: Handle::default(),
-                domain_tex: Handle::default(),
-            },
-        });
-    let surface_handle = app
-        .world_mut()
-        .resource_mut::<Assets<WaterMaterial>>()
-        .add(WaterMaterial {
-            base: StandardMaterial {
-                alpha_mode: bevy::material::AlphaMode::Add,
-                depth_bias: 0.05,
-                ..Default::default()
-            },
-            extension: WaterExtension {
-                params: WaterUniforms::surface_default(),
-                wave_tex: Handle::default(),
-                domain_tex: Handle::default(),
-            },
-        });
+    let absorb_handle =
+        app.world_mut()
+            .resource_mut::<Assets<WaterMaterial>>()
+            .add(WaterMaterial {
+                base: StandardMaterial {
+                    alpha_mode: bevy::material::AlphaMode::Multiply,
+                    depth_bias: 0.0,
+                    ..Default::default()
+                },
+                extension: WaterExtension {
+                    params: WaterUniforms::absorb_default(),
+                    wave_tex: Handle::default(),
+                    domain_tex: Handle::default(),
+                    obstacle_tex: Handle::default(),
+                },
+            });
+    let surface_handle =
+        app.world_mut()
+            .resource_mut::<Assets<WaterMaterial>>()
+            .add(WaterMaterial {
+                base: StandardMaterial {
+                    alpha_mode: bevy::material::AlphaMode::Add,
+                    depth_bias: 0.05,
+                    ..Default::default()
+                },
+                extension: WaterExtension {
+                    params: WaterUniforms::surface_default(),
+                    wave_tex: Handle::default(),
+                    domain_tex: Handle::default(),
+                    obstacle_tex: Handle::default(),
+                },
+            });
 
     app.update();
     app.update();
@@ -307,6 +329,7 @@ fn water_contact_queues_swept_craters_and_kelvin_wakes_without_legacy_discs() {
             WaterKinematics {
                 velocity: Vec3::new(0.0, -12.0, 0.0),
                 body_radius: 0.42,
+                contact_y_offset: 0.0,
             },
         ))
         .id();
@@ -336,6 +359,7 @@ fn water_contact_queues_swept_craters_and_kelvin_wakes_without_legacy_discs() {
             WaterKinematics {
                 velocity: Vec3::new(4.2, 0.0, 0.0),
                 body_radius: 0.42,
+                contact_y_offset: 0.0,
             },
         ));
     }
@@ -348,9 +372,7 @@ fn water_contact_queues_swept_craters_and_kelvin_wakes_without_legacy_discs() {
     );
 
     // Ensure no legacy floating Ripple entities were spawned.
-    let mut ripple_q = app
-        .world_mut()
-        .query::<&viber::terrain::water_fx::Ripple>();
+    let mut ripple_q = app.world_mut().query::<&viber::terrain::water_fx::Ripple>();
     assert_eq!(ripple_q.iter(app.world()).count(), 0);
 }
 
@@ -362,9 +384,13 @@ fn water_shaders_preserve_two_pass_and_ssr_contracts() {
     assert!(WATER_WGSL.contains("fog_zero"));
     assert!(WATER_WGSL.contains("sample_domain_bank_grad"));
     assert!(WATER_WGSL.contains("bank_shear_foam"));
+    assert!(WATER_WGSL.contains("sample_obstacle"));
+    assert!(WATER_WGSL.contains("sample_domain_flow"));
+    assert!(WATER_WGSL.contains("obs_collide_foam"));
     assert!(WATER_WAVES_WGSL.contains("fn step_sim"));
     assert!(WATER_WAVES_WGSL.contains("fn gradient_export"));
     assert!(WATER_WAVES_WGSL.contains("shore_break_foam"));
+    assert!(WATER_WAVES_WGSL.contains("obs_collide_foam"));
     assert!(WATER_SSR_WGSL.contains("let water_m = 0.0"));
     assert!(WATER_SSR_WGSL.contains("ground_m"));
     let _ = std::marker::PhantomData::<AmbientPlugin>;
@@ -383,3 +409,289 @@ fn depth_regimes_and_shore_friction_stratify_impulses() {
     assert!(deep_splash.radius > shallow_splash.radius * 1.2);
 }
 
+#[test]
+fn river_current_collides_with_boulders_and_updates_when_broken() {
+    use avian3d::prelude::Collider;
+    use viber::terrain::water_obstacles::{WaterObstacle, deflect_flow_by_obstacles};
+    use viber::terrain::water_waves::rasterize_domain_with_obstacles;
+
+    let mut grid = make_flat_grid(256.0, 128, 12.0);
+    let mut river_spec = RiverSpec::default();
+    river_spec.path = vec![
+        Vec2::new(0.0, -30.0),
+        Vec2::new(0.0, 0.0),
+        Vec2::new(0.0, 30.0),
+    ];
+    river_spec.width = 12.0;
+    river_spec.depth = 2.4;
+    let body = carve_river(&mut grid, &river_spec, 0, &[]).expect("river carves cleanly");
+    let surface_y = body
+        .surface_y_at(Vec2::ZERO)
+        .expect("river surface at origin");
+    let base_flow = body
+        .sample_domain(Vec2::ZERO, None, 1.5)
+        .expect("domain at origin")
+        .flow;
+    let rt = make_test_runtime(grid, vec![body]);
+
+    let boulder = WaterObstacle::circle(Vec2::ZERO, 1.8);
+    let len = DOMAIN_GRID_SIZE as usize * DOMAIN_GRID_SIZE as usize * 8;
+    let mut dom_bytes = vec![0u8; len];
+    let mut obs_bytes = vec![0u8; len];
+    let origin = IVec2::new(-64, -64);
+
+    assert!(rasterize_domain_with_obstacles(
+        &rt,
+        origin,
+        &[boulder.clone()],
+        &mut dom_bytes,
+        Some(&mut obs_bytes),
+    ));
+    assert!(
+        obs_bytes.iter().any(|&b| b != 0),
+        "obstacle_tex should record non-zero SDF halo around rock in water"
+    );
+    let sheltered = deflect_flow_by_obstacles(Vec2::new(0.0, 3.6), base_flow, &[boulder]);
+    assert!(
+        sheltered.length() < base_flow.length() * 0.65,
+        "downstream pocket behind boulder should shelter current: {sheltered:?} vs {base_flow:?}"
+    );
+
+    // Live ECS verification: spawning and despawning a river boulder collider
+    // automatically rebuilds obstacle_tex and clears active_obstacles.
+    let mut app = App::new();
+    app.add_plugins((MinimalPlugins, AssetPlugin::default()));
+    app.init_asset::<Image>()
+        .init_asset::<StandardMaterial>()
+        .init_asset::<Shader>()
+        .init_asset::<WaterMaterial>();
+    app.add_plugins(WaterWavePlugin);
+    // Os obstáculos vêm dos colliders avian via o adapter do jogo.
+    app.add_plugins(viber::terrain::WaterBridgePlugin);
+    app.insert_resource(rt);
+
+    let rock_entity = app
+        .world_mut()
+        .spawn((
+            Transform::from_xyz(0.0, surface_y, 0.0),
+            GlobalTransform::from_xyz(0.0, surface_y, 0.0),
+            Collider::sphere(1.8),
+        ))
+        .id();
+    app.update();
+
+    let waves = app.world().resource::<WaterWaveWorld>();
+    assert_eq!(waves.active_obstacles.len(), 1);
+    let obs_img = app
+        .world()
+        .resource::<Assets<Image>>()
+        .get(&waves.obstacle_tex)
+        .expect("obstacle_tex image allocated");
+    assert!(
+        obs_img
+            .data
+            .as_ref()
+            .is_some_and(|d| d.iter().any(|&b| b != 0)),
+        "obstacle_tex asset should hold rock halo"
+    );
+
+    // Shattering/removing the boulder clears the collision mask on next frame.
+    app.world_mut().despawn(rock_entity);
+    app.update();
+
+    let waves = app.world().resource::<WaterWaveWorld>();
+    assert!(waves.active_obstacles.is_empty());
+    let obs_img = app
+        .world()
+        .resource::<Assets<Image>>()
+        .get(&waves.obstacle_tex)
+        .unwrap();
+    assert!(
+        obs_img
+            .data
+            .as_ref()
+            .is_some_and(|d| d.iter().all(|&b| b == 0)),
+        "despawned boulder must clear obstacle_tex"
+    );
+}
+
+/// Casco a remos: mesmas dimensões do `src/boat.rs` (o teste não pode divergir
+/// do barco real sem falhar).
+fn rowboat_body() -> FloatingBody {
+    FloatingBody {
+        mass: 260.0,
+        hull_half: Vec3::new(0.80, 0.30, 2.20),
+        hull_center: Vec3::new(0.0, -0.24, 0.0),
+        center_of_mass: Vec3::new(0.0, -0.16, 0.0),
+        displacement_factor: 0.55,
+        buoyancy_gain: 1.0,
+        linear_drag: 1.15,
+        quadratic_drag: 2.3,
+        angular_drag: 3.1,
+        heave_drag: 5.0,
+        heave_quadratic: 0.9,
+        wave_response: 1.0,
+        max_speed: 9.0,
+        ground_stiffness: 14000.0,
+        ground_damping: 1200.0,
+        ground_friction: 5.0,
+    }
+}
+
+/// A engine integra o casco e publica a velocidade em `WaterKinematics`: o
+/// barco flutua na cota do deslocamento DESENHADO (gerstner), com heave
+/// dentro do físico e sem afundar/descolar do espelho.
+#[test]
+fn buoyancy_floats_a_rowboat_on_the_drawn_swell_and_publishes_kinematics() {
+    let mut grid = make_flat_grid(256.0, 128, 12.0);
+    let mut lake_spec = LakeSpec::default();
+    lake_spec.at = Vec2::ZERO;
+    lake_spec.radius = 18.0;
+    lake_spec.depth = 4.0;
+    let body = carve_lake(&mut grid, &lake_spec, 0).expect("lake carved");
+    let surface_y = body.water_y;
+    let rt = make_test_runtime(grid, vec![body]);
+    let hull = rowboat_body();
+
+    let mut app = App::new();
+    app.add_plugins(MinimalPlugins);
+    app.insert_resource(TimeUpdateStrategy::ManualDuration(
+        std::time::Duration::from_secs_f32(1.0 / 60.0),
+    ));
+    app.insert_resource(rt);
+    app.add_plugins(WaterBuoyancyPlugin);
+
+    let boat = app
+        .world_mut()
+        .spawn((
+            Transform::from_translation(Vec3::new(0.0, surface_y + hull.rest_height(), 0.0)),
+            GlobalTransform::default(),
+            hull,
+            FloatState::default(),
+            WaterKinematics {
+                velocity: Vec3::ZERO,
+                body_radius: 2.6,
+                contact_y_offset: hull.hull_center.y - hull.hull_half.y,
+            },
+        ))
+        .id();
+
+    // 6 s a 60 Hz: assenta e depois mede o heave.
+    for _ in 0..360 {
+        app.update();
+    }
+    let (mut min_y, mut max_y, mut sum_y, mut samples) = (f32::MAX, f32::MIN, 0.0_f32, 0);
+    let mut bobbed = false;
+    for _ in 0..120 {
+        app.update();
+        let (y, kin) = {
+            let world = app.world();
+            let tf = world.get::<Transform>(boat).expect("boat transform");
+            let kin = world.get::<WaterKinematics>(boat).expect("boat kinematics");
+            (tf.translation.y, kin.velocity)
+        };
+        min_y = min_y.min(y);
+        max_y = max_y.max(y);
+        sum_y += y;
+        samples += 1;
+        if kin.y.abs() > 1e-3 {
+            bobbed = true;
+        }
+    }
+    let mean = sum_y / samples as f32;
+    let rest = surface_y + hull.rest_height();
+    assert!(
+        (mean - rest).abs() < 0.12,
+        "flutua na linha de água desenhada: mean {mean} vs rest {rest}"
+    );
+    assert!(
+        max_y - min_y > 0.005,
+        "o swell dá heave real: range {}",
+        max_y - min_y
+    );
+    assert!(
+        max_y - min_y < 0.8,
+        "sem ejeção do casco: range {}",
+        max_y - min_y
+    );
+    assert!(bobbed, "a velocidade vertical chega ao WaterKinematics");
+}
+
+/// Um casco com a quilha submersa poucos centímetros tem de entrar como
+/// "molhado" e emitir esteira Kelvin — o limiar dos pés (0,22 m) nunca o
+/// daria como na água e não havia esteira nenhuma.
+#[test]
+fn boat_keel_contact_offset_emits_a_kelvin_wake() {
+    let mut grid = make_flat_grid(256.0, 128, 12.0);
+    let mut lake_spec = LakeSpec::default();
+    lake_spec.at = Vec2::ZERO;
+    lake_spec.radius = 18.0;
+    lake_spec.depth = 4.0;
+    let body = carve_lake(&mut grid, &lake_spec, 0).expect("lake carved");
+    let surface_y = body.water_y;
+    let rt = make_test_runtime(grid, vec![body]);
+    let hull = rowboat_body();
+    let boat_y = surface_y + hull.rest_height();
+
+    let mut app = App::new();
+    app.add_plugins((MinimalPlugins, AssetPlugin::default()));
+    app.insert_resource(TimeUpdateStrategy::ManualDuration(
+        std::time::Duration::from_secs_f32(1.0 / 60.0),
+    ));
+    app.init_asset::<Image>()
+        .init_asset::<Mesh>()
+        .init_asset::<StandardMaterial>()
+        .init_asset::<Shader>();
+    app.insert_resource(rt);
+    app.add_plugins((WaterWavePlugin, WaterFxPlugin));
+
+    let boat = app
+        .world_mut()
+        .spawn((
+            Transform::from_translation(Vec3::new(-2.0, boat_y, 0.0)),
+            GlobalTransform::from_translation(Vec3::new(-2.0, boat_y, 0.0)),
+            WaterContact::default(),
+            WaterKinematics {
+                velocity: Vec3::new(2.6, 0.0, 0.0),
+                body_radius: 2.6,
+                contact_y_offset: hull.hull_center.y - hull.hull_half.y,
+            },
+        ))
+        .id();
+
+    // O casco avança para leste a 2.6 m/s (a posição tem de andar: a velocidade
+    // do passo e a do `WaterKinematics` são comparadas).
+    let mut x = -2.0_f32;
+    let mut saw_wake = false;
+    for _ in 0..6 {
+        x += 2.6 / 60.0;
+        {
+            let mut entity = app.world_mut().entity_mut(boat);
+            entity.insert((
+                Transform::from_translation(Vec3::new(x, boat_y, 0.0)),
+                GlobalTransform::from_translation(Vec3::new(x, boat_y, 0.0)),
+            ));
+        }
+        app.update();
+        let waves = app.world().resource::<WaterWaveWorld>();
+        saw_wake |= waves.impulses.iter().any(|i| i.is_wake);
+        if saw_wake {
+            break;
+        }
+    }
+    assert!(saw_wake, "o barco a 2.6 m/s tem de abrir esteira Kelvin");
+}
+
+/// O raio da esteira acompanha o casco (o clamp antigo de 1,5 m apertava um
+/// barco de 4 m ao tamanho de um nadador).
+#[test]
+fn boat_wake_radius_scales_with_hull_size() {
+    let swimmer = compute_wake_impulse(2.6, 0.42, 0.35);
+    let boat = compute_wake_impulse(2.6, 2.6, 0.35);
+    assert!(
+        boat.radius > swimmer.radius * 2.0,
+        "esteira do barco {boat:?} vs nadador {swimmer:?}"
+    );
+    assert!(boat.radius <= 2.6 * 2.6 + 1e-3, "raio limitado pelo casco");
+    assert!(boat.foam > swimmer.foam, "casco desloca mais espuma");
+}
