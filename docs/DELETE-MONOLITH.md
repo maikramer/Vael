@@ -52,10 +52,16 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
   no monorepo, `cli/` no Vael, `scene_runtime` APAGADO (`3d11d27` — os
   gémeos spawn/recipes/scene_loader ficaram reconciliados NO monólito; a
   G-2 deles precisa de novo destino).
-- **Falta**: F6/F7 (superfície Lua restante), a **INTEGRAÇÃO do host**
-  (publicar `ScriptHostState` a partir do runtime do monólito → consumir
-  BMS → apagar o `luau/` vivo), F9 (tests.rs 2.8k), G-2 (raiz ~35k + o
-  destino pós-scene_runtime), H (fecho do bridge + apagar a dep).
+- **F6/F7** ✅ `0b68972`+`15bc610` no main: a superfície Lua do BMS está
+  COMPLETA (IA/combate/cinemática/save/terreno/fala/UI/sinais — 14 comandos
+  novos + ~20 closures com a validação do monólito; conversor Lua→JSON para
+  args de sinais). Falta o tick de timers (`after`/`every`), que é parte da
+  INTEGRAÇÃO do host.
+- **G-2** 🔄 `exit5/g2`: worldsys → engine commitado; restantes em curso.
+- **Falta**: a INTEGRAÇÃO do host (publisher do ScriptGlobals no monólito
+  ou no Vael + dreno dos ScriptCommandMessage + tick de timers → trocar o
+  plugin no Vael → apagar o `luau/` vivo ~13.8k), F9 (tests), o resto da
+  G-2, H (fecho do bridge + apagar a dep).
 
 ## Achados do inventário (2026-11-15, módulo-a-módulo)
 
