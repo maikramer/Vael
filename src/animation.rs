@@ -50,6 +50,11 @@ impl Plugin for VaelAnimationPlugin {
 /// O pedido de bind da engine (`AnimatedScene`) e o `CharacterAnimator` ficam
 /// na entidade do personagem, que pode ser um antepassado do nó do modelo
 /// (o `GltfScene` dentro do NPC): sobe-se pelos pais até encontrar um deles.
+///
+/// Ao ceder, a entidade ganha [`viber::ik::FootIk`]: o IK de pés (agora a
+/// pilha `bevy_skeleton_modifiers`, sem precisar de `CharacterAnimator`) passa
+/// a cobrir os NPCs autorados no Jackdaw — os rigs cedidos ficavam sem IK
+/// nenhum porque a query velha exigia o animator da engine.
 pub fn cede_rig_to_jackdaw(
     mut commands: Commands,
     mut sets: Query<(
@@ -58,12 +63,13 @@ pub fn cede_rig_to_jackdaw(
         Option<&AnimatedScene>,
         Option<&AnimationSources>,
         Option<&viber::scene::SceneSource>,
+        Option<&viber::ik::FootIk>,
     )>,
     parents: Query<&ChildOf>,
     engine: Query<(), Or<(With<AnimatedScene>, With<CharacterAnimator>)>>,
     scenes: Query<&AnimatedScene>,
 ) {
-    for (entity, mut set, scene, sources, origin) in &mut sets {
+    for (entity, mut set, scene, sources, origin, foot_ik) in &mut sets {
         // Set sem ficheiros: os clips vêm do modelo que a engine carregou —
         // o `url` do nó (`/assets/…glb` → `assets/…glb` no `AssetServer`);
         // a cena instanciada é montada em memória e não tem caminho.
@@ -98,6 +104,11 @@ pub fn cede_rig_to_jackdaw(
                 commands
                     .entity(current)
                     .remove::<(AnimatedScene, CharacterAnimator)>();
+                if foot_ik.is_none() {
+                    // O IK novo (bevy_skeleton_modifiers) só precisa do marker
+                    // e dos ossos — o bind da engine `ik` trata do resto.
+                    commands.entity(current).insert(viber::ik::FootIk);
+                }
                 break;
             }
             at = parents.get(current).ok().map(ChildOf::parent);
