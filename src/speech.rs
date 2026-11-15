@@ -192,11 +192,11 @@ fn present_spoken_lines(
         return;
     }
     let Some(assets) = assets.as_deref() else {
-        for (owner, (text, _)) in latest {
-            debug!(
-                ?owner,
-                "vael: fala sem BubbleAssets — o texto não aparece ({text})"
-            );
+        // Sem `BubbleAssets` (fonte inválida) o balão nativo já está
+        // desligado: sem o toast a linha desaparecia de vez.
+        for (_, (text, _)) in latest {
+            debug!("vael: fala sem BubbleAssets — vira toast ({text})");
+            toasts.write(ScriptToast(text));
         }
         return;
     };
