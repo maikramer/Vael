@@ -76,7 +76,13 @@ function M.get(id)
 end
 
 function M.started(id)
-  return tonumber(viber.game()["judge." .. tostring(id) .. ".t0"]) ~= nil
+  local t0 = tonumber(viber.game()["judge." .. tostring(id) .. ".t0"])
+  -- `viber.time()` é o uptime do PROCESSO e nunca recua: um `t0` no futuro
+  -- é resto de outro arranque (o save guarda números). A janela do juramento
+  -- morreu com a sessão — devolver `false` faz o altar reabrir as marcas no
+  -- [E] seguinte em vez de julgar um registo vazio (ou de ignorar ações até
+  -- o relógio alcançar o valor gravado).
+  return t0 ~= nil and t0 <= viber.time()
 end
 
 function M.start(id)
