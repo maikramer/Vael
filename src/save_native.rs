@@ -74,7 +74,9 @@ struct SlotMeta {
 /// aplicação no frame seguinte.
 #[derive(Resource, Default)]
 pub struct NativeSaveState {
-    pending_save: Option<(PathBuf, SlotMeta)>,
+    /// `(temporário, destino, meta)`: o moonshine escreve no temporário (o
+    /// `std::fs::write` dele trunca o destino) e o fim do frame renomeia.
+    pending_save: Option<(PathBuf, PathBuf, SlotMeta)>,
     pending_load: Option<PathBuf>,
     save_done: bool,
     load_done: bool,
@@ -140,6 +142,9 @@ fn process_save_requests(world: &mut World) {
     }
     request.save = false;
     request.load = false;
+    // O slot é do pedido, não um estado pegajoso: um `viber.save()` a seguir
+    // a um save manual não pode cair no slot manual (o monólito limpa-o).
+    request.slot = None;
 
     if save {
         let Some(payload) = capture(world) else {
@@ -153,19 +158,27 @@ fn process_save_requests(world: &mut World) {
             error!("vael save: não criei {}: {err}", parent.display());
             return;
         }
+        let tmp = tmp_path(&path);
         let meta = meta_of(&payload);
         world.insert_resource(payload);
         if let Some(mut state) = world.get_resource_mut::<NativeSaveState>() {
-            state.pending_save = Some((path.clone(), meta));
+            state.pending_save = Some((tmp.clone(), path.clone(), meta));
             state.save_done = false;
         }
         world.trigger_save(
-            SaveWorld::default_into_file(path.clone()).include_resource::<VaelSaveFile>(),
+            SaveWorld::default_into_file(tmp).include_resource::<VaelSaveFile>(),
         );
         info!(path = %path.display(), "vael save: gravado");
     } else {
         let path = native_path(world, slot);
         if path.is_file() {
+            // A identidade do payload é zerada ANTES do load: se o load falhar,
+            // o recurso fica com o payload (e o id) anterior e um id vazio
+            // denuncia-o — mesmo quando o sidecar se perdeu (kill entre a
+            // gravação do RON e a da meta).
+            if let Some(mut payload) = world.get_resource_mut::<VaelSaveFile>() {
+                payload.save_id.clear();
+            }
             if let Some(mut state) = world.get_resource_mut::<NativeSaveState>() {
                 state.pending_load = Some(path.clone());
                 state.load_done = false;
@@ -184,7 +197,7 @@ fn process_save_requests(world: &mut World) {
 }
 
 fn finish_native_save(world: &mut World) {
-    let Some((path, meta)) = world
+    let Some((tmp, path, meta)) = world
         .get_resource_mut::<NativeSaveState>()
         .and_then(|mut state| {
             if !state.save_done {
@@ -196,9 +209,24 @@ fn finish_native_save(world: &mut World) {
     else {
         return;
     };
+    // Só depois do rename é que o slot muda: um kill a meio da escrita deixa
+    // o save ANTERIOR intacto (o moonshine escreve com `std::fs::write`, que
+    // truncava o destino).
+    if let Err(err) = commit_save(&tmp, &path) {
+        error!("vael save: {} não substituído: {err}", path.display());
+        return;
+    }
     if let Err(err) = write_meta(&path, &meta) {
         error!("vael save: sidecar {}: {err}", path.display());
     }
+}
+
+/// `fsync` do temporário + rename atómico para o slot.
+fn commit_save(tmp: &Path, path: &Path) -> Result<(), String> {
+    std::fs::File::open(tmp)
+        .and_then(|file| file.sync_all())
+        .map_err(|err| format!("{}: {err}", tmp.display()))?;
+    std::fs::rename(tmp, path).map_err(|err| format!("{}: {err}", path.display()))
 }
 
 fn finish_native_load(world: &mut World) {
@@ -222,38 +250,53 @@ fn finish_native_load(world: &mut World) {
     let Some(path) = loaded else {
         return;
     };
-    // Confirma que o recurso é o ficheiro que pedimos (um load falhado deixa
-    // o payload anterior e não pode ser aplicado por engano).
-    let Some(meta) = read_meta(&path) else {
-        warn!("vael save: sidecar em falta para {}", path.display());
-        return;
-    };
+    // O `save_id` é zerado antes do load, por isso um payload com id é prova
+    // de que o ficheiro pedido É o que está no recurso (um load falhado
+    // deixava-o vazio). O sidecar é só o cache do menu: se faltar ou estiver
+    // atrasado (kill entre o rename do RON e a meta), o ficheiro manda.
     let payload = world.resource::<VaelSaveFile>().clone();
-    if payload.save_id != meta.save_id {
+    if payload.save_id.is_empty() {
         warn!(
             "vael save: load de {} não aplicou o payload esperado",
             path.display()
         );
         return;
     }
+    match read_meta(&path) {
+        Some(meta) if payload.save_id != meta.save_id => warn!(
+            "vael save: sidecar de {} desactualizado — a aplicar o ficheiro",
+            path.display()
+        ),
+        Some(_) => {}
+        None => warn!(
+            "vael save: sidecar em falta para {} — a aplicar o payload do ficheiro",
+            path.display()
+        ),
+    }
     apply_payload(world, &payload);
 }
 
 fn capture(world: &mut World) -> Option<VaelSaveFile> {
-    let save = world
+    let mut save = world
         .get_resource::<VaelSave>()
         .cloned()
         .unwrap_or_default();
     // Store do processo primeiro (o `viber.game()` dos contextos BMS); sem
     // chaves (arranque), o save tipado.
-    let kv = {
+    let (kv, live_store) = {
         let kv = game_to_json_process();
         if kv.is_empty() {
-            save.to_world_kv()
+            (save.to_world_kv(), false)
         } else {
-            kv
+            (kv, true)
         }
     };
+    // O store é o espelho VIVO e o tipado só é sincronizado a 10 Hz: fundir
+    // aqui deixa o `game.vael` e o `world_kv` do MESMO ficheiro a contar a
+    // mesma história (hp/gear/quests), sem tocar no que é só-Rust.
+    if live_store {
+        save.merge_world_kv(&kv);
+    }
     let world_kv_json = serde_json::to_string(&kv).unwrap_or_default();
     let save_json = serde_json::to_string(&save).unwrap_or_default();
     let position = world
@@ -331,14 +374,24 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
 }
 
 fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
-    if let Ok(save) = serde_json::from_str::<VaelSave>(&payload.save_json) {
-        world.insert_resource(save);
-    } else {
-        warn!("vael save: save_json inválido");
+    let kv = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json).ok();
+    match serde_json::from_str::<VaelSave>(&payload.save_json) {
+        Ok(save) => {
+            world.insert_resource(save);
+        }
+        Err(err) => {
+            // Sem o tipado (ficheiro de outra versão/truncado), migrar o
+            // `world_kv` é melhor do que deixar o `VaelSave` da sessão
+            // anterior a mandar no HUD/save seguinte.
+            warn!("vael save: save_json inválido ({err}); a migrar world_kv");
+            if let Some(kv) = &kv {
+                world.insert_resource(VaelSave::from_world_kv(kv));
+            }
+        }
     }
     // `restore_game_json` repõe o store do processo (o `viber.game()` de
     // todos os contextos BMS lê daqui — já não depende de haver host).
-    if let Ok(kv) = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json) {
+    if let Some(kv) = kv {
         restore_game_json(&kv);
     }
     if let Some(mut mixer) = world.get_resource_mut::<AudioMixerSettings>() {
@@ -374,20 +427,31 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
             crate::respawn::teleport_player(world, position);
         }
     } else {
-        let mut change = ChangeScene::new(
-            payload.scene.clone(),
-            payload
-                .position
-                .map(Arrival::Position)
-                .unwrap_or(Arrival::Entry(None)),
-        );
+        let arrival = payload
+            .position
+            .map(Arrival::Position)
+            .unwrap_or(Arrival::Entry(None));
+        let mut change = ChangeScene::new(payload.scene.clone(), arrival.clone());
         change.came_from = payload
             .came_from_scene
             .clone()
             .zip(payload.came_from_portal.clone());
         if let Err(err) = request_change(world, change) {
             warn!("vael save: troca de cena no load falhou: {err}");
-            if let Some(position) = payload.position {
+            // A cena guardada pode ter saído do projeto: cair no mundo
+            // principal com a pose guardada é melhor do que ficar na cena
+            // atual (o título) com o estado carregado. O `came_from` do save
+            // pertence à cena que já não existe — não se repõe.
+            let main = viber::project::MAIN_SCENE;
+            let mut recovered = false;
+            if payload.scene != main {
+                let mut fallback = ChangeScene::new(main, arrival);
+                fallback.came_from = None;
+                recovered = request_change(world, fallback).is_ok();
+            }
+            if !recovered
+                && let Some(position) = payload.position
+            {
                 crate::respawn::teleport_player(world, position);
             }
         }
@@ -433,6 +497,13 @@ fn native_path(world: &World, slot: Option<u32>) -> PathBuf {
 
 fn meta_path(path: &Path) -> PathBuf {
     path.with_extension("meta.json")
+}
+
+/// Temporário da gravação (o `finish_native_save` renomeia-o para o slot).
+fn tmp_path(path: &Path) -> PathBuf {
+    let mut name = path.file_name().map(|name| name.to_os_string()).unwrap_or_default();
+    name.push(".tmp");
+    path.with_file_name(name)
 }
 
 fn meta_of(payload: &VaelSaveFile) -> SlotMeta {
@@ -625,6 +696,28 @@ mod tests {
             assert_eq!(loaded.position, Some(Vec3::new(1.0, 2.0, 3.0)));
             assert_eq!(loaded.scene, "main");
         }
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// O moonshine escreve no temporário: só o rename mexe no slot, por isso
+    /// uma gravação interrompida não perde o save anterior.
+    #[test]
+    fn grava_no_temporario_e_so_o_rename_muda_o_slot() {
+        let dir = std::env::temp_dir().join(format!("vael-save-atomic-{}", std::process::id()));
+        std::fs::create_dir_all(&dir).expect("dir");
+        let path = dir.join("vael.auto.vsave.ron");
+        std::fs::write(&path, "save antigo").expect("antigo");
+        let tmp = tmp_path(&path);
+        std::fs::write(&tmp, "save novo").expect("novo");
+
+        assert_eq!(
+            std::fs::read_to_string(&path).expect("slot"),
+            "save antigo",
+            "o slot só muda no commit"
+        );
+        commit_save(&tmp, &path).expect("commit");
+        assert_eq!(std::fs::read_to_string(&path).expect("slot"), "save novo");
+        assert!(!tmp.exists(), "o temporário sai depois do rename");
         let _ = std::fs::remove_dir_all(&dir);
     }
 
