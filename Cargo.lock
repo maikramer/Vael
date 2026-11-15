@@ -1170,6 +1170,8 @@ dependencies = [
 name = "bevy_ext_engine"
 version = "0.1.0"
 dependencies = [
+ "anyhow",
+ "avian3d",
  "bevy",
  "bevy_ext_core",
  "bevy_ext_gltf",
@@ -1177,11 +1179,12 @@ dependencies = [
  "bevy_ext_postfx",
  "bevy_ext_terrain_runtime",
  "bevy_ext_world",
- "bevy_rapier3d",
+ "dirs 7.0.0",
  "meshopt 0.7.0",
  "mlua",
  "serde",
  "serde_json",
+ "serde_yaml",
 ]
 
 [[package]]
@@ -1222,14 +1225,26 @@ dependencies = [
 ]
 
 [[package]]
+name = "bevy_ext_nav"
+version = "0.1.0"
+dependencies = [
+ "avian3d",
+ "bevy",
+ "bevy_ext_core",
+ "bevy_landmass",
+ "bevy_rerecast",
+ "landmass_rerecast",
+]
+
+[[package]]
 name = "bevy_ext_physics"
 version = "0.1.0"
 dependencies = [
+ "avian3d",
  "bevy",
  "bevy_ext_core",
  "bevy_ext_scene",
  "bevy_ext_terrain_runtime",
- "bevy_rapier3d",
 ]
 
 [[package]]
@@ -1275,12 +1290,12 @@ name = "bevy_ext_terrain_runtime"
 version = "0.1.0"
 dependencies = [
  "anyhow",
+ "avian3d",
  "bevy",
  "bevy_ext_core",
  "bevy_ext_gltf",
  "bevy_ext_terrain",
  "bevy_ext_world",
- "bevy_rapier3d",
  "bevy_voxel_terrain",
  "dirs 7.0.0",
  "flate2",
@@ -1288,6 +1303,16 @@ dependencies = [
  "image",
  "serde",
  "serde_json",
+]
+
+[[package]]
+name = "bevy_ext_ui"
+version = "0.1.0"
+dependencies = [
+ "bevy",
+ "bevy_ext_core",
+ "bevy_ext_world",
+ "mlua",
 ]
 
 [[package]]
@@ -1305,10 +1330,13 @@ dependencies = [
  "bevy_ext_core",
  "bevy_ext_engine",
  "bevy_ext_gltf",
+ "bevy_ext_nav",
  "bevy_ext_physics",
+ "bevy_ext_postfx",
  "bevy_ext_save",
  "bevy_ext_scene",
  "bevy_ext_terrain_runtime",
+ "bevy_ext_ui",
  "bevy_ext_water",
  "bevy_ext_world",
  "bevy_gradmesh",
@@ -2125,19 +2153,6 @@ name = "bevy_ptr"
 version = "0.20.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "845b9f43ea7e4be1a19b93673325d47c091df8e3a57a2cd30dd003d0972796be"
-
-[[package]]
-name = "bevy_rapier3d"
-version = "0.37.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "549d1806101690b7b3076189dfaa6e2aec392d601dfea3249c6c18fb1105dafa"
-dependencies = [
- "bevy",
- "bitflags 2.13.2",
- "log",
- "nalgebra",
- "rapier3d",
-]
 
 [[package]]
 name = "bevy_reflect"
@@ -4697,18 +4712,6 @@ checksum = "19fc433e8437a212d1b6f1e68c7824af3aed907da60afa994e7f542d18d12aa9"
 
 [[package]]
 name = "glam"
-version = "0.31.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "556f6b2ea90b8d15a74e0e7bb41671c9bdf38cd9f78c284d750b9ce58a2b5be7"
-
-[[package]]
-name = "glam"
-version = "0.32.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "f70749695b063ecbf6b62949ccccde2e733ec3ecbbd71d467dca4e5c6c97cca0"
-
-[[package]]
-name = "glam"
 version = "0.33.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "37bfe73dc8ec21f54d181e5a60554327ec3f1c600c455a75ccbfc65d2106a6c4"
@@ -4749,7 +4752,6 @@ checksum = "28d74079318e3a077bd3d15faa90fde24fa37bb9f157f92f853e6019a15fd413"
 dependencies = [
  "approx",
  "glam 0.33.12",
- "nalgebra",
  "num-traits",
  "simba",
 ]
@@ -6870,37 +6872,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "nalgebra"
-version = "0.35.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "adc43a60c217b0c6ff46e47f26911015ad8d2e5a8be1af668c67e370d99a4346"
-dependencies = [
- "approx",
- "glam 0.30.10",
- "glam 0.31.1",
- "glam 0.32.1",
- "glam 0.33.12",
- "matrixmultiply",
- "nalgebra-macros",
- "num-complex",
- "num-rational",
- "num-traits",
- "simba",
- "typenum",
-]
-
-[[package]]
-name = "nalgebra-macros"
-version = "0.3.0"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "973e7178a678cfd059ccec50887658d482ce16b0aa9da3888ddeab5cd5eb4889"
-dependencies = [
- "proc-macro2",
- "quote",
- "syn 2.0.119",
-]
-
-[[package]]
 name = "nanorand"
 version = "0.6.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -8193,19 +8164,6 @@ name = "profiling"
 version = "1.0.18"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d595e54a326bc53c1c197b32d295e14b169e3cfeaa8dc82b529f947fba6bcf5"
-dependencies = [
- "profiling-procmacros",
-]
-
-[[package]]
-name = "profiling-procmacros"
-version = "1.0.18"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4488a4a36b9a4ba6b9334a32a39971f77c1436ec82c38707bce707699cc3bbcb"
-dependencies = [
- "quote",
- "syn 2.0.119",
-]
 
 [[package]]
 name = "pxfm"
@@ -8364,28 +8322,6 @@ name = "rangemap"
 version = "1.8.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a611d15b50743feb4c76b7d03edcb0e64f399c26961e4efe6975bc398be6aa3d"
-
-[[package]]
-name = "rapier3d"
-version = "0.36.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "033e2edc815d61ab97bd74ed5d1cbea5ebe575218774a7cfedbd3551f0033317"
-dependencies = [
- "approx",
- "arrayvec",
- "bitflags 2.13.2",
- "glamx",
- "log",
- "nalgebra",
- "num-traits",
- "parry3d",
- "profiling",
- "serde",
- "simba",
- "static_assertions",
- "thiserror 2.0.21",
- "wide",
-]
 
 [[package]]
 name = "raw-window-handle"
