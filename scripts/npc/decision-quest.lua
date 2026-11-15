@@ -213,6 +213,13 @@ function on_update(_dt)
   if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
     return
   end
+  -- Herói caído: os 2,2 s de `dying` antecedem o modal de morte, por isso o
+  -- [E] ainda chega aqui — o puzzle não aceita nem entrega uma missão (nem
+  -- paga os itens do desfecho) a um cadáver, como os outros dadores e POIs.
+  local _, hp = rules.player_hp()
+  if hp <= 0 then
+    return
+  end
   viber.face_player()
   viber.gesture("talk")
 
