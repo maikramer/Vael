@@ -65,9 +65,12 @@ def find_text3d(explicit: str | None) -> str:
     found = shutil.which("text3d")
     if found:
         return found
-    fallback = Path.home() / "GitClones" / "AiGameKit" / "Text3D" / ".venv" / "bin" / "text3d"
-    if fallback.is_file():
-        return str(fallback)
+    # O AiGameKit é o checkout IRMÃO deste; `~/GitClones` só como último
+    # recurso (o clone pode estar em qualquer lado).
+    for base in (ROOT.parent, Path.home() / "GitClones"):
+        fallback = base / "AiGameKit" / "Text3D" / ".venv" / "bin" / "text3d"
+        if fallback.is_file():
+            return str(fallback)
     raise SystemExit(
         "text3d não encontrado. Instala o AiGameKit ou passa --text3d / TEXT3D=…"
     )
@@ -205,6 +208,7 @@ def install(source: Path, destination: Path) -> None:
 def generate(
     job: Job,
     *,
+    root: Path,
     text3d: str,
     tmp_root: Path,
     finish: bool,
@@ -289,7 +293,7 @@ def generate(
         install(generated[2], job.lod2)
 
         return (
-            f"{job.lod0.relative_to(ROOT)}: "
+            f"{job.lod0.relative_to(root)}: "
             f"{base_info.faces} → {levels[1].faces} → {levels[2].faces} faces"
         )
     finally:
@@ -327,7 +331,10 @@ def main() -> int:
     jobs = discover(args.root, args.only)
     missing = [job for job in jobs if args.force or not is_current(job)]
     if not jobs:
-        print("nenhum *_lod0.glb encontrado.", file=sys.stderr)
+        if args.only:
+            print(f"nenhum modelo casa com --only {' '.join(args.only)}.", file=sys.stderr)
+        else:
+            print("nenhum *_lod0.glb encontrado.", file=sys.stderr)
         return 1
 
     print(
@@ -351,6 +358,7 @@ def main() -> int:
             pool.submit(
                 generate,
                 job,
+                root=args.root,
                 text3d=text3d,
                 tmp_root=tmp_root,
                 finish=not args.no_finish,

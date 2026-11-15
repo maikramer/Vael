@@ -70,6 +70,7 @@ SETTINGS = [
     ("Ambiente", "world/settings/environment.bsn"),
     ("Pós-processamento", "world/settings/postfx.bsn"),
     ("Flora", "world/settings/flora.bsn"),
+    ("Relva", "world/settings/grass.bsn"),
 ]
 
 
@@ -93,7 +94,9 @@ def block_name(block: str) -> str:
 
 
 def folder_of(block: str) -> str:
-    source = re.search(r'IsA \{ source: "([^"]+)"', block)
+    # O `IsA` tanto sai numa linha (`IsA { source: "…", deleted: [] }`) como
+    # no formato multilinha que o Jackdaw grava (`IsA {\n    source: "…",`).
+    source = re.search(r'IsA \{\s*source: "([^"]+)"', block)
     if source:
         for prefix, folder in SOURCE_FOLDERS:
             if source.group(1).startswith(prefix):
@@ -148,7 +151,7 @@ def unique_names(children: list[str]) -> list[str]:
     out = []
     for child in children:
         name = block_name(child)
-        source = re.search(r'IsA \{ source: "([^"]+)"', child)
+        source = re.search(r'IsA \{\s*source: "([^"]+)"', child)
         if seen[name] > 1 and source:
             parent = Path(source.group(1)).parent.name
             child = child.replace(f'#"{name}"', f'#"{parent}/{name}"', 1)
@@ -183,8 +186,17 @@ def main() -> int:
     parser.add_argument("world", type=Path)
     parser.add_argument("--dry-run", action="store_true")
     args = parser.parse_args()
+    if not args.world.is_file():
+        print(f"erro: {args.world} não existe", file=sys.stderr)
+        return 1
     text = args.world.read_text(encoding="utf-8")
-    new, layout = tidy(text, args.world.resolve().parent)
+    try:
+        new, layout = tidy(text, args.world.resolve().parent)
+    except ValueError:
+        # `split_root` espera a raiz `<world>` com um `Children [` de topo e o
+        # `]` de fecho na coluna 0; outro `.bsn` (módulo, cena) não é mundo.
+        print(f"erro: {args.world} não é um mundo (sem `Children [` de raiz)", file=sys.stderr)
+        return 1
     if not layout:
         print(f"{args.world}: já organizado")
         return 0

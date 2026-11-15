@@ -15,10 +15,10 @@ Fixtures:
   rays.json       grelha fixa de 314 raios (toi, normal, nome do alvo)
   colliders.json  props nomeados junto a 3 âncoras (forma + half-extents)
   hero.json       invariantes de movimento (andar, saltar, repouso)
-  perf.jsonl      `viber debug prof --record` (opcional)
+  perf.jsonl      `vael-tools debug prof --record` (opcional)
 
 O jogo tem de estar a correr com `--bridge` e o mundo carregado
-(`viber debug --port P wait-ready`). Uma fixture só é comparável com o mesmo
+(`vael-tools debug --port P wait-ready`). Uma fixture só é comparável com o mesmo
 `world.bsn`: o `meta.json` guarda o hash e o `compare` recusa hashes
 diferentes.
 """
@@ -35,7 +35,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT / "tools"))
-from qa import Bridge  # noqa: E402  (o cliente JSON-RPC do bridge)
+from qa import Bridge, short, tools_bin  # noqa: E402  (cliente JSON-RPC e CLI do bridge)
 
 DEFAULT_OUT = ROOT / "docs" / "qa" / "avian"
 GRID_STEP = 4.0
@@ -231,6 +231,12 @@ def cmd_capture(args) -> None:
     errors = sum(1 for r in results if r.get("error"))
     (out / "rays.json").write_text(json.dumps(results, indent=1) + "\n")
     print(f"rays: {len(results)} ({hits} hit, {errors} erro) → {out / 'rays.json'}")
+    if errors:
+        print(
+            f"avian_baseline: {errors}/{len(results)} raios sem resultado — "
+            f"a fixture {out / 'rays.json'} não serve para comparar",
+            file=sys.stderr,
+        )
 
     colliders = collider_fixture(bridge, origin)
     (out / "colliders.json").write_text(json.dumps(colliders, indent=1) + "\n")
@@ -239,14 +245,25 @@ def cmd_capture(args) -> None:
     if args.perf:
         perf = out / "perf.jsonl"
         try:
-            subprocess.run(
-                ["viber", "debug", "--port", str(args.port), "prof",
+            res = subprocess.run(
+                [*tools_bin(), "debug", "--port", str(args.port), "prof",
                  "--record", "10", "--hz", "2", "-o", str(perf)],
                 capture_output=True, text=True, timeout=60,
             )
-            print(f"perf: {perf}")
+            if res.returncode != 0:
+                print(
+                    f"perf: falhou (exit {res.returncode}) "
+                    f"{short(res.stderr.strip())}",
+                    file=sys.stderr,
+                )
+            else:
+                print(f"perf: {perf}")
         except Exception as err:  # noqa: BLE001
             print(f"perf: falhou ({err})", file=sys.stderr)
+
+    if errors:
+        # Exit 1: uma captura sem raios não é uma baseline válida.
+        sys.exit(1)
 
 
 # ── hero ────────────────────────────────────────────────────────────────
@@ -272,7 +289,7 @@ def sample(bridge: Bridge, seconds: float, hz: float = 10.0) -> list[dict]:
 
 def hold_key(port: int, key: str, hold_ms: int) -> subprocess.Popen:
     return subprocess.Popen(
-        ["viber", "debug", "--port", str(port), "key", key, "--hold-ms", str(hold_ms)],
+        [*tools_bin(), "debug", "--port", str(port), "key", key, "--hold-ms", str(hold_ms)],
         stdout=subprocess.DEVNULL,
         stderr=subprocess.DEVNULL,
     )
@@ -315,7 +332,7 @@ def cmd_hero(args) -> None:
     settle(bridge, 0.6)
     ground_y = float(player(bridge)["y"])
     subprocess.run(
-        ["viber", "debug", "--port", str(args.port), "key", "space"],
+        [*tools_bin(), "debug", "--port", str(args.port), "key", "space"],
         capture_output=True, text=True, timeout=20,
     )
     jump_samples = sample(bridge, 1.2)
@@ -377,6 +394,15 @@ def cmd_compare(args) -> None:
     mismatched = 0
     worst = 0.0
     for i, (b, a) in enumerate(zip(rb, ra)):
+        # Um raio sem resultado (`error`) não é "sem hit": duas fixtures cheias
+        # de erros comparavam iguais e davam "paridade OK" a mentir.
+        if b.get("error") or a.get("error"):
+            problems.append(
+                f"ray {i} ({b.get('kind')}): sem resultado "
+                f"({b.get('error') or a.get('error')})"
+            )
+            mismatched += 1
+            continue
         if bool(b.get("hit")) != bool(a.get("hit")):
             problems.append(f"ray {i} ({b['kind']}): hit {b.get('hit')} → {a.get('hit')}")
             mismatched += 1

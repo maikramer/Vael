@@ -2,15 +2,24 @@
 # Gate local do Vael: corre tudo o que valida o jogo sem abrir a janela.
 #   tools/check.sh            # a partir de qualquer pasta
 #   tools/check.sh --full     # + testes do crate `vael` (compila; ~2-3 min)
-# Sai com 1 se algum passo OBRIGATÓRIO falhar. O binário da engine não é
-# recompilado (VIBER_NO_BUILD=1): isto valida o jogo, não a engine.
+# Sai com 1 se algum passo OBRIGATÓRIO falhar.
 set -u
 cd "$(dirname "$0")/.."
-export VIBER_NO_BUILD=1
 fail=0
 full=0
 [ "${1:-}" = "--full" ] && full=1
 step() { printf '\n== %s ==\n' "$1"; }
+
+step "vael-tools (build)"
+# Constrói o CLI ANTES do resto: o `lint_content.py` (e o analyze/lint abaixo)
+# consomem este binário. Sem `VAEL_TOOLS_BIN` o lint preferia um
+# `target/release/vael-tools` antigo e analisava o mundo com ele.
+if cargo build --quiet -p vael-tools; then
+  export VAEL_TOOLS_BIN="$PWD/target/debug/vael-tools"
+else
+  echo "FALHOU: cargo build -p vael-tools"
+  fail=1
+fi
 
 step "conteúdo (JSON + referências)"
 python3 tools/lint_content.py || fail=1
@@ -40,18 +49,16 @@ print(f"lua: {bad} ficheiro(s) com erro de sintaxe")
 sys.exit(1 if bad else 0)
 PY
 else
-  echo "saltado: pip install luaparser (ou cargo test --test script_syntax em ../Viber)"
+  echo "saltado: pip install luaparser (sem ele a sintaxe Lua não é verificada)"
 fi
 
-step "viber analyze"
-if command -v viber >/dev/null; then
-  viber analyze world.bsn 2>&1 | grep -v '^warning: <Road>' | tail -12
+step "vael-tools: analyze/lint"
+if [ -n "${VAEL_TOOLS_BIN:-}" ]; then
+  "$VAEL_TOOLS_BIN" analyze world.bsn 2>&1 | grep -v '^warning: <Road>' | tail -12
   [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
-  step "viber scene lint"
-  viber scene lint 2>&1 | tail -8
+  step "vael-tools lint"
+  "$VAEL_TOOLS_BIN" lint 2>&1 | tail -8
   [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
-else
-  echo "saltado: viber não está no PATH"
 fi
 
 step "traduções em falta"
@@ -62,7 +69,7 @@ python3 tools/i18n_extract.py | tail -6
 
 if [ $full -eq 1 ]; then
   step "testes do crate vael"
-  CARGO_TARGET_DIR=../Viber/target cargo test --release -p vael --quiet 2>&1 \
+  cargo test --release -p vael --quiet 2>&1 \
     | grep -E 'FAILED|panicked|test result' | head -20
   [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
 fi

@@ -12,8 +12,8 @@ Para cada elemento de visual cujo `url` é uma árvore do pool:
   tiver mais filhos).
 
 As **receitas** de `<Scatter>` (`<GLTFLoader role="visual">` dentro de um
-`<Scatter>`) ficam intactas: um `viber tool scatter` re-bake ainda precisa
-delas. Depois de um re-scatter, voltar a correr esta migração.
+`<Scatter>`) ficam intactas: o re-scatter do Jackdaw ainda precisa delas.
+Depois de um re-scatter, voltar a correr esta migração.
 
 A pose fica no XML (o runtime lê a estação); a árvore é plantada por
 `src/flora.rs` com pools por espécie.
@@ -255,13 +255,24 @@ def main() -> int:
     for pattern in WORLD_GLOBS:
         paths.extend(glob.glob(os.path.join(args.root, pattern), recursive=True))
     paths = sorted({p for p in paths if not p.endswith(".bak")})
+    if not paths:
+        # Sem isto o `--check` dizia "ok" com zero ficheiros lidos (o mundo é
+        # `.bsn` desde 2026-11-12 e este script só migra o XML aposentado).
+        print(
+            f"flora_migrate: nenhum .xml encontrado em {args.root!r} — o mundo é "
+            "`.bsn` desde 2026-11-12 e este script só migra XML; nada verificado.",
+            file=sys.stderr,
+        )
+        return 1
 
     total = 0
     remaining: list[str] = []
+    seen_paths: list[str] = []
     for path in paths:
         text = open(path, encoding="utf-8").read()
         if not any(url in text for url in TREES):
             continue
+        seen_paths.append(path)
         report: list[str] = []
         migrated, converted = migrate_text(text, path, report)
         for line in report:
@@ -276,7 +287,15 @@ def main() -> int:
             remaining.append(path)
 
     if args.check:
-        pendentes = total + sum(count_unmigrated(open(p, encoding="utf-8").read()) for p in remaining)
+        # Relê o disco (e não `total`): com `--apply` o texto já foi escrito e
+        # somar as convertidas dizia que ainda havia árvores quando não havia.
+        pendentes = 0
+        remaining = []
+        for path in seen_paths:
+            pending = count_unmigrated(open(path, encoding="utf-8").read())
+            if pending:
+                pendentes += pending
+                remaining.append(path)
         if pendentes:
             print(f"\nAINDA HÁ ÁRVORES GLB ({pendentes} pendentes)", file=sys.stderr)
             for path in remaining:

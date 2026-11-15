@@ -36,6 +36,9 @@ def load_ahgt(path: Path) -> tuple[np.ndarray, int, int, float]:
     meta_len = struct.unpack_from("<I", raw, 16)[0]
     if magic != AHGT_MAGIC or version != 1:
         raise SystemExit(f"AHGT inválido: magic=0x{magic:08x} version={version}")
+    if 20 + meta_len > len(raw):
+        # Um `meta_len` corrompido dava um JSONDecodeError de uma fatia truncada.
+        raise SystemExit(f"AHGT truncado: metadata pede {meta_len} B, só há {len(raw) - 20}")
     meta = json.loads(raw[20 : 20 + meta_len])
     max_height = float(meta["maxHeight"])
     payload = raw[20 + meta_len :]
