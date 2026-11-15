@@ -57,11 +57,29 @@ que ainda vive no monólito, o destino de cada peça e a ordem até
   novos + ~20 closures com a validação do monólito; conversor Lua→JSON para
   args de sinais). Falta o tick de timers (`after`/`every`), que é parte da
   INTEGRAÇÃO do host.
-- **G-2** 🔄 `exit5/g2`: worldsys → engine commitado; restantes em curso.
-- **Falta**: a INTEGRAÇÃO do host (publisher do ScriptGlobals no monólito
-  ou no Vael + dreno dos ScriptCommandMessage + tick de timers → trocar o
-  plugin no Vael → apagar o `luau/` vivo ~13.8k), F9 (tests), o resto da
-  G-2, H (fecho do bridge + apagar a dep).
+- **G-2** ✅ `exit5/g2` (9 commits, monólito 100.5k → **86.2k**): worldsys,
+  animation (núcleo), cinematic, ambient repartido, postfx runtime, hud →
+  engine/postfx/audio. `scene/` (9.1k) e o grupo spawner/recipes/
+  scene_loader (~17.5k) ficaram para a última onda (bloqueados por
+  physics/luau/contratos — documentado no relatório do agente).
+- **INTEGRAÇÃO do host** — construída (`bms_bridge.rs` 2.2k no monólito:
+  `apply_script_command` extraído 1:1 do `luau_update` [61 braços], dreno
+  dos comandos BMS, publisher `ScriptHostState` com TODAS as fontes) e a
+  **troca testada a vivo no Vael — NÃO passou**: compila, boota, renderiza
+  e o ping/screenshot funcionam, mas os scripts não correm (0 lin
+  `viber::luau` vs 23 no host antigo). Causa: o BMS carrega scripts como
+  **assets** (`ScriptComponent` + `ScriptAttachment` via AssetServer) e o
+  jogo semeia `LuaScriptRef` com os scripts FORA do asset root. Revert
+  seguro aplicado no Vael (1 commit; a troca é autocontida no app.rs).
+  **Peças que faltam na troca**: (1) espelho `LuaScriptRef` →
+  `ScriptComponent` com `EntityScript(entity, asset)` no BmsBridgePlugin;
+  (2) asset source para `scripts/` (symlink em assets/public OU source
+  extra no AssetPlugin); (3) dispatch do `on_update` com
+  `timers::seed_script_identity` (path/elapsed para os timers); (4)
+  publisher do `HostWaterBodies` (implementar `WaterBodies` sobre o água
+  do terrain_runtime); (5) adapter BRP do REPL `viber.lua` ANTES da troca
+  (o qa.py usa-o). Cada passo com QA vivo (fogueira/slime/ambiência nos
+  logs como prova de scripts).
 
 ## Achados do inventário (2026-11-15, módulo-a-módulo)
 

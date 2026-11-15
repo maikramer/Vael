@@ -7,15 +7,15 @@
 //! engine (`gameplay`), save externo (`moonshine-save`), scripts Luau em
 //! `Compat` e IA em modo serviço. O que era opção morta não existe aqui —
 //! as branches de `RunMode::Edit`, `SavePlugin`, projéteis e
-//! `ensure_player_vitals` ficaram no `viber run` (crate `viber_engine`).
+//! `ensure_player_vitals` ficaram no monólito (crate `bevy_ext_viber_engine`).
 
 use std::path::{Path, PathBuf};
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use bevy::app::PluginGroupBuilder;
 use bevy::prelude::*;
-use bevy_kira_audio::prelude::{Mix, ReverbBuilder};
 use bevy_kira_audio::AudioApp;
+use bevy_kira_audio::prelude::{Mix, ReverbBuilder};
 
 use viber::profiler::{Group, timed};
 use viber::recipes::spawn::{self, PendingWorld};
@@ -29,8 +29,6 @@ pub struct VaelAppOptions {
     /// Mundo COMO O CLI O RECEBEU (antes do `start-scene`): identidade do
     /// registo de sessão/`viber.ping`. A bridge responde por este caminho.
     pub identity: PathBuf,
-    /// Espelho por frame de `viber.ecs` (opt-in: `VIBER_ECS_MIRROR=1`).
-    pub ecs_mirror: bool,
     /// Wrapper do grupo `DefaultPlugins` (o Vael usa o PIE do Jackdaw).
     pub default_plugins: Option<fn(PluginGroupBuilder) -> PluginGroupBuilder>,
 }
@@ -67,14 +65,13 @@ fn gpu_profiling_enabled() -> bool {
 
 /// Monta a App do Vael a partir do mundo já resolvido (`resolve_run_path`).
 ///
-/// O parceiro de leitura disto é `viber::app::build_app` (o `viber run`):
+/// O parceiro de leitura disto é `viber::app::build_app` (o monólito):
 /// as fases estão na mesma ordem; o que difere está comentado no sítio.
 pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     let VaelAppOptions {
         start_entry,
         bridge_port,
         identity,
-        ecs_mirror,
         default_plugins,
     } = opts;
     // Absoluto desde já: o asset root e o base_dir do terreno não podem
@@ -84,8 +81,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // O runtime só corre mundos ESTÁTICOS (`<world static="true">`).
     if !world.static_world {
         bail!(
-            "{}: mundo procedural (sem `<world static=\"true\">`) — converte-o com `viber bake {}`.",
-            path.display(),
+            "{}: mundo procedural (sem `<world static=\"true\">`) — converte-o no Jackdaw ou usa um mundo estático.",
             path.display()
         );
     }
@@ -126,11 +122,11 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     };
     let shader_entities = &main_world.as_ref().unwrap_or(&world).entities;
     let sky_config = viber::sky::SkyConfig::from_world(shader_entities).with_env_override();
-    // As configs de água/camadas vêm dos módulos do terreno (o terrain_host
-    // terreno para o `bevy_ext_terrain_runtime` mudou a assinatura).
-    let water_config =
-        viber::terrain::water_material::water_surface_config_from_world(shader_entities);
-    let layers_config = viber::terrain::layer_material::TerrainChunkConfig::from_world(shader_entities);
+    // As configs de água/camadas vêm do glue IR→shader do monólito
+    // (`viber::terrain_host` — o walk do IR de parsing não vive no
+    // `bevy_ext_terrain_runtime`).
+    let water_config = viber::terrain_host::water_surface_config_from_world(shader_entities);
+    let layers_config = viber::terrain_host::terrain_chunk_config_from_world(shader_entities);
     let shaders_dir = asset_root.join("shaders");
     let _ = std::fs::create_dir_all(&shaders_dir);
     for (name, contents) in [
@@ -138,7 +134,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         ("water.wesl", water_config.render_world_shader()),
     ] {
         if let Err(e) = std::fs::write(shaders_dir.join(name), contents) {
-            eprintln!("vael: falha ao escrever {}/{name}: {e}", shaders_dir.display());
+            eprintln!(
+                "vael: falha ao escrever {}/{name}: {e}",
+                shaders_dir.display()
+            );
         }
     }
     if let Some(layers_config) = &layers_config
@@ -147,7 +146,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             layers_config.render_world_shader(),
         )
     {
-        eprintln!("vael: falha ao escrever {}/terrain_chunk.wesl: {e}", shaders_dir.display());
+        eprintln!(
+            "vael: falha ao escrever {}/terrain_chunk.wesl: {e}",
+            shaders_dir.display()
+        );
     }
     // SSR da água: shader ESTÁTICO, só com o gate ligado.
     if viber::water_ssr::water_ssr_requested()
@@ -156,13 +158,19 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             viber::water_ssr::WATER_SSR_WGSL,
         )
     {
-        eprintln!("vael: falha ao escrever {}/water_ssr.wesl: {e}", shaders_dir.display());
+        eprintln!(
+            "vael: falha ao escrever {}/water_ssr.wesl: {e}",
+            shaders_dir.display()
+        );
     }
     // O loader de glTF é recursivo por nó: pool de IO com stack 32 MiB ANTES
     // do `TaskPoolPlugin` (que respeita o global já criado).
-    let io_threads = std::thread::available_parallelism()
-        .map(|n| (n.get() / 4).clamp(1, 4))
-        .unwrap_or(1);
+    //
+    // O número de threads é o da engine (`cores - 2`, `VIBER_IO_THREADS`):
+    // aqui chegou a ser `cores/4` (teto 4), o que deixava ~1,5 GB de GLB do
+    // Vael numa fila de 3–4 threads com o resto da máquina parado — o arranque
+    // pagava isso em dezenas de segundos.
+    let io_threads = viber::app::io_thread_count();
     bevy::tasks::IoTaskPool::get_or_init(|| {
         bevy::tasks::TaskPoolBuilder::new()
             .num_threads(io_threads)
@@ -181,7 +189,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             .collect(),
     ));
     // O modo Game viaja como resource: os run conditions (`scripts_enabled`)
-    // leem-no. (O modo Edit e a pausa de tempo ficaram no `viber run`.)
+    // leem-no. (O modo Edit e a pausa de tempo ficaram no monólito.)
     app.insert_resource(bevy_ext_core::RunMode::Game);
     // Fonte de assets multi-root + meshopt, ANTES do `AssetPlugin` (que
     // snapshot-a as fontes quando constrói).
@@ -189,6 +197,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // O config viaja COMO RESOURCE: ambient (sfx_dir), save (dir), terreno
     // (textures_dir) e o spawn (bgm_dir) leem-no de lá.
     app.insert_resource(config.clone());
+    // O runtime de terreno lê `TerrainWorldAssets` (não o `GameConfig`): sem
+    // este recorte as layers resolvem contra a pasta do mundo
+    // (`grass/albedo.ktx2`) e cada albedo vira um `Path not found` no Bevy.
+    viber::terrain_host::install_world_assets(&mut app, &config, &world_dir);
     app.insert_resource(viber::save::SaveDir(Some(config.save_dir().to_path_buf())));
     // O modelo do céu: o IBL e os probes regionais usam a MESMA radiância.
     app.insert_resource(viber::sky::SkyModelState::from_config(&sky_config));
@@ -206,10 +218,22 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             file_path: asset_root.to_string_lossy().into_owned(),
             ..Default::default()
         });
-    if bridge_port.is_some() {
+    // Warnings de TERCEIROS que não têm acção nossa no arranque: o `arboard`
+    // cai para o X11 quando o compositor não expõe `ext-data-control`
+    // (Wayland) e o `sctk_adwaita` não conhece um botão da decoração. Sem os
+    // silenciar, cada linha aparece no log e o QA (que lê o log) aprende a
+    // ignorar WARN. `RUST_LOG` sobrepõe-se a este filtro (contrato do
+    // bevy_log), portanto um debug destes alvos continua possível.
+    const QUIET_TARGETS: &str = "arboard=error,sctk_adwaita=error";
+    let log_filter = format!("{},{QUIET_TARGETS}", bevy::log::DEFAULT_FILTER);
+    let mut log_plugin = if bridge_port.is_some() {
         // A layer de logs do bridge tem de ser instalada no LogPlugin no boot.
-        plugins = plugins.set(viber::bridge::logs::log_plugin_with_bridge());
-    }
+        viber::bridge::logs::log_plugin_with_bridge()
+    } else {
+        bevy::log::LogPlugin::default()
+    };
+    log_plugin.filter = log_filter;
+    plugins = plugins.set(log_plugin);
     if gpu_profiling_enabled() {
         use bevy::render::settings::{WgpuFeatures, WgpuSettings};
         let base = WgpuSettings::default();
@@ -270,7 +294,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         voice: Some(voice_reverb),
     });
     // Bridge de debug + registo de sessão (o agente que lançou o jogo lê a
-    // linha do eprintln para apontar o `viber debug` a ESTA engine).
+    // linha do eprintln para apontar o `vael-tools debug` a ESTA engine).
     if let Some(port) = bridge_port {
         app.add_plugins(viber::bridge::BridgePlugin { port });
         app.insert_resource(viber::bridge::BridgeIdentity {
@@ -296,7 +320,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             });
         }
         eprintln!(
-            "vael: debug bridge at http://127.0.0.1:{port} — viber debug --world {} …",
+            "vael: debug bridge at http://127.0.0.1:{port} — vael-tools debug --world {} …",
             identity.display()
         );
     }
@@ -309,7 +333,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         .and_then(|ext| ext.to_str())
         .is_some_and(|ext| ext.eq_ignore_ascii_case("bsn"))
     {
-        info!("scene doc: {} é .bsn — edição de cena via Jackdaw", path.display());
+        info!(
+            "scene doc: {} é .bsn — edição de cena via Jackdaw",
+            path.display()
+        );
     } else {
         app.insert_resource(viber::scene::doc::SceneDoc::load(path)?);
     }
@@ -319,7 +346,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     } else {
         path.to_path_buf()
     };
-    app.insert_resource(viber::save::WorldSaveKey(viber::save::world_save_key(&save_key_path)));
+    app.insert_resource(viber::save::WorldSaveKey(viber::save::world_save_key(
+        &save_key_path,
+    )));
     let scene_title = world.title.clone();
     // Autoloads do projeto: parseados aqui, spawnados antes da 1.ª cena.
     if project.declared {
@@ -341,7 +370,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             app.insert_resource(viber::scene_loader::PendingAutoload(autoload));
         }
     }
-    app.insert_resource(viber::scene_loader::CurrentScene::for_path(path, scene_title));
+    app.insert_resource(viber::scene_loader::CurrentScene::for_path(
+        path,
+        scene_title,
+    ));
     if let Some(entry) = start_entry {
         app.insert_resource(viber::scene_loader::StartEntry(Some(entry)));
     }
@@ -383,13 +415,25 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         dir: world_dir_pre.join("locale"),
     });
     app.add_plugins(viber::streaming::StreamingPlugin);
+    // Residência posicional dos GLB (`<GltfScene>`): o véu espera só o anel
+    // próximo e o resto do mundo entra atrás do herói. `VIBER_GLTF_STREAMING=0`
+    // volta a carregar tudo no arranque.
+    app.add_plugins(viber::gltf_residency::GltfResidencyPlugin);
     app.add_plugins(viber::foliage::FoliagePlugin);
     app.add_plugins(viber::draw_diag::DrawDiagPlugin);
     app.add_plugins(viber::frame_pacing::FramePacingPlugin);
     app.add_plugins(viber::netplay::NetPlayPlugin);
-    app.add_plugins(bevy_ext_physics::physics::PhysicsPlugin {
+    // Física (Avian) do `bevy_ext_physics` — o mesmo plugin que o monólito
+    // expõe em `viber::physics::PhysicsPlugin`. O streaming dos colliders das
+    // colunas voxel é host-side (lê o `TerrainRuntime` do monólito) e entra
+    // pelo `TerrainCollidersPlugin` ao lado, como na app da engine.
+    app.add_plugins(viber::physics::PhysicsPlugin {
         debug: std::env::var_os("VIBER_PHYSICS_DEBUG").is_some(),
     });
+    app.add_plugins(viber::physics::TerrainCollidersPlugin);
+    // Controller do herói (tnua) e step assist. O `PhysicsPlugin` acima só
+    // faz colliders; o herói é do jogo (`viber::player`).
+    app.add_plugins(viber::player::HeroPhysicsPlugin);
     app.add_plugins(viber::postfx::PostFxPlugin);
     app.add_plugins(viber::postfx_toggle::PostFxDebugTogglePlugin);
     app.add_plugins(viber::adaptive_quality::AdaptiveQualityPlugin);
@@ -398,16 +442,21 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::ibl::SkyIblPlugin);
     app.add_plugins(viber::terrain::TerrainPlugin);
     app.add_plugins(viber::terrain::runtime::TerrainFeaturesPlugin);
-    // O adaptador do Vael (layout dos quadrantes + Vale, vento/tinta)
-    // embrulha o ExtGrassPlugin do crate.
-    app.add_plugins(crate::grass::VaelGrassPlugin);
+    // A relva (`crate::grass::VaelGrassPlugin`) NÃO entra aqui: é plugin do
+    // jogo e o `VaelPlugin` (lib.rs) já a regista — duplicar dá panic
+    // ("plugin was already added").
     app.add_plugins(viber::textures::TexturesPlugin);
-    // Host Luau (`scripts/` do config, `on_update(dt)`); o árbitro das
-    // interações é registado pelo próprio plugin.
-    app.add_plugins(viber::luau::LuauScriptPlugin {
-        scripts_dir: config.scripts_dir_on(&world_dir),
-        ecs_mirror,
-    });
+    // Host Luau (BMS 0.24): a superfície `viber.*` vive no bevy_ext_luau
+    // (ondas F2-F8) e o `BmsBridgePlugin` do monólito publica o estado do
+    // mundo (ScriptHostState) e aplica os comandos dos scripts com a
+    // maquinaria de sempre. Scripts correm no PreUpdate do BMS.
+    app.add_plugins(bevy_ext_luau::VaelScriptingPlugin);
+    app.add_plugins(viber::luau::bms_bridge::BmsBridgePlugin);
+    // Adaptadores de host da G-1: publicam o mundo para os crates de
+    // áudio/IA (sem eles music_driver/script_sound_loops ficam mudos e a
+    // locomoção perde o snap de Y).
+    app.add_plugins(viber::audio_host::AudioHostPlugin);
+    app.add_plugins(viber::ai_host::AiHostPlugin);
     // Serviços que o movimento, o som e o HUD leem.
     app.init_resource::<viber::menus::MenusOpen>();
     app.init_resource::<viber::music::MusicLayerOverride>();
@@ -432,7 +481,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::attachment::AttachmentPlugin);
     // FX puros sem preset RPG: kick de FOV e hit-stop.
     app.init_resource::<bevy_ext_engine::camera_glue::CameraFx>();
-    app.add_systems(bevy::app::Update, bevy_ext_engine::camera_glue::fov_kick_system);
+    app.add_systems(
+        bevy::app::Update,
+        bevy_ext_engine::camera_glue::fov_kick_system,
+    );
     app.init_resource::<viber::time_fx::HitStop>();
     app.init_resource::<viber::time_fx::BaseTimeScale>();
     app.add_systems(bevy::app::Update, viber::time_fx::hit_stop_system);
@@ -471,35 +523,65 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // UI declarativa da engine (fala/prompts/NLU; o HUD do jogo é o
     // `VaelUiPlugin`, em bevy_pf).
     app.add_plugins(viber::ui::UiPlugin);
+    // O retrato do MUNDO que os binds leem (`publish_ui_world_state` pede-o por
+    // `ResMut`): o `UiPlugin` do crate não o inicializa, e o campo em falta
+    // faria a system falhar a validação em TODOS os frames.
+    app.init_resource::<viber::ui::host::UiWorldState>();
     // Feedback de impacto (números/mensagens); o pool 2D é decisão do jogo:
     // o Vael desenha o texto no mundo (bevy_rich_text3d).
     app.add_plugins(bevy_ext_engine::feedback::FeedbackPlugin);
     app.insert_resource(bevy_ext_engine::feedback::DamageNumbers2d(false));
-    // `viber.ui` tem de ganhar ao runtime Luau (script do frame 1 via
-    // `luau_on_add`): instalação antes, mutações enfileiradas depois, e a
-    // UI PUBLICA antes dos scripts lerem (cliques no mesmo frame).
+    // O retrato do MUNDO (relógio/chuva/zona + `display-name`) e a fonte do HUD
+    // chegam ao crate `bevy_ext_ui` antes do collect ler os binds; sem eles os
+    // binds de tempo/clima ficavam vazios e as listas caíam na fonte omissa.
     app.add_systems(
         bevy::app::Update,
-        viber::ui::install_ui_script_api
-            .before(viber::luau::luau_on_add)
-            .before(viber::luau::luau_update),
-    );
-    app.configure_sets(
-        bevy::app::Update,
-        viber::ui::UiSet::Script.after(viber::luau::luau_update),
-    );
-    app.configure_sets(
-        bevy::app::Update,
         (
-            viber::ui::UiSet::Collect,
-            viber::ui::UiSet::Build,
-            viber::ui::UiSet::Bind,
+            viber::ui::publish_ui_world_state,
+            viber::ui::publish_ui_font,
         )
-            .before(viber::luau::luau_update),
+            .before(viber::ui::UiSet::Collect),
     );
-    // Spawn do mundo: arranque e trocas de cena (o mesmo spawner).
-    app.add_systems(bevy::app::Startup, spawn::startup);
-    app.add_systems(viber::scene_loader::SceneLoad, spawn::startup);
+    // `viber.ui` tem de ganhar ao runtime Luau (script do frame 1 via
+    // `luau_on_add`): o handle da VM (`UiScriptHost`) sai ANTES do install —
+    // sem ele o `install_ui_script_api` do crate sai em silêncio e TODO o
+    // `viber.ui.*` dos scripts morre ("attempt to index nil": HUD-equipa-
+    // mento, habilidades, combate, profiler). Instalação antes, mutações
+    // enfileiradas depois, e a UI PUBLICA antes dos scripts lerem (cliques no
+    // mesmo frame).
+    // Scripts no PreUpdate do BMS: a UI (Collect/Build/Bind no Update)
+    // corre naturalmente depois das mutações enfileiradas; o dreno dos
+    // comandos BMS ordena a aplicação no monólito (`apply_bms_commands`).
+    app.add_systems(
+        bevy::app::Update,
+        viber::luau::bms_bridge::apply_bms_commands
+            .after(bevy_ext_luau::commands::drain_commands),
+    );
+    // Spawn do mundo: arranque e trocas de cena (o mesmo spawner). O spawn
+    // junta-se ao set do contrato do nav crate: o `NavPlugin` aplica a
+    // `<NavMesh>` e cria o arquipélago DEPOIS dele (Startup) e o handle do
+    // terreno (`nav::publish_nav_ground`) sai a seguir ao spawn.
+    app.add_systems(
+        bevy::app::Startup,
+        (spawn::startup, viber::nav::publish_nav_ground)
+            .chain()
+            .in_set(viber::nav::WorldSpawned),
+    );
+    // Trocas de cena: o mesmo spawn, num schedule re-executável. O par
+    // tag+arquipélago do crate só entra no `SceneLoad` do CORE e o runtime
+    // corre O SEU (`viber::scene_loader::SceneLoad`) — volta a registar-se
+    // aqui, a seguir ao spawn e ao handle (o par não é idempotente: corre num
+    // schedule que corre mesmo).
+    app.add_systems(
+        viber::scene_loader::SceneLoad,
+        (
+            spawn::startup,
+            viber::nav::publish_nav_ground,
+            viber::nav::apply_navmesh_tag,
+            viber::nav::spawn_archipelago,
+        )
+            .chain(),
+    );
     app.add_plugins(viber::scene_loader::SceneLoaderPlugin);
     // Câmara de editor desligada no jogo (o Vael não usa `--camera free`).
     app.add_plugins(bevy_ext_engine::editor_camera::EditorCameraPlugin { enabled: false });
