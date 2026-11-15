@@ -100,6 +100,14 @@ struct VaelFire {
     phase: f32,
 }
 
+/// Candidato de **preenchimento** criado por [`fill_dark_fires`] para um fogo
+/// sem `PointLight`. É uma raiz nossa (não vem do spawner da cena): sem ser
+/// despawnado na troca de cena ficava a arder onde já não há fogo — e o
+/// fogo novo da cena seguinte era dispensado pelo `lit` do preenchimento
+/// (a entidade velha já estava a 2 m).
+#[derive(Component)]
+struct VaelFilledFire;
+
 /// Afinação lida do ambiente no arranque.
 #[derive(Resource, Debug, Clone)]
 struct PracticalConfig {
@@ -179,6 +187,9 @@ impl Plugin for VaelPracticalLightsPlugin {
                     .before(LightsSystems::Pool),
             )
             .add_systems(Update, exempt_pool_lights.after(LightsSystems::Pool))
+            // Limpa os candidatos de preenchimento da cena que saiu (antes do
+            // `fill_dark_fires` do `PostUpdate`, que cria os da cena nova).
+            .add_systems(Update, despawn_filled_fires_on_scene_change)
             // Migração/adoção/preenchimento leem `GlobalTransform`: só depois
             // da propagação, senão no frame de spawn todas as posições são a
             // identidade e os pareamentos luz↔fogo saem errados.
@@ -431,10 +442,36 @@ fn fill_dark_fires(
                 base: mean,
                 torch: false,
             },
+            VaelFilledFire,
             Transform::from_translation(pos),
             Visibility::Inherited,
             Name::new("vael.fire-light"),
         ));
+    }
+}
+
+/// Os candidatos de preenchimento morrem com a cena: são raízes nossas e o
+/// descarregamento só leva as entidades que o spawner marcou.
+fn despawn_filled_fires_on_scene_change(
+    mut commands: Commands,
+    current: Option<Res<viber::scene_loader::CurrentScene>>,
+    filled: Query<Entity, With<VaelFilledFire>>,
+    mut last: Local<Option<String>>,
+) {
+    let Some(current) = current else {
+        return;
+    };
+    let id = current.id.clone().unwrap_or_default();
+    if last.as_deref() == Some(id.as_str()) {
+        return;
+    }
+    let first = last.is_none();
+    *last = Some(id);
+    if first {
+        return;
+    }
+    for entity in &filled {
+        commands.entity(entity).despawn();
     }
 }
 
@@ -660,7 +697,7 @@ mod tests {
         world.run_system_once(fill_dark_fires).unwrap();
         world.flush();
 
-        let mut query = world.query::<(&PoolCandidate, &Transform)>();
+        let mut query = world.query::<(&PoolCandidate, &Transform, &VaelFilledFire)>();
         let filled: Vec<_> = query.iter(&world).collect();
         assert_eq!(filled.len(), 1, "um fogo escuro, um candidato");
         assert!(filled[0].0.intensity > 0.0);
