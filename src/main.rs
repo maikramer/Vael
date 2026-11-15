@@ -228,6 +228,13 @@ fn main() -> Result<()> {
                 .with_port(port)
                 .with_app_name("Vael"),
         );
+        // Tools MCP nativas (`bevy_brp_mcp` 0.23 → stdio no ZCode): o plugin
+        // injeta `brp_extras/*` (screenshot, teclas/rato/gamepad, diagnósticos,
+        // shutdown) no mesmo servidor BRP — o `RemoteHttpPlugin` já existe, por
+        // isso a porta dele é ignorada. `VAEL_BRP_EXTRAS=0` desliga (A/B).
+        if brp_extras_enabled() {
+            app.add_plugins(bevy_brp_extras::BrpExtrasPlugin::default());
+        }
     }
 
     info!(
@@ -271,6 +278,19 @@ fn tools_enabled() -> bool {
         })
         .unwrap_or(false);
     flag || std::env::var_os("JACKDAW_PIE").is_some()
+}
+
+/// `VAEL_BRP_EXTRAS=0` desliga o `BrpExtrasPlugin` (default ligado quando as
+/// ferramentas estão): é A/B com o CLI, não um segundo interruptor para lembrar.
+fn brp_extras_enabled() -> bool {
+    !matches!(
+        std::env::var("VAEL_BRP_EXTRAS")
+            .unwrap_or_default()
+            .trim()
+            .to_ascii_lowercase()
+            .as_str(),
+        "0" | "false" | "off" | "no"
+    )
 }
 
 /// `WxH` (ex.: `1280x720`) → tamanho físico da janela. Teto defensivo: um

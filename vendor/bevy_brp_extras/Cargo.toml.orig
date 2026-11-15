@@ -1,0 +1,57 @@
+[package]
+authors = ["natepiano <slicks.curable.0k@icloud.com>"]
+categories = [
+  "development-tools",
+  "development-tools::debugging",
+  "game-development",
+]
+description = "Extra BRP methods for Bevy apps including screenshot, shutdown, and keyboard input capabilities"
+edition = "2024"
+keywords = ["bevy", "brp", "debugging", "gamedev", "remote"]
+license = "MIT OR Apache-2.0"
+name = "bevy_brp_extras"
+readme = "README.md"
+repository.workspace = true
+version = "0.23.0"
+
+[dependencies]
+# Minimal Bevy features for extras library:
+# - bevy_render: Screenshot/ScreenshotCaptured (transitively enables bevy_window, bevy_camera, bevy_image)
+# - bevy_log: info!/warn!/error! macros in bevy::prelude
+# - serialize: Serialize/Deserialize impls on bevy input types (MouseButton, MouseScrollUnit, etc.)
+# - png: screenshot PNG support and ImageFormat::from_extension("png") check
+bevy = { workspace = true, features = [
+  "bevy_log",
+  "bevy_render",
+  "png",
+  "serialize",
+] }
+
+# Direct dependency to control default features (bevy/bevy_remote pulls in HTTP transport
+# which requires async-io and doesn't compile on wasm32)
+bevy_remote = { workspace = true, default-features = false }
+
+schemars.workspace     = true
+serde.workspace        = true
+serde_json.workspace   = true
+strum.workspace        = true
+strum_macros.workspace = true
+
+# On native, enable HTTP transport (default features include async-io)
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+bevy_remote        = { workspace = true, default-features = true }
+image.workspace    = true
+tempfile.workspace = true
+
+[features]
+default     = ["diagnostics", "gamepad", "ui"]
+diagnostics = []
+gamepad     = ["bevy/gamepad"]
+ui          = ["bevy/bevy_ui"]
+
+[dev-dependencies]
+async-channel.workspace = true
+reqwest.workspace       = true
+
+[lints]
+workspace = true

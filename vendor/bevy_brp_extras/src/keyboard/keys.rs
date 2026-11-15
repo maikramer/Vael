@@ -1,0 +1,162 @@
+//! Send-keys handler: press/hold/release key sequences via BRP.
+
+use std::str::FromStr;
+use std::time::Duration;
+
+use bevy::input::ButtonState;
+use bevy::input::keyboard::KeyboardInput;
+use bevy::prelude::*;
+use bevy::window::PrimaryWindow;
+use bevy::window::WindowEvent;
+use bevy_remote::BrpError;
+use bevy_remote::BrpResult;
+use serde::Deserialize;
+use serde::Serialize;
+use serde_json::Value;
+
+use super::constants::DEFAULT_KEY_DURATION_MS;
+use super::constants::MAX_KEY_DURATION_MS;
+use super::events;
+use super::key_code::KeyCodeWrapper;
+use crate::brp_request;
+use crate::brp_request::EmptyParamsPolicy;
+use crate::constants::METHOD_SEND_KEYS;
+use crate::window_event;
+
+/// Component that tracks keys that need to be released after a duration
+#[derive(Component)]
+pub(super) struct TimedKeyRelease {
+    /// The key code wrappers to release (stores wrapper for text field generation)
+    pub(super) keys:  Vec<KeyCodeWrapper>,
+    /// Timer tracking the remaining duration
+    pub(super) timer: Timer,
+}
+
+/// Request structure for `send_keys`
+#[derive(Debug, Deserialize)]
+pub(super) struct SendKeysRequest {
+    /// Array of key codes to send
+    keys:        Vec<String>,
+    /// Duration in milliseconds to hold the keys before releasing
+    #[serde(default = "default_duration")]
+    duration_ms: u32,
+}
+
+/// Response structure for `send_keys`
+#[derive(Debug, Serialize, Deserialize)]
+pub(super) struct SendKeysResponse {
+    /// Whether the operation was successful
+    pub(super) success:     bool,
+    /// List of keys that were sent
+    pub(super) keys_sent:   Vec<String>,
+    /// Duration in milliseconds the keys were held
+    pub(super) duration_ms: u32,
+}
+
+const fn default_duration() -> u32 { DEFAULT_KEY_DURATION_MS }
+
+/// Validate key codes and return the parsed key code wrappers
+fn validate_keys(keys: &[String]) -> Result<Vec<(String, KeyCodeWrapper)>, BrpError> {
+    let mut validated_keys = Vec::new();
+
+    for key_str in keys {
+        match KeyCodeWrapper::from_str(key_str) {
+            Ok(wrapper) => {
+                validated_keys.push((key_str.clone(), wrapper));
+            },
+            Err(_) => {
+                return Err(brp_request::invalid_params(format!(
+                    "Invalid key code '{key_str}': Unknown key code"
+                )));
+            },
+        }
+    }
+
+    Ok(validated_keys)
+}
+
+/// Handler for `send_keys` requests
+///
+/// Simulates keyboard input by sending key press/release events
+///
+/// # Errors
+///
+/// Returns `BrpError` if:
+/// - Request parameters are missing
+/// - Request format is invalid
+/// - Any key code is invalid or unknown
+pub(crate) fn send_keys_handler(In(params): In<Option<Value>>, world: &mut World) -> BrpResult {
+    let request: SendKeysRequest = brp_request::parse_request(params, EmptyParamsPolicy::Reject)?;
+
+    // Validate key codes
+    let validated_keys = validate_keys(&request.keys)?;
+    let valid_key_strings: Vec<String> = validated_keys.iter().map(|(s, _)| s.clone()).collect();
+    let wrappers: Vec<KeyCodeWrapper> = validated_keys.iter().map(|(_, w)| *w).collect();
+
+    // Validate duration doesn't exceed maximum
+    if request.duration_ms > MAX_KEY_DURATION_MS {
+        return Err(brp_request::invalid_params(format!(
+            "Duration {}ms exceeds maximum allowed duration of {}ms (1 minute)",
+            request.duration_ms, MAX_KEY_DURATION_MS
+        )));
+    }
+
+    // Always send press events first, addressed to the primary window
+    let window = events::primary_window_entity(world);
+    let press_events = events::create_keyboard_events(&wrappers, ButtonState::Pressed, window);
+    for event in press_events {
+        window_event::write_input_event(world, event);
+    }
+
+    // Always spawn an entity to handle the timed release
+    if !wrappers.is_empty() {
+        world.spawn(TimedKeyRelease {
+            keys:  wrappers,
+            timer: Timer::new(
+                Duration::from_millis(u64::from(request.duration_ms)),
+                TimerMode::Once,
+            ),
+        });
+    }
+
+    brp_request::serialize_response(
+        SendKeysResponse {
+            success:     true,
+            keys_sent:   valid_key_strings,
+            duration_ms: request.duration_ms,
+        },
+        METHOD_SEND_KEYS,
+    )
+}
+
+/// System that processes timed key releases
+///
+/// The hold runs on `Time<Real>`, not the default (virtual) clock: apps pause
+/// or scale the virtual clock (a title screen, an editor pause, a replay), and
+/// an injected key must still come back up so the next press is a fresh one.
+pub(super) fn process_timed_key_releases(
+    mut commands: Commands,
+    time: Res<Time<Real>>,
+    mut query: Query<(Entity, &mut TimedKeyRelease)>,
+    primary_window: Query<Entity, With<PrimaryWindow>>,
+    mut keyboard_events: MessageWriter<KeyboardInput>,
+    mut window_events: MessageWriter<WindowEvent>,
+) {
+    let window = primary_window.single().unwrap_or(Entity::PLACEHOLDER);
+    for (entity, mut timed_release) in &mut query {
+        timed_release.timer.tick(time.delta());
+
+        if timed_release.timer.is_finished() {
+            // Send release events for all keys (text is None for release events)
+            let release_events =
+                events::create_keyboard_events(&timed_release.keys, ButtonState::Released, window);
+            for event in release_events {
+                window_events.write(WindowEvent::from(event.clone()));
+                keyboard_events.write(event);
+            }
+
+            // Remove the component after releasing
+            commands.entity(entity).despawn();
+        }
+    }
+}

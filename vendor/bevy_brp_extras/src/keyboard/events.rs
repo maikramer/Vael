@@ -1,0 +1,102 @@
+//! Keyboard event creation utilities
+
+use bevy::input::ButtonState;
+use bevy::input::keyboard::Key;
+use bevy::input::keyboard::KeyboardInput;
+use bevy::input::keyboard::NativeKey;
+use bevy::prelude::Entity;
+use bevy::prelude::With;
+use bevy::prelude::World;
+use bevy::window::PrimaryWindow;
+
+use super::key_code::KeyCodeWrapper;
+
+/// The window every injected keyboard event names: the primary window when
+/// the app has one, `Entity::PLACEHOLDER` otherwise.
+///
+/// Real `winit` events carry their window, and text editors compare it
+/// against the window that owns the focused field, so an event with a
+/// placeholder window is dropped as text even though `ButtonInput` sees it.
+pub(super) fn primary_window_entity(world: &mut World) -> Entity {
+    world
+        .query_filtered::<Entity, With<PrimaryWindow>>()
+        .single(world)
+        .unwrap_or(Entity::PLACEHOLDER)
+}
+
+/// Create keyboard events from validated key code wrappers, addressed to `window`.
+///
+/// Populates `logical_key` and `text` fields for printable characters,
+/// enabling text input simulation that works with Bevy's text input systems.
+pub(super) fn create_keyboard_events(
+    wrappers: &[KeyCodeWrapper],
+    button_state: ButtonState,
+    window: Entity,
+) -> Vec<KeyboardInput> {
+    create_keyboard_events_with_text(wrappers, button_state, None, window)
+}
+
+/// Create keyboard events with an optional target character override.
+///
+/// When `target_char` is provided, it will be used as the `text` field
+/// for the final non-modifier key in the sequence. This is essential for
+/// shifted characters (e.g., `!` requires Shift+1, but text should be `!`).
+pub(super) fn create_keyboard_events_with_text(
+    wrappers: &[KeyCodeWrapper],
+    button_state: ButtonState,
+    target_char: Option<char>,
+    window: Entity,
+) -> Vec<KeyboardInput> {
+    // Find the last non-modifier key index (that's where we set the text)
+    let last_non_modifier_idx = wrappers.iter().rposition(|w| {
+        !matches!(
+            w,
+            KeyCodeWrapper::ShiftLeft
+                | KeyCodeWrapper::ShiftRight
+                | KeyCodeWrapper::ControlLeft
+                | KeyCodeWrapper::ControlRight
+                | KeyCodeWrapper::AltLeft
+                | KeyCodeWrapper::AltRight
+                | KeyCodeWrapper::SuperLeft
+                | KeyCodeWrapper::SuperRight
+        )
+    });
+
+    wrappers
+        .iter()
+        .enumerate()
+        .map(|(idx, &wrapper)| {
+            let key_code = wrapper.to_key_code();
+            let is_target_key = Some(idx) == last_non_modifier_idx;
+
+            // Use target_char for the final non-modifier key, otherwise use to_char()
+            let char_opt = if is_target_key && target_char.is_some() {
+                target_char
+            } else {
+                wrapper.to_char()
+            };
+
+            // Build logical_key and text based on whether this is a printable character.
+            let (logical_key, text) =
+                char_opt.map_or((Key::Unidentified(NativeKey::Unidentified), None), |c| {
+                    let s: String = c.to_string();
+                    // Only populate text on press events, not release, and only for the target key
+                    let text = if button_state == ButtonState::Pressed && is_target_key {
+                        Some(s.clone().into())
+                    } else {
+                        None
+                    };
+                    (Key::Character(s.into()), text)
+                });
+
+            KeyboardInput {
+                state: button_state,
+                key_code,
+                logical_key,
+                window,
+                repeat: false,
+                text,
+            }
+        })
+        .collect()
+}

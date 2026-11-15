@@ -1,0 +1,214 @@
+# Changelog
+
+All notable changes to this project will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [0.23.0] - 2026-10-09
+
+### Added
+- Simulated gamepads: `connect_gamepad`, `send_gamepad_button`, `set_gamepad_button`, `set_gamepad_axis` and `disconnect_gamepad` drive a pad the app treats as real, behind the default `gamepad` feature. Send taps for 100 ms by default; set holds until changed. Typed button and axis names match Bevy's variants, and timed releases run on the real clock. Thanks [johanhelsing](https://github.com/johanhelsing)!
+- Add `rect` to `brp_extras/screenshot`: a `{x, y, width, height}` crop in physical target coordinates for a full-window or camera capture. It must lie inside the primary window or the camera's viewport, and it is rejected with `entity`; extras without it answer "unknown field `rect`"
+- Entity screenshots of an entity without its own `Aabb` crop to the union of its visible descendants' AABBs, reported as `bounds_kind: "hierarchy"`
+
+### Changed
+- Update to Bevy 0.20.0
+- Screenshot crops now happen before the RGB conversion, so only the kept pixels are converted, and PNG encoding uses the `Up` row filter in place of the adaptive one
+
+### Fixed
+- Fix a second `brp_extras/screenshot` request with the same path, sent right after the first response, hanging until the client's timeout. The capture slot now frees on delivery
+- Fix a panic when a screenshot timed out or was abandoned after Bevy had extracted it: extras no longer despawns a screenshot entity that carries Bevy's `Capturing`
+- Fix `send_keys`, `send_mouse_button`, and `double_click_mouse` leaving keys and buttons pressed while the app paused or slowed its virtual clock. The hold and the double click's second-click delay now run on `Time<Real>`, so an injected key comes back up after its duration whatever the app does with `Time<Virtual>`
+
+## [0.23.0-rc.1] - 2026-09-26
+
+### Changed
+- Update to Bevy 0.20.0-rc.1
+
+### Fixed
+- Fix UI entity screenshots failing with `non-finite clip coordinates` when an ancestor clips only one axis (`Overflow::clip_x()` or `Overflow::clip_y()`). Bevy represents the unclipped axis with infinite edges; those edges are now treated as unbounded. Crops also follow Bevy 0.20's transformed `CalculatedClip` regions, so a rotated clipping ancestor bounds the crop to the visible part of the node
+- Fix `registry.schema` omitting `componentInfo` for components nothing had spawned yet. BRP clients couldn't see that a `#[component(immutable)]` component (e.g. `AccessibleLabel`) was immutable, so a `world.mutate_components` call on one panicked the app. `BrpExtrasPlugin` now registers every reflected component with the `World` at startup.
+
+## [0.22.7] - 2026-09-23
+
+### Fixed
+- Fix `send_keys` and `type_text` sending keyboard events to `Entity::PLACEHOLDER` instead of the primary window, which made text fields drop the typed text; apps with no window still use the placeholder
+
+## [0.22.6] - 2026-09-09
+
+### Changed
+- Version bump to 0.22.6 to maintain workspace version synchronization
+
+## [0.22.5] - 2026-08-27
+
+### Changed
+- Version bump to 0.22.5 to maintain workspace version synchronization
+
+## [0.22.4] - 2026-08-27
+
+### Changed
+- Version bump to 0.22.4 to maintain workspace version synchronization
+
+## [0.22.3] - 2026-08-17
+
+### Changed
+- Version bump to 0.22.3 to maintain workspace version synchronization
+
+## [0.22.2] - 2026-07-29
+
+### Changed
+- Drop the `bevy_kana` dependency. The numeric cast traits it supplied are replaced by glam's `UVec2::as_vec2`/`Vec2::as_uvec2` in screenshot bounds resolution and by a scoped `#[allow(clippy::cast_precision_loss)]` on the drag interpolation factor.
+
+## [0.22.1] - 2026-07-15
+
+### Added
+- Add the public `AgentTool` builder and `AppAgentToolExt::register_agent_tool` extension API for publishing typed descriptions and raw JSON parameter/result schemas for existing instant BRP methods.
+- Add the version-1 `brp_extras/agent_tools` endpoint with deterministic ordering and request-time all-or-error validation against live instant methods.
+
+## [0.22.0] - 2026-07-14
+
+### Added
+- Extend the existing terminal `brp_extras/screenshot` method with active-camera viewport capture and AABB entity capture using optional entity ID, camera ID, and physical-pixel padding fields.
+- Add default-enabled optional Bevy UI entity bounds with transformed, clipped, viewport-local crop resolution.
+- Add immutable entity, name, camera, bounds-kind, and crop-rectangle metadata to successful entity capture responses.
+
+### Changed
+- Keep one screenshot request in flight while the watching BRP call waits for capture, encoding, and PNG publication; remove request tokens, request coalescing, destination reservations, path generations, and same-target job batching.
+- Prefer complete UI computed bounds over incidental AABBs, reject partial UI initialization, and retain AABB capture with the UI resolver disabled in no-default builds.
+- Reject padding without an entity, entity names in extras requests, hidden or off-layer entities, ambiguous cameras, and unsupported camera targets.
+
+## [0.21.0] - 2026-07-10
+
+### Changed
+- Version bump to 0.21.0 to maintain workspace version synchronization
+
+## [0.20.1] - 2026-06-20
+
+### Changed
+- Update `bevy_kana` to 0.1.0 so the crate resolves against Bevy 0.19.0 instead of Bevy 0.19 release candidates.
+
+## [0.20.0] - 2026-06-19
+
+### Changed
+- Version bump to 0.20.0 to maintain workspace version synchronization
+
+## [0.20.0-rc.1] - 2026-05-24
+
+### Changed
+- Update to Bevy 0.19
+
+## [0.19.0] - 2026-03-22
+
+### Added
+- Add `port_in_title()` builder method to optionally append `(port: XXXXX)` to the primary window's title at startup. Accepts `PortDisplay::Always` (always show) or `PortDisplay::NonDefault` (only when the port differs from the default 15702). Not called by default — window title is unchanged unless opted in.
+- Add `with_http_plugin()` constructor for providing a fully configured `RemoteHttpPlugin`.
+- Add `HasEffectivePort` trait enabling `get_effective_port()` on both `Unconfigured` and `PortConfigured` plugin states, returning the correct resolved port for each.
+
+### Fixed
+- Fix `BrpExtrasPlugin` panicking when `RemotePlugin` or `RemoteHttpPlugin` is already added by another plugin. `RemotePlugin` and `RemoteHttpPlugin` are now conditionally added only if not already present, and extras methods are registered directly into the existing `RemoteMethods` resource. If `RemoteHttpPlugin` is already present, port configuration (`with_port()` / `BRP_EXTRAS_PORT`) is ignored and a warning is logged.
+
+## [0.18.7] - 2026-03-03
+
+### Changed
+- Version bump to 0.18.7 to maintain workspace version synchronization
+
+## [0.18.6] - 2026-02-25
+
+### Changed
+- Version bump to 0.18.6 to maintain workspace version synchronization
+
+## [0.18.5] - 2026-02-22
+
+### Changed
+- Version bump to 0.18.5 to maintain workspace version synchronization
+
+## [0.18.4] - 2026-02-20
+
+### Added
+- **WASM support**: Decoupled HTTP transport from the core plugin, enabling compilation on `wasm32` targets. On native, `RemoteHttpPlugin` is added automatically as before. On WASM, only BRP methods are registered — users supply their own transport (e.g., a WebSocket relay). Thanks [johanhelsing](https://github.com/johanhelsing)!
+- **`get_diagnostics` method**: New BRP method for querying FPS and frame time diagnostics from Bevy's `DiagnosticsStore`. Returns current, average, and smoothed FPS values, frame time in milliseconds, total frame count, and history buffer metadata. Defensively installs `FrameTimeDiagnosticsPlugin` if not already present.
+- **`diagnostics` feature**: New feature flag (enabled by default) that controls FPS diagnostics support. Disable with `default-features = false` to exclude the diagnostics system and `FrameTimeDiagnosticsPlugin`.
+
+### Fixed
+- Fixed BRP-injected mouse input (move, scroll, drag, click) not working when the Bevy app window is unfocused. The `Window` component's internal cursor position is now updated alongside message writes, so `window.cursor_position()` returns the correct value even without OS-level cursor events.
+
+## [0.18.3] - 2026-02-17
+
+### Fixed
+- Fixed simulated mouse and keyboard input not triggering Bevy's picking system by dual-writing events to the `WindowEvent` message channel
+
+## [0.18.2] - 2026-02-17
+
+### Added
+- **Mouse input methods**: Nine new BRP methods for comprehensive mouse control
+  - `click_mouse` - Simple click with configurable button (Left, Right, Middle, Back, Forward)
+  - `double_click_mouse` - Double click with configurable delay between clicks
+  - `send_mouse_button` - Press and hold mouse button for specified duration
+  - `move_mouse` - Move cursor with delta (relative) or absolute positioning
+  - `drag_mouse` - Smooth drag operation with interpolated movement over frames
+  - `scroll_mouse` - Mouse wheel scrolling (line-based or pixel-based, horizontal/vertical)
+  - `double_tap_gesture` - Trackpad double tap gesture (macOS)
+  - `pinch_gesture` - Trackpad pinch-to-zoom gesture (macOS)
+  - `rotation_gesture` - Trackpad rotation gesture (macOS)
+
+### Changed
+- Mouse operations now default to the last window the cursor was moved to instead of always defaulting to the primary window when no explicit `window` parameter is provided
+
+## [0.18.1] - 2026-02-10
+
+### Added
+- **`type_text` method**: New BRP method for sequential character typing. Types text one character per frame, handling shift for uppercase/symbols and mapping unmappable characters as skipped. Thanks [tobert](https://github.com/tobert)!
+
+### Fixed
+- **`send_keys` text field population**: Fixed `send_keys` to populate the `text` field on `KeyboardInput` events, enabling proper text input in Bevy UI text fields. Thanks [tobert](https://github.com/tobert)!
+
+## [0.18.0] - 2026-01-15
+
+### Changed
+- Updated dependency to Bevy 0.18.0 stable release
+
+## [0.18.0-rc.1] - 2025-12-21
+
+### Changed
+- **Upgraded to Bevy 0.18.0-rc.1**: Updated bevy dependency from 0.17.x to 0.18.0-rc.1
+  - `BorderRadius` now set via `Node.border_radius` field instead of standalone component
+  - `AnimationTarget` split into `AnimationTargetId` + `AnimatedBy` components
+  - `Image::reinterpret_stacked_2d_as_array` now returns `Result`
+
+## [0.17.2] - 2025-11-20
+
+### Changed
+- Version bump to 0.17.2 to maintain workspace version synchronization
+
+## [0.17.1] - 2025-11-20
+
+### Changed
+- Version bump to 0.17.1 to maintain workspace version synchronization
+
+## [0.17.0] - 2025-10-31
+
+### Changed
+- Version numbering now tracks Bevy releases for clearer compatibility signaling
+
+### Added
+- Support for Bevy 0.17.0 through 0.17.2
+- New `brp_extras/send_keys` method for simulating keyboard input
+- New `brp_extras/set_window_title` method for changing window title
+- Environment variable port override support via `BRP_EXTRAS_PORT`
+  - Allows runtime port configuration without code changes
+  - Priority: `BRP_EXTRAS_PORT` environment variable > `with_port()` > default port (15702)
+  - Enables unique port assignment for testing and CI/CD environments
+
+### Breaking Change
+- Removed `brp_extras/discover_format` method in favor of using the BevyBrpMcp tool, `brp_type_guide` method which uses the TypeRegistry to create a more accurate response than this retired method. And given it is built into the mcp tool itself, will not require `BevyBrpExtras` dependency.
+
+## [0.2.0] - 2025-06-24
+
+### Added
+- Screenshot functionality via `brp_extras/screenshot` method
+- Graceful shutdown via `brp_extras/shutdown` method
+- Component format discovery via `brp_extras/discover_format` method
+
+[0.2.1]: https://github.com/natepiano/bevy_brp/extras/compare/v0.2.0...v0.2.1
+[0.2.0]: https://github.com/natepiano/bevy_brp/extras/releases/tag/v0.2.0

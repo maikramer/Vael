@@ -1,0 +1,281 @@
+//! Extra BRP methods for Bevy applications
+//!
+//! This crate provides additional Bevy Remote Protocol (BRP) methods that can be added
+//! to your Bevy application for enhanced remote control capabilities.
+//!
+//! # Usage
+//!
+//! Add the plugin to your Bevy app:
+//! ```no_run
+//! use bevy::prelude::*;
+//! use bevy_brp_extras::BrpExtrasPlugin;
+//!
+//! App::new()
+//!     .add_plugins(DefaultPlugins)
+//!     .add_plugins(BrpExtrasPlugin::default())
+//!     .run();
+//! ```
+//!
+//! # BRP methods and agent tools
+//!
+//! Registering a remote method inserts its system into
+//! [`RemoteMethods`](bevy_remote::RemoteMethods), which makes the method callable and visible in
+//! exhaustive `rpc.discover` transport discovery. Calling
+//! [`AppAgentToolExt::register_agent_tool`] is a separate action: it publishes an agent-facing
+//! description and optional raw JSON schemas for one existing instant method. It does not register
+//! the backing BRP handler or create a native MCP tool.
+//!
+//! Every published [`AgentTool`] names a BRP method, while most BRP methods need not be published
+//! as agent tools. See the complete
+//! [agent tool registration example](https://github.com/natepiano/bevy_brp/blob/main/extras/examples/agent_tool_registration.rs)
+//! for the required plugin ordering, method insertion, and mutable-resource borrow scope.
+//!
+//! After running the example, agents list the curated entries and pass a selected entry's exact
+//! method and matching raw parameters to `brp_execute`:
+//!
+//! ```text
+//! cargo run -p bevy_brp_extras --example agent_tool_registration
+//! brp_list_agent_tools(port: 15702)
+//! brp_execute(
+//!     port: 15702,
+//!     method: "example/multiply",
+//!     params: { "value": 6, "factor": 7 }
+//! )
+//! ```
+//!
+//! An omitted parameter schema documents a parameterless method whose JSON-RPC request omits
+//! `params`. An omitted result schema leaves the raw BRP JSON-RPC `result` undocumented. Schema
+//! types supplied through the generic builder methods generate documentation during application
+//! construction only; they do not decode requests or encode results.
+//!
+//! [`struct@BrpExtrasPlugin`] installs the instant `brp_extras/agent_tools` endpoint that publishes
+//! the current metadata. Each request validates every backing method against the live
+//! [`RemoteMethods`](bevy_remote::RemoteMethods) resource. If any entry's method is missing or is a
+//! watching method, the request returns no partial catalog. Its BRP error data identifies the
+//! rejected entry with stable `name`, `method`, and `reason` fields.
+//!
+//! # Plugin Composability
+//!
+//! `BrpExtrasPlugin` is designed to compose with existing BRP setups. If
+//! [`RemotePlugin`](bevy_remote::RemotePlugin) or
+//! [`RemoteHttpPlugin`](bevy_remote::http::RemoteHttpPlugin) are already added
+//! to the app, `BrpExtrasPlugin` will skip adding them and register its methods
+//! into the existing [`RemoteMethods`](bevy_remote::RemoteMethods) resource.
+//!
+//! **Important**: If `RemoteHttpPlugin` is already present, any port
+//! configuration on `BrpExtrasPlugin` (`with_port()` or the `BRP_EXTRAS_PORT`
+//! environment variable) will be ignored — the existing HTTP transport is used
+//! as-is. A warning is logged when this occurs.
+//!
+//! # HTTP Transport Configuration
+//!
+//! On native targets, HTTP transport can be configured in three mutually
+//! exclusive ways (enforced at compile time):
+//!
+//! 1. **Default** — uses `BRP_EXTRAS_PORT` env var or port 15702
+//! 2. **Explicit port** — `BrpExtrasPlugin::with_port(9000)`
+//! 3. **Full control** — `BrpExtrasPlugin::with_http_plugin(plugin)` accepts a pre-configured
+//!    [`RemoteHttpPlugin`](bevy_remote::http::RemoteHttpPlugin)
+//!
+//! # Available BRP Methods
+//!
+//! ## App Lifecycle
+//!
+//! ### `brp_extras/screenshot`
+//! Captures the primary window, a camera viewport, or a bounds-backed entity and publishes a
+//! complete PNG.
+//! The watching request returns only after publication.
+//! Success means the PNG is fully encoded and atomically published; it does not assert that scene
+//! content is nonuniform. A minimized, hidden, or fully occluded primary-window surface may
+//! legitimately produce a black image on platforms that stop presenting it. Entity captures
+//! reflect the selected camera target; retained image or other offscreen targets avoid
+//! primary-window presentation dependence when the application is designed to use them.
+//! - `path` (string, required): destination file path
+//! - `entity` (u64, optional): exact Bevy entity ID whose bounds select the crop
+//! - `camera` (u64, optional): active camera viewport, or the camera used for entity capture
+//! - `padding` (u32, optional): physical pixels added around entity bounds; requires `entity` and
+//!   defaults to zero
+//! - `rect` (object, optional): `{x, y, width, height}` (u32) crop in physical target coordinates
+//!   for a full-window or camera capture; it must lie inside the primary window or the camera's
+//!   physical viewport and is rejected with `entity`
+//!
+//! AABB capture projects the selected entity's [`Aabb`](bevy::camera::primitives::Aabb) through
+//! the selected camera. With the default `ui` feature, complete Bevy UI computed components take
+//! precedence over an incidental AABB and supply transformed, clipped physical bounds plus their
+//! computed target camera. Partial UI computed state is rejected. Disabling default features
+//! retains AABB capture without compiling this crate's UI bounds resolver, imports, or capability.
+//! This does not guarantee removal of UI crates from the dependency graph because upstream Bevy
+//! 0.20 `bevy_remote` brings that family transitively through `bevy_dev_tools`. Both modes crop the
+//! complete composited target, so overlapping content and post-processing remain visible. With
+//! neither `camera` nor `entity`, the method captures the primary window. With only `camera`, it
+//! captures that camera's physical viewport. The method never resolves names. An entity without
+//! its own `Aabb` crops to the union of the projected AABBs of its visible descendants, reported as
+//! `bounds_kind: "hierarchy"`. If `camera` is omitted for AABB capture, exactly one active,
+//! initialized camera with a screenshot-capable target must exist.
+//!
+//! The capture slot frees when the response is delivered, so a client may send the same request
+//! again, back to back, as soon as it has the first response. Bevy Remote gives a call no identity,
+//! so identical calls in the delivery frame and one in the next frame are treated as the delivered
+//! call's own repeat. `brp_extras/screenshot+watch` is not supported.
+//!
+//! Requires Bevy's `png` feature. Calls fail before enqueueing when PNG support is unavailable.
+//!
+//! ### `brp_extras/shutdown`
+//! Schedules a graceful application shutdown. No parameters.
+//!
+//! ### `brp_extras/set_window_title`
+//! Changes the title of the primary window.
+//! - `title` (string, required): new window title
+//!
+//! ### `brp_extras/get_diagnostics`
+//! Returns FPS and frame time diagnostics from Bevy's `DiagnosticsStore`.
+//! No parameters. Requires the `diagnostics` cargo feature (enabled by default).
+//!
+//! Returns current, average, and smoothed values for FPS and frame time,
+//! plus total frame count and history buffer metadata.
+//!
+//! ## Keyboard
+//!
+//! ### `brp_extras/send_keys`
+//! Simulates keyboard input with a press-hold-release cycle. All keys are
+//! pressed simultaneously and held for the specified duration.
+//! - `keys` (array of strings, required): key codes (e.g., `["KeyA", "Space", "ShiftLeft"]`)
+//! - `duration_ms` (u32, optional, default: 100, max: 60000): hold duration in milliseconds
+//!
+//! ### `brp_extras/type_text`
+//! Types text sequentially, one character per frame, with proper shift handling
+//! for uppercase and symbols.
+//! - `text` (string, required): text to type (letters, numbers, symbols, newlines, tabs)
+//!
+//! ## Gamepad
+//!
+//! Requires the `gamepad` cargo feature (enabled by default). A simulated gamepad is fed
+//! through the same messages `bevy_gilrs` writes, so the app treats it as a real pad. Button
+//! and axis names are Bevy's [`GamepadButton`](bevy::input::gamepad::GamepadButton) and
+//! [`GamepadAxis`](bevy::input::gamepad::GamepadAxis) variants (`"South"`, `"LeftStickX"`).
+//! A change takes effect in the next frame's `PreUpdate`.
+//!
+//! ### `brp_extras/connect_gamepad`
+//! Spawns and connects a simulated gamepad. Returns `{"gamepad": <entity>}`.
+//! - `name` (string, optional): name reported for the pad
+//!
+//! ### `brp_extras/send_gamepad_button`
+//! Taps a button on a simulated gamepad. The button is seen down for at least one frame.
+//! - `gamepad` (u64, required): entity from `connect_gamepad`
+//! - `button` (string, required)
+//! - `duration_ms` (u32, optional, default: 100, max: 60000): release after this long on the real
+//!   clock, so it works while the app pauses its virtual clock
+//!
+//! ### `brp_extras/set_gamepad_button`
+//! Sets a button's analog value until changed again. A value of `0.0` releases it.
+//! - `gamepad` (u64, required): entity from `connect_gamepad`
+//! - `button` (string, required)
+//! - `value` (f32, required): analog value in `[0.0, 1.0]`
+//!
+//! ### `brp_extras/set_gamepad_axis`
+//! Sets an axis on a simulated gamepad. Axes stay where they are put.
+//! - `gamepad` (u64, required)
+//! - `axis` (string, required)
+//! - `value` (f32, required): in `[-1.0, 1.0]`
+//!
+//! ### `brp_extras/disconnect_gamepad`
+//! Disconnects a simulated gamepad. Bevy removes its `Gamepad` component, as for a real pad.
+//! Later input calls on that entity fail; connect a new pad to send more input.
+//! - `gamepad` (u64, required)
+//!
+//! ## Mouse
+//!
+//! All mouse methods accept an optional `window` parameter (entity ID) to target
+//! a specific window. Defaults to the primary window.
+//!
+//! Button values: `"Left"`, `"Right"`, `"Middle"`, `"Back"`, `"Forward"`
+//!
+//! ### `brp_extras/click_mouse`
+//! Performs a click (press and immediate release).
+//! - `button` (string, required)
+//! - `window` (u64, optional)
+//!
+//! ### `brp_extras/double_click_mouse`
+//! Performs two rapid clicks with configurable delay.
+//! - `button` (string, required)
+//! - `delay_ms` (u32, optional, default: 250): delay between clicks
+//! - `window` (u64, optional)
+//!
+//! ### `brp_extras/send_mouse_button`
+//! Presses and holds a mouse button for a specified duration.
+//! - `button` (string, required)
+//! - `duration_ms` (u32, optional, default: 100, max: 60000)
+//! - `window` (u64, optional)
+//!
+//! ### `brp_extras/move_mouse`
+//! Moves the cursor by delta or to an absolute position. Exactly one must be provided.
+//! - `delta` ([f32; 2], optional): relative movement
+//! - `position` ([f32; 2], optional): absolute position
+//! - `window` (u64, optional)
+//!
+//! ### `brp_extras/drag_mouse`
+//! Performs a smooth drag with linear interpolation over a number of frames.
+//! - `button` (string, required)
+//! - `start` ([f32; 2], required): starting position
+//! - `end` ([f32; 2], required): ending position
+//! - `frames` (u32, required): number of frames to interpolate over
+//! - `window` (u64, optional)
+//!
+//! ### `brp_extras/scroll_mouse`
+//! Sends mouse wheel scroll events.
+//! - `x` (f32, required): horizontal scroll amount
+//! - `y` (f32, required): vertical scroll amount
+//! - `unit` (string, required): `"Line"` or `"Pixel"`
+//! - `window` (u64, optional)
+//!
+//! ## Trackpad Gestures (macOS)
+//!
+//! ### `brp_extras/double_tap_gesture`
+//! Sends a double-tap gesture event. No parameters.
+//!
+//! ### `brp_extras/pinch_gesture`
+//! Sends a pinch gesture for zoom operations.
+//! - `delta` (f32, required): positive = zoom in, negative = zoom out
+//!
+//!
+//! ### `brp_extras/rotation_gesture`
+//! Sends a rotation gesture.
+//! - `delta` (f32, required): rotation in radians
+//!
+//! ## Agent Tools
+//!
+//! ### `brp_extras/agent_tools`
+//! Returns the catalog of agent tools published through
+//! [`AppAgentToolExt::register_agent_tool`]. No parameters.
+//! See [BRP methods and agent tools](#brp-methods-and-agent-tools) for the per-request validation
+//! rules and the BRP error data returned for a rejected entry.
+
+mod agent_tools;
+mod brp_request;
+mod component_registration;
+mod constants;
+#[cfg(feature = "diagnostics")]
+mod diagnostics;
+#[cfg(feature = "gamepad")]
+mod gamepad;
+mod keyboard;
+mod mouse;
+mod plugin;
+mod screenshot;
+mod shutdown;
+mod window_event;
+mod window_title;
+
+pub use agent_tools::AgentTool;
+pub use agent_tools::AppAgentToolExt;
+pub use constants::DEFAULT_REMOTE_PORT;
+pub use plugin::BrpExtrasPlugin;
+#[cfg(not(target_arch = "wasm32"))]
+pub use plugin::HasEffectivePort;
+#[cfg(not(target_arch = "wasm32"))]
+pub use plugin::HttpPluginConfigured;
+#[cfg(not(target_arch = "wasm32"))]
+pub use plugin::PortConfigured;
+#[cfg(not(target_arch = "wasm32"))]
+pub use plugin::PortDisplay;
+pub use plugin::Unconfigured;
