@@ -1019,6 +1019,10 @@ fn player_movement(
     {
         for (_, _, _, _, tnua, velocity, _, _, _, _, _, _, _, _) in &mut players {
             if let Some(mut tnua) = tnua {
+                // O reset da fila tem de correr também aqui: sem ele a ação em
+                // curso (um salto) ficava "alimentada" para sempre — o tnua só
+                // a larga depois de a fila envelhecer.
+                tnua.initiate_action_feeding();
                 tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk::default();
             }
             if let Some(mut velocity) = velocity {
@@ -1066,6 +1070,10 @@ fn player_movement(
             controller.dodge = None;
             controller.lunge = None;
             if let Some(mut tnua) = tnua {
+                // Sem o reset da fila a ação em curso (salto) continuava
+                // "alimentada" com o menu aberto: o herói subia por trás da
+                // loja/mapa até o crate a dar por largada.
+                tnua.initiate_action_feeding();
                 tnua.basis = bevy_tnua::builtins::TnuaBuiltinWalk::default();
             }
             if let Some(mut velocity) = velocity {
@@ -1074,7 +1082,7 @@ fn player_movement(
             if let Some(ref mut kin) = kin {
                 kin.velocity = Vec3::ZERO;
             }
-            sync_engine_player(&mut engine_player, &controller);
+            sync_engine_player(&mut engine_player, &mut controller);
         }
         return;
     }
@@ -1167,7 +1175,7 @@ fn player_movement(
             {
                 commands.entity(entity).remove::<TeleportSettle>();
             }
-            sync_engine_player(&mut engine_player, &controller);
+            sync_engine_player(&mut engine_player, &mut controller);
             continue;
         }
         // A bordo: quem conduz é o `boat.rs` (o leme e os remos escrevem no
@@ -1189,7 +1197,7 @@ fn player_movement(
             if let Some(ref mut kin) = water_kin {
                 kin.velocity = Vec3::ZERO;
             }
-            sync_engine_player(&mut engine_player, &controller);
+            sync_engine_player(&mut engine_player, &mut controller);
             continue;
         }
         // Tutela pós-teleporte: enquanto dura, o chão ANALÍTICO manda mesmo
@@ -1210,6 +1218,13 @@ fn player_movement(
             controller.jump_buffer_time = f32::NEG_INFINITY;
             controller.in_water = false;
             commands.entity(entity).remove::<Knockback>();
+            // A inércia do sítio antigo é do CORPO (`LinearVelocity`), não do
+            // espelho: o teleporte só move o `Transform`/`Player`, por isso
+            // sem este zero o herói chegava a deslizar/ cair com a velocidade
+            // da origem (o `vel_*` acima é reescrito pelo sync no fim).
+            if let Some(velocity) = velocity.as_deref_mut() {
+                velocity.0 = Vec3::ZERO;
+            }
             // O Knockback do tnua é incancelável pelo feed; uma CHEGADA de
             // teleporte limpa a ação corrente à mão (nada de aterrar ainda a
             // ser empurrado do sítio antigo).
@@ -1458,6 +1473,17 @@ fn player_movement(
                 controller.dodge = None;
             }
         } else {
+            // Sem Dash em curso o Burst não pode ficar pendurado: o tnua recusa
+            // o Dash no ar (`allow_in_air: false`) e em água funda não há ação
+            // nenhuma. Sem este envelhecimento `dodge` ficava `Some` para
+            // sempre — `dodging` travava as esquivas seguintes e o A/D (steer)
+            // ficava a zero.
+            if let Some((_, burst)) = controller.dodge.as_mut() {
+                burst.t += dt;
+                if burst.done() {
+                    controller.dodge = None;
+                }
+            }
             let (vel_x, vel_z) = integrate_horizontal(
                 controller.vel_x,
                 controller.vel_z,
@@ -1777,6 +1803,11 @@ fn player_movement(
         } else if let Some(velocity) = velocity.as_deref() {
             // Em terra a vertical é do tnua: `vel_y` é a leitura do corpo.
             controller.vel_y = velocity.0.y;
+        } else {
+            // Sem corpo (testes headless, ou herói antes do `TnuaController`):
+            // a única gravidade/empuxo é a de `integrate_water_vertical` —
+            // descartá-la deixava o herói a planar depois do salto.
+            controller.vel_y = next_vy.max(-TERMINAL_VELOCITY);
         }
 
         // O tnua fica DESLIGADO na água funda: aí conduzimos `LinearVelocity`
@@ -1888,7 +1919,7 @@ fn player_movement(
             kin.velocity = Vec3::new(controller.vel_x, impact_vy, controller.vel_z);
             kin.body_radius = PLAYER_WATER_RADIUS;
         }
-        sync_engine_player(&mut engine_player, &controller);
+        sync_engine_player(&mut engine_player, &mut controller);
         if let Some(bus) = bus.as_deref() {
             let mut shared = bus.lock();
             shared.move_x = move_x;
@@ -1938,7 +1969,17 @@ fn world_border_clamp(
     }
 }
 
-fn sync_engine_player(engine: &mut Player, controller: &VaelController) {
+/// Espelha o controller no `Player` da engine e adopta a velocidade que o Lua
+/// escreveu nele (`viber.set_player_speed`: passivas de equipamento, gelo).
+///
+/// A adopção tem de ser AQUI (e não só no caminho do movimento): com o menu
+/// aberto ou o corpo entregue a um script este sync também corre, e escrever
+/// `controller.speed` por cima apagava o multiplicador sem o Lua voltar a
+/// aplicá-lo (ele só chama quando o valor muda).
+fn sync_engine_player(engine: &mut Player, controller: &mut VaelController) {
+    if engine.speed.is_finite() && engine.speed > 0.0 {
+        controller.speed = engine.speed;
+    }
     engine.speed = controller.speed;
     engine.sprint_multiplier = controller.sprint_multiplier;
     engine.jump_height = controller.jump_height;
