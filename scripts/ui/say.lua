@@ -260,6 +260,15 @@ function M.tick(dt)
     M.cancel()
     return
   end
+  -- O ecrã de MORTE não entra no `menu_open` (os 2,2 s de `dying` ainda são
+  -- jogáveis). Sem isto a barra de fala ficava focada por cima dele: o
+  -- Enter/dígitos do "Tentar de novo" iam para o campo de fala e a entrega
+  -- corria na callback (dador a pagar a um cadáver).
+  if st.phase ~= "idle" and viber.ui and viber.ui.is_open
+      and viber.ui.is_open("death") then
+    M.cancel()
+    return
+  end
 
   -- O UiInput pode limpar o texto ao desfocar; guarda o último valor não
   -- vazio do frame para o `focus_changed` não submeter uma string vazia.
