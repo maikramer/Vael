@@ -30,7 +30,7 @@ use bevy::prelude::*;
 use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_ext_world::xml::values::parse_color;
 use bevy_flora::{
-    BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeShake, TreeShakes,
+    BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeLog, TreeShake, TreeShakes,
 };
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
@@ -1582,6 +1582,7 @@ fn reap_saved(
     commands: &mut Commands,
     save: Option<&VaelSave>,
     mut spawns: Option<&mut PendingScriptSpawns>,
+    helper: &TransformHelper<'_, '_>,
     harvestables: &Query<(
         Entity,
         &Harvestable,
@@ -1617,11 +1618,17 @@ fn reap_saved(
             if fell_tree.is_some() {
                 continue;
             }
+            // `GlobalTransform` ainda está no DEFAULT no `PostStartup`/no
+            // `SceneLoad` (o `TransformPlugin` só propaga no `PostUpdate`): a
+            // árvore reposta nascia na origem do mundo, à escala 1. A pose
+            // global da estação vem do `TransformHelper`, que a compõe dos
+            // `Transform` da hierarquia.
+            let global = helper.compute_global_transform(entity).unwrap_or(*global);
             let tree = spawn_felled_tree(
                 commands,
                 pooled,
                 look,
-                global,
+                &global,
                 Vec3::new(fell.dx, 0.0, fell.dz),
                 fell.cut_height,
                 true,
@@ -1668,6 +1675,7 @@ fn reap_on_load(
     mut commands: Commands,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
+    helper: TransformHelper,
     harvestables: Query<(
         Entity,
         &Harvestable,
@@ -1681,6 +1689,7 @@ fn reap_on_load(
         &mut commands,
         save.as_deref(),
         spawns.as_deref_mut(),
+        &helper,
         &harvestables,
     );
 }
@@ -1693,6 +1702,7 @@ fn reap_periodic(
     mut commands: Commands,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
+    helper: TransformHelper,
     harvestables: Query<(
         Entity,
         &Harvestable,
@@ -1711,16 +1721,22 @@ fn reap_periodic(
         &mut commands,
         save.as_deref(),
         spawns.as_deref_mut(),
+        &helper,
         &harvestables,
     );
 }
 
 /// As árvores tombadas são raízes (fora da hierarquia da cena): numa troca de
 /// cena ficariam a flutuar. O estado persiste no save e o restauro repõe-nas.
+///
+/// Os **toros** (`TreeLog`) também são raízes criadas pelo `bevy_flora` ao
+/// retalhar: sem os despawnar, ficavam no mundo depois de sair da cena (e
+/// apareciam noutra cena, noutro sítio do mapa). O save tem
+/// `flora-fell.<chave>.bucked` e volta a retalhar a árvore reposta.
 fn despawn_fell_trees(
     mut commands: Commands,
     current: Option<Res<CurrentScene>>,
-    trees: Query<Entity, Or<(With<FellTree>, With<Felled>)>>,
+    trees: Query<Entity, Or<(With<FellTree>, With<Felled>, With<TreeLog>)>>,
     mut last: Local<Option<String>>,
 ) {
     let Some(current) = current else {
@@ -2505,8 +2521,76 @@ mod tests {
         );
     }
 
-    /// O `reap_saved` repõe a árvore TOMBADA do save (em vez de a despawnar):
-    /// `FellTree { lying: true }` + chave `flora-fell` na entidade.
+    /// O restauro corre no `PostStartup`/`SceneLoad`, quando o `GlobalTransform`
+    /// das entidades acabadas de spawnar ainda está no DEFAULT (o
+    /// `TransformPlugin` propaga no `PostUpdate`): a pose global da estação
+    /// tem de vir do `TransformHelper`, senão a árvore reposta nascia na
+    /// origem do mundo, à escala 1.
+    #[test]
+    fn reap_restaura_a_arvore_com_a_pose_global_da_estacao() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+        let mut app = app_rust();
+        let _player = spawn_player(&mut app);
+        let group = app
+            .world_mut()
+            .spawn(Transform::from_xyz(0.0, 38.7304, 0.0))
+            .id();
+        let mut h = harvestable("tree", Some("tree@world/forest.xml#1"), 3, 3.5, "wood", 3);
+        h.style = BreakStyle::Fall;
+        let prop = app
+            .world_mut()
+            .spawn((
+                h,
+                Transform::from_xyz(-102.0, 7.0, 176.0),
+                ChildOf(group),
+                PooledTree {
+                    pool: Handle::default(),
+                    variant: 0,
+                },
+            ))
+            .id();
+        {
+            let mut save = app.world_mut().resource_mut::<VaelSave>();
+            store_flora_fell(
+                Some(&mut save),
+                "tree@world/forest.xml#1",
+                Vec3::new(0.6, 0.0, -0.8),
+                0.7,
+                false,
+            );
+            save.harvested.insert("tree@world/forest.xml#1".into());
+        }
+
+        app.update();
+
+        let tree = {
+            let mut q = app.world_mut().query_filtered::<Entity, With<FellTree>>();
+            q.single(app.world())
+                .expect("a árvore reposta é uma raiz com FellTree")
+        };
+        let pose = app
+            .world()
+            .get::<Transform>(tree)
+            .expect("a árvore reposta tem pose");
+        assert!(
+            (pose.translation.y - 45.7304).abs() < 1e-3,
+            "a cota soma o grupo da vegetação: {}",
+            pose.translation.y
+        );
+        assert!((pose.translation.x + 102.0).abs() < 1e-3);
+        assert!((pose.translation.z - 176.0).abs() < 1e-3);
+        // A estação continua no sítio (o toco não se mudou para a origem).
+        let station = app
+            .world()
+            .get::<Transform>(prop)
+            .expect("a estação fica com o Transform");
+        assert_eq!(station.translation, Vec3::new(-102.0, 7.0, 176.0));
+    }
+
+    /// `reap_saved` não despawna: repõe a árvore já deitada.
     #[test]
     fn reap_restaura_arvore_deitada_do_save() {
         let mut app = app_rust();
@@ -2553,6 +2637,61 @@ mod tests {
         assert!((fell.cut_height - 0.7).abs() < 1e-5);
         assert!(app.world().get::<Harvestable>(prop).is_none());
         let _ = point;
+    }
+
+    /// Uma troca de cena leva as árvores deitadas E os toros (`TreeLog`): os
+    /// dois são RAIZES criadas pelo `bevy_flora` fora da hierarquia da cena.
+    /// Sem os toros na limpeza, ficavam no mundo depois de sair da cena.
+    #[test]
+    fn troca_de_cena_limpa_as_arvores_deitadas_e_os_toros() {
+        fn scene(id: &str) -> viber::scene_loader::CurrentScene {
+            viber::scene_loader::CurrentScene {
+                root: PathBuf::new(),
+                id: Some(id.to_string()),
+                path: PathBuf::new(),
+                title: None,
+                entry: None,
+                came_from: None,
+                return_pose: None,
+            }
+        }
+
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .insert_resource(scene("main"))
+            .add_systems(Update, despawn_fell_trees);
+        let log = app
+            .world_mut()
+            .spawn((
+                TreeLog {
+                    stump: Entity::from_raw_u32(1).expect("id"),
+                    index: 0,
+                    capsule: bevy_flora::WoodCapsule {
+                        a: Vec3::ZERO,
+                        b: Vec3::Y,
+                        radius: 0.1,
+                    },
+                },
+                Transform::default(),
+            ))
+            .id();
+        let tree = app
+            .world_mut()
+            .spawn((FellTree::default(), Transform::default()))
+            .id();
+
+        // 1.º frame só assenta a cena: nada a limpar.
+        app.update();
+        assert!(app.world().get_entity(log).is_ok());
+        assert!(app.world().get_entity(tree).is_ok());
+
+        app.insert_resource(scene("interiors/chapel"));
+        app.update();
+        assert!(
+            app.world().get_entity(log).is_err(),
+            "os toros da cena anterior saem"
+        );
+        assert!(app.world().get_entity(tree).is_err());
     }
 
     /// `[J]` numa árvore deitada retalha-a em toros e marca o save.
