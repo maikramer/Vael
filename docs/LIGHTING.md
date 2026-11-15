@@ -106,6 +106,109 @@ Um `PrecipitationBlocker` cobre o volume da câmara (`interior_precipitation`)
 para as gotas do crate não caírem dentro da sala; o trovão também é
 silenciado.
 
+## Luzes práticas (fogueiras e lanternas)
+
+O mundo autora ~450 `PointLight`, todas reais e estáticas. À noite o
+`torch_pool_drive` da engine compensa a exposição com um ganho global (×8 nas
+quentes, ×64 nas que têm `shadows="true"`), uma lavagem quente uniforme. O
+`src/lights.rs` troca as **luzes de fogo** por luzes práticas do
+[`bevy_lights`](https://crates.io/crates/bevy_lights) 0.5 (`=0.5.0`, pin
+exato):
+
+- **Pool orçamentado** (`LightPoolPlugin`): um máximo de luzes reais
+  (`VAEL_POOL_SIZE`, default 24) perto do herói, escolhidas por iluminância
+  com histerese e cross-fade. O resto fica virtual — a chama/partícula é o
+  que se vê.
+- **Adoção**: a `PointLight` quente mais próxima de um emissor
+  `preset: "fire"` (até 4 m) vira `PoolCandidate` e **perde o `PointLight`**
+  (um dono só). As quentes de preenchimento (janelas, brilho da vila) e os
+  cristais frios continuam autorais — senão, com `reach` de 60 m, o fim da
+  rua apagava.
+- **Fogos sem luz**: os braseiros de `clutter.bsn` e parte da cidadela não
+  têm `PointLight`; o `fill_dark_fires` cria um candidato com a intensidade
+  do modelo do crate (`FIRE_EDGE_LUX` à distância de alcance do tipo), em vez
+  de mais um número afinado à mão.
+- **Flicker**: o `FlickerPlugin` faz cada luz respirar (fase determinística
+  por posição; profundidade e ritmo pelo tipo de fogo). Ver **Um só dono da
+  intensidade** abaixo.
+- **Chamas**: `FlamePlugin` desenha uma chama billboard aditiva sobre cada
+  emissor, com o mesmo `phase`/`diameter`/`depth` da luz (`VAEL_FLAME_BILLBOARDS`).
+- **Migração das partículas**: os **248** emissores `preset: "fire"` do mundo
+  deixam de correr no sistema CPU da engine. O `lights.rs` remove o
+  `AmbientFx` e o bundle que o `ambient_fx_manager` montou
+  (`ParticleEmitter`+`Mesh3d`) — a entidade fica (nome, hierarquia,
+  `Transform`, `Visibility`) e ganha `VaelFire` + `FlameSite`/`FuelBed`/brasas/
+  fumo. Os restantes `ParticleSpec` (poeira, folhas, fumo, pirilampos, neve…)
+  não são tocados. `VAEL_FIRE_MIGRATE=0` mantém as duas versões para o A/B.
+  O `.bsn` continua a autorar `<ParticleSystem preset="fire">` — a migração é
+  de **runtime**, por isso o Jackdaw e o `analyze` não mudam.
+- **Sombras**: `max_shadowed` do pool (`VAEL_POOL_SHADOWS`, default 2) só de
+  noite. O gotcha das cube shadows continua válido: cada luz custa 6 vistas e
+  pisca no chão — o default é conservador e mede-se antes de subir.
+
+### Um só dono da intensidade
+
+O `Flicker` escreve `PointLight.intensity` e o `torch_pool_drive` escreve o
+mesmo campo. A regra: **cada luz de fogo tem um dono só.** As candidatas
+levam o valor autoral em `VaelPractical::base` e o `lights.rs` reescreve
+`candidate.intensity` por frame com as funções públicas da engine
+(`torch_pool_gain`/`warm_fill_gain`), preservando a calibração ×64/×8 por
+luz. As luzes que o pool spawna levam `viber::postfx::NightGainExempt`: sem
+o marcador o drive da engine capturava a base 0 delas (nascem a 0) e
+escrevia 0 para sempre — o mesmo bug que já tinha sido resolvido à parte na
+`TravellerLantern`.
+
+### Reverter
+
+`VAEL_PRACTICAL_LIGHTS=0` desliga o módulo inteiro e devolve exatamente o
+comportamento anterior (luzes autorais + ganho global). É o interruptor de
+regressão; o resto da tabela está no topo de `src/lights.rs`
+(`VAEL_POOL_SIZE`, `VAEL_POOL_SHADOWS`, `VAEL_FIRE_FILL`,
+`VAEL_FLAME_BILLBOARDS`, `VAEL_FIRE_MIGRATE`).
+
+### QA
+
+```bash
+# A/B: mesma noite, com e sem o pool. O `prof --tab frames` dá p95/hitches;
+# o contador `shadow_lights` confirma o orçamento de sombras.
+VAEL_SCENARIO=night_lanterns/night cargo run --release -- \
+  world.bsn --scene main --entry dev --bridge 15706
+VAEL_PRACTICAL_LIGHTS=0 VAEL_SCENARIO=night_lanterns/night cargo run ...
+viber debug --port 15706 wait-ready
+viber debug --port 15706 prof --tab frames
+viber debug --port 15706 screenshot -o /tmp/noite.png
+
+# Visual: rua das lanternas, acampamento dos contrabandistas, tochas de
+# caverna e lareira de interior, com `VAEL_FLAME_BILLBOARDS=0/1`.
+```
+
+Cenários em `qa/scenarios/night_lanterns/night.json` e
+`night_campfire/night.json` (hora 22, céu limpo, herói teleportado para o
+sítio). O veredicto numérico de flicker (luma por frame) é o `burst` do
+runtime — `viber-tools/burst` no BRP, como o resto do QA temporal.
+
+### Limites conhecidos
+
+- O crate é muito novo (0.5.0, 2 semanas, 324 downloads) e o README
+  declara-o *"Vibe Coded"* — sem revisão humana linha a linha. O pin exato e
+  o gate existem por isso; todo o contacto com ele vive em `src/lights.rs`.
+- As luzes adotadas deixam de contar em `viber.debug.lights`/no profiler como
+  `PointLight`, e um re-spawn do `live_edit` volta a ser adotado no frame
+  seguinte (`Added<PointLight>`).
+- O template do pool é único: cor por candidato (`PoolCandidate::color`), mas
+  `range`/`radius` são os do template (20 m/0,45 m). Os cristais frios, com
+  `radius: 5`, ficam de fora.
+- Só as luzes de fogo entram no pool; as de preenchimento continuam no ganho
+  global da engine.
+- Migrar as partículas perde o **look CPU** das chamas antigas (gradiente de
+  cor, jitter) a favor da chama billboard + brasas/fumo do crate. O A/B é
+  `VAEL_FIRE_MIGRATE=0` (as duas juntas) contra `1` (só chama); com
+  `VAEL_FLAME_BILLBOARDS=0` a migração é forçada a 0 para o fogo não
+  desaparecer.
+- O `BurstPool` da engine não recebe de volta as malhas dos emissores que
+  já estavam montados quando a migração corre (≤ orçamento de 8 por scan;
+  quads pequenos). Só acontece no arranque/carregamento de cena.
+
 ## Performance
 
 - Sombras em todos os frames (o `bevy_elements` desenha-as; o modo de
