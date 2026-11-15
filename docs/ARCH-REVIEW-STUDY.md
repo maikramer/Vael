@@ -268,7 +268,16 @@ Dexterous Developer.
 - **F3 — consumir em vez de copiar**: waves do plano de exit dos
   `bevy_extensions`, ordenadas pela divergência medida (`spawn` → postfx →
   nav → ui → roads); cada wave: o `viber_engine` passa a depender do crate
-  e perde a cópia.
+  e perde a cópia. **Actualização 2026-11-14** (onda exit2/exit3, dono
+  [`EXIT-MAP.md`](EXIT-MAP.md)): a onda de unificação de gémeos e a
+  composição própria da App já estão validadas nas branches
+  `integrate2/all` + `exit2/app-assembly` (bloqueadas na água do monólito);
+  as divergências à data: `spawn.rs` **633 lin** (monólito à frente com
+  colliders **avian** + `gradmesh_style` + RoadSpec.flare), água **1.275**
+  (`bevy_ext_water` já extraído, avian), postfx 349, nav 72, roads 4. A
+  física do jogo é avian+tnua — as cópias extraídas da era Rapier
+  (`bevy_ext_physics`, spawn_gate, voxel spawn) **portam-se a avian** antes
+  dos swaps. O `viber.ecs` (2.1k) tem zero usos no jogo e morre sem port.
 - **F4 — consolidações**: UI uma stack (B2), envelope de save único (B3),
   postfx encolhido (B4); 4b/4d/4e seguem a `MIGRATION.md`/`PACKAGES.md`.
 
