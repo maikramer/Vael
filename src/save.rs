@@ -355,6 +355,11 @@ impl VaelSave {
         let incoming = Self::from_world_kv(kv);
         let has = |key: &str| kv.contains_key(key);
         let has_prefix = |prefix: &str| kv.keys().any(|key| key.starts_with(prefix));
+        // Marca de "snapshot do store vivo": são as chaves que o `rules.lua`
+        // semeia no arranque. Quando estão lá, a AUSÊNCIA de uma secção é um
+        // estado (equipamento removido) e não uma lacuna de um snapshot
+        // parcial.
+        let live = has("hp") || has("max_hp") || has("level") || has("xp");
 
         if has("hp") {
             self.vitals.hp = incoming.vitals.hp;
@@ -380,10 +385,16 @@ impl VaelSave {
         if has_prefix("item.") || has("save_gold") {
             self.inventory = incoming.inventory.clone();
         }
+        // `q.<id>` cobre o destracking: o diário limpa `tracked_quest` mas a
+        // quest fica com o seu estado, por isso o snapshot traz a chave `q.`.
         if has("quest_states") || has_prefix("q.") {
             self.quests = incoming.quests.clone();
         }
-        if has("equipment") || has_prefix("gear.") {
+        // O equipamento NÃO é só-Rust: desequipar a última peça apaga
+        // `gear.<slot>` do Lua, por isso a ausência das chaves também tem de
+        // chegar ao tipado (senão o painel continuava a mostrar a peça que
+        // saiu até ao próximo load).
+        if has("equipment") || has_prefix("gear.") || live {
             self.equipment = incoming.equipment.clone();
         }
         if has("story_prologo") {
@@ -392,8 +403,11 @@ impl VaelSave {
         if has("story_epilogo") {
             self.story.epilogue = incoming.story.epilogue;
         }
-        if has("spawn_x") || has("spawn_y") || has("spawn_z") || has("spawn_pos") {
-            self.spawn = incoming.spawn;
+        // O spawn só é substituído quando o snapshot traz os TRÊS eixos (o
+        // parser exige-os): um KV parcial (`spawn_x` sem y/z) não pode
+        // apagar o ponto de descanso que o Rust já tem.
+        if let Some(spawn) = incoming.spawn {
+            self.spawn = Some(spawn);
         }
         // Colheitas/marcadores são monotónicos e o Rust é o dono; o KV é
         // espelho. A união nunca desfaz uma colheita feita neste frame.
@@ -809,6 +823,37 @@ mod tests {
         assert!(save.harvested.contains("old_tree"));
         assert!(save.harvested.contains("new_tree"));
         assert_eq!(save.vitals.hp, 73.0);
+    }
+
+    /// Desequipar a última peça apaga `gear.<slot>` do Lua: a ausência das
+    /// chaves num snapshot vivo também é um estado.
+    #[test]
+    fn merge_limpa_o_equipamento_quando_nao_ha_gear_no_snapshot() {
+        let mut save = VaelSave::default();
+        save.equipment.weapon = Some("iron_axe".into());
+
+        let mut kv = BTreeMap::new();
+        kv.insert("hp".into(), json!(50));
+        kv.insert("item.gold".into(), json!(1));
+
+        save.merge_world_kv(&kv);
+
+        assert_eq!(save.equipment.weapon, None);
+    }
+
+    /// Um KV com só `spawn_x` não pode apagar o ponto de descanso guardado.
+    #[test]
+    fn merge_nao_apaga_o_spawn_com_um_snapshot_parcial() {
+        let mut save = VaelSave::default();
+        save.spawn = Some([1.0, 2.0, 3.0]);
+
+        let mut kv = BTreeMap::new();
+        kv.insert("hp".into(), json!(50));
+        kv.insert("spawn_x".into(), json!(9.0));
+
+        save.merge_world_kv(&kv);
+
+        assert_eq!(save.spawn, Some([1.0, 2.0, 3.0]));
     }
 
     #[test]
