@@ -115,6 +115,10 @@ pub fn respawn_patch(save: &VaelSave, flasks: u32) -> BTreeMap<String, Value> {
     patch.insert("frost_tick".to_string(), json!(0));
     patch.insert("flasks".to_string(), json!(flasks));
     patch.insert("title_done".to_string(), json!(true));
+    // O flag é DESTE caminho: nascer em `main` (ou com a troca falhada) não
+    // pode deixar um `pending_respawn` de uma morte anterior a disparar um
+    // teleporte no próximo `scene_loaded`.
+    patch.insert("pending_respawn".to_string(), json!(false));
     patch
 }
 
@@ -171,6 +175,11 @@ pub fn respawn_now(world: &mut World, spawn: Vec3, flasks: u32) {
         let change = ChangeScene::new("main", Arrival::Position(spawn));
         if let Err(err) = request_change(world, change) {
             warn!("vael: respawn sem troca de cena: {err}");
+            // Sem troca, o `scene_loaded` que limpa o flag nunca chega:
+            // limpá-lo aqui evita um teleporte fantasma no próximo load.
+            let mut clear = BTreeMap::new();
+            clear.insert("pending_respawn".to_string(), json!(false));
+            viber::luau::game::apply_patch_json(&clear);
             teleport_player(world, spawn);
         }
     } else {
@@ -225,5 +234,10 @@ mod tests {
         assert_eq!(patch.get("venom"), Some(&json!(0)));
         assert_eq!(patch.get("burn_tick"), Some(&json!(0)));
         assert_eq!(patch.get("flasks"), Some(&json!(3)));
+        assert_eq!(
+            patch.get("pending_respawn"),
+            Some(&json!(false)),
+            "o flag não pode ficar de uma morte anterior numa casa"
+        );
     }
 }
