@@ -235,12 +235,22 @@ pub fn grant_iframes(kv: &mut CombatKv, secs: f64) {
 
 /// Timers da guarda (sessão, nunca no save).
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
-struct GuardState {
+pub(crate) struct GuardState {
     session_id: f64,
     until: f64,
     start: Option<f64>,
     lock: f64,
 }
+
+/// Guarda do jogo, partilhada por TODOS os contextos BMS.
+///
+/// A guarda é aberta num contexto (o controlador do jogador, `abilities.lua`)
+/// e lida noutro (o `rules.tick` do `rules_host.lua` e o `fsm.lua` de cada
+/// criatura). Um [`GuardState`] por `install` dava um estado por contexto: o
+/// [L] abria a guarda num deles e o dano dos inimigos nunca a via — sem parry
+/// nem bloqueio. O `VaelCombatPlugin` cria UM para o jogo todo.
+#[derive(Resource, Debug, Clone, Default)]
+pub(crate) struct VaelCombatSession(Arc<Mutex<GuardState>>);
 
 impl GuardState {
     /// Estado recomeçado (Novo Jogo/save de outra partida).
@@ -278,7 +288,9 @@ pub struct VaelCombatPlugin;
 impl Plugin for VaelCombatPlugin {
     fn build(&self, app: &mut App) {
         // `Startup` corre depois do `PreStartup` que carrega o `VaelContent`.
-        app.add_systems(
+        // A sessão da guarda é uma só: os instaladores de cada contexto BMS
+        // partilham-na (ver [`VaelCombatSession`]).
+        app.init_resource::<VaelCombatSession>().add_systems(
             Startup,
             install_combat_api
                 .after(crate::vault::install_vault_api)
@@ -292,16 +304,32 @@ impl Plugin for VaelCombatPlugin {
 /// Arranque: acrescenta as primitivas de combate à tabela `viber.vael`.
 ///
 /// Público dentro do crate para o plugin do relógio ordenar depois dele.
-pub(crate) fn install_combat_api() {
-    crate::script_host::register_installer(|lua| install(lua, CombatRules::default()));
+pub(crate) fn install_combat_api(session: Res<VaelCombatSession>) {
+    let session = session.0.clone();
+    crate::script_host::register_installer(move |lua| {
+        install_with_session(lua, CombatRules::default(), Arc::clone(&session))
+    });
     info!("vael: combate em Rust registado nos contextos BMS (`viber.vael`)");
+}
+
+/// Acrescenta as primitivas a `viber.vael` com uma sessão própria.
+///
+/// É o caminho dos testes e de um host sem plugin: cada `install` nasce com a
+/// sua guarda (isolada). O jogo usa [`install_with_session`] com a sessão
+/// partilhada do [`VaelCombatSession`].
+#[cfg(test)]
+pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
+    install_with_session(lua, rules, Arc::new(Mutex::new(GuardState::default())))
 }
 
 /// Acrescenta `guard`, `damage_player`, `heal_player` e `grant_iframes` a
 /// `viber.vael` sem substituir as funções que já lá estão.
-pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
+pub(crate) fn install_with_session(
+    lua: &Lua,
+    rules: CombatRules,
+    guard_session: Arc<Mutex<GuardState>>,
+) -> mlua::Result<()> {
     let rules = Arc::new(rules);
-    let guard_session = Arc::new(Mutex::new(GuardState::default()));
     let vael = vael_table(lua)?;
 
     vael_fn!(
@@ -757,6 +785,64 @@ mod tests {
         crate::vault::install_test_game(&lua, &game);
         install(&lua, regras()).expect("instalar viber.vael");
         (lua, game)
+    }
+
+    #[test]
+    fn dois_contextos_partilham_a_guarda_da_sessao() {
+        // O jogo abre a guarda num contexto (`abilities.lua`) e leva o dano
+        // noutro (`fsm.lua`/`rules_host.lua`): com um estado por `install` o
+        // parry nunca chegava ao contexto do dano.
+        let session = Arc::new(Mutex::new(GuardState::default()));
+
+        // Contexto A: o controlador do jogador.
+        let lua_guarda = Lua::new();
+        lua_guarda
+            .globals()
+            .set("viber", lua_guarda.create_table().expect("tabela viber"))
+            .expect("global viber");
+        let game_guarda = lua_guarda.create_table().expect("tabela do jogo");
+        crate::vault::install_test_game(&lua_guarda, &game_guarda);
+        install_with_session(&lua_guarda, regras(), Arc::clone(&session)).expect("contexto A");
+
+        // Contexto B (o das criaturas): outra VM, a mesma sessão.
+        let lua_dano = Lua::new();
+        lua_dano
+            .globals()
+            .set("viber", lua_dano.create_table().expect("tabela viber"))
+            .expect("global viber");
+        let game = lua_dano.create_table().expect("tabela do jogo");
+        crate::vault::install_test_game(&lua_dano, &game);
+        install_with_session(&lua_dano, regras(), Arc::clone(&session)).expect("contexto B");
+
+        game.raw_set(KEY_HP, 100).expect("hp");
+        game.raw_set(KEY_MAX_HP, 100).expect("max_hp");
+
+        lua_guarda
+            .load("viber.vael.guard(10.0)")
+            .exec()
+            .expect("guarda");
+        let parried: bool = lua_dano
+            .load("return viber.vael.damage_player(30, 10.1).parried")
+            .eval()
+            .expect("parry no contexto do dano");
+        assert!(
+            parried,
+            "a guarda do jogador tem de valer no dano das criaturas"
+        );
+        assert_eq!(game.raw_get::<f64>(KEY_HP).expect("hp"), 100.0);
+
+        // E o bloqueio (fora da janela de parry) também.
+        game.raw_set(KEY_IFRAMES, 0).expect("iframes");
+        lua_guarda
+            .load("viber.vael.guard(20.0)")
+            .exec()
+            .expect("guarda");
+        let blocked: bool = lua_dano
+            .load("return viber.vael.damage_player(30, 20.3).blocked")
+            .eval()
+            .expect("bloqueio no contexto do dano");
+        assert!(blocked);
+        assert_eq!(game.raw_get::<f64>(KEY_HP).expect("hp"), 92.5);
     }
 
     #[test]
