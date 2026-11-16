@@ -405,17 +405,25 @@ pub struct VaelController {
     pub attack_slow: f32,
     #[reflect(ignore)]
     pub attack_face: Option<Vec3>,
-    /// Já viu o [`viber::player::TeleportSettle`] corrente (distingue a
-    /// CHEGADA de um teleporte da tutela a meio). Ver `player_movement`.
-    pub settle_seen: bool,
+    /// `frames` do [`TeleportSettle`] já visto (`0` = sem tutela). Um valor
+    /// que SOBE é uma chegada NOVA: quem teleporta re-inserta o componente
+    /// com `frames` cheio e, a meio de uma tutela, um segundo teleporte não
+    /// era visível para o antigo `bool` (a inércia do destino novo ficava).
+    /// Ver `player_movement`.
+    pub settle_frames_seen: u8,
     /// Estava submerso no frame anterior (histerese de entrada/som na água).
     pub in_water: bool,
+}
+
+impl VaelController {
+    /// Velocidade de passo por omissão (m/s) — a mesma do `Player` da engine.
+    pub const DEFAULT_SPEED: f32 = 4.0;
 }
 
 impl Default for VaelController {
     fn default() -> Self {
         Self {
-            speed: 4.0,
+            speed: Self::DEFAULT_SPEED,
             sprint_multiplier: 1.5,
             jump_height: 2.3,
             rotation_speed: 10.0,
@@ -432,28 +440,84 @@ impl Default for VaelController {
             attack_until: f32::NEG_INFINITY,
             attack_slow: 1.0,
             attack_face: None,
-            settle_seen: false,
+            settle_frames_seen: 0,
             in_water: false,
         }
     }
 }
 
+/// Última velocidade que o Lua escreveu no `Player` da engine
+/// (`viber.set_player_speed`: passivas de equipamento, gelo), em m/s.
+///
+/// O `<PlayerGLTF>` é re-spawnado a cada troca de cena com um
+/// `Player::default()` (4 m/s), mas o `rules.lua` só reenvia o multiplicador
+/// quando o seu `M._speed` muda — sem esta memória a passiva perdia-se até ao
+/// próximo equipamento. Um controller novo nasce já com ela; o
+/// `sync_engine_player` continua a adoptar o que o Lua escrever.
+#[derive(Resource, Debug, Clone, Copy, Default)]
+pub struct HeroSpeedPassive(Option<f32>);
+
+impl HeroSpeedPassive {
+    /// Velocidade com que um controller NOVO nasce (m/s).
+    fn speed_or_default(&self) -> f32 {
+        self.0
+            .filter(|speed| speed.is_finite() && *speed > 0.0)
+            .unwrap_or(VaelController::DEFAULT_SPEED)
+    }
+
+    /// Guarda a velocidade que o Lua escreveu (lixo não entra).
+    fn remember(&mut self, speed: f32) {
+        if speed.is_finite() && speed > 0.0 {
+            self.0 = Some(speed);
+        }
+    }
+}
+
 /// Anexa o controller e a cinemática de água às entidades marcadas com `Player`.
+///
+/// Um controller NOVO (o `<PlayerGLTF>` re-spawnado numa troca de cena) nasce
+/// com a velocidade de passiva que o Lua tinha pedido — o `Player` da engine
+/// vem de `Player::default()` (4 m/s) e o `rules.lua` não a reenvia. O
+/// `Player` é semeado no mesmo passo para o sync seguinte não a rebaixar.
 fn attach_controllers(
     mut commands: Commands,
-    players: Query<
+    passive: Option<Res<HeroSpeedPassive>>,
+    mut players: Query<
         (
             Entity,
             Option<&VaelController>,
             Option<&viber::terrain::WaterKinematics>,
+            &mut Player,
         ),
         With<Player>,
     >,
 ) {
-    for (entity, controller, kin) in &players {
+    let passive_speed = passive
+        .as_deref()
+        .map_or(VaelController::DEFAULT_SPEED, HeroSpeedPassive::speed_or_default);
+    for (entity, controller, kin, mut engine_player) in &mut players {
         commands.entity(entity).insert((VaelPlayer, PlayerBody));
-        if controller.is_none() {
-            commands.entity(entity).insert(VaelController::default());
+        match controller {
+            None => {
+                let speed = passive_speed;
+                commands.entity(entity).insert(VaelController {
+                    speed,
+                    ..Default::default()
+                });
+                if engine_player.speed != speed {
+                    engine_player.speed = speed;
+                }
+            }
+            Some(controller) => {
+                // `Player` reposto a meio (a entidade sobreviveu ao load): um
+                // valor POR OMISSÃO é o `Player::default()` recém-inserido, não
+                // uma escrita do Lua (essa o `player_movement` já adoptou e
+                // fica no controller) — devolve-se a velocidade que conduzimos.
+                let pristine = engine_player.speed == Player::default().speed;
+                if pristine && controller.speed != engine_player.speed {
+                    engine_player.speed = controller.speed;
+                }
+            }
         }
         // Estados de animação pela ação do tnua → override para o driver da
         // engine (o blending grounded continua do driver).
@@ -469,6 +533,21 @@ fn attach_controllers(
                     body_radius: PLAYER_WATER_RADIUS,
                     contact_y_offset: 0.0,
                 });
+        }
+    }
+}
+
+/// Memoriza a velocidade que o Lua escreveu no `Player` ANTES de o
+/// `player_movement` a adoptar: depois do `sync_engine_player` os dois
+/// valores coincidem e a escrita externa deixa de ser visível. Ver
+/// [`HeroSpeedPassive`].
+fn remember_lua_speed(
+    mut passive: ResMut<HeroSpeedPassive>,
+    players: Query<(&Player, &VaelController)>,
+) {
+    for (engine, controller) in &players {
+        if (engine.speed - controller.speed).abs() > 1.0e-4 {
+            passive.remember(engine.speed);
         }
     }
 }
@@ -591,6 +670,7 @@ impl Plugin for VaelPlayerPlugin {
     fn build(&self, app: &mut App) {
         app.register_type::<VaelController>()
             .init_resource::<HeroMotionBus>()
+            .init_resource::<HeroSpeedPassive>()
             .add_systems(
                 Startup,
                 install_motion_api.after(crate::combat::install_combat_api),
@@ -600,6 +680,12 @@ impl Plugin for VaelPlayerPlugin {
                 viber::scene_loader::SceneLoad,
                 (attach_controllers, attach_hero_radar, attach_climbable)
                     .after(viber::recipes::spawn::startup),
+            )
+            .add_systems(
+                Update,
+                // Antes do movimento: a escrita do Lua é lida aqui, o
+                // `player_movement` adopta-a e reescreve o espelho.
+                remember_lua_speed.before(PlayerMovementSet),
             )
             .add_systems(
                 Update,
@@ -744,7 +830,7 @@ fn jump_velocity(height: f32) -> f32 {
 /// margem rasa (`<= 0.15 m`: sem trava), vau médio (`0.15..0.42 m`: resistência
 /// leve nos tornozelos) e nado/água profunda (`0.42..0.88 m`: arrasto pesado até 0.58).
 pub fn water_submersion_drag(submersion: f32) -> f32 {
-    if submersion <= WADE_DRAG_START_DEPTH {
+    if !submersion.is_finite() || submersion <= WADE_DRAG_START_DEPTH {
         return 1.0;
     }
     let knee_depth = 0.42_f32;
@@ -759,10 +845,42 @@ pub fn water_submersion_drag(submersion: f32) -> f32 {
     0.87 - 0.29 * smooth
 }
 
+/// Folga (m) entre o leito da coluna de água e os pés do herói: o `sample` do
+/// terreno é bisseccionado e a cápsula flutua acima do leito — sem ela um
+/// herói pousado no fundo contava como "fora da água".
+pub const WATER_BED_SLACK: f32 = 0.15;
+
+/// Profundidade (m) a que o herói está numa coluna de água, `0` fora dela.
+///
+/// O domínio vem do `water_domain_at(x, z)` do runtime, que é uma query **2D**
+/// (não há variante 3D/segmento na engine). A coluna é
+/// `[surface_y − depth, surface_y]`, por isso um herói ABAIXO do leito — numa
+/// gruta por baixo do rio, num túnel — não está na água: sem este corte a
+/// superfície de CIMA contava e o herói "nadava" dentro da rocha (a submersão
+/// alimentava o empuxo e o tnua era desligado no meio da gruta).
+pub fn water_column_submersion(
+    flat_surface_y: f32,
+    depth: f32,
+    drawn_surface_y: f32,
+    y: f32,
+) -> f32 {
+    if !flat_surface_y.is_finite() || !drawn_surface_y.is_finite() || !y.is_finite() {
+        return 0.0;
+    }
+    let bed = flat_surface_y - depth.max(0.0);
+    if y < bed - WATER_BED_SLACK {
+        return 0.0;
+    }
+    (drawn_surface_y - y).max(0.0).min(40.0)
+}
+
 /// Correnteza de rio aplicada ao jogador segundo a profundidade: em bordas rasas
 /// o atrito com o fundo segura o passo (`0.0`); em águas mais fundas a correnteza
 /// empurra suavemente rio abaixo.
 pub fn water_flow_drift(submersion: f32, flow: Vec2) -> Vec2 {
+    if !submersion.is_finite() || !flow.is_finite() {
+        return Vec2::ZERO;
+    }
     if submersion <= 0.18 || flow.length_squared() <= 1e-6 {
         return Vec2::ZERO;
     }
@@ -774,12 +892,26 @@ pub fn water_flow_drift(submersion: f32, flow: Vec2) -> Vec2 {
 /// Resultado da resposta vertical à água num passo: velocidade ajustada,
 /// estado de contacto atualizado e velocidade de mergulho (0 fora de entradas bruscas).
 pub fn integrate_water_vertical(
-    mut vel_y: f32,
+    vel_y: f32,
     submersion: f32,
     was_in_water: bool,
     grounded: bool,
     dt: f32,
 ) -> (f32, bool, f32) {
+    // Um `vel_y`/`submersion` degenerado (dt enorme, sonda a devolver NaN)
+    // envenenava a integração e o herói ficava com a velocidade NaN — a
+    // posição dele nunca mais recuperava. Fronteira dura: passo zero.
+    let mut vel_y = if vel_y.is_finite() { vel_y } else { 0.0 };
+    let submersion = if submersion.is_finite() {
+        submersion.max(0.0)
+    } else {
+        0.0
+    };
+    let dt = if dt.is_finite() {
+        dt.clamp(0.0, 0.05)
+    } else {
+        0.0
+    };
     let mut plunge_speed = 0.0;
     let in_water = if was_in_water {
         submersion > 0.12
@@ -791,7 +923,6 @@ pub fn integrate_water_vertical(
         // Amortecimento imediato de impacto na entrada da coluna de água.
         vel_y *= 0.35;
     }
-    let dt = dt.clamp(0.0, 0.05);
     if submersion > SWIM_DEPTH {
         let spring_accel = GRAVITY * (submersion - SWIM_IDLE_DEPTH) * 1.15;
         vel_y = (vel_y + spring_accel * dt) * (-8.5 * dt).exp();
@@ -1038,31 +1169,65 @@ fn player_movement(
     if blocked {
         for (
             entity,
-            _,
+            mut transform,
             mut controller,
             mut engine_player,
             tnua,
             velocity,
             _,
-            _,
+            mut position,
             _,
             mut settle,
             _,
             _,
             mut kin,
-            _,
+            boat,
         ) in &mut players
         {
+            // Rede analítica também com o menu aberto: o Avian continua a
+            // aplicar gravidade e, com a coluna voxel ainda sem collider (a
+            // cena de menu abre o título no primeiro frame), o herói
+            // atravessava o chão e caía para sempre — a câmara do título ia
+            // atrás dele (visto 2026-11-15: herói a y=−546 na cena `menu`,
+            // título sobre fundo de névoa sem o acampamento).
+            if boat.is_none()
+                && let Some(rt) = runtime.filter(|rt| {
+                    rt.in_field(transform.translation.x, transform.translation.z)
+                })
+            {
+                let (px, py, pz) = (
+                    transform.translation.x,
+                    transform.translation.y,
+                    transform.translation.z,
+                );
+                let ground = rt
+                    .surface_below(px, pz, py + GROUND_PROBE)
+                    .unwrap_or_else(|| rt.sample(px, pz));
+                let terrain_ready = collision
+                    .as_deref()
+                    .is_some_and(|status| status.is_ready(entity));
+                let rest = ground + viber::player::HERO_FLOAT_HEIGHT;
+                let fell = py < rt.sample(px, pz) - VOID_RESCUE_DEPTH;
+                if fell || (!terrain_ready && py < rest) {
+                    let y = if fell { rt.sample(px, pz) } else { rest };
+                    transform.translation.y = y;
+                    if let Some(position) = position.as_deref_mut() {
+                        position.0.y = y;
+                    }
+                }
+            }
             // O settle TEM de correr com o menu aberto: o loader de cena
             // espera `!settling` para fechar a fase Settle do load, e o
             // título da cena de menu abre exatamente nesse momento — sem
             // isto o véu ficava preso para sempre (medido 2026-11-15:
             // `settling=1` durante 57 s com o menu aberto).
-            if let Some(state) = settle.as_deref_mut()
-                && state.frames > 0
-                && state.tick(time.delta_secs())
-            {
-                commands.entity(entity).remove::<TeleportSettle>();
+            if let Some(state) = settle.as_deref_mut() {
+                // A época é lida aqui também: um teleporte pedido com o menu
+                // aberto não pode voltar a parecer uma chegada depois.
+                controller.settle_frames_seen = state.frames;
+                if state.frames > 0 && state.tick(time.delta_secs()) {
+                    commands.entity(entity).remove::<TeleportSettle>();
+                }
             }
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
@@ -1083,6 +1248,15 @@ fn player_movement(
                 kin.velocity = Vec3::ZERO;
             }
             sync_engine_player(&mut engine_player, &mut controller);
+        }
+        // Pedidos do Lua que ficaram na fila com o menu aberto (esquiva/golpe
+        // pedidos no frame em que ele abriu) não disparam quando ele fechar —
+        // era um salto/golpe "fantasma" ao voltar ao jogo.
+        if let Some(bus) = bus.as_deref() {
+            let mut shared = bus.lock();
+            shared.dodge = None;
+            shared.attack = None;
+            shared.dodging = false;
         }
         return;
     }
@@ -1169,11 +1343,11 @@ fn player_movement(
             // a prontidão do mundo espera `!settling` — sem o tick, o véu
             // não abria e o portão (que espera a época fechar) nunca soltava
             // o herói (deadlock medido 2026-11-15: `settling=1 gated=1`).
-            if let Some(state) = settle.as_deref_mut()
-                && state.frames > 0
-                && state.tick(time.delta_secs())
-            {
-                commands.entity(entity).remove::<TeleportSettle>();
+            if let Some(state) = settle.as_deref_mut() {
+                controller.settle_frames_seen = state.frames;
+                if state.frames > 0 && state.tick(time.delta_secs()) {
+                    commands.entity(entity).remove::<TeleportSettle>();
+                }
             }
             sync_engine_player(&mut engine_player, &mut controller);
             continue;
@@ -1197,6 +1371,15 @@ fn player_movement(
             if let Some(ref mut kin) = water_kin {
                 kin.velocity = Vec3::ZERO;
             }
+            // Sem o tick, um embarque a meio de uma tutela deixava o settle
+            // pendurado (`settling=1` para sempre) e a prontidão do mundo à
+            // espera.
+            if let Some(state) = settle.as_deref_mut() {
+                controller.settle_frames_seen = state.frames;
+                if state.frames > 0 && state.tick(time.delta_secs()) {
+                    commands.entity(entity).remove::<TeleportSettle>();
+                }
+            }
             sync_engine_player(&mut engine_player, &mut controller);
             continue;
         }
@@ -1209,14 +1392,32 @@ fn player_movement(
         // sem a inércia nem o knockback do sítio antigo. Quem teleporta repõe
         // o `Player` da engine — agora um espelho que este sync reescreve —
         // por isso o reset do MOVIMENTO vive aqui, no dono.
-        let fresh_settle = settle.is_some() && !controller.settle_seen;
-        controller.settle_seen = settle.is_some();
-        if fresh_settle {
+        //
+        // A chegada é o contador do `TeleportSettle` APARECER (não havia) ou
+        // SUBIR: quem teleporta re-inserta o componente com `frames` cheio, e
+        // um segundo teleporte dentro da mesma janela (o antigo `bool` já era
+        // `true`) não limpava a inércia do destino novo. O tick só desce o
+        // contador, por isso um valor maior é sempre uma tutela nova.
+        let arriving = settle
+            .as_deref()
+            .is_some_and(|state| settle_arriving(state.frames, controller.settle_frames_seen));
+        if let Some(state) = settle.as_deref() {
+            controller.settle_frames_seen = state.frames;
+        }
+        if arriving {
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
             controller.jump_buffer_time = f32::NEG_INFINITY;
             controller.in_water = false;
+            // Esquiva/avanço e golpe do sítio ANTIGO não continuam no novo:
+            // com a ação do tnua limpa abaixo, um `dodge` pendurado só servia
+            // para travar o A/D (steer) e as esquivas seguintes durante a
+            // janela do Burst.
+            controller.dodge = None;
+            controller.lunge = None;
+            controller.attack_until = f32::NEG_INFINITY;
+            controller.attack_face = None;
             commands.entity(entity).remove::<Knockback>();
             // A inércia do sítio antigo é do CORPO (`LinearVelocity`), não do
             // espelho: o teleporte só move o `Transform`/`Player`, por isso
@@ -1275,9 +1476,15 @@ fn player_movement(
                     d.depth,
                 )
         });
-        let submersion = water_y
-            .map(|wy| (wy - transform.translation.y).max(0.0))
-            .unwrap_or(0.0);
+        // A coluna do domínio só conta para quem está DENTRO dela — ver
+        // [`water_column_submersion`] (gruta sob o rio).
+        let submersion_at = |y: f32| {
+            water_domain
+                .zip(water_y)
+                .map(|(d, wy)| water_column_submersion(d.surface_y, d.depth, wy, y))
+                .unwrap_or(0.0)
+        };
+        let submersion = submersion_at(transform.translation.y);
         let water_drag = water_submersion_drag(submersion);
         let water_flow = if !interior_mode && submersion > 0.18 {
             water_domain
@@ -1601,16 +1808,32 @@ fn player_movement(
         }
 
         // Agachar: feed CONTÍNUO (a ação não é one-shot — o `action_trigger`
-        // não serve). O levantar é da ação (`Rising` só com headroom livre);
-        // em água funda o toggle do tnua está desligado e não alimenta.
-        if with_body
-            && !interior_mode
-            && let Some(tnua) = tnua.as_deref_mut()
-        {
-            if crouch_held {
-                tnua.action_start(VaelHeroScheme::Crouch(TnuaBuiltinCrouch));
+        // não serve). O levantar é da ação (`Rising` só com headroom livre).
+        //
+        // Em água funda (e nos interiores) o `Crouch` não é alimentável: o
+        // toggle do tnua fica `Disabled`, o `apply_controller_system` do crate
+        // SALTA a entidade e a ação nunca acaba — o agachar ficava PRESO
+        // (cápsula agachada, animação de marcha rasteira e, ao sair da água,
+        // o corpo a meio). Fechar a ação e limpar a corrente aqui.
+        if let Some(tnua) = tnua.as_deref_mut() {
+            if with_body && !interior_mode {
+                if crouch_held {
+                    tnua.action_start(VaelHeroScheme::Crouch(TnuaBuiltinCrouch));
+                } else {
+                    tnua.action_end(VaelHeroSchemeActionDiscriminant::Crouch);
+                }
             } else {
                 tnua.action_end(VaelHeroSchemeActionDiscriminant::Crouch);
+                if matches!(
+                    tnua.action_discriminant(),
+                    Some(VaelHeroSchemeActionDiscriminant::Crouch)
+                ) {
+                    // Sem isto o `current_action` só caía no próximo passo do
+                    // tnua — que está desligado. A cápsula agachada
+                    // (`hero_crouch_collider`) e o estado de animação seguem
+                    // o discriminante, por isso a limpeza é imediata.
+                    tnua.current_action = None;
+                }
             }
         }
 
@@ -1780,7 +2003,7 @@ fn player_movement(
             }
         }
 
-        let submersion = water_y.map(|wy| (wy - py).max(0.0)).unwrap_or(0.0);
+        let submersion = submersion_at(py);
         let swimming = submersion >= SWIM_DEPTH;
         let pre_entry_vel_y = controller.vel_y;
         let (next_vy, now_in_water, plunge_speed) = integrate_water_vertical(
@@ -1933,10 +2156,15 @@ fn player_movement(
 
 /// `<WorldBorder>`: mantém o herói dentro do disco do mapa (fora das
 /// bolsas de interior). Corre depois do movimento, no mesmo frame.
+///
+/// A `Position` do corpo é a pose AUTORITATIVA: escrever só o `Transform` dava
+/// um clamp cosmético — o writeback do Avian devolvia-o ao sítio antigo no
+/// passo seguinte e o herói continuava fora do disco. As duas cópias andam
+/// juntas, como no resgate do vazio.
 fn world_border_clamp(
     border: Option<Res<bevy_ext_core::WorldBorderConfig>>,
     scene: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
-    mut players: Query<&mut Transform, With<Player>>,
+    mut players: Query<(&mut Transform, Option<&mut Position>), With<Player>>,
     mut logged: Local<bool>,
 ) {
     let Some(border) = border else {
@@ -1946,7 +2174,7 @@ fn world_border_clamp(
     if limit <= 0.0 {
         return;
     }
-    for mut transform in &mut players {
+    for (mut transform, mut position) in &mut players {
         let pos = transform.translation;
         if scene
             .as_deref()
@@ -1954,19 +2182,44 @@ fn world_border_clamp(
         {
             continue;
         }
-        let dist_sq = pos.x * pos.x + pos.z * pos.z;
-        if dist_sq > limit * limit {
-            let scale = limit / dist_sq.sqrt();
-            transform.translation.x = pos.x * scale;
-            transform.translation.z = pos.z * scale;
-            if !*logged {
-                *logged = true;
-                info!("world border: player returned inside r={limit}");
-            }
-        } else {
+        let Some(clamped) = border_clamped_xz(pos.x, pos.z, limit) else {
             *logged = false;
+            continue;
+        };
+        transform.translation.x = clamped.x;
+        transform.translation.z = clamped.y;
+        if let Some(position) = position.as_deref_mut() {
+            position.0.x = clamped.x;
+            position.0.z = clamped.y;
+        }
+        if !*logged {
+            *logged = true;
+            info!("world border: player returned inside r={limit}");
         }
     }
+}
+
+/// XZ do herói reposto no disco de raio `limit` (`None` quando já está dentro,
+/// ou quando a posição/o limite são degenerados — nunca inventar um ponto NaN).
+pub fn border_clamped_xz(x: f32, z: f32, limit: f32) -> Option<Vec2> {
+    if !x.is_finite() || !z.is_finite() || !limit.is_finite() || limit <= 0.0 {
+        return None;
+    }
+    let dist_sq = x * x + z * z;
+    if dist_sq <= limit * limit {
+        return None;
+    }
+    let scale = limit / dist_sq.sqrt();
+    Some(Vec2::new(x * scale, z * scale))
+}
+
+/// Chegada NOVA de teleporte: `frames > 0` e o contador subiu desde a última
+/// observação (`seen == 0` = não havia tutela). Quem teleporta re-inserta o
+/// `TeleportSettle` com o contador cheio; o tick só o desce, por isso um valor
+/// maior é sempre um teleporte novo — dois na mesma janela de tutela eram
+/// indistinguíveis para o antigo `bool` e o segundo não limpava a inércia.
+pub fn settle_arriving(frames: u8, seen: u8) -> bool {
+    frames > 0 && (seen == 0 || frames > seen)
 }
 
 /// Espelha o controller no `Player` da engine e adopta a velocidade que o Lua
@@ -2178,5 +2431,130 @@ mod tests {
         assert!(mid_drift.length() > 0.01);
         assert!(deep_drift.length() > mid_drift.length());
         assert!((deep_drift - river_flow * 0.24).length() < 1e-4);
+    }
+
+    /// A coluna do domínio (query 2D) só conta para quem está DENTRO dela: um
+    /// herói numa gruta sob o rio não pode apanhar a superfície de cima.
+    #[test]
+    fn submersion_so_dentro_da_coluna_de_agua() {
+        // Lago com a superfície a 100 e 3 m de fundo (leito a 97).
+        let surface = 100.0;
+        let depth = 3.0;
+        assert!((water_column_submersion(surface, depth, surface, 99.0) - 1.0).abs() < 1e-5);
+        // Pousado no leito (a cápsula flutua 0.9 m acima dele): está na água.
+        let na_agua = water_column_submersion(surface, depth, surface, 97.9);
+        assert!(na_agua > 2.0, "no fundo do lago ainda está submerso: {na_agua}");
+        // Gruta 7 m abaixo do leito: fora da coluna (antes nadava na rocha).
+        assert_eq!(water_column_submersion(surface, depth, surface, 90.0), 0.0);
+        // Acima da superfície: seco.
+        assert_eq!(water_column_submersion(surface, depth, surface, 101.0), 0.0);
+        // Lixo não envenena a submersão.
+        assert_eq!(water_column_submersion(f32::NAN, depth, surface, 99.0), 0.0);
+        assert_eq!(water_column_submersion(surface, depth, f32::NAN, 99.0), 0.0);
+        assert_eq!(water_column_submersion(surface, depth, surface, f32::NAN), 0.0);
+    }
+
+    #[test]
+    fn water_helpers_are_nan_safe() {
+        assert_eq!(water_submersion_drag(f32::NAN), 1.0);
+        assert_eq!(water_submersion_drag(f32::INFINITY), 1.0, "sem trava inventada");
+        assert_eq!(water_flow_drift(f32::NAN, Vec2::X), Vec2::ZERO);
+        assert_eq!(water_flow_drift(1.0, Vec2::NAN), Vec2::ZERO);
+        let (vy, in_water, plunge) =
+            integrate_water_vertical(f32::NAN, f32::NAN, false, false, f32::INFINITY);
+        assert!(vy.is_finite(), "velocidade NaN envenenava a posição: {vy}");
+        assert!(!in_water);
+        assert_eq!(plunge, 0.0);
+        // dt gigante é o mesmo clamp de sempre (0.05): uma queda não pode
+        // integrar 1 s de gravidade num frame.
+        let (vy, _, _) = integrate_water_vertical(0.0, 0.0, false, false, 1.0);
+        assert!((vy + GRAVITY * 0.05).abs() < 1e-4, "vy={vy}");
+    }
+
+    /// Dois teleportes na MESMA janela de tutela: o segundo é uma chegada nova
+    /// (o antigo `bool` só via o primeiro e a inércia do destino ficava).
+    #[test]
+    fn segundo_teleporte_na_janela_de_settle_e_uma_chegada_nova() {
+        let full = TeleportSettle::default().frames; // 30
+        assert!(settle_arriving(full, 0), "primeira chegada");
+        assert!(!settle_arriving(full - 8, full), "o tick não é chegada");
+        assert!(
+            settle_arriving(full, full - 8),
+            "o contador subiu: teleporte re-inserto a meio da tutela"
+        );
+        assert!(!settle_arriving(0, 0), "sem tutela não há chegada");
+        assert!(!settle_arriving(0, full), "tutela a acabar");
+    }
+
+    #[test]
+    fn a_passiva_de_velocidade_sobrevive_ao_player_novo() {
+        let mut passive = HeroSpeedPassive::default();
+        assert_eq!(passive.speed_or_default(), VaelController::DEFAULT_SPEED);
+        passive.remember(2.4);
+        assert_eq!(passive.speed_or_default(), 2.4, "o controller nasce com ela");
+        // Lixo não entra (e não apaga a última boa).
+        passive.remember(f32::NAN);
+        passive.remember(0.0);
+        passive.remember(f32::INFINITY);
+        assert_eq!(passive.speed_or_default(), 2.4);
+
+        // Herói re-spawnado numa troca de cena: `Player::default()` (4 m/s) e
+        // sem controller. O attach semeia os DOIS, para o sync seguinte não
+        // rebaixar a semente.
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<HeroSpeedPassive>()
+            .add_systems(Update, attach_controllers);
+        app.world_mut().resource_mut::<HeroSpeedPassive>().remember(2.4);
+        let hero = app.world_mut().spawn(Player::default()).id();
+        app.update();
+        let seeded = app
+            .world()
+            .get::<VaelController>(hero)
+            .expect("controller anexado")
+            .speed;
+        assert_eq!(seeded, 2.4);
+        assert_eq!(app.world().get::<Player>(hero).unwrap().speed, 2.4);
+
+        // O sync não a rebaixa (a semente já está no espelho).
+        let mut engine = Player {
+            speed: app.world().get::<Player>(hero).unwrap().speed,
+            ..Default::default()
+        };
+        let mut controller = VaelController {
+            speed: seeded,
+            ..Default::default()
+        };
+        sync_engine_player(&mut engine, &mut controller);
+        assert_eq!(controller.speed, 2.4, "a semente não é rebaixada no sync");
+
+        // Uma escrita do Lua no mesmo `Player` continua a mandar.
+        engine.speed = 3.6;
+        sync_engine_player(&mut engine, &mut controller);
+        assert_eq!(controller.speed, 3.6);
+        assert_eq!(engine.speed, 3.6);
+
+        // `Player` reposto a 4.0 com a entidade viva (load): o attach devolve
+        // a velocidade que já conduzíamos (o Lua não a reenvia).
+        app.world_mut().entity_mut(hero).insert(Player::default());
+        app.update();
+        assert_eq!(
+            app.world().get::<Player>(hero).unwrap().speed,
+            2.4,
+            "o default reposto não apaga a passiva"
+        );
+    }
+
+    #[test]
+    fn borda_do_mundo_repoe_dentro_do_disco() {
+        assert_eq!(border_clamped_xz(10.0, 0.0, 100.0), None, "dentro: nada a fazer");
+        let clamped = border_clamped_xz(200.0, 0.0, 100.0)
+            .expect("fora do disco volta para dentro");
+        assert!((clamped.length() - 100.0).abs() < 1e-4);
+        let clamped = border_clamped_xz(300.0, 400.0, 100.0).unwrap();
+        assert!((clamped.length() - 100.0).abs() < 1e-4);
+        assert_eq!(border_clamped_xz(f32::NAN, 0.0, 100.0), None);
+        assert_eq!(border_clamped_xz(200.0, 0.0, f32::NAN), None);
+        assert_eq!(border_clamped_xz(200.0, 0.0, 0.0), None, "sem raio útil");
     }
 }
