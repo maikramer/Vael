@@ -12,6 +12,7 @@ use bevy_ext_core::{GROUND_PROBE, Player, TeleportSettle};
 use bevy_ext_core::{SfxClip, SfxEvent};
 use serde_json::{Value, json};
 use viber::luau::components::ScriptToast;
+use viber::luau::game::{apply_patch_json, game_to_json_process};
 use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::ui::UiWriter;
 
@@ -120,6 +121,149 @@ pub fn respawn_patch(save: &VaelSave, flasks: u32) -> BTreeMap<String, Value> {
     // teleporte no próximo `scene_loaded`.
     patch.insert("pending_respawn".to_string(), json!(false));
     patch
+}
+
+/// Fração do ouro que a morte larga numa bolsa (`DEATH_GOLD_FRAC` do Lua).
+pub const DEATH_GOLD_FRAC: f64 = 0.25;
+
+/// O que o `start_death` do Lua faz além de armar o `dying`: largar a bolsa
+/// (25% do ouro no sítio da queda, só no `main`) e tocar `game_over`.
+///
+/// A morte por DoT nasce no tick da autoridade Rust (`rules_authority`), que
+/// não passa pelo `M.start_death` do Lua — sem isto, morrer envenenado não
+/// custava ouro nem tocava o sting de morte (o clip `death` fica com o rig,
+/// que é do script).
+pub fn start_death_side_effects(world: &mut World) {
+    // `Transform` (e não a global, que só propaga no PostUpdate): a bolsa
+    // fica onde o herói caiu neste frame.
+    let position = world
+        .query_filtered::<&Transform, With<Player>>()
+        .iter(world)
+        .next()
+        .map(|transform| transform.translation)
+        .filter(|position| position.is_finite());
+    // `drop_purse`: só no mundo grande — as coordenadas de um interior não
+    // valem em `main` (e sem cena, como no Lua, vale).
+    let in_main = world
+        .get_resource::<CurrentScene>()
+        .is_none_or(|scene| scene.id.as_deref().is_none_or(|id| id == "main"));
+    if let (true, Some(position)) = (in_main, position) {
+        drop_purse(world, position);
+    }
+    if world.contains_resource::<Messages<SfxEvent>>() {
+        world.write_message(SfxEvent {
+            clip: SfxClip::GameOver,
+            position,
+        });
+    }
+}
+
+/// `drop_purse`: um quarto do ouro fica numa bolsa no sítio da queda, pelo
+/// cofre em Rust (`vault_get`/`vault_take`) e com o patch no `viber.game()`
+/// que o `tick_purse` do Lua lê.
+fn drop_purse(world: &mut World, position: Vec3) {
+    let Some(content) = world.get_resource::<crate::content::VaelContent>() else {
+        return;
+    };
+    let rules = crate::vault::VaultRules::from_items(&content.items);
+    let gold_key = crate::vault::item_key("gold");
+    let store = game_to_json_process();
+    let mut items = BTreeMap::new();
+    if let Some(gold) = store.get(&gold_key).and_then(crate::compat::json_i64) {
+        items.insert(gold_key.clone(), gold.max(0));
+    }
+    let have = crate::vault::vault_get(&rules, &items, "gold");
+    let lost = (have as f64 * DEATH_GOLD_FRAC).floor() as i64;
+    if lost < 1 || !crate::vault::vault_take(&rules, &mut items, "gold", lost as f64) {
+        return;
+    }
+    let mut patch = BTreeMap::new();
+    if let Some(now) = items.get(&gold_key) {
+        patch.insert(gold_key, json!(*now));
+    }
+    patch.insert("lost_gold".to_string(), json!(lost));
+    patch.insert("lost_x".to_string(), json!(position.x));
+    patch.insert("lost_y".to_string(), json!(position.y));
+    patch.insert("lost_z".to_string(), json!(position.z));
+    apply_patch_json(&patch);
+}
+
+/// `(dying, death_pending)` do `viber.game()`.
+fn death_flags(kv: &BTreeMap<String, Value>) -> (f32, bool) {
+    let dying = kv
+        .get("dying")
+        .and_then(crate::compat::json_f32)
+        .filter(|dying| dying.is_finite())
+        .unwrap_or(0.0);
+    let pending = match kv.get("death_pending") {
+        Some(Value::Bool(flag)) => *flag,
+        Some(value) => crate::compat::json_bool(value).unwrap_or(false),
+        None => false,
+    };
+    (dying, pending)
+}
+
+/// A morte COMEÇOU neste frame? `before`/`after` são `death_flags` antes e
+/// depois do tick da autoridade.
+///
+/// Uma morte que já estava em curso (`dying > 0` ou `death_pending` no
+/// `before`) não conta — a passagem de `dying` para `death_pending` 2,2 s
+/// depois é a MESMA morte e não pode largar outra bolsa.
+pub fn death_started(before: (f32, bool), after: (f32, bool)) -> bool {
+    if before.0 > 0.0 || before.1 {
+        return false;
+    }
+    after.0 > 0.0 || after.1
+}
+
+/// Estado de morte observado antes do tick da autoridade (o `dying` que o Lua
+/// escreveu no dano direto está no store nesse ponto).
+#[derive(Resource, Debug, Default)]
+pub struct DeathWatch {
+    before: (f32, bool),
+}
+
+fn watch_death_before_tick(mut watch: ResMut<DeathWatch>) {
+    watch.before = death_flags(&game_to_json_process());
+}
+
+/// Uma morte que nasceu no tick da autoridade (DoT, ou 0 HP de um save) não
+/// passou pelo `M.start_death` do Lua: corre aqui o que ele faria.
+fn death_started_in_rust(world: &mut World) {
+    // Com o tick no Lua (`VAEL_RULES_RUST=0`) o `start_death` já correu lá.
+    if !world
+        .get_resource::<crate::rules_authority::VaelRulesConfig>()
+        .is_some_and(|config| config.rust)
+    {
+        return;
+    }
+    let after = death_flags(&game_to_json_process());
+    let Some(before) = world.get_resource::<DeathWatch>().map(|watch| watch.before) else {
+        return;
+    };
+    if !death_started(before, after) {
+        return;
+    }
+    start_death_side_effects(world);
+}
+
+/// Plugin do respawn: observa o início das mortes do tick autoritativo.
+pub struct VaelRespawnPlugin;
+
+impl Plugin for VaelRespawnPlugin {
+    fn build(&self, app: &mut App) {
+        app.init_resource::<DeathWatch>()
+            .add_systems(
+                Update,
+                watch_death_before_tick
+                    .after(viber::luau::bms_bridge::apply_bms_commands)
+                    .before(crate::rules_authority::VaelRulesSet),
+            )
+            .add_systems(
+                Update,
+                death_started_in_rust.after(crate::rules_authority::VaelRulesSet),
+            );
+    }
 }
 
 /// Teleporta o herói para `requested` com o chão da física (a mesma via do
@@ -239,5 +383,119 @@ mod tests {
             Some(&json!(false)),
             "o flag não pode ficar de uma morte anterior numa casa"
         );
+    }
+
+    #[test]
+    fn morte_nova_e_so_o_inicio_dela() {
+        // DoT: `dying` nasce no tick da autoridade.
+        assert!(death_started((0.0, false), (2.2, false)));
+        // Um hitch > 2,2 s esgota o `dying` no mesmo tick e cai no pendente.
+        assert!(death_started((0.0, false), (0.0, true)));
+        // Já estava a morrer: nada a fazer.
+        assert!(!death_started((2.2, false), (2.1, false)));
+        // A MESMA morte a chegar ao ecrã (dying → death_pending).
+        assert!(!death_started((0.1, false), (0.0, true)));
+        assert!(!death_started((0.0, true), (0.0, true)));
+    }
+
+    fn cena_interior(id: &str) -> CurrentScene {
+        CurrentScene {
+            root: std::path::PathBuf::new(),
+            id: Some(id.to_string()),
+            path: std::path::PathBuf::new(),
+            title: None,
+            entry: None,
+            came_from: None,
+            return_pose: None,
+        }
+    }
+
+    fn mundo_com_morte(scene: &str) -> (World, Entity) {
+        let mut world = World::new();
+        world.init_resource::<Messages<SfxEvent>>();
+        world.insert_resource(crate::content::VaelContent::default());
+        world.insert_resource(cena_interior(scene));
+        let player = world
+            .spawn((Player::default(), Transform::from_xyz(1.0, 2.0, 3.0)))
+            .id();
+        (world, player)
+    }
+
+    /// A morte por DoT não passa pelo `start_death` do Lua: a bolsa e o som
+    /// têm de sair daqui (paridade com `drop_purse`/`sound_at_player`).
+    #[test]
+    fn a_morte_no_rust_larga_a_bolsa_e_toca_game_over() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock do store");
+        viber::luau::game::restore_game_json(&BTreeMap::new());
+        let (mut world, _player) = mundo_com_morte("main");
+        let mut seed = BTreeMap::new();
+        seed.insert("item.gold".into(), json!(100));
+        viber::luau::game::apply_patch_json(&seed);
+
+        start_death_side_effects(&mut world);
+
+        let kv = viber::luau::game::game_to_json_process();
+        assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(75));
+        assert_eq!(kv.get("lost_gold").and_then(Value::as_i64), Some(25));
+        assert_eq!(kv.get("lost_x").and_then(Value::as_f64), Some(1.0));
+        assert_eq!(kv.get("lost_y").and_then(Value::as_f64), Some(2.0));
+        assert_eq!(kv.get("lost_z").and_then(Value::as_f64), Some(3.0));
+        let sfx: Vec<SfxEvent> = world
+            .resource::<Messages<SfxEvent>>()
+            .iter_current_update_messages()
+            .cloned()
+            .collect();
+        assert!(
+            sfx.iter().any(|event| event.clip == SfxClip::GameOver),
+            "o sting de morte tem de tocar: {sfx:?}"
+        );
+    }
+
+    /// `drop_purse` só vale no `main`: num interior o ouro fica, mas o som
+    /// continua (o `start_death` do Lua não tem portão de cena para o som).
+    #[test]
+    fn num_interior_a_morte_nao_larga_bolsa() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock do store");
+        viber::luau::game::restore_game_json(&BTreeMap::new());
+        let (mut world, _player) = mundo_com_morte("interiors/chapel");
+        let mut seed = BTreeMap::new();
+        seed.insert("item.gold".into(), json!(100));
+        viber::luau::game::apply_patch_json(&seed);
+
+        start_death_side_effects(&mut world);
+
+        let kv = viber::luau::game::game_to_json_process();
+        assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(100));
+        assert!(!kv.contains_key("lost_gold"), "sem bolsa num interior");
+        let sfx: Vec<SfxEvent> = world
+            .resource::<Messages<SfxEvent>>()
+            .iter_current_update_messages()
+            .cloned()
+            .collect();
+        assert!(sfx.iter().any(|event| event.clip == SfxClip::GameOver));
+    }
+
+    /// Sem ouro suficiente para uma bolsa (ou sem posição do herói) o patch
+    /// fica vazio e nada muda no store.
+    #[test]
+    fn sem_ouro_para_a_bolsa_nao_ha_patch() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock do store");
+        viber::luau::game::restore_game_json(&BTreeMap::new());
+        let (mut world, _player) = mundo_com_morte("main");
+        let mut seed = BTreeMap::new();
+        seed.insert("item.gold".into(), json!(3));
+        viber::luau::game::apply_patch_json(&seed);
+
+        start_death_side_effects(&mut world);
+
+        let kv = viber::luau::game::game_to_json_process();
+        assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(3));
+        assert!(!kv.contains_key("lost_gold"), "floor(3 * 0.25) = 0");
     }
 }

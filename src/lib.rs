@@ -164,6 +164,9 @@ impl Plugin for VaelPlugin {
                 // Autoridade (default; `VAEL_RULES_RUST=0` devolve o tick
                 // de vitais/status/morte ao Lua).
                 VaelRulesAuthorityPlugin,
+                // Morte que nasce no tick da autoridade (DoT): larga a bolsa
+                // e toca `game_over` como o `start_death` do Lua.
+                respawn::VaelRespawnPlugin,
                 VaelHudPlugin,
                 // HUD comportamental que o `scripts/ui/hud.lua` deixou.
                 VaelHudUiPlugin,

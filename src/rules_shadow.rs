@@ -6,6 +6,12 @@
 //! que o [`VaelStateSyncPlugin`](crate::state_sync::VaelStateSyncPlugin) lê a
 //! 10 Hz. Não escreve no Lua, no [`VaelSave`], no ECS nem no HUD.
 //!
+//! As resistências de estado (`venom_resist`/`burn_resist` do equipamento e
+//! dos talentos) são as mesmas que a autoridade aplica: o shadow reconstrói o
+//! equipamento/talentos do [`VaelSave`] com a malha de atributos partilhada
+//! ([`status_resists`]) e o DoT dele passa a bater com o do
+//! [`crate::rules_authority`].
+//!
 //! Limites conhecidos:
 //! - `rules.god` (modo DEV) é um local do módulo Lua e não viaja em
 //!   `viber.game()`; com o god ligado o Lua congela os estados e o shadow
@@ -15,13 +21,10 @@
 //!   `hp`).
 //! - O shadow não simula `sync_passives` (mudanças de `max_hp`), a bolsa
 //!   perdida, FX, som, UI, teleporte do respawn nem o refill dos frascos.
-//! - As resistências de estado (`venom_resist`/`burn_resist` do equipamento e
-//!   talentos) não entram no shadow: ele simula sempre o DoT sem resistência.
-//!   A [`StatusResists`] existe para a autoridade, que as reconstrói do KV.
 //!
 //! `VAEL_RULES_SHADOW=1` liga o sistema; por omissão não corre (é QA).
 
-use std::collections::BTreeMap;
+use std::collections::{BTreeMap, BTreeSet};
 
 use bevy::prelude::*;
 use bevy_ext_core::MenusOpen;
@@ -30,7 +33,10 @@ use viber::ui::modal::UiModalsOpen;
 use viber::worldsys::WeatherState;
 
 use crate::components::PlayerVitals;
+use crate::content::VaelContent;
+use crate::gear::{GearRules, GearState, RESIST_BURN, RESIST_VENOM, SLOTS};
 use crate::save::VaelSave;
+use crate::stats::{AttributeRules, StatEngine};
 
 /// A partir daqui `clock.raining()` diz que chove. Fonte única: o contrato
 /// 0,3 é o [`crate::clock::RAIN_HEAVY`] (f64); as comparações com o
@@ -65,6 +71,57 @@ impl StatusResists {
     fn burn_factor(self) -> f32 {
         1.0 - resist_clamped(self.burn)
     }
+}
+
+/// Resistências do equipamento/talentos a partir do estado do equipamento.
+///
+/// É a MESMA malha que o `M.stat("<estado>_resist")` do Lua lia: o grafo de
+/// atributos do [`StatEngine`] sobre os efeitos das três peças equipadas e dos
+/// talentos aprendidos. A autoridade ([`crate::rules_authority`]) e o shadow
+/// usam-na — sem isto o DoT do shadow era o caso sem resistência e a
+/// comparação divergia em qualquer save com peças de resistência.
+pub fn status_resists(
+    rules: &GearRules,
+    state: &mut GearState,
+    learned: &BTreeSet<String>,
+    stat_engine: &mut Option<StatEngine>,
+) -> StatusResists {
+    let engine = stat_engine.get_or_insert_with(|| StatEngine::new(AttributeRules::default()));
+    let snapshot = engine.snapshot(rules, state, learned);
+    StatusResists {
+        venom: snapshot.stat(RESIST_VENOM) as f32,
+        burn: snapshot.stat(RESIST_BURN) as f32,
+    }
+}
+
+/// Estado do equipamento a partir do save tipado (o shadow não tem o KV).
+///
+/// Só os ids equipados entram em `held` (`item.<id>` > 0), como na leitura do
+/// `rules_authority`; uma marca órfã é limpa pelo próprio `status_resists`.
+pub(crate) fn gear_state_from_save(save: &VaelSave) -> GearState {
+    let mut state = GearState::default();
+    let slots = [
+        (SLOTS[0], save.equipment.weapon.as_deref()),
+        (SLOTS[1], save.equipment.armor.as_deref()),
+        (SLOTS[2], save.equipment.charm.as_deref()),
+    ];
+    for (slot, id) in slots {
+        let Some(id) = id.filter(|id| !id.is_empty()) else {
+            continue;
+        };
+        state.equipped.insert(slot.to_string(), id.to_string());
+    }
+    let equipped: Vec<String> = state.equipped.values().cloned().collect();
+    for id in equipped {
+        let count = save.inventory.get(&id);
+        state.held.insert(id, count as f64);
+    }
+    state
+}
+
+/// Talentos aprendidos no save (`save.progression.skills`).
+pub(crate) fn learned_from_save(save: &VaelSave) -> BTreeSet<String> {
+    save.progression.skills.clone()
 }
 
 /// `math.max(0, math.min(0.8, valor))`; um valor não finito não é resistência.
@@ -120,6 +177,15 @@ pub struct VaelRulesShadow {
     /// O `shadow_tick` chamou `respawn()` neste frame. Não faz parte da
     /// comparação shadow↔Lua; é o sinal para a UI teleportar/refrescar.
     pub respawned: bool,
+    /// O `shadow_tick` armou uma morte neste frame (`start_death`). Como o
+    /// `respawned`, é um sinal de transição, não estado comparado: com a
+    /// autoridade ligada o `start_death` do Lua NÃO corre no dano ao longo do
+    /// tempo (DoT) nem num save com `hp` 0, por isso é o tick que marca a
+    /// morte para o caminho Rust (ver `VaelDeathStarted`).
+    pub death_started: bool,
+    /// A morte armada veio do DoT (`apply_damage`); `false` para o `hp` 0 de
+    /// um save carregado. O Lua só corre `start_death` no dano direto.
+    pub death_from_dot: bool,
 
     // ── referência Lua e contadores ─────────────────────────────────────
     /// Último snapshot Lua usado para semear. `iframes` entra na cópia mas
@@ -159,6 +225,8 @@ impl Default for VaelRulesShadow {
             death_pending: false,
             death_wait: 0.0,
             respawned: false,
+            death_started: false,
+            death_from_dot: false,
             last_lua: None,
             comparisons: 0,
             divergences: 0,
@@ -351,6 +419,8 @@ pub fn shadow_tick(
     resists: StatusResists,
 ) {
     state.respawned = false;
+    state.death_started = false;
+    state.death_from_dot = false;
     sanitize(state);
     if !dt.is_finite() || dt <= 0.0 {
         return;
@@ -412,7 +482,7 @@ pub fn shadow_tick(
 
     // 0 HP sem `dying`/`death_pending` (save corrompido): começa a morte.
     if state.hp <= 0.0 && state.dying <= 0.0 && !state.death_pending {
-        start_death(state);
+        start_death(state, false);
     }
 
     if state.dying > 0.0 {
@@ -437,11 +507,18 @@ pub fn shadow_tick(
 }
 
 /// `start_death`: só arma se ainda não está a morrer nem pendente.
-fn start_death(state: &mut VaelRulesShadow) {
+///
+/// Marca a transição em `death_started`/`death_from_dot`: com a autoridade
+/// ligada, o `start_death` do Lua não corre no DoT nem num save com `hp` 0 —
+/// sem este sinal, a bolsa e o som de morte desses casos não tinham quem os
+/// corresse (ver `VaelDeathStarted` no [`crate::rules_authority`]).
+fn start_death(state: &mut VaelRulesShadow, from_dot: bool) {
     if state.dying > 0.0 || state.death_pending {
         return;
     }
     state.dying = DEATH_FALL_SECS;
+    state.death_started = true;
+    state.death_from_dot = from_dot;
 }
 
 /// Aplica dano clampado, como o `max(0, hp - dmg)` do Lua.
@@ -451,7 +528,7 @@ fn apply_damage(state: &mut VaelRulesShadow, amount: f32) {
     }
     state.hp = (state.hp - amount).max(0.0);
     if state.hp <= 0.0 {
-        start_death(state);
+        start_death(state, true);
     }
 }
 
@@ -529,11 +606,14 @@ fn rules_shadow_system(
     time: Res<Time>,
     vitals: Option<Res<PlayerVitals>>,
     save: Option<Res<VaelSave>>,
+    content: Option<Res<VaelContent>>,
     weather: Option<Res<WeatherState>>,
     menus: Option<Res<MenusOpen>>,
     modals: Option<Res<UiModalsOpen>>,
     mut shadow: ResMut<VaelRulesShadow>,
     mut enabled: Local<Option<bool>>,
+    mut gear_rules: Local<Option<GearRules>>,
+    mut stat_engine: Local<Option<StatEngine>>,
 ) {
     let enabled = *enabled
         .get_or_insert_with(|| shadow_enabled(std::env::var("VAEL_RULES_SHADOW").ok().as_deref()));
@@ -571,19 +651,22 @@ fn rules_shadow_system(
     let frozen = menus.as_deref().is_some_and(MenusOpen::any)
         || modals.as_deref().is_some_and(|m| m.is_open("title"));
     let death_open = modals.as_deref().is_some_and(|m| m.is_open("death"));
+    // As mesmas resistências da autoridade: só interessam com DoT a correr
+    // (é o único consumidor) e reconstroem-se do save, não do KV.
+    let resists = match content.as_ref() {
+        Some(content) if shadow.venom > 0.0 || shadow.burn > 0.0 => {
+            if gear_rules.is_none() || content.is_changed() {
+                *gear_rules = Some(GearRules::from_content(content));
+            }
+            let rules = gear_rules.as_ref().expect("acabou de ser preenchido");
+            let mut state = gear_state_from_save(&save);
+            let learned = learned_from_save(&save);
+            status_resists(rules, &mut state, &learned, &mut stat_engine)
+        }
+        _ => StatusResists::default(),
+    };
     let dt = time.delta_secs();
-    // O shadow não reconstrói o equipamento do save (nem tem o conteúdo nem a
-    // malha de atributos): sem resistências, o DoT dele é o caso base. A
-    // comparação é ao Lua com a autoridade desligada — com peças de resistência
-    // equipadas o `hp` fica mais alto no Lua (limite conhecido).
-    shadow_tick(
-        &mut shadow,
-        dt,
-        rain,
-        frozen,
-        death_open,
-        StatusResists::default(),
-    );
+    shadow_tick(&mut shadow, dt, rain, frozen, death_open, resists);
 
     // Resumo de 1 Hz (sem spam). O flag cobre o último segundo, não só a
     // última comparação.
@@ -797,6 +880,82 @@ mod tests {
             },
         );
         assert!((queimadura.hp - 97.0).abs() < 1e-4, "hp={}", queimadura.hp);
+    }
+
+    #[test]
+    fn resistencias_do_save_chegam_ao_dot_do_shadow() {
+        // A malha é a mesma da autoridade: equipamento + talentos do save.
+        let mut content = VaelContent::default();
+        content.items.items.push(crate::content::ItemDef {
+            id: "nature_amulet".into(),
+            slot: "charm".into(),
+            effects: BTreeMap::from([("venom_resist".to_string(), 0.5)]),
+            ..Default::default()
+        });
+        content.progression.skills.push(crate::content::SkillDef {
+            id: "burnward".into(),
+            effects: BTreeMap::from([("burn_resist".to_string(), 0.4)]),
+            ..Default::default()
+        });
+        let rules = GearRules::from_content(&content);
+
+        let mut save = VaelSave::default();
+        save.equipment.charm = Some("nature_amulet".into());
+        save.inventory.set("nature_amulet", 1);
+        save.progression.skills.insert("burnward".into());
+
+        let mut state = gear_state_from_save(&save);
+        assert_eq!(
+            state.equipped.get("charm").map(String::as_str),
+            Some("nature_amulet")
+        );
+        let learned = learned_from_save(&save);
+        let mut engine = None;
+        let resists = status_resists(&rules, &mut state, &learned, &mut engine);
+        assert!((resists.venom - 0.5).abs() < 1e-4);
+        assert!((resists.burn - 0.4).abs() < 1e-4);
+
+        // O DoT do shadow passa a bater com o da autoridade (4 dps a 50 %).
+        let mut shadow = VaelRulesShadow::default();
+        shadow.venom = 10.0;
+        shadow_tick(&mut shadow, 1.0, false, false, false, resists);
+        assert!((shadow.hp - 98.0).abs() < 1e-4, "hp={}", shadow.hp);
+
+        // Peça fora da mochila: o efeito dela deixa de contar.
+        save.inventory.set("nature_amulet", 0);
+        let mut state = gear_state_from_save(&save);
+        let resists = status_resists(&rules, &mut state, &learned, &mut engine);
+        assert_eq!(resists.venom, 0.0);
+        assert!((resists.burn - 0.4).abs() < 1e-4, "o talento continua");
+    }
+
+    #[test]
+    fn morte_por_dot_sinaliza_a_transicao() {
+        // Sem o sinal, o `start_death` do Lua (bolsa + som) não tinha
+        // substituto Rust quando o dano é DoT.
+        let mut state = VaelRulesShadow::default();
+        state.hp = 3.0;
+        state.venom = 10.0;
+        tick(&mut state, 1.0);
+        assert_eq!(state.hp, 0.0);
+        assert!(state.death_started, "o tick tem de marcar a morte");
+        assert!(state.death_from_dot);
+
+        // O sinal dura um tick.
+        tick(&mut state, 0.1);
+        assert!(!state.death_started);
+        assert!(!state.death_from_dot);
+
+        // 0 HP de um save (sem `dying`) também arma a morte, sem DoT.
+        let mut corrupto = VaelRulesShadow::default();
+        corrupto.hp = 0.0;
+        tick(&mut corrupto, 0.1);
+        assert!(corrupto.death_started);
+        assert!(!corrupto.death_from_dot);
+
+        // Uma morte já armada não volta a sinalizar.
+        tick(&mut corrupto, 0.1);
+        assert!(!corrupto.death_started);
     }
 
     #[test]

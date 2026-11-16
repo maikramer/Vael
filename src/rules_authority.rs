@@ -17,8 +17,11 @@
 //! - O respawn de fallback (sem modal de morte) repõe as vitais mas NÃO
 //!   teleporta o herói, não reabastece frascos e não toca na bolsa: isso é o
 //!   `rules.respawn` do Lua, que o ecrã de morte chama no "Tentar de novo".
-//! - Uma morte por DoT não toca o som `game_over` nem larga a bolsa (essas
-//!   acções vivem no `start_death` do Lua, que só o dano direto corre).
+//! - Uma morte armada pelo tick (DoT, ou um save com `hp` 0) não corre o
+//!   `start_death` do Lua: a largada da bolsa e o som `game_over` são de outro
+//!   dono. Para o caminho Rust os ver, o tick emite [`VaelDeathStarted`] no
+//!   frame em que arma a morte; quem trata das consequências
+//!   (`respawn.rs`/cofre) lê a mensagem e faz o mesmo que o `start_death`.
 //! - O `M.god` do `devmode.lua` chega via `viber.game().vael_god` (o Lua
 //!   espelha-o quando a autoridade está ligada); sem esse espelho o god do
 //!   Lua não seria visível daqui.
@@ -121,6 +124,18 @@ impl VaelRulesAuthority {
     /// O último tick chamou o respawn de fallback (sem modal de morte).
     pub fn respawned(&self) -> bool {
         self.state.respawned
+    }
+
+    /// O último tick armou uma morte (`start_death`) — ver
+    /// [`VaelDeathStarted`]. Não cobre o dano direto: esse arma a morte no
+    /// `start_death` do Lua antes de o tick correr.
+    pub fn death_started(&self) -> bool {
+        self.state.death_started
+    }
+
+    /// A morte armada pelo tick veio do DoT (veneno/queimadura).
+    pub fn death_from_dot(&self) -> bool {
+        self.state.death_from_dot
     }
 
     /// Os campos que o Rust possui, para o save/componentes.
@@ -244,6 +259,26 @@ impl OwnedVitals {
 #[derive(SystemSet, Debug, Clone, PartialEq, Eq, Hash)]
 pub struct VaelRulesSet;
 
+/// Mensagem: o tick da autoridade armou uma morte neste frame.
+///
+/// Handoff para o caminho Rust das consequências (largar a bolsa e tocar o
+/// som `game_over`): com a autoridade ligada, o `start_death` do Lua não corre
+/// no DoT nem num save carregado a 0 HP, por isso sem este sinal essas
+/// mortes ficavam sem bolsa/som. A mensagem é emitida apenas na transição —
+/// um tick por morte, nunca por frame.
+///
+/// **Não ligar dois consumidores.** O `src/respawn.rs`
+/// (`death_started_in_rust`) deteta a mesma transição comparando o `dying`/
+/// `death_pending` do KV antes e depois deste set; quem consumir esta
+/// mensagem tem de deixar de lado essa comparação (senão a bolsa cai duas
+/// vezes).
+#[derive(Message, Debug, Clone, Copy, PartialEq, Eq)]
+pub struct VaelDeathStarted {
+    /// A morte veio do dano ao longo do tempo (veneno/queimadura); `false`
+    /// para o `hp` 0 de um save carregado.
+    pub from_dot: bool,
+}
+
 /// Plugin da autoridade Rust.
 pub struct VaelRulesAuthorityPlugin;
 
@@ -252,6 +287,9 @@ impl Plugin for VaelRulesAuthorityPlugin {
         app.init_resource::<VaelRulesConfig>()
             .init_resource::<VaelRulesAuthority>()
             .init_resource::<crate::respawn::RespawnRequest>()
+            // Handoff da morte armada pelo tick (DoT/save a 0 HP): o caminho
+            // Rust das consequências lê esta mensagem.
+            .add_message::<VaelDeathStarted>()
             // O Lua lê `vael_rust_vitals` no `rules.tick`; tem de existir
             // antes do primeiro `luau_update`.
             .add_systems(Startup, apply_rust_gate)
@@ -298,6 +336,7 @@ fn rules_authority_system(
     save: Option<ResMut<VaelSave>>,
     mut authority: ResMut<VaelRulesAuthority>,
     mut respawn: ResMut<crate::respawn::RespawnRequest>,
+    mut death_started: MessageWriter<VaelDeathStarted>,
     mut gear_rules: Local<Option<crate::gear::GearRules>>,
     mut stat_engine: Local<Option<crate::stats::StatEngine>>,
 ) {
@@ -335,6 +374,13 @@ fn rules_authority_system(
             _ => StatusResists::default(),
         };
         authority.tick(time.delta_secs(), rain, frozen, death_open, resists);
+        if authority.death_started() {
+            // Transição (não por frame): o consumidor larga a bolsa/toca o
+            // `game_over` uma única vez, como o `start_death` do Lua.
+            death_started.write(VaelDeathStarted {
+                from_dot: authority.death_from_dot(),
+            });
+        }
         if authority.respawned() {
             // O patch de vitais já vai a seguir; a UI consome este pedido para
             // fazer o que o `M.respawn` fazia e o Rust não possui: teleporte,
@@ -367,16 +413,13 @@ fn rules_authority_system(
 ///
 /// O `gear.<slot>` só conta com o item na mochila (`item.<id>` > 0), como no
 /// `src/gear.rs`; a malha limpa marcas órfãs no estado local (não escreve no
-/// KV — isso é do módulo do equipamento).
+/// KV — isso é do módulo do equipamento). A conta é a MESMA do shadow
+/// (`crate::rules_shadow::status_resists`), para a paridade ser real.
 fn status_resists(
     rules: &crate::gear::GearRules,
     kv: &BTreeMap<String, Value>,
     stat_engine: &mut Option<crate::stats::StatEngine>,
 ) -> StatusResists {
-    let engine = stat_engine.get_or_insert_with(|| {
-        crate::stats::StatEngine::new(crate::stats::AttributeRules::default())
-    });
-
     let mut state = crate::gear::GearState::default();
     for slot in crate::gear::SLOTS {
         if let Some(Value::String(id)) = kv.get(&crate::gear::gear_key(slot)) {
@@ -399,11 +442,7 @@ fn status_resists(
             learned.insert(id.clone());
         }
     }
-    let snapshot = engine.snapshot(rules, &mut state, &learned);
-    StatusResists {
-        venom: snapshot.stat(crate::gear::RESIST_VENOM) as f32,
-        burn: snapshot.stat(crate::gear::RESIST_BURN) as f32,
-    }
+    crate::rules_shadow::status_resists(rules, &mut state, &learned, stat_engine)
 }
 
 /// Título/menu por cima: o frame é da UI. Espelha o `ui_owns_frame` do
@@ -792,6 +831,51 @@ mod tests {
         let mut limpo = VaelRulesAuthority::default();
         limpo.seed(&kv(&[("hp", json!(100)), ("max_hp", json!(100))]));
         assert!(!limpo.has_status_dot());
+    }
+
+    #[test]
+    fn morte_armada_pelo_tick_emite_o_sinal_para_o_caminho_rust() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
+
+        #[derive(Resource, Default)]
+        struct DeathSignals(Vec<VaelDeathStarted>);
+        fn collect(
+            mut reader: MessageReader<VaelDeathStarted>,
+            mut out: ResMut<DeathSignals>,
+        ) {
+            for signal in reader.read() {
+                out.0.push(*signal);
+            }
+        }
+
+        let mut app = App::new();
+        app.add_plugins(bevy::MinimalPlugins)
+            .insert_resource(VaelRulesConfig { rust: true })
+            .init_resource::<PlayerVitals>()
+            .init_resource::<VaelSave>()
+            .init_resource::<DeathSignals>()
+            .add_plugins(VaelRulesAuthorityPlugin)
+            .add_systems(Update, collect.after(VaelRulesSet));
+
+        // Um save com 0 HP sem `dying` arma a morte no primeiro tick em que
+        // haja `dt` — o `start_death` do Lua não corre neste caminho.
+        let mut patch = BTreeMap::new();
+        patch.insert("hp".to_string(), json!(0));
+        patch.insert("max_hp".to_string(), json!(100));
+        viber::luau::game::apply_patch_json(&patch);
+        app.update();
+        app.update();
+
+        let signals = &app.world().resource::<DeathSignals>().0;
+        assert_eq!(signals.len(), 1, "um sinal por morte, nunca por frame");
+        assert!(!signals[0].from_dot, "0 HP de save não é DoT");
+        assert!(
+            app.world().resource::<VaelRulesAuthority>().owned().dying > 0.0,
+            "o tick arma o `dying` (o ecrã de morte lê o estado)"
+        );
     }
 
     fn cena(id: &str) -> CurrentScene {
