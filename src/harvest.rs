@@ -19,8 +19,9 @@
 //!   o cooldown de 0,4 s entre golpes mantém-se;
 //! - o topple usa [`viber::physics_fx::Falling`] para `break-style: fall`;
 //!   os bursts/FX de partículas ficam para uma passagem posterior;
-//! - o substituto (`berry-bush-bare`) é spawnado sem a escala original (o
-//!   pedido de spawn não transporta escala);
+//! - o substituto (`berry-bush-bare`) leva a escala autoral (`replace-scale`)
+//!   aplicada depois do spawn do protótipo (o pedido da engine não transporta
+//!   escala — ver [`ReplacementScale`]);
 //! - o progresso de quests `collect` é pedido ao [`QuestEventQueue`]; sem
 //!   ele, o `sync_collect` do `rules.tick` (Lua) apanha o cofre no frame
 //!   seguinte.
@@ -31,6 +32,7 @@ use bevy_ext_core::{SfxClip, SfxEvent};
 use bevy_ext_world::xml::values::parse_color;
 use bevy_flora::{
     BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeLog, TreeShake, TreeShakes,
+    TreeStump,
 };
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
@@ -43,7 +45,7 @@ use viber::physics_fx::Falling;
 use viber::player::Player;
 use viber::recipes::spawn::{PendingPrototypeSpawn, PendingScriptSpawns};
 use viber::scene::SceneSource;
-use viber::scene_loader::CurrentScene;
+use viber::scene_loader::{CurrentScene, SceneEpoch};
 use viber::ui::ScriptBindValue;
 use viber::ui::script::UiScriptBinds;
 use viber::ui::widgets::UiFocusedInput;
@@ -348,6 +350,59 @@ struct BuckFocus {
     cooldown: f32,
 }
 
+/// Geração de cena em que nasceu uma árvore tombada / toco / toro do
+/// `bevy_flora`.
+///
+/// Os três são entidades RAIZ (o descarregamento da cena só leva o que o
+/// spawner marcou), por isso são limpos quando a geração muda. Comparar com o
+/// `CurrentScene.id` não serve: a troca de cena corre no `Last` e a limpeza no
+/// `Update` do frame seguinte — uma árvore **restaurada do save** na cena nova
+/// (spawn do `SceneLoad`, dentro dessa troca) era varrida como se fosse da
+/// velha. O `SceneEpoch` sobe ANTES do `SceneLoad`, por isso a árvore reposta
+/// já leva a geração nova e sobrevive.
+#[derive(Component, Debug, Clone, Copy)]
+struct FellEpoch(u64);
+
+/// A geração de cena corrente (`0` sem o recurso — apps mínimas/testes).
+fn fell_epoch(epoch: Option<&SceneEpoch>) -> u64 {
+    epoch.map_or(0, |epoch| epoch.0)
+}
+
+/// Pedido de escala uniforme para o substituto (`replace-scale`) à espera do
+/// spawn do `<Prototype>`.
+///
+/// O `PendingPrototypeSpawn` da engine **não transporta escala** (nome,
+/// posição, cota, callback Lua) e o `on_spawned` é uma `mlua::Function` que o
+/// caminho Rust não tem. O `apply_script_spawns` materializa a raiz com a
+/// translação pedida; este sistema, no `PostUpdate` depois dele e antes da
+/// propagação, encontra a raiz nova pelo XZ e escreve a escala. A posição vem
+/// do mesmo pedido, por isso o casamento é exato (≈1 mm).
+#[derive(Debug, Clone, Copy)]
+struct ReplacementScale {
+    x: f32,
+    z: f32,
+    scale: f32,
+    /// Idade do pedido (s): um protótipo que não existe não deixa o pedido
+    /// pendente para sempre.
+    age: f32,
+}
+
+/// Pedidos de escala à espera do spawn (ver [`ReplacementScale`]).
+#[derive(Resource, Default)]
+struct PendingReplacementScales(Vec<ReplacementScale>);
+
+/// Teto de espera de um pedido de escala (s).
+const REPLACEMENT_SCALE_TIMEOUT: f32 = 2.0;
+
+/// Os dois recursos de spawn da colheita num só `SystemParam`: o pedido do
+/// protótipo e a escala que ele não transporta. `harvest_input` já está no
+/// limite de 16 parâmetros da engine (um `SystemParam` a mais não compila).
+#[derive(bevy::ecs::system::SystemParam)]
+struct ReplacementSpawns<'w> {
+    spawns: Option<ResMut<'w, PendingScriptSpawns>>,
+    scales: Option<ResMut<'w, PendingReplacementScales>>,
+}
+
 /// Pedidos de tombo vindos do Lua (`viber.vael.fell_tree`): a função só
 /// enfileira (o closure não tem o ECS); o sistema processa no `Update`.
 #[derive(Resource, Clone, Default)]
@@ -387,6 +442,7 @@ fn install_fell_api(mut commands: Commands) {
 fn process_pending_fell(
     mut commands: Commands,
     pending: Option<Res<PendingFloraFell>>,
+    epoch: Option<Res<SceneEpoch>>,
     mut save: Option<ResMut<VaelSave>>,
     props: Query<(
         &GlobalTransform,
@@ -400,6 +456,7 @@ fn process_pending_fell(
     let Some(pending) = pending else {
         return;
     };
+    let epoch = fell_epoch(epoch.as_deref());
     let requests = std::mem::take(
         &mut *pending
             .0
@@ -434,6 +491,7 @@ fn process_pending_fell(
                 direction,
                 cut_height,
                 false,
+                epoch,
             );
             if let Some(key) = key.as_deref() {
                 commands.entity(tree).insert(FloraFellKey(key.to_string()));
@@ -545,6 +603,7 @@ impl Plugin for VaelHarvestPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<VaelHarvestConfig>()
             .init_resource::<HarvestFocus>()
+            .init_resource::<PendingReplacementScales>()
             .register_type::<Harvestable>()
             .register_type::<HarvestFocus>()
             .register_type::<BreakStyle>()
@@ -570,6 +629,13 @@ impl Plugin for VaelHarvestPlugin {
                     .chain()
                     .after(viber::recipes::spawn::startup),
             )
+            // Props que nascem DEPOIS do load (spawn de script, `live_edit` do
+            // Jackdaw): o `PostStartup`/`SceneLoad` não os vê e o caminho Lua
+            // (`viber.player_nearby`) vê-os — a colheita Rust ficava cega.
+            .add_systems(
+                Update,
+                attach_late_harvestables.before(update_harvest_focus),
+            )
             .add_systems(
                 Update,
                 (update_harvest_focus, harvest_input)
@@ -585,8 +651,20 @@ impl Plugin for VaelHarvestPlugin {
                     reap_periodic,
                     tree_landed_feedback,
                     buck_felled_trees,
-                    despawn_fell_trees,
                 ),
+            )
+            // As raízes do `bevy_flora` (árvores deitadas, tocos e toros) não
+            // são da cena: ficam com a geração em que nasceram e morrem quando
+            // ela muda.
+            .add_systems(Update, (tag_fell_entities, despawn_fell_trees).chain())
+            // A escala do substituto: o spawn do protótipo é exclusivo e corre
+            // no `PostUpdate`; escrever depois dele e antes da propagação põe
+            // a escala no `GlobalTransform` do MESMO frame.
+            .add_systems(
+                PostUpdate,
+                apply_replacement_scales
+                    .after(viber::recipes::spawn::apply_script_spawns)
+                    .before(bevy::transform::TransformSystems::Propagate),
             )
             .init_resource::<BuckFocus>();
     }
@@ -903,6 +981,8 @@ pub struct Stump {
     /// `None` = sem Y autorado (o spawn assenta no terreno).
     pub y: Option<f32>,
     pub z: f32,
+    /// Escala uniforme autorada (`replace-scale`); saves antigos não a têm.
+    pub scale: f32,
 }
 
 /// Lê `stump.<chave>.*` de um snapshot do `viber.game()`/`legacy`.
@@ -912,11 +992,15 @@ pub fn stump_for(kv: &BTreeMap<String, Json>, key: &str) -> Option<Stump> {
     if !REPLACEMENTS.contains(&proto) {
         return None;
     }
+    let scale = json_f32(kv.get(&field("scale")))
+        .filter(|scale| (0.05..=20.0).contains(scale))
+        .unwrap_or(1.0);
     Some(Stump {
         proto: proto.to_string(),
         x: json_f32(kv.get(&field("x")))?,
         y: json_f32(kv.get(&field("y"))),
         z: json_f32(kv.get(&field("z")))?,
+        scale,
     })
 }
 
@@ -1096,7 +1180,30 @@ fn attach_harvestables(
     props: Query<(Entity, &ScriptProps, Option<&Name>, Option<&SceneSource>), Without<Harvestable>>,
 ) {
     let root = root.as_deref().map(|root| root.0.as_path());
-    for (entity, props, name, source) in &props {
+    attach_props(&mut commands, root, &props);
+}
+
+/// O mesmo, para os props que nascem **depois** do load (`spawn_prototype`
+/// de um script, `live_edit` do Jackdaw a re-spawnar o nó). O caminho Lua lê
+/// `viber.player_nearby` (vivo) e via-os; o Rust ficava cego até ao reload.
+fn attach_late_harvestables(
+    mut commands: Commands,
+    root: Option<Res<VaelProjectRoot>>,
+    props: Query<
+        (Entity, &ScriptProps, Option<&Name>, Option<&SceneSource>),
+        (Added<ScriptProps>, Without<Harvestable>),
+    >,
+) {
+    let root = root.as_deref().map(|root| root.0.as_path());
+    attach_props(&mut commands, root, &props);
+}
+
+fn attach_props<F: bevy::ecs::query::QueryFilter>(
+    commands: &mut Commands,
+    root: Option<&Path>,
+    props: &Query<(Entity, &ScriptProps, Option<&Name>, Option<&SceneSource>), F>,
+) {
+    for (entity, props, name, source) in props.iter() {
         let name = name.map(Name::as_str).unwrap_or("");
         let key = stable_key(Some(name), source, root);
         // O `.bsn` tipado é a fonte; as props (strings do DSL) só para mundos
@@ -1224,6 +1331,7 @@ fn spawn_felled_tree(
     direction: Vec3,
     cut_height: f32,
     lying: bool,
+    epoch: u64,
 ) -> Entity {
     let tree = commands
         .spawn((
@@ -1241,6 +1349,7 @@ fn spawn_felled_tree(
                 speed: 1.0,
                 lying,
             },
+            FellEpoch(epoch),
         ))
         .id();
     if let Some(look) = look {
@@ -1262,6 +1371,7 @@ fn harvest_input(
     typing: Option<Res<UiFocusedInput>>,
     interaction: Option<Res<InteractionFocus>>,
     time: Res<Time>,
+    epoch: Option<Res<SceneEpoch>>,
     mut shakes: Option<ResMut<TreeShakes>>,
     mut harvestables: Query<(
         &mut Harvestable,
@@ -1270,7 +1380,7 @@ fn harvest_input(
         Option<&PooledTree>,
         Option<&PooledLook>,
     )>,
-    mut spawns: Option<ResMut<PendingScriptSpawns>>,
+    mut spawner: ReplacementSpawns,
     players: Query<&GlobalTransform, With<Player>>,
     queue: Option<Res<QuestEventQueue>>,
 ) {
@@ -1394,7 +1504,7 @@ fn harvest_input(
     }
     // Quebra: substituto, topple ou despawn.
     if let Some(proto) = replacement.as_deref() {
-        if let Some(spawns) = spawns.as_deref_mut() {
+        if let Some(spawns) = spawner.spawns.as_deref_mut() {
             spawns.0.push(PendingPrototypeSpawn {
                 name: proto.to_string(),
                 pos: position,
@@ -1403,6 +1513,16 @@ fn harvest_input(
                 on_spawned: None,
                 caller_path: None,
             });
+            // O pedido da engine não leva escala: aplica-se à raiz quando o
+            // `apply_script_spawns` a materializar (ver [`ReplacementScale`]).
+            if let Some(scales) = spawner.scales.as_deref_mut() {
+                scales.0.push(ReplacementScale {
+                    x: position.x,
+                    z: position.z,
+                    scale: replace_scale,
+                    age: 0.0,
+                });
+            }
         }
         commands.entity(entity).try_despawn();
     } else if style == BreakStyle::Fall {
@@ -1420,6 +1540,7 @@ fn harvest_input(
                 direction,
                 cut_height,
                 false,
+                fell_epoch(epoch.as_deref()),
             );
             commands
                 .entity(entity)
@@ -1582,6 +1703,8 @@ fn reap_saved(
     commands: &mut Commands,
     save: Option<&VaelSave>,
     mut spawns: Option<&mut PendingScriptSpawns>,
+    mut scales: Option<&mut PendingReplacementScales>,
+    epoch: u64,
     helper: &TransformHelper<'_, '_>,
     harvestables: &Query<(
         Entity,
@@ -1632,6 +1755,7 @@ fn reap_saved(
                 Vec3::new(fell.dx, 0.0, fell.dz),
                 fell.cut_height,
                 true,
+                epoch,
             );
             commands.entity(tree).insert(FloraFellKey(matched.clone()));
             if fell.bucked {
@@ -1667,6 +1791,16 @@ fn reap_saved(
             on_spawned: None,
             caller_path: None,
         });
+        // A escala autorada do substituto (`stump.<chave>.scale`) volta com
+        // ele; sem isto o rebento ficava à escala do protótipo.
+        if let Some(scales) = scales.as_deref_mut() {
+            scales.0.push(ReplacementScale {
+                x: stump.x,
+                z: stump.z,
+                scale: stump.scale,
+                age: 0.0,
+            });
+        }
     }
 }
 
@@ -1675,6 +1809,8 @@ fn reap_on_load(
     mut commands: Commands,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
+    mut scales: Option<ResMut<PendingReplacementScales>>,
+    epoch: Option<Res<SceneEpoch>>,
     helper: TransformHelper,
     harvestables: Query<(
         Entity,
@@ -1689,6 +1825,8 @@ fn reap_on_load(
         &mut commands,
         save.as_deref(),
         spawns.as_deref_mut(),
+        scales.as_deref_mut(),
+        fell_epoch(epoch.as_deref()),
         &helper,
         &harvestables,
     );
@@ -1702,6 +1840,8 @@ fn reap_periodic(
     mut commands: Commands,
     save: Option<Res<VaelSave>>,
     mut spawns: Option<ResMut<PendingScriptSpawns>>,
+    mut scales: Option<ResMut<PendingReplacementScales>>,
+    epoch: Option<Res<SceneEpoch>>,
     helper: TransformHelper,
     harvestables: Query<(
         Entity,
@@ -1721,39 +1861,99 @@ fn reap_periodic(
         &mut commands,
         save.as_deref(),
         spawns.as_deref_mut(),
+        scales.as_deref_mut(),
+        fell_epoch(epoch.as_deref()),
         &helper,
         &harvestables,
     );
 }
 
-/// As árvores tombadas são raízes (fora da hierarquia da cena): numa troca de
-/// cena ficariam a flutuar. O estado persiste no save e o restauro repõe-nas.
-///
-/// Os **toros** (`TreeLog`) também são raízes criadas pelo `bevy_flora` ao
-/// retalhar: sem os despawnar, ficavam no mundo depois de sair da cena (e
-/// apareciam noutra cena, noutro sítio do mapa). O save tem
-/// `flora-fell.<chave>.bucked` e volta a retalhar a árvore reposta.
+/// Marca os tocos e toros que o `bevy_flora` cria (entidades RAIZ suas) com a
+/// geração da árvore de que nasceram: o toco guarda a árvore em `TreeStump` e
+/// o toro o toco, por isso a geração propaga-se sem um `CurrentScene`.
+fn tag_fell_entities(
+    mut commands: Commands,
+    epoch: Option<Res<SceneEpoch>>,
+    epochs: Query<&FellEpoch>,
+    stumps: Query<(Entity, &TreeStump), (Added<TreeStump>, Without<FellEpoch>)>,
+    logs: Query<(Entity, &TreeLog), (Added<TreeLog>, Without<FellEpoch>)>,
+) {
+    if stumps.is_empty() && logs.is_empty() {
+        return;
+    }
+    let current = fell_epoch(epoch.as_deref());
+    for (entity, stump) in &stumps {
+        let inherited = stump
+            .tree
+            .and_then(|tree| epochs.get(tree).ok())
+            .map_or(current, |epoch| epoch.0);
+        commands.entity(entity).insert(FellEpoch(inherited));
+    }
+    for (entity, log) in &logs {
+        let inherited = epochs.get(log.stump).map_or(current, |epoch| epoch.0);
+        commands.entity(entity).insert(FellEpoch(inherited));
+    }
+}
+
+/// Limpa as raízes do `bevy_flora` da cena que saiu: árvores tombadas
+/// (`FellTree`/`Felled`), os **tocos** (`TreeStump`, uma raiz criada pelo
+/// crate — sem isto a cena seguinte herdava um toco com malha órfã) e os
+/// **toros** (`TreeLog`, criados ao retalhar). O estado persiste no save e o
+/// restauro (no `SceneLoad`, já com a geração nova) repõe-nos.
 fn despawn_fell_trees(
     mut commands: Commands,
-    current: Option<Res<CurrentScene>>,
-    trees: Query<Entity, Or<(With<FellTree>, With<Felled>, With<TreeLog>)>>,
-    mut last: Local<Option<String>>,
+    epoch: Option<Res<SceneEpoch>>,
+    trees: Query<
+        (Entity, &FellEpoch),
+        Or<(
+            With<FellTree>,
+            With<Felled>,
+            With<TreeStump>,
+            With<TreeLog>,
+        )>,
+    >,
 ) {
-    let Some(current) = current else {
-        return;
-    };
-    let id = current.id.clone().unwrap_or_default();
-    if last.as_deref() == Some(id.as_str()) {
+    let current = fell_epoch(epoch.as_deref());
+    for (entity, born) in &trees {
+        if born.0 != current {
+            commands.entity(entity).despawn();
+        }
+    }
+}
+
+/// Escreve a escala do substituto na raiz que o `apply_script_spawns`
+/// materializou (ver [`ReplacementScale`]).
+fn apply_replacement_scales(
+    time: Res<Time>,
+    mut pending: ResMut<PendingReplacementScales>,
+    mut spawned: Query<(&mut Transform, Option<&ChildOf>), Added<Transform>>,
+) {
+    if pending.0.is_empty() {
         return;
     }
-    let first = last.is_none();
-    *last = Some(id);
-    if first {
-        return;
-    }
-    for tree in &trees {
-        commands.entity(tree).despawn();
-    }
+    let dt = time.delta_secs();
+    pending.0.retain_mut(|request| {
+        let mut matched = false;
+        for (mut transform, parent) in &mut spawned {
+            // A raiz do protótipo não tem pai; um filho local (0,0) não é o
+            // substituto (e um casamento errado escalava a malha errada).
+            if parent.is_some() {
+                continue;
+            }
+            if (transform.translation.x - request.x).abs() <= 1e-3
+                && (transform.translation.z - request.z).abs() <= 1e-3
+            {
+                transform.scale = Vec3::splat(request.scale);
+                matched = true;
+                break;
+            }
+        }
+        if matched {
+            return false;
+        }
+        request.age += dt;
+        request.age <= REPLACEMENT_SCALE_TIMEOUT
+    });
 }
 
 /// Embate da árvore cortada: o `bevy_flora` avisa com `TreeLanded` no primeiro
@@ -2193,9 +2393,17 @@ mod tests {
         kv.insert("stump.tree@forest.xml#1.x".into(), json!(1.5));
         kv.insert("stump.tree@forest.xml#1.y".into(), json!(2.0));
         kv.insert("stump.tree@forest.xml#1.z".into(), json!(-3.0));
+        kv.insert("stump.tree@forest.xml#1.scale".into(), json!(1.35));
         let stump = stump_for(&kv, "tree@forest.xml#1").expect("stump");
         assert_eq!(stump.proto, "berry-bush-bare");
         assert_eq!((stump.x, stump.y, stump.z), (1.5, Some(2.0), -3.0));
+        assert!((stump.scale - 1.35).abs() < 1e-6);
+        // Sem `scale` (save antigo) o substituto fica à escala do protótipo.
+        kv.remove("stump.tree@forest.xml#1.scale");
+        assert_eq!(stump_for(&kv, "tree@forest.xml#1").map(|s| s.scale), Some(1.0));
+        // Fora do intervalo autorado (`replace-scale` 0,05..20) cai em 1.
+        kv.insert("stump.tree@forest.xml#1.scale".into(), json!(99.0));
+        assert_eq!(stump_for(&kv, "tree@forest.xml#1").map(|s| s.scale), Some(1.0));
         // Sem protótipo conhecido não há stump.
         kv.insert("stump.tree@forest.xml#1.proto".into(), json!("nao-existe"));
         assert!(stump_for(&kv, "tree@forest.xml#1").is_none());
@@ -2289,6 +2497,29 @@ mod tests {
         assert_eq!(harvestable.hits, 2);
         assert_eq!(harvestable.kind, "stone");
         assert_eq!(harvestable.amount, 4);
+    }
+
+    /// Um prop que nasce com o jogo a correr (`spawn_prototype` de um script,
+    /// `live_edit`) também recebe `Harvestable`: o caminho Lua lê
+    /// `viber.player_nearby` e via-o, o Rust ficava cego até ao reload.
+    #[test]
+    fn attach_le_props_nascidos_depois_do_load() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_systems(Update, attach_late_harvestables);
+        app.update();
+        let entity = app
+            .world_mut()
+            .spawn(ScriptProps(Arc::new(props(&[
+                ("destructible", "hits: 1; break-style: shatter"),
+                ("resource-kind", "stone"),
+            ]))))
+            .id();
+        app.update();
+        assert!(
+            app.world().get::<Harvestable>(entity).is_some(),
+            "o prop de runtime fica colhível"
+        );
     }
 
     // ── durabilidade/loot/XP ────────────────────────────────────────────
@@ -2639,59 +2870,90 @@ mod tests {
         let _ = point;
     }
 
-    /// Uma troca de cena leva as árvores deitadas E os toros (`TreeLog`): os
-    /// dois são RAIZES criadas pelo `bevy_flora` fora da hierarquia da cena.
-    /// Sem os toros na limpeza, ficavam no mundo depois de sair da cena.
+    /// Uma troca de cena leva as árvores deitadas, os **tocos** e os toros: os
+    /// três são RAIZES criadas pelo `bevy_flora` fora da hierarquia da cena.
+    /// A árvore **restaurada do save** na cena nova (spawn do `SceneLoad`, já
+    /// com a geração nova) NÃO pode ser varrida no frame seguinte — era o que
+    /// a limpeza por `CurrentScene.id` fazia (a troca corre no `Last`).
     #[test]
-    fn troca_de_cena_limpa_as_arvores_deitadas_e_os_toros() {
-        fn scene(id: &str) -> viber::scene_loader::CurrentScene {
-            viber::scene_loader::CurrentScene {
-                root: PathBuf::new(),
-                id: Some(id.to_string()),
-                path: PathBuf::new(),
-                title: None,
-                entry: None,
-                came_from: None,
-                return_pose: None,
-            }
-        }
-
+    fn troca_de_cena_limpa_as_raizes_do_bevy_flora_da_geracao_antiga() {
+        let capsule = || bevy_flora::WoodCapsule {
+            a: Vec3::ZERO,
+            b: Vec3::Y,
+            radius: 0.1,
+        };
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
-            .insert_resource(scene("main"))
-            .add_systems(Update, despawn_fell_trees);
-        let log = app
+            .insert_resource(SceneEpoch(7))
+            .add_systems(Update, (tag_fell_entities, despawn_fell_trees).chain());
+
+        let old_tree = app
+            .world_mut()
+            .spawn((FellTree::default(), FellEpoch(6)))
+            .id();
+        let old_stump = app
+            .world_mut()
+            .spawn((
+                TreeStump {
+                    tree: Some(old_tree),
+                    capsule: capsule(),
+                },
+                FellEpoch(6),
+            ))
+            .id();
+        let old_log = app
             .world_mut()
             .spawn((
                 TreeLog {
-                    stump: Entity::from_raw_u32(1).expect("id"),
+                    stump: old_stump,
                     index: 0,
-                    capsule: bevy_flora::WoodCapsule {
-                        a: Vec3::ZERO,
-                        b: Vec3::Y,
-                        radius: 0.1,
-                    },
+                    capsule: capsule(),
                 },
-                Transform::default(),
+                FellEpoch(6),
             ))
             .id();
-        let tree = app
+        // A árvore reposta do save na cena NOVA (geração 7) fica.
+        let new_tree = app
             .world_mut()
-            .spawn((FellTree::default(), Transform::default()))
+            .spawn((
+                FellTree {
+                    lying: true,
+                    ..default()
+                },
+                FellEpoch(7),
+            ))
+            .id();
+        // O toco que o crate acabou de criar herda a geração da árvore.
+        let new_stump = app
+            .world_mut()
+            .spawn(TreeStump {
+                tree: Some(new_tree),
+                capsule: capsule(),
+            })
             .id();
 
-        // 1.º frame só assenta a cena: nada a limpar.
-        app.update();
-        assert!(app.world().get_entity(log).is_ok());
-        assert!(app.world().get_entity(tree).is_ok());
-
-        app.insert_resource(scene("interiors/chapel"));
         app.update();
         assert!(
-            app.world().get_entity(log).is_err(),
+            app.world().get_entity(old_tree).is_err(),
+            "a árvore deitada da cena anterior sai"
+        );
+        assert!(
+            app.world().get_entity(old_stump).is_err(),
+            "o toco do crate também é uma raiz e sai"
+        );
+        assert!(
+            app.world().get_entity(old_log).is_err(),
             "os toros da cena anterior saem"
         );
-        assert!(app.world().get_entity(tree).is_err());
+        assert!(
+            app.world().get_entity(new_tree).is_ok(),
+            "a árvore restaurada na cena nova não é varrida"
+        );
+        assert_eq!(
+            app.world().get::<FellEpoch>(new_stump).map(|epoch| epoch.0),
+            Some(7),
+            "o toco novo herda a geração da árvore"
+        );
     }
 
     /// `[J]` numa árvore deitada retalha-a em toros e marca o save.
@@ -2833,6 +3095,63 @@ mod tests {
         let stump = stump_for(&save.legacy, "tree@forest.xml#1").expect("stump");
         assert_eq!(stump.proto, "berry-bush-bare");
         assert_eq!((stump.x, stump.y, stump.z), (1.5, Some(2.0), -3.0));
+        assert!(
+            (stump.scale - 1.25).abs() < 1e-6,
+            "a escala do substituto ida e volta: {}",
+            stump.scale
+        );
+    }
+
+    /// O substituto spawnado pelo `apply_script_spawns` recebe a escala do
+    /// `replace-scale`: o pedido da engine não a transporta, por isso é escrita
+    /// na raiz nova (a que não tem pai) pela posição XZ do pedido.
+    #[test]
+    fn replace_scale_aplica_se_a_raiz_spawnada() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<PendingReplacementScales>()
+            .add_systems(Update, apply_replacement_scales);
+        app.world_mut()
+            .resource_mut::<PendingReplacementScales>()
+            .0
+            .push(ReplacementScale {
+                x: 4.0,
+                z: -2.0,
+                scale: 1.5,
+                age: 0.0,
+            });
+        // Um FILHO na origem local (0,0) não pode ser o alvo.
+        let parent = app
+            .world_mut()
+            .spawn(Transform::from_xyz(100.0, 0.0, 100.0))
+            .id();
+        let child = app
+            .world_mut()
+            .spawn((Transform::default(), ChildOf(parent)))
+            .id();
+        let bush = app
+            .world_mut()
+            .spawn(Transform::from_xyz(4.0, 40.0, -2.0))
+            .id();
+
+        app.update();
+
+        assert_eq!(
+            app.world().get::<Transform>(bush).map(|t| t.scale),
+            Some(Vec3::splat(1.5))
+        );
+        assert_eq!(
+            app.world().get::<Transform>(child).map(|t| t.scale),
+            Some(Vec3::ONE),
+            "um filho local não é a raiz do protótipo"
+        );
+        assert!(
+            app.world()
+                .resource::<PendingReplacementScales>()
+                .0
+                .is_empty(),
+            "o pedido é consumido pelo spawn que casa"
+        );
     }
 
     #[test]
