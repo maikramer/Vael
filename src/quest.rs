@@ -660,13 +660,20 @@ pub(crate) fn install_quest_api(content: Option<Res<VaelContent>>) {
         warn!("vael: quests sem conteúdo carregado — `viber.vael` não estendido");
         return;
     };
-    let rules = QuestRules::from_content(&content);
-    let vault = VaultRules::from_items(&content.items);
-    let xp = XpRules::from_progression(&content.progression);
+    // Um `Arc` por conjunto de regras: cada contexto BMS (~199 + criaturas)
+    // partilha-o em vez de clonar as definições/cofre/curva ao nascer.
+    let rules = Arc::new(QuestRules::from_content(&content));
+    let vault = Arc::new(VaultRules::from_items(&content.items));
+    let xp = Arc::new(XpRules::from_progression(&content.progression));
     let quests = content.quests.len();
-    // `Fn`: o closure possui as regras e clona por contexto novo.
+    // `Fn`: o closure possui as regras e clona o `Arc` por contexto novo.
     crate::script_host::register_installer(move |lua| {
-        install(lua, rules.clone(), vault.clone(), xp.clone())
+        install_shared(
+            lua,
+            Arc::clone(&rules),
+            Arc::clone(&vault),
+            Arc::clone(&xp),
+        )
     });
     info!(
         quests,
@@ -676,15 +683,25 @@ pub(crate) fn install_quest_api(content: Option<Res<VaelContent>>) {
 
 /// Acrescenta as funções `quest_*` a `viber.vael` sem substituir as que já lá
 /// estão (cofre, XP, equipamento).
+///
+/// O caminho dos testes/host sem plugin: embrulha as regras em `Arc`s novos.
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn install(
     lua: &Lua,
     rules: QuestRules,
     vault: VaultRules,
     xp: XpRules,
 ) -> mlua::Result<()> {
-    let rules = Arc::new(rules);
-    let vault = Arc::new(vault);
-    let xp = Arc::new(xp);
+    install_shared(lua, Arc::new(rules), Arc::new(vault), Arc::new(xp))
+}
+
+/// O mesmo com as regras partilhadas pelos contextos (o jogo).
+pub(crate) fn install_shared(
+    lua: &Lua,
+    rules: Arc<QuestRules>,
+    vault: Arc<VaultRules>,
+    xp: Arc<XpRules>,
+) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
     vael_fn!(

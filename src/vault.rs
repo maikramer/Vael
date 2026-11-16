@@ -91,15 +91,20 @@ impl VaultRules {
             .is_some_and(|item| item.kind == "resource")
     }
 
-    /// Teto de uma pilha: recurso → `resource_cap`; item com `stack` → esse
-    /// valor; caso contrário → `stack_max`. Nunca negativo.
+    /// Teto de uma pilha: recurso → `resource_cap`; item com `stack` > 0 →
+    /// esse valor; caso contrário → `stack_max`. Nunca negativo.
+    ///
+    /// É a ÚNICA fonte do teto: a loja e a forja usam-na (`economy::cap_of`)
+    /// e o `vault_add` cobra por ela, por isso o pré-check de uma compra/forja
+    /// e a escrita no cofre concordam sempre (incluindo os recursos, que param
+    /// no `resource_cap` e não no `stack_max`).
     pub fn cap_for(&self, kind: &str) -> i64 {
         if self.is_resource(kind) {
             return self.resource_cap.max(0);
         }
         match self.items.get(kind).and_then(|item| item.stack) {
-            Some(stack) => stack.max(0),
-            None => self.stack_max.max(0),
+            Some(stack) if stack > 0 => stack,
+            _ => self.stack_max.max(0),
         }
     }
 }
@@ -224,9 +229,11 @@ pub(crate) fn install_vault_api(
         warn!("vael: cofre sem conteúdo carregado — `viber.vael` não instalado");
         return;
     };
-    let rules = VaultRules::from_items(&content.items);
+    // UM `Arc` para o jogo todo: cada contexto BMS (~199 + as criaturas) lê o
+    // mesmo mapa de itens em vez de clonar `VaultRules` ao nascer.
+    let rules = Arc::new(VaultRules::from_items(&content.items));
     let itens = content.items.items.len();
-    crate::script_host::register_installer(move |lua| install(lua, rules.clone()));
+    crate::script_host::register_installer(move |lua| install_shared(lua, Arc::clone(&rules)));
     info!(
         itens,
         "vael: cofre em Rust registado nos contextos BMS (`viber.vael`)"
@@ -301,8 +308,15 @@ macro_rules! vael_fn {
 pub(crate) use vael_fn;
 
 /// Instala as quatro funções do cofre na tabela `viber.vael`.
+///
+/// O caminho dos testes/host sem plugin: embrulha as regras num `Arc` novo.
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn install(lua: &Lua, rules: VaultRules) -> mlua::Result<()> {
-    let rules = Arc::new(rules);
+    install_shared(lua, Arc::new(rules))
+}
+
+/// O mesmo com as regras partilhadas pelos contextos (o jogo).
+pub(crate) fn install_shared(lua: &Lua, rules: Arc<VaultRules>) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
     vael_fn!(

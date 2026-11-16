@@ -411,11 +411,19 @@ pub(crate) fn install_gear_api(content: Option<Res<VaelContent>>) {
         warn!("vael: equipamento sem conteúdo carregado — `viber.vael` não estendido");
         return;
     };
-    let rules = GearRules::from_content(&content);
+    // UM `Arc` de regras e UM `StatEngine` para o jogo todo. Antes cada
+    // contexto BMS (~199 + as criaturas) clonava o equipamento/talentos e
+    // criava a sua própria `World` do gauge. O motor é partilhado por um
+    // `Mutex`: os contextos leem o MESMO `viber.game()`, por isso o digest do
+    // último rebuild continua válido entre eles.
+    let rules = Arc::new(GearRules::from_content(&content));
+    let stats = Arc::new(Mutex::new(StatEngine::new(AttributeRules::default())));
     let itens = content.items.items.len();
     let talentos = content.progression.skills.len();
-    // `Fn`: o closure possui as regras e clona por contexto novo.
-    crate::script_host::register_installer(move |lua| install(lua, rules.clone()));
+    // `Fn`: o closure partilha os `Arc`s por contexto novo.
+    crate::script_host::register_installer(move |lua| {
+        install_shared(lua, Arc::clone(&rules), Arc::clone(&stats))
+    });
     info!(
         itens,
         talentos, "vael: equipamento em Rust registado nos contextos BMS (`viber.vael`)"
@@ -427,9 +435,24 @@ pub(crate) fn install_gear_api(content: Option<Res<VaelContent>>) {
 /// Usa a tabela já criada pelo cofre/XP; só cria uma nova se esta não existir.
 /// O [`StatEngine`] é partilhado por todas as funções que leem as passivas —
 /// reconstrói o grafo só quando o conjunto equipado/talentos muda.
+///
+/// O caminho dos testes/host sem plugin: embrulha as regras/motor em `Arc`s
+/// novos (um motor isolado por contextos montados à mão).
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn install(lua: &Lua, rules: GearRules) -> mlua::Result<()> {
-    let rules = Arc::new(rules);
-    let stats = Arc::new(Mutex::new(StatEngine::new(AttributeRules::default())));
+    install_shared(
+        lua,
+        Arc::new(rules),
+        Arc::new(Mutex::new(StatEngine::new(AttributeRules::default()))),
+    )
+}
+
+/// O mesmo com as regras/motor partilhados pelos contextos (o jogo).
+pub(crate) fn install_shared(
+    lua: &Lua,
+    rules: Arc<GearRules>,
+    stats: Arc<Mutex<StatEngine>>,
+) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
     vael_fn!(

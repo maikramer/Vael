@@ -10,14 +10,17 @@
 //! Regras portadas de `scripts/game/shop.lua` e `scripts/lib/craft.lua`:
 //! - só entram no catálogo itens com `shop` e um preço válido; um preço
 //!   negativo é ignorado e 0 só é válido na compra (`zero_ok`);
-//! - o teto de pilha é o `cap_of` do Lua: `stack` (> 0) ou `stack_max`. O
-//!   `resource_cap` só corta no `vault_add`; é essa diferença que os
-//!   rollbacks de compra/forja recuperam;
+//! - o teto de pilha é o [`VaultRules::cap_for`] (a mesma fonte do
+//!   `vault_add`): recursos param no `resource_cap`, os outros no `stack` do
+//!   item ou no `stack_max`. O pré-check da compra/forja e a escrita no cofre
+//!   concordam sempre, por isso um item no teto falha antes de o ouro sair;
 //! - comprar: o ouro sai e o item entra; sem espaço na mochila o ouro volta;
 //! - vender: o item sai e o ouro entra; se o ouro não couber todo, o parcial
 //!   é retirado e o item regressa ao cofre;
 //! - forjar: os custos saem e o produto entra; uma falha (falta/cheio)
-//!   devolve tudo o que foi tirado.
+//!   devolve tudo o que foi tirado. O teto do PRODUTO conta com os custos já
+//!   consumidos (uma receita que gasta o próprio item que produz não é
+//!   "cheia" só porque a pilha está no teto).
 
 use std::collections::{BTreeMap, BTreeSet};
 use std::sync::Arc;
@@ -100,13 +103,12 @@ pub fn price_of(value: Option<i64>, zero_ok: bool) -> Option<i64> {
     }
 }
 
-/// Teto da pilha como o `cap_of` do Lua: `stack` quando > 0, senão
-/// `stack_max`. O `resource_cap` é do `vault_add` (ver o doc do módulo).
+/// Teto da pilha: delega em [`VaultRules::cap_for`], a mesma fonte que o
+/// `vault_add` cobra. Manter duas contas (stack/`stack_max` aqui e
+/// `resource_cap` no cofre) fazia a loja aceitar uma compra que o cofre
+/// cortava depois.
 pub fn cap_of(vault: &VaultRules, id: &str) -> i64 {
-    match vault.items.get(id).and_then(|item| item.stack) {
-        Some(stack) if stack > 0 => stack,
-        _ => vault.stack_max.max(0),
-    }
+    vault.cap_for(id)
 }
 
 /// Acção da negociação.
@@ -501,10 +503,18 @@ fn recipe_status(
             return CraftStatus::Missing;
         }
     }
+    // O produto pode ser também um custo da própria receita: o teto conta com
+    // os custos JÁ consumidos (senão uma pilha no teto dizia "cheia" mesmo
+    // quando a forja liberta espaço ao gastar o próprio item).
+    let consumed = recipe
+        .cost
+        .iter()
+        .filter(|(item, _)| item == &recipe.out)
+        .map(|(_, n)| *n)
+        .sum::<i64>();
     let count = recipe.output_count();
-    if vault_get(&rules.vault, kv, &recipe.out).saturating_add(count)
-        > cap_of(&rules.vault, &recipe.out)
-    {
+    let have = vault_get(&rules.vault, kv, &recipe.out).saturating_sub(consumed);
+    if have.saturating_add(count) > cap_of(&rules.vault, &recipe.out) {
         return CraftStatus::Full;
     }
     CraftStatus::Ok
@@ -608,12 +618,14 @@ pub(crate) fn install_economy_api(content: Option<Res<VaelContent>>) {
         warn!("vael: economia sem conteúdo carregado — `viber.vael` não estendido");
         return;
     };
-    let shop = ShopRules::from_items(&content.items);
-    let craft = CraftRules::from_content(&content.items, &content.recipes);
+    // Um `Arc` por conjunto de regras: os contextos BMS (~199 + criaturas)
+    // partilham-no em vez de clonar o catálogo/receitas ao nascer.
+    let shop = Arc::new(ShopRules::from_items(&content.items));
+    let craft = Arc::new(CraftRules::from_content(&content.items, &content.recipes));
     let receitas = craft.recipes.len();
-    // `Fn`: o closure possui as regras e clona por contexto novo.
+    // `Fn`: o closure possui as regras e clona o `Arc` por contexto novo.
     crate::script_host::register_installer(move |lua| {
-        install(lua, shop.clone(), craft.clone())
+        install_shared(lua, Arc::clone(&shop), Arc::clone(&craft))
     });
     info!(
         itens = content.items.items.len(),
@@ -623,9 +635,19 @@ pub(crate) fn install_economy_api(content: Option<Res<VaelContent>>) {
 
 /// Acrescenta as funções da loja/forja a `viber.vael` sem substituir as que
 /// já lá estão (cofre, XP, equipamento, quests, combate, relógio).
+///
+/// O caminho dos testes/host sem plugin: embrulha as regras em `Arc`s novos.
+#[cfg_attr(not(test), allow(dead_code))]
 pub(crate) fn install(lua: &Lua, shop: ShopRules, craft: CraftRules) -> mlua::Result<()> {
-    let shop = Arc::new(shop);
-    let craft = Arc::new(craft);
+    install_shared(lua, Arc::new(shop), Arc::new(craft))
+}
+
+/// O mesmo com as regras partilhadas pelos contextos (o jogo).
+pub(crate) fn install_shared(
+    lua: &Lua,
+    shop: Arc<ShopRules>,
+    craft: Arc<CraftRules>,
+) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
     vael_fn!(
@@ -909,6 +931,7 @@ mod tests {
                 .iter()
                 .map(|(item, n)| ((*item).to_string(), *n))
                 .collect(),
+            ..Default::default()
         };
         RecipesFile {
             recipes: vec![
@@ -957,14 +980,15 @@ mod tests {
     }
 
     #[test]
-    fn teto_usa_stack_ou_stack_max_como_o_lua() {
+    fn teto_usa_stack_ou_stack_max_e_o_resource_cap() {
         let shop = shop();
         assert_eq!(cap_of(&shop.vault, "semente"), 3);
         assert_eq!(cap_of(&shop.vault, "pocao"), 5);
         assert_eq!(cap_of(&shop.vault, "desconhecido"), 5);
-        // O `cap_of` do Lua não consulta o `resource_cap` (3): é o `vault_add`
-        // que o aplica, e é por isso que o rollback existe.
-        assert_eq!(cap_of(&shop.vault, "seiva"), 5);
+        // Recurso: o teto é o `resource_cap` (3) nos DOIS caminhos — o
+        // pré-check da loja/forja e o `vault_add` dizem o mesmo.
+        assert_eq!(cap_of(&shop.vault, "seiva"), 3);
+        assert_eq!(shop.vault.cap_for("seiva"), 3);
     }
 
     #[test]
@@ -1038,15 +1062,16 @@ mod tests {
     }
 
     #[test]
-    fn compra_sem_espaco_devolve_o_ouro() {
+    fn compra_de_recurso_no_teto_falha_sem_gastar_ouro() {
         let shop = shop();
-        // `seiva` é recurso e tem `resource_cap` 3: o teto da banca (5)
-        // deixa passar, o `vault_add` corta e a compra reembolsa.
+        // `seiva` é recurso e tem `resource_cap` 3: o pré-check da banca usa
+        // o mesmo teto do `vault_add` e a compra falha antes de o ouro sair.
         let mut inventario = kv(&[("item.gold", 2), ("item.seiva", 3)]);
         let out = shop_trade(&shop, &mut inventario, TradeAction::Buy, "seiva");
         assert!(!out.ok);
-        assert_eq!(out.reason, Some(TradeReason::NoSpace));
-        assert_eq!(inventario["item.gold"], 2, "o ouro tem de voltar");
+        assert_eq!(out.reason, Some(TradeReason::Full));
+        assert_eq!(out.cap, Some(3));
+        assert_eq!(inventario["item.gold"], 2, "o ouro não pode sair");
         assert_eq!(inventario["item.seiva"], 3);
     }
 
@@ -1162,16 +1187,62 @@ mod tests {
     }
 
     #[test]
-    fn forja_reverte_quando_o_produto_nao_cabe_no_teto_do_cofre() {
+    fn forja_de_recurso_acima_do_resource_cap_e_full_sem_tirar_custos() {
         let craft = craft();
-        // `seiva` é recurso: o cap da receita (5) deixa passar, o cofre (3)
-        // corta a produção a 1 e os custos voltam.
+        // `seiva` é recurso (`resource_cap` 3): 2 + 2 não cabe e o
+        // pré-check apanha-o ANTES de os custos saírem.
         let mut inventario = kv(&[("item.erva", 2), ("item.seiva", 2)]);
         let out = craft_make(&craft, &mut inventario, "seiva");
         assert!(!out.ok);
         assert_eq!(out.reason, Some(CraftReason::Full));
-        assert_eq!(inventario["item.erva"], 2, "custos devolvidos");
-        assert_eq!(inventario["item.seiva"], 2, "produção parcial revertida");
+        assert_eq!(inventario["item.erva"], 2, "custos intactos");
+        assert_eq!(inventario["item.seiva"], 2);
+    }
+
+    #[test]
+    fn forja_que_gasta_o_proprio_produto_cabe_no_teto() {
+        // Pilha da poção no teto (5) e a receita gasta 1 poção para produzir
+        // 1: 5 - 1 + 1 = 5, cabe. O pré-check antigo (5 + 1 > 5) dizia
+        // "cheia" e a forja nunca passava.
+        let recipes = RecipesFile {
+            recipes: vec![RecipeDef {
+                id: "reforja".into(),
+                out: "pocao".into(),
+                count: 1,
+                cost: [("pocao".to_string(), 1)].into_iter().collect(),
+                ..Default::default()
+            }],
+            ..Default::default()
+        };
+        let craft = CraftRules::from_content(&items_file(), &recipes);
+        let mut inventario = kv(&[("item.pocao", 5)]);
+
+        assert_eq!(
+            craft_status(&craft, &inventario, "reforja"),
+            Some(CraftStatus::Ok)
+        );
+        let out = craft_make(&craft, &mut inventario, "reforja");
+        assert!(out.ok, "razão: {:?}", out.reason);
+        assert_eq!(inventario["item.pocao"], 5);
+
+        // Sem espaço de facto (gasta 0 e produz 2 com a pilha a 4/5): Full.
+        let recipes = RecipesFile {
+            recipes: vec![RecipeDef {
+                id: "dobra".into(),
+                out: "pocao".into(),
+                count: 2,
+                cost: [("erva".to_string(), 1)].into_iter().collect(),
+                ..Default::default()
+            }],
+            ..Default::default()
+        };
+        let craft = CraftRules::from_content(&items_file(), &recipes);
+        let mut inventario = kv(&[("item.erva", 1), ("item.pocao", 4)]);
+        assert_eq!(
+            craft_status(&craft, &inventario, "dobra"),
+            Some(CraftStatus::Full)
+        );
+        assert_eq!(inventario["item.pocao"], 4);
     }
 
     #[test]
