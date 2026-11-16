@@ -16,6 +16,7 @@ use bevy::prelude::*;
 use serde::{Deserialize, Serialize};
 use serde_json::{Value, json};
 
+use crate::boat::BoatPose;
 use crate::compat::{json_bool, json_f32, json_i64};
 use crate::components::{Inventory, PlayerVitals, QuestLog, XpState};
 
@@ -65,6 +66,20 @@ pub struct VaelSave {
     pub harvested: BTreeSet<String>,
     pub markers: BTreeSet<String>,
     pub spawn: Option<[f32; 3]>,
+    /// Poses dos barcos do `main` ([`crate::boat::BoatStates`]) e o barco em
+    /// que o herói seguia. Os barcos são despawnados a cada `SceneLoad`, por
+    /// isso a pose tem de viajar no save: sem ela um save a bordo acordava o
+    /// herói na coordenada do barco e o barco no sítio autorado.
+    ///
+    /// Vive no JSON tipado (e não no payload refletido do `save_native`) de
+    /// propósito: o `#[serde(default)]` deixa um save antigo (sem os campos)
+    /// carregar, enquanto um campo novo no payload refletido fazia falhar o
+    /// `from_reflect` do moonshine e perdia o save INTEIRO.
+    #[serde(default)]
+    pub boats: Vec<BoatPose>,
+    /// Nome do barco em que o herói seguia (`None` = a pé).
+    #[serde(default)]
+    pub riding_boat: Option<String>,
     /// Chaves que o schema tipado não conhece (progresso `q.<id>.n`,
     /// `dialogue.*`, `riddle.*`, `lang`, …). Nunca é descartado.
     #[serde(flatten, default)]
@@ -85,6 +100,8 @@ impl Default for VaelSave {
             harvested: BTreeSet::new(),
             markers: BTreeSet::new(),
             spawn: None,
+            boats: Vec::new(),
+            riding_boat: None,
             legacy: BTreeMap::new(),
         }
     }
@@ -163,18 +180,30 @@ impl VaelSave {
                 }
                 "spawn_x" => {
                     spawn[0] = json_f32(value);
+                    if spawn[0].is_none() {
+                        keep_raw(&mut save.legacy, key, value);
+                    }
                     continue;
                 }
                 "spawn_y" => {
                     spawn[1] = json_f32(value);
+                    if spawn[1].is_none() {
+                        keep_raw(&mut save.legacy, key, value);
+                    }
                     continue;
                 }
                 "spawn_z" => {
                     spawn[2] = json_f32(value);
+                    if spawn[2].is_none() {
+                        keep_raw(&mut save.legacy, key, value);
+                    }
                     continue;
                 }
                 "spawn_pos" => {
                     spawn_antigo = parse_spawn(value);
+                    if spawn_antigo.is_none() && !value.is_null() {
+                        keep_raw(&mut save.legacy, key, value);
+                    }
                     continue;
                 }
                 "story_prologo" => {
@@ -414,9 +443,12 @@ impl VaelSave {
         self.harvested.extend(incoming.harvested.iter().cloned());
         self.markers.extend(incoming.markers.iter().cloned());
 
+        // O que o Rust possui e o snapshot não trouxe fica: inclui chaves com
+        // forma tipada que o schema não leu (estão em `legacy` e o
+        // `to_world_kv` repõe-nas; descartá-las aqui perdia-as no merge).
         let mut legacy = incoming.legacy;
         for (key, value) in &self.legacy {
-            if !kv.contains_key(key) && !is_typed_key(key) {
+            if !kv.contains_key(key) {
                 legacy.entry(key.clone()).or_insert_with(|| value.clone());
             }
         }
@@ -427,13 +459,14 @@ impl VaelSave {
     pub fn to_world_kv(&self) -> BTreeMap<String, Value> {
         let mut kv = BTreeMap::new();
 
-        // Legacy primeiro; as chaves representadas pelo schema tipado são
-        // reescritas a partir dos campos (e as que deixaram de existir não
-        // ressuscitam).
+        // Legacy primeiro, SEM filtrar pela forma da chave: um valor tipado
+        // que o schema não conseguiu ler (`item.x` textual, `gear.slot`
+        // numérico, `tracked_quest` não-string, `spawn_*` textual, …) fica em
+        // `legacy` e tem de voltar — filtrá-lo aqui perdia-o no round-trip.
+        // As escritas dos campos tipados vêm depois e sobrepõem-se, por isso
+        // uma chave regenerável nunca ressuscita com o valor velho.
         for (key, value) in &self.legacy {
-            if !is_typed_key(key) {
-                kv.insert(key.clone(), value.clone());
-            }
+            kv.insert(key.clone(), value.clone());
         }
 
         kv.insert("hp".into(), json!(self.vitals.hp));
@@ -530,6 +563,7 @@ impl Plugin for VaelSavePlugin {
             .register_type::<VaelSave>()
             .register_type::<Equipment>()
             .register_type::<StoryFlags>()
+            .register_type::<crate::boat::BoatPose>()
             .register_type::<PlayerVitals>()
             .register_type::<Inventory>()
             .register_type::<XpState>()
@@ -619,32 +653,11 @@ fn truthy_names(value: &Value) -> Option<Vec<String>> {
     }
 }
 
-/// Chave do `world_kv` cujo valor é reescrito a partir dos campos tipados.
-fn is_typed_key(key: &str) -> bool {
-    matches!(
-        key,
-        "hp" | "max_hp"
-            | "xp"
-            | "xp_next"
-            | "level"
-            | "skill_points"
-            | "save_level"
-            | "save_gold"
-            | "tracked_quest"
-            | "spawn_x"
-            | "spawn_y"
-            | "spawn_z"
-            | "spawn_pos"
-            | "story_prologo"
-            | "story_epilogo"
-    ) || key.starts_with("item.")
-        || key.starts_with("skill.")
-        || key.starts_with("gear.")
-        || key.starts_with("harvested.")
-        || key.starts_with("mark.")
-        || key
-            .strip_prefix("q.")
-            .is_some_and(|rest| !rest.contains('.'))
+/// Guarda em `legacy` o valor de uma chave tipada que o schema não conseguiu
+/// ler: o [`VaelSave::to_world_kv`] volta a escrevê-la e o campo tipado (se o
+/// souber representar) sobrepõe-se no output.
+fn keep_raw(legacy: &mut BTreeMap<String, Value>, key: &str, value: &Value) {
+    legacy.insert(key.to_string(), value.clone());
 }
 
 #[cfg(test)]
@@ -867,5 +880,105 @@ mod tests {
         assert_eq!(save.vitals.hp, 73.8);
         assert_eq!(save.progression.level, 4);
         assert_eq!(save.inventory.gold, 9);
+    }
+
+    /// Um valor de chave TIPADA que o schema não consegue ler não pode
+    /// desaparecer: fica em `legacy` e volta ao espelho `world_kv` (os campos
+    /// tipados só se sobrepõem quando têm um valor para escrever).
+    #[test]
+    fn chaves_tipadas_ilegiveis_sobrevivem_ao_round_trip() {
+        let mut kv = BTreeMap::new();
+        kv.insert("hp".into(), json!(50));
+        kv.insert("item.gold".into(), json!(10));
+        kv.insert("item.bog-moss".into(), json!("três"));
+        kv.insert("tracked_quest".into(), json!(42));
+        kv.insert("gear.weapon".into(), json!(7));
+        kv.insert("q.city_intro".into(), json!(["junk"]));
+        kv.insert("skill.vitality1".into(), json!("yes"));
+        kv.insert("harvested.old_tree".into(), json!("talvez"));
+        kv.insert("spawn_x".into(), json!("longe"));
+        kv.insert("spawn_pos".into(), json!({"x": 1.0}));
+
+        let save = VaelSave::from_world_kv(&kv);
+        assert_eq!(save.legacy.get("item.bog-moss"), Some(&json!("três")));
+        assert_eq!(save.legacy.get("tracked_quest"), Some(&json!(42)));
+        assert_eq!(save.legacy.get("gear.weapon"), Some(&json!(7)));
+        assert_eq!(save.legacy.get("q.city_intro"), Some(&json!(["junk"])));
+        assert_eq!(save.legacy.get("skill.vitality1"), Some(&json!("yes")));
+        assert_eq!(save.legacy.get("harvested.old_tree"), Some(&json!("talvez")));
+        assert_eq!(save.legacy.get("spawn_x"), Some(&json!("longe")));
+        assert_eq!(save.legacy.get("spawn_pos"), Some(&json!({"x": 1.0})));
+
+        let back = save.to_world_kv();
+        // O espelho volta a tê-las (o `is_typed_key` já não as filtra).
+        assert_eq!(back.get("item.bog-moss"), Some(&json!("três")));
+        assert_eq!(back.get("tracked_quest"), Some(&json!(42)));
+        assert_eq!(back.get("gear.weapon"), Some(&json!(7)));
+        assert_eq!(back.get("q.city_intro"), Some(&json!(["junk"])));
+        assert_eq!(back.get("skill.vitality1"), Some(&json!("yes")));
+        assert_eq!(back.get("harvested.old_tree"), Some(&json!("talvez")));
+        assert_eq!(back.get("spawn_x"), Some(&json!("longe")));
+        assert_eq!(back.get("spawn_pos"), Some(&json!({"x": 1.0})));
+        // O campo tipado ganha às chaves que ele próprio representa.
+        assert_eq!(back.get("hp"), Some(&json!(50.0)));
+        assert_eq!(back.get("item.gold"), Some(&json!(10)));
+
+        // E o ciclo é estável: recarregar o espelho não muda nada.
+        let again = VaelSave::from_world_kv(&back);
+        assert_eq!(again.legacy, save.legacy);
+        assert_eq!(again.to_world_kv(), back);
+    }
+
+    /// O merge não pode apagar o que o KV não traz (incluindo as chaves
+    /// tipadas ilegíveis guardadas em `legacy`).
+    #[test]
+    fn merge_preserva_chaves_tipadas_ilegiveis() {
+        let mut save = VaelSave::default();
+        save.legacy.insert("item.bog-moss".into(), json!("três"));
+
+        let mut kv = BTreeMap::new();
+        kv.insert("hp".into(), json!(50));
+
+        save.merge_world_kv(&kv);
+
+        assert_eq!(save.legacy.get("item.bog-moss"), Some(&json!("três")));
+        assert_eq!(save.to_world_kv().get("item.bog-moss"), Some(&json!("três")));
+    }
+
+    /// Os barcos viajam no JSON tipado: posição e yaw por barco, mais o barco
+    /// em que o herói seguia. Um save antigo (sem os campos) carrega.
+    #[test]
+    fn barcos_sobrevivem_ao_round_trip_do_save() {
+        let mut save = VaelSave::default();
+        save.boats.push(BoatPose {
+            name: "barco-a".into(),
+            position: Vec3::new(1.0, 2.0, 3.0),
+            yaw: 1.25,
+        });
+        save.boats.push(BoatPose {
+            name: "barco-b".into(),
+            position: Vec3::new(-4.0, 0.5, 9.0),
+            yaw: -0.5,
+        });
+        save.riding_boat = Some("barco-a".into());
+
+        // VaelSave → JSON (o `save_json` do payload).
+        let text = serde_json::to_string(&save).expect("serializa");
+        let back: VaelSave = serde_json::from_str(&text).expect("deserializa");
+        assert_eq!(back, save);
+
+        // E o envelope completo (o caminho do save_native).
+        let mut envelope = bevy_ext_save::SaveGame::default();
+        save.write_to_save_game(&mut envelope);
+        assert_eq!(VaelSave::from_save_game(&envelope), save);
+
+        // Save antigo: os campos novos ficam com o default.
+        let antigo: VaelSave = serde_json::from_value(json!({
+            "version": 1,
+            "vitals": {"hp": 40.0, "max_hp": 100.0},
+        }))
+        .expect("save antigo");
+        assert!(antigo.boats.is_empty());
+        assert_eq!(antigo.riding_boat, None);
     }
 }

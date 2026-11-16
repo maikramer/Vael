@@ -19,7 +19,7 @@ use std::path::{Path, PathBuf};
 use avian3d::prelude::RigidBodyDisabled;
 use bevy::prelude::*;
 use bevy_ext_core::Player;
-use serde::Deserialize;
+use serde::{Deserialize, Serialize};
 
 use crate::player::VaelController;
 use viber::recipes::spawn::OrbitCamera;
@@ -87,6 +87,50 @@ pub struct Oar {
 /// Os barcos de `data/boats.json` já nasceram nesta cena.
 #[derive(Resource, Default)]
 pub struct BoatsSpawned(pub bool);
+
+/// Pose guardada de um barco: o `name` (a identidade do `data/boats.json`), a
+/// posição de equilíbrio e o yaw.
+///
+/// Os barcos são despawnados em cada `SceneLoad` e só nascem no `main`, por
+/// isso a pose tem de sobreviver fora das entidades ([`BoatStates`]) e viajar
+/// no save ([`crate::save::VaelSave::boats`]) — sem ela, sair de `main` e
+/// voltar (ou carregar um save a bordo) punha o barco no sítio autorado.
+#[derive(Debug, Clone, Default, PartialEq, Serialize, Deserialize, Reflect)]
+#[serde(default, rename_all = "snake_case")]
+pub struct BoatPose {
+    pub name: String,
+    pub position: Vec3,
+    pub yaw: f32,
+}
+
+/// Estado dos barcos entre cenas: o `spawn_boats` consulta as poses ANTES das
+/// coordenadas autoradas do `data/boats.json`.
+#[derive(Resource, Debug, Default, Clone)]
+pub struct BoatStates {
+    pub poses: Vec<BoatPose>,
+    /// Barco em que o herói seguia. O `RidingBoat` guarda a entidade, que não
+    /// sobrevive ao `SceneLoad` nem ao load de um save: o nome é a chave que
+    /// volta a ligá-lo.
+    pub riding: Option<String>,
+    /// As poses vieram de um save e ainda não foram aplicadas aos barcos
+    /// vivos. Enquanto é `true`, o espelho não as sobrepõe.
+    pub pending: bool,
+    /// O `riding` veio de um save e ainda não foi reposto (uma vez, quando o
+    /// barco e o herói existirem).
+    pub riding_pending: bool,
+}
+
+impl BoatStates {
+    /// Estado a partir do save (as poses e o embarque ficam por aplicar).
+    pub fn from_save(poses: Vec<BoatPose>, riding: Option<String>) -> Self {
+        Self {
+            riding_pending: riding.is_some(),
+            poses,
+            riding,
+            pending: true,
+        }
+    }
+}
 
 /// Configuração dos barcos do mundo.
 #[derive(Debug, Clone, Deserialize, Default)]
@@ -355,12 +399,14 @@ pub struct VaelBoatPlugin;
 impl Plugin for VaelBoatPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<BoatsSpawned>()
+            .init_resource::<BoatStates>()
             .add_systems(Startup, load_boat_assets)
             .add_systems(viber::scene_loader::SceneLoad, despawn_boats_on_scene_load)
             .add_systems(
                 Update,
                 (
                     spawn_boats,
+                    drive_boat_states,
                     recover_missing_boat,
                     board_or_leave_boat,
                     drive_boats,
@@ -427,6 +473,7 @@ fn spawn_boats(
     terrain: Option<Res<TerrainRuntime>>,
     scene: Option<Res<viber::scene_loader::CurrentScene>>,
     root: Option<Res<crate::VaelProjectRoot>>,
+    states: Option<Res<BoatStates>>,
 ) {
     if spawned.0 {
         return;
@@ -456,19 +503,40 @@ fn spawn_boats(
         .unwrap_or_else(|| PathBuf::from("data/boats.json"));
     let config = BoatsConfig::load(&config_path);
     for spawn in &config.boats {
-        let Some(surface) = terrain.water_surface_at(spawn.x, spawn.z) else {
-            warn!(
-                "vael: barco `{}` sem água em ({}, {})",
-                spawn.name, spawn.x, spawn.z
-            );
+        // A pose guardada (save ou visita anterior ao `main`) ganha à
+        // autorada — mas só enquanto o sítio guardado ainda tiver água: um
+        // mundo regenerado com a costa noutro lado não pode fazer o barco
+        // desaparecer.
+        let saved = states.as_deref().and_then(|states| {
+            states
+                .poses
+                .iter()
+                .find(|pose| pose.name == spawn.name)
+                .filter(|pose| {
+                    pose.position.is_finite()
+                        && terrain
+                            .water_surface_at(pose.position.x, pose.position.z)
+                            .is_some()
+                })
+        });
+        let (x, z) = saved.map_or((spawn.x, spawn.z), |pose| (pose.position.x, pose.position.z));
+        let yaw = saved.map_or(spawn.yaw, |pose| pose.yaw);
+        let Some(surface) = terrain.water_surface_at(x, z) else {
+            warn!("vael: barco `{}` sem água em ({}, {})", spawn.name, x, z);
             continue;
         };
         let body = rowboat_body();
         let mut state = FloatState {
-            yaw: spawn.yaw,
+            yaw,
             ..Default::default()
         };
-        let mut position = Vec3::new(spawn.x, surface + body.rest_height(), spawn.z);
+        // Um save guardou a cota de equilíbrio: nasce já lá em vez de
+        // recalcular a partir da superfície (que pode ter mudado).
+        let saved_y = saved.map(|pose| pose.position.y).filter(|y| y.is_finite());
+        let mut position = match saved_y {
+            Some(y) => Vec3::new(x, y, z),
+            None => Vec3::new(x, surface + body.rest_height(), z),
+        };
         // Assenta já no equilíbrio (evita o "plop" de 0,5 m no arranque).
         let sample = |p: Vec2| {
             terrain
@@ -533,6 +601,130 @@ fn spawn_boats(
     }
 }
 
+/// Tira o herói do barco em que estiver, sem tocar no resto do estado.
+///
+/// Um load manda na pose: o `RidingBoat` da sessão anterior prendia o herói ao
+/// assento (`seat_riders`) em vez de o deixar no sítio guardado, por isso o
+/// load limpa-o antes do teleporte e o `BoatStates` do save volta a embarcá-lo
+/// se for esse o caso.
+pub fn leave_boat_now(world: &mut World) {
+    let Some(player) = world
+        .query_filtered::<Entity, With<Player>>()
+        .iter(world)
+        .next()
+    else {
+        return;
+    };
+    world
+        .entity_mut(player)
+        .remove::<(RidingBoat, RigidBodyDisabled)>();
+}
+
+/// Mantém o [`BoatStates`] vivo entre cenas e aplica o que veio de um save.
+///
+/// - `pending`: as poses vieram do load; aplicam-se aos barcos vivos (os que
+///   nasceram neste frame já usaram as poses no `spawn_boats`).
+/// - `riding_pending`: o embarque guardado volta assim que o barco e o herói
+///   existem (uma vez só — um E a seguir tira o herói e ninguém o põe lá
+///   outra vez).
+/// - sem nada por aplicar: espelha as poses dos barcos VIVOS. Sem barcos
+///   (interior, menu) conserva a última pose conhecida do `main` — é isso que
+///   faz um barco voltar ao sítio onde ficou quando o herói reentra no mundo.
+fn drive_boat_states(
+    mut commands: Commands,
+    mut states: ResMut<BoatStates>,
+    mut boats: Query<(Entity, &Name, &mut Transform, &mut FloatState), With<Boat>>,
+    names: Query<(Entity, &Name), With<Boat>>,
+    players: Query<(Entity, Option<&RidingBoat>), With<Player>>,
+) {
+    let player = players.iter().next();
+
+    let applied_pending = states.pending;
+    if applied_pending {
+        states.pending = false;
+        for pose in &states.poses {
+            let Some((_, _, mut transform, mut float)) = boats
+                .iter_mut()
+                .find(|(_, name, _, _)| name.as_str() == pose.name)
+            else {
+                continue;
+            };
+            transform.translation = pose.position;
+            transform.rotation = Quat::from_rotation_y(pose.yaw);
+            float.yaw = pose.yaw;
+            float.velocity = Vec3::ZERO;
+            float.pitch = 0.0;
+            float.roll = 0.0;
+            float.pitch_vel = 0.0;
+            float.roll_vel = 0.0;
+        }
+    }
+
+    if states.riding_pending {
+        // O `RidingBoat` guarda a entidade, que o save não pode guardar: o
+        // nome do barco é a chave. Só se repõe quando ninguém já está a bordo.
+        let Some(name) = states.riding.clone() else {
+            states.riding_pending = false;
+            return;
+        };
+        // Procura por nome numa query imutável: o `iter_mut` do `match`
+        // prolongava o empréstimo mutável até ao guard do braço `None`.
+        let boat = names
+            .iter()
+            .find(|(_, boat_name)| boat_name.as_str() == name)
+            .map(|(boat, _)| boat);
+        let have_boats = !names.is_empty();
+        match boat {
+            Some(boat) => {
+                if let Some((player, riding)) = player {
+                    if riding.is_none() {
+                        commands
+                            .entity(player)
+                            .insert((RidingBoat { boat }, RigidBodyDisabled));
+                    }
+                    states.riding_pending = false;
+                }
+            }
+            // Os barcos já nasceram e nenhum é o guardado: o barco saiu do
+            // mundo (nome mudou no `data/boats.json`) — não insistir.
+            None if have_boats => {
+                states.riding_pending = false;
+                states.riding = None;
+            }
+            None => {}
+        }
+        // Enquanto o embarque está por repor, as poses do save continuam a
+        // mandar (nada de espelhar por cima delas).
+        return;
+    }
+    if applied_pending {
+        // As poses do save acabaram de ser aplicadas: não as sobrepor já com
+        // o espelho neste frame.
+        return;
+    }
+
+    let mut poses: Vec<BoatPose> = boats
+        .iter_mut()
+        .map(|(_, name, transform, float)| BoatPose {
+            name: name.as_str().to_string(),
+            position: transform.translation,
+            yaw: float.yaw,
+        })
+        .collect();
+    if !poses.is_empty() {
+        poses.sort_by(|a, b| a.name.cmp(&b.name));
+        states.poses = poses;
+    }
+    if let Some((_, riding)) = player {
+        states.riding = riding.and_then(|riding| {
+            names
+                .get(riding.boat)
+                .ok()
+                .map(|(_, name)| name.as_str().to_string())
+        });
+    }
+}
+
 fn interaction_just_pressed(
     actions: Option<&viber::input_map::ActionState>,
     keys: &ButtonInput<KeyCode>,
@@ -566,6 +758,8 @@ fn board_or_leave_boat(
     mut commands: Commands,
     keys: Res<ButtonInput<KeyCode>>,
     actions: Option<Res<viber::input_map::ActionState>>,
+    typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
+    menus: Option<Res<bevy_ext_core::MenusOpen>>,
     mut players: Query<
         (
             Entity,
@@ -578,7 +772,13 @@ fn board_or_leave_boat(
     boats: Query<(Entity, &Transform, &FloatState), With<Boat>>,
     mut cameras: Query<&mut OrbitCamera>,
 ) {
-    let pressed = interaction_just_pressed(actions.as_deref(), &keys);
+    // Um menu aberto (mapa/diário/pausa) ou a barra de fala com o foco
+    // bloqueiam o E — no caminho do `ActionState` quem bloqueia é o
+    // `gather_actions`, mas o fallback de teclas cruas entrava no barco por
+    // baixo do menu.
+    let blocked = menus.as_ref().is_some_and(|menus| menus.any())
+        || typing.as_ref().is_some_and(|typing| typing.0.is_some());
+    let pressed = !blocked && interaction_just_pressed(actions.as_deref(), &keys);
     if !pressed {
         return;
     }
@@ -800,5 +1000,154 @@ mod tests {
         assert_eq!(cfg.boats.len(), 2);
         assert_eq!(cfg.boats[0].yaw, 0.0);
         assert!((cfg.boats[1].yaw - 1.5).abs() < 1e-6);
+    }
+
+    /// O estado aplicado pelo load: posição/yaw aos barcos vivos e o embarque
+    /// outra vez ligado ao barco pelo nome.
+    #[test]
+    fn boat_states_aplicam_a_pose_guardada_e_o_embarque() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<BoatStates>()
+            .add_systems(Update, drive_boat_states);
+        *app.world_mut().resource_mut::<BoatStates>() = BoatStates::from_save(
+            vec![BoatPose {
+                name: "barco-a".into(),
+                position: Vec3::new(10.0, 1.0, -4.0),
+                yaw: 0.75,
+            }],
+            Some("barco-a".into()),
+        );
+        let boat = app
+            .world_mut()
+            .spawn((
+                Name::new("barco-a"),
+                Transform::default(),
+                FloatState::default(),
+                Boat::default(),
+            ))
+            .id();
+        let player = app.world_mut().spawn(Player::default()).id();
+
+        app.update();
+
+        let transform = *app.world().get::<Transform>(boat).unwrap();
+        assert_eq!(transform.translation, Vec3::new(10.0, 1.0, -4.0));
+        assert!((app.world().get::<FloatState>(boat).unwrap().yaw - 0.75).abs() < 1e-6);
+        let riding = app.world().get::<RidingBoat>(player).expect("a bordo");
+        assert_eq!(riding.boat, boat);
+        assert!(app.world().get::<RigidBodyDisabled>(player).is_some());
+        let states = app.world().resource::<BoatStates>();
+        assert!(!states.pending);
+        assert!(!states.riding_pending);
+    }
+
+    /// O embarque espera pelo barco (num load que troca de cena o barco nasce
+    /// depois) e não se repete depois de um E.
+    #[test]
+    fn o_embarque_do_save_espera_pelo_barco_e_nao_se_repete() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<BoatStates>()
+            .add_systems(Update, drive_boat_states);
+        *app.world_mut().resource_mut::<BoatStates>() =
+            BoatStates::from_save(Vec::new(), Some("barco-a".into()));
+        let player = app.world_mut().spawn(Player::default()).id();
+
+        // O barco ainda não existe: o embarque fica à espera.
+        app.update();
+        assert!(app.world().resource::<BoatStates>().riding_pending);
+        assert!(app.world().get::<RidingBoat>(player).is_none());
+
+        // Nasceu: o herói volta a bordo.
+        let boat = app
+            .world_mut()
+            .spawn((
+                Name::new("barco-a"),
+                Transform::default(),
+                FloatState::default(),
+                Boat::default(),
+            ))
+            .id();
+        app.update();
+        assert_eq!(app.world().get::<RidingBoat>(player).unwrap().boat, boat);
+        assert!(!app.world().resource::<BoatStates>().riding_pending);
+
+        // O jogador sai (E): o estado segue o ECS, não o save.
+        app.world_mut().entity_mut(player).remove::<RidingBoat>();
+        app.update();
+        assert!(app.world().get::<RidingBoat>(player).is_none());
+        assert_eq!(app.world().resource::<BoatStates>().riding, None);
+    }
+
+    /// Sem barcos (interior/menu) o estado guardado NÃO é limpo: é ele que
+    /// devolve o barco ao sítio onde ficou quando o herói volta ao `main`.
+    #[test]
+    fn boat_states_sobrevivem_a_uma_cena_sem_barcos() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<BoatStates>()
+            .add_systems(Update, drive_boat_states);
+        *app.world_mut().resource_mut::<BoatStates>() = BoatStates::from_save(
+            vec![BoatPose {
+                name: "barco-a".into(),
+                position: Vec3::new(10.0, 1.0, -4.0),
+                yaw: 0.75,
+            }],
+            None,
+        );
+        app.world_mut().resource_mut::<BoatStates>().pending = false;
+
+        app.update();
+
+        let states = app.world().resource::<BoatStates>();
+        assert_eq!(states.poses.len(), 1, "a pose continua guardada");
+        assert_eq!(states.poses[0].name, "barco-a");
+    }
+
+    /// Com barcos vivos o espelho segue a física e o embarque real.
+    #[test]
+    fn boat_states_espelham_os_barcos_vivos() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<BoatStates>()
+            .add_systems(Update, drive_boat_states);
+        let boat = app
+            .world_mut()
+            .spawn((
+                Name::new("barco-b"),
+                Transform::from_xyz(3.0, 0.5, 5.0),
+                FloatState {
+                    yaw: 0.25,
+                    ..Default::default()
+                },
+                Boat::default(),
+            ))
+            .id();
+        app.world_mut()
+            .spawn((Player::default(), RidingBoat { boat }));
+
+        app.update();
+
+        let states = app.world().resource::<BoatStates>();
+        assert_eq!(states.poses.len(), 1);
+        assert_eq!(states.poses[0].name, "barco-b");
+        assert_eq!(states.poses[0].position, Vec3::new(3.0, 0.5, 5.0));
+        assert!((states.poses[0].yaw - 0.25).abs() < 1e-6);
+        assert_eq!(states.riding.as_deref(), Some("barco-b"));
+    }
+
+    /// A pose viaja pelo serde (é o campo `boats` do `VaelSave`).
+    #[test]
+    fn boat_pose_serde_ida_e_volta() {
+        let pose = BoatPose {
+            name: "barco-a".into(),
+            position: Vec3::new(1.0, 2.0, 3.0),
+            yaw: -0.5,
+        };
+        let text = serde_json::to_string(&pose).expect("serializa");
+        assert_eq!(serde_json::from_str::<BoatPose>(&text).unwrap(), pose);
+        // Um objeto antigo/vazio cai nos defaults.
+        assert_eq!(BoatPose::default(), serde_json::from_str("{}").unwrap());
     }
 }

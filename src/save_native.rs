@@ -13,6 +13,7 @@
 
 use std::collections::BTreeMap;
 use std::path::{Path, PathBuf};
+use std::sync::{Mutex, OnceLock};
 
 use bevy::prelude::*;
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
@@ -28,6 +29,7 @@ use viber::scene_loader::{Arrival, ChangeScene, CurrentScene, request_change};
 use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiWriter;
 
+use crate::boat::BoatStates;
 use crate::save::{VAEL_SAVE_VERSION, VaelSave};
 
 /// Payload refletido do save. Tudo o que não é `Reflect` (legacy do
@@ -59,14 +61,20 @@ pub struct VaelSaveFile {
 }
 
 /// Metadados do menu (lidos sem deserializar o RON).
+///
+/// `#[serde(default)]` e `level`/`gold` em `i64`: um sidecar de outra versão
+/// (campo novo em falta) ou editado à mão com um negativo não pode falhar a
+/// leitura — um `read_meta` a `None` escondia o slot do menu apesar do save
+/// estar bom.
 #[derive(Debug, Clone, Serialize, Deserialize, Default)]
+#[serde(default)]
 struct SlotMeta {
     save_id: String,
     saved_at: f64,
     playtime: f64,
     title: String,
-    level: u32,
-    gold: u32,
+    level: i64,
+    gold: i64,
     scene: String,
 }
 
@@ -107,7 +115,15 @@ impl Plugin for VaelNativeSavePlugin {
                 Update,
                 process_save_requests.after(viber::luau::bms_bridge::apply_bms_commands),
             )
-            .add_systems(PostUpdate, (finish_native_save, finish_native_load));
+            .add_systems(
+                PostUpdate,
+                (
+                    finish_native_save,
+                    finish_native_load,
+                    report_failed_native_io,
+                )
+                    .chain(),
+            );
     }
 }
 
@@ -229,6 +245,35 @@ fn commit_save(tmp: &Path, path: &Path) -> Result<(), String> {
     std::fs::rename(tmp, path).map_err(|err| format!("{}: {err}", path.display()))
 }
 
+/// Um save/load que o moonshine recusou (RON de outro jogo, ficheiro
+/// corrompido, disco cheio) NÃO dispara `Saved`/`Loaded`: sem isto o pedido
+/// ficava pendente para sempre e a operação falhava em silêncio (só a linha
+/// `error!` do crate no log) — o jogador via "a carregar" e nada acontecia.
+fn report_failed_native_io(world: &mut World) {
+    let Some(mut state) = world.get_resource_mut::<NativeSaveState>() else {
+        return;
+    };
+    if !state.save_done
+        && let Some((tmp, path, _)) = state.pending_save.take()
+    {
+        warn!(
+            "vael save: {} não gravou (o slot anterior ficou intacto)",
+            path.display()
+        );
+        // O temporário meio escrito não serve para nada.
+        let _ = std::fs::remove_file(&tmp);
+    }
+    if !state.load_done
+        && state.load_legacy.is_none()
+        && let Some(path) = state.pending_load.take()
+    {
+        warn!(
+            "vael save: {} não carregou (ficheiro inválido ou de outro jogo)",
+            path.display()
+        );
+    }
+}
+
 fn finish_native_load(world: &mut World) {
     let ready = world
         .get_resource::<NativeSaveState>()
@@ -297,13 +342,26 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
     if live_store {
         save.merge_world_kv(&kv);
     }
+    // Barcos: o [`BoatStates`] sobrevive aos `SceneLoad` (os barcos são
+    // despawnados ao sair do `main`) e é atualizado a cada frame com a física
+    // viva; guardar daqui é o que faz um save a bordo acordar o barco no sítio
+    // onde ficou (e não no autorado).
+    if let Some(states) = world.get_resource::<BoatStates>() {
+        save.boats = states.poses.clone();
+        save.riding_boat = states.riding.clone();
+    }
     let world_kv_json = serde_json::to_string(&kv).unwrap_or_default();
     let save_json = serde_json::to_string(&save).unwrap_or_default();
+    // `Transform` e não `GlobalTransform`: o `Update` corre antes da
+    // propagação da hierarquia (PostUpdate), por isso a global é sempre um
+    // frame atrás do que o herói está a ver — a pose gravada não pode ficar
+    // 1 frame para trás do sítio onde o jogador gravou.
     let position = world
-        .query_filtered::<&GlobalTransform, With<bevy_ext_core::Player>>()
+        .query_filtered::<&Transform, With<bevy_ext_core::Player>>()
         .iter(world)
         .next()
-        .map(|transform| transform.translation());
+        .map(|transform| transform.translation)
+        .filter(|position| position.is_finite());
     let scene = world
         .get_resource::<CurrentScene>()
         .filter(|scene| scene.switchable())
@@ -375,8 +433,14 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
 
 fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     let kv = serde_json::from_str::<BTreeMap<String, Value>>(&payload.world_kv_json).ok();
+    // Um payload editado à mão (ou vindo de outra versão) pode trazer NaN/inf:
+    // um `position` não finito punha a física do herói em NaN e um volume NaN
+    // silenciava o áudio para sempre.
+    let position = payload.position.filter(|position| position.is_finite());
+    let mut boats = BoatStates::default();
     match serde_json::from_str::<VaelSave>(&payload.save_json) {
         Ok(save) => {
+            boats = BoatStates::from_save(save.boats.clone(), save.riding_boat.clone());
             world.insert_resource(save);
         }
         Err(err) => {
@@ -389,19 +453,43 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
             }
         }
     }
+    // As poses dos barcos vêm do save: o `drive_boat_states` aplica-as aos
+    // barcos vivos (e o `spawn_boats` usa-as se o load trocar de cena).
+    world.insert_resource(boats);
+    // O embarque da sessão anterior não sobrevive ao load: sem isto o
+    // `seat_riders` prendia o herói ao barco velho depois do teleporte. O
+    // `BoatStates` do save volta a pô-lo a bordo se for esse o caso.
+    crate::boat::leave_boat_now(world);
     // `restore_game_json` repõe o store do processo (o `viber.game()` de
     // todos os contextos BMS lê daqui — já não depende de haver host).
     if let Some(kv) = kv {
         restore_game_json(&kv);
     }
     if let Some(mut mixer) = world.get_resource_mut::<AudioMixerSettings>() {
-        mixer.master = payload.volumes.x.clamp(0.0, 1.0);
-        mixer.music = payload.volumes.y.clamp(0.0, 1.0);
-        mixer.sfx = payload.volumes.z.clamp(0.0, 1.0);
-        mixer.voice = payload.volumes_extra.x.clamp(0.0, 1.0);
-        mixer.ambience = payload.volumes_extra.y.clamp(0.0, 1.0);
+        // Um volume não finito mantém o da sessão em vez de o estragar.
+        let set = |value: f32| value.is_finite().then(|| value.clamp(0.0, 1.0));
+        if let Some(value) = set(payload.volumes.x) {
+            mixer.master = value;
+        }
+        if let Some(value) = set(payload.volumes.y) {
+            mixer.music = value;
+        }
+        if let Some(value) = set(payload.volumes.z) {
+            mixer.sfx = value;
+        }
+        if let Some(value) = set(payload.volumes_extra.x) {
+            mixer.voice = value;
+        }
+        if let Some(value) = set(payload.volumes_extra.y) {
+            mixer.ambience = value;
+        }
     }
-    if let Some(mut locale) = world.get_resource_mut::<Locale>() {
+    // O idioma só troca se o ficheiro existir: um save com um `lang`
+    // desconhecido deixava a tabela vazia e o HUD mostrava as chaves `@…`
+    // cruas até o jogador escolher outro idioma.
+    if let Some(mut locale) = world.get_resource_mut::<Locale>()
+        && locale.dir.join(format!("{}.json", payload.locale)).is_file()
+    {
         locale.set_lang(&payload.locale);
     }
     if let Some(mut map) = world.get_resource_mut::<ActionMap>()
@@ -423,14 +511,11 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
         .and_then(|scene| scene.id.as_deref())
         .is_some_and(|id| id == payload.scene);
     if scene_matches {
-        if let Some(position) = payload.position {
+        if let Some(position) = position {
             crate::respawn::teleport_player(world, position);
         }
     } else {
-        let arrival = payload
-            .position
-            .map(Arrival::Position)
-            .unwrap_or(Arrival::Entry(None));
+        let arrival = position.map(Arrival::Position).unwrap_or(Arrival::Entry(None));
         let mut change = ChangeScene::new(payload.scene.clone(), arrival.clone());
         change.came_from = payload
             .came_from_scene
@@ -450,7 +535,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
                 recovered = request_change(world, fallback).is_ok();
             }
             if !recovered
-                && let Some(position) = payload.position
+                && let Some(position) = position
             {
                 crate::respawn::teleport_player(world, position);
             }
@@ -513,8 +598,8 @@ fn meta_of(payload: &VaelSaveFile) -> SlotMeta {
         saved_at: payload.saved_at,
         playtime: payload.playtime,
         title: payload.title.clone(),
-        level: save.progression.level.max(0) as u32,
-        gold: save.inventory.gold.max(0) as u32,
+        level: save.progression.level,
+        gold: save.inventory.gold,
         scene: payload.scene.clone(),
     }
 }
@@ -533,15 +618,121 @@ fn write_meta(path: &Path, meta: &SlotMeta) -> Result<(), String> {
     std::fs::rename(&tmp, meta_path(path)).map_err(|err| err.to_string())
 }
 
+/// `i64` do sidecar → `u32` do menu, sem negativos nem overflow.
+fn u32_level(value: i64) -> u32 {
+    value.clamp(0, u32::MAX as i64) as u32
+}
+
 fn read_meta(path: &Path) -> Option<SlotMeta> {
     let text = std::fs::read_to_string(meta_path(path)).ok()?;
-    serde_json::from_str(&text).ok()
+    let mut meta: SlotMeta = serde_json::from_str(&text).ok()?;
+    // Um sidecar editado à mão com NaN/inf rebentava a ordenação do menu
+    // (`latest_slot` compara `saved_at`) e o texto do `playtime`.
+    if !meta.saved_at.is_finite() {
+        meta.saved_at = 0.0;
+    }
+    if !meta.playtime.is_finite() {
+        meta.playtime = 0.0;
+    }
+    Some(meta)
+}
+
+/// Impressão digital de um ficheiro para a cache dos slots legados:
+/// `(caminho, (mtime em nanos, tamanho))`.
+fn file_stamp(path: &Path) -> (PathBuf, Option<(u128, u64)>) {
+    let meta = std::fs::metadata(path).ok();
+    let mtime = meta
+        .as_ref()
+        .and_then(|meta| meta.modified().ok())
+        .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
+        .map(|duration| duration.as_nanos());
+    (
+        path.to_path_buf(),
+        mtime.map(|mtime| (mtime, meta.as_ref().map_or(0, std::fs::Metadata::len))),
+    )
+}
+
+/// Cache dos slots do envelope JSON antigo.
+///
+/// O `bevy_ext_save::list_save_slots` abre e re-parseia até cinco JSON em
+/// cada chamada, e o menu chama o [`list_slots`] a 2 Hz: sem mudança no disco
+/// (caminho + mtime + tamanho de cada ficheiro), as linhas são as mesmas.
+#[derive(Default)]
+struct LegacySlotsCache {
+    stamp: Vec<(PathBuf, Option<(u128, u64)>)>,
+    rows: Vec<SaveSlotInfo>,
+}
+
+fn legacy_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlotInfo> {
+    static CACHE: OnceLock<Mutex<Option<LegacySlotsCache>>> = OnceLock::new();
+
+    let mut stamp = Vec::with_capacity(5);
+    for slot in 0..=3u32 {
+        stamp.push(file_stamp(&bevy_ext_save::save_path_for_slot(
+            world_key,
+            save_dir,
+            Some(slot),
+        )));
+    }
+    stamp.push(file_stamp(&bevy_ext_save::save_path_for(world_key, save_dir)));
+
+    let cache = CACHE.get_or_init(|| Mutex::new(None));
+    let mut cached = cache
+        .lock()
+        .unwrap_or_else(|poisoned| poisoned.into_inner());
+    if let Some(rows) = cached.as_ref()
+        && rows.stamp == stamp
+    {
+        return rows.rows.clone();
+    }
+    let rows = bevy_ext_save::list_save_slots(world_key, save_dir);
+    *cached = Some(LegacySlotsCache {
+        stamp,
+        rows: rows.clone(),
+    });
+    rows
+}
+
+/// Slot do `viber.save()`/`viber.load()` (sem slot) gravado pela nativa:
+/// `{key}.legacy.vsave.ron`. O envelope JSON antigo (`{key}.save.json`) é o
+/// outro candidato a slot 4, tratado pelo [`bevy_ext_save::list_save_slots`].
+fn native_legacy_slot(base: &Path, key: &str) -> Option<SaveSlotInfo> {
+    let path = base.join(format!("{key}.legacy.vsave.ron"));
+    let file = std::fs::metadata(&path).ok()?;
+    let meta = read_meta(&path);
+    let saved_at = meta
+        .as_ref()
+        .map(|meta| meta.saved_at)
+        .filter(|saved_at| *saved_at > 0.0)
+        .or_else(|| {
+            file.modified()
+                .ok()
+                .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
+                .map(|duration| duration.as_secs_f64())
+        });
+    Some(SaveSlotInfo {
+        slot: 4,
+        path: path.display().to_string(),
+        exists: true,
+        bytes: file.len(),
+        saved_at,
+        level: meta.as_ref().map_or(0, |meta| u32_level(meta.level)),
+        gold: meta.as_ref().map_or(0, |meta| u32_level(meta.gold)),
+        scene: meta.as_ref().map(|meta| meta.scene.clone()),
+        playtime: meta.as_ref().map(|meta| meta.playtime),
+        title: meta.as_ref().map(|meta| meta.title.clone()),
+    })
 }
 
 /// Lista os quatro slots nativos; se um slot ainda só tiver o JSON antigo,
 /// devolve o metadata antigo para o menu continuar a mostrá-lo.
+///
+/// O **slot 4** é o `viber.save()`/`viber.load()` (sem slot), como no
+/// monólito: a UI pede-o ao load com `slot = None` e assim o save escrito por
+/// `viber.save()` deixa de ser invisível no menu. Mapear `None` → slot 0
+/// (autosave) foi rejeitado: uma gravação manual apagaria o autosave.
 pub fn list_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlotInfo> {
-    let old = bevy_ext_save::list_save_slots(world_key, save_dir);
+    let old = legacy_slots(world_key, save_dir);
     let base = save_dir
         .map(Path::to_path_buf)
         .unwrap_or_else(default_save_dir);
@@ -558,8 +749,8 @@ pub fn list_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveS
                 exists: file.is_some(),
                 bytes: file.as_ref().map_or(0, |meta| meta.len()),
                 saved_at: Some(meta.saved_at),
-                level: meta.level,
-                gold: meta.gold,
+                level: u32_level(meta.level),
+                gold: u32_level(meta.gold),
                 scene: Some(meta.scene),
                 playtime: Some(meta.playtime),
                 title: Some(meta.title),
@@ -581,8 +772,11 @@ pub fn list_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveS
             });
         }
     }
-    if let Some(legacy) = old.iter().find(|row| row.slot == 4) {
-        rows.push(legacy.clone());
+    // A nativa manda; o envelope JSON antigo só aparece se ela não existir.
+    if let Some(legacy) =
+        native_legacy_slot(&base, &key).or_else(|| old.iter().find(|row| row.slot == 4).cloned())
+    {
+        rows.push(legacy);
     }
     rows
 }
@@ -604,7 +798,17 @@ fn legacy_payload(world: &mut World, slot: Option<u32>) -> Option<VaelSaveFile> 
         .get_resource::<SaveDir>()
         .and_then(|dir| dir.0.clone());
     let old_path = bevy_ext_save::save_path_for_slot(key.as_deref(), dir.as_deref(), slot);
-    let game = bevy_ext_save::load_from_disk(&old_path).ok()?;
+    let game = match bevy_ext_save::load_from_disk(&old_path) {
+        Ok(game) => game,
+        Err(err) => {
+            // "slot sem ficheiro" para um ficheiro que EXISTE mas não abre é
+            // uma mensagem que esconde a corrupção do envelope antigo.
+            if old_path.is_file() {
+                warn!("vael save: {} ilegível ({err})", old_path.display());
+            }
+            return None;
+        }
+    };
     let save = game
         .game
         .as_ref()
@@ -642,6 +846,7 @@ fn legacy_payload(world: &mut World, slot: Option<u32>) -> Option<VaelSaveFile> 
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::boat::BoatPose;
     use bevy::asset::AssetPlugin;
 
     fn payload() -> VaelSaveFile {
@@ -741,5 +946,200 @@ mod tests {
         assert_eq!(back.level, 3);
         assert_eq!(back.gold, 4);
         let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    fn unique_dir(tag: &str) -> PathBuf {
+        let dir = std::env::temp_dir().join(format!(
+            "vael-save-{tag}-{}-{}",
+            std::process::id(),
+            std::time::SystemTime::now()
+                .duration_since(std::time::UNIX_EPOCH)
+                .map(|d| d.as_nanos())
+                .unwrap_or_default()
+        ));
+        std::fs::create_dir_all(&dir).expect("dir");
+        dir
+    }
+
+    fn meta() -> SlotMeta {
+        SlotMeta {
+            save_id: "id".into(),
+            saved_at: 12.0,
+            playtime: 3.0,
+            title: "Vael".into(),
+            level: 5,
+            gold: 7,
+            scene: "main".into(),
+        }
+    }
+
+    /// O `viber.save()` (sem slot) grava `{key}.legacy.vsave.ron`; o menu tem
+    /// de o ver como slot 4 (a UI pede o 4 ao load como `slot = None`).
+    #[test]
+    fn o_save_sem_slot_aparece_como_slot_4() {
+        let dir = unique_dir("legacy-slot");
+        let path = dir.join("vael.legacy.vsave.ron");
+        std::fs::write(&path, "dados").expect("ron");
+        write_meta(&path, &meta()).expect("meta");
+
+        let rows = list_slots(Some("vael"), Some(&dir));
+        let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
+        assert!(row.exists);
+        assert_eq!(row.path, path.display().to_string());
+        assert_eq!(row.level, 5);
+        assert_eq!(row.gold, 7);
+        assert_eq!(row.scene.as_deref(), Some("main"));
+        assert_eq!(row.saved_at, Some(12.0));
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// Sem sidecar (kill entre o rename e a meta) o slot continua listado: um
+    /// save existente não pode ficar invisível no menu.
+    #[test]
+    fn o_save_sem_slot_sem_sidecar_ainda_aparece() {
+        let dir = unique_dir("legacy-sem-meta");
+        std::fs::write(dir.join("vael.legacy.vsave.ron"), "dados").expect("ron");
+
+        let rows = list_slots(Some("vael"), Some(&dir));
+        let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
+        assert!(row.exists, "o ficheiro existe");
+        assert!(row.saved_at.is_some(), "cai no mtime");
+        assert_eq!(row.level, 0);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// Um sidecar de outra versão (sem título/nível/ouro) ou com valores
+    /// estranhos não pode falhar a leitura e esconder um save que existe.
+    #[test]
+    fn sidecar_leniente_nao_esconde_o_slot() {
+        let dir = unique_dir("meta-leniente");
+        let path = dir.join("vael.slot1.vsave.ron");
+        std::fs::write(&path, "dados").expect("ron");
+        // Só os campos "antigos"; `level` fora do intervalo do `u32`.
+        std::fs::write(
+            meta_path(&path),
+            r#"{"save_id":"x","saved_at":5.0,"playtime":1.0,"scene":"main","level":-4}"#,
+        )
+        .expect("meta");
+
+        let rows = list_slots(Some("vael"), Some(&dir));
+        let row = rows.iter().find(|row| row.slot == 1).expect("slot 1");
+        assert!(row.exists);
+        assert_eq!(row.level, 0, "negativo clampa em 0");
+        assert_eq!(row.gold, 0);
+        assert_eq!(row.scene.as_deref(), Some("main"));
+        assert_eq!(row.saved_at, Some(5.0));
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// A nativa manda: se os dois existirem, o slot 4 é o `.legacy.vsave.ron`
+    /// (é o que o load lê primeiro, ver o `process_save_requests`).
+    #[test]
+    fn o_slot_4_prefere_a_nativa_ao_envelope_json() {
+        let dir = unique_dir("legacy-prioridade");
+        let native = dir.join("vael.legacy.vsave.ron");
+        std::fs::write(&native, "dados").expect("ron");
+        write_meta(&native, &meta()).expect("meta");
+        let old = bevy_ext_save::save_path_for(Some("vael"), Some(&dir));
+        let mut game = bevy_ext_save::SaveGame::default();
+        game.world_kv
+            .insert("save_level".into(), serde_json::json!(2));
+        bevy_ext_save::save_to_disk(&old, &game).expect("json antigo");
+
+        let rows = list_slots(Some("vael"), Some(&dir));
+        let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
+        assert_eq!(row.path, native.display().to_string());
+        assert_eq!(row.level, 5);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// O envelope JSON antigo continua a aparecer no slot 4, e a cache por
+    /// (caminho, mtime, tamanho) apanha um ficheiro escrito depois.
+    #[test]
+    fn o_envelope_json_antigo_aparece_e_a_cache_ve_o_ficheiro_novo() {
+        let dir = unique_dir("legacy-cache");
+        let first = list_slots(Some("vael"), Some(&dir));
+        assert!(first.iter().all(|row| row.slot != 4), "nada gravado ainda");
+
+        let old = bevy_ext_save::save_path_for(Some("vael"), Some(&dir));
+        let mut game = bevy_ext_save::SaveGame::default();
+        game.world_kv
+            .insert("save_level".into(), serde_json::json!(3));
+        bevy_ext_save::save_to_disk(&old, &game).expect("json antigo");
+
+        let rows = list_slots(Some("vael"), Some(&dir));
+        let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
+        assert_eq!(row.level, 3);
+
+        // Regravar muda o mtime/tamanho: a cache não serve a linha velha.
+        std::thread::sleep(std::time::Duration::from_millis(5));
+        game.world_kv
+            .insert("save_level".into(), serde_json::json!(9));
+        bevy_ext_save::save_to_disk(&old, &game).expect("json antigo");
+        let rows = list_slots(Some("vael"), Some(&dir));
+        let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
+        assert_eq!(row.level, 9);
+        let _ = std::fs::remove_dir_all(&dir);
+    }
+
+    /// O `capture` guarda a pose dos barcos e o `apply_payload` volta a pô-la
+    /// por aplicar — o `drive_boat_states` é que a aplica às entidades.
+    #[test]
+    fn capture_e_apply_levam_as_poses_dos_barcos() {
+        // O store de `viber.game()` é do processo e o `apply_payload` escreve
+        // nele: o lock serializa com os outros testes que o tocam.
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock do store");
+        let pose = BoatPose {
+            name: "barco-a".into(),
+            position: Vec3::new(4.0, 1.5, -8.0),
+            yaw: 0.5,
+        };
+        let mut world = World::new();
+        world.init_resource::<VaelSave>();
+        world.insert_resource(BoatStates {
+            poses: vec![pose.clone()],
+            riding: Some("barco-a".into()),
+            ..Default::default()
+        });
+
+        let payload = capture(&mut world).expect("payload");
+        let save: VaelSave = serde_json::from_str(&payload.save_json).expect("save_json");
+        assert_eq!(save.boats, vec![pose.clone()]);
+        assert_eq!(save.riding_boat.as_deref(), Some("barco-a"));
+
+        // O load repõe o estado, ainda por aplicar.
+        apply_payload(&mut world, &payload);
+        let states = world.resource::<BoatStates>();
+        assert_eq!(states.poses, vec![pose]);
+        assert_eq!(states.riding.as_deref(), Some("barco-a"));
+        assert!(states.pending);
+    }
+
+    /// Um payload com `position`/volumes não finitos não pode estragar a
+    /// física nem silenciar o áudio.
+    #[test]
+    fn apply_ignora_posicao_e_volumes_nao_finitos() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock do store");
+        let mut world = World::new();
+        world.init_resource::<VaelSave>();
+        world.insert_resource(AudioMixerSettings::default());
+        let mut payload = payload();
+        payload.position = Some(Vec3::new(f32::NAN, 0.0, 1.0));
+        payload.volumes = Vec3::new(f32::INFINITY, 0.5, f32::NAN);
+        payload.volumes_extra = Vec2::new(0.25, f32::NAN);
+
+        apply_payload(&mut world, &payload);
+
+        let mixer = world.resource::<AudioMixerSettings>();
+        assert_eq!(mixer.music, 0.5);
+        assert_eq!(mixer.voice, 0.25);
+        // Um NaN mantinha o valor anterior (aqui, o default) e não o estraga.
+        assert!(mixer.master.is_finite());
+        assert!(mixer.sfx.is_finite());
+        assert!(mixer.ambience.is_finite());
     }
 }
