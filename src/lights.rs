@@ -10,11 +10,11 @@
 //! # Invariante
 //!
 //! O pool só possui as luzes de **fogo** (a `PointLight` quente mais próxima de
-//! um emissor `preset: "fire"`, até [`ADOPT_RADIUS`] m). As luzes quentes de
-//! preenchimento — janelas, brilho da vila — continuam autorais e não passam
-//! pelo pool: com `reach` de 60 m, se elas entrassem, o fim da rua apagava.
-//! Os cristais frios (`point-cool-*`) também ficam de fora (o pool tem um
-//! template único de cor/alcance).
+//! um emissor `preset: "fire"`, até [`ADOPT_RADIUS`] m, um dono por emissor).
+//! As luzes quentes de preenchimento — janelas, brilho da vila — continuam
+//! autorais e não passam pelo pool: com `reach` de 60 m, se elas entrassem, o
+//! fim da rua apagava. Os cristais frios (`point-cool-*`) também ficam de fora
+//! (o pool tem um template único de cor/alcance).
 //!
 //! # Composição com a engine
 //!
@@ -23,7 +23,7 @@
 //! dois writers no mesmo campo. A regra é: **a luz de fogo tem um dono só.**
 //! O candidato leva o valor autoral em [`VaelPractical::base`] e este módulo
 //! reescreve `candidate.intensity` por frame com as funções públicas da engine
-//! ([`torch_pool_gain`]/[`warm_fill_gain`]), preservando a calibração ×64/×8
+//! ([`torch_pool_gain`] e [`FIRE_NIGHT_GAIN`]), preservando a calibração ×64/×16
 //! por luz. As luzes que o pool spawna levam [`NightGainExempt`], senão o drive
 //! da engine capturava a base 0 delas (nascem a 0) e escrevia 0 para sempre.
 //!
@@ -59,7 +59,7 @@ use viber::ambient::{AuthoredShadowLight, TravellerLantern};
 use viber::particles::{AmbientFx, ParticleEmitter};
 use viber::player::Player;
 use viber::postfx::{
-    NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target, warm_fill_gain,
+    NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target,
 };
 // O `ParticleSpec` da ENGINE (o que o `AmbientFx` carrega), não o do
 // `bevy_ext_scene`: são tipos distintos com o mesmo nome.
@@ -70,6 +70,8 @@ use viber::worldsys::AtmosphereState;
 pub const ADOPT_RADIUS: f32 = 4.0;
 /// Duas entidades mais próximas do que isto são o mesmo fogo já servido.
 const PAIR_RADIUS: f32 = 2.0;
+/// Ganho nocturno das luzes de fogo adoptadas (sem sombra autoral).
+pub const FIRE_NIGHT_GAIN: f32 = 16.0;
 /// Luzes reais por omissão.
 pub const DEFAULT_POOL_SIZE: usize = 24;
 /// Cube shadow maps por omissão à noite. Cada um custa 6 vistas: o gotcha do
@@ -103,10 +105,32 @@ struct VaelFire {
 /// Candidato de **preenchimento** criado por [`fill_dark_fires`] para um fogo
 /// sem `PointLight`. É uma raiz nossa (não vem do spawner da cena): sem ser
 /// despawnado na troca de cena ficava a arder onde já não há fogo — e o
-/// fogo novo da cena seguinte era dispensado pelo `lit` do preenchimento
+/// fogo novo da cena seguinte era dispensado por um `lit` de posições
 /// (a entidade velha já estava a 2 m).
 #[derive(Component)]
 struct VaelFilledFire;
+
+/// Quem serve este fogo, por **entidade do fogo** — não pela posição da luz.
+///
+/// A deduplicação por posição da luz deixava o mesmo fogo com dois
+/// candidatos: uma luz a 2–4 m do fogo passava o `pair_radius` (2 m) e
+/// adoptava um fogo já servido. O preenchimento também era dispensado se a
+/// `PointLight` real estivesse a 2–4 m. O dono é o próprio fogo que o diz.
+#[derive(Component, Clone, Copy, Debug)]
+enum VaelFireOwner {
+    /// A `PointLight` autoral que virou `PoolCandidate` (o dono definitivo).
+    Light(Entity),
+    /// O candidato de [`fill_dark_fires`] (provisório: uma `PointLight` real
+    /// que apareça depois toma o lugar e o preenchimento sai).
+    Fill(Entity),
+}
+
+/// A entidade que o dono referencia.
+fn owner_entity(owner: &VaelFireOwner) -> Entity {
+    match owner {
+        VaelFireOwner::Light(entity) | VaelFireOwner::Fill(entity) => *entity,
+    }
+}
 
 /// Afinação lida do ambiente no arranque.
 #[derive(Resource, Debug, Clone)]
@@ -182,6 +206,7 @@ impl Plugin for VaelPracticalLightsPlugin {
                     drive_focus,
                     drive_practical_intensity,
                     gate_shadows_by_night,
+                    lantern_shadow_by_night,
                 )
                     .chain()
                     .before(LightsSystems::Pool),
@@ -299,16 +324,31 @@ fn drive_focus(
 
 /// Compõe a noite nas candidatas: `base × ganho da família` — a mesma conta do
 /// `torch_pool_drive`, mas por luz e antes de o pool ler o valor.
+///
+/// O `Flicker` do pool oscila **para baixo** a partir do valor do candidato: a
+/// média é `intensity × flicker_mean(depth)`. Para a luz de fogo manter a
+/// calibração autoral (a média, não o pico), a escrita divide por esse factor —
+/// o que também desfaz a divisão que o `candidate_at_mean` do preenchimento já
+/// fez, em vez de a aplicar duas vezes.
 fn drive_practical_intensity(
     atmosphere: Option<Res<AtmosphereState>>,
     mut candidates: Query<(&mut PoolCandidate, &VaelPractical)>,
 ) {
     let night = atmosphere.map(|a| a.night).unwrap_or(0.0).clamp(0.0, 1.0);
     let torch = torch_pool_gain(night);
-    let fill = warm_fill_gain(night);
+    // Um fogo VISÍVEL (chama no ecrã) é a fonte que a noite deve ler: leva o
+    // seu próprio ganho, acima do dos preenchimentos (`warm_fill_gain`, ×3).
+    // Com o ×8 partilhado, os preenchimentos soltos da vila ofuscavam as
+    // tochas e a chama "não emitia" (2026-11-16).
+    let fire = 1.0 + (FIRE_NIGHT_GAIN - 1.0) * night;
     for (mut candidate, practical) in &mut candidates {
-        let gain = if practical.torch { torch } else { fill };
-        let target = torch_pool_target(practical.base, gain);
+        let gain = if practical.torch { torch } else { fire };
+        let mut target = torch_pool_target(practical.base, gain);
+        let depth = candidate.depth.unwrap_or(bevy_lights::FLICKER_DEPTH);
+        let mean = bevy_lights::flicker_mean(depth);
+        if target.is_finite() && target > 0.0 && mean > 0.05 {
+            target /= mean;
+        }
         if (candidate.intensity - target).abs() > 1.0 {
             candidate.intensity = target;
         }
@@ -318,6 +358,10 @@ fn drive_practical_intensity(
 /// Adopta as luzes de fogo autorais: a `PointLight` quente mais próxima de um
 /// emissor passa a `PoolCandidate` e perde o `PointLight` (um dono só).
 ///
+/// A deduplicação é **por entidade do fogo** ([`VaelFireOwner`]): um fogo já
+/// servido por uma luz real não volta a ser adoptado por outra; um fogo que
+/// só tinha o preenchimento recebe a luz real e o preenchimento sai.
+///
 /// Acorda quando entra uma luz **ou** um fogo: os dois podem chegar em frames
 /// diferentes (o prefab e o nó inline não são sempre expandidos juntos), e uma
 /// luz que nascesse antes do emissor ficava autoral para sempre.
@@ -325,7 +369,8 @@ fn drive_practical_intensity(
 fn adopt_fire_lights(
     mut commands: Commands,
     config: Res<PracticalConfig>,
-    fires: Query<(&GlobalTransform, &VaelFire)>,
+    fires: Query<(Entity, &GlobalTransform, &VaelFire, Option<&VaelFireOwner>)>,
+    alive: Query<(), Or<(With<PoolCandidate>, With<PointLight>)>>,
     new_lights: Query<(), Added<PointLight>>,
     new_fires: Query<(), Added<VaelFire>>,
     lights: Query<
@@ -341,19 +386,28 @@ fn adopt_fire_lights(
             Without<PoolLight>,
         ),
     >,
-    adopted: Query<&GlobalTransform, (With<PoolCandidate>, With<VaelPractical>)>,
 ) {
     if new_lights.is_empty() && new_fires.is_empty() {
         return;
     }
-    let candidates: Vec<(Vec3, FireKind, f32)> = fires
+    // Um fogo com uma luz REAL ainda viva está servido; os que têm só o
+    // preenchimento continuam elegíveis (a luz real toma o lugar dele).
+    let candidates: Vec<(Entity, Vec3, FireKind, f32)> = fires
         .iter()
-        .map(|(transform, fire)| (transform.translation(), fire.kind, fire.phase))
+        .filter(|(_, _, _, owner)| {
+            !matches!(
+                owner,
+                Some(VaelFireOwner::Light(entity)) if alive.contains(*entity)
+            )
+        })
+        .map(|(entity, transform, fire, _)| {
+            (entity, transform.translation(), fire.kind, fire.phase)
+        })
         .collect();
     if candidates.is_empty() {
         return;
     }
-    let mut served: Vec<Vec3> = adopted.iter().map(|t| t.translation()).collect();
+    let mut served: Vec<Entity> = Vec::new();
     for (entity, transform, light, shadow) in &lights {
         // Só fogo: cristais frios e luz de preenchimento ficam autorais.
         if !torch_pool_is_warm(light.color.to_linear()) {
@@ -362,23 +416,35 @@ fn adopt_fire_lights(
         let pos = transform.translation();
         let winner = candidates
             .iter()
-            .filter(|(fire, ..)| fire.distance(pos) <= config.adopt_radius)
-            .filter(|(fire, ..)| {
-                !served
-                    .iter()
-                    .any(|s| s.distance(*fire) <= config.pair_radius)
+            .filter(|(_, fire_pos, ..)| fire_pos.distance(pos) <= config.adopt_radius)
+            .filter(|(fire, ..)| !served.contains(fire))
+            .min_by(|(_, a, ..), (_, b, ..)| {
+                a.distance_squared(pos).total_cmp(&b.distance_squared(pos))
             })
-            .min_by(|(a, ..), (b, ..)| a.distance_squared(pos).total_cmp(&b.distance_squared(pos)))
             .copied();
-        let Some((fire_pos, kind, phase)) = winner else {
+        let Some((fire_entity, fire_pos, kind, phase)) = winner else {
             continue;
         };
-        served.push(fire_pos);
+        served.push(fire_entity);
+        // O preenchimento era provisório: a luz real é o dono definitivo.
+        if let Ok((_, _, _, Some(owner))) = fires.get(fire_entity)
+            && let VaelFireOwner::Fill(fill) = *owner
+        {
+            commands.entity(fill).try_despawn();
+        }
+        commands
+            .entity(fire_entity)
+            .insert(VaelFireOwner::Light(entity));
         commands
             .entity(entity)
             .insert((
                 PoolCandidate {
-                    offset: Vec3::ZERO,
+                    // A luz real nasce NA CHAMA, não onde a `PointLight`
+                    // autoral estava: essas ficavam até 4 m ao lado (e às
+                    // vezes abaixo do chão) — a tocha à direita da praça não
+                    // iluminava nada e o poço ao lado brilhava (2026-11-16).
+                    // `offset` é em eixos do mundo, relativo a esta entidade.
+                    offset: (fire_pos - pos) + kind.candidate_at_mean(1.0).offset,
                     intensity: light.intensity,
                     phase: Some(phase),
                     diameter: Some(kind.diameter()),
@@ -402,7 +468,11 @@ fn adopt_fire_lights(
 fn fill_dark_fires(
     mut commands: Commands,
     config: Res<PracticalConfig>,
-    fires: Query<(&GlobalTransform, &VaelFire), Added<VaelFire>>,
+    fires: Query<
+        (Entity, &GlobalTransform, &VaelFire, Option<&VaelFireOwner>),
+        Added<VaelFire>,
+    >,
+    alive: Query<(), Or<(With<PoolCandidate>, With<PointLight>)>>,
     adopted: Query<&GlobalTransform, (With<PoolCandidate>, With<VaelPractical>)>,
     lights: Query<
         &GlobalTransform,
@@ -421,7 +491,11 @@ fn fill_dark_fires(
         .chain(lights.iter())
         .map(|t| t.translation())
         .collect();
-    for (transform, fire) in &fires {
+    for (fire_entity, transform, fire, owner) in &fires {
+        // Já há dono (a luz real ou um preenchimento anterior): não duplicar.
+        if owner.is_some_and(|owner| alive.contains(owner_entity(owner))) {
+            continue;
+        }
         let kind = fire.kind;
         let pos = transform.translation();
         if lit.iter().any(|l| l.distance(pos) <= config.pair_radius) {
@@ -436,17 +510,22 @@ fn fill_dark_fires(
         let mut candidate = kind.candidate_at_mean(mean);
         candidate.color = Some(fire_color());
         candidate.phase = Some(fire.phase);
-        commands.spawn((
-            candidate,
-            VaelPractical {
-                base: mean,
-                torch: false,
-            },
-            VaelFilledFire,
-            Transform::from_translation(pos),
-            Visibility::Inherited,
-            Name::new("vael.fire-light"),
-        ));
+        let filled = commands
+            .spawn((
+                candidate,
+                VaelPractical {
+                    base: mean,
+                    torch: false,
+                },
+                VaelFilledFire,
+                Transform::from_translation(pos),
+                Visibility::Inherited,
+                Name::new("vael.fire-light"),
+            ))
+            .id();
+        commands
+            .entity(fire_entity)
+            .insert(VaelFireOwner::Fill(filled));
     }
 }
 
@@ -483,6 +562,25 @@ fn exempt_pool_lights(
 ) {
     for entity in &added {
         commands.entity(entity).insert(NightGainExempt);
+    }
+}
+
+/// Sombra da lanterna do viajante, só de noite. À noite o sol apaga-se e,
+/// sem ela, nada no raio do herói projectava sombra (herói e props a
+/// "flutuar", 2026-11-16). O orçamento de sombras da engine decide "noite"
+/// pelo relógio antigo da engine, que já não é o do céu (`bevy_elements`) —
+/// por isso o dono desta é o Vael, pela mesma noite do pool.
+fn lantern_shadow_by_night(
+    config: Res<PracticalConfig>,
+    atmosphere: Option<Res<AtmosphereState>>,
+    mut lanterns: Query<&mut PointLight, With<TravellerLantern>>,
+) {
+    let night = atmosphere.map(|a| a.night).unwrap_or(0.0);
+    let want = config.max_shadowed > 0 && night >= config.shadow_night_min;
+    for mut light in &mut lanterns {
+        if light.shadow_maps_enabled != want {
+            light.shadow_maps_enabled = want;
+        }
     }
 }
 
@@ -630,8 +728,8 @@ mod tests {
             "família tocha ×64"
         );
         assert!(
-            (torch_pool_target(base, warm_fill_gain(1.0)) - base * 8.0).abs() < 1.0,
-            "família fill ×8"
+            (torch_pool_target(base, FIRE_NIGHT_GAIN) - base * 16.0).abs() < 1.0,
+            "fogo visível ×16"
         );
     }
 
@@ -824,15 +922,127 @@ mod tests {
             .id();
         world.run_system_once(drive_practical_intensity).unwrap();
 
+        // A calibração é a MÉDIA: o `Flicker` do pool oscila para baixo a
+        // partir do valor do candidato (`flicker_mean(depth)`).
+        let mean = bevy_lights::flicker_mean(bevy_lights::FLICKER_DEPTH);
         let fill_now = world.get::<PoolCandidate>(fill).unwrap().intensity;
         assert!(
-            (fill_now - 4_800.0 * 8.0).abs() < 1.0,
-            "fill ×8: {fill_now}"
+            (fill_now - 4_800.0 * FIRE_NIGHT_GAIN / mean).abs() < 1.0,
+            "fogo ×{FIRE_NIGHT_GAIN}: {fill_now}"
         );
         let torch_now = world.get::<PoolCandidate>(torch).unwrap().intensity;
         assert!(
-            (torch_now - 120_000.0 * 64.0).abs() < 1.0,
+            (torch_now - 120_000.0 * 64.0 / mean).abs() < 1.0,
             "tocha ×64: {torch_now}"
         );
+    }
+
+    /// Um fogo, duas luzes quentes dentro do raio: só a mais próxima o serve;
+    /// a outra fica autoral (o passe anterior deduplicava pela posição da
+    /// LUZ, e a luz a 2–4 m passava o `pair_radius` e criava um segundo
+    /// candidato no mesmo fogo).
+    #[test]
+    fn duas_luzes_num_fogo_so_a_mais_proxima_adopta() {
+        use bevy::ecs::system::RunSystemOnce as _;
+
+        let mut world = World::default();
+        world.insert_resource(PracticalConfig::default());
+        let fire = world
+            .spawn((
+                VaelFire {
+                    kind: FireKind::Lantern,
+                    phase: 0.5,
+                },
+                GlobalTransform::from_translation(Vec3::new(10.0, 0.0, 10.0)),
+            ))
+            .id();
+        let light = |pos: Vec3| {
+            (
+                PointLight {
+                    intensity: 4_800.0,
+                    color: Color::srgb(1.0, 0.65, 0.30),
+                    ..default()
+                },
+                GlobalTransform::from_translation(pos),
+            )
+        };
+        let near = world.spawn(light(Vec3::new(10.4, 0.6, 10.0))).id();
+        let far = world.spawn(light(Vec3::new(13.0, 0.6, 10.0))).id();
+        world.run_system_once(adopt_fire_lights).unwrap();
+        world.flush();
+
+        assert!(
+            world.get::<PoolCandidate>(near).is_some(),
+            "a luz mais próxima adopta o fogo"
+        );
+        assert!(
+            world.get::<PointLight>(far).is_some(),
+            "a segunda luz dentro do raio de adopção não adopta o MESMO fogo"
+        );
+        assert!(matches!(
+            world.get::<VaelFireOwner>(fire),
+            Some(VaelFireOwner::Light(entity)) if *entity == near
+        ));
+        // O dono é uma entidade do fogo: um segundo passe não muda nada.
+        world.run_system_once(adopt_fire_lights).unwrap();
+        world.flush();
+        assert!(matches!(
+            world.get::<VaelFireOwner>(fire),
+            Some(VaelFireOwner::Light(entity)) if *entity == near
+        ));
+    }
+
+    /// O fogo que só tinha preenchimento recebe a `PointLight` real que aparece
+    /// depois (frames separados): o preenchimento é despawnado, não fica um
+    /// segundo candidato a arder no mesmo sítio.
+    #[test]
+    fn uma_luz_real_tardia_toma_o_lugar_do_preenchimento() {
+        use bevy::ecs::system::RunSystemOnce as _;
+
+        let mut world = World::default();
+        world.insert_resource(PracticalConfig::default());
+        let fire = world
+            .spawn((
+                VaelFire {
+                    kind: FireKind::Brazier,
+                    phase: 0.25,
+                },
+                GlobalTransform::from_translation(Vec3::new(5.0, 0.0, 5.0)),
+            ))
+            .id();
+        world.run_system_once(fill_dark_fires).unwrap();
+        world.flush();
+        let filled = {
+            let mut q = world.query_filtered::<Entity, With<VaelFilledFire>>();
+            q.single(&world).expect("candidato de preenchimento")
+        };
+        assert!(matches!(
+            world.get::<VaelFireOwner>(fire),
+            Some(VaelFireOwner::Fill(entity)) if *entity == filled
+        ));
+
+        // A luz real chega num frame seguinte.
+        let real = world
+            .spawn((
+                PointLight {
+                    intensity: 4_800.0,
+                    color: Color::srgb(1.0, 0.65, 0.30),
+                    ..default()
+                },
+                GlobalTransform::from_translation(Vec3::new(5.2, 0.6, 5.0)),
+            ))
+            .id();
+        world.run_system_once(adopt_fire_lights).unwrap();
+        world.flush();
+
+        assert!(
+            world.get_entity(filled).is_err(),
+            "o preenchimento provisório sai quando a luz real chega"
+        );
+        assert!(world.get::<PoolCandidate>(real).is_some());
+        assert!(matches!(
+            world.get::<VaelFireOwner>(fire),
+            Some(VaelFireOwner::Light(entity)) if *entity == real
+        ));
     }
 }
