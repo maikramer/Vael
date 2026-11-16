@@ -1,0 +1,1152 @@
+//! Montagem da App do Viber — partilhada entre o binário `viber run`
+//! ([`RunMode::Game`]) e o modo de edição in-process ([`RunMode::Edit`]).
+//!
+//! [`build_app`] lê o mundo + `config.yaml`, especializa os shaders por mundo,
+//! instala o `DefaultPlugins` (janela, asset roots multi-root) e todos os
+//! plugins da engine; quem chama decide quando fazer `run()` — o editor
+//! acrescenta os seus plugins antes.
+//!
+//! O modo Edit é ADITIVO sobre o Game: os mesmos plugins (o spawn do mundo
+//! depende dos recursos deles), mas com a simulação congelada
+//! (`Time<Virtual>` em pausa), sem host Luau (os scripts do jogo correm no
+//! BMS — `bevy_ext_luau` — e a engine standalone corre sem comportamento),
+//! sem bridge e com a câmara de editor no lugar da de jogo.
+//!
+//! [`AppOptions`] é COMPONÍVEL: um crate que traga as suas próprias regras
+//! (o Vael em Rust) desliga o comportamento de jogo, os scripts e/ou a UI e
+//! fica com os serviços de engine — terreno, navegação, física, render e os
+//! FX de apresentação. [`build_app_with_world`] aceita um mundo já parseado
+//! para quem o carrega por outro caminho.
+
+use std::path::{Path, PathBuf};
+
+use anyhow::{Context, Result, bail};
+use bevy::app::{App, PluginGroup};
+use bevy::ecs::schedule::IntoScheduleConfigs;
+use bevy::ecs::system::{Res, ResMut};
+use bevy::log::info;
+use bevy::time::{Time, Virtual};
+use bevy_kira_audio::AudioApp;
+
+use crate::ai_host;
+use crate::audio_host;
+use crate::bridge;
+use crate::profiler::{Group, timed};
+use crate::recipes::ParsedWorld;
+use crate::recipes::spawn::{self, PendingWorld};
+use crate::{
+    a11y, ambient, animation, attachment, audio_space, camera, editor_camera, foliage, hud,
+    ik, impact, input_map, locale, luau, menus, meshopt, music, nav, netplay, particles, physics,
+    physics_fx, player, postfx, profiler, prop_tint, ragdoll, recipes, render_lod, save, sky,
+    spawner, streaming, terrain, textures, time_fx, ui, worldsys, xml,
+};
+
+// Para quê a App é montada — o enum saiu para o `bevy_ext_core` (contrato
+// de partilha: o runtime de cena e o host têm de ver o MESMO resource). O
+// caminho `crate::app::RunMode` mantém-se.
+pub use bevy_engine_core::RunMode;
+
+/// Run condition: o JOGO corre (tudo menos o modo Edit do editor; sem o
+/// resource — apps mínimas de teste — corre).
+///
+/// Era o gate dos sistemas do host Luau; com o host morto continua a ser o
+/// gate "fora do Edit" que os sistemas de jogo do Vael (quest_events,
+/// rules_authority, travel) penduram — o nome histórico mantém-se.
+pub fn scripts_enabled(mode: Option<Res<RunMode>>) -> bool {
+    mode.is_none_or(|mode| *mode != RunMode::Edit)
+}
+
+/// Que IA a engine regista.
+#[derive(Debug, Clone, Copy, Default, PartialEq, Eq)]
+pub enum AiMode {
+    /// Nada: nem sentidos nem a FSM simples.
+    Off,
+    /// Só o serviço ([`crate::ai::AiServicePlugin`]): sentidos, vitais das
+    /// criaturas e o consumidor do [`crate::ai::AiLocomotion`]. O
+    /// comportamento é de quem monta a App (scripts Luau, regras em Rust) —
+    /// a FSM simples da engine não corre.
+    Service,
+    /// Serviço + FSM simples ([`crate::ai::AiPlugin`]) — o de sempre.
+    #[default]
+    Full,
+}
+
+/// Opções de [`build_app`].
+#[derive(Debug, Clone)]
+pub struct AppOptions {
+    pub mode: RunMode,
+    /// Porta do debug bridge (no modo Edit: agentes a editar dentro do editor).
+    pub bridge_port: Option<u16>,
+    /// `--camera free` (sempre ligado em [`RunMode::Edit`]).
+    pub camera_free: bool,
+    /// Título da janela; omisso → `config.yaml` `title` → "Viber — <mundo>".
+    pub window_title: Option<String>,
+    /// Entrada de chegada na cena de arranque (`viber run --entry`); numa cena que não é
+    /// a principal, omisso = a primeira entrada.
+    pub start_entry: Option<String>,
+    /// Mundo COMO O CLI O RECEBEU (antes de o `start-scene` o trocar pela cena de
+    /// arranque): a identidade do `engine.json`/`viber.ping`. O `session up` regista o
+    /// caminho que lhe foi pedido; sem isto a engine registava a cena de menu e o
+    /// `viber debug --world <mundo>` via a porta servida por outro mundo (registo
+    /// "stale"). Omisso = `path` (editores e apps mínimas).
+    pub world_path: Option<PathBuf>,
+    /// Regras de jogo da engine (projéteis e vitais do herói). `false` deixa
+    /// essas regras para quem monta a App. O player/câmara têm o seu próprio
+    /// gate ([`Self::player_camera`]) e a IA o seu ([`Self::ai`]).
+    pub gameplay: bool,
+    /// Pool 2D de números de dano (`viber.damage_number`), projectado para a
+    /// UI. `false` para um jogo que desenha o texto no mundo (o Vael usa
+    /// `bevy_rich_text3d`): a mensagem `DamageNumberEvent` continua a ser
+    /// emitida, só o pool de UI da engine deixa de existir.
+    pub damage_numbers_2d: bool,
+    /// IA da engine: [`AiMode::Full`] (serviço + FSM simples, o de sempre),
+    /// [`AiMode::Service`] (só sentidos/movimento, comportamento do jogo) ou
+    /// [`AiMode::Off`].
+    pub ai: AiMode,
+    /// Serviços de player/câmara de jogo: movimento do herói, terceira pessoa,
+    /// rigs e clamp da borda. `false` para um jogo que traz o seu controller e
+    /// câmara; a câmara de editor (`--camera free`) é independente.
+    pub player_camera: bool,
+    /// Save/load do jogo é externo: a engine não instala o `SavePlugin`
+    /// (o jogo trata dos slots e do envelope). `SaveRequest`, `SaveDir` e
+    /// `WorldSaveKey` continuam disponíveis como ponte Lua.
+    pub external_save: bool,
+    /// UI declarativa (`ui::UiPlugin`) e o que depende dela (menus do HUD).
+    pub ui: bool,
+    /// Profiler (overlay F3, recursos e âncoras de render). O `timed(...)` dos
+    /// sistemas mede sempre (rings em processo) — sem o plugin só ninguém lê.
+    pub profiler: bool,
+    /// Configura o grupo [`bevy::DefaultPlugins`] imediatamente antes de ele
+    /// entrar na App. Um jogo que precise de o envolver — o Vael usa o PIE
+    /// do Jackdaw em modo *windowless* — passa o wrapper aqui; `None` mantém
+    /// o grupo da engine.
+    #[allow(clippy::type_complexity)]
+    pub default_plugins: Option<fn(bevy::app::PluginGroupBuilder) -> bevy::app::PluginGroupBuilder>,
+}
+
+impl Default for AppOptions {
+    /// O comportamento de sempre: tudo ligado.
+    fn default() -> Self {
+        Self {
+            mode: RunMode::default(),
+            bridge_port: None,
+            camera_free: false,
+            window_title: None,
+            start_entry: None,
+            world_path: None,
+            gameplay: true,
+            damage_numbers_2d: true,
+            ai: AiMode::Full,
+            player_camera: true,
+            external_save: false,
+            ui: true,
+            profiler: true,
+            default_plugins: None,
+        }
+    }
+}
+
+fn pause_virtual_time(mut time: ResMut<Time<Virtual>>) {
+    time.pause();
+}
+
+/// Tamanho do shadow map da DIRECIONAL (`VIBER_DIR_SHADOW_SIZE`, default
+/// 4096). É UMA textura de 4 camadas (~268 MB a 4096, metade a 2048).
+fn dir_shadow_size() -> usize {
+    std::env::var("VIBER_DIR_SHADOW_SIZE")
+        .ok()
+        .and_then(|raw| raw.parse::<usize>().ok())
+        .filter(|size| *size >= 256 && size % 2 == 0)
+        .unwrap_or_else(crate::graphics::dir_shadow_size)
+}
+
+/// Tamanho do cube shadow map das PointLight (`VIBER_POINT_SHADOW_SIZE`).
+///
+/// Default 1024 (ver o comentário no recurso); `1536` devolve o valor do
+/// passe visual r1. Tem de ser u32 par e >= 4 — o wgpu recusa tamanhos
+/// ímpares em algumas plataformas.
+fn point_shadow_size() -> usize {
+    std::env::var("VIBER_POINT_SHADOW_SIZE")
+        .ok()
+        .and_then(|raw| raw.parse::<usize>().ok())
+        .filter(|size| *size >= 4 && size % 2 == 0)
+        .unwrap_or(1024)
+}
+
+/// Profiling do lado do RENDER (`VIBER_PROF_GPU=1`).
+///
+/// Os sistemas instrumentados pelo `timed` somam ~4 ms de um frame de ~44 ms
+/// no `simple-rpg` — os outros 40 ms são o render app (extract, prepare,
+/// queue e os passes na GPU) e não eram observáveis por via nenhuma. Com o gate ON
+/// pedimos os `TIMESTAMP_QUERY` ao wgpu e ligamos o `RenderDiagnosticsPlugin`,
+/// que mede cada span do render graph em CPU **e** GPU; o snapshot do
+/// profiler publica-os em `gpu[]` (`viber debug prof --json`).
+///
+/// OPT-IN de propósito: pedir ao device uma feature que o adapter não tenha
+/// FALHA a criação do renderer (Metal/WebGPU não têm timestamps), e as
+/// próprias queries custam tempo por frame.
+pub fn gpu_profiling_enabled() -> bool {
+    matches!(
+        std::env::var("VIBER_PROF_GPU").as_deref(),
+        Ok("1" | "true" | "on")
+    )
+}
+
+pub fn load_world(path: &Path) -> Result<ParsedWorld> {
+    let loaded = xml::include::load_world(path)?;
+    recipes::parse_world(&loaded.root_attrs, &loaded.nodes)
+}
+
+/// A pasta base do jogo (config, scripts, assets, `/…` dos includes): a raiz do PROJETO
+/// ([`crate::project::root_of`]). Para um mundo ao lado do seu `config.yaml` é a pasta dele,
+/// exatamente como sempre foi (devolvida na forma em que veio no caminho); uma cena em
+/// `scenes/` sobe à pasta do projeto.
+pub fn world_base_dir(path: &Path) -> Option<PathBuf> {
+    let parent = path
+        .parent()
+        .map(|p| p.to_path_buf())
+        .filter(|p| !p.as_os_str().is_empty());
+    let root = crate::project::root_of(path);
+    let same = |dir: &Path| dir.canonicalize().is_ok_and(|dir| dir == root);
+    match parent {
+        Some(parent) if same(&parent) => Some(parent),
+        None if same(Path::new(".")) => None,
+        _ => Some(root),
+    }
+}
+
+/// world_dir (scripts/estilos relativos) + asset roots por ordem de
+/// precedência (docs/ASSETS.md): a pasta do mundo SEMPRE primeiro (é lá que
+/// os shaders especializados são escritos e os overrides vivem), as roots
+/// extra do `config.yaml` do jogo a seguir. A engine não descobre nada por
+/// conta própria — quem serve o quê é declarado pelo jogo.
+pub fn world_asset_dirs(
+    path: &Path,
+    config: &crate::config::GameConfig,
+) -> (PathBuf, Vec<PathBuf>) {
+    let world_dir = world_base_dir(path).unwrap_or_else(|| PathBuf::from("."));
+    let roots = config.asset_roots(&world_dir);
+    (world_dir, roots)
+}
+
+pub fn build_app(path: &Path, opts: AppOptions) -> Result<App> {
+    // Absolute from here on: the asset root and terrain base_dir must not
+    // depend on the CWD (bevy resolves relative asset roots against the exe).
+    let path = std::path::absolute(path)?;
+    let world = load_world(&path)?;
+    build_app_with_world(&path, world, opts)
+}
+
+/// Monta a App a partir de um mundo JÁ parseado (o `build_app` é o par de
+/// [`load_world`]): quem carrega o mundo por outro caminho — um crate com as
+/// suas próprias regras a injetar entidades/recursos — não o parseia duas
+/// vezes. O resto do contrato é o de [`build_app`].
+pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -> Result<App> {
+    let AppOptions {
+        mode,
+        bridge_port,
+        camera_free,
+        window_title,
+        start_entry,
+        world_path,
+        gameplay,
+        damage_numbers_2d,
+        ai,
+        player_camera,
+        external_save,
+        ui,
+        profiler,
+        default_plugins,
+    } = opts;
+    // Modo Edit: o editor in-process é dono da navegação, do input e da janela — câmara
+    // de editor, simulação congelada. O bridge só existe se o editor o pedir
+    // (`viber run --bridge`): um agente a editar o MESMO documento que o humano.
+    let camera_free = camera_free || mode == RunMode::Edit;
+    // Absolutizado aqui também: esta entrada é pública e o chamador pode vir
+    // com um caminho relativo (o `build_app` já o absolutiza).
+    let path = &std::path::absolute(path)?;
+    // O `start-scene` troca a CENA carregada, não o mundo que a engine serve:
+    // a identidade do bridge/sessão é o caminho que o CLI pediu. Registá-la
+    // como a cena de arranque fazia o `viber.ping` responder "menu.xml" a uma
+    // engine pedida como `world.xml`, e o `viber debug --world world.xml`
+    // recusava-a como registo stale.
+    //
+    // Absolutizado como `path`: o `engine.json`/`viber.ping` tem de valer de
+    // qualquer cwd (`session down` e o `debug --world` comparam-no com paths
+    // canónicos). Um "world.xml" relativo só casava no diretório de onde a
+    // engine foi lançada — o `session down` corria noutro e recusava o pid.
+    let identity = match world_path {
+        Some(world_path) => std::path::absolute(world_path)?,
+        None => path.to_path_buf(),
+    };
+    // O runtime só corre mundos ESTÁTICOS (`<world static="true">`): poses finais, terreno
+    // pré-gerado, vegetação em `.vinst`. Um mundo procedural é material para `viber bake`,
+    // que o converte no próprio sítio — nada é gerado nem assentado no arranque.
+    if !world.static_world {
+        bail!(
+            "{}: mundo procedural (sem `<world static=\"true\">`) — o runtime só carrega mundos estáticos. Converte-o com `viber bake {}` (escreve o estático nos mesmos ficheiros).",
+            path.display(),
+            path.display()
+        );
+    }
+    // O config.yaml do jogo é OBRIGATÓRIO e lido antes de tudo: é dele que
+    // vêm as asset roots e os diretórios (docs/ASSETS.md).
+    let world_dir_pre = world_base_dir(path).unwrap_or_else(|| PathBuf::from("."));
+    let config = crate::config::load(&world_dir_pre)?;
+    // Preset de gráficos ANTES de construir a App: as cascatas do sol, o
+    // shadow map e o raymarch volumétrico são lidos durante o spawn do mundo.
+    let graphics = crate::graphics::resolve(config.graphics.as_deref());
+    // Perfil de post-FX do JOGO: também antes da App — o attach da câmara lê
+    // os gates no primeiro Update e o volumétrico decide-se no Startup.
+    crate::postfx::resolve_profile(config.postfx.as_ref());
+    // Perfil de reflexos: decide se o SSR nasce, se o chão entra no raymarch
+    // e o orçamento (passos/alcance) — antes de o plugin ser registado.
+    crate::water_ssr::resolve_profile(config.reflections.as_ref());
+    info!("graphics preset: {}", graphics.name());
+    let title = window_title
+        .or_else(|| config.title.clone())
+        // `title: ""` no config.yaml é "omisso" (o template documenta
+        // "vazio = nome do world.xml"), não uma janela sem título.
+        .map(|title| title.trim().to_owned())
+        .filter(|title| !title.is_empty())
+        .unwrap_or_else(|| {
+            format!(
+                "Viber — {}",
+                path.file_name().and_then(|n| n.to_str()).unwrap_or("world")
+            )
+        });
+    // Asset roots por ordem de precedência: a pasta do mundo primeiro, as
+    // roots extra do config a seguir (`VIBER_ASSET_POOL` continua a ganhar
+    // para debug/CI). Calculadas ANTES de escrever o shader: materiais
+    // custom resolvem o shader especializado pela 1.ª root, e o `run`
+    // escreve-o sempre nela — as roots extra nunca são escritas.
+    let (world_dir, asset_roots) = world_asset_dirs(path, &config);
+    let asset_root = asset_roots[0].clone();
+    // O shader do céu é ESPECIALIZADO por mundo: a config do <Sky>/<DayCycle>/
+    // <Weather> é injectada como consts WGSL (o uniform de material custom no
+    // Bevy 0.19 nunca re-uploads — ver sky.rs). O mesmo para a água (relógio
+    // do glint + vento das ondas) e para o blend de camadas do terreno
+    // (world span dos splats) — este último só se algum <Terrain> pedir
+    // `layers`; mundos sem camadas nem tocam no ficheiro. O diretório é
+    // SEMPRE `shaders/` da 1.ª root: os `Material::fragment_shader()` são fns
+    // ESTÁTICAS que lêem `shaders/{sky,water,terrain_chunk}.wgsl` contra as
+    // roots — a escrita e a leitura têm de casar (contrato de conteúdo,
+    // docs/ASSETS.md).
+    // Projeto com cenas: as constantes dos shaders são do PROJETO (os materiais não
+    // re-especializam numa troca de cena) — vêm sempre da cena principal, mesmo quando se
+    // arranca noutra (`viber run --scene`).
+    let project = crate::project::Project::discover(path);
+    let main_world = if project.declared
+        && project.scene_id(path).as_deref() != Some(crate::project::MAIN_SCENE)
+    {
+        match load_world(&project.main_scene_path()) {
+            Ok(main) => Some(main),
+            Err(error) => {
+                bevy::log::warn!(
+                    "cena principal do projeto não carrega ({error:#}) — shaders da cena de arranque"
+                );
+                None
+            }
+        }
+    } else {
+        None
+    };
+    let shader_entities = &main_world.as_ref().unwrap_or(&world).entities;
+    let sky_config = sky::SkyConfig::from_world(shader_entities).with_env_override();
+    let water_config = crate::terrain_host::water_surface_config_from_world(shader_entities);
+    let layers_config = crate::terrain_host::terrain_chunk_config_from_world(shader_entities);
+    let shaders_dir = asset_root.join("shaders");
+    let _ = std::fs::create_dir_all(&shaders_dir);
+    for (name, contents) in [
+        ("sky.wesl", sky_config.render_world_shader()),
+        ("water.wesl", water_config.render_world_shader()),
+    ] {
+        if let Err(e) = std::fs::write(shaders_dir.join(name), contents) {
+            eprintln!(
+                "viber: falha ao escrever {}/{name}: {e}",
+                shaders_dir.display()
+            );
+        }
+    }
+    if let Some(layers_config) = &layers_config
+        && let Err(e) = std::fs::write(
+            shaders_dir.join("terrain_chunk.wesl"),
+            layers_config.render_world_shader(),
+        )
+    {
+        eprintln!(
+            "viber: falha ao escrever {}/terrain_chunk.wesl: {e}",
+            shaders_dir.display()
+        );
+    }
+    // SSR da água (Fase B): shader ESTÁTICO (sem especialização por mundo) —
+    // só se escreve com o gate ligado, para não tocar no disco de mundos que
+    // não o usam.
+    if crate::water_ssr::water_ssr_requested()
+        && let Err(e) = std::fs::write(
+            shaders_dir.join("water_ssr.wesl"),
+            crate::water_ssr::WATER_SSR_WGSL,
+        )
+    {
+        eprintln!(
+            "viber: falha ao escrever {}/water_ssr.wesl: {e}",
+            shaders_dir.display()
+        );
+    }
+    // O loader de glTF é recursivo por nó e os personagens novos (text3d)
+    // têm hierarquias fundas: o stack default do IO Task Pool (2 MiB)
+    // estourava com o pool atual do Vael. Inicializa o pool ANTES do
+    // `TaskPoolPlugin` do `DefaultPlugins` (que respeita o global já criado)
+    // com 32 MiB. Ver [`io_thread_count`] para o número de threads.
+    let io_threads = io_thread_count();
+    bevy::tasks::IoTaskPool::get_or_init(|| {
+        bevy::tasks::TaskPoolBuilder::new()
+            .num_threads(io_threads)
+            .thread_name("IO Task Pool".to_string())
+            .stack_size(32 * 1024 * 1024)
+            .build()
+    });
+    let mut app = App::new();
+    // Cinemáticas do mundo (`<Cinematic>`): biblioteca antes do plugin (o
+    // `init_resource` dele não a substitui).
+    app.insert_resource(crate::cinematic::CinematicLibrary(
+        world
+            .cinematics
+            .iter()
+            .map(|spec| (spec.id.clone(), spec.clone()))
+            .collect(),
+    ));
+    // O modo viaja como resource: os run conditions de cena/editor
+    // leem-no para congelar a simulação no editor.
+    app.insert_resource(mode);
+    // Registered before `AssetPlugin`, which snapshots the sources when it
+    // builds. The reader is multi-root (world → extras do config) and expands
+    // `EXT_meshopt_compression`, so the engine reads compressed GLBs as
+    // authored — no per-example mirror.
+    meshopt::register_asset_source(&mut app, asset_roots.clone());
+    // O config viaja COMO RESOURCE: ambient (sfx_dir), save (dir), terreno
+    // (textures_dir) e o spawn (bgm_dir) leem-no de lá.
+    app.insert_resource(config.clone());
+    // O runtime de terreno lê `TerrainWorldAssets` (não o `GameConfig`): sem
+    // este recorte as layers resolvem contra a pasta do mundo e cada albedo
+    // vira um `Path not found`.
+    crate::terrain_host::install_world_assets(&mut app, &config, &world_dir);
+    app.insert_resource(save::SaveDir(Some(config.save_dir().to_path_buf())));
+    // O modelo do céu também viaja como resource — o IBL (`ibl.rs`) pinta o
+    // cubemap com a MESMA radiância que o domo desenha e os probes regionais
+    // (`probes.rs`) usam os mesmos coeficientes. Sem ele os dois lêem `None` e
+    // ficam presos em `analytic`, qualquer que seja o `<Sky model>`.
+    app.insert_resource(sky::SkyModelState::from_config(&sky_config));
+    // (a linha do modelo resolvido sai depois de `add_plugins` — o subscriber
+    // de tracing só existe a partir daí; ver `viber debug logs`)
+    // DLSS (src/dlss.rs): com a feature compilada, o `DlssInitPlugin` entra
+    // sozinho no DefaultPlugins (antes do RenderPlugin) — mas EXIGE o
+    // `DlssProjectId` já no mundo quando constrói (panica sem ele). Tem de
+    // ser ANTES do `add_plugins` abaixo.
+    #[cfg(feature = "dlss")]
+    app.insert_resource(crate::dlss::project_id());
+    let mut plugins = bevy::DefaultPlugins
+        .set(bevy::window::WindowPlugin {
+            primary_window: Some(bevy::window::Window {
+                title,
+                present_mode: crate::graphics::present_mode(),
+                ..Default::default()
+            }),
+            ..Default::default()
+        })
+        .set(bevy::asset::AssetPlugin {
+            file_path: asset_root.to_string_lossy().into_owned(),
+            ..Default::default()
+        });
+    if bridge_port.is_some() {
+        // A layer de logs do bridge tem de ser instalada no LogPlugin no boot.
+        plugins = plugins.set(bridge::logs::log_plugin_with_bridge());
+    }
+    if gpu_profiling_enabled() {
+        // As queries de timestamp são uma feature do DEVICE: têm de ser
+        // pedidas na criação do renderer, não dá para ligar depois. Partimos
+        // do default (que traz o `TEXTURE_ADAPTER_SPECIFIC_FORMAT_FEATURES`
+        // de que o KTX2 depende) e só acrescentamos as três de timestamp.
+        use bevy::render::settings::{WgpuFeatures, WgpuSettings};
+        let base = WgpuSettings::default();
+        plugins = plugins.set(bevy::render::RenderPlugin {
+            render_creation: WgpuSettings {
+                features: base.features
+                    | WgpuFeatures::TIMESTAMP_QUERY
+                    | WgpuFeatures::TIMESTAMP_QUERY_INSIDE_ENCODERS
+                    | WgpuFeatures::TIMESTAMP_QUERY_INSIDE_PASSES,
+                ..base
+            }
+            .into(),
+            ..Default::default()
+        });
+    }
+    if let Some(configure) = default_plugins {
+        plugins = configure(plugins);
+    }
+    app.add_plugins(plugins);
+    // Reflexão dos tipos de jogo no `AppTypeRegistry` (BRP/`viber.query`):
+    // independente do resto — um app com `gameplay`/`ui`/`scripts` desligados
+    // continua a poder inspecionar o ECS.
+    app.add_plugins(crate::reflect::ReflectPlugin);
+    // Picking (DefaultPickingPlugins): o backend de UI alimenta a
+    // `Interaction` da UI declarativa (src/ui/interaction.rs). O MESH picking
+    // não tem consumidor nenhum na engine e, com `require_markers` false
+    // (default), raycastava TODAS as malhas visíveis em TODAS as câmaras por
+    // frame — com markers, só entidades com `Pickable` (nenhuma) são
+    // raycastadas. Se um dia se quiser clique em malhas, criar a entidade com
+    // `Pickable` e desfazer esta linha.
+    app.insert_resource(bevy::picking::mesh_picking::MeshPickingSettings {
+        require_markers: true,
+        ..Default::default()
+    });
+    if gpu_profiling_enabled() {
+        app.add_plugins(bevy::render::diagnostic::RenderDiagnosticsPlugin);
+        info!(
+            "profiler: render diagnostics ON (VIBER_PROF_GPU) — `viber debug prof --json` traz gpu[]"
+        );
+    }
+    // SSR de reflexões raster (Fase B, src/water_ssr.rs): reflexo de cena na
+    // água + chão molhado na chuva por raymarch sobre o depth prepass.
+    // OPT-IN (`VIBER_WATER_SSR=1`) enquanto não existir acumulação temporal
+    // própria do passe — sem ela o reflexo dança com as ondas (medido).
+    app.add_plugins(crate::water_ssr::WaterSsrPlugin);
+    // Probes regionais (src/probes.rs): bounce de bioma nos pads com tint,
+    // parallax-corrected. DEFAULT ON — `VIBER_PROBES=0` desliga.
+    app.add_plugins(crate::probes::RegionalProbesPlugin);
+    // Céu/dia/noite, IBL e probes regionais resolvem o modelo por AQUI (o
+    // subscriber de tracing já existe): é a linha que confirma na QA que o
+    // gate `<Sky model>`/`VIBER_SKY_MODEL` chegou ao render e ao IBL.
+    info!(
+        "sky: modelo {} (attr <Sky model> / VIBER_SKY_MODEL)",
+        match sky_config.model {
+            sky::SkyModel::Nishita => "nishita",
+            sky::SkyModel::Analytic => "analytic",
+        }
+    );
+    // Áudio: backend kira (bevy_kira_audio) com buses tipados — o
+    // `AudioMixerSettings` (save/menu/XML) empurra volumes para os canais
+    // (crate::music::mixer_sync) e tudo o que está a tocar responde ao vivo.
+    // O bevy_audio/rodio do Bevy fica compilado mas sem players — nenhum
+    // som nasce por ele.
+    app.add_plugins(bevy_kira_audio::AudioPlugin);
+    app.add_audio_channel::<crate::music::MusicBus>();
+    let mut sfx_track = bevy_kira_audio::AudioTrack::new();
+    let sfx_reverb = sfx_track.add_effect(
+        bevy_kira_audio::prelude::ReverbBuilder::new().mix(bevy_kira_audio::prelude::Mix(0.0)),
+    );
+    app.add_audio_channel_with_track::<crate::music::SfxBus>(sfx_track);
+    let mut voice_track = bevy_kira_audio::AudioTrack::new();
+    let voice_reverb = voice_track.add_effect(
+        bevy_kira_audio::prelude::ReverbBuilder::new().mix(bevy_kira_audio::prelude::Mix(0.0)),
+    );
+    app.add_audio_channel_with_track::<crate::music::VoiceBus>(voice_track);
+    app.add_audio_channel::<crate::music::AmbienceBus>();
+    app.init_resource::<crate::music::AudioDuck>();
+    app.init_resource::<crate::music::AudioReverb>();
+    app.insert_resource(crate::music::ReverbHandles {
+        sfx: Some(sfx_reverb),
+        voice: Some(voice_reverb),
+    });
+    // O host dos sistemas `music::*` (exit4/G1): espelha cena/bioma/chuva no
+    // `AudioWorldState`, semeia o `AudioPaths` do config e marca o ouvido.
+    app.add_plugins(audio_host::AudioHostPlugin);
+    if let Some(port) = bridge_port {
+        app.add_plugins(bridge::BridgePlugin { port });
+        // O ping passa a identificar o mundo servido — o `viber debug
+        // --world` valida-o contra o engine.json (registo stale → erro, não
+        // mutação do mundo errado).
+        app.insert_resource(bridge::BridgeIdentity {
+            world: identity.display().to_string(),
+        });
+        // Regista a engine no registo de sessões MESMO fora de `session up`:
+        // assim qualquer `viber debug …` descobre a porta sozinho. Se já há
+        // uma engine viva registada (sessão de outro agente), não mexe — o
+        // descobridor encontra-a a ela.
+        let session = crate::session::SessionPaths::for_world(&identity);
+        let register = match session.engine_info() {
+            Some(existing) if existing.pid != std::process::id() => {
+                !bridge::client::port_alive(existing.port)
+            }
+            _ => true,
+        };
+        if register {
+            let _ = session.write_engine(&crate::session::EngineInfo {
+                pid: std::process::id(),
+                port,
+                world: identity.display().to_string(),
+                started_at_ms: std::time::SystemTime::now()
+                    .duration_since(std::time::UNIX_EPOCH)
+                    .map(|d| d.as_millis() as u64)
+                    .unwrap_or(0),
+                log: String::new(),
+            });
+        }
+        // O agente que lançou a engine lê esta linha: o caminho para APONTAR
+        // os seus `viber debug` a ESTA engine (e não à de outro agente).
+        eprintln!(
+            "viber: debug bridge at http://127.0.0.1:{port} — viber debug --world {} … (ou export VIBER_BRIDGE_PORT={port})",
+            identity.display()
+        );
+    }
+    // Documento editável do mundo (`crate::scene`): a fonte das edições de agentes
+    // (`viber.scene.*`) e do modo de edição — carregado em todos os modos, é barato.
+    app.add_plugins((
+        crate::scene::live::ScenePlugin,
+        crate::scene::sync::SceneSyncPlugin,
+    ));
+    // O documento vivo (`viber.scene.*`, undo/live sync) continua XML. Num
+    // mundo `.bsn` ele não é carregado: a autoria é no Jackdaw e o bridge
+    // devolve "sem documento" nas operações de cena.
+    if path
+        .extension()
+        .and_then(|ext| ext.to_str())
+        .is_some_and(|ext| ext.eq_ignore_ascii_case("bsn"))
+    {
+        info!(
+            "scene doc: {} é .bsn — edição de cena via Jackdaw; `viber.scene.*` desligado",
+            path.display()
+        );
+    } else {
+        app.insert_resource(crate::scene::doc::SceneDoc::load(path)?);
+    }
+    // O save é do JOGO (projeto), não da cena: a chave é sempre a da cena principal.
+    let save_key_path = if project.declared {
+        project.main_scene_path()
+    } else {
+        path.to_path_buf()
+    };
+    app.insert_resource(save::WorldSaveKey(save::world_save_key(&save_key_path)));
+    let scene_title = world.title.clone();
+    // Autoloads do projeto: parseados aqui, spawnados uma vez antes da primeira cena.
+    if project.declared {
+        let mut autoload = Vec::new();
+        for file in project.autoload_paths() {
+            let loaded = crate::xml::include::load_world_in(&file, &project.root)
+                .with_context(|| format!("autoload {}", file.display()))?;
+            let parsed = recipes::parse_world(&loaded.root_attrs, &loaded.nodes)
+                .with_context(|| format!("autoload {}", file.display()))?;
+            autoload.push(parsed);
+        }
+        if !autoload.is_empty() {
+            app.insert_resource(crate::scene_loader::PendingAutoload(autoload));
+        }
+    }
+    app.insert_resource(crate::scene_loader::CurrentScene::for_path(
+        path,
+        scene_title,
+    ));
+    if let Some(entry) = start_entry {
+        app.insert_resource(crate::scene_loader::StartEntry(Some(entry)));
+    }
+    app.insert_resource(PendingWorld {
+        world,
+        base_dir: world_base_dir(path),
+    });
+    // `worldsys::sun_drive` aims the directional light from it; nothing was
+    // creating it, so that system failed parameter validation.
+    app.init_resource::<worldsys::SunState>();
+    // Luz de interior (ambiente fixo, sem noite) — ver `InteriorLighting`.
+    app.init_resource::<worldsys::InteriorLighting>();
+    // Sombras de qualidade (passe visual r1): mapa DIRECIONAL 4096 — o
+    // default (2048) deixava as sombras das árvores granuladas mesmo ao pé do
+    // herói; é UMA textura (4 cascatas), ~268 MB, e o sol justifica-a.
+    // `VIBER_DIR_SHADOW_SIZE` para o A/B 4096→2048 que o PERFORMANCE.md lista
+    // desde a 1.ª passagem (o default fica 4096 — sombras das árvores ao pé
+    // do herói, decisão do r1). Os gêmeos das point lights e das cascatas:
+    // `VIBER_POINT_SHADOW_SIZE` (aqui) e `VIBER_SHADOW_CASCADES`/
+    // `VIBER_SHADOW_DISTANCE` (recipes::sun_shadow_*).
+    app.insert_resource(bevy::light::DirectionalLightShadowMap {
+        size: dir_shadow_size(),
+    });
+    // Point light: 1024. O array é `size² × 4 B × 6 faces × nº de luzes com
+    // sombra` — a 1536 eram ~56 MB POR LANTERNA, ~680 MB com o orçamento de 12
+    // cheio, e cada mudança de contagem REALOCA o array inteiro com o pico
+    // transitório de ambos (foi o `point_light_shadow_map_texture` a falhar o
+    // OOM que matou uma sessão de 10 h a 2026-09-12 03:06). O r1 subiu para
+    // 1536 pelos GRANULADOS da DIRECIONAL — nas point lights o PCSS
+    // (`soft_shadow_size` = radius da lanterna) desfaz a borda e o mapa
+    // cobre o `range` (20 m): ~2,6 cm/texel a 1024 contra ~1,7 a 1536, numa
+    // sombra cujo caster está a metros da luz. A 1024: ~25 MB/lanterna,
+    // ~300 MB no pior caso. `VIBER_POINT_SHADOW_SIZE=1536` devolve o r1
+    // (A/B visual de QA — os dois valores têm de ser comparados com o
+    // protocolo do controle antes de reclamar diferença nenhuma).
+    app.insert_resource(bevy::light::PointLightShadowMap {
+        size: point_shadow_size(),
+    });
+    // Widgets nativos (minimapa/bússola/seta) também obedecem ao esconder-HUD
+    // do jogo (`viber.ui.set_visible("hud", false)`).
+    app.init_resource::<hud::HudHidden>();
+    // `sky::spawn_sky` needs `Assets<SkyMaterial>`; without this plugin the
+    // startup system panics and leaves `Assets<Mesh>` taken out of the world.
+    // O mesmo para o material de água (`Assets<WaterMaterial>` no bootstrap
+    // do terreno).
+    app.add_plugins(bevy::pbr::MaterialPlugin::<sky::SkyMaterial>::default());
+    app.add_plugins(bevy::pbr::MaterialPlugin::<
+        terrain::water_material::WaterMaterial,
+    >::default());
+    // O material das camadas de terreno POR CHUNK (`layers="…"`): o
+    // bootstrap precisa de `Assets<TerrainChunkMaterial>` — sem este plugin
+    // um mundo com camadas degradaria para o caminho legado.
+    app.add_plugins(bevy::pbr::MaterialPlugin::<
+        terrain::layer_material::TerrainChunkMaterial,
+    >::default());
+    // Primitivas procedurais das `<Composition>` (`recipes::spawn`): o plugin
+    // registra `GradMeshMaterial` (ExtendedMaterial sobre o StandardMaterial)
+    // e embute o shader. Sem ele `Assets<GradMeshMaterial>` não existe e o
+    // spawn cai no caminho StandardMaterial antigo — é também o que mantém os
+    // testes headless (apps mínimas, sem render) a funcionar.
+    app.add_plugins(bevy_gradmesh::GradMeshPlugin);
+    app.add_plugins(animation::AnimationPlugin);
+    app.add_plugins(crate::decal_fx::DecalFxPlugin);
+    app.add_plugins(ik::IkPlugin);
+    app.add_plugins(ragdoll::RagdollPlugin);
+    app.add_plugins(input_map::InputMapPlugin);
+    app.add_plugins(a11y::A11yPlugin);
+    app.add_plugins(audio_space::AudioSpacePlugin);
+    app.add_plugins(locale::LocalePlugin {
+        dir: world_dir_pre.join("locale"),
+    });
+    app.add_plugins(streaming::StreamingPlugin);
+    app.add_plugins(crate::gltf_residency::GltfResidencyPlugin);
+    app.add_plugins(foliage::FoliagePlugin);
+    // `VIBER_DRAW_DIAG=1`: malhas/triângulos por vista (câmara, cascatas, lanternas).
+    app.add_plugins(crate::draw_diag::DrawDiagPlugin);
+    // Frames com a mesma duração (divisor do refresh); `VIBER_FPS_CAP`.
+    app.add_plugins(crate::frame_pacing::FramePacingPlugin);
+    app.add_plugins(netplay::NetPlayPlugin);
+    app.add_plugins(physics::PhysicsPlugin {
+        debug: std::env::var_os("VIBER_PHYSICS_DEBUG").is_some(),
+    });
+    // O streaming de colliders do terreno é host-side (lê o `TerrainRuntime`
+    // do monólito); o `PhysicsPlugin` acima é o do `bevy_ext_physics`.
+    app.add_plugins(physics::TerrainCollidersPlugin);
+    // Controller do herói (tnua) e step assist: no jogo, não no crate de
+    // colliders. A engine standalone usa o `HeroScheme` próprio; o Vael
+    // regista o dele (`VaelHeroScheme`).
+    app.add_plugins(crate::player::HeroPhysicsPlugin::<crate::player::HeroScheme>::new(
+        crate::player::hero_config,
+    ));
+    // Pós-processamento (exposição/bloom/SSAO) na câmara do mundo; os
+    // `pp-*` das `<BiomeRegion>` conduzem-no. `VIBER_NO_POSTFX=1` desliga.
+    app.add_plugins(postfx::PostFxPlugin);
+    // Foco de DOF das cinemáticas (exit5/G-2): a lente saiu para o
+    // `bevy_ext_postfx::runtime` e lá lê o RECURSO `PostFxCinematicFocus`
+    // em vez do playback do monólito — este glue de uma linha publica-o
+    // antes do drive (o twin não pode depender das cinemáticas: ciclo).
+    app.init_resource::<postfx::PostFxCinematicFocus>();
+    app.add_systems(
+        bevy::app::Update,
+        postfx::publish_cinematic_focus.before(postfx::FxDrive),
+    );
+    // `<PostFxDebugToggle>`: teclas que comutam os gates de pós-processo ao
+    // vivo (inerte sem a tag no mundo).
+    app.add_plugins(crate::postfx_toggle::PostFxDebugTogglePlugin);
+    // `<AdaptiveQuality>`: tiers de qualidade pelo frame-time real (SSAO,
+    // volumétrico, sombras de ponto, cortes de efeitos).
+    app.add_plugins(crate::adaptive_quality::AdaptiveQualityPlugin);
+    // `<SpawnGate>`: segura a entidade-alvo no ar até haver collider de
+    // terreno sob ela (inerte sem a tag).
+    app.add_plugins(crate::spawn_gate::SpawnGatePlugin);
+    // `<ProjectileTemplate>` + `viber.fire_projectile`: projéteis simples
+    // (linha reta ou arco balístico) com dano por facção. Comportamento de
+    // JOGO: fora com `gameplay: false`.
+    if gameplay {
+        app.add_plugins(crate::projectile::ProjectilePlugin);
+    }
+    // IBL vivo do céu (LightProbe + cubemap da paleta da atmosfera, filtrado
+    // na GPU) — ambiente/reflexos que seguem a hora do dia. `VIBER_NO_IBL=1`.
+    app.add_plugins(crate::ibl::SkyIblPlugin);
+    app.add_plugins(terrain::TerrainPlugin);
+    // Ponte IR→terreno antes do plugin: o bootstrap extraído lê o
+    // `PendingWorld` do spawn através dela (`terrain_host::collect_from_spawn`).
+    crate::terrain_host::install_terrain_collect(&mut app);
+    app.add_plugins(terrain::runtime::TerrainFeaturesPlugin);
+    // Escritor único de samplers/mipmaps das texturas carregadas (o registro
+    // `WorldTiledTextures` é consumido aqui; escrever o sampler noutro
+    // sistema reabria a corrida clamp/REPEAT das texturas de chão).
+    app.add_plugins(textures::TexturesPlugin);
+    // Fase 2: Luau — SEM host na engine standalone (2026-11-15, onda final
+    // do DELETE-MONOLITH): o host vivo (`LuauScriptPlugin`) morreu. Os
+    // scripts de comportamento correm no BMS (`bevy_ext_luau`) e é o JOGO
+    // que regista `VaelScriptingPlugin` + `luau::bms_bridge::BmsBridgePlugin`
+    // (a ponte publica o estado do frame e aplica os comandos). Um app que
+    // traga comportamento próprio regista a ponte BMS explicitamente.
+
+    // Serviços de engine que o movimento, o som e o HUD leem.
+    app.init_resource::<menus::MenusOpen>();
+    app.init_resource::<music::MusicLayerOverride>();
+    app.init_resource::<music::CombatMusicState>();
+    app.init_resource::<hud::markers::HudMarkers>();
+    app.init_resource::<music::ScriptSoundLoops>();
+    app.add_plugins(crate::world_ready::WorldReadyPlugin);
+    app.add_plugins(menus::MenusPlugin);
+    // Save/load & opções: serviço de ENGINE (grava `world_kv`/posição/vitais
+    // em qualquer preset; os campos RPG só entram quando os recursos existem).
+    // Um jogo com save próprio (`external_save`) fica só com os recursos e o
+    // importador de recortes de terreno; os pedidos são consumidos pelo jogo.
+    if external_save {
+        app.init_resource::<save::SaveRequest>()
+            .init_resource::<save::PendingSavePatches>()
+            .add_systems(
+                bevy::app::Last,
+                save::apply_pending_save_patches::<crate::scene_loader::SceneLoader>
+                    .after(crate::scene_loader::drive_scene_loader),
+            );
+    } else {
+        app.add_plugins(save::SavePlugin);
+    }
+    // Props em ossos (`viber.attach`): primitiva genérica (espada, volante…).
+    app.add_plugins(attachment::AttachmentPlugin);
+    // FX puros para mundos SEM o preset RPG: o CombatPlugin registra o kick
+    // de FOV e o hit-stop; sem ele, as primitivas `viber.fov_kick/hit_stop`
+    // (e o shake/kick/punch que vivem em recursos incondicionais) ficariam
+    // inertes. Registo CONDICIONAL — registar o mesmo sistema 2× duplica a
+    // instância no schedule e panica ao inicializar.
+    // Hit-stop e FOV kick são FX da engine (`viber.hit_stop` / `fov_kick`).
+    // Combate, vitals, economia, viagem, skills e quests são regras do
+    // exemplo — vivem em Lua, não entram no App.
+    app.init_resource::<camera::CameraFx>();
+    app.add_systems(bevy::app::Update, camera::fov_kick_system);
+    app.init_resource::<time_fx::HitStop>();
+    app.init_resource::<time_fx::BaseTimeScale>();
+    app.add_systems(bevy::app::Update, time_fx::hit_stop_system);
+
+    // Mundo vivo (loop 9): fog/tint por BiomeRegion, orçamento de luzes,
+    // gestos idle de NPC, SFX.
+    app.add_plugins(ambient::AmbientPlugin);
+    // day_tint para os materiais dos GltfScene (copas/casas/props) — sem
+    // isto ficam com albedo de dia sob o luar e leem-se "recortados" à noite
+    // (peça exploração, r10; mecanismo documentado no módulo).
+    app.add_plugins(prop_tint::PropTintPlugin);
+    // Física Fase 3 (loop 10): knockback cinemático + destrutíveis com queda.
+    app.add_plugins(physics_fx::PhysicsFxPlugin);
+    // Colheita é `scripts/game/harvest.lua` (`viber.player_nearby`).
+    // Sword trace (ribbon da lâmina) + bursts one-shot de partícula.
+    app.add_plugins(particles::BurstPlugin);
+    // FX de impacto de combate: recoil (squash-and-stretch) do inimigo
+    // atingido + anel fino no chão (slam/bomba e avisos de golpe).
+    app.add_plugins(impact::ImpactFxPlugin);
+    // FX de água: splash na entrada/saída e esteira de ondas de quem
+    // caminha dentro do lago/rio (a lâmina é estática — o rasto tem de
+    // viver no ECS, ver `terrain::water_fx`).
+    app.add_plugins(terrain::water_waves::WaterWavePlugin);
+    app.add_plugins(terrain::water_fx::WaterFxPlugin);
+    // Adaptadores do jogo (fonte do terreno, ambiente, obstáculos Rapier/voxel,
+    // partículas e marcador `WaterBodied`).
+    app.add_plugins(terrain::water_bridge::WaterBridgePlugin);
+    // Corpos que flutuam (barcos/jangadas/bóias): integra Arquimedes por
+    // coluna do casco, currante e encalhe, e publica a velocidade em
+    // `WaterKinematics` para a esteira/salpico acima os ver como nadadores.
+    app.add_plugins(terrain::water_buoyancy::WaterBuoyancyPlugin);
+    // Trauma da camera shake — o melee (e o dano recebido) somam aqui.
+    app.init_resource::<camera::CameraShake>();
+    // Solavanco direcional da câmara no impacto (mola; o combate soma impulsos).
+    app.init_resource::<camera::CameraKick>();
+    // Câmara de jogo conduzida por script (`viber.camera_free`/`camera_pose`)
+    // + snapshot lido por `viber.camera_state()`. Sem modo livre o sistema só
+    // publica o snapshot — nenhum mundo paga pose.
+    app.init_resource::<camera::ScriptCameraFree>();
+    app.init_resource::<camera::CameraSnapshot>();
+    // Quests, marcadores e o guia são do exemplo (`scripts/lib/rules.lua`).
+    app.add_plugins(crate::cinematic::CinematicPlugin);
+    // IA: quem decide é `ai`, não `gameplay`.
+    // - `AiServicePlugin` regista o `apply_ai_locomotion`, consumidor ÚNICO do
+    //   movimento pedido pelos scripts (`viber.move_towards`) e pela navegação.
+    //   Sem ele a FSM entra em chase e o `desired` fica certo, mas ninguém
+    //   aplica a velocidade — as criaturas atacam paradas. Também traz os
+    //   sentidos (`SensesPlugin`) e os vitais das criaturas sem script.
+    // - `SimpleAiPlugin` acrescenta a FSM simples da engine (`enemy_ai`).
+    // `Off` não regista nenhum dos dois (nem os sentidos).
+    // O host dos plugins `ai` (exit4/G1): o `Ground` do `bevy_ext_ai` passa a
+    // ser o `TerrainRuntime` da engine — o integrador de locomoção amosta o
+    // Y e clampeia à borda pela mesma fonte que o código histórico lia.
+    app.add_plugins(ai_host::AiHostPlugin);
+    match ai {
+        AiMode::Full => {
+            app.add_plugins(crate::ai::AiPlugin);
+        }
+        AiMode::Service => {
+            app.add_plugins(crate::ai::AiServicePlugin);
+        }
+        AiMode::Off => {}
+    }
+    // Navegação: navmesh Recast num tile que segue o herói, A* + evitamento
+    // RVO (bevy_landmass) e preferência por estradas via custo por tipo de
+    // polígono. Sem isto a IA volta à linha recta de sempre — o que é
+    // exactamente o que `VIBER_NAV=0` faz.
+    app.add_plugins(nav::NavPlugin);
+    // LOD de render: culling por distância (Bevy `VisibilityRange`, alimentado
+    // pelo raio de `CullDistance`) nas instâncias de spawner + orçamento de
+    // sombras. Sem isto as ~9700 cenas glTF do simple-rpg (60k entidades)
+    // entram todas nas 4 cascatas de sombra a cada frame.
+    // `VIBER_RENDER_LOD=0` desliga o plugin — logo, também o culling e a
+    // ladder de LOD: é o A/B honesto para medir o ganho sem trocar de binário.
+    if std::env::var("VIBER_RENDER_LOD").as_deref() != Ok("0") {
+        app.add_plugins(render_lod::RenderLodPlugin);
+    }
+    // Profiler: overlay F3 (fps/frame/entidades/scripts ativos) + `viber.profiler`.
+    // `profiler: false` não regista o plugin; o `timed(...)` continua a medir
+    // para os rings globais (ninguém os lê, mas nada panica nem depende de
+    // recursos do profiler).
+    if profiler {
+        app.add_plugins(profiler::ProfilerPlugin);
+    }
+    // UI declarativa (XML + folha de estilo + `viber.ui` no Luau): o HUD do
+    // mundo é autoria, não código. Sem ela, os nós `<UiRoot>` ainda podem ser
+    // construídos pelo spawn (é o registry que os endereça) e o
+    // `menus::mirror_ui_modals_open` lê o `UiModalsOpen` em todos os frames —
+    // inicializam-se os dois para nenhum `Res`/`resource_mut` panicas; ficam
+    // inertes.
+    if ui {
+        app.add_plugins(ui::UiPlugin);
+        // Glue do shim `ui.rs`: o retrato do MUNDO e a fonte do HUD chegam
+        // ao crate extraído antes do collect ler os binds.
+        app.add_systems(
+            bevy::app::Update,
+            (
+                ui::publish_ui_world_state,
+                ui::publish_ui_font,
+            )
+                .before(ui::UiSet::Collect),
+        );
+    } else {
+        app.init_resource::<crate::ui::runtime::UiRegistry>()
+            .init_resource::<crate::ui::UiModalsOpen>();
+    }
+    // Combate é do JOGO: o melee/chain/dano vivem em `scripts/game/combat.lua`
+    // (Vael). A engine só dá os serviços genéricos — vitais, vault, skills,
+    // feedback de impacto e a mão armada (apresentação). NÃO voltar a
+    // registar `player_melee_attack`/`swing_track_system`/`cycle_weapon`.
+    app.add_plugins(crate::feedback::FeedbackPlugin);
+    // O pool 2D de números de dano é uma decisão do jogo; a mensagem
+    // `DamageNumberEvent` fica disponível para quem desenhar texto próprio.
+    app.insert_resource(crate::feedback::DamageNumbers2d(damage_numbers_2d));
+    // Colheita/destrutíveis são DADOS autorais + regras em Lua. Nenhum
+    // plugin de colheita: os props autorais viajam em `ScriptProps` e o Lua lê.
+    // O spawn do mundo junta-se ao set do contrato do nav crate: o NavPlugin
+    // aplica a `<NavMesh>` e cria o arquipélago DEPOIS dele (Startup). O
+    // handle do terreno (`nav::publish_nav_ground`) sai a seguir ao spawn.
+    app.add_systems(
+        bevy::app::Startup,
+        (spawn::startup, nav::publish_nav_ground)
+            .chain()
+            .in_set(nav::WorldSpawned),
+    );
+    // Trocas de cena (`crate::scene_loader`): o mesmo spawn, num schedule re-executável.
+    // O nav crate registra o par tag+arquipélago no `SceneLoad` do core — o
+    // runtime do Viber corre o SEU schedule (um tipo só, `bevy_ext_engine`),
+    // por isso a reaplicação entra aqui, a seguir ao spawn e ao handle.
+    app.add_systems(
+        crate::scene_loader::SceneLoad,
+        (
+            spawn::startup,
+            nav::publish_nav_ground,
+            nav::apply_navmesh_tag,
+            nav::spawn_archipelago,
+        )
+            .chain(),
+    );
+    app.add_plugins(crate::scene_loader::SceneLoaderPlugin);
+    // Câmara livre de editor (`--camera free`, src/editor_camera.rs): a
+    // navegação orbit/pan/zoom de edição via bridge (`viber.camera.*`).
+    // ADITIVO — sem a flag o plugin não regista nada e o comportamento é
+    // 100% o de sempre; com ela, a câmara de jogo fica inactiva e os
+    // sistemas gated abaixo (input do player, terceira-pessoa) param.
+    app.add_plugins(editor_camera::EditorCameraPlugin {
+        enabled: camera_free,
+    });
+    // Spawn RUNTIME de prototypes (viber.spawn_prototype): exclusivo, no
+    // PostUpdate (depois dos scripts do Update — as callbacks da entidade nova
+    // correm aqui) e ANTES da propagação: sem a aresta a entidade podia
+    // renderizar um frame com o `GlobalTransform` identidade (na origem).
+    app.add_systems(
+        bevy::app::PostUpdate,
+        recipes::spawn::apply_script_spawns
+            .before(bevy::transform::TransformSystems::Propagate)
+            .run_if(recipes::spawn::has_pending_script_spawns),
+    );
+    app.add_systems(
+        bevy::app::Update,
+        (
+            // Balão de diálogo: única via que decrementa o timer e volta a
+            // esconder — sem registo, o balão ficava no ecrã para sempre.
+            timed(Group::Hud, hud::hud_balloon_update),
+            // Acessibilidade: escala das legendas do balão (A11y).
+            hud::apply_subtitle_scale,
+        ),
+    );
+    // Serviços de PLAYER/CÂMARA: não são regras. O Vael usa-os enquanto migra
+    // o controller/câmara para o seu crate (`player_camera: true`,
+    // `gameplay: false`); quem já traz os seus desliga-os.
+    if player_camera {
+        app.add_systems(
+            bevy::app::Update,
+            (
+                // Deterministic order: the rigid follow skips third-person
+                // cameras, the player steers their yaw with A/D, then the
+                // third-person camera trails it. All three touch OrbitCamera.
+                (
+                    timed(Group::Camera, spawn::orbit_camera_follow),
+                    // Modo editor (`--camera free`): o WASD não move o herói e a
+                    // terceira-pessoa não disputa a pose — a câmara de editor é
+                    // a única activa (ver `editor_camera`).
+                    timed(Group::Player, player::player_movement)
+                        .run_if(editor_camera::editor_camera_inactive)
+                        // A intenção (basis/salto) tem de estar escrita antes
+                        // da lógica do tnua.
+                        .before(bevy_tnua::prelude::TnuaPipelineSystems::Logic),
+                    timed(Group::Camera, camera::third_person_camera)
+                        .run_if(editor_camera::editor_camera_inactive),
+                    // `viber.camera_free`: substitui a pose DEPOIS do rig de
+                    // terceira pessoa (e publica o snapshot do `camera_state`).
+                    timed(Group::Camera, camera::script_camera)
+                        .run_if(editor_camera::editor_camera_inactive),
+                )
+                    .chain(),
+                timed(Group::Camera, spawn::auto_orbit),
+                // Clamp da borda DEPOIS do movimento do player (mesmo frame):
+                // sem ordem, o clamp viajava um frame atrás do WASD. Ordena
+                // contra um sistema que só existe neste bloco.
+                worldsys::world_border_clamp.after(player::player_movement),
+            ),
+        );
+    }
+    // Regras de jogo: o herói nasce no autoload sem `Health` (o Vael guarda
+    // hp/max no `viber.game()`); sem esta rede, `viber.entity_damage(player)` e
+    // o dano radial avisavam "sem Health" em vez de funcionar. Idempotente e só
+    // insere quando falta.
+    if gameplay {
+        app.add_systems(bevy::app::Update, crate::vitals::ensure_player_vitals);
+    }
+    app.add_systems(
+        bevy::app::Update,
+        (
+            timed(Group::Spawner, spawn::gltf_scene_spawner),
+            hud::compass::hud_compass_update,
+            hud::compass::hud_compass_landmarks_update,
+            hud::hide_world_hud_in_interior,
+            hud::waypoint::update_waypoint_arrow,
+            timed(Group::Hud, hud::hud_minimap_update),
+            timed(Group::Hud, hud::hud_minimap_landmarks_update),
+            timed(Group::World, music::audio_loop_starter),
+            timed(Group::World, music::mixer_sync),
+            timed(Group::World, music::apply_reverb),
+            timed(Group::World, music::music_driver),
+            timed(Group::World, music::script_sound_loops),
+            // A bandeira de interior é lida pelo `daycycle_drive` e pelo
+            // tint dos props — decidida ANTES deles, no mesmo frame.
+            timed(Group::World, worldsys::interior_lighting_drive).before(worldsys::daycycle_drive),
+            timed(Group::World, worldsys::daycycle_drive),
+            // Regime de interior por CIMA dos drivers do mundo (sol/IBL).
+            timed(Group::World, worldsys::interior_lighting_apply)
+                .after(worldsys::sun_drive)
+                .after(worldsys::daycycle_drive),
+            // `weather_drive`/`atmosphere_drive` vivem no AmbientPlugin (dono
+            // do `AtmosphereState`), ordenados contra este `sun_drive`. A
+            // lente (twin) lê a paleta do MESMO frame: os drives do mundo
+            // correm antes do set `FxDrive` da cadeia de drives.
+            timed(Group::World, worldsys::sun_drive).before(postfx::FxDrive),
+        ),
+    );
+    // Tuplo dividido: o Bevy limita tuples de sistemas a 20 elementos (e o
+    // bloco de gameplay acima é condicional). Constraints são explícitas
+    // (.after), a separação não muda semântica.
+    app.add_systems(
+        bevy::app::Update,
+        (
+            sky::sky_follow_camera,
+            hud::hud_toggle,
+            // Lifecycle de FX ambiente por proximidade (`src/particles.rs`):
+            // monta/desmonta os bundles dos markers `AmbientFx` (espuma da
+            // água, `<ParticleSystem>` autorais) pela distância da câmara —
+            // ENCADEADO antes do update para os recém-montados simularem já
+            // neste frame (tuplos de sistemas não garantem ordem).
+            (
+                timed(Group::Fx, particles::ambient_fx_manager),
+                timed(Group::Fx, particles::particle_emitter_update),
+            )
+                .chain(),
+            timed(Group::Spawner, spawner::instantiate_spawn_groups),
+        ),
+    );
+    if mode == RunMode::Edit {
+        // Cena congelada: física, IA e animações param (tempo virtual em
+        // pausa); o render, o céu e o LOD continuam a correr.
+        app.add_systems(bevy::app::Startup, pause_virtual_time);
+    }
+    Ok(app)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// O default tem de ser o comportamento de sempre: o CLI e o editor não
+    /// passam os gates novos, e um default `false` desligava-lhes o jogo.
+    #[test]
+    fn default_app_options_keep_the_full_engine() {
+        let opts = AppOptions::default();
+        assert!(opts.gameplay, "gameplay liga por omissão");
+        assert_eq!(opts.ai, AiMode::Full, "IA completa por omissão");
+        assert!(opts.player_camera, "player/câmara ligam por omissão");
+        assert!(opts.ui, "UI declarativa liga por omissão");
+        assert!(opts.profiler, "profiler liga por omissão");
+    }
+
+    /// Os três modos de IA são distintos e o default é o completo.
+    #[test]
+    fn ai_mode_modes_are_distinct() {
+        assert_eq!(AiMode::default(), AiMode::Full);
+        assert_ne!(AiMode::Service, AiMode::Full);
+        assert_ne!(AiMode::Off, AiMode::Full);
+        assert_ne!(AiMode::Off, AiMode::Service);
+    }
+
+    /// `AiServicePlugin` sozinho tem de construir e correr sem o `enemy_ai`:
+    /// o `.before(enemy_ai)` do `hear_combat` passa a apontar para um conjunto
+    /// vazio, não para um erro de schedule. O serviço corre (os vitais entram)
+    /// e a FSM simples não (o `sense_ai` nunca toca na criatura).
+    #[test]
+    fn ai_service_plugin_builds_and_runs_without_the_simple_ai() {
+        let mut app = App::new();
+        app.add_plugins(bevy::MinimalPlugins)
+            .add_plugins(crate::ai::AiServicePlugin);
+        let creature = app
+            .world_mut()
+            .spawn(crate::ai::EnemyCreature::default())
+            .id();
+        app.update();
+        let world = app.world();
+        assert!(
+            world.get::<crate::vitals::Health>(creature).is_some(),
+            "o serviço garante os vitais das criaturas"
+        );
+        assert!(
+            world.get::<crate::senses::SenseMemory>(creature).is_none(),
+            "sem FSM simples ninguém corre o sense_ai"
+        );
+    }
+}
+
+/// Threads do `IoTaskPool`.
+///
+/// No Bevy é ali que corre TODO o trabalho de um load: a leitura, o decode
+/// meshopt do nosso reader, o parse do glTF e o transcode KTX2 (UASTC → BCn)
+/// de cada textura — o loader do glTF paraleliza as texturas no mesmo pool.
+/// O default do Bevy (¼ dos cores, teto 4) deixava ~1.4 GB de GLB do Vael
+/// numa fila de 4 e o carregamento demorava minutos com 12 cores parados.
+/// Ficam dois cores livres (main + render); threads ociosas não custam nada
+/// depois do carregamento. `VIBER_IO_THREADS` força o número (medições).
+pub fn io_thread_count() -> usize {
+    if let Some(n) = std::env::var("VIBER_IO_THREADS")
+        .ok()
+        .and_then(|v| v.trim().parse::<usize>().ok())
+        .filter(|n| *n > 0)
+    {
+        return n;
+    }
+    std::thread::available_parallelism()
+        .map(|n| n.get().saturating_sub(2).clamp(2, 16))
+        .unwrap_or(2)
+}

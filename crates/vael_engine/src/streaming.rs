@@ -1,0 +1,323 @@
+//! Anéis de residência do conteúdo.
+//!
+//! Quente (&lt;160 m): ECS completo. Morno (até 400 m): o script já congela
+//! pelo raio de activação. Frio: a entidade com [`Streamable`] sai para um
+//! registo e volta quando o herói se aproxima, com a pose e o `viber.state`
+//! que deu para serializar. `stream="resident"` nunca arrefece.
+
+use std::collections::{HashMap, HashSet};
+
+use bevy::prelude::*;
+
+pub const HOT_RADIUS: f32 = 160.0;
+pub const COLD_RADIUS: f32 = 400.0;
+/// Acorda um pouco antes do limite, para não piscar na fronteira.
+pub const WAKE_RADIUS: f32 = 360.0;
+
+#[derive(Clone, Copy, Debug, PartialEq, Eq)]
+pub enum Ring {
+    Hot,
+    Warm,
+    Cold,
+}
+
+pub fn ring_for(distance: f32) -> Ring {
+    if distance < HOT_RADIUS {
+        Ring::Hot
+    } else if distance < COLD_RADIUS {
+        Ring::Warm
+    } else {
+        Ring::Cold
+    }
+}
+
+/// Pode ir para o registo frio. Sem isto (jogador, UI, terreno) fica.
+#[derive(Component, Debug, Reflect)]
+#[reflect(Component)]
+pub struct Streamable;
+
+/// Nunca arrefece (`stream="resident"`).
+#[derive(Component, Debug, Reflect)]
+#[reflect(Component)]
+pub struct Resident;
+
+#[derive(Clone, Debug, Reflect)]
+pub struct ColdRecord {
+    pub key: String,
+    /// Pose de MUNDO. A entidade pode ser um `<GltfScene>` filho de uma
+    /// `<Entity>`; guardar o `Transform` local acordava a cena na origem.
+    pub transform: Transform,
+    pub name: Option<String>,
+    pub scene: Option<Handle<bevy::world_serialization::WorldAsset>>,
+    pub script: Option<String>,
+    pub state_json: Option<String>,
+    /// Proveniência do nó XML, para a entidade acordada poder voltar a dormir.
+    pub source: crate::scene::SceneSource,
+}
+
+#[derive(Resource, Default, Reflect)]
+#[reflect(Resource)]
+pub struct ColdStore {
+    pub records: HashMap<String, ColdRecord>,
+}
+
+pub fn should_sleep(distance: f32, resident: bool, editor: bool) -> bool {
+    !editor && !resident && ring_for(distance) == Ring::Cold
+}
+
+pub fn should_wake(distance: f32) -> bool {
+    distance <= WAKE_RADIUS
+}
+
+fn source_key(origin: &crate::scene::SceneSource) -> String {
+    let path = origin
+        .0
+        .path
+        .iter()
+        .map(|i| i.to_string())
+        .collect::<Vec<_>>()
+        .join("/");
+    format!("{}#{path}", origin.0.file.display())
+}
+
+pub fn stream_rings(
+    mut commands: Commands,
+    mut store: ResMut<ColdStore>,
+    editor: Option<Res<crate::editor_camera::EditorCamState>>,
+    players: Query<&GlobalTransform, With<crate::player::Player>>,
+    query: Query<(
+        Entity,
+        &GlobalTransform,
+        &crate::scene::SceneSource,
+        Option<&Name>,
+        Option<&bevy::world_serialization::WorldAssetRoot>,
+        Option<&crate::luau::LuaScriptRef>,
+        Has<bevy::prelude::Mesh3d>,
+        Has<crate::recipes::spawn::GltfScenePending>,
+        Has<crate::gltf_residency::GltfSceneSpec>,
+        Has<Resident>,
+        Has<Streamable>,
+    )>,
+    children: Query<&Children>,
+) {
+    let Some(player) = players.iter().next() else {
+        return;
+    };
+    let editing = editor.as_deref().is_some_and(|s| s.active);
+    let hero = player.translation();
+    let mut wake = Vec::new();
+    for (key, record) in &store.records {
+        let pos = record.transform.translation;
+        if should_wake(pos.distance(hero)) {
+            wake.push(key.clone());
+        }
+    }
+    for key in wake {
+        let Some(record) = store.records.remove(&key) else {
+            continue;
+        };
+        let mut spawned = commands.spawn((Streamable, record.transform, Visibility::Inherited));
+        if let Some(name) = record.name.clone() {
+            spawned.insert(Name::new(name));
+        }
+        if let Some(scene) = record.scene.clone() {
+            spawned.insert(bevy::world_serialization::WorldAssetRoot(scene));
+        }
+        if let Some(path) = record.script.clone() {
+            spawned.insert(crate::luau::LuaScriptRef { path });
+        }
+        spawned.insert(record.source.clone());
+        let _ = key;
+    }
+    let mut sleep: Vec<(Entity, ColdRecord)> = Vec::new();
+    // Chaves já escolhidas nesta passagem: `sleep.iter().any(...)` era O(n²)
+    // quando muitos irmãos da mesma origem adormeciam no mesmo frame.
+    let mut sleeping_keys: HashSet<String> = HashSet::new();
+    for (entity, global, source, name, scene, script, has_mesh, pending, deferred, resident, streamable) in
+        &query
+    {
+        if !streamable {
+            continue;
+        }
+        // Uma `<GltfScene>` adiada (residência posicional) não tem cena nem
+        // malha por ainda não ter chegado perto: quem a acorda é o
+        // `gltf_residency`, não o registo frio.
+        if deferred {
+            continue;
+        }
+        // Só adormece o que sabe acordar: cena (WorldAssetRoot) ou entidade
+        // sem visual. Um `<GltfScene>` ainda a carregar ou uma primitiva
+        // (`Mesh3d`) não têm como ser reconstruídos e ficariam vazios.
+        if scene.is_none() && (has_mesh || pending) {
+            continue;
+        }
+        let distance = global.translation().distance(hero);
+        if !should_sleep(distance, resident, editing) {
+            continue;
+        }
+        // `despawn()` é recursivo no Bevy: adormecer um pai com filhos XML
+        // apagava a subárvore, e o ColdRecord só guarda a pose do root.
+        // Só folhas hibernam (o pai fica residente e os filhos seguem o LOD).
+        if children.get(entity).is_ok_and(|kids| !kids.is_empty()) {
+            continue;
+        }
+        // Duas entidades podem partilhar a mesma origem (`<Use>`/include
+        // repetido); sem uma chave única a segunda hibernação substituía o
+        // registo da primeira e uma instância desaparecia para sempre. A
+        // primeira mantém a chave histórica (`ficheiro#path`), a colisão
+        // leva o id — saves/testes antigos continuam a reconhecê-la.
+        // A colisão testa TAMBÉM os registos desta passagem: `store.records`
+        // só recebe os `sleep` no fim do loop, e dois irmãos da mesma origem
+        // adormecidos no MESMO frame ficavam ambos com a chave base (o
+        // segundo `insert` apagava o primeiro).
+        let base = source_key(source);
+        let key = if store.records.contains_key(&base) || !sleeping_keys.insert(base.clone()) {
+            format!("{}#{}", base, entity.to_bits())
+        } else {
+            base
+        };
+        sleep.push((
+            entity,
+            ColdRecord {
+                key: key.clone(),
+                transform: global.compute_transform(),
+                name: name.map(|n| n.as_str().to_string()),
+                scene: scene.map(|s| s.0.clone()),
+                script: script.map(|s| s.path.clone()),
+                // Estado de VM por entidade (`viber.state` do host antigo):
+                // morreu com ela — o estado que sobrevive ao hibernar vive no
+                // save do jogo.
+                state_json: None,
+                source: source.clone(),
+            },
+        ));
+    }
+    for (entity, record) in sleep {
+        store.records.insert(record.key.clone(), record);
+        commands.entity(entity).despawn();
+    }
+}
+
+pub struct StreamingPlugin;
+
+impl Plugin for StreamingPlugin {
+    fn build(&self, app: &mut App) {
+        app.init_resource::<ColdStore>()
+            .add_systems(Update, stream_rings);
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn rings_split_hot_warm_and_cold() {
+        assert_eq!(ring_for(10.0), Ring::Hot);
+        assert_eq!(ring_for(200.0), Ring::Warm);
+        assert_eq!(ring_for(500.0), Ring::Cold);
+    }
+
+    #[test]
+    fn residents_and_the_editor_never_sleep() {
+        assert!(!should_sleep(800.0, true, false));
+        assert!(!should_sleep(800.0, false, true));
+        assert!(should_sleep(800.0, false, false));
+        assert!(should_wake(300.0));
+        assert!(!should_wake(390.0));
+    }
+
+    #[test]
+    fn a_named_npc_comes_back_inside_the_wake_radius() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins);
+        app.add_plugins(bevy::transform::TransformPlugin);
+        app.add_plugins(StreamingPlugin);
+        app.world_mut().spawn((
+            crate::player::Player::default(),
+            Transform::from_xyz(0.0, 0.0, 0.0),
+            GlobalTransform::from_xyz(0.0, 0.0, 0.0),
+        ));
+        let origin = crate::xml::NodeOrigin {
+            file: std::sync::Arc::from(std::path::Path::new("world/npc.xml")),
+            path: vec![0],
+        };
+        app.world_mut().spawn((
+            Streamable,
+            Name::new("mina"),
+            Transform::from_xyz(0.0, 0.0, 500.0),
+            GlobalTransform::from_xyz(0.0, 0.0, 500.0),
+            crate::scene::SceneSource(std::sync::Arc::new(origin)),
+        ));
+        app.update();
+        assert!(
+            app.world()
+                .resource::<ColdStore>()
+                .records
+                .contains_key("world/npc.xml#0"),
+            "500 m adormece"
+        );
+        {
+            let world = app.world_mut();
+            let mut names = world.query::<&Name>();
+            assert_eq!(names.iter(world).count(), 0);
+        }
+        let player = {
+            let mut q = app
+                .world_mut()
+                .query_filtered::<Entity, With<crate::player::Player>>();
+            let world = app.world();
+            q.iter(world).next().unwrap()
+        };
+        app.world_mut().entity_mut(player).insert((
+            Transform::from_xyz(0.0, 0.0, 500.0),
+            GlobalTransform::from_xyz(0.0, 0.0, 500.0),
+        ));
+        app.update();
+        let names: Vec<_> = app
+            .world_mut()
+            .query::<&Name>()
+            .iter(app.world())
+            .map(|n| n.as_str().to_string())
+            .collect();
+        assert!(
+            names.iter().any(|n| n == "mina"),
+            "acorda com o nome: {names:?}"
+        );
+        assert!(app.world().resource::<ColdStore>().records.is_empty());
+    }
+
+    /// Dois irmãos da MESMA origem (`<Use>`/include repetido) adormecidos no
+    /// mesmo frame: cada um precisa do seu registo, senão o segundo `insert`
+    /// apagava o primeiro e uma instância desaparecia para sempre.
+    #[test]
+    fn two_entities_with_the_same_source_both_sleep() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins);
+        app.add_plugins(bevy::transform::TransformPlugin);
+        app.add_plugins(StreamingPlugin);
+        app.world_mut().spawn((
+            crate::player::Player::default(),
+            Transform::from_xyz(0.0, 0.0, 0.0),
+            GlobalTransform::from_xyz(0.0, 0.0, 0.0),
+        ));
+        let origin = crate::xml::NodeOrigin {
+            file: std::sync::Arc::from(std::path::Path::new("world/npc.xml")),
+            path: vec![0],
+        };
+        for _ in 0..2 {
+            app.world_mut().spawn((
+                Streamable,
+                Transform::from_xyz(0.0, 0.0, 500.0),
+                GlobalTransform::from_xyz(0.0, 0.0, 500.0),
+                crate::scene::SceneSource(std::sync::Arc::new(origin.clone())),
+            ));
+        }
+        app.update();
+        assert_eq!(
+            app.world().resource::<ColdStore>().records.len(),
+            2,
+            "os dois irmãos hibernam (chaves distintas)"
+        );
+    }
+}

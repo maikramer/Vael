@@ -103,6 +103,19 @@ function M.init()
   end
 end
 
+local function tr(text)
+  -- O prompt da barra vai por `viber.ui.set`, que NÃO passa pelos embrulhos
+  -- de saída (`viber.toast/say/...`): sem isto as perguntas dos enigmas e dos
+  -- dadores ficavam em PT no modo EN apesar de terem entrada no
+  -- `locale/strings_en.json`. O `lib/i18n.lua` instala `viber.__i18n_tr`
+  -- quando o `lib/rules.lua` carrega (todos os que abrem a barra já o fizeram).
+  local fn = viber.__i18n_tr
+  if type(fn) == "function" and type(text) == "string" and text ~= "" then
+    return fn(text)
+  end
+  return text
+end
+
 function M.ask(opts)
   M.init()
   -- Capturado AQUI (o `ask` corre no on_update do NPC); os callbacks correm
@@ -146,13 +159,15 @@ function M.ask(opts)
   st.typed = ""
   st.speaker = speaker
   st.timer = opts.timeout or DEFAULT_TIMEOUT
-  local prompt = opts.prompt or "Diz uma palavra."
+  -- A frase base (e o exemplo/dica, que são conteúdo) traduzem-se SEPARADAS:
+  -- a frase composta com o sufixo não é a chave do locale.
+  local prompt = tr(opts.prompt or "Diz uma palavra.")
   if opts.example and opts.example ~= "" then
-    prompt = prompt .. "  ·  ex.: " .. opts.example
+    prompt = prompt .. "  ·  ex.: " .. tr(opts.example)
   elseif opts.hint and opts.hint ~= "" then
-    prompt = prompt .. "  ·  " .. opts.hint
+    prompt = prompt .. "  ·  " .. tr(opts.hint)
   elseif opts.allow_fallback then
-    prompt = prompt .. "  ·  Diga um verso elemental ou o nome de uma criatura..."
+    prompt = prompt .. "  ·  " .. tr("Diga um verso elemental ou o nome de uma criatura...")
   end
   viber.ui.set("say.prompt", prompt)
   viber.ui.set_text(INPUT, "")
@@ -216,7 +231,7 @@ local function submit(text)
   st.phase = "waiting"
   st.said = text
   st.timer = THINK_TIMEOUT
-  viber.ui.set("say.prompt", "A ouvir…")
+  viber.ui.set("say.prompt", tr("A ouvir…"))
   viber.ui.set("dialogue.until", viber.time() + 1.0)
   local id, err
   if st.backend == "decision" then

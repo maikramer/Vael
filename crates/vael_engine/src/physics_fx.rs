@@ -1,0 +1,482 @@
+//! Física Fase 3 (loop 10 do port simple-rpg) — efeitos físicos sobre a
+//! arquitetura transform-driven da engine (as criaturas movem-se por
+//! comandos de script e o herói por cinemática própria — o equivalente do
+//! Character Controller original; não há rigidbodies dinâmicos para
+//! receber impulsos Rapier):
+//!
+//! - **Knockback**: [`Knockback`] — velocidade horizontal com decaimento
+//!   exponencial aplicada ao Transform do atingido (melee, golpe forte,
+//!   bomba, dano de script com origem conhecida).
+//! - **Destrutíveis com queda** (`break-style: fall` do XML): [`Falling`]
+//!   tomba a entidade (rotação progressiva) e despawna no fim — os scripts
+//!   de colheita chamam `viber.topple()` no último golpe.
+//!
+//! Pure fns (`knockback_after`, `fall_angle`, `radial_strength`) testadas.
+
+use bevy::prelude::*;
+
+pub use bevy_engine_core::{
+    FALL_ANGLE_DEG, FALL_DURATION, Falling, KNOCKBACK_DECAY, KNOCKBACK_EPSILON, Knockback,
+    fall_angle, fall_rotation, knockback_after, knockback_decay_factor, knockback_travel_factor,
+    push_velocity, radial_strength,
+};
+use crate::profiler::{Group, timed};
+use crate::terrain::runtime::TerrainRuntime;
+
+// ── sistemas ────────────────────────────────────────────────────────────
+
+/// Aplica e decai o knockback; senta o Y no terreno quando disponível.
+///
+/// - Cadáveres (`Corpse`) ficam de fora: mortos por strike/bomba no MESMO
+///   frame tinham o `Knockback` inserido por cima da animação de morte.
+/// - O HERÓI é saltado por completo: o `player_movement` aplica o empurrão no
+///   pedido do character controller E o decai (integral exata no mesmo passo).
+///   Aqui só se move quem não tem controller próprio; criaturas assentam na
+///   superfície sob elas.
+/// - XZ clampado ao disco do [`crate::worldsys::WorldBorderConfig`] (a mesma
+///   matemática de `worldsys::world_border_clamp`): o empurrão não pode
+///   expulsar ninguém do mundo — excepto dentro da bolsa de interior, que
+///   vive declaradamente fora do disco (o clamp teleportava para o vale).
+#[allow(clippy::type_complexity)]
+fn knockback_system(
+    time: Res<Time>,
+    terrain: Option<Res<TerrainRuntime>>,
+    border: Option<Res<crate::worldsys::WorldBorderConfig>>,
+    interior: Option<Res<crate::worldsys::InteriorSceneConfig>>,
+    mut knocked: Query<
+        (
+            Entity,
+            &mut Transform,
+            &mut Knockback,
+            Option<&crate::player::Player>,
+        ),
+        Without<crate::corpse::Corpse>,
+    >,
+    mut commands: Commands,
+) {
+    let dt = time.delta_secs();
+    let limit = border.as_deref().map(|b| b.radius - b.margin);
+    for (entity, mut transform, mut knockback, player) in &mut knocked {
+        // O HERÓI é dono do próprio empurrão: o `player_movement` aplica-o no
+        // pedido do character controller e decai-o no MESMO passo (integral
+        // exata). Decair aqui também deixava a distância dependente da ORDEM
+        // dos sistemas e do framerate: num frame longo o herói andava
+        // `v·e^(−k·dt)·dt`, uma fração ínfima dos `v/k` pedidos.
+        if player.is_some() {
+            continue;
+        }
+        // Integral EXATA do decaimento (`v·(1−e^{−k·dt})/k`) em vez de Euler
+        // explícito (`v·dt` e depois `v *= 1−k·dt`): num frame longo
+        // (`dt > 1/k` — soluço, carregamento) o Euler já tinha andado `v·dt`
+        // quando zerava a velocidade, ou seja 3× a distância pedida. Assim a
+        // distância total é `v₀/k` qualquer que seja o dt.
+        let decay = knockback_decay_factor(dt);
+        let travel = knockback_travel_factor(dt);
+        let step = knockback.velocity * travel;
+        let mut x = transform.translation.x + step.x;
+        let mut z = transform.translation.z + step.z;
+        knockback.velocity *= decay;
+        if knockback.velocity.length() < KNOCKBACK_EPSILON {
+            knockback.velocity = Vec3::ZERO;
+            commands.entity(entity).remove::<Knockback>();
+        }
+        let in_interior = interior
+            .as_deref()
+            .is_some_and(|scene| scene.contains(transform.translation.x, transform.translation.z));
+        if let Some(limit) = limit.filter(|limit| !in_interior && *limit > 0.0) {
+            let dist_sq = x * x + z * z;
+            if dist_sq > limit * limit {
+                let scale = limit / dist_sq.sqrt();
+                x *= scale;
+                z *= scale;
+            }
+        }
+        if let Some(terrain) = terrain.as_deref() {
+            transform.translation.y =
+                crate::player::ground_near(terrain, x, z, transform.translation.y);
+        }
+        transform.translation.x = x;
+        transform.translation.z = z;
+    }
+}
+
+/// Tomba destrutíveis e despawna no fim da queda.
+fn falling_system(
+    time: Res<Time>,
+    mut falling: Query<(Entity, &mut Transform, &mut Falling)>,
+    mut commands: Commands,
+) {
+    let dt = time.delta_secs();
+    for (entity, mut transform, mut fall) in &mut falling {
+        fall.timer += dt;
+        if fall.timer >= FALL_DURATION {
+            commands.entity(entity).try_despawn();
+            continue;
+        }
+        let angle = fall_angle(fall.timer, FALL_DURATION);
+        transform.rotation = fall_rotation(fall.axis, angle) * fall.initial;
+    }
+}
+
+// ── plugin ──────────────────────────────────────────────────────────────
+
+pub struct PhysicsFxPlugin;
+
+impl Plugin for PhysicsFxPlugin {
+    fn build(&self, app: &mut App) {
+        app.add_systems(
+            Update,
+            (
+                timed(Group::Fx, knockback_system),
+                timed(Group::Fx, falling_system),
+            ),
+        );
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn test_knockback_flattens_y() {
+        let kb = knockback_after(Vec3::new(3.0, 9.0, 4.0), 6.0);
+        assert!(kb.velocity.y.abs() < 1e-5, "sem componente vertical");
+        // direção (3,4) normalizada × 6
+        let expected = Vec3::new(0.6, 0.0, 0.8) * 6.0;
+        assert!((kb.velocity - expected).length() < 1e-3);
+    }
+
+    #[test]
+    fn test_knockback_zero_direction_safe() {
+        let kb = knockback_after(Vec3::ZERO, 6.0);
+        assert_eq!(kb.velocity, Vec3::ZERO);
+    }
+
+    /// Eixo nulo continua a dar uma ROTAÇÃO (quaternião unitário) — antes
+    /// encolhia o prop em vez de o tombar.
+    #[test]
+    fn test_fall_rotation_stays_unit_on_a_zero_axis() {
+        let q = fall_rotation(Vec3::ZERO, 90.0);
+        assert!((q.length() - 1.0).abs() < 1e-5, "unit: {}", q.length());
+        let tipped = q * Vec3::Y;
+        assert!(tipped.y.abs() < 1e-4, "fully tipped: {tipped}");
+        let q = fall_rotation(Vec3::new(0.0, 0.0, 5.0), 90.0);
+        assert!(
+            (q * Vec3::Y - Vec3::NEG_X).length() < 1e-4,
+            "axis is normalized"
+        );
+    }
+
+    #[test]
+    fn test_fall_angle_eases_in() {
+        assert!((fall_angle(0.0, 0.9).abs()) < 1e-4);
+        let mid = fall_angle(0.45, 0.9);
+        assert!(
+            mid < FALL_ANGLE_DEG / 2.0,
+            "ease-in: metade do tempo < metade do ângulo ({mid})"
+        );
+        assert!((fall_angle(0.9, 0.9) - FALL_ANGLE_DEG).abs() < 1e-3);
+        // passa do fim: clamp
+        assert!((fall_angle(5.0, 0.9) - FALL_ANGLE_DEG).abs() < 1e-3);
+    }
+
+    #[test]
+    fn test_radial_strength_falloff() {
+        assert!((radial_strength(0.0, 6.0, 10.0).unwrap() - 10.0).abs() < 1e-4);
+        let edge = radial_strength(6.0, 6.0, 10.0).unwrap();
+        assert!((edge - 4.0).abs() < 1e-4, "40% na borda");
+        assert!(radial_strength(7.0, 6.0, 10.0).is_none());
+        // Raio degenerado não tem disco (0/0 = NaN).
+        assert!(radial_strength(0.0, 0.0, 10.0).is_none());
+        assert!(radial_strength(0.0, -3.0, 10.0).is_none());
+        assert!(radial_strength(f32::NAN, 4.0, 10.0).is_none());
+    }
+
+    /// App headless mínima com o plugin (relógio avançado à mão, como em
+    /// `ai.rs` — sem TimePlugin o delta real microscópico não estraga os
+    /// passos do knockback).
+    fn fx_app() -> App {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins.build().disable::<bevy::time::TimePlugin>());
+        app.add_plugins(PhysicsFxPlugin);
+        app.init_resource::<Time>();
+        app
+    }
+
+    /// R2-G7: cadáveres (`Corpse`) não são empurrados pelo knockback —
+    /// o strike/bomba inseria `Knockback` em mortos do mesmo frame.
+    #[test]
+    fn test_knockback_skips_corpses_headless() {
+        let mut app = fx_app();
+        let alive = app
+            .world_mut()
+            .spawn((
+                Transform::from_xyz(0.0, 0.0, 0.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+            ))
+            .id();
+        let dead = app
+            .world_mut()
+            .spawn((
+                Transform::from_xyz(0.0, 0.0, 0.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+                crate::corpse::Corpse {
+                    timer: crate::corpse::CORPSE_LIFETIME,
+                },
+            ))
+            .id();
+        app.world_mut()
+            .resource_mut::<Time>()
+            .advance_by(std::time::Duration::from_millis(100));
+        app.update();
+        let alive_x = app.world().get::<Transform>(alive).unwrap().translation.x;
+        let dead_x = app.world().get::<Transform>(dead).unwrap().translation.x;
+        assert!(alive_x > 0.0, "vivo desloca: {alive_x}");
+        assert_eq!(dead_x, 0.0, "cadáver fica no lugar: {dead_x}");
+    }
+
+    /// R2-G5a: o HERÓI é SALTADO por este sistema — o Transform fica intacto
+    /// e o `Knockback` não é decaído aqui (o `player_movement` aplica-o no
+    /// pedido do character controller e decai-o no mesmo passo).
+    #[test]
+    fn test_knockback_keeps_player_y_headless() {
+        use std::sync::Arc;
+
+        let mut app = fx_app();
+        // Grid procedural pequeno (mesmo setup dos testes de `ai.rs`) — sem
+        // isto o branch do Y-slam nem corria e o teste não apanhava a
+        // regressão.
+        let spec = crate::terrain::spec::TerrainSpec {
+            world_size: 128.0,
+            max_height: 40.0,
+            seed: 5,
+            ..crate::terrain::spec::TerrainSpec::default()
+        };
+        let map = crate::terrain::heightmap::HeightMapU16::procedural(
+            &spec,
+            spec.resolution.max(1) as usize,
+        );
+        let grid = crate::terrain::brush::BrushGrid::from_height_map(
+            &map,
+            spec.world_size,
+            spec.max_height,
+            spec.height_smoothing,
+        )
+        .expect("grid builds");
+        app.insert_resource(TerrainRuntime {
+            spec,
+            grid: Arc::new(grid),
+            water: vec![],
+            roads: vec![],
+            pads: vec![],
+            voxel: Arc::new(crate::terrain::voxel::VoxelField::default()),
+            deltas: std::sync::Arc::new(crate::terrain::delta::DeltaGrid::default()),
+            paint: std::sync::Arc::new(crate::terrain::paint::PaintGrid::default()),
+            splat_tuning: Default::default(),
+            paving: Default::default(),
+        });
+
+        let hero = app
+            .world_mut()
+            .spawn((
+                crate::player::Player::default(),
+                Transform::from_xyz(10.0, 3.5, 10.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+            ))
+            .id();
+        // Um NÃO-player na mesma zona: leva o Y-slam (comportamento mantido).
+        let prop = app
+            .world_mut()
+            .spawn((
+                Transform::from_xyz(10.0, 3.5, 10.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+            ))
+            .id();
+
+        app.world_mut()
+            .resource_mut::<Time>()
+            .advance_by(std::time::Duration::from_millis(100));
+        app.update();
+
+        let hero_t = app.world().get::<Transform>(hero).unwrap().translation;
+        assert_eq!(
+            hero_t,
+            Vec3::new(10.0, 3.5, 10.0),
+            "Transform do herói intocado"
+        );
+        let hero_kb = app.world().get::<Knockback>(hero).unwrap().velocity;
+        assert_eq!(
+            hero_kb,
+            Vec3::X * 2.0,
+            "o herói aplica/decai no player_movement — este sistema não toca"
+        );
+        let prop_t = app.world().get::<Transform>(prop).unwrap().translation;
+        let ground = app
+            .world()
+            .resource::<TerrainRuntime>()
+            .sample_mesh_surface(prop_t.x, prop_t.z);
+        assert!(
+            (prop_t.y - ground).abs() < 1e-3,
+            "não-player assenta na superfície: {} vs {ground}",
+            prop_t.y
+        );
+    }
+
+    /// R2-G5b: o deslocamento do knockback é clampado ao disco do
+    /// WorldBorder (mesma matemática de `worldsys::world_border_clamp`).
+    #[test]
+    fn test_knockback_clamps_to_world_border_headless() {
+        let mut app = fx_app();
+        app.insert_resource(crate::worldsys::WorldBorderConfig {
+            radius: 100.0,
+            warn_seconds: 5.0,
+            margin: 10.0,
+        });
+        // 1 empurrão forte: (90,0) + X·2·1 s = 92 — o limite é 90
+        // (radius − margin): fica em 90.
+        let id = app
+            .world_mut()
+            .spawn((
+                Transform::from_xyz(90.0, 0.0, 0.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+            ))
+            .id();
+        app.world_mut()
+            .resource_mut::<Time>()
+            .advance_by(std::time::Duration::from_secs_f32(1.0));
+        app.update();
+        let t = app.world().get::<Transform>(id).unwrap().translation;
+        let dist = (t.x * t.x + t.z * t.z).sqrt();
+        assert!(
+            (dist - 90.0).abs() < 1e-3,
+            "clampado ao disco (limit 90): dist={dist}"
+        );
+        // Dentro do disco: o empurrão aplica-se sem clamp. Relógio avançado
+        // por update (sem TimePlugin o delta é o que aqui se der).
+        let inner = app
+            .world_mut()
+            .spawn((
+                Transform::from_xyz(0.0, 0.0, 0.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+            ))
+            .id();
+        app.world_mut()
+            .resource_mut::<Time>()
+            .advance_by(std::time::Duration::from_millis(100));
+        app.update();
+        let t = app.world().get::<Transform>(inner).unwrap().translation;
+        assert!(t.x > 0.0, "sem clamp dentro do disco: {t:?}");
+    }
+
+    /// `radius <= margin` (o caso documentado `radius="0"`) não tem disco
+    /// interior: o `limit` NEGATIVO espelhava o empurrão para o lado oposto
+    /// do mundo (`scale` negativo). O `world_border_clamp` já tinha o guarda;
+    /// esta cópia não.
+    #[test]
+    fn test_knockback_never_mirrors_with_a_degenerate_border() {
+        let mut app = fx_app();
+        app.insert_resource(crate::worldsys::WorldBorderConfig {
+            radius: 10.0,
+            warn_seconds: 5.0,
+            margin: 30.0, // limit = -20
+        });
+        let id = app
+            .world_mut()
+            .spawn((
+                Transform::from_xyz(30.0, 0.0, 0.0),
+                Knockback {
+                    velocity: Vec3::X * 2.0,
+                },
+            ))
+            .id();
+        app.world_mut()
+            .resource_mut::<Time>()
+            .advance_by(std::time::Duration::from_millis(100));
+        app.update();
+        let t = app.world().get::<Transform>(id).unwrap().translation;
+        assert!(
+            t.x > 30.0,
+            "sem disco interior o empurrão não é clampado nem espelhado: {t:?}"
+        );
+    }
+
+    /// A distância percorrida não depende da divisão do tempo: um frame de
+    /// 1 s (soluço) tem de dar o mesmo que 100 frames de 10 ms. No Euler
+    /// explícito antigo o frame de 1 s andava `v₀·1 s` = 3 m (6× o pedido).
+    #[test]
+    fn test_knockback_distance_is_frame_rate_independent() {
+        fn travel(millis: &[u64]) -> f32 {
+            let mut app = fx_app();
+            let id = app
+                .world_mut()
+                .spawn((
+                    Transform::default(),
+                    Knockback {
+                        velocity: Vec3::X * 3.0,
+                    },
+                ))
+                .id();
+            for step in millis {
+                app.world_mut()
+                    .resource_mut::<Time>()
+                    .advance_by(std::time::Duration::from_millis(*step));
+                app.update();
+            }
+            app.world().get::<Transform>(id).unwrap().translation.x
+        }
+        let one_long = travel(&[500]);
+        let many_short = travel(&[10u64; 50]);
+        assert!(
+            (one_long - many_short).abs() < 1e-3,
+            "1 frame de 500 ms → {one_long:.4} m; 50 de 10 ms → {many_short:.4} m"
+        );
+        // v₀·(1−e^{−k·0,5})/k = 0,475 m; o Euler antigo dava v₀·0,5 = 1,5 m.
+        assert!(
+            one_long < 0.6,
+            "o frame longo passou dos ~0,475 m: {one_long:.4} m"
+        );
+    }
+
+    /// A MESMA integral que move os corpos daqui é a que o `player_movement`
+    /// usa para o herói: somar os fatores parciais tem de dar a distância
+    /// total `v₀·(1−e^{−kT})/k`, qualquer que seja a divisão do tempo.
+    #[test]
+    fn test_travel_factor_telescopes_to_the_exact_distance() {
+        fn travelled(steps: &[f32]) -> f32 {
+            let mut velocity = 3.0_f32;
+            let mut distance = 0.0_f32;
+            for dt in steps {
+                distance += velocity * knockback_travel_factor(*dt);
+                velocity *= knockback_decay_factor(*dt);
+            }
+            distance
+        }
+        let total = 3.0 * (1.0 - (-KNOCKBACK_DECAY * 0.5).exp()) / KNOCKBACK_DECAY;
+        for steps in [
+            vec![0.5],
+            vec![1.0 / 60.0; 30],
+            vec![0.01; 50],
+            vec![0.1; 5],
+        ] {
+            let d = travelled(&steps);
+            assert!(
+                (d - total).abs() < 1e-3,
+                "{} passos deram {d:.4} m, total exato {total:.4}",
+                steps.len()
+            );
+        }
+    }
+}

@@ -1407,56 +1407,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bevy_ext_viber_engine"
-version = "0.1.0"
-dependencies = [
- "anyhow",
- "arboard",
- "avian3d",
- "base64 0.23.1",
- "bevy",
- "bevy-tnua",
- "bevy-tnua-avian3d",
- "bevy_ext_ai",
- "bevy_ext_audio",
- "bevy_ext_core",
- "bevy_ext_engine",
- "bevy_ext_gltf",
- "bevy_ext_gradmesh",
- "bevy_ext_luau",
- "bevy_ext_nav",
- "bevy_ext_physics",
- "bevy_ext_postfx",
- "bevy_ext_save",
- "bevy_ext_scene",
- "bevy_ext_terrain_runtime",
- "bevy_ext_ui",
- "bevy_ext_water",
- "bevy_ext_world",
- "bevy_gradmesh",
- "bevy_kira_audio",
- "bevy_landmass",
- "bevy_rerecast",
- "bevy_voxel_terrain",
- "celer-decision",
- "celer-nlu",
- "clap",
- "dirs 7.0.0",
- "flate2",
- "half",
- "image",
- "landmass_rerecast",
- "meshopt 0.7.0",
- "mlua",
- "notify",
- "roxmltree 0.21.2",
- "serde",
- "serde_json",
- "serde_yaml",
- "transvoxel",
-]
-
-[[package]]
 name = "bevy_ext_water"
 version = "0.1.0"
 dependencies = [
@@ -10983,7 +10933,6 @@ dependencies = [
  "bevy_ext_postfx",
  "bevy_ext_save",
  "bevy_ext_scene",
- "bevy_ext_viber_engine",
  "bevy_ext_world",
  "bevy_flora",
  "bevy_gauge",
@@ -11006,6 +10955,7 @@ dependencies = [
  "serde",
  "serde_json",
  "vael-content",
+ "vael_engine",
 ]
 
 [[package]]
@@ -11046,6 +10996,59 @@ dependencies = [
  "serde",
  "serde_json",
  "tempfile",
+]
+
+[[package]]
+name = "vael_engine"
+version = "0.1.0"
+dependencies = [
+ "anyhow",
+ "arboard",
+ "avian3d",
+ "base64 0.23.1",
+ "bevy",
+ "bevy-tnua",
+ "bevy-tnua-avian3d",
+ "bevy_ext_ai",
+ "bevy_ext_audio",
+ "bevy_ext_core",
+ "bevy_ext_engine",
+ "bevy_ext_gltf",
+ "bevy_ext_gradmesh",
+ "bevy_ext_luau",
+ "bevy_ext_nav",
+ "bevy_ext_physics",
+ "bevy_ext_postfx",
+ "bevy_ext_save",
+ "bevy_ext_scene",
+ "bevy_ext_terrain_runtime",
+ "bevy_ext_ui",
+ "bevy_ext_water",
+ "bevy_ext_world",
+ "bevy_gradmesh",
+ "bevy_kira_audio",
+ "bevy_landmass",
+ "bevy_rerecast",
+ "bevy_voxel_terrain",
+ "celer-decision",
+ "celer-nlu",
+ "clap",
+ "dirs 7.0.0",
+ "flate2",
+ "half",
+ "image",
+ "landmass_rerecast",
+ "meshopt 0.7.0",
+ "mlua",
+ "naga",
+ "notify",
+ "roxmltree 0.21.2",
+ "serde",
+ "serde_json",
+ "serde_yaml",
+ "tempfile",
+ "transvoxel",
+ "wesl",
 ]
 
 [[package]]

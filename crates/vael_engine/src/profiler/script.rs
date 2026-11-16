@@ -1,0 +1,378 @@
+//! Superfície Luau do profiler — `viber.profiler()` (leitura) e
+//! `viber.profiler_cmd(cmd)` (ações), no mesmo padrão do `viber.ui`:
+//!
+//! * **leitura** — o sistema [`publish_profiler_view`] publica um snapshot
+//!   JSON num `Arc<Mutex<…>>` (leve com o modal fechado, completo a ~4 Hz
+//!   com o modal `<UiModal id="profiler-win" key="p">` aberto) e a closure
+//!   converte-o para tabela Lua on-demand (reutiliza `json_to_lua` da
+//!   bridge);
+//! * **escrita** — as closures enfileiram comandos numa fila `Arc<Mutex>`
+//!   e [`apply_profiler_commands`] aplica-os pós-frame (mesmo contrato do
+//!   `UiCommandQueue`: scripts correm num thread só, lock sem contenção).
+//!
+//! As teclas **F5** (aba), **F12**/**Pause** (congelar), **Backquote**
+//! (exportar) e **PageUp/PageDown** (raio) continuam engine-side
+//! ([`profiler_keys_system`]) — o modal declarativo trata do **P** sozinho
+//! (`key="p"` faz toggle nativo) — e o driver `ui/profiler.lua` sincroniza
+//! o estado para a UI por `viber.ui.select_tab`/classes.
+
+use std::sync::{Arc, Mutex};
+use std::time::Instant;
+
+use bevy::prelude::*;
+use serde_json::Value;
+
+use super::{ProfilerState, TABS};
+
+/// Cadência de publicação do snapshot completo (s) — 4 Hz chega para uma
+/// janela de debug e mantém o passe de entidades fora do caminho quente.
+const PUBLISH_INTERVAL: f32 = 0.25;
+
+/// Recurso partilhado entre as closures Lua e os sistemas da engine.
+/// Mesma forma do `UiScriptState`: clonável, locks sem contenção.
+///
+/// Os Arcs são CLONES dos globais ([`shared_view`]/[`shared_queue`]): em modo
+/// BMS as closures vivem em contextos por entidade criados pelo regist
+/// `bevy_ext_luau::add_context_installer` e o recurso tem de partilhar os
+/// MESMOS Arcs com elas (era a VM única do host antigo que os unia).
+#[derive(Clone, Resource, Reflect)]
+#[reflect(Resource)]
+pub struct ProfilerScriptState {
+    /// Último snapshot publicado (`None` = modal fechado, nada a mostrar).
+    #[reflect(ignore)]
+    pub view: Arc<Mutex<Option<Value>>>,
+    /// Comandos enfileirados por `viber.profiler_cmd` (aplicados pós-frame).
+    pub queue: Arc<Mutex<Vec<String>>>,
+    /// True depois de `viber.profiler` existir no host antigo (BMS instala
+    /// por contexto, sem flag).
+    pub installed: bool,
+}
+
+impl Default for ProfilerScriptState {
+    fn default() -> Self {
+        Self {
+            view: Arc::clone(&shared_view()),
+            queue: Arc::clone(&shared_queue()),
+            installed: false,
+        }
+    }
+}
+
+/// Snapshot partilhado view/queue — o ponto de encontro das closures dos
+/// contextos BMS com os sistemas da engine.
+fn shared_view() -> Arc<Mutex<Option<Value>>> {
+    static SHARED: std::sync::LazyLock<Arc<Mutex<Option<Value>>>> =
+        std::sync::LazyLock::new(|| Arc::new(Mutex::new(None)));
+    Arc::clone(&SHARED)
+}
+
+fn shared_queue() -> Arc<Mutex<Vec<String>>> {
+    static SHARED: std::sync::LazyLock<Arc<Mutex<Vec<String>>>> =
+        std::sync::LazyLock::new(|| Arc::new(Mutex::new(Vec::new())));
+    Arc::clone(&SHARED)
+}
+
+fn install_profiler_api(lua: &mlua::Lua, _state: &ProfilerScriptState) -> mlua::Result<()> {
+    let viber: mlua::Table = lua.globals().get("viber")?;
+
+    // viber.profiler() -> table | nil — snapshot publicado pela engine
+    // (nil com o modal fechado: o driver nem acorda o GC).
+    {
+        let view = Arc::clone(&shared_view());
+        viber.set(
+            "profiler",
+            lua.create_function(move |lua, ()| {
+                let cached = view.lock().ok().and_then(|guard| guard.clone());
+                match cached {
+                    Some(value) => Ok(crate::bridge::lua::json_to_lua(lua, &value)?),
+                    None => Ok(mlua::Value::Nil),
+                }
+            })?,
+        )?;
+    }
+
+    // viber.profiler_cmd(cmd) — enfileira ação ("freeze", "export", "reset",
+    // "tab:<nome>", "radius:<±N>", "extra:<id>"); aplicada pós-frame.
+    {
+        let queue = Arc::clone(&shared_queue());
+        viber.set(
+            "profiler_cmd",
+            lua.create_function(move |_, cmd: String| {
+                if let Ok(mut queue) = queue.lock() {
+                    queue.push(cmd);
+                }
+                Ok(())
+            })?,
+        )?;
+    }
+
+    Ok(())
+}
+
+/// Instalador de contexto: `viber.profiler`/`viber.profiler_cmd` em CADA
+/// contexto novo (o registo `bevy_ext_luau::add_context_installer` corre-o
+/// sobre a `&Lua` nua — contexto BMS semeado ou a REPL do bridge).
+pub fn install_context_api(lua: &mlua::Lua) -> Result<(), String> {
+    let state = ProfilerScriptState::default();
+    install_profiler_api(lua, &state).map_err(|error| error.to_string())
+}
+
+/// Publica o snapshot para as closures: leve com o modal fechado (nada),
+/// completo a [`PUBLISH_INTERVAL`] com `<UiModal id="profiler-win">` aberto.
+pub fn publish_profiler_view(world: &mut World) {
+    // Throttle num Local-like: o estado vive no recurso (o sistema é
+    // exclusivo, sem Locals convenientes).
+    world.resource_scope(|world: &mut World, mut throttle: Mut<PublishThrottle>| {
+        throttle.0 += world.resource::<Time>().delta_secs();
+        let open = world
+            .get_resource::<crate::ui::modal::UiModalsOpen>()
+            .map(|m| m.open.iter().any(|id| id == "profiler-win"))
+            .unwrap_or(false);
+        if !open {
+            // Modal fechado: larga o cache — `viber.profiler()` devolve nil.
+            if let Ok(mut view) = world.resource::<ProfilerScriptState>().view.lock()
+                && view.is_some()
+            {
+                *view = None;
+            }
+            return;
+        }
+        if throttle.0 < PUBLISH_INTERVAL {
+            return;
+        }
+        throttle.0 = 0.0;
+
+        let value = super::full_snapshot(world);
+        if let Ok(mut view) = world.resource::<ProfilerScriptState>().view.lock() {
+            *view = Some(value);
+        }
+    });
+}
+
+/// Throttle do publicador (o sistema é exclusivo; estado em recurso).
+#[derive(Default, Resource, Reflect)]
+#[reflect(Resource)]
+pub struct PublishThrottle(pub f32);
+
+/// Aplica os comandos enfileirados por `viber.profiler_cmd` — pós-frame,
+/// igual ao `apply_ui_commands`.
+pub fn apply_profiler_commands(world: &mut World) {
+    let pending: Vec<String> = world
+        .resource::<ProfilerScriptState>()
+        .queue
+        .lock()
+        .map(|mut queue| std::mem::take(&mut *queue))
+        .unwrap_or_default();
+    for cmd in pending {
+        let status = run_profiler_cmd(world, &cmd);
+        if let Some(mut state) = world.get_resource_mut::<ProfilerState>() {
+            state.status = status;
+        }
+    }
+}
+
+/// Executa um comando do profiler e devolve a mensagem de estado. Partilhado
+/// pelas teclas (F5/F12/…) e pelos comandos Lua.
+pub fn run_profiler_cmd(world: &mut World, cmd: &str) -> String {
+    let cmd = cmd.trim();
+    if let Some(tab) = cmd.strip_prefix("tab:") {
+        if let Some(index) = TABS.iter().position(|&t| t == tab) {
+            if let Some(mut state) = world.get_resource_mut::<ProfilerState>() {
+                state.tab = index;
+            }
+            return format!("aba: {tab}");
+        }
+        return format!("aba desconhecida: {tab}");
+    }
+    if let Some(rest) = cmd.strip_prefix("trace:") {
+        let (action, arg) = match rest.split_once(':') {
+            Some((action, arg)) => (action, Some(arg)),
+            None => (rest, None),
+        };
+        return match action {
+            "start" => {
+                let seconds = arg
+                    .and_then(|raw| raw.trim().parse::<f32>().ok())
+                    .unwrap_or(10.0);
+                let status = super::trace::start(seconds, super::trace::DEFAULT_MAX_EVENTS);
+                format!(
+                    "trace a gravar {:.0}s ({} eventos/limite)",
+                    seconds.max(0.0),
+                    status["max_events"].as_u64().unwrap_or(0)
+                )
+            }
+            "stop" => {
+                let status = super::trace::stop();
+                format!(
+                    "trace fechado: {} frames, {} eventos",
+                    status["last"]["frames"].as_u64().unwrap_or(0),
+                    status["last"]["events"].as_u64().unwrap_or(0)
+                )
+            }
+            "export" => match super::trace::export(None, "chrome") {
+                Ok(result) => format!("trace → {}", result.path),
+                Err(error) => format!("trace falhou: {error}"),
+            },
+            other => format!("comando trace desconhecido: {other}"),
+        };
+    }
+    if let Some(raw) = cmd.strip_prefix("hitch:") {
+        let ms: f32 = raw.trim().parse().unwrap_or(0.0);
+        if ms.is_finite()
+            && ms > 0.0
+            && let Some(mut log) = world.get_resource_mut::<super::HitchLog>()
+        {
+            log.threshold_ms = ms;
+            return format!("hitch ≥ {ms:.0} ms");
+        }
+        return "limiar de hitch inválido".into();
+    }
+    match cmd {
+        "freeze" => {
+            if let Some(mut state) = world.get_resource_mut::<ProfilerState>() {
+                state.frozen = !state.frozen;
+                return if state.frozen {
+                    "congelado".into()
+                } else {
+                    "aquisição retomada".into()
+                };
+            }
+            "sem estado".into()
+        }
+        "export" => match super::export_to_file(world, None) {
+            Ok(path) => format!("exportado → {}", path.display()),
+            Err(error) => format!("export falhou: {error}"),
+        },
+        "copy" => match super::copy_snapshot_to_clipboard(world) {
+            Ok(bytes) => format!("JSON copiado ({bytes} bytes)"),
+            Err(error) => format!("copiar falhou: {error}"),
+        },
+        "reset" => {
+            super::timed::reset_timings();
+            "timings limpos".into()
+        }
+        _ => {
+            if let Some(delta) = cmd.strip_prefix("radius:") {
+                let delta: f32 = delta.trim().parse().unwrap_or(0.0);
+                // NaN/inf: `clamp` propaga NaN e `dist > NaN` é sempre falso —
+                // a aba Mundo passava a listar TODAS as entidades e nunca
+                // recuperava (o raio ficava NaN para sempre).
+                if !delta.is_finite() {
+                    return "raio inválido".into();
+                }
+                if let Some(mut state) = world.get_resource_mut::<ProfilerState>() {
+                    state.nearby_radius = (state.nearby_radius + delta).clamp(5.0, 200.0);
+                    return format!("raio: {:.0} m", state.nearby_radius);
+                }
+                return "sem estado".into();
+            }
+            if let Some(id) = cmd.strip_prefix("extra:") {
+                return match super::toggle_extra(world, id) {
+                    Some(on) => format!("{id} → {}", if on { "ON" } else { "OFF" }),
+                    None => format!("extra desconhecido: {id}"),
+                };
+            }
+            format!("comando desconhecido: {cmd}")
+        }
+    }
+}
+
+/// Teclas engine-side do profiler: **F12**/**Pause** (congelar),
+/// **Backquote** (exportar), **PageUp/PageDown** (raio). O **P** é do modal
+/// declarativo (`key="p"`) e as ABAS têm teclado nativo do modal
+/// (`]`/`.` próxima, `[`/`,` anterior, dígitos 1–6 saltam) — o driver Luau
+/// espelha a aba escolhida para a engine (fonte única: a UI). Corre mesmo
+/// com menus abertos — a janela do profiler É um menu.
+pub fn profiler_keys_system(world: &mut World) {
+    let (freeze, export, radius_up, radius_down) = {
+        let keys = world.resource::<ButtonInput<KeyCode>>();
+        (
+            keys.just_pressed(KeyCode::F12) || keys.just_pressed(KeyCode::Pause),
+            keys.just_pressed(KeyCode::Backquote),
+            keys.just_pressed(KeyCode::PageUp),
+            keys.just_pressed(KeyCode::PageDown),
+        )
+    };
+    if freeze {
+        let status = run_profiler_cmd(world, "freeze");
+        world.resource_mut::<ProfilerState>().status = status;
+    }
+    if export {
+        let status = run_profiler_cmd(world, "export");
+        world.resource_mut::<ProfilerState>().status = status;
+    }
+    if radius_up {
+        let status = run_profiler_cmd(world, "radius:+10");
+        world.resource_mut::<ProfilerState>().status = status;
+    }
+    if radius_down {
+        let status = run_profiler_cmd(world, "radius:-10");
+        world.resource_mut::<ProfilerState>().status = status;
+    }
+}
+
+/// Marca-tempo partilhado (o [`Instant`] de arranque para o publish log).
+#[allow(dead_code)]
+pub fn started_at() -> Instant {
+    Instant::now()
+}
+
+#[cfg(test)]
+mod tests {
+    use super::super::{TAB_SYSTEMS, TAB_WORLD};
+    use super::*;
+
+    #[test]
+    fn test_run_profiler_cmd_tab_aliases() {
+        let mut world = World::new();
+        world.init_resource::<ProfilerState>();
+        assert_eq!(run_profiler_cmd(&mut world, "tab:world"), "aba: world");
+        assert_eq!(world.resource::<ProfilerState>().tab, TAB_WORLD);
+        assert_eq!(run_profiler_cmd(&mut world, "tab:systems"), "aba: systems");
+        assert_eq!(world.resource::<ProfilerState>().tab, TAB_SYSTEMS);
+        assert_eq!(
+            run_profiler_cmd(&mut world, "tab:nuvem"),
+            "aba desconhecida: nuvem"
+        );
+    }
+
+    #[test]
+    fn test_run_profiler_cmd_freeze_and_radius() {
+        let mut world = World::new();
+        world.init_resource::<ProfilerState>();
+        assert_eq!(run_profiler_cmd(&mut world, "freeze"), "congelado");
+        assert!(world.resource::<ProfilerState>().frozen);
+        assert_eq!(run_profiler_cmd(&mut world, "freeze"), "aquisição retomada");
+        assert!(!world.resource::<ProfilerState>().frozen);
+
+        assert_eq!(run_profiler_cmd(&mut world, "radius:+15"), "raio: 45 m");
+        assert_eq!(run_profiler_cmd(&mut world, "radius:-100"), "raio: 5 m");
+        assert_eq!(run_profiler_cmd(&mut world, "radius:+500"), "raio: 200 m");
+        // NaN/inf não podem contaminar o raio (a comparação com NaN é sempre
+        // falsa e a aba Mundo listava tudo).
+        assert_eq!(run_profiler_cmd(&mut world, "radius:nan"), "raio inválido");
+        assert_eq!(
+            world.resource::<ProfilerState>().nearby_radius,
+            200.0,
+            "raio intacto"
+        );
+        assert_eq!(run_profiler_cmd(&mut world, "radius:inf"), "raio inválido");
+        assert_eq!(
+            run_profiler_cmd(&mut world, "wat"),
+            "comando desconhecido: wat"
+        );
+    }
+
+    #[test]
+    fn test_run_profiler_cmd_reset() {
+        // O reset limpa globais partilhados com os testes do `timed` — a
+        // mesma lock evita que ele corra a meio de uma atribuição por frame.
+        let _guard = super::super::timed::TEST_LOCK.lock();
+        let mut world = World::new();
+        world.init_resource::<ProfilerState>();
+        super::super::timed::set_frozen(false);
+        super::super::timed::record_system(super::super::Group::Fx, "test_cmd_sys", 1.0);
+        assert_eq!(run_profiler_cmd(&mut world, "reset"), "timings limpos");
+        assert!(super::super::timed::systems_snapshot(16.0).is_empty());
+    }
+}

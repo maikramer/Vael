@@ -1,0 +1,2474 @@
+//! Auditoria de assets referenciados pelo XML — corre headless no
+//! `viber analyze`: ficheiros ausentes, GLBs com compressão não suportada
+//! (Draco/Basis; meshopt é expandido pelo reader da engine), texturas com
+//! formato desconhecido ou magia inválida, colliders ausentes em modelos
+//! glTF, refs a scripts/estilos/BGM que não existem em disco, e conflitos
+//! geométricos entre features de terreno (estradas que entram na lâmina de
+//! lagos/rios ou atravessam a banda sólida de cliffs).
+//!
+//! Não abre a engine: lê bytes de cabeçalho (GLB magic + chunk JSON, PNG/JPEG
+//! magic) — barato e suficiente para apanhar os casos reais (GLB truncado,
+//! HTML guardado como .png, export Draco do DCC, typo no caminho).
+
+use std::collections::HashMap;
+use std::path::{Path, PathBuf};
+
+use bevy::math::{Affine3A, Vec2, Vec3};
+
+use crate::glb_bounds::GlbBounds;
+use crate::physics::ColliderShape;
+use crate::recipes::{EntityKind, EntitySpec, ParsedWorld};
+use crate::terrain::cliffs::CliffSpec;
+use crate::terrain::cut::CutSpec;
+use crate::terrain::paths::{distance_to_path, nearest_on_path, resample};
+use crate::terrain::plateau::PlateauSpec;
+use crate::terrain::roads::{RoadProfile, RoadSpec};
+use crate::terrain::water::{
+    CARVE_MARGIN, CONTOUR_PEAK, LakeShape, LakeSpec, RiverSpec, river_cliff_crossings,
+};
+
+/// Severidade de um achado: `Missing` vira ERRO com `analyze --strict`.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum Severity {
+    Missing,
+    Warning,
+    Info,
+}
+
+#[derive(Debug, Clone)]
+pub struct AuditIssue {
+    pub severity: Severity,
+    pub message: String,
+}
+
+#[derive(Debug, Default)]
+pub struct AuditReport {
+    /// Referências a ficheiros recolhidas (incl. repetidas).
+    pub references: usize,
+    pub issues: Vec<AuditIssue>,
+    /// Modelos glTF SEM collider (passam através) — nome ou url.
+    pub colliderless: Vec<String>,
+}
+
+impl AuditReport {
+    pub fn missing_count(&self) -> usize {
+        self.issues
+            .iter()
+            .filter(|issue| issue.severity == Severity::Missing)
+            .count()
+    }
+}
+
+/// Tipo de ficheiro referenciado (dita o sniffing).
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum RefKind {
+    Glb,
+    Texture,
+    Heightmap,
+    Audio,
+    Script,
+    Stylesheet,
+    /// Binário `.vinst` de instâncias pré-geradas (vegetação estática).
+    Instances,
+}
+
+struct AssetRef {
+    kind: RefKind,
+    /// Caminho absoluto no disco.
+    path: PathBuf,
+    /// Como foi referenciado (para a mensagem): `<GltfScene name="x">`.
+    context: String,
+}
+
+/// Audita o mundo: recolhe refs e verifica cada uma. `asset_roots` está em
+/// ordem de precedência (docs/ASSETS.md): a pasta do mundo primeiro, as
+/// roots extra do config.yaml do jogo a seguir — [`resolve_asset`] decide;
+/// `world_dir` resolve scripts/estilos relativos; `config` fornece os dirs
+/// de áudio e texturas do jogo.
+/// Paths de áudio carregados por HARDCODE na engine: os clips do registry
+/// Lua (`luau::SFX_NAME_REGISTRY` — uma linha por variante, aliases caem no
+/// dedup) mais os loops de ambiente (`ambient::AMBIENT_LOOP_FILES`),
+/// resolvidos contra o `sfx_dir` do config. O audit valida-os a todos
+/// porque nunca aparecem no XML — sem isto o `analyze` dizia "ok" com o jogo
+/// mudo (foi o caso dos loops de água).
+pub(crate) fn engine_audio_files(config: &crate::config::GameConfig) -> Vec<String> {
+    let mut files: Vec<String> = crate::luau::SFX_NAME_REGISTRY
+        .iter()
+        .map(|(_, clip)| config.sfx_path(clip.file()))
+        .collect();
+    files.extend(
+        crate::ambient::AMBIENT_LOOP_FILES
+            .iter()
+            .map(|rel| config.sfx_path(rel)),
+    );
+    files.sort_unstable();
+    files.dedup();
+    files
+}
+
+/// Resolve um caminho de asset contra as roots por ordem: a primeira que o
+/// tem ganha (override por-mundo → pool partilhado). Quando nenhuma o tem,
+/// devolve o join com a 1.ª root — a mensagem de "ausente" aponta ao sítio
+/// onde o autor esperava o ficheiro.
+fn resolve_asset(roots: &[PathBuf], rel: &str) -> PathBuf {
+    let rel = rel.trim_start_matches('/');
+    for root in roots {
+        let candidate = root.join(rel);
+        if candidate.exists() {
+            return candidate;
+        }
+    }
+    roots
+        .first()
+        .map(|root| root.join(rel))
+        .unwrap_or_else(|| PathBuf::from(rel))
+}
+
+pub fn audit(
+    world: &ParsedWorld,
+    world_dir: &Path,
+    asset_roots: &[PathBuf],
+    config: &crate::config::GameConfig,
+) -> AuditReport {
+    let mut report = AuditReport::default();
+    let mut refs: Vec<AssetRef> = Vec::new();
+    collect_entities(
+        &world.entities,
+        world_dir,
+        asset_roots,
+        config,
+        false,
+        &mut refs,
+        &mut report,
+    );
+
+    // Conflitos entre features de terreno — ver [`FeatureIndex`].
+    let mut features = FeatureIndex::default();
+    collect_features(&world.entities, [0.0, 0.0], &mut features);
+    report.issues.extend(audit_feature_conflicts(&features));
+
+    // Props sólidos gerados dentro uns dos outros (ou dentro de props autorais).
+    // Ver [`audit_static_overlaps`]: o `analyze` dizia "OK" com árvores geradas
+    // a nascer dentro da pedra de musgo e arbustos empilhados no mesmo ponto.
+    report
+        .issues
+        .extend(audit_static_overlaps(&world.entities, asset_roots));
+
+    // SFX carregados por path HARDCODED na engine — ver
+    // [`engine_audio_files`]. Os paths vêm do `sfx_dir` do config do jogo.
+    for file in engine_audio_files(config) {
+        refs.push(AssetRef {
+            kind: RefKind::Audio,
+            path: resolve_asset(asset_roots, &file),
+            context: "sfx engine".to_string(),
+        });
+    }
+
+    report.colliderless.sort();
+    report.colliderless.dedup();
+
+    // Dedup por (kind, path) mantendo o 1.º contexto + contagem.
+    report.references = refs.len();
+    let mut unique: Vec<(RefKind, PathBuf, String, usize)> = Vec::new();
+    for r in refs {
+        if let Some(entry) = unique
+            .iter_mut()
+            .find(|(kind, path, ..)| *kind == r.kind && *path == r.path)
+        {
+            entry.3 += 1;
+        } else {
+            unique.push((r.kind, r.path, r.context, 1));
+        }
+    }
+
+    for (kind, path, context, count) in unique {
+        let uses = if count > 1 {
+            format!(" (+{count} refs iguais)")
+        } else {
+            String::new()
+        };
+        if !path.is_file() {
+            report.issues.push(AuditIssue {
+                severity: Severity::Missing,
+                message: format!("ausente: {} (usado por {context}{uses})", path.display()),
+            });
+            continue;
+        }
+        match kind {
+            RefKind::Glb => audit_glb(&path, &context, &mut report.issues),
+            RefKind::Texture => audit_texture(&path, &context, &mut report.issues),
+            RefKind::Heightmap => {
+                if path
+                    .extension()
+                    .is_some_and(|e| e.eq_ignore_ascii_case("png"))
+                {
+                    check_magic(
+                        &path,
+                        &context,
+                        b"\x89PNG\r\n\x1a\n",
+                        "PNG",
+                        &mut report.issues,
+                    );
+                }
+            }
+            RefKind::Audio => {
+                if !path
+                    .extension()
+                    .is_some_and(|e| e.eq_ignore_ascii_case("ogg"))
+                {
+                    report.issues.push(AuditIssue {
+                        severity: Severity::Warning,
+                        message: format!(
+                            "formato de áudio pouco usual: {} (a engine usa .ogg) — {context}",
+                            path.display()
+                        ),
+                    });
+                }
+            }
+            RefKind::Script | RefKind::Stylesheet => {}
+            RefKind::Instances => {
+                if let Err(error) = crate::vinst::read(&path) {
+                    report.issues.push(AuditIssue {
+                        severity: Severity::Warning,
+                        message: format!(
+                            "instâncias inválidas: {} ({error}) — {context}",
+                            path.display()
+                        ),
+                    });
+                }
+            }
+        }
+    }
+    report
+}
+
+/// Quest × mundo montado: conteúdo morto é bug de conteúdo.
+///
+/// Duas ligações do `simple-rpg` só existem por NOME, e ambas falham em
+/// Recursão pela árvore de entidades recolhendo refs + GLBs sem collider.
+fn collect_entities(
+    entities: &[EntitySpec],
+    world_dir: &Path,
+    asset_roots: &[PathBuf],
+    config: &crate::config::GameConfig,
+    inherited_collider: bool,
+    refs: &mut Vec<AssetRef>,
+    report: &mut AuditReport,
+) {
+    for entity in entities {
+        let label = entity
+            .name
+            .clone()
+            .or_else(|| entity.tag.clone())
+            .unwrap_or_else(|| "sem nome".into());
+
+        let collider_covered = inherited_collider || !entity.physics.is_empty();
+        // `mesh-url` de um colisor é uma referência a FICHEIRO como outra
+        // qualquer: um caminho mal montado (ou um `_collision.glb` que não
+        // existe para aquele prop) dava "Path not found" no arranque sem o
+        // `analyze` dizer nada — foi assim que uma grelha de interiores
+        // inteira nasceu com o colisor a apontar para o nome errado.
+        {
+            let url = match &entity.physics.collider {
+                crate::physics::ColliderShape::Mesh { url, .. }
+                | crate::physics::ColliderShape::Precompute { url } => Some(url),
+                _ => None,
+            };
+            if let Some(url) = url {
+                refs.push(AssetRef {
+                    kind: RefKind::Glb,
+                    path: resolve_asset(asset_roots, url),
+                    context: format!("<collider mesh-url=\"{url}\"> {label}"),
+                });
+            }
+        }
+        if let Some(script) = &entity.script {
+            refs.push(AssetRef {
+                kind: RefKind::Script,
+                path: config.scripts_dir_on(world_dir).join(script),
+                context: format!("<script=\"{script}\"> {label}"),
+            });
+        }
+        match &entity.kind {
+            EntityKind::GltfScene {
+                url, lod1, lod2, ..
+            } => {
+                // O herói tem character controller próprio (colisão via
+                // Avian, não via attr); o resto herda collider do ancestral.
+                if !collider_covered {
+                    report.colliderless.push(url.clone());
+                }
+                // A ladder de LOD do `<GltfScene>` são ficheiros como os
+                // outros: sem este braço um `lod1-url`/`lod2-url` em falta
+                // (ou corrompido) passava o `analyze` em silêncio e o LOD só
+                // degradava no arranque com um warn.
+                for asset in std::iter::once(url).chain(lod1.iter()).chain(lod2.iter()) {
+                    refs.push(AssetRef {
+                        kind: RefKind::Glb,
+                        path: resolve_asset(asset_roots, asset),
+                        context: format!("<{asset}> {label}"),
+                    });
+                }
+            }
+            EntityKind::PlayerGltf { url } => {
+                refs.push(AssetRef {
+                    kind: RefKind::Glb,
+                    path: resolve_asset(asset_roots, url),
+                    context: format!("<{url}> {label}"),
+                });
+            }
+            EntityKind::Primitive { material, .. } => {
+                if let Some(texture) = &material.texture {
+                    refs.push(AssetRef {
+                        kind: RefKind::Texture,
+                        path: resolve_asset(asset_roots, texture),
+                        context: format!("<texture=\"{texture}\"> {label}"),
+                    });
+                }
+                // `normal-map` da primitiva: mesma resolução de roots do
+                // albedo — um mapa de normais em falta deixava o soalho liso
+                // sem que o `analyze` dissesse nada.
+                if let Some(normal) = &material.normal_map {
+                    refs.push(AssetRef {
+                        kind: RefKind::Texture,
+                        path: resolve_asset(asset_roots, normal),
+                        context: format!("<normal-map=\"{normal}\"> {label}"),
+                    });
+                }
+            }
+            EntityKind::Terrain { spec } => {
+                if let Some(heightmap) = &spec.heightmap {
+                    refs.push(AssetRef {
+                        kind: RefKind::Heightmap,
+                        path: resolve_asset(asset_roots, heightmap),
+                        context: format!("<heightmap=\"{heightmap}\">"),
+                    });
+                }
+                if let Some(texture) = &spec.texture {
+                    refs.push(AssetRef {
+                        kind: RefKind::Texture,
+                        path: resolve_asset(asset_roots, texture),
+                        context: format!("<terrain texture=\"{texture}\">"),
+                    });
+                }
+                for layer in &spec.layers {
+                    // Lista canónica com buracos (""): slot sem alias
+                    // autoral — nada a auditar.
+                    if layer.is_empty() {
+                        continue;
+                    }
+                    // Alias do pool (`grass`) ou caminho cru de textura — a
+                    // mesma resolução do bootstrap (config.terrain_albedo).
+                    let path = config
+                        .terrain_albedo(layer)
+                        .unwrap_or_else(|| layer.clone());
+                    refs.push(AssetRef {
+                        kind: RefKind::Texture,
+                        path: resolve_asset(asset_roots, &path),
+                        context: format!("<terrain layers=\"…{layer}…\">"),
+                    });
+                }
+            }
+            EntityKind::Road { spec } => {
+                push_ribbon_texture(asset_roots, &spec.texture, &label, refs)
+            }
+            EntityKind::RoadNetwork { spec } => {
+                push_ribbon_texture(asset_roots, &spec.texture, &label, refs)
+            }
+            EntityKind::GroundDecal { spec } => {
+                if let Some(texture) = &spec.texture {
+                    refs.push(AssetRef {
+                        kind: RefKind::Texture,
+                        path: resolve_asset(asset_roots, texture),
+                        context: format!("<decal texture=\"{texture}\"> {label}"),
+                    });
+                }
+            }
+            EntityKind::Vegetation { spec } => {
+                for mesh in &spec.meshes {
+                    refs.push(AssetRef {
+                        kind: RefKind::Glb,
+                        path: resolve_asset(asset_roots, mesh),
+                        context: format!("<vegetation mesh=\"{mesh}\"> {label}"),
+                    });
+                }
+                // Um `.vinst` ausente/corrompido faz o runtime omitir o grupo
+                // inteiro com um warn no arranque; o analyze tem de o ver.
+                if let Some(instances) = &spec.instances {
+                    refs.push(AssetRef {
+                        kind: RefKind::Instances,
+                        path: resolve_asset(asset_roots, instances),
+                        context: format!("<vegetation instances=\"{instances}\"> {label}"),
+                    });
+                }
+            }
+            // O template do spawner é a ÚNICA referência ao GLB das
+            // instâncias — sem este braço um template partido passava o
+            // `analyze` em silêncio e o motor só avisava 60 s depois do
+            // arranque ("template still loading — group skipped"), com o
+            // grupo inteiro a não produzir nada. Foi assim que
+            // `props/rock_boulder_lod0.glb` (referido só por um template de
+            // `spawn/dressing.xml`) ficou fora do relatório enquanto o motor
+            // o procurava em vão a cada arranque.
+            EntityKind::StaticSpawner { spec } | EntityKind::DynamicSpawner { spec } => {
+                for url in &spec.template_urls {
+                    refs.push(AssetRef {
+                        kind: RefKind::Glb,
+                        path: resolve_asset(asset_roots, url),
+                        context: format!("<GLTFLoader> {label}"),
+                    });
+                }
+                for lod in &spec.template_lods {
+                    for url in [&lod.lod1_url, &lod.lod2_url].into_iter().flatten() {
+                        refs.push(AssetRef {
+                            kind: RefKind::Glb,
+                            path: resolve_asset(asset_roots, url),
+                            context: format!("<GLTFLoader lód> {label}"),
+                        });
+                    }
+                }
+                // O collider do template também é um ficheiro: sem este braço
+                // um `mesh-url` em falta só aparecia no `PendingCollider` do
+                // arranque (fallback de AABB) — o analyze dizia "ok".
+                if let Some(url) = match &spec.template_collider {
+                    Some(ColliderShape::Mesh { url, .. })
+                    | Some(ColliderShape::Precompute { url }) => Some(url),
+                    _ => None,
+                } {
+                    refs.push(AssetRef {
+                        kind: RefKind::Glb,
+                        path: resolve_asset(asset_roots, url),
+                        context: format!("<GLTFLoader collider mesh-url=\"{url}\"> {label}"),
+                    });
+                }
+                // `<Creature script="…">` corre a partir do dir de scripts do
+                // jogo, como qualquer `script=` de entidade.
+                if let Some(script) = &spec.template_script {
+                    refs.push(AssetRef {
+                        kind: RefKind::Script,
+                        path: config.scripts_dir_on(world_dir).join(script),
+                        context: format!("<GLTFLoader template script=\"{script}\"> {label}"),
+                    });
+                }
+            }
+            EntityKind::MusicLayer { layer, sound, .. } => {
+                // Convenção do runtime (spawn.rs): sound `bgm-x` →
+                // `{bgm_dir}/x.ogg`; sem sound, o nome é a layer.
+                let path = resolve_asset(asset_roots, &config.bgm_file(layer, sound));
+                refs.push(AssetRef {
+                    kind: RefKind::Audio,
+                    path,
+                    context: format!("<MusicLayer layer=\"{layer}\">"),
+                });
+            }
+            EntityKind::UiStyle {
+                source: crate::recipes::UiStyleSource::File(file),
+            } => {
+                // Relativo à pasta do jogo (o prefixo `ui/` é do autor —
+                // contrato do XML, não um dir do config); folhas inline não
+                // têm ficheiro a verificar.
+                refs.push(AssetRef {
+                    kind: RefKind::Stylesheet,
+                    path: world_dir.join(file),
+                    context: format!("<UiStyle src=\"{file}\">"),
+                });
+            }
+            _ => {}
+        }
+        collect_entities(
+            &entity.children,
+            world_dir,
+            asset_roots,
+            config,
+            collider_covered,
+            refs,
+            report,
+        );
+    }
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Conflitos entre features de terreno — estradas × lagos/rios/cliffs.
+//
+// Estradas e corpos de água escavam o mesmo campo; o guard do carve já evita
+// a escavação dentro de zona de água, mas o RIBBON visual é desenhado na
+// mesma — e um trilho decal (`flatten="0"`) não carve nada. Uma estrada cujo
+// traçado entra na lâmina fica submersa e rasgada (o caso real: a ponte da
+// Lagoa Grande do simple-rpg, afogada pelo contorno orgânico ±28% — pontas
+// autoradas à distância nominal do raio, a água chega a `CONTOUR_PEAK` dele).
+// Tudo aqui é geométrico e estático — exatamente o que o `analyze` vê sem
+// abrir a engine.
+//
+// Translações XZ dos ancestrais são acumuladas (as features leem
+// WorldTransform); escala/rotação de ancestrais é ignorada — nenhum mundo do
+// repo põe features sob um grupo assim.
+
+/// Passo de amostragem do traçado das estradas (m).
+const ROAD_SAMPLE_STEP: f32 = 2.0;
+/// Folga (m) extra no teste da banda de um cliff.
+const CLIFF_TIP_MARGIN: f32 = 1.0;
+
+/// Features recolhidas da árvore de entidades, prontas para os testes
+/// cruzados. As specs são clonadas — o audit corre uma vez, headless.
+#[derive(Default)]
+struct FeatureIndex {
+    /// `<Road>`: (rótulo, spec).
+    roads: Vec<(String, RoadSpec)>,
+    /// `<RoadNetwork>` expandido por segmento: (rótulo, polyline, largura,
+    /// perfil).
+    segments: Vec<(String, Vec<Vec2>, f32, RoadProfile)>,
+    lakes: Vec<(String, LakeSpec)>,
+    rivers: Vec<(String, RiverSpec)>,
+    cuts: Vec<(String, CutSpec)>,
+    plateaus: Vec<(String, PlateauSpec)>,
+    cliffs: Vec<(String, CliffSpec)>,
+}
+
+fn collect_features(entities: &[EntitySpec], offset: [f32; 2], out: &mut FeatureIndex) {
+    for entity in entities {
+        let named = entity.name.is_some() || entity.tag.is_some();
+        let label = entity
+            .name
+            .clone()
+            .or_else(|| entity.tag.clone())
+            .unwrap_or_else(|| "sem nome".into());
+        // As coordenadas da própria feature já trazem a translation dela
+        // (`terrain_offset` no parse): só os ANCESTRAIS entram aqui, como no
+        // `collect_walk` do runtime. Somar também a própria punha o audit a
+        // testar a feature no dobro do deslocamento.
+        let off = offset;
+        let child_off = [
+            offset[0] + entity.transform.translation[0],
+            offset[1] + entity.transform.translation[2],
+        ];
+        let shift = |points: &[Vec2]| -> Vec<Vec2> {
+            points
+                .iter()
+                .map(|p| p + Vec2::new(off[0], off[1]))
+                .collect()
+        };
+        // Fallback de rótulo com coordenadas — "sem nome" não diz NADA ao
+        // autor a procurar o sítio no XML.
+        let where_at = |p: Vec2| format!("({:.0}, {:.0})", p.x, p.y);
+        match &entity.kind {
+            EntityKind::Road { spec } if !spec.path.is_empty() => {
+                let mut spec = spec.clone();
+                spec.path = shift(&spec.path);
+                let label = spec.name.clone().unwrap_or_else(|| {
+                    if named {
+                        label
+                    } else {
+                        format!("estrada {}", where_at(spec.path[0]))
+                    }
+                });
+                out.roads.push((label, spec));
+            }
+            EntityKind::RoadNetwork { spec } => {
+                let ways: HashMap<&str, (Vec2, Option<f32>)> = spec
+                    .ways
+                    .iter()
+                    .map(|w| (w.id.as_str(), (w.at + Vec2::new(off[0], off[1]), w.width)))
+                    .collect();
+                let net_label =
+                    spec.name
+                        .clone()
+                        .unwrap_or(if named { label } else { String::new() });
+                for seg in &spec.segments {
+                    let (Some(&(a_at, a_w)), Some(&(b_at, _))) =
+                        (ways.get(seg.a.as_str()), ways.get(seg.b.as_str()))
+                    else {
+                        continue; // ways em falta são erro do parse, não daqui
+                    };
+                    let mut pts = vec![a_at];
+                    pts.extend(shift(&seg.via));
+                    pts.push(b_at);
+                    let width = seg.width.or(a_w).unwrap_or(spec.default_width);
+                    let profile = seg.profile.unwrap_or(spec.default_profile);
+                    let seg_label = if net_label.is_empty() {
+                        format!("{}→{}", seg.a, seg.b)
+                    } else {
+                        format!("{net_label}: {}→{}", seg.a, seg.b)
+                    };
+                    out.segments.push((seg_label, pts, width, profile));
+                }
+            }
+            EntityKind::Lake { spec } => {
+                let mut spec = spec.clone();
+                spec.at += Vec2::new(off[0], off[1]);
+                let label = if named {
+                    label
+                } else {
+                    format!("lago {}", where_at(spec.at))
+                };
+                out.lakes.push((label, spec));
+            }
+            EntityKind::River { spec } => {
+                let mut spec = spec.clone();
+                spec.path = shift(&spec.path);
+                let label = if named {
+                    label
+                } else if let Some(p) = spec.path.first() {
+                    format!("rio {}", where_at(*p))
+                } else {
+                    label
+                };
+                out.rivers.push((label, spec));
+            }
+            EntityKind::Cut { spec } => {
+                let mut spec = spec.clone();
+                spec.path = shift(&spec.path);
+                let label = if named {
+                    label
+                } else if let Some(p) = spec.path.first() {
+                    format!("cut {}", where_at(*p))
+                } else {
+                    label
+                };
+                out.cuts.push((label, spec));
+            }
+            EntityKind::Plateau { spec } => {
+                let mut spec = spec.clone();
+                spec.at += Vec2::new(off[0], off[1]);
+                let label = if named {
+                    label
+                } else {
+                    format!("plateau {}", where_at(spec.at))
+                };
+                out.plateaus.push((label, spec));
+            }
+            EntityKind::Cliff { spec } => {
+                let mut spec = spec.clone();
+                spec.path = shift(&spec.path);
+                let label = if named {
+                    label
+                } else if let Some(p) = spec.path.first() {
+                    format!("cliff {}", where_at(*p))
+                } else {
+                    label
+                };
+                out.cliffs.push((label, spec));
+            }
+            _ => {}
+        }
+        collect_features(&entity.children, child_off, out);
+    }
+}
+
+fn audit_feature_conflicts(idx: &FeatureIndex) -> Vec<AuditIssue> {
+    let mut issues = Vec::new();
+    for (label, spec) in &idx.roads {
+        audit_road_line(
+            label,
+            &spec.path,
+            spec.width,
+            spec.profile,
+            idx,
+            &mut issues,
+        );
+    }
+    for (label, pts, width, profile) in &idx.segments {
+        audit_road_line(label, pts, *width, *profile, idx, &mut issues);
+    }
+    // Rio × cliff — já não é um conflito: é uma CACHOEIRA automática. O
+    // runtime conduz o perfil do rio pelo cruzamento (hold a montante +
+    // queda garantida) e a parede voxel corta a face. Informa o autor com
+    // a queda prometida — cruzar sem querer é exatamente o erro que esta
+    // linha torna visível.
+    for (rlabel, river) in &idx.rivers {
+        for (clabel, cliff) in &idx.cliffs {
+            for fall in river_cliff_crossings(river, std::slice::from_ref(cliff)) {
+                issues.push(AuditIssue {
+                    severity: Severity::Info,
+                    message: format!(
+                        "rio `{rlabel}` cruza o cliff `{clabel}` perto de ({:.0}, {:.0}) — \
+                         cachoeira automática (queda ≥ {:.1} m)",
+                        fall.at.x, fall.at.y, fall.min_drop
+                    ),
+                });
+            }
+        }
+    }
+    // Cut × água — a vala descendo à lâmina rasga as paredes voxel na água
+    // e lê-se como fenda; cruzar um cliff é parede contra parede.
+    for (clabel, cut) in &idx.cuts {
+        if cut.path.len() < 2 {
+            continue;
+        }
+        let samples = resample(&cut.path, ROAD_SAMPLE_STEP);
+        let half = cut.width * 0.5;
+        for (llabel, lake) in &idx.lakes {
+            let shape = LakeShape::from_authoring(lake.at, &lake.shape);
+            let mut depth_in = 0.0_f32;
+            let mut worst = cut.path[0];
+            for p in &samples {
+                let d = p.distance(lake.at);
+                let delta = *p - lake.at;
+                let theta = delta.y.atan2(delta.x);
+                let inside = shape.contour(lake.radius, theta) - (d - half);
+                if inside > depth_in {
+                    depth_in = inside;
+                    worst = *p;
+                }
+            }
+            if depth_in > 0.0 {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "cut `{clabel}` entra na lâmina do lago `{llabel}` perto de ({:.0}, \
+                         {:.0}) (até {depth_in:.1} m para dentro, contando a meia-largura do \
+                         piso) — as paredes da vala descem à água",
+                        worst.x, worst.y
+                    ),
+                });
+            }
+        }
+        for (rlabel, river) in &idx.rivers {
+            if river.path.len() < 2 {
+                continue;
+            }
+            let mut dmin = f32::INFINITY;
+            let mut worst = cut.path[0];
+            for p in &samples {
+                let d = distance_to_path(&river.path, *p);
+                if d < dmin {
+                    dmin = d;
+                    worst = *p;
+                }
+            }
+            if dmin < river.width * 0.5 + half {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "cut `{clabel}` cruza o rio `{rlabel}` perto de ({:.0}, {:.0}) — as \
+                         paredes da vala abrem na água; termina o cut antes da margem",
+                        worst.x, worst.y
+                    ),
+                });
+            }
+        }
+        for (wlabel, cliff) in &idx.cliffs {
+            if cliff.path.len() < 2 {
+                continue;
+            }
+            let mut dmin = f32::INFINITY;
+            let mut worst = cut.path[0];
+            for p in &samples {
+                let d = distance_to_path(&cliff.path, *p);
+                if d < dmin {
+                    dmin = d;
+                    worst = *p;
+                }
+            }
+            // Parede × parede: a banda do cliff + a banda do cut não podem
+            // partilhar o mesmo sítio (a segunda fatia o sólido da 1.ª).
+            if dmin < cliff.width * 0.5 + cut.width * 0.5 + 2.0 {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "cut `{clabel}` cruza a banda do cliff `{wlabel}` perto de ({:.0}, \
+                         {:.0}) — parede contra parede; afasta o traçado ou o cliff",
+                        worst.x, worst.y
+                    ),
+                });
+            }
+        }
+    }
+    // Plateau × água/estradas — o raise corre ANTES de pads/água, mas a
+    // parede é voxel: uma bacia a abrir dentro da pegada, ou uma estrada a
+    // entrar nela, esbarram no anel.
+    let plateau_sd = |plateau: &PlateauSpec, p: Vec2| -> f32 {
+        let half = plateau.size * 0.5;
+        let radius = plateau.corner_radius.clamp(0.0, half.x.min(half.y));
+        let inner = half - Vec2::splat(radius);
+        let d = (p - plateau.at).abs() - inner;
+        Vec2::max(d, Vec2::ZERO).length() + d.max_element().min(0.0) - radius
+    };
+    for (plabel, plateau) in &idx.plateaus {
+        for (llabel, lake) in &idx.lakes {
+            let shape = LakeShape::from_authoring(lake.at, &lake.shape);
+            let mut dmin = f32::INFINITY;
+            let mut worst = lake.at;
+            for i in 0..64 {
+                let theta = i as f32 / 64.0 * std::f32::consts::TAU;
+                let r = shape.contour(lake.radius, theta) * CARVE_MARGIN;
+                let p = lake.at + Vec2::new(theta.cos(), theta.sin()) * r;
+                let sd = plateau_sd(plateau, p);
+                if sd < dmin {
+                    dmin = sd;
+                    worst = p;
+                }
+            }
+            if dmin < 0.0 {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "lago `{llabel}` sobrepõe o plateau `{plabel}` perto de ({:.0}, {:.0}) \
+                         — a bacia desce ATRAVÉS da mesa; separe os dois",
+                        worst.x, worst.y
+                    ),
+                });
+            }
+        }
+        let mut road_paths: Vec<(String, &Vec<Vec2>)> = idx
+            .roads
+            .iter()
+            .map(|(label, spec)| (label.clone(), &spec.path))
+            .collect();
+        for (label, pts, _, _) in &idx.segments {
+            road_paths.push((label.clone(), pts));
+        }
+        let road_hit = road_paths
+            .iter()
+            .filter_map(|(label, pts)| {
+                let samples = resample(pts, ROAD_SAMPLE_STEP);
+                let mut worst = *pts.first()?;
+                let mut dmin = f32::INFINITY;
+                for p in &samples {
+                    let sd = plateau_sd(plateau, *p);
+                    if sd < dmin {
+                        dmin = sd;
+                        worst = *p;
+                    }
+                }
+                (dmin < 0.0).then_some((label.clone(), worst))
+            })
+            .next();
+        if let Some((rlabel, worst)) = road_hit {
+            issues.push(AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "estrada `{rlabel}` entra na pegada do plateau `{plabel}` perto de ({:.0}, \
+                     {:.0}) — o anel de parede voxel bloqueia a subida; termina a estrada fora \
+                     ou sobe ao topo por um pad/ rampa autoral fora do anel",
+                    worst.x, worst.y
+                ),
+            });
+        }
+    }
+    issues.sort_by(|a, b| a.message.cmp(&b.message));
+    issues
+}
+
+// ─────────────────────────────────────────────────────────────────────────
+// Props sólidos dentro uns dos outros.
+//
+// O gerador de vegetation/scatter coloca milhares de instâncias: o
+// `avoid-overlaps` do runtime já usa a pegada dos grupos, mas os grupos
+// pré-gerados do XML e o `viber tool scatter` antigo registavam 0,8 m fixos
+// por instância existente — árvores grandes passavam umas pelas outras e
+// nasciam dentro de props autorais (a pedra de musgo do pântano).
+//
+// Aqui a pegada é o AABB REAL do GLB (com a quantização i16 e o scale dos
+// nós), não o `footprint-radius` autoral: o audit vê o que o jogador vê. O
+// teste é conservador de propósito — só acusa quando o CENTRO de um prop cai
+// dentro da caixa do outro, com penetração ≥ 0,35 m. Encostar de lado é
+// normal tanto em pedras como em árvores; estar dentro não é.
+//
+// Props autorais entre si NÃO são acusados: um pilar caído "dentro" de uma
+// ruína e o obelisco encaixado no altar são composições à mão. O que o audit
+// protege é o que o BAKER pode estragar: pares com pelo menos uma instância
+// gerada (`inst-…`).
+// ─────────────────────────────────────────────────────────────────────────
+
+/// Folga (m) da borda ao testar se um centro está dentro da caixa.
+const OVERLAP_MARGIN: f32 = 0.15;
+/// Penetração mínima (m) — abaixo disto é encosto, não sobreposição.
+const OVERLAP_DEPTH_MIN: f32 = 0.35;
+/// Sobreposição vertical mínima (m) — dois props no mesmo XZ mas um em cima
+/// do outro (numa prateleira, no altar) não colidem.
+const OVERLAP_Y_MIN: f32 = 0.25;
+/// Lado da célula do índice espacial (m).
+const OVERLAP_CELL: f32 = 8.0;
+
+struct SolidBox {
+    label: String,
+    /// Instância de `<Group generated-by>` (`inst-…`) — o baker pode mexer.
+    generated: bool,
+    inverse: Affine3A,
+    local_min: Vec3,
+    local_max: Vec3,
+    center: Vec3,
+    world_min: Vec3,
+    world_max: Vec3,
+    y_min: f32,
+    y_max: f32,
+}
+
+fn bounds_corners(world: Affine3A, bounds: GlbBounds) -> (Vec3, Vec3) {
+    let mut min = Vec3::splat(f32::INFINITY);
+    let mut max = Vec3::splat(f32::NEG_INFINITY);
+    for corner in 0..8 {
+        let local = Vec3::new(
+            if corner & 1 == 0 {
+                bounds.min.x
+            } else {
+                bounds.max.x
+            },
+            if corner & 2 == 0 {
+                bounds.min.y
+            } else {
+                bounds.max.y
+            },
+            if corner & 4 == 0 {
+                bounds.min.z
+            } else {
+                bounds.max.z
+            },
+        );
+        let point = world.transform_point3(local);
+        min = min.min(point);
+        max = max.max(point);
+    }
+    (min, max)
+}
+
+/// Recolhe os `<GltfScene>` que ocupam espaço. Um nó é sólido quando ele (ou
+/// um ancestral) tem collider, ou quando é uma instância gerada — a folhagem
+/// gerada também conta: arbusto dentro de arbusto é o mesmo bug.
+fn collect_solids(
+    entities: &[EntitySpec],
+    parent_world: Affine3A,
+    ancestor_collider: bool,
+    roots: &[PathBuf],
+    bounds_cache: &mut HashMap<PathBuf, Option<GlbBounds>>,
+    out: &mut Vec<SolidBox>,
+) {
+    for entity in entities {
+        let world = parent_world * crate::placement::entity_affine(&entity.transform);
+        let has_collider = !matches!(entity.physics.collider, ColliderShape::None);
+        let generated = entity
+            .name
+            .as_deref()
+            .is_some_and(|name| name.starts_with("inst-"));
+        let solid = has_collider || ancestor_collider || generated;
+        if let EntityKind::GltfScene { url, .. } = &entity.kind
+            && solid
+        {
+            let path = resolve_asset(roots, url);
+            let bounds = *bounds_cache
+                .entry(path.clone())
+                .or_insert_with(|| crate::glb_bounds::read(&path));
+            if let Some(bounds) = bounds {
+                let (min, max) = bounds_corners(world, bounds);
+                let inverse = world.inverse();
+                if world.matrix3.determinant().abs() > 1e-12
+                    && inverse.matrix3.is_finite()
+                    && min.is_finite()
+                    && max.is_finite()
+                {
+                    let center = (min + max) * 0.5;
+                    let label = entity.name.clone().unwrap_or_else(|| {
+                        let file = url.rsplit('/').next().unwrap_or(url);
+                        format!("{file} em ({:.0}, {:.0})", center.x, center.z)
+                    });
+                    out.push(SolidBox {
+                        label,
+                        generated,
+                        inverse,
+                        local_min: bounds.min,
+                        local_max: bounds.max,
+                        center,
+                        world_min: min,
+                        world_max: max,
+                        y_min: min.y,
+                        y_max: max.y,
+                    });
+                }
+            }
+        }
+        collect_solids(&entity.children, world, solid, roots, bounds_cache, out);
+    }
+}
+
+/// Profundidade (m) com que `point` penetra a caixa, ou `None` quando está
+/// fora (com [`OVERLAP_MARGIN`] de folga). O teste é no referencial LOCAL —
+/// a Y global do par não bastava: uma árvore inclinada tem AABB mundo alto,
+/// mas o ponto pode estar acima do topo LOCAL da caixa.
+fn containment_depth(solid: &SolidBox, point: Vec3) -> Option<f32> {
+    let local = solid.inverse.transform_point3(point);
+    let x = (solid.local_min.x, solid.local_max.x);
+    let z = (solid.local_min.z, solid.local_max.z);
+    if local.x < x.0 - OVERLAP_MARGIN
+        || local.x > x.1 + OVERLAP_MARGIN
+        || local.y < solid.local_min.y - OVERLAP_MARGIN
+        || local.y > solid.local_max.y + OVERLAP_MARGIN
+        || local.z < z.0 - OVERLAP_MARGIN
+        || local.z > z.1 + OVERLAP_MARGIN
+    {
+        return None;
+    }
+    let dx = (local.x - x.0).min(x.1 - local.x);
+    let dz = (local.z - z.0).min(z.1 - local.z);
+    Some(dx.min(dz))
+}
+
+fn audit_static_overlaps(entities: &[EntitySpec], roots: &[PathBuf]) -> Vec<AuditIssue> {
+    let mut solids = Vec::new();
+    let mut bounds_cache = HashMap::new();
+    collect_solids(
+        entities,
+        Affine3A::IDENTITY,
+        false,
+        roots,
+        &mut bounds_cache,
+        &mut solids,
+    );
+    if solids.len() < 2 {
+        return Vec::new();
+    }
+
+    // Índice espacial barato: 4,5 mil props não podem ser O(n²).
+    let mut cells: HashMap<(i32, i32), Vec<usize>> = HashMap::new();
+    for (index, solid) in solids.iter().enumerate() {
+        let half_x = (solid.world_max.x - solid.world_min.x) * 0.5;
+        let half_z = (solid.world_max.z - solid.world_min.z) * 0.5;
+        let radius = half_x.max(half_z);
+        let x0 = ((solid.center.x - radius) / OVERLAP_CELL).floor() as i32;
+        let x1 = ((solid.center.x + radius) / OVERLAP_CELL).floor() as i32;
+        let z0 = ((solid.center.z - radius) / OVERLAP_CELL).floor() as i32;
+        let z1 = ((solid.center.z + radius) / OVERLAP_CELL).floor() as i32;
+        for cz in z0..=z1 {
+            for cx in x0..=x1 {
+                cells.entry((cx, cz)).or_default().push(index);
+            }
+        }
+    }
+
+    let mut seen = std::collections::HashSet::new();
+    let mut hits: Vec<(f32, usize, usize)> = Vec::new();
+    for bucket in cells.values() {
+        for (slot, &a) in bucket.iter().enumerate() {
+            for &b in &bucket[(slot + 1)..] {
+                let key = (a.min(b), a.max(b));
+                if !seen.insert(key) {
+                    continue;
+                }
+                let (left, right) = (&solids[key.0], &solids[key.1]);
+                if !left.generated && !right.generated {
+                    continue; // composição autoral: pilar caído na ruína, obelisco no altar
+                }
+                let y_overlap = left.y_max.min(right.y_max) - left.y_min.max(right.y_min);
+                if y_overlap < OVERLAP_Y_MIN {
+                    continue;
+                }
+                let depth = containment_depth(left, right.center)
+                    .into_iter()
+                    .chain(containment_depth(right, left.center))
+                    .fold(0.0f32, f32::max);
+                if depth >= OVERLAP_DEPTH_MIN {
+                    hits.push((depth, key.0, key.1));
+                }
+            }
+        }
+    }
+    hits.sort_by(|a, b| b.0.total_cmp(&a.0));
+    hits.into_iter()
+        .map(|(depth, a, b)| {
+            let left = &solids[a];
+            let right = &solids[b];
+            let x = (left.center.x + right.center.x) * 0.5;
+            let z = (left.center.z + right.center.z) * 0.5;
+            AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "sobreposição: `{}` dentro de `{}` em ({x:.0}, {z:.0}) — {depth:.1} m de \
+                     penetração; move um deles ou regenera o scatter (`viber tool scatter`)",
+                    left.label, right.label
+                ),
+            }
+        })
+        .collect()
+}
+
+/// Testa UMA estrada (de `<Road>` ou expandida de rede) contra lagos, rios e
+/// cliffs. `is_bridge` abre a exceção do deck: cruzar água é o propósito de
+/// uma ponte — o que se exige é que as PONTAS fiquem fora da lâmina.
+fn audit_road_line(
+    label: &str,
+    path: &[Vec2],
+    width: f32,
+    profile: RoadProfile,
+    idx: &FeatureIndex,
+    issues: &mut Vec<AuditIssue>,
+) {
+    if path.len() < 2 {
+        return;
+    }
+    let samples = resample(path, ROAD_SAMPLE_STEP);
+    let is_bridge = profile == RoadProfile::Bridge;
+
+    for (name, lake) in &idx.lakes {
+        let shape = LakeShape::from_authoring(lake.at, &lake.shape);
+        // Quanto o traçado (com a MEIA-LARGURA do ribbon) penetra o contorno
+        // orgânico REAL: `r(θ) − (|p − at| − half)`. Testar só a linha
+        // central deixava passar trilhos cuja BORDA ficava dentro de água —
+        // o decal mergulhava na bacia abaixo do plano sem nada no relatório
+        // (caso real: o trilho NE da Lagoa Grande do simple-rpg, eixo a
+        // 30.0 m do centro com o contorno real a ~29 m naquele rumo).
+        let half = width * 0.5;
+        let mut depth_in = 0.0_f32;
+        let mut worst = path[0];
+        for p in &samples {
+            let d = p.distance(lake.at);
+            let delta = *p - lake.at;
+            let theta = delta.y.atan2(delta.x);
+            let inside = shape.contour(lake.radius, theta) - (d - half);
+            if inside > depth_in {
+                depth_in = inside;
+                worst = *p;
+            }
+        }
+        if depth_in <= 0.0 {
+            continue;
+        }
+        if is_bridge {
+            let reach = lake.radius * CONTOUR_PEAK;
+            let tips_inside = path.iter().any(|tip| tip.distance(lake.at) < reach);
+            if tips_inside {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "ponte \"{label}\": pontas dentro do alcance do contorno orgânico do lago \
+                         \"{name}\" (lâmina até r={reach:.0} m, ±{}%) — a água pode cobrir \
+                         pontas/deck; afaste as pontas",
+                        (CONTOUR_PEAK - 1.0) * 100.0,
+                    ),
+                });
+            } else {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "ponte \"{label}\" cruza o lago \"{name}\" perto de ({:.0}, {:.0}) — o \
+                         deck é ribbon plana SEM collider no terreno voxel: o herói não tem por \
+                         onde atravessar; usa uma <Bridge> volumétrica no vão e garante pontas \
+                         fora da lâmina (worst-case r={:.0} m)",
+                        worst.x, worst.y, reach,
+                    ),
+                });
+            }
+        } else {
+            issues.push(AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "estrada \"{label}\" entra na lâmina do lago \"{name}\" perto de \
+                     ({:.0}, {:.0}) (até {depth_in:.1} m para dentro, contando a meia-largura \
+                     do ribbon; contorno orgânico ±{}%) — o piso fica submerso",
+                    worst.x,
+                    worst.y,
+                    (CONTOUR_PEAK - 1.0) * 100.0,
+                ),
+            });
+        }
+    }
+
+    for (name, river) in &idx.rivers {
+        if river.path.len() < 2 {
+            continue;
+        }
+        let half = river.width * 0.5;
+        // A borda do ribbon conta: uma estrada cuja margem entra na lâmina
+        // rasga o piso na água mesmo com o eixo seco.
+        let road_half = width * 0.5;
+        let mut dmin = f32::INFINITY;
+        let mut worst = path[0];
+        for p in &samples {
+            if let Some(hit) = nearest_on_path(&river.path, *p) {
+                let d = p.distance(hit.point);
+                if d < dmin {
+                    dmin = d;
+                    worst = *p;
+                }
+            }
+        }
+        if dmin >= half + road_half {
+            continue;
+        }
+        if is_bridge {
+            // Largura máx. da lâmina: com pool-spacing os poços abrem até
+            // ×1.2 (`water.rs`, `halfs`). A folga é a banca de margem — não
+            // se soma margem genérica por cima (pontas 0.5 m fora da banca
+            // são prática normal, o abutment assenta aí).
+            let water_half = if river.pool_spacing > 0.0 {
+                half * 1.2
+            } else {
+                half
+            };
+            let clear = water_half + river.bank_width;
+            let tips_clear = path.iter().all(|tip| {
+                nearest_on_path(&river.path, *tip).is_some_and(|h| tip.distance(h.point) >= clear)
+            });
+            if tips_clear {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "ponte \"{label}\" cruza o rio \"{name}\" perto de ({:.0}, {:.0}) — o \
+                         deck é ribbon plana SEM collider no terreno voxel: o herói não tem \
+                         por onde atravessar; usa uma <Bridge> volumétrica no vão",
+                        worst.x, worst.y,
+                    ),
+                });
+            } else {
+                issues.push(AuditIssue {
+                    severity: Severity::Warning,
+                    message: format!(
+                        "ponte \"{label}\": pontas a <{clear:.0} m do eixo do rio \"{name}\" — \
+                         a lâmina/banco de margem pode cobrir as pontas",
+                    ),
+                });
+            }
+        } else {
+            issues.push(AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "estrada \"{label}\" cruza a lâmina do rio \"{name}\" perto de ({:.0}, \
+                     {:.0}) (eixo a {dmin:.1} m do centro; lâmina ±{half:.0} m + meia-largura \
+                     do ribbon) — o piso fica submerso",
+                    worst.x, worst.y,
+                ),
+            });
+        }
+    }
+
+    for (name, cliff) in &idx.cliffs {
+        if cliff.path.len() < 2 {
+            continue;
+        }
+        let band = cliff.width * 0.5 + width * 0.5 + CLIFF_TIP_MARGIN;
+        let mut dmin = f32::INFINITY;
+        for p in &samples {
+            if let Some(hit) = nearest_on_path(&cliff.path, *p) {
+                dmin = dmin.min(p.distance(hit.point));
+            }
+        }
+        if dmin < band {
+            issues.push(AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "estrada \"{label}\" cruza a banda do cliff \"{name}\" (folga \
+                     {CLIFF_TIP_MARGIN:.0} m) — o ribbon atravessa a rocha sólida do campo voxel",
+                ),
+            });
+        }
+    }
+
+    // Estrada × cut — INTENÇÃO ambígua, por isso Info (o precedente do
+    // rio×cliff): correr DENTRO da vala é o road cut e é legítimo; cruzar
+    // TRANSVERSAL esbarra nas paredes voxel. O autor decide com o ponto na
+    // mão.
+    for (name, cut) in &idx.cuts {
+        if cut.path.len() < 2 {
+            continue;
+        }
+        let corridor = cut.width * 0.5 + width * 0.5;
+        let mut dmin = f32::INFINITY;
+        let mut worst = path[0];
+        for p in &samples {
+            if let Some(hit) = nearest_on_path(&cut.path, *p) {
+                let d = p.distance(hit.point);
+                if d < dmin {
+                    dmin = d;
+                    worst = *p;
+                }
+            }
+        }
+        if dmin < corridor {
+            issues.push(AuditIssue {
+                severity: Severity::Info,
+                message: format!(
+                    "estrada \"{label}\" cruza/acompanha o cut \"{name}\" perto de ({:.0}, \
+                     {:.0}) — se é o road cut (estrada dentro da vala), ok; cruzar transversal \
+                     bloqueia o ribbon nas paredes voxel",
+                    worst.x, worst.y,
+                ),
+            });
+        }
+    }
+}
+
+fn push_ribbon_texture(
+    asset_roots: &[PathBuf],
+    texture: &Option<String>,
+    label: &str,
+    refs: &mut Vec<AssetRef>,
+) {
+    if let Some(texture) = texture {
+        refs.push(AssetRef {
+            kind: RefKind::Texture,
+            path: resolve_asset(asset_roots, texture),
+            context: format!("<ribbon texture=\"{texture}\"> {label}"),
+        });
+    }
+}
+
+// ---------------------------------------------------------------- GLB
+
+/// GLB: magic + chunk JSON → extensões usadas. Draco/Basis não são
+/// suportados pela engine; meshopt é expandido pelo asset reader.
+fn audit_glb(path: &Path, context: &str, issues: &mut Vec<AuditIssue>) {
+    const GLB_MAGIC: &[u8; 4] = b"glTF";
+    let Ok(bytes) = std::fs::read(path) else {
+        return; // ausência já foi reportada
+    };
+    if bytes.len() < 12 || &bytes[0..4] != GLB_MAGIC {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "glb inválido: {} não começa com a magia \"glTF\" (truncado ou não é GLB?) — {context}",
+                path.display()
+            ),
+        });
+        return;
+    }
+    // Cabeçalho truncado entre a magia e o chunk JSON (12–19 bytes): ler o
+    // chunk len ou fatiar [20..end] era index out of bounds — o analyze
+    // panicava em vez de falhar limpo.
+    if bytes.len() < 20 {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "glb inválido: {} truncado antes do chunk JSON — {context}",
+                path.display()
+            ),
+        });
+        return;
+    }
+    let json_len = u32::from_le_bytes([bytes[12], bytes[13], bytes[14], bytes[15]]) as usize;
+    let end = (20 + json_len).min(bytes.len());
+    let Ok(json) = std::str::from_utf8(&bytes[20..end]) else {
+        return;
+    };
+    // Draco: a engine não lê — falha o load com warn em runtime.
+    // `KHR_texture_basisu` NÃO está na lista: a engine lê KTX2 tal-como-
+    // autorado (o `MeshoptAssetReader` passa-o e o Bevy transcode UASTC —
+    // `meshopt::load_gltf` desliga a validação exactamente por isso). A
+    // regra antiga só não disparava porque o extinto espelho vinha
+    // decomprimido; servindo o pool direto ela virava falso positivo em
+    // massa.
+    for (extension, hint) in [(
+        "KHR_draco_mesh_compression",
+        "a engine (Bevy 0.19) não lê Draco",
+    )] {
+        if json.contains(extension) {
+            issues.push(AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "compressão não suportada: {extension} em {} ({hint}) — {context}",
+                    path.display()
+                ),
+            });
+        }
+    }
+    // KTX2 EMBUTIDO: a extensão `KHR_texture_basisu` está em TODO o pool
+    // (UASTC também a declara), portanto não distingue nada — a diferença
+    // entre um GLB que carrega e um que falha está no
+    // `supercompressionScheme` de cada imagem. É preciso abrir o payload.
+    // Sem isto, um GLB do BasisLZ passa o `analyze` e só falha no arranque
+    // ("Unsupported supercompression scheme: BasisLZ"), com o objeto a não
+    // aparecer no mundo.
+    let Ok(doc) = serde_json::from_str::<serde_json::Value>(json) else {
+        return;
+    };
+    let Some(images) = doc.get("images").and_then(|v| v.as_array()) else {
+        return;
+    };
+    let views = doc.get("bufferViews").and_then(|v| v.as_array());
+    // Chunk BIN: a seguir ao header do GLB (12), ao header do chunk JSON (8),
+    // ao JSON e ao header do chunk BIN (8).
+    let bin = 20 + json_len + 8;
+    for image in images {
+        if image.get("mimeType").and_then(|m| m.as_str()) != Some("image/ktx2") {
+            continue;
+        }
+        let Some(view) = image
+            .get("bufferView")
+            .and_then(serde_json::Value::as_u64)
+            .and_then(|index| views.and_then(|v| v.get(index as usize)))
+        else {
+            continue;
+        };
+        let offset = view
+            .get("byteOffset")
+            .and_then(serde_json::Value::as_u64)
+            .unwrap_or(0) as usize;
+        let Some(start) = bin.checked_add(offset) else {
+            continue;
+        };
+        let Some(header) = bytes.get(start..(start + 52).min(bytes.len())) else {
+            continue;
+        };
+        if let Some(problem) = ktx2_payload_problem(header) {
+            issues.push(AuditIssue {
+                severity: Severity::Warning,
+                message: format!(
+                    "ktx2 embutido não suportado: {} usa {problem} — {context}",
+                    path.display()
+                ),
+            });
+        }
+    }
+}
+
+// ---------------------------------------------------------------- texturas
+
+const TEXTURE_EXTENSIONS: &[&str] = &["png", "jpg", "jpeg", "webp", "ktx2", "hdr", "tga"];
+
+fn audit_texture(path: &Path, context: &str, issues: &mut Vec<AuditIssue>) {
+    let extension = path
+        .extension()
+        .and_then(|e| e.to_str())
+        .map(|e| e.to_ascii_lowercase());
+    let Some(extension) = extension else {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "textura sem extensão: {} (esperado png/jpg/webp/ktx2/hdr) — {context}",
+                path.display()
+            ),
+        });
+        return;
+    };
+    if !TEXTURE_EXTENSIONS.contains(&extension.as_str()) {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "formato de textura não suportado: .{extension} em {} (esperado png/jpg/webp/ktx2/hdr/tga) — {context}",
+                path.display()
+            ),
+        });
+        return;
+    }
+    match extension.as_str() {
+        "png" => check_magic(path, context, b"\x89PNG\r\n\x1a\n", "PNG", issues),
+        "jpg" | "jpeg" => check_magic(path, context, b"\xff\xd8\xff", "JPEG", issues),
+        "ktx2" => audit_ktx2(path, context, issues),
+        "webp" => check_webp(path, context, issues),
+        "hdr" => check_magic(path, context, b"#?", "HDR", issues),
+        // .tga não tem magia fiável (o campo de ID é opcional e a assinatura
+        // opcional vive no FIM do ficheiro) — a extensão basta.
+        "tga" => {}
+        _ => {}
+    }
+}
+
+/// Lê só os primeiros `n` bytes (cabeçalho) — o audit não abre texturas
+/// inteiras.
+fn read_header(path: &Path, n: u64) -> Option<Vec<u8>> {
+    use std::io::Read as _;
+    let file = std::fs::File::open(path).ok()?;
+    let mut buffer = Vec::new();
+    file.take(n).read_to_end(&mut buffer).ok()?;
+    Some(buffer)
+}
+
+/// KTX2: magia de 12 bytes + cabeçalho de 80; `vkFormat` (u32 LE @12),
+/// `supercompressionScheme` (u32 LE @44; 0 none / 1 BasisLZ / 2 Zstandard) e
+/// `dfdByteOffset` (u32 LE @48) — discriminantes conferidos na crate `ktx2`
+/// 0.5.
+const KTX2_MAGIC: [u8; 12] = [
+    0xAB, 0x4B, 0x54, 0x58, 0x20, 0x32, 0x30, 0xBB, 0x0D, 0x0A, 0x1A, 0x0A,
+];
+/// `KHR_DF_MODEL_ETC1S` — o modelo que o BasisLZ transporta.
+///
+/// UASTC declara `KHR_DF_MODEL_UASTC` (166), e é essa a diferença que o
+/// `vkFormat 0` sozinho não conta: `VK_FORMAT_UNDEFINED` só quer dizer "o
+/// formato vem do descritor", que é o caso de **todo** o KTX2 do pipeline,
+/// incluindo o UASTC que o Bevy lê sem problema.
+const KTX2_DFD_MODEL_ETC1S: u8 = 163;
+/// `colorModel` do descritor de formato: logo a seguir a
+/// `dfdTotalSize`(4) + `vendorId`(4) + `descriptorBlockSize`(4).
+const KTX2_DFD_COLOR_MODEL: usize = 12;
+
+/// O `colorModel` do primeiro bloco do descritor, quando está ao alcance da
+/// leitura de cabeçalho.
+fn ktx2_dfd_color_model(bytes: &[u8]) -> Option<u8> {
+    let dfd = u32::from_le_bytes(bytes.get(48..52)?.try_into().ok()?) as usize;
+    bytes.get(dfd + KTX2_DFD_COLOR_MODEL).copied()
+}
+
+/// O problema de um payload KTX2 (em ficheiro solto ou embutido num GLB), se
+/// houver. Precisa dos primeiros 52 bytes + do descritor, quando ao alcance.
+///
+/// A regra é a mesma nos dois sítios de propósito: o que a engine recusa é
+/// uma propriedade do payload, não de onde ele vive.
+fn ktx2_payload_problem(bytes: &[u8]) -> Option<String> {
+    if bytes.len() < 16 || bytes[..12] != KTX2_MAGIC {
+        return None; // magia errada é reportada pelo caller (só o solto a testa)
+    }
+    let vk_format = u32::from_le_bytes([bytes[12], bytes[13], bytes[14], bytes[15]]);
+    // O scheme só se lê com os 48 bytes do cabeçalho presentes.
+    let scheme = (bytes.len() >= 48)
+        .then(|| u32::from_le_bytes([bytes[44], bytes[45], bytes[46], bytes[47]]));
+    if scheme == Some(1) {
+        // BasisLZ é o ÚNICO scheme que o Bevy não descomprime — fatal venha
+        // o payload de ETC1S ou de UASTC.
+        return Some(
+            "supercompressão BasisLZ (scheme 1) — a engine (Bevy 0.19) não descomprime BasisLZ; reexporta em UASTC (`text3d finish`)"
+                .to_string(),
+        );
+    }
+    if vk_format == 0 && ktx2_dfd_color_model(bytes) == Some(KTX2_DFD_MODEL_ETC1S) {
+        // ETC1S fora do BasisLZ não devia existir: se aparecer, é sinal de
+        // um encode a meio caminho.
+        return Some(
+            "ETC1S sem BasisLZ (colorModel 163) — reexporta em UASTC (`text3d finish`)".to_string(),
+        );
+    }
+    if (147..=156).contains(&vk_format) {
+        // Família ETC2/EAC crua: VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK
+        // (147 = 0x93) até VK_FORMAT_EAC_R11G11_SNORM_BLOCK (156 = 0x9C) —
+        // discriminantes conferidos na crate `ktx2` 0.5, enum `Format`.
+        // UASTC declara o formato no descritor (vkFormat 0) e passa.
+        return Some(format!(
+            "ETC2/EAC cru (vkFormat {vk_format}) — desktop não amostra ETC2; reexporta em UASTC (`text3d finish`)"
+        ));
+    }
+    None
+}
+
+/// O `.ktx2` merece sniffing próprio: ETC1S/BasisLZ é FATAL na engine (o
+/// Bevy 0.19 não descomprime BasisLZ — regra "nunca etc1s") e entrava como
+/// falso negativo, ao contrário do análogo GLB (Draco/Basis verificados).
+///
+/// O scheme é quem decide, não o `vkFormat`: o pool inteiro declara
+/// `VK_FORMAT_UNDEFINED` (UASTC com o formato no descritor, scheme `none`),
+/// e uma versão anterior deste teste marcava-o todo como BasisLZ — 13 avisos
+/// falsos no simple-rpg, que é a maneira mais rápida de ensinar quem lê o
+/// relatório a ignorá-lo.
+fn audit_ktx2(path: &Path, context: &str, issues: &mut Vec<AuditIssue>) {
+    let Some(bytes) = read_header(path, 4096) else {
+        return;
+    };
+    // 12 bytes é só a magia; o campo de formato ocupa 12..16.
+    if bytes.len() < 16 || bytes[..12] != KTX2_MAGIC {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "ktx2 inválido: {} não tem a magia KTX2 (truncado ou não é KTX2?) — {context}",
+                path.display()
+            ),
+        });
+        return;
+    }
+    if let Some(problem) = ktx2_payload_problem(&bytes) {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "ktx2 não suportado: {} usa {problem} — {context}",
+                path.display()
+            ),
+        });
+    }
+}
+
+/// WebP é um contentor RIFF: "RIFF" + tamanho (4 bytes) + "WEBP" @8.
+fn check_webp(path: &Path, context: &str, issues: &mut Vec<AuditIssue>) {
+    let Some(bytes) = read_header(path, 12) else {
+        return;
+    };
+    if bytes.len() < 12 || !bytes.starts_with(b"RIFF") || !bytes[8..12].starts_with(b"WEBP") {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "webp inválido: {} não tem a magia RIFF….WEBP (corrompido ou PNG/JPEG guardado com a extensão errada?) — {context}",
+                path.display()
+            ),
+        });
+    }
+}
+
+fn check_magic(
+    path: &Path,
+    context: &str,
+    magic: &[u8],
+    format: &str,
+    issues: &mut Vec<AuditIssue>,
+) {
+    let Ok(bytes) = std::fs::read(path) else {
+        return;
+    };
+    if !bytes.starts_with(magic) {
+        issues.push(AuditIssue {
+            severity: Severity::Warning,
+            message: format!(
+                "{format} inválido: {} não tem a magia {format} (corrompido ou HTML/JSON guardado com a extensão errada?) — {context}",
+                path.display()
+            ),
+        });
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::physics::{ColliderShape, PhysicsSpec};
+    use crate::recipes::{EntitySpec, MaterialSpec, TransformSpec};
+
+    fn entity(name: &str, kind: EntityKind, collider: ColliderShape) -> EntitySpec {
+        EntitySpec {
+            prototype_instance: None,
+            name: Some(name.into()),
+            tag: None,
+            script: None,
+            props: Vec::new(),
+            links: Default::default(),
+            transform: TransformSpec::default(),
+            physics: PhysicsSpec {
+                collider,
+                body: Default::default(),
+                mass: None,
+                gravity_scale: None,
+                trigger: false,
+            },
+            kind,
+            children: vec![],
+            source: None,
+        }
+    }
+
+    /// GLB mínimo válido: header + chunk JSON com a extensão dada.
+    fn glb_bytes(extension: Option<&str>) -> Vec<u8> {
+        let json = match extension {
+            Some(ext) => format!(r#"{{"extensionsUsed":["{ext}"]}}"#),
+            None => "{}".into(),
+        };
+        let mut out = Vec::from(&b"glTF"[..]);
+        out.extend_from_slice(&2u32.to_le_bytes()); // version
+        out.extend_from_slice(&(12 + json.len() as u32).to_le_bytes()); // total
+        out.extend_from_slice(&(json.len() as u32).to_le_bytes()); // chunk len
+        out.extend_from_slice(b"JSON");
+        out.extend_from_slice(json.as_bytes());
+        out
+    }
+
+    fn setup() -> (tempfile::TempDir, PathBuf, PathBuf) {
+        let dir = tempfile::tempdir().expect("tmpdir");
+        let world_dir = dir.path().join("mundo");
+        let asset_root = world_dir.clone();
+        std::fs::create_dir_all(asset_root.join("assets/meshes")).unwrap();
+        std::fs::create_dir_all(asset_root.join("assets/textures")).unwrap();
+        std::fs::create_dir_all(asset_root.join("scripts")).unwrap();
+        // O fixture cria-os vazios: o que se testa aqui é a recolha de refs
+        // e o reporte dos assets do MUNDO, não a existência dos clips.
+        for rel in engine_audio_files(&crate::config::fixture()) {
+            let path = asset_root.join(rel.trim_start_matches('/'));
+            std::fs::create_dir_all(path.parent().expect("parent")).unwrap();
+            std::fs::File::create(&path).unwrap();
+        }
+        (dir, world_dir, asset_root)
+    }
+
+    #[test]
+    fn test_missing_glb_is_reported() {
+        let (_dir, world_dir, asset_root) = setup();
+        let world = ParsedWorld {
+            entities: vec![entity(
+                "heroi",
+                EntityKind::PlayerGltf {
+                    url: "/assets/meshes/fantasma.glb".into(),
+                },
+                Default::default(),
+            )],
+            ..Default::default()
+        };
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        // 1 ref do mundo + os SFX da engine (fixture cria-os, nenhum falha).
+        assert_eq!(report.references, 1 + engine_audio_files(&config).len());
+        assert_eq!(report.missing_count(), 1);
+        assert!(
+            report.issues[0].message.contains("ausente")
+                && report.issues[0].message.contains("fantasma.glb"),
+            "{:?}",
+            report.issues
+        );
+        // PlayerGLTF NUNCA entra na lista de colliderless: o herói tem
+        // character controller próprio (colisão via Avian no spawn).
+        assert!(report.colliderless.is_empty());
+    }
+
+    #[test]
+    fn test_colliderless_and_inherited_collider() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(asset_root.join("assets/meshes/a.glb"), glb_bytes(None)).unwrap();
+        std::fs::write(asset_root.join("assets/meshes/b.glb"), glb_bytes(None)).unwrap();
+        let glb = |url: &str| EntityKind::gltf_scene(url);
+        // "cobre": Group com collider → filhos GltfScene NÃO são colliderless.
+        let mut group = entity("muro", EntityKind::Group, ColliderShape::Auto);
+        group.children = vec![entity(
+            "painel",
+            glb("/assets/meshes/a.glb"),
+            Default::default(),
+        )];
+        let world = ParsedWorld {
+            entities: vec![
+                group,
+                entity("nu", glb("/assets/meshes/b.glb"), Default::default()),
+            ],
+            ..Default::default()
+        };
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        assert_eq!(
+            report.colliderless,
+            vec!["/assets/meshes/b.glb".to_string()]
+        );
+    }
+
+    /// A ladder `lod1-url`/`lod2-url` de um `<GltfScene>` é uma referência de
+    /// ficheiro: um tier em falta tem de sair no relatório (antes só o URL
+    /// principal era auditado — o LOD degradava em silêncio no arranque).
+    #[test]
+    fn test_gltf_scene_lod_tiers_are_audited() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(asset_root.join("assets/meshes/a_lod0.glb"), glb_bytes(None)).unwrap();
+        let world = ParsedWorld {
+            entities: vec![entity(
+                "tree",
+                EntityKind::GltfScene {
+                    url: "/assets/meshes/a_lod0.glb".into(),
+                    lod1: Some("/assets/meshes/a_lod1.glb".into()),
+                    lod2: None,
+                    lod_near: 40.0,
+                    lod_mid: 100.0,
+                },
+                Default::default(),
+            )],
+            ..Default::default()
+        };
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &crate::config::fixture(),
+        );
+        assert!(
+            report
+                .issues
+                .iter()
+                .any(|issue| issue.severity == Severity::Missing
+                    && issue.message.contains("a_lod1.glb")),
+            "{:?}",
+            report.issues
+        );
+    }
+
+    /// O collider de um template de spawner é uma referência de ficheiro como
+    /// as outras: um `mesh-url` em falta tem de sair no `analyze` (antes só o
+    /// `PendingCollider` do arranque avisava, com fallback de AABB).
+    #[test]
+    fn test_spawner_template_collider_mesh_is_audited() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(asset_root.join("assets/meshes/rocha.glb"), glb_bytes(None)).unwrap();
+        let nodes = crate::xml::parse_fragment(
+            r#"<StaticSpawner count="2">
+                 <GameObject collider="shape: trimesh; mesh-url: /assets/meshes/rocha_collision.glb">
+                   <GLTFLoader url="/assets/meshes/rocha.glb" />
+                 </GameObject>
+               </StaticSpawner>"#,
+        )
+        .unwrap();
+        let world = crate::recipes::parse_world(&[], &nodes).unwrap();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &crate::config::fixture(),
+        );
+        assert!(
+            report
+                .issues
+                .iter()
+                .any(|issue| issue.severity == Severity::Missing
+                    && issue.message.contains("rocha_collision.glb")),
+            "{:?}",
+            report.issues
+        );
+    }
+
+    #[test]
+    fn test_draco_is_flagged_and_meshopt_is_not() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(
+            asset_root.join("assets/meshes/draco.glb"),
+            glb_bytes(Some("KHR_draco_mesh_compression")),
+        )
+        .unwrap();
+        std::fs::write(
+            asset_root.join("assets/meshes/meshopt.glb"),
+            glb_bytes(Some("EXT_meshopt_compression")),
+        )
+        .unwrap();
+        let glb_scene = |url: &str, name: &str| {
+            entity(
+                name,
+                EntityKind::gltf_scene(url),
+                ColliderShape::Box {
+                    size: Default::default(),
+                    offset: Default::default(),
+                },
+            )
+        };
+        let world = ParsedWorld {
+            entities: vec![
+                glb_scene("/assets/meshes/draco.glb", "d"),
+                glb_scene("/assets/meshes/meshopt.glb", "m"),
+            ],
+            ..Default::default()
+        };
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        assert_eq!(report.missing_count(), 0);
+        assert_eq!(report.issues.len(), 1, "só o Draco: {:?}", report.issues);
+        assert!(report.issues[0].message.contains("Draco"));
+        assert!(report.colliderless.is_empty(), "com collider explícito");
+    }
+
+    #[test]
+    fn test_invalid_glb_magic_and_texture_checks() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(
+            asset_root.join("assets/meshes/falso.glb"),
+            b"<html>404</html>",
+        )
+        .unwrap();
+        std::fs::write(
+            asset_root.join("assets/textures/ok.png"),
+            [0x89, b'P', b'N', b'G', 0x0d, 0x0a, 0x1a, 0x0a, 0, 0],
+        )
+        .unwrap();
+        std::fs::write(
+            asset_root.join("assets/textures/falso.png"),
+            b"{\"json\": true}",
+        )
+        .unwrap();
+        std::fs::write(asset_root.join("assets/textures/vector.svg"), b"<svg/>").unwrap();
+        let with_texture = |name: &str, tex: &str, _file: &str| {
+            entity(
+                name,
+                EntityKind::Primitive {
+                    shape: crate::recipes::Shape::Cuboid {
+                        half_size: [0.5; 3],
+                    },
+                    material: MaterialSpec {
+                        texture: Some(tex.into()),
+                        ..Default::default()
+                    },
+                },
+                ColliderShape::Auto,
+            )
+        };
+        let world = ParsedWorld {
+            entities: vec![
+                with_texture("a", "/assets/textures/falso.png", "x"),
+                with_texture("b", "/assets/textures/vector.svg", "y"),
+            ],
+            ..Default::default()
+        };
+        // Referenciar também o glb falso e o png ok (via GltfScene + decal).
+        let mut world = world;
+        world.entities.push(entity(
+            "c",
+            EntityKind::gltf_scene("/assets/meshes/falso.glb"),
+            ColliderShape::Auto,
+        ));
+        // O png ok existe mas não é referenciado — acrescentar 2.ª textura ok
+        // via 3.ª entidade para provar que NÃO gera issue.
+        world
+            .entities
+            .push(with_texture("d", "/assets/textures/ok.png", "z"));
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        assert_eq!(report.missing_count(), 0);
+        assert_eq!(report.issues.len(), 3, "{:?}", report.issues);
+        assert!(
+            report
+                .issues
+                .iter()
+                .any(|i| i.message.contains("glb inválido"))
+        );
+        assert!(
+            report
+                .issues
+                .iter()
+                .any(|i| i.message.contains("PNG inválido"))
+        );
+        assert!(
+            report
+                .issues
+                .iter()
+                .any(|i| i.message.contains("formato de textura não suportado: .svg"))
+        );
+    }
+
+    #[test]
+    fn test_scripts_styles_and_music() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(
+            world_dir.join("scripts/lobo.lua"),
+            "function on_update(dt) end",
+        )
+        .unwrap();
+        std::fs::create_dir_all(asset_root.join("assets/audio/bgm")).unwrap();
+        std::fs::write(asset_root.join("assets/audio/bgm/explore.ogg"), b"ogg").unwrap();
+        let mut lobo = entity(
+            "lobo",
+            EntityKind::gltf_scene("/assets/meshes/lobo.glb"),
+            ColliderShape::Auto,
+        );
+        lobo.script = Some("lobo.lua".into());
+        let world = ParsedWorld {
+            entities: vec![
+                lobo,
+                entity(
+                    "fantasma",
+                    EntityKind::gltf_scene("/assets/meshes/fantasma.glb"),
+                    ColliderShape::Auto,
+                ),
+                entity(
+                    "musica",
+                    EntityKind::MusicLayer {
+                        layer: "explore".into(),
+                        sound: "bgm-explore".into(),
+                        base_volume: 0.2,
+                    },
+                    Default::default(),
+                ),
+                entity(
+                    "musica2",
+                    EntityKind::MusicLayer {
+                        layer: "inexistente".into(),
+                        sound: String::new(),
+                        base_volume: 0.2,
+                    },
+                    Default::default(),
+                ),
+                entity(
+                    "css_inline",
+                    EntityKind::UiStyle {
+                        source: crate::recipes::UiStyleSource::Inline(
+                            "@import x; .hud { color: red; }".into(),
+                        ),
+                    },
+                    Default::default(),
+                ),
+                entity(
+                    "css_ficheiro",
+                    EntityKind::UiStyle {
+                        source: crate::recipes::UiStyleSource::File("ui/falta.css".into()),
+                    },
+                    Default::default(),
+                ),
+            ],
+            ..Default::default()
+        };
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        // Ausentes: lobo.glb (não criado), fantasma.glb, bgm/inexistente.ogg,
+        // ui/falta.css — a folha inline não é um ficheiro.
+        assert_eq!(report.missing_count(), 4, "{:?}", report.issues);
+        // Script existente não gera issue; audio ok não gera.
+        assert!(
+            report
+                .issues
+                .iter()
+                .all(|i| i.severity == Severity::Missing)
+        );
+    }
+
+    fn write_bytes(dir: &tempfile::TempDir, name: &str, bytes: &[u8]) -> PathBuf {
+        let path = dir.path().join(name);
+        std::fs::write(&path, bytes).expect("escrever fixture");
+        path
+    }
+
+    #[test]
+    fn test_pool_fallback_root_resolves_and_override_wins() {
+        // Contrato multi-root (docs/ASSETS.md): a 1.ª root serve primeiro
+        // (override por-mundo), o pool preenche o que faltar, e o "ausente"
+        // aponta à 1.ª root quando ninguém tem o ficheiro.
+        let dir = tempfile::tempdir().expect("tmpdir");
+        let world_dir = dir.path().join("mundo");
+        let pool = dir.path().join("pool");
+        std::fs::create_dir_all(world_dir.join("assets/meshes")).unwrap();
+        std::fs::create_dir_all(pool.join("assets/meshes")).unwrap();
+        // Só no pool → resolvido pelo fallback.
+        std::fs::write(pool.join("assets/meshes/do_pool.glb"), glb_bytes(None)).unwrap();
+        // Nas DUAS (override local ganha; basta existir para não faltar).
+        std::fs::write(
+            world_dir.join("assets/meshes/override.glb"),
+            glb_bytes(None),
+        )
+        .unwrap();
+        std::fs::write(pool.join("assets/meshes/override.glb"), glb_bytes(None)).unwrap();
+        // Os SFX da engine são auditados por HARDCODE (nunca aparecem no
+        // XML) — fixture no POOL prova que o fallback também os resolve.
+        for rel in engine_audio_files(&crate::config::fixture()) {
+            let path = pool.join(rel.trim_start_matches('/'));
+            std::fs::create_dir_all(path.parent().expect("parent")).unwrap();
+            std::fs::File::create(&path).unwrap();
+        }
+        let world = ParsedWorld {
+            entities: vec![
+                entity(
+                    "a",
+                    EntityKind::gltf_scene("/assets/meshes/do_pool.glb"),
+                    ColliderShape::Auto,
+                ),
+                entity(
+                    "b",
+                    EntityKind::gltf_scene("/assets/meshes/override.glb"),
+                    ColliderShape::Auto,
+                ),
+                entity(
+                    "c",
+                    EntityKind::gltf_scene("/assets/meshes/fantasma.glb"),
+                    ColliderShape::Auto,
+                ),
+            ],
+            ..Default::default()
+        };
+        let roots = vec![world_dir.clone(), pool.clone()];
+        let config = crate::config::fixture();
+        let report = audit(&world, &world_dir, &roots, &config);
+        // Só fantasma falta — e a mensagem aponta à root do MUNDO.
+        assert_eq!(report.missing_count(), 1, "{:?}", report.issues);
+        assert!(
+            report.issues[0].message.contains(
+                &world_dir
+                    .join("assets/meshes/fantasma.glb")
+                    .display()
+                    .to_string()
+            ),
+            "{:?}",
+            report.issues
+        );
+    }
+
+    /// Cabeçalho KTX2 mínimo (12 magia + 32 campos + scheme @44 = 48 bytes).
+    fn ktx2_header(vk_format: u32, scheme: u32) -> Vec<u8> {
+        let mut bytes = KTX2_MAGIC.to_vec();
+        bytes.extend_from_slice(&vk_format.to_le_bytes()); // vkFormat @12
+        bytes.extend_from_slice(&1u32.to_le_bytes()); // typeSize
+        bytes.extend_from_slice(&256u32.to_le_bytes()); // pixelWidth
+        bytes.extend_from_slice(&256u32.to_le_bytes()); // pixelHeight
+        bytes.extend_from_slice(&1u32.to_le_bytes()); // pixelDepth
+        bytes.extend_from_slice(&1u32.to_le_bytes()); // layerCount
+        bytes.extend_from_slice(&1u32.to_le_bytes()); // faceCount
+        bytes.extend_from_slice(&1u32.to_le_bytes()); // levelCount
+        bytes.extend_from_slice(&scheme.to_le_bytes()); // supercompressionScheme @44
+        bytes
+    }
+
+    /// Cabeçalho KTX2 mínimo (12 magia + 32 campos + scheme @44 = 48 bytes),
+    /// com o `dfdByteOffset` @48 a apontar para um descritor que declara
+    /// `color_model`.
+    fn ktx2_header_with_dfd(vk_format: u32, scheme: u32, color_model: u8) -> Vec<u8> {
+        /// Onde o descritor começa: depois do cabeçalho (52) e do índice.
+        const DFD_OFFSET: u32 = 80;
+        let mut bytes = ktx2_header(vk_format, scheme);
+        bytes.extend_from_slice(&DFD_OFFSET.to_le_bytes()); // dfdByteOffset @48
+        bytes.resize(DFD_OFFSET as usize, 0);
+        bytes.resize(DFD_OFFSET as usize + 16, 0);
+        bytes[DFD_OFFSET as usize + KTX2_DFD_COLOR_MODEL] = color_model;
+        bytes
+    }
+
+    #[test]
+    fn test_ktx2_etc1s_and_etc2_flagged_uastc_passes() {
+        let dir = tempfile::tempdir().expect("tmpdir");
+        // ETC1S/BasisLZ: vkFormat 0 (UNDEFINED — o formato vem do descritor)
+        // com supercompressão BasisLZ → warn.
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "etc1s.ktx2", &ktx2_header(0, 1)),
+            "teste",
+            &mut issues,
+        );
+        assert_eq!(issues.len(), 1, "etc1s tem de ser apanhado: {issues:?}");
+        // ETC2 cru (147 = VK_FORMAT_ETC2_R8G8B8_UNORM_BLOCK) → warn.
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "etc2.ktx2", &ktx2_header(147, 0)),
+            "teste",
+            &mut issues,
+        );
+        assert_eq!(issues.len(), 1, "ETC2 cru tem de ser apanhado: {issues:?}");
+        // UASTC (37 = VK_FORMAT_R8G8B8A8_UNORM, scheme Zstandard) → limpo.
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "uastc.ktx2", &ktx2_header(37, 2)),
+            "teste",
+            &mut issues,
+        );
+        assert!(issues.is_empty(), "UASTC passa limpo: {issues:?}");
+        // UASTC como o pipeline o escreve: vkFormat 0 (o formato está no
+        // descritor), SEM supercompressão, colorModel UASTC → limpo. Era aqui
+        // que a versão anterior do teste marcava o pool inteiro como
+        // BasisLZ (13 avisos falsos no simple-rpg).
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "uastc-dfd.ktx2", &ktx2_header_with_dfd(0, 0, 166)),
+            "teste",
+            &mut issues,
+        );
+        assert!(
+            issues.is_empty(),
+            "UASTC com o formato no descritor passa limpo: {issues:?}"
+        );
+        // ETC1S sem BasisLZ: o encode parou a meio → warn.
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "etc1s-sem-lz.ktx2", &ktx2_header_with_dfd(0, 0, 163)),
+            "teste",
+            &mut issues,
+        );
+        assert_eq!(
+            issues.len(),
+            1,
+            "ETC1S sem BasisLZ tem de ser apanhado: {issues:?}"
+        );
+        // Magia errada (PNG guardado como .ktx2) → warn.
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "falso.ktx2", b"\x89PNG\r\n\x1a\n"),
+            "teste",
+            &mut issues,
+        );
+        assert_eq!(issues.len(), 1, "magia errada tem de ser apanhada");
+    }
+
+    #[test]
+    fn test_webp_and_hdr_magic() {
+        let dir = tempfile::tempdir().expect("tmpdir");
+        let mut webp = b"RIFF\x24\x00\x00\x00".to_vec();
+        webp.extend_from_slice(b"WEBP");
+        let mut issues = Vec::new();
+        audit_texture(&write_bytes(&dir, "ok.webp", &webp), "teste", &mut issues);
+        assert!(issues.is_empty(), "webp válido passa: {issues:?}");
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "falso.webp", b"\x89PNG\r\n\x1a\n"),
+            "teste",
+            &mut issues,
+        );
+        assert_eq!(issues.len(), 1, "webp sem RIFF/WEBP tem de ser apanhado");
+        let mut issues = Vec::new();
+        audit_texture(
+            &write_bytes(&dir, "ok.hdr", b"#?RADIANCE\n\n-Y 4 3\n"),
+            "teste",
+            &mut issues,
+        );
+        assert!(issues.is_empty(), "hdr válido passa: {issues:?}");
+    }
+
+    // ── Conflitos estrada × água/cliff ─────────────────────────────────
+
+    /// Parse de um mundo XML pequeno (sem assets) para os testes de features.
+    fn feature_index(src: &str) -> FeatureIndex {
+        let dir = tempfile::tempdir().expect("tmpdir");
+        let path = dir.path().join("world.xml");
+        std::fs::write(&path, src).unwrap();
+        let loaded = crate::xml::include::load_world(&path).expect("parse xml");
+        let world =
+            crate::recipes::parse_world(&loaded.root_attrs, &loaded.nodes).expect("parse ir");
+        let mut idx = FeatureIndex::default();
+        collect_features(&world.entities, [0.0, 0.0], &mut idx);
+        idx
+    }
+
+    /// A translation da própria feature já vem no `path` do parse; o audit
+    /// só soma a dos grupos ancestrais (antes contava a própria duas vezes).
+    #[test]
+    fn test_feature_offsets_are_counted_once() {
+        let idx = feature_index(
+            r#"<world>
+              <Group translation="100 0 0">
+                <Road name="r" translation="50 0 0" path="-30 0 30 0" width="4" />
+                <Lake name="l" translation="0 0 20" at="5 5" radius="4" depth="1" />
+              </Group>
+            </world>"#,
+        );
+        let road = &idx.roads[0].1;
+        assert_eq!(road.path[0], Vec2::new(120.0, 0.0));
+        assert_eq!(road.path[1], Vec2::new(180.0, 0.0));
+        assert_eq!(idx.lakes[0].1.at, Vec2::new(105.0, 25.0));
+    }
+
+    #[test]
+    fn test_road_entering_lake_water_warns() {
+        let idx = feature_index(
+            r#"<world>
+              <Lake at="0 0" radius="10" depth="2" />
+              <Road name="trilha" path="-30 0 30 0" width="4" flatten="0" />
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        let hits: Vec<_> = issues
+            .iter()
+            .filter(|i| i.message.contains("lâmina do lago"))
+            .collect();
+        assert_eq!(hits.len(), 1, "{issues:?}");
+        assert_eq!(hits[0].severity, Severity::Warning);
+        assert!(hits[0].message.contains("\"trilha\""), "{issues:?}");
+    }
+
+    #[test]
+    fn test_road_far_from_water_is_silent() {
+        let idx = feature_index(
+            r#"<world>
+              <Lake at="0 0" radius="10" depth="2" />
+              <River path="-50 200 50 200" width="10" />
+              <Cliff path="-40 -200 40 -200" width="6" />
+              <Road name="zona" path="-30 100 30 100" width="4" flatten="0" />
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        assert!(issues.is_empty(), "{issues:?}");
+    }
+
+    #[test]
+    fn test_bridge_tiers_over_lake() {
+        // Pontas a 11 m do centro (11 < 10×1.45 worst-case) → Warning mesmo
+        // com o contorno real da fase a poder estar mais pequeno.
+        let idx = feature_index(
+            r#"<world>
+              <Lake at="0 0" radius="10" depth="2" />
+              <RoadNetwork default-profile="artery" default-width="4">
+                <Way id="e" xz="-11 0" />
+                <Way id="w" xz="11 0" />
+                <Segment a="e" b="w" profile="bridge" />
+              </RoadNetwork>
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        let warns: Vec<_> = issues
+            .iter()
+            .filter(|i| i.severity == Severity::Warning)
+            .collect();
+        assert_eq!(warns.len(), 1, "{issues:?}");
+        assert!(warns[0].message.contains("afaste as pontas"), "{issues:?}");
+
+        // Pontas a 15 m (> worst-case 14.5) mas o vão cruza a lâmina →
+        // Warning: o deck é ribbon plana sem collider — travessia quebrada
+        // no terreno voxel, mesmo com as pontas secas.
+        let idx = feature_index(
+            r#"<world>
+              <Lake at="0 0" radius="10" depth="2" />
+              <RoadNetwork default-profile="artery" default-width="4">
+                <Way id="e" xz="-15 0" />
+                <Way id="w" xz="15 0" />
+                <Segment a="e" b="w" profile="bridge" />
+              </RoadNetwork>
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        assert!(
+            issues.iter().all(|i| i.severity == Severity::Warning),
+            "{issues:?}"
+        );
+        let cruza = issues
+            .iter()
+            .find(|i| i.message.contains("cruza o lago"))
+            .expect("mensagem de travessia");
+        assert!(cruza.message.contains("<Bridge>"), "{issues:?}");
+        // O ponto reportado é o de maior penetração (meio do vão), não as
+        // pontas — o passo de amostragem (2 m desde o vértice) pega (-1, 0).
+        assert!(cruza.message.contains("(-1, 0)"), "{issues:?}");
+    }
+
+    #[test]
+    fn test_road_crossing_river_warns_bridge_tiers() {
+        let idx = feature_index(
+            r#"<world>
+              <River path="-50 0 50 0" width="10" bank-width="2" />
+              <Road name="vau" path="0 -40 0 40" width="4" flatten="0" />
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        let hits: Vec<_> = issues
+            .iter()
+            .filter(|i| i.message.contains("lâmina do rio"))
+            .collect();
+        assert_eq!(hits.len(), 1, "{issues:?}");
+        assert_eq!(hits[0].severity, Severity::Warning);
+
+        // Ponte com pontas claras (20 ≥ 5+2+2) → Warning (deck sem collider);
+        // pontas curtas → Warning (água cobre as pontas).
+        let idx = feature_index(
+            r#"<world>
+              <River path="-50 0 50 0" width="10" bank-width="2" />
+              <RoadNetwork default-profile="artery" default-width="4">
+                <Way id="n" xz="0 -20" />
+                <Way id="s" xz="0 20" />
+                <Segment a="n" b="s" profile="bridge" />
+              </RoadNetwork>
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        assert!(
+            issues.iter().all(|i| i.severity == Severity::Warning),
+            "{issues:?}"
+        );
+        assert!(
+            issues
+                .iter()
+                .any(|i| i.message.contains("<Bridge> volumétrica")),
+            "{issues:?}"
+        );
+
+        let idx = feature_index(
+            r#"<world>
+              <River path="-50 0 50 0" width="10" bank-width="2" />
+              <RoadNetwork default-profile="artery" default-width="4">
+                <Way id="n" xz="0 -6" />
+                <Way id="s" xz="0 6" />
+                <Segment a="n" b="s" profile="bridge" />
+              </RoadNetwork>
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        assert!(
+            issues
+                .iter()
+                .any(|i| i.severity == Severity::Warning && i.message.contains("eixo do rio")),
+            "{issues:?}"
+        );
+    }
+
+    #[test]
+    fn test_road_crossing_cliff_band_warns() {
+        let idx = feature_index(
+            r#"<world>
+              <Cliff path="-40 0 40 0" width="6" />
+              <Road name="atalho" path="-20 -20 -20 20" width="4" flatten="0" />
+            </world>"#,
+        );
+        let issues = audit_feature_conflicts(&idx);
+        let hits: Vec<_> = issues
+            .iter()
+            .filter(|i| i.message.contains("banda do cliff"))
+            .collect();
+        assert_eq!(hits.len(), 1, "{issues:?}");
+        assert_eq!(hits[0].severity, Severity::Warning);
+    }
+
+    /// GLB de um cubo unitário centrado na origem — bounds de 1 m para o
+    /// teste de sobreposição.
+    fn glb_cube_bytes() -> Vec<u8> {
+        let json = r#"{"nodes":[{"mesh":0}],"meshes":[{"primitives":[{"attributes":{"POSITION":0}}]}],"accessors":[{"componentType":5126,"type":"VEC3","count":8,"min":[-0.5,-0.5,-0.5],"max":[0.5,0.5,0.5]}]}"#;
+        let mut out = Vec::from(&b"glTF"[..]);
+        out.extend_from_slice(&2u32.to_le_bytes());
+        out.extend_from_slice(&(12 + 8 + json.len() as u32).to_le_bytes());
+        out.extend_from_slice(&(json.len() as u32).to_le_bytes());
+        out.extend_from_slice(b"JSON");
+        out.extend_from_slice(json.as_bytes());
+        out
+    }
+
+    /// O bug real: uma instância gerada nasce dentro de um prop autoral. O
+    /// audit antigo dizia OK; agora acusa com os dois nomes.
+    #[test]
+    fn test_generated_inside_authored_is_reported() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(asset_root.join("assets/meshes/cube.glb"), glb_cube_bytes()).unwrap();
+        let rock = entity(
+            "pedra",
+            EntityKind::gltf_scene("/assets/meshes/cube.glb"),
+            ColliderShape::Auto,
+        );
+        let mut tree = entity(
+            "inst-grp-1-0000",
+            EntityKind::gltf_scene("/assets/meshes/cube.glb"),
+            ColliderShape::None,
+        );
+        tree.transform.translation = [0.1, 0.0, 0.0];
+        let world = ParsedWorld {
+            entities: vec![rock, tree],
+            ..Default::default()
+        };
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        let hits: Vec<_> = report
+            .issues
+            .iter()
+            .filter(|issue| issue.message.contains("sobreposição"))
+            .collect();
+        assert_eq!(hits.len(), 1, "{:?}", report.issues);
+        assert!(hits[0].message.contains("pedra"), "{}", hits[0].message);
+        assert!(
+            hits[0].message.contains("inst-grp-1-0000"),
+            "{}",
+            hits[0].message
+        );
+        assert_eq!(hits[0].severity, Severity::Warning);
+    }
+
+    /// Composição AUTORAL (pilar caído dentro da ruína, obelisco no altar)
+    /// não é o bug do baker — o audit não acusa autoral×autoral.
+    #[test]
+    fn test_authored_props_may_overlap_on_purpose() {
+        let (_dir, world_dir, asset_root) = setup();
+        std::fs::write(asset_root.join("assets/meshes/cube.glb"), glb_cube_bytes()).unwrap();
+        let mut altar = entity(
+            "altar",
+            EntityKind::gltf_scene("/assets/meshes/cube.glb"),
+            ColliderShape::Auto,
+        );
+        let mut needle = entity(
+            "obelisco",
+            EntityKind::gltf_scene("/assets/meshes/cube.glb"),
+            ColliderShape::Auto,
+        );
+        needle.transform.translation = [0.1, 0.0, 0.0];
+        altar.transform.translation = [0.0, 0.0, 0.0];
+        let world = ParsedWorld {
+            entities: vec![altar, needle],
+            ..Default::default()
+        };
+        let config = crate::config::fixture();
+        let report = audit(
+            &world,
+            &world_dir,
+            std::slice::from_ref(&asset_root),
+            &config,
+        );
+        assert!(
+            !report
+                .issues
+                .iter()
+                .any(|issue| issue.message.contains("sobreposição")),
+            "{:?}",
+            report.issues
+        );
+    }
+}

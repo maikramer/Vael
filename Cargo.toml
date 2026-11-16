@@ -11,7 +11,7 @@ publish = false
 # O jogo é o membro por omissão (`default-members`): `cargo run`/`cargo test`
 # na raiz não compilam o editor nem o Jackdaw. O editor constrói-se
 # explicitamente com `-p vael-editor`; o conteúdo é partilhado por ambos.
-members = ["cli", "content", "editor"]
+members = ["cli", "content", "editor", "crates/vael_engine"]
 default-members = ["."]
 resolver = "3"
 
@@ -98,7 +98,7 @@ vael-content = { path = "content" }
 # Runtime de gameplay: o código do Viber mudou-se para o monorepo
 # bevy_extensions como crate transitório. O alias `viber` preserva todos
 # os imports `viber::` do jogo. TODO(viber-exit): dividir em pacotes finais.
-viber = { package = "bevy_ext_viber_engine", path = "../bevy_extensions/crates/bevy_ext_viber_engine", features = ["ai"] }
+viber = { package = "vael_engine", path = "crates/vael_engine", features = ["ai"] }
 # Runtime de debug/ferramentas: regista `vael-tools/*` no `bevy_remote` do
 # jogo. O engine `viber` continua a ser o runtime de gameplay nesta fase.
 bevy_ext_bridge_runtime = { path = "../bevy_extensions/crates/bevy_ext_bridge_runtime" }
@@ -178,10 +178,10 @@ lto = "thin"
 # esta tabela o jogo (que compila o `viber` por path) resolveria o
 # `rerecast` limpo do crates.io (0.5.1), enquanto a engine standalone e os
 # testes dela usam o fork do vendor com os dois fixes de robustez
-# (`../bevy_extensions/crates/bevy_ext_viber_engine/vendor/rerecast/VIBER_PATCH.md`).
+# (`../bevy_extensions/vendor/rerecast/VIBER_PATCH.md`).
 # A navmesh do jogo mudaria de comportamento entre os dois builds. O vendor
 # mudou-se do `../Viber` para o `bevy_extensions` (dono do runtime); é o
 # mesmo patch da engine e não altera o código do sibling.
 
 [patch.crates-io]
-rerecast = { path = "../bevy_extensions/crates/bevy_ext_viber_engine/vendor/rerecast" }
+rerecast = { path = "../bevy_extensions/vendor/rerecast" }

@@ -1,0 +1,108 @@
+[package]
+name = "vael_engine"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.97.1"
+description = "Runtime de gameplay do Vael herdado do monólito bevy_ext_viber_engine (apagado a 2026-11-15); esvazia-se para os bevy_ext_* — ver docs/DELETE-MONOLITH.md"
+license = "MIT OR Apache-2.0"
+publish = false
+
+[lib]
+path = "src/lib.rs"
+
+[dependencies]
+anyhow = "1.0"
+bevy_engine_core = { package = "bevy_ext_core", version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_core" }
+bevy_world_xml = { package = "bevy_ext_world", version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_world", features = ["terrain"] }
+bevy_save_slots = { package = "bevy_ext_save", version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_save" }
+bevy_ext_gltf = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_gltf" }
+bevy_voxel_terrain = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_voxel_terrain" }
+bevy_ext_scene = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_scene" }
+bevy_ext_water = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_water" }
+# Crates extraídos na onda exit2/hubs: o monólito reexporta os módulos que
+# saíram (corpse/ik, feedback, render_lod, sky_nishita, camera_glue) e o jogo
+# continua a ver `viber::…`; o ECS partilha UM tipo por contrato. A feature
+# `luau` liga o `ScriptGameEvent::to_table` (mlua). `physics`/`ragdoll`/
+# `editor_camera` continuam reais no monólito (código mais novo, Avian).
+bevy_ext_physics = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_physics" }
+bevy_ext_engine = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_engine", features = ["luau"] }
+base64 = "0.23"
+bevy = { version = "0.20.1", features = [
+    "bevy_remote", "wav", "jpeg", "webp", "basis-universal",
+    "dfg_lut", "bluenoise_texture", "area_light_luts",
+    "experimental_pbr_pcss", "bevy_dev_tools", "bevy_gizmos",
+    # KTX2 zstd pela libzstd (C): o `ruzstd` (Rust puro, o default do Bevy)
+    # era metade do tempo de CPU do carregamento dos GLB (perfil 2026-11-13).
+    "zstd_c",
+] }
+clap = { version = "4.6", features = ["derive"] }
+celer-nlu = { version = "0.3.0", path = "../../../CelerAI/crates/nlu", optional = true }
+celer-decision = { version = "0.1.0", path = "../../../CelerAI/crates/decision", optional = true }
+image = { version = "0.25", default-features = false, features = ["png"] }
+roxmltree = "0.21"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+flate2 = "1"
+avian3d = { version = "0.8", features = ["bevy_diagnostic"] }
+# Controller do herói: o Avian não traz character controller com chão/autostep.
+bevy-tnua = "0.33"
+bevy-tnua-avian3d = "0.13"
+mlua = { version = "0.12", features = ["luau", "vendored", "send"] }
+arboard = { version = "3", default-features = false, features = ["wayland-data-control"] }
+meshopt = "0.7"
+transvoxel = "2"
+dirs = "7"
+half = "2"
+notify = "8"
+bevy_rerecast = { version = "0.6", default-features = false, features = ["bevy_mesh"] }
+bevy_landmass = "0.13"
+landmass_rerecast = "0.4"
+# O mesmo arranjo do Vael: o `bevy_gradmesh` (crates.io) traz o plugin do
+# renderer; o `bevy_ext_gradmesh` local (feature `physics`) traz o collider
+# exacto das primitivas procedurais para o spawn.
+bevy_gradmesh = "0.3.9"
+bevy_ext_gradmesh = { path = "../../../bevy_extensions/crates/bevy_ext_gradmesh", features = ["physics"] }
+bevy_kira_audio = { version = "0.27.1", features = ["ogg", "spatial"] }
+# BGM driver extraído (shim `src/music.rs`); os TypePaths `viber::music`
+# estão congelados no crate de áudio.
+bevy_ext_audio = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_audio" }
+# IA (sentidos/FSM/locomoção) movida ao crate (exit4/G1); o monólito
+# reexporta os módulos `ai`/`senses` e publica o host (`Ground`).
+bevy_ext_ai = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_ai" }
+# Navegação extraída (shim `src/nav/mod.rs`); os TypePaths `viber::nav` estão
+# congelados no crate. O mesmo `bevy_rerecast` do monólito — o `[patch]` do
+# vendor/rerecast aplica-se ao workspace inteiro.
+bevy_ext_nav = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_nav" }
+# UI declarativa extraída (shim `src/ui.rs`); os TypePaths `viber::ui::…` e os
+# contratos partilhados (ScriptInteraction/ScriptEventQueue/HudHidden/
+# MinimapRange/SceneSource/UiWorldState/UiFont/UiScriptHost) vivem no
+# `ui::host` do crate — os módulos donos do monólito reexportam-nos.
+bevy_ext_ui = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_ui" }
+bevy_ext_luau = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_luau" }
+# Pós-processamento extraído (shim `src/postfx.rs`); os contratos de estado
+# do céu (`AtmosphereState`/`SunState`/`BiomeRegions`…, TypePaths
+# `viber::worldsys`) vivem no `env` do crate e o `worldsys` do monólito
+# reexporta-os — os drives continuam AQUI.
+bevy_ext_postfx = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_postfx" }
+# Terreno volumétrico extraído (shim `pub use … as terrain` em `lib.rs`); os
+# TypePaths `viber::terrain::…` estão congelados no crate.
+bevy_ext_terrain_runtime = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_terrain_runtime" }
+
+[dev-dependencies]
+# Nos testes deste crate o debug render do rapier não se registra (ver
+# `bevy_ext_physics` feature `headless`): os apps de teste não têm gizmos.
+bevy_ext_physics = { version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_physics", features = ["headless"] }
+image = { version = "0.25", default-features = false, features = ["png"] }
+naga = { version = "30.0.1", features = ["wgsl-in"] }
+wesl = "0.6.0"
+tempfile = "3"
+
+[features]
+default = ["experimental_pbr_pcss", "luau-jit"]
+ai = ["nlu", "decision"]
+experimental_pbr_pcss = ["bevy/experimental_pbr_pcss"]
+luau-jit = ["mlua/luau-jit"]
+nlu = ["dep:celer-nlu", "bevy_ext_luau/nlu"]
+decision = ["dep:celer-decision", "bevy_ext_luau/decision"]
+
