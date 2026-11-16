@@ -158,7 +158,7 @@ mod tests {
         insert_component(
             app.world_mut(),
             entity,
-            "vael_engine::projectile::Projectile",
+            "bevy_ext_viber_engine::projectile::Projectile",
             &patch,
         )
         .expect("insert sem Default");
@@ -175,7 +175,7 @@ mod tests {
         let error = insert_component(
             app.world_mut(),
             entity,
-            "vael_engine::projectile::Projectile",
+            "bevy_ext_viber_engine::projectile::Projectile",
             &partial,
         )
         .unwrap_err();

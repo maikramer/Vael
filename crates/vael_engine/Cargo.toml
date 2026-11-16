@@ -8,6 +8,10 @@ license = "MIT OR Apache-2.0"
 publish = false
 
 [lib]
+# O NOME do crate (e não o do pacote) é o prefixo dos TypePaths que o
+# Reflect regista por omissão — `bevy_ext_viber_engine::projectile::Projectile`
+# está congelado no wire (saves/BSN) e não pode mudar com a mudança de casa.
+name = "bevy_ext_viber_engine"
 path = "src/lib.rs"
 
 [dependencies]

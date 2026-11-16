@@ -6921,11 +6921,13 @@ mod tests {
             ],
         ))
         .unwrap();
-        // edge-noise is accepted-for-compat but warned.
-        assert!(w.iter().any(|m| m.contains("edge-noise")), "{w:?}");
+        // `edge-noise` deixou de ser aceite-só-por-compatibilidade: é o ruído
+        // do bordo que o pavimento em grelha lê (`RoadSpec::edge_noise`).
+        assert!(w.is_empty(), "{w:?}");
         let EntityKind::Road { spec } = spec.kind else {
             panic!("expected road");
         };
+        assert!((spec.edge_noise - 0.6).abs() < 1e-6, "edge_noise={}", spec.edge_noise);
         assert_eq!(spec.path.len(), 3);
         assert_eq!(spec.width, 4.0);
         assert!(!spec.flatten, "flatten=0 is a decal trail");

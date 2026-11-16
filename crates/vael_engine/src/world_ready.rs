@@ -534,7 +534,10 @@ fn update_world_readiness(
         && !terrain_busy
         && compiling == 0
         && baking == 0
-        && hero.is_some() == !players.is_empty()
+        // Um `Player` sem `GlobalTransform` é uma app mínima/teste: não há
+        // herói a assentar nem posição para o anel — não bloqueia (ver o
+        // contrato do parâmetro `players`). Sem players nenhuns (menu) idem.
+        && (hero.is_some() || players.iter().all(|(transform, ..)| transform.is_none()))
         && textures_ready
         && player_ready
         && spawn_groups_ready
@@ -596,15 +599,18 @@ mod tests {
         app
     }
 
+    /// Sem herói (cena de menu) não há assentamento a esperar — o
+    /// `player_ready` fica verdadeiro. O que o véu não faz é abrir antes da
+    /// época mínima (o mundo ainda está a nascer nos primeiros frames).
     #[test]
-    fn sem_heroi_nunca_fica_pronto_antes_do_teto() {
+    fn sem_heroi_o_veu_espera_a_epoca_minima() {
         let mut app = app();
         for _ in 0..40 {
             app.update();
         }
         let r = app.world().resource::<WorldReadiness>();
         assert!(!r.ready);
-        assert!(!r.player_ready);
+        assert!(r.player_ready);
     }
 
     #[test]
