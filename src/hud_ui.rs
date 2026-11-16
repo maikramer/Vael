@@ -136,12 +136,13 @@ fn refresh_other_quests(
         .map(ScriptBindValue::text)
         .unwrap_or_else(|| best_quest(&save, content).0);
     let rows = other_quest_rows(&save, content, &shown);
+    let lang = crate::hud::save_lang(&save).to_string();
 
     for i in 0..OTHER_ROWS {
         let id = format!("quest-other-{}", i + 1);
         match rows.get(i) {
             Some(row) => {
-                writer.set_text(id.clone(), row.text());
+                writer.set_text(id.clone(), row.text(Some(content), &lang));
                 writer.set_visible(id.clone(), true);
                 writer.toggle_class(id, "ready", row.ready);
             }
@@ -153,7 +154,10 @@ fn refresh_other_quests(
         }
     }
     let extra = rows.len().saturating_sub(OTHER_ROWS);
-    writer.set_text("quest-other-more", others_more_text(extra));
+    writer.set_text(
+        "quest-other-more",
+        others_more_text(extra, Some(content), &lang),
+    );
     writer.set_visible("quest-other-more", extra > 0);
 }
 

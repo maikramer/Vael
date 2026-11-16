@@ -19,7 +19,7 @@ use viber::hud::markers::{HudBlip, HudMarkers, HudPoint};
 use viber::luau::components::{LuaScriptRef, ScriptProps};
 use viber::scene_loader::CurrentScene;
 
-use crate::content::VaelContent;
+use crate::content::{VaelContent, label};
 use crate::harvest::Harvestable;
 use crate::quest::{quest_available, quest_objective, quest_state};
 use crate::quest_events::kind_matches;
@@ -130,13 +130,15 @@ fn quest_waypoint(
     let content = content?;
     let kv = quest_kv(save);
     let positions = travel.get().positions;
+    let lang = crate::hud::save_lang(save);
 
-    let npc_point = |def: &crate::content::QuestDef, prefix: &str| -> Option<HudPoint> {
+    let npc_point = |def: &crate::content::QuestDef, key: &str, pt: &str| -> Option<HudPoint> {
         let position = *npcs.get(&def.npc)?;
         Some(HudPoint {
             position,
             label: format!(
-                "{prefix} · {}",
+                "{} · {}",
+                label(Some(content), lang, key, pt),
                 if def.title.is_empty() {
                     &def.id
                 } else {
@@ -170,7 +172,10 @@ fn quest_waypoint(
                         best = Some((
                             HudPoint {
                                 position,
-                                label: format!("Caçar · {title}"),
+                                label: format!(
+                                    "{} · {title}",
+                                    label(Some(content), lang, "hud.mark.hunt", "Caçar")
+                                ),
                             },
                             distance,
                         ));
@@ -186,7 +191,7 @@ fn quest_waypoint(
                         let Some(position) = positions.get(token).copied() else {
                             continue;
                         };
-                        let label = content
+                        let mark_label = content
                             .landmarks
                             .landmarks
                             .iter()
@@ -201,7 +206,10 @@ fn quest_waypoint(
                             .unwrap_or_else(|| token.to_string());
                         let point = HudPoint {
                             position: Vec3::from_array(position),
-                            label: format!("Visitar · {label}"),
+                            label: format!(
+                                "{} · {mark_label}",
+                                label(Some(content), lang, "hud.mark.visit", "Visitar")
+                            ),
                         };
                         let distance = distance3(position, player);
                         if best.as_ref().is_none_or(|(_, best_d)| distance < *best_d) {
@@ -234,7 +242,10 @@ fn quest_waypoint(
                             best = Some((
                                 HudPoint {
                                     position,
-                                    label: format!("Guardião · {title}"),
+                                    label: format!(
+                                        "{} · {title}",
+                                        label(Some(content), lang, "hud.mark.guardian", "Guardião")
+                                    ),
                                 },
                                 distance,
                             ));
@@ -267,7 +278,10 @@ fn quest_waypoint(
                         best = Some((
                             HudPoint {
                                 position,
-                                label: format!("Recolher · {title}"),
+                                label: format!(
+                                    "{} · {title}",
+                                    label(Some(content), lang, "hud.mark.gather", "Recolher")
+                                ),
                             },
                             distance,
                         ));
@@ -285,11 +299,12 @@ fn quest_waypoint(
         let def = content.quests.get(id);
         if let Some(def) = def {
             if state == "ready" {
-                if let Some(point) = npc_point(def, "Entregar") {
+                if let Some(point) = npc_point(def, "hud.mark.deliver", "Entregar") {
                     return Some(point);
                 }
             } else if state == "active"
-                && let Some(point) = objective_point(id).or_else(|| npc_point(def, "Missão"))
+                && let Some(point) =
+                    objective_point(id).or_else(|| npc_point(def, "hud.mark.quest", "Missão"))
             {
                 return Some(point);
             }
@@ -303,16 +318,17 @@ fn quest_waypoint(
         let state = quest_state(&rules.quests, &kv, id);
         if state == "ready" {
             if ready.is_none() {
-                ready = npc_point(def, "Entregar");
+                ready = npc_point(def, "hud.mark.deliver", "Entregar");
             }
         } else if state == "active" {
             if active.is_none() {
-                active = objective_point(id).or_else(|| npc_point(def, "Missão"));
+                active =
+                    objective_point(id).or_else(|| npc_point(def, "hud.mark.quest", "Missão"));
             }
         } else if quest_available(&rules.quests, &kv, id) {
             // Sem quest: o dador novo mais próximo. `quest_available` fica
             // para a onda das quests; aqui o fallback é o cartão do HUD.
-            if let Some(point) = npc_point(def, "Missão") {
+            if let Some(point) = npc_point(def, "hud.mark.quest", "Missão") {
                 let distance = distance3(point.position.to_array(), player);
                 if new_best
                     .as_ref()
@@ -357,8 +373,23 @@ fn publish_markers(
     };
     let player_pos = player_position(&player, Some(&travel));
     let positions = travel.get().positions;
+    // Só os nomes que alguma quest aponta como NPC: o mapa com TODOS os
+    // nomes do mundo (dezenas de milhares de strings) a cada 0,5 s dava
+    // picos de ~17 ms (medido 2026-11-16).
+    let wanted: std::collections::HashSet<&str> = content
+        .as_deref()
+        .map(|content| {
+            content
+                .quests
+                .values()
+                .map(|def| def.npc.as_str())
+                .filter(|npc| !npc.is_empty())
+                .collect()
+        })
+        .unwrap_or_default();
     let npcs: std::collections::BTreeMap<String, Vec3> = names
         .iter()
+        .filter(|(name, _)| wanted.contains(name.as_str()))
         .map(|(name, transform)| (name.as_str().to_string(), transform.translation()))
         .collect();
 

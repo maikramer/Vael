@@ -334,8 +334,14 @@ fn sync_hud(
         .unwrap_or("pt");
 
     let hp = save.vitals.hp as f64;
-    let max_hp = save.vitals.max_hp.max(1.0) as f64;
-    let health = (hp / max_hp).clamp(0.0, 1.0);
+    // Mesma guarda do `hud.rs` (`max_hp` a zero dá "0/0", não "0/1"): o
+    // espelho do HUD e a barra do XAML têm de concordar no texto.
+    let max_hp = save.vitals.max_hp as f64;
+    let health = if max_hp > 0.0 {
+        (hp / max_hp).clamp(0.0, 1.0)
+    } else {
+        0.0
+    };
     let xp_next = save.progression.xp_next.max(1) as f64;
     let xp = (save.progression.xp as f64 / xp_next).clamp(0.0, 1.0);
 
@@ -351,7 +357,7 @@ fn sync_hud(
         .iter()
         .take(OTHER_ROWS)
         .map(|row| QuestRowVm {
-            text: row.text(),
+            text: row.text(content, lang),
             ready: row.ready,
         })
         .collect();
@@ -427,7 +433,7 @@ fn sync_hud(
         m.quest_text = quest_text;
         m.quests_others = !visible_rows.is_empty();
         m.quest_others = visible_rows.clone();
-        m.quest_others_more = others_more_text(extra);
+        m.quest_others_more = others_more_text(extra, content, lang);
         m.quest_others_more_visible = extra > 0;
 
         m.target_alive = bind_flag(binds, "target.alive");

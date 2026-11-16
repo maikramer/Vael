@@ -94,7 +94,7 @@
       <Border Background="#66171D20" BorderBrush="#33B7A477" BorderThickness="1"
               Padding="10,6" Margin="0,2">
         <Grid ColumnDefinitions="*,Auto,Auto" Width="940">
-          <TextBlock Text="{Binding title}" FontSize="13"/>
+          <TextBlock Text="{Binding title}" FontSize="13" Foreground="{StaticResource Ink}"/>
           <TextBlock Grid.Column="1" Text="{Binding subtitle}" FontSize="11"
                      Foreground="{StaticResource Muted}" Margin="10,0,0,0"/>
           <TextBlock Grid.Column="2" Text="{Binding tag}" FontSize="12"

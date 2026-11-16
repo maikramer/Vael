@@ -89,11 +89,11 @@
         <Grid Grid.Row="2" ColumnDefinitions="Auto,Auto,Auto,Auto,*,Auto" Margin="0,6">
           <Border Width="10" Height="10" CornerRadius="5" Background="#FFE6C888"
                   VerticalAlignment="Center"/>
-          <TextBlock Grid.Column="1" Text="tu" FontSize="11" Foreground="{StaticResource Muted}"
-                     Margin="6,0,14,0"/>
+          <TextBlock Grid.Column="1" Text="{Binding map_you}" FontSize="11"
+                     Foreground="{StaticResource Muted}" Margin="6,0,14,0"/>
           <Border Grid.Column="2" Width="10" Height="10" CornerRadius="5" Background="#FF8FD4FF"
                   VerticalAlignment="Center"/>
-          <TextBlock Grid.Column="3" Text="destino" FontSize="11"
+          <TextBlock Grid.Column="3" Text="{Binding map_destiny}" FontSize="11"
                      Foreground="{StaticResource Muted}" Margin="6,0,14,0"/>
           <TextBlock Grid.Column="4" Text="{Binding waypoint_label}" FontSize="11"
                      Foreground="{StaticResource Gold}" Visibility="{Binding waypoint_visible}"

@@ -15,7 +15,7 @@ use viber::ui::UiSet;
 use viber::ui::script::{ScriptBindValue, UiScriptBinds};
 
 use crate::compat::json_number_like;
-use crate::content::{Objective, QuestDef, VaelContent};
+use crate::content::{Objective, QuestDef, VaelContent, label};
 use crate::save::VaelSave;
 
 /// Variável de ambiente do gate do HUD em Rust (`1` = ligado).
@@ -341,6 +341,11 @@ fn quest_progress(save: &VaelSave, id: &str) -> f64 {
     num(save, &format!("q.{id}.n"))
 }
 
+/// Idioma da UI escolhido no save (`lang`, default `pt`).
+pub(crate) fn save_lang(save: &VaelSave) -> &str {
+    save.legacy.get("lang").and_then(Value::as_str).unwrap_or("pt")
+}
+
 /// O cartão do HUD: a missão seguida (`tracked_quest`) ganha; sem ela, a de
 /// maior progresso (pronta > em curso > mais avançada), como `rules.publish`.
 pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64, String) {
@@ -383,7 +388,7 @@ pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64
         };
         if state == "ready" {
             best_progress = 1.0;
-            best_text = "pronta".to_string();
+            best_text = label(Some(content), save_lang(save), "hud.quest.ready", "pronta");
         } else {
             best_progress = (have / need).min(1.0);
             best_text = format!("{}/{}", have.floor() as i64, need.floor() as i64);
@@ -406,9 +411,13 @@ pub struct OtherQuestRow {
 
 impl OtherQuestRow {
     /// Texto da linha: `"<título>  · pronta"` quando está pronta.
-    pub fn text(&self) -> String {
+    pub fn text(&self, content: Option<&VaelContent>, lang: &str) -> String {
         if self.ready {
-            format!("{}  · pronta", self.title)
+            format!(
+                "{}  · {}",
+                self.title,
+                label(content, lang, "hud.quest.ready", "pronta")
+            )
         } else {
             self.title.clone()
         }
@@ -454,12 +463,17 @@ pub fn other_quest_rows(save: &VaelSave, content: &VaelContent, shown: &str) -> 
 }
 
 /// `"+N no diário [Q]"` (vazio quando não sobra nenhuma).
-pub fn others_more_text(extra: usize) -> String {
+pub fn others_more_text(extra: usize, content: Option<&VaelContent>, lang: &str) -> String {
     if extra == 0 {
-        String::new()
-    } else {
-        format!("+{extra} no diário [Q]")
+        return String::new();
     }
+    label(
+        content,
+        lang,
+        "hud.quest.others_more",
+        &format!("+{extra} no diário [Q]"),
+    )
+    .replace("{n}", &extra.to_string())
 }
 
 /// Compara um valor Rust com o do Lua: texto exato para rótulos e número com
@@ -650,6 +664,45 @@ mod tests {
     }
 
     #[test]
+    fn cartao_e_outras_quests_seguem_o_idioma() {
+        // EN: o "pronta" do cartão e das linhas de baixo vêm da tabela
+        // `locale/en.json`; sem ela o fallback PT mentia a um jogador EN.
+        let mut content = conteudo();
+        content.quests.insert(
+            "other".to_string(),
+            QuestDef {
+                id: "other".into(),
+                title: "O outro".into(),
+                ..Default::default()
+            },
+        );
+        content.locale.insert(
+            "en".into(),
+            BTreeMap::from([
+                ("hud.quest.ready".to_string(), "ready".to_string()),
+                (
+                    "hud.quest.others_more".to_string(),
+                    "+{n} in the journal [Q]".to_string(),
+                ),
+            ]),
+        );
+        let mut kv = kv_base();
+        kv.insert("lang".into(), json!("en"));
+        kv.insert("q.wolf".into(), json!("ready"));
+        kv.insert("q.other".into(), json!("ready"));
+        let save = VaelSave::from_world_kv(&kv);
+        let (title, _, text) = best_quest(&save, &content);
+        assert_eq!(title, "O Lobo");
+        assert_eq!(text, "ready");
+        let rows = other_quest_rows(&save, &content, "O Lobo");
+        assert_eq!(rows[0].text(Some(&content), "en"), "O outro  · ready");
+        assert_eq!(
+            others_more_text(1, Some(&content), "en"),
+            "+1 in the journal [Q]"
+        );
+    }
+
+    #[test]
     fn comparacao_aceita_texto_e_numero_equivalentes() {
         assert!(same_bind(
             &ScriptBindValue::Number(12.0),
@@ -716,17 +769,17 @@ mod tests {
                 ready: true
             }
         );
-        assert_eq!(rows[0].text(), "Épsilon  · pronta");
+        assert_eq!(rows[0].text(Some(&content), "pt"), "Épsilon  · pronta");
         assert!(rows.iter().all(|row| row.title != "Alfa"));
         // Sem prontas, o desempate é o título (bytes, como o `<` do Lua).
         let ativos: Vec<&str> = rows[1..].iter().map(|row| row.title.as_str()).collect();
         assert_eq!(ativos, ["Beta", "Delta", "Gama"]);
         // Só três cabem por baixo do cartão; a quarta vira o "+1".
         assert_eq!(
-            others_more_text(rows.len().saturating_sub(OTHER_ROWS)),
+            others_more_text(rows.len().saturating_sub(OTHER_ROWS), Some(&content), "pt"),
             "+1 no diário [Q]"
         );
-        assert_eq!(others_more_text(0), "");
+        assert_eq!(others_more_text(0, Some(&content), "pt"), "");
     }
 
     #[test]

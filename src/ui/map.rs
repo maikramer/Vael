@@ -22,7 +22,7 @@ use crate::save::VaelSave;
 use crate::travel::{
     TravelState, VaelTravelRules, available, distance_xz, is_revealed, is_surveyed,
 };
-use crate::ui::screens::{RowVm, VaelUiRules, quest_kv};
+use crate::ui::screens::{RowVm, VaelUiRules, quest_kv, record_action};
 
 /// Z da camada do mapa (acima do HUD, abaixo do título/morte).
 const Z_MAP: i32 = 150;
@@ -60,6 +60,9 @@ pub struct MapVm {
     pub travel_rows: Vec<RowVm>,
     pub map_rows_empty: bool,
     pub travel_rows_empty: bool,
+    /// Legenda do canvas: "tu" e "destino" (i18n em `map.*`).
+    pub map_you: String,
+    pub map_destiny: String,
     pub player_margin: String,
     pub player_visible: bool,
     pub waypoint_margin: String,
@@ -136,8 +139,15 @@ fn sign_nearest(world: &mut World) {
         .unwrap_or_default();
     let mut best: Option<(String, f64)> = None;
     let mut locked: Option<(String, f64)> = None;
+    // O `VaelSave` é um snapshot a 10 Hz: sem ler também o store vivo, dois
+    // [F] no mesmo marco (antes do snapshot) assinavam e reportavam a visita
+    // duas vezes.
+    let live = viber::luau::game::game_to_json_process();
+    let marked_live = |name: &str| {
+        matches!(live.get(&format!("mark.{name}")), Some(Value::Bool(true)))
+    };
     for mark in &rules.landmarks {
-        if is_surveyed(&save, &mark.name) {
+        if is_surveyed(&save, &mark.name) || marked_live(&mark.name) {
             continue;
         }
         let Some(position) = positions.get(&mark.name) else {
@@ -174,6 +184,9 @@ fn sign_nearest(world: &mut World) {
     };
     let mut patch = std::collections::BTreeMap::new();
     patch.insert(format!("mark.{name}"), json!(true));
+    // A visita é uma ação observável pelo juiz (o registo partilhado `act.*`
+    // que o `judge.lua` lê); entra no mesmo patch do `mark.*`.
+    record_action(world, &mut patch, "visitar", "local", &name);
     patch_game(world, patch);
     // `report_visit` é a mesma função Rust que o scan de visitas usa.
     if let Some(ui_rules) = world.get_resource::<VaelUiRules>().cloned() {
@@ -463,9 +476,9 @@ pub fn sync_map(
                 title: mark.label.clone(),
                 subtitle: format!("{biome} · {distance} m"),
                 tag: if surveyed {
-                    "assinado".to_string()
+                    label(content, lang, "map.tag.signed", "assinado")
                 } else {
-                    "por assinar".to_string()
+                    label(content, lang, "map.tag.unsigned", "por assinar")
                 },
                 progress: 0.0,
                 has_progress: false,
@@ -526,11 +539,16 @@ pub fn sync_map(
         m.travel_rows_empty = travel_rows.is_empty();
         m.map_rows = map_rows.clone();
         m.travel_rows = travel_rows.clone();
+        m.map_you = label(content, lang, "map.you", "tu");
+        m.map_destiny = label(content, lang, "map.destiny", "destino");
         m.player_visible = player_pos.is_some();
         m.player_margin = format!("{player_left:.1},{player_top:.1},0,0");
-        if let Some(((left, top), label)) = waypoint {
+        if let Some(((left, top), waypoint_name)) = waypoint {
             m.waypoint_margin = format!("{left:.1},{top:.1},0,0");
-            m.waypoint_label = format!("Destino: {label}");
+            m.waypoint_label = format!(
+                "{} {waypoint_name}",
+                label(content, lang, "map.waypoint", "Destino:")
+            );
             m.waypoint_visible = true;
         } else {
             m.waypoint_label = String::new();

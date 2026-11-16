@@ -171,7 +171,6 @@ pub struct ScreensVm {
     pub talent_exclusion_edges: Vec<TalentEdgeVm>,
     pub talent_canvas_width: f64,
     pub talent_canvas_height: f64,
-    pub talent_detail_visible: bool,
     pub talent_selected_icon: String,
     pub talent_has_selected_icon: bool,
     pub talent_selected_title: String,
@@ -180,15 +179,6 @@ pub struct ScreensVm {
     pub talent_selected_status: String,
     pub talent_learn_label: String,
     pub talent_learn_enabled: bool,
-
-    pub tab_quests: bool,
-    pub tab_bag: bool,
-    pub tab_skills: bool,
-    pub tab_shop: bool,
-    pub tab_forge: bool,
-    pub tab_controls: bool,
-    pub tab_a11y: bool,
-    pub tab_system: bool,
 
     pub tab_quests_label: String,
     pub tab_bag_label: String,
@@ -299,6 +289,37 @@ fn patch_game(_world: &mut World, patch: BTreeMap<String, Value>) {
         return;
     }
     viber::luau::game::apply_patch_json(&patch);
+}
+
+/// Registo de ações observáveis pelo juiz, no store do jogo (o mesmo onde
+/// vivem `mark.<name>`/`q.*`): `act.seq` é o próximo índice e cada ação
+/// ocupa `act.<n>.v` (verbo), `.k` (tipo do id) e `.i` (id), com `.t` no
+/// relógio de `viber.time()`.
+///
+/// O `patch` é aplicado por quem chama (`patch_game`), para a ação entrar no
+/// mesmo `apply_patch` das outras chaves.
+pub(crate) fn record_action(
+    world: &mut World,
+    patch: &mut BTreeMap<String, Value>,
+    verb: &str,
+    kind: &str,
+    id: &str,
+) {
+    let seq = game_kv(world)
+        .get("act.seq")
+        .and_then(crate::compat::json_number_like)
+        .map(|n| n.floor() as i64)
+        .filter(|n| *n >= 0)
+        .unwrap_or(0);
+    patch.insert(format!("act.{seq}.v"), json!(verb));
+    patch.insert(format!("act.{seq}.k"), json!(kind));
+    patch.insert(format!("act.{seq}.i"), json!(id));
+    // Sem `Time` (apps de teste) a ação fica sem carimbo: o campo é
+    // opcional no schema.
+    if let Some(time) = world.get_resource::<Time>() {
+        patch.insert(format!("act.{seq}.t"), json!(time.elapsed_secs_f64()));
+    }
+    patch.insert("act.seq".to_string(), json!(seq + 1));
 }
 
 fn toast(world: &mut World, text: impl Into<String>) {
@@ -426,14 +447,22 @@ fn fmt_playtime(secs: Option<f64>) -> Option<String> {
     })
 }
 
-fn slot_summary(slot: Option<&SaveSlotInfo>) -> String {
+fn slot_summary(
+    slot: Option<&SaveSlotInfo>,
+    content: Option<&VaelContent>,
+    lang: &str,
+) -> String {
     let Some(slot) = slot else {
-        return "Sem jogos guardados".to_string();
+        return label(content, lang, "menu.no_saves", "Sem jogos guardados");
     };
     let where_ = if slot.level > 0 {
-        format!("Nível {}", slot.level)
+        format!(
+            "{} {}",
+            label(content, lang, "menu.level_short", "Nível"),
+            slot.level
+        )
     } else {
-        "Jogo guardado".to_string()
+        label(content, lang, "menu.slot_saved", "Jogo guardado")
     };
     match fmt_playtime(slot.playtime) {
         Some(time) => format!("{where_} · {time}"),
@@ -441,21 +470,37 @@ fn slot_summary(slot: Option<&SaveSlotInfo>) -> String {
     }
 }
 
-fn load_label(n: u32, slot: Option<&SaveSlotInfo>) -> String {
+fn load_label(
+    n: u32,
+    slot: Option<&SaveSlotInfo>,
+    content: Option<&VaelContent>,
+    lang: &str,
+) -> String {
+    let load = label(content, lang, "menu.load", "Carregar");
     let Some(slot) = slot else {
-        return format!("Carregar {n}");
+        return format!("{load} {n}");
     };
-    if slot.scene.as_deref() == Some("menu") {
-        return format!("Carregar {n} · sem jogo");
+    // `exists=false` é um slot vazio da lista do disco: dizer "guardado"
+    // anunciava um jogo que não existe (o botão fica desactivado, mas o
+    // rótulo não pode mentir).
+    if !slot.exists || slot.scene.as_deref() == Some("menu") {
+        return format!(
+            "{load} {n} · {}",
+            label(content, lang, "menu.no_game", "sem jogo")
+        );
     }
     let level = if slot.level > 0 {
-        format!("Nv {}", slot.level)
+        format!(
+            "{} {}",
+            label(content, lang, "menu.level_abbr", "Nv"),
+            slot.level
+        )
     } else {
-        "guardado".to_string()
+        label(content, lang, "menu.slot_saved_adj", "guardado")
     };
     match fmt_playtime(slot.playtime) {
-        Some(time) => format!("Carregar {n} · {level} · {time}"),
-        None => format!("Carregar {n} · {level}"),
+        Some(time) => format!("{load} {n} · {level} · {time}"),
+        None => format!("{load} {n} · {level}"),
     }
 }
 
@@ -785,6 +830,11 @@ fn bag_click(world: &mut World, id: &str) {
             }
         }
     }
+    // Equipar é uma ação observável (o juiz pesa-a); guardar não — o
+    // artefacto continua na mochila e não muda o que o herói tem vestido.
+    if result == Toggle::On {
+        record_action(world, &mut patch, "equipar", "item", id);
+    }
     patch_game(world, patch);
     match result {
         Toggle::On => {
@@ -905,6 +955,22 @@ fn forge_click(world: &mut World, id: &str) {
             if let Some(value) = xp_kv.get(key) {
                 patch.insert(key.to_string(), json!(value));
             }
+        }
+        // Forjar alimenta os objetivos `craft` (o `M.report_craft` do Lua).
+        // Sem isto a forja ficava fora das quests: o item aparecia e a quest
+        // não avançava.
+        let mut qkv = quest_kv(&save);
+        let changed = crate::quest_events::report_craft(
+            &rules.quests,
+            &mut qkv,
+            &outcome.output,
+            outcome.count as i64,
+        );
+        if !changed.is_empty() {
+            patch.extend(
+                qkv.into_iter()
+                    .filter(|(key, _)| key.starts_with("q.")),
+            );
         }
         patch_game(world, patch);
         let label = content
@@ -1130,7 +1196,9 @@ fn title_settings(world: &mut World) {
     if let Some(writer) = world.get_resource::<UiWriter>() {
         writer.open("title", false);
         writer.open("menu", true);
-        writer.select_tab("menu", "system");
+        // "Definições" abre as opções (acessibilidade/áudio), não a página
+        // de sistema com os slots de gravação.
+        writer.select_tab("menu", "a11y");
     }
     world.resource_mut::<VaelScreensState>().menu_settings = true;
 }
@@ -1272,48 +1340,51 @@ fn item_icon(id: &str) -> Option<String> {
     Some(format!("assets/icons/{icon}"))
 }
 
-fn biome_label(biome: &str) -> String {
+fn biome_label(content: Option<&VaelContent>, lang: &str, biome: &str) -> String {
     match biome {
-        "city" => "Discórdia",
-        "dark_forest" | "dark-forest" => "Floresta Sombria",
-        "desert" => "Ermo",
-        "swamp" => "Pântano",
-        "frozen_peaks" | "frozen-peaks" => "Picos Gelados",
-        value => value,
+        "city" => label(content, lang, "menu.biome.city", "Discórdia"),
+        "dark_forest" | "dark-forest" => {
+            label(content, lang, "menu.biome.dark_forest", "Floresta Sombria")
+        }
+        "desert" => label(content, lang, "menu.biome.desert", "Ermo"),
+        "swamp" => label(content, lang, "menu.biome.swamp", "Pântano"),
+        "frozen_peaks" | "frozen-peaks" => {
+            label(content, lang, "menu.biome.frozen_peaks", "Picos Gelados")
+        }
+        value => value.to_string(),
     }
-    .to_string()
 }
 
-fn target_label(target: &str) -> String {
-    let label = match target {
-        "wolf" => "lobos",
-        "bandit" => "bandidos",
-        "goblin" => "goblins",
-        "shade" => "sombras",
-        "slime" => "slimes",
-        "scorpion" => "escorpiões",
-        "bogling" => "boglings",
-        "witch" => "a Bruxa do Bosque",
-        "sand-worm" => "o Verme da Areia",
-        "bog-warden" => "o Guardião do Lodo",
-        "boss" => "o Ogro dos Picos",
-        "stone" => "pedras",
-        "wood" => "madeira",
-        "dark-wood" => "madeira escura",
-        "bog-moss" => "musgo do pântano",
-        "nota" => "Notas",
-        "enviado" => "o Enviado de Vidro",
-        "sino" => "a Sineira Afogada",
-        "defender" => "a Testemunha de Vidro",
-        "goblin-brute" => "goblins brutos",
-        "bandit-shield" => "bandidos de escudo",
-        "bogling-hexer" => "boglings feiticeiros",
-        "shade-night" => "sombras da noite",
-        "elite" => "elites",
-        "wolf_pelt" => "peles de lobo",
+fn target_label(content: Option<&VaelContent>, lang: &str, target: &str) -> String {
+    let (key, pt) = match target {
+        "wolf" => ("menu.target.wolf", "lobos"),
+        "bandit" => ("menu.target.bandit", "bandidos"),
+        "goblin" => ("menu.target.goblin", "goblins"),
+        "shade" => ("menu.target.shade", "sombras"),
+        "slime" => ("menu.target.slime", "slimes"),
+        "scorpion" => ("menu.target.scorpion", "escorpiões"),
+        "bogling" => ("menu.target.bogling", "boglings"),
+        "witch" => ("menu.target.witch", "a Bruxa do Bosque"),
+        "sand-worm" => ("menu.target.sand_worm", "o Verme da Areia"),
+        "bog-warden" => ("menu.target.bog_warden", "o Guardião do Lodo"),
+        "boss" => ("menu.target.boss", "o Ogro dos Picos"),
+        "stone" => ("menu.target.stone", "pedras"),
+        "wood" => ("menu.target.wood", "madeira"),
+        "dark-wood" => ("menu.target.dark_wood", "madeira escura"),
+        "bog-moss" => ("menu.target.bog_moss", "musgo do pântano"),
+        "nota" => ("menu.target.nota", "Notas"),
+        "enviado" => ("menu.target.enviado", "o Enviado de Vidro"),
+        "sino" => ("menu.target.sino", "a Sineira Afogada"),
+        "defender" => ("menu.target.defender", "a Testemunha de Vidro"),
+        "goblin-brute" => ("menu.target.goblin_brute", "goblins brutos"),
+        "bandit-shield" => ("menu.target.bandit_shield", "bandidos de escudo"),
+        "bogling-hexer" => ("menu.target.bogling_hexer", "boglings feiticeiros"),
+        "shade-night" => ("menu.target.shade_night", "sombras da noite"),
+        "elite" => ("menu.target.elite", "elites"),
+        "wolf_pelt" => ("menu.target.wolf_pelt", "peles de lobo"),
         value => return value.to_string(),
     };
-    label.to_string()
+    label(content, lang, key, pt)
 }
 
 fn objective_line(
@@ -1321,16 +1392,26 @@ fn objective_line(
     def: &QuestDef,
     state: &str,
     view: &crate::quest::ObjectiveView,
+    lang: &str,
 ) -> String {
     if state == "ready"
         && let Some(parley) = &def.parley
         && let Some(report) = &parley.report
         && !report.example.is_empty()
     {
-        return format!("diz ao NPC: «{}»", report.example);
+        return format!(
+            "{} «{}»",
+            label(content, lang, "menu.quest.parley", "diz ao NPC:"),
+            report.example
+        );
     }
     let prefix = if view.total > 1 {
-        format!("etapa {}/{}: ", view.at, view.total)
+        format!(
+            "{} {}/{}: ",
+            label(content, lang, "menu.quest.stage", "etapa"),
+            view.at,
+            view.total
+        )
     } else {
         String::new()
     };
@@ -1340,18 +1421,40 @@ fn objective_line(
     let count = view.count;
     match view.objective_type.as_str() {
         "craft" => format!(
-            "{prefix}forjar {count}× {}",
+            "{prefix}{} {count}× {}",
+            label(content, lang, "menu.quest.craft", "forjar"),
             item_label(content, &view.target)
         ),
-        "kill" => format!("{prefix}derrotar {count}× {}", target_label(&view.target)),
-        "collect" => format!("{prefix}reunir {count}× {}", target_label(&view.target)),
-        "visit" => format!("{prefix}visitar {count} locais"),
-        "decision" => format!("{prefix}convencer {}", target_label(&view.target)),
+        "kill" => format!(
+            "{prefix}{} {count}× {}",
+            label(content, lang, "menu.quest.kill", "derrotar"),
+            target_label(content, lang, &view.target)
+        ),
+        "collect" => format!(
+            "{prefix}{} {count}× {}",
+            label(content, lang, "menu.quest.collect", "reunir"),
+            target_label(content, lang, &view.target)
+        ),
+        "visit" => format!(
+            "{prefix}{} {count} {}",
+            label(content, lang, "menu.quest.visit", "visitar"),
+            label(content, lang, "menu.quest.places", "locais")
+        ),
+        "decision" => format!(
+            "{prefix}{} {}",
+            label(content, lang, "menu.quest.decision", "convencer"),
+            target_label(content, lang, &view.target)
+        ),
         other => format!("{prefix}{other}"),
     }
 }
 
-fn quest_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules) -> Vec<RowVm> {
+fn quest_rows(
+    save: &VaelSave,
+    content: Option<&VaelContent>,
+    rules: &VaelUiRules,
+    lang: &str,
+) -> Vec<RowVm> {
     let kv = quest_kv(save);
     let mut rows = Vec::new();
     let empty = std::collections::BTreeMap::new();
@@ -1377,10 +1480,10 @@ fn quest_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
         };
         let view = quest_objective(&rules.quests, &kv, &id_string);
         let status_text = match state.as_str() {
-            "ready" => "pronta a entregar",
-            "active" => "em curso",
-            "done" => "concluída",
-            _ => "por aceitar",
+            "ready" => label(content, lang, "menu.quest.ready", "pronta a entregar"),
+            "active" => label(content, lang, "menu.quest.active", "em curso"),
+            "done" => label(content, lang, "menu.quest.done", "concluída"),
+            _ => label(content, lang, "menu.quest.untaken", "por aceitar"),
         };
         let tracked = save.quests.tracked.as_deref() == Some(id_string.as_str())
             && (state == "active" || state == "ready");
@@ -1394,8 +1497,8 @@ fn quest_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
                 },
                 format!(
                     "{} · {}",
-                    objective_line(content, def, &state, &view),
-                    biome_label(&def.biome)
+                    objective_line(content, def, &state, &view, lang),
+                    biome_label(content, lang, &def.biome)
                 ),
                 status_text,
             )
@@ -1456,7 +1559,12 @@ fn stat_lines(save: &VaelSave, rules: &VaelUiRules, lang: &str) -> (String, Stri
     (attributes, derived)
 }
 
-fn bag_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules) -> Vec<RowVm> {
+fn bag_rows(
+    save: &VaelSave,
+    content: Option<&VaelContent>,
+    rules: &VaelUiRules,
+    lang: &str,
+) -> Vec<RowVm> {
     let Some(content) = content else {
         return Vec::new();
     };
@@ -1483,7 +1591,7 @@ fn bag_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules)
             let mut tag = String::new();
             if slot.is_some() && count > 0 {
                 if is_equipped(&rules.gear, &mut state, &item.id) {
-                    tag = "equipado".to_string();
+                    tag = label(Some(content), lang, "menu.bag.equipped", "equipado");
                 } else {
                     let needs = rules
                         .gear
@@ -1498,9 +1606,12 @@ fn bag_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules)
                             .get(&item.id)
                             .map(|item| item.requires_text.clone())
                             .unwrap_or_default();
-                        tag = format!("requer {text}");
+                        tag = format!(
+                            "{} {text}",
+                            label(Some(content), lang, "menu.bag.requires", "requer")
+                        );
                     } else {
-                        tag = "equipar".to_string();
+                        tag = label(Some(content), lang, "menu.bag.equip", "equipar");
                     }
                 }
             } else if item.use_item.is_some() && count > 0 {
@@ -1549,7 +1660,12 @@ fn shop_list_rows(save: &VaelSave, rules: &VaelUiRules) -> Vec<RowVm> {
         .collect()
 }
 
-fn forge_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRules) -> Vec<RowVm> {
+fn forge_rows(
+    save: &VaelSave,
+    content: Option<&VaelContent>,
+    rules: &VaelUiRules,
+    lang: &str,
+) -> Vec<RowVm> {
     let kv = inventory_kv(save);
     rules
         .craft
@@ -1559,7 +1675,7 @@ fn forge_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
             let status = craft_status(&rules.craft, &kv, &recipe.id)
                 .unwrap_or(crate::economy::CraftStatus::Missing);
             let count = recipe.output_count();
-            let label = item_label(content, &recipe.out);
+            let out_label = item_label(content, &recipe.out);
             let cost = recipe
                 .cost
                 .iter()
@@ -1573,16 +1689,24 @@ fn forge_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
                 .collect::<Vec<_>>()
                 .join(" · ");
             let (status_text, note) = match status {
-                crate::economy::CraftStatus::Ok => ("forjar", String::new()),
-                crate::economy::CraftStatus::Missing => ("falta material", String::new()),
-                crate::economy::CraftStatus::Full => ("mochila cheia", String::new()),
+                crate::economy::CraftStatus::Ok => {
+                    (label(content, lang, "menu.forge.ok", "forjar"), String::new())
+                }
+                crate::economy::CraftStatus::Missing => (
+                    label(content, lang, "menu.forge.missing", "falta material"),
+                    String::new(),
+                ),
+                crate::economy::CraftStatus::Full => (
+                    label(content, lang, "menu.forge.full", "mochila cheia"),
+                    String::new(),
+                ),
             };
             RowVm::menu(
                 format!("forge-{}", recipe.id),
                 if count > 1 {
-                    format!("{label} ×{count}")
+                    format!("{out_label} ×{count}")
                 } else {
-                    label
+                    out_label
                 },
                 if cost.is_empty() { note } else { cost },
                 status_text,
@@ -1591,84 +1715,112 @@ fn forge_rows(save: &VaelSave, content: Option<&VaelContent>, rules: &VaelUiRule
         .collect()
 }
 
-fn controls_rows() -> Vec<RowVm> {
+fn controls_rows(content: Option<&VaelContent>, lang: &str) -> Vec<RowVm> {
     [
-        ("W A S D", "mover"),
-        ("SHIFT", "correr"),
-        ("ESPAÇO", "saltar"),
-        ("RATO/J", "atacar"),
-        ("C", "esquiva (dash)"),
-        ("E", "curar"),
-        ("R", "golpe forte"),
-        ("L", "guarda / aparar"),
-        ("B", "bomba"),
-        ("V", "trocar de alvo"),
-        ("1 / 2", "poção / antídoto"),
-        ("E", "interagir e falar"),
-        ("F", "assinar marco da Nota"),
-        ("G", "viagem rápida (junto a uma fogueira)"),
-        ("Q / ESC", "abrir e fechar este diário"),
-        ("1 - 8", "separador do diário (com ele aberto)"),
-        ("P", "profiler"),
+        ("W A S D", "menu.controls.move", "mover"),
+        ("SHIFT", "menu.controls.run", "correr"),
+        ("ESPAÇO", "menu.controls.jump", "saltar"),
+        ("RATO/J", "menu.controls.attack", "atacar"),
+        ("C", "menu.controls.dodge", "esquiva (dash)"),
+        ("E", "menu.controls.heal", "curar"),
+        ("R", "menu.controls.strike", "golpe forte"),
+        ("L", "menu.controls.guard", "guarda / aparar"),
+        ("B", "menu.controls.bomb", "bomba"),
+        ("V", "menu.controls.target", "trocar de alvo"),
+        ("1 / 2", "menu.controls.potions", "poção / antídoto"),
+        ("E", "menu.controls.interact", "interagir e falar"),
+        ("F", "menu.controls.sign", "assinar marco da Nota"),
+        (
+            "G",
+            "menu.controls.travel",
+            "viagem rápida (junto a uma fogueira)",
+        ),
+        ("Q / ESC", "menu.controls.journal", "abrir e fechar este diário"),
+        (
+            "1 - 8",
+            "menu.controls.tabs",
+            "separador do diário (com ele aberto)",
+        ),
+        ("P", "menu.controls.profiler", "profiler"),
     ]
     .into_iter()
-    .map(|(key, action)| RowVm::menu(String::new(), key, action, String::new()).info())
+    .map(|(key, id, pt)| {
+        RowVm::menu(
+            String::new(),
+            key,
+            label(content, lang, id, pt),
+            String::new(),
+        )
+        .info()
+    })
     .collect()
 }
 
 fn a11y_rows(
+    content: Option<&VaelContent>,
+    lang: &str,
     a11y: &A11y,
     scale: f32,
     locale: Option<&Locale>,
     mixer: &AudioMixerSettings,
 ) -> Vec<RowVm> {
-    let on_off = |value: bool| if value { "ligado" } else { "desligado" };
-    let lang = locale.map(|locale| locale.lang.as_str()).unwrap_or("pt");
+    let on_off = |value: bool| {
+        if value {
+            label(content, lang, "menu.a11y.on", "ligado")
+        } else {
+            label(content, lang, "menu.a11y.off", "desligado")
+        }
+    };
+    let current_lang = locale.map(|locale| locale.lang.as_str()).unwrap_or("pt");
     [
         (
             "shake",
-            "Tremor da câmara".to_string(),
-            on_off(a11y.shake).to_string(),
+            label(content, lang, "menu.a11y.shake", "Tremor da câmara"),
+            on_off(a11y.shake),
         ),
         (
             "hitstop",
-            "Hit-stop no impacto".to_string(),
-            on_off(a11y.hitstop).to_string(),
+            label(content, lang, "menu.a11y.hitstop", "Hit-stop no impacto"),
+            on_off(a11y.hitstop),
         ),
         (
             "interact_hold",
-            "[E] por hold (0,35 s)".to_string(),
-            on_off(a11y.interact_hold).to_string(),
+            label(content, lang, "menu.a11y.hold", "[E] por hold (0,35 s)"),
+            on_off(a11y.interact_hold),
         ),
         (
             "subtitle",
-            "Tamanho das legendas".to_string(),
+            label(content, lang, "menu.a11y.subtitle", "Tamanho das legendas"),
             format!("{:.2}×", a11y.subtitle_scale),
         ),
         (
             "ui_scale",
-            "Escala do HUD".to_string(),
+            label(content, lang, "menu.a11y.scale", "Escala do HUD"),
             format!("{scale:.2}×"),
         ),
-        ("language", "Idioma".to_string(), lang.to_string()),
+        (
+            "language",
+            label(content, lang, "menu.a11y.language", "Idioma"),
+            current_lang.to_string(),
+        ),
         (
             "vol-master",
-            "Volume geral".to_string(),
+            label(content, lang, "menu.a11y.vol_master", "Volume geral"),
             format!("{}%", (mixer.master * 100.0).round() as i32),
         ),
         (
             "vol-music",
-            "Volume da música".to_string(),
+            label(content, lang, "menu.a11y.vol_music", "Volume da música"),
             format!("{}%", (mixer.music * 100.0).round() as i32),
         ),
         (
             "vol-sfx",
-            "Volume dos efeitos".to_string(),
+            label(content, lang, "menu.a11y.vol_sfx", "Volume dos efeitos"),
             format!("{}%", (mixer.sfx * 100.0).round() as i32),
         ),
         (
             "vol-ambience",
-            "Volume do ambiente".to_string(),
+            label(content, lang, "menu.a11y.vol_ambience", "Volume do ambiente"),
             format!("{}%", (mixer.ambience * 100.0).round() as i32),
         ),
     ]
@@ -1677,7 +1829,13 @@ fn a11y_rows(
     .collect()
 }
 
-fn system_rows(save: &VaelSave, ui: Option<&UiData>, scene: Option<&CurrentScene>) -> Vec<RowVm> {
+fn system_rows(
+    content: Option<&VaelContent>,
+    lang: &str,
+    save: &VaelSave,
+    ui: Option<&UiData>,
+    scene: Option<&CurrentScene>,
+) -> Vec<RowVm> {
     let health = if save.vitals.max_hp > 0.0 {
         format!(
             "{}/{}",
@@ -1693,37 +1851,59 @@ fn system_rows(save: &VaelSave, ui: Option<&UiData>, scene: Option<&CurrentScene
         .and_then(Value::as_f64)
         .and_then(|n| fmt_playtime(Some(n)))
         .unwrap_or_else(|| "—".to_string());
-    let zone = ui.map(|ui| ui.zone_name.clone()).unwrap_or_default();
+    let zone = ui
+        .map(|ui| ui.zone_name.clone())
+        .filter(|zone| !zone.trim().is_empty())
+        .unwrap_or_else(|| "—".to_string());
+    let head = |key: &str, pt: &str| label(content, lang, key, pt);
     [
-        ("Motor".to_string(), "Viber".to_string()),
-        ("Render".to_string(), "Bevy · Avian".to_string()),
-        ("Cena".to_string(), scene_id(scene)),
+        (head("menu.sys.engine", "Motor"), "Vael".to_string()),
+        (head("menu.sys.render", "Render"), "Bevy · Avian".to_string()),
+        (head("menu.sys.scene", "Cena"), scene_id(scene)),
         (
-            "Hora".to_string(),
+            head("menu.sys.time", "Hora"),
             ui.map(|ui| ui.clock.clone()).unwrap_or_default(),
         ),
-        ("Nível".to_string(), save.progression.level.to_string()),
-        ("Vida".to_string(), health),
-        ("Ouro".to_string(), save.inventory.gold.to_string()),
-        ("Zona".to_string(), zone),
-        ("Sessão".to_string(), playtime),
+        (
+            head("menu.sys.level", "Nível"),
+            save.progression.level.to_string(),
+        ),
+        (head("menu.sys.health", "Vida"), health),
+        (
+            head("menu.sys.gold", "Ouro"),
+            save.inventory.gold.to_string(),
+        ),
+        (head("menu.sys.zone", "Zona"), zone),
+        (head("menu.sys.session", "Sessão"), playtime),
     ]
     .into_iter()
     .map(|(key, value)| RowVm::menu(String::new(), key, String::new(), value).info())
     .collect()
 }
 
-fn credits_rows() -> Vec<RowVm> {
+fn credits_rows(content: Option<&VaelContent>, lang: &str) -> Vec<RowVm> {
     [
-        "VAEL — O Silêncio de Vael",
-        "Um RPG de mundo aberto feito com a engine Viber.",
-        "Mundo, quests e regras: scripts Luau do Vael.",
-        "Engine, ferramentas e editor: Viber.",
-        "Assets: pipeline AiGameKit.",
+        (
+            "menu.credits.game",
+            "VAEL — O Silêncio de Vael",
+        ),
+        (
+            "menu.credits.about",
+            "Um RPG de mundo aberto feito com a engine Viber.",
+        ),
+        (
+            "menu.credits.content",
+            "Mundo, quests e regras: scripts Luau do Vael.",
+        ),
+        (
+            "menu.credits.engine",
+            "Engine, ferramentas e editor: Viber.",
+        ),
+        ("menu.credits.assets", "Assets: pipeline AiGameKit."),
     ]
     .into_iter()
-    .map(|line| RowVm {
-        title: line.to_string(),
+    .map(|(key, pt)| RowVm {
+        title: label(content, lang, key, pt),
         ..Default::default()
     })
     .collect()
@@ -1734,29 +1914,34 @@ fn credits_rows() -> Vec<RowVm> {
 /// Troca as páginas do diário. O `Visibility` bindado num `ScrollViewer`
 /// não colapsa de forma fiável no layout WPF; o sistema escreve `Display`
 /// directamente nas páginas nomeadas (oito nós, custo desprezável).
+///
+/// A separadora activa vem do [`UiTabs`] (o mesmo estado que os botões e as
+/// teclas 1-8 escrevem), não de uma cópia no view-model: eram oito campos
+/// `tab_*` que o XAML nunca lia.
 pub fn sync_menu_pages(
     vm: Option<Res<VaelScreensVm>>,
+    tabs: Option<Res<UiTabs>>,
     ui: PfQuery,
     mut pages: Query<(&mut Node, &mut Visibility)>,
 ) {
-    let Some(vm) = vm else {
+    if vm.is_none() {
         return;
-    };
-    let Some(tabs) = vm.0.read(|m: &ScreensVm| {
-        [
-            ("page-quests", m.tab_quests),
-            ("page-bag", m.tab_bag),
-            ("page-skills", m.tab_skills),
-            ("page-shop", m.tab_shop),
-            ("page-forge", m.tab_forge),
-            ("page-controls", m.tab_controls),
-            ("page-a11y", m.tab_a11y),
-            ("page-system", m.tab_system),
-        ]
-    }) else {
-        return;
-    };
-    for (name, active) in tabs {
+    }
+    let tab = tabs
+        .as_deref()
+        .and_then(|tabs| tabs.selected("menu"))
+        .unwrap_or("quests");
+    let tabs_state = [
+        ("page-quests", tab == "quests"),
+        ("page-bag", tab == "bag"),
+        ("page-skills", tab == "skills"),
+        ("page-shop", tab == "shop"),
+        ("page-forge", tab == "forge"),
+        ("page-controls", tab == "controls"),
+        ("page-a11y", tab == "a11y"),
+        ("page-system", tab == "system"),
+    ];
+    for (name, active) in tabs_state {
         if let Some(entity) = ui.by_name(name)
             && let Ok((mut node, mut visibility)) = pages.get_mut(entity)
         {
@@ -2146,25 +2331,27 @@ pub fn sync_screens(
     // `StatEngine` da mochila) todos os frames.
     let (quests, bag, shop, forge, controls, a11y, system) = if menu_open {
         let quests = rules
-            .map(|rules| quest_rows(&save, content, rules))
+            .map(|rules| quest_rows(&save, content, rules, &lang))
             .unwrap_or_default();
         let bag = rules
-            .map(|rules| bag_rows(&save, content, rules))
+            .map(|rules| bag_rows(&save, content, rules, &lang))
             .unwrap_or_default();
         let shop = rules
             .map(|rules| shop_list_rows(&save, rules))
             .unwrap_or_default();
         let forge = rules
-            .map(|rules| forge_rows(&save, content, rules))
+            .map(|rules| forge_rows(&save, content, rules, &lang))
             .unwrap_or_default();
-        let controls = controls_rows();
+        let controls = controls_rows(content, &lang);
         let a11y = a11y_rows(
+            content,
+            &lang,
             a11y.as_deref().unwrap_or(&A11y::default()),
             scale.as_deref().map(|scale| scale.0).unwrap_or(1.0),
             locale.as_deref(),
             mixer.as_deref().unwrap_or(&AudioMixerSettings::default()),
         );
-        let system = system_rows(&save, ui.as_deref(), scene.as_deref());
+        let system = system_rows(content, &lang, &save, ui.as_deref(), scene.as_deref());
         (quests, bag, shop, forge, controls, a11y, system)
     } else {
         (
@@ -2263,7 +2450,7 @@ pub fn sync_screens(
         .map(|cache| cache.slots.as_slice())
         .unwrap_or(&[]);
     let best = latest_slot(slots);
-    let save_info = slot_summary(best);
+    let save_info = slot_summary(best, content, &lang);
 
     let live_quests = quests.len();
     let live_bag = bag.len();
@@ -2301,7 +2488,6 @@ pub fn sync_screens(
         m.talent_exclusion_edges = talent_exclusions.clone();
         m.talent_canvas_width = talent_w;
         m.talent_canvas_height = talent_h;
-        m.talent_detail_visible = talent_detail_vm.visible;
         m.talent_selected_icon = talent_detail_vm.icon.clone();
         m.talent_has_selected_icon = talent_detail_vm.has_icon;
         m.talent_selected_title = talent_detail_vm.title.clone();
@@ -2310,15 +2496,6 @@ pub fn sync_screens(
         m.talent_selected_status = talent_detail_vm.status.clone();
         m.talent_learn_label = talent_detail_vm.learn_label.clone();
         m.talent_learn_enabled = talent_detail_vm.learn_enabled;
-
-        m.tab_quests = tab == "quests";
-        m.tab_bag = tab == "bag";
-        m.tab_skills = tab == "skills";
-        m.tab_shop = tab == "shop";
-        m.tab_forge = tab == "forge";
-        m.tab_controls = tab == "controls";
-        m.tab_a11y = tab == "a11y";
-        m.tab_system = tab == "system";
 
         m.tab_quests_label = label(content, &lang, "menu.tab.quests", "Missões");
         m.tab_bag_label = label(content, &lang, "menu.tab.bag", "Mochila");
@@ -2340,8 +2517,8 @@ pub fn sync_screens(
             "Nenhuma missão registada.",
         );
         m.bag_empty_text = label(content, &lang, "menu.bag.empty", "Mochila vazia.");
-        m.shop_empty_text = "Sem ofertas.".to_string();
-        m.forge_empty_text = "Sem receitas.".to_string();
+        m.shop_empty_text = label(content, &lang, "menu.shop.empty", "Sem ofertas.");
+        m.forge_empty_text = label(content, &lang, "menu.forge.empty", "Sem receitas.");
         m.quests = quests.clone();
         m.bag = bag.clone();
         m.shop = shop.clone();
@@ -2353,9 +2530,9 @@ pub fn sync_screens(
         m.save1_label = label(content, &lang, "menu.save1", "Guardar 1");
         m.save2_label = label(content, &lang, "menu.save2", "Guardar 2");
         m.save3_label = label(content, &lang, "menu.save3", "Guardar 3");
-        m.load1_label = load_label(1, slots.iter().find(|s| s.slot == 1));
-        m.load2_label = load_label(2, slots.iter().find(|s| s.slot == 2));
-        m.load3_label = load_label(3, slots.iter().find(|s| s.slot == 3));
+        m.load1_label = load_label(1, slots.iter().find(|s| s.slot == 1), content, &lang);
+        m.load2_label = load_label(2, slots.iter().find(|s| s.slot == 2), content, &lang);
+        m.load3_label = load_label(3, slots.iter().find(|s| s.slot == 3), content, &lang);
         m.save_enabled = !on_title && player_alive(&save);
         let load_ok = |n: u32| {
             slots
@@ -2384,10 +2561,15 @@ pub fn sync_screens(
         m.title_save_info = save_info.clone();
         m.title_continue_enabled = best.is_some();
         m.credits_title = label(content, &lang, "title.credits.title", "CRÉDITOS");
-        m.credits = credits_rows();
+        m.credits = credits_rows(content, &lang);
 
         m.death_open = death_open;
-        m.death_kicker = "O VALE FICA À ESPERA".to_string();
+        m.death_kicker = label(
+            content,
+            &lang,
+            "death.kicker",
+            "O VALE FICA À ESPERA",
+        );
         m.death_title = label(content, &lang, "death.title", "CAÍSTE");
         m.death_line = label(
             content,
@@ -2395,7 +2577,10 @@ pub fn sync_screens(
             "death.line",
             "A última fogueira ainda te chama.",
         );
-        m.death_save_info = format!("Último save: {save_info}");
+        m.death_save_info = format!(
+            "{} {save_info}",
+            label(content, &lang, "death.last_save", "Último save:")
+        );
         m.death_retry_label = label(content, &lang, "death.retry", "Tentar de novo");
         m.death_load_label = label(content, &lang, "death.load", "Carregar");
         m.death_title_label = label(content, &lang, "death.to_title", "Título");
@@ -2463,6 +2648,34 @@ mod tests {
     }
 
     #[test]
+    fn rotulos_do_diario_seguem_o_idioma() {
+        // EN: o rótulo vem de `locale/en.json`; sem tabela fica o PT (base).
+        let mut content = VaelContent::default();
+        content.locale.insert(
+            "en".into(),
+            BTreeMap::from([
+                (
+                    "menu.biome.dark_forest".to_string(),
+                    "Dark Forest".to_string(),
+                ),
+                ("menu.target.wolf".to_string(), "wolves".to_string()),
+                ("menu.quest.active".to_string(), "in progress".to_string()),
+            ]),
+        );
+        assert_eq!(
+            biome_label(Some(&content), "en", "dark-forest"),
+            "Dark Forest"
+        );
+        assert_eq!(target_label(Some(&content), "en", "wolf"), "wolves");
+        assert_eq!(biome_label(None, "en", "swamp"), "Pântano");
+        assert_eq!(target_label(None, "en", "wolf"), "lobos");
+        assert_eq!(
+            label(Some(&content), "en", "menu.quest.active", "em curso"),
+            "in progress"
+        );
+    }
+
+    #[test]
     fn latest_slot_ignora_a_cena_de_menu_e_escolhe_o_mais_recente() {
         let slots = vec![
             slot(0, Some("main"), 10.0, 3),
@@ -2477,21 +2690,29 @@ mod tests {
     #[test]
     fn load_label_mostra_nivel_e_tempo_ou_sem_jogo() {
         assert_eq!(
-            load_label(2, Some(&slot(2, None, 0.0, 7))),
+            load_label(2, Some(&slot(2, None, 0.0, 7)), None, "pt"),
             "Carregar 2 · Nv 7 · 2 min"
         );
         assert_eq!(
-            load_label(1, Some(&slot(1, Some("menu"), 0.0, 3))),
+            load_label(1, Some(&slot(1, Some("menu"), 0.0, 3)), None, "pt"),
             "Carregar 1 · sem jogo"
         );
-        assert_eq!(load_label(3, None), "Carregar 3");
+        assert_eq!(load_label(3, None, None, "pt"), "Carregar 3");
+        // Um slot que o disco nem tem (`exists=false`) não é "guardado".
+        let mut empty = slot(2, None, 0.0, 0);
+        empty.exists = false;
+        empty.playtime = None;
+        assert_eq!(
+            load_label(2, Some(&empty), None, "pt"),
+            "Carregar 2 · sem jogo"
+        );
     }
 
     #[test]
     fn mensagens_do_sistema_de_slots() {
-        assert_eq!(slot_summary(None), "Sem jogos guardados");
+        assert_eq!(slot_summary(None, None, "pt"), "Sem jogos guardados");
         assert_eq!(
-            slot_summary(Some(&slot(1, None, 0.0, 0))),
+            slot_summary(Some(&slot(1, None, 0.0, 0)), None, "pt"),
             "Jogo guardado · 2 min"
         );
     }
@@ -2558,7 +2779,6 @@ mod xaml_tests {
         }];
         model.talent_canvas_width = 800.0;
         model.talent_canvas_height = 400.0;
-        model.talent_detail_visible = true;
         model.talent_selected_title = "Talento".into();
         model.talent_selected_effects = "+2 Força".into();
         model.talent_selected_requirement = "Sem requisitos".into();
@@ -2586,7 +2806,7 @@ mod xaml_tests {
     fn tab_ativa_troca_de_pagina_e_destaque() {
         let mut app = app();
         let mut model = ScreensVm::default();
-        model.tab_quests = true;
+        model.menu_open = true;
         let vm = Bindable::new(model);
         let root = app.world_mut().spawn(DataContext(vm.clone())).id();
         let doc = include_xaml!("ui/menu.xaml").document();
@@ -2596,7 +2816,10 @@ mod xaml_tests {
         app.world_mut()
             .entity_mut(root)
             .insert(DataContext(vm.clone()));
+        let mut tabs = UiTabs::default();
+        tabs.select("menu", "quests");
         app.insert_resource(VaelScreensVm(vm.clone()))
+            .insert_resource(tabs)
             .add_systems(Update, sync_menu_pages);
         app.update();
         let (quests_page, bag_page, quests_active, bag_active) = {
@@ -2623,10 +2846,9 @@ mod xaml_tests {
             assert_eq!(bag, Visibility::Hidden);
         }
 
-        vm.update(|m: &mut ScreensVm| {
-            m.tab_quests = false;
-            m.tab_bag = true;
-        });
+        app.world_mut()
+            .resource_mut::<UiTabs>()
+            .select("menu", "bag");
         for _ in 0..3 {
             app.update();
         }
