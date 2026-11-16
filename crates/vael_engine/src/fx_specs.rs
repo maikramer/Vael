@@ -27,9 +27,18 @@ pub fn impact_spec(
     }
 }
 
-/// Sparks do impacto: poucas, pequenas, curtas.
+/// Sparks do impacto. Eram 4–10 cm a viver 0,16–0,32 s: a 4–5 m da câmara
+/// davam 2–5 px, e o TAA apagava-as — no jogo não se via nada no golpe
+/// (visto 2026-11-16). Maiores, mais longas e com cor HDR (o unlit não leva
+/// exposição: >1 satura para branco-amarelo no tonemap).
 pub fn hit_sparks_spec() -> crate::recipes::ParticleSpec {
-    impact_spec("sparks", (0.04, 0.1), (0.16, 0.32), (1.4, 3.2), None)
+    impact_spec(
+        "sparks",
+        (0.09, 0.2),
+        (0.25, 0.5),
+        (2.0, 4.5),
+        Some([3.0, 2.1, 0.8]),
+    )
 }
 
 /// Vira o MODELO para `dir` (XZ) de uma vez (slerp): snap de cast.

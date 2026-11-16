@@ -199,7 +199,9 @@ pub fn preset(name: &str) -> ResolvedEmitter {
                 [1.0, 0.5, 0.12],
                 Vec3::new(0.0, -7.0, 0.0),
                 0.15,
-                true,
+                // Blend, não Add: as faíscas aditivas não chegavam ao ecrã
+                // (nem 960 de uma vez, 2026-11-16) e a cor já é unlit/HDR.
+                false,
                 0.3,
             ),
             "explosion" => (
