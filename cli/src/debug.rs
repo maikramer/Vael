@@ -10,24 +10,32 @@
 //! semântico (`until`/`expect`/`wait-ready`/`scene --wait` devolvem 1 em
 //! timeout/falha); `playbook` compõe os passos num processo só.
 
-use std::io::Write;
+use std::io::{Read, Seek, SeekFrom, Write};
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
 use std::time::{Duration, Instant};
 
-use anyhow::{Context, Result, bail};
+use anyhow::{Context, Result, anyhow, bail};
 use clap::Subcommand;
 use serde_json::{Value, json};
 
 use bevy_ext_bridge_protocol::{
     BridgeClient, LEGACY_CLICK, LEGACY_KEY, LEGACY_LOGS, LEGACY_LUA, LEGACY_MOVE, LEGACY_PING,
-    LEGACY_PROFILER_MARK, LEGACY_PROFILER_TAB, LEGACY_TEXT, LEGACY_TREE, METHOD_FRAME_STATS,
-    METHOD_HITCHES, METHOD_MARK, METHOD_MEMORY, METHOD_PAUSE, METHOD_PLAY, METHOD_STEP,
-    METHOD_TREE, SessionPaths, is_listening, normalize_key, resolve_port,
+    LEGACY_PROFILER, LEGACY_PROFILER_MARK, LEGACY_PROFILER_TAB, LEGACY_TEXT, LEGACY_TREE,
+    METHOD_FRAME_STATS, METHOD_HITCHES, METHOD_LOGS, METHOD_MARK, METHOD_MEMORY, METHOD_PAUSE,
+    METHOD_PLAY, METHOD_STEP, METHOD_TREE, SessionPaths, is_listening, normalize_key, resolve_port,
 };
 
 /// Troca de cena (só no monólito; a duração depende do mundo).
 const LEGACY_SCENE_CHANGE: &str = "viber.scene.change";
+/// Cena carregada + época + prontidão (só no monólito). É o que permite
+/// esperar pela cena NOVA sem aceitar o `ready` da anterior.
+const LEGACY_SCENE_CURRENT: &str = "viber.scene.current";
+/// Leituras `ready` seguidas que bastam quando o bridge não expõe cena nem
+/// época (runtime novo): 4 × 500 ms ≈ 2 s de estabilidade em vez de um frame.
+const SCENE_STABLE_POLLS: u32 = 4;
+/// Bloco da leitura do log de trás para a frente (`read_log_lines`).
+const LOG_CHUNK: u64 = 64 * 1024;
 
 #[derive(Subcommand)]
 pub enum DebugCommand {
@@ -335,18 +343,27 @@ pub fn run(
             )?;
         }
         DebugCommand::Tree { filter } => {
-            let value = call_fallback(
-                &client,
-                METHOD_TREE,
-                LEGACY_TREE,
-                json!({ "filter": filter }),
-            )?;
+            // O `viber.tree` do monólito só aceita `max_depth`: no fallback o
+            // filtro é aplicado aqui à árvore devolvida (antes era ignorado em
+            // silêncio e `--filter` parecia funcionar com tudo).
+            let value = client
+                .call(METHOD_TREE, json!({ "filter": filter }))
+                .or_else(|_| {
+                    client
+                        .call(LEGACY_TREE, json!({}))
+                        .map(|tree| filter_tree(&tree, filter.as_deref()))
+                })?;
             println!("{}", serde_json::to_string_pretty(&value)?);
         }
         DebugCommand::Logs { tail, grep, .. } => {
             // Só se chega aqui com `--source bridge` ou `auto` sem ficheiro
             // de sessão (o ficheiro é servido antes do probe do bridge).
-            let value = client.call(LEGACY_LOGS, json!({ "limit": tail }))?;
+            let value = call_fallback(
+                &client,
+                METHOD_LOGS,
+                LEGACY_LOGS,
+                json!({ "limit": tail }),
+            )?;
             let entries = filter_log_entries(&value, grep.as_deref());
             emit(
                 json_out,
@@ -355,11 +372,11 @@ pub fn run(
             )?;
         }
         DebugCommand::Memory => {
-            let value = client.call(METHOD_MEMORY, json!({}))?;
+            let value = profiler_field(&client, METHOD_MEMORY, "memory")?;
             println!("{}", serde_json::to_string_pretty(&value)?);
         }
         DebugCommand::Hitches => {
-            let value = client.call(METHOD_HITCHES, json!({}))?;
+            let value = profiler_field(&client, METHOD_HITCHES, "hitches")?;
             println!("{}", serde_json::to_string_pretty(&value)?);
         }
         DebugCommand::Prof {
@@ -384,16 +401,22 @@ pub fn run(
                             .with_context(|| format!("a criar {}", path.display()))
                     })
                     .transpose()?;
+                let mut series: Vec<Value> = Vec::new();
                 for sample in 0..samples {
                     let value = client
                         .call(METHOD_FRAME_STATS, json!({}))
                         .or_else(|_| client.call(LEGACY_PROFILER_TAB, json!({ "tab": tab })))?;
-                    if let Some(file) = file.as_mut() {
-                        writeln!(file, "{value}")?;
-                    } else {
+                    match file.as_mut() {
+                        Some(file) => {
+                            writeln!(file, "{value}")?;
+                        }
+                        // Sem `-o` as amostras são JSONL no stdout. Com
+                        // `--json` o stdout tem de ser UM documento: a série
+                        // é impressa junta no fim (antes iam linhas soltas).
+                        None if json => series.push(value),
                         // Sem `-o`, as amostras iam para o vazio (o comando
                         // saía com 0 e sem output): JSONL no stdout.
-                        println!("{value}");
+                        None => println!("{value}"),
                     }
                     // Sem `sleep` depois da última amostra (com `--hz` baixo
                     // eram segundos a mais no fim do comando).
@@ -415,6 +438,14 @@ pub fn run(
                     } else {
                         println!("perf: {} amostra(s) em {}", samples, path.display());
                     }
+                } else if json {
+                    println!(
+                        "{}",
+                        serde_json::to_string_pretty(&json!({
+                            "samples": samples,
+                            "series": series,
+                        }))?
+                    );
                 }
             } else {
                 let value = client
@@ -554,11 +585,16 @@ pub fn run(
             wait,
             wait_timeout,
         } => {
+            // Marca a cena ANTES do pedido: o `ready` do ping pode ainda ser o
+            // da cena anterior por um frame (e uma troca para a MESMA cena tem
+            // de esperar a época, senão o `--wait` saía de imediato).
+            let before = wait.then(|| scene_marker(&client));
             let requested = scene_change(&client, &name, entry.as_deref())?;
             let mut result = json!({ "requested": name, "entry": entry, "change": requested });
             let mut ok = true;
-            if wait {
-                let ready = poll_ready(&client, port, wait_timeout, json_out)?;
+            if let Some(before) = &before {
+                let ready =
+                    poll_ready_for_scene(&client, port, &name, before, wait_timeout, json_out)?;
                 result["ready"] = json!(ready);
                 ok = ready;
             }
@@ -735,6 +771,213 @@ pub(crate) fn scene_change(
         }
     }
     Ok(last)
+}
+
+/// Fotografia da cena antes de pedir uma troca (`poll_ready_for_scene`). O
+/// id da cena não entra: a leitura nova é comparada com o pedido; o que a
+/// marca dá é a ÉPOCA (para a troca para a mesma cena) e o `ready` (para o
+/// runtime antigo, sem cena).
+#[derive(Debug, Clone, Default)]
+pub(crate) struct SceneMarker {
+    /// Época do loader: sobe a cada troca (apanha a troca para a MESMA cena).
+    epoch: Option<u64>,
+    /// `ready` do ping (o runtime novo não expõe cena nem época).
+    ready: Option<bool>,
+}
+
+/// Estado da cena agora: `viber.scene.current` (monólito) ou o `ready` do
+/// ping. O runtime novo só tem o segundo.
+struct SceneSnapshot {
+    scene: Option<String>,
+    epoch: Option<u64>,
+    ready: Option<bool>,
+    status: Option<String>,
+}
+
+fn scene_snapshot(client: &BridgeClient) -> Result<SceneSnapshot> {
+    if let Ok(value) = client.call(LEGACY_SCENE_CURRENT, json!({}))
+        && value.is_object()
+    {
+        let text = |value: Option<&Value>| value.and_then(Value::as_str).map(str::to_string);
+        return Ok(SceneSnapshot {
+            scene: text(value.get("scene")),
+            epoch: value.get("epoch").and_then(Value::as_u64),
+            ready: value.get("ready").and_then(Value::as_bool),
+            status: text(value.pointer("/loading/status")),
+        });
+    }
+    let pong = client.ping()?;
+    let text = |value: Option<&Value>| value.and_then(Value::as_str).map(str::to_string);
+    Ok(SceneSnapshot {
+        scene: text(pong.get("scene")),
+        epoch: pong.get("epoch").and_then(Value::as_u64),
+        ready: pong.get("ready").and_then(Value::as_bool),
+        status: text(pong.pointer("/loading/status")),
+    })
+}
+
+/// A marca da cena actual (para tirar ANTES de `scene_change`). Sem bridge
+/// que responda, tudo `None` — a espera degrada para o `ready` do ping.
+pub(crate) fn scene_marker(client: &BridgeClient) -> SceneMarker {
+    match scene_snapshot(client) {
+        Ok(snapshot) => SceneMarker {
+            epoch: snapshot.epoch,
+            ready: snapshot.ready,
+        },
+        Err(_) => SceneMarker::default(),
+    }
+}
+
+/// Normaliza um nome de cena para comparar o pedido com o `current`:
+/// `scenes/menu.bsn`, `./menu.bsn` e `menu` são a mesma cena.
+fn normalize_scene(name: &str) -> String {
+    let name = name.trim().trim_end_matches('/');
+    let name = name.strip_prefix("./").unwrap_or(name);
+    let name = name.strip_prefix("scenes/").unwrap_or(name);
+    name.strip_suffix(".bsn")
+        .or_else(|| name.strip_suffix(".xml"))
+        .unwrap_or(name)
+        .to_string()
+}
+
+fn scene_matches(want: &str, got: &str) -> bool {
+    let want = normalize_scene(want);
+    let got = normalize_scene(got);
+    if want.is_empty() || got.is_empty() {
+        return want == got;
+    }
+    want == got || want.ends_with(&format!("/{got}")) || got.ends_with(&format!("/{want}"))
+}
+
+/// Estado acumulado da espera da cena nova.
+#[derive(Debug, Default, Clone, Copy)]
+struct SceneWait {
+    /// Já se viu `ready: false` depois do pedido (o véu subiu).
+    seen_not_ready: bool,
+    /// Leituras seguidas com a cena nova pronta.
+    stable: u32,
+}
+
+/// Veredicto de uma leitura na espera da cena nova.
+#[derive(Debug, PartialEq, Eq)]
+enum SceneWaitStep {
+    /// A cena nova está pronta — a espera acabou.
+    Ready,
+    /// Ainda não (ou o sinal pode ser o da cena anterior).
+    Wait,
+    /// Não há como distinguir (bridge sem época e véu que nunca apareceu):
+    /// aceitar ao fim da janela de estabilidade, com aviso.
+    Stale,
+}
+
+/// Consome uma leitura do bridge. Função pura: é a regra que fecha a corrida
+/// do `scene --wait` (o `ready` da cena anterior não conta como pronto).
+fn scene_wait_step(
+    wait: &mut SceneWait,
+    before: &SceneMarker,
+    snapshot: &SceneSnapshot,
+    want: &str,
+) -> SceneWaitStep {
+    if snapshot.ready == Some(false) {
+        wait.seen_not_ready = true;
+    }
+    // Sem espelho de prontidão não há véu a esperar (o mesmo tratamento do
+    // `wait-ready`).
+    let ready = snapshot.ready.unwrap_or(true);
+    let scene_ok = snapshot
+        .scene
+        .as_deref()
+        .map(|got| scene_matches(want, got))
+        .unwrap_or(true);
+    if !ready || !scene_ok {
+        wait.stable = 0;
+        return SceneWaitStep::Wait;
+    }
+    // Vimos o véu a subir DEPOIS do pedido: o `ready` é desta cena.
+    if wait.seen_not_ready {
+        return SceneWaitStep::Ready;
+    }
+    // Sem ter visto o véu, exigir duas leituras seguidas com a época à
+    // frente: há um frame em que a época já subiu mas o véu ainda não
+    // recomeçou (troca para a MESMA cena, ou `ready` velho).
+    let epoch_fresh = match (before.epoch, snapshot.epoch) {
+        (Some(before), Some(now)) => now > before,
+        // Sem época no bridge, só é atribuível à cena nova se o `ready` de
+        // antes era falso.
+        _ => before.ready != Some(true),
+    };
+    wait.stable += 1;
+    if epoch_fresh && wait.stable >= 2 {
+        return SceneWaitStep::Ready;
+    }
+    if wait.stable >= SCENE_STABLE_POLLS {
+        return SceneWaitStep::Stale;
+    }
+    SceneWaitStep::Wait
+}
+
+/// Espera a cena NOVA ficar pronta. `before` é a marca tirada antes do pedido
+/// de troca: sem ela, o `ready` do ping pode ser o da cena anterior por um
+/// frame (o bug do `scene --wait` que voltava "pronto" antes da troca).
+pub(crate) fn poll_ready_for_scene(
+    client: &BridgeClient,
+    port: u16,
+    want: &str,
+    before: &SceneMarker,
+    timeout_secs: u64,
+    quiet: bool,
+) -> Result<bool> {
+    let started = Instant::now();
+    let deadline = Duration::from_secs(timeout_secs);
+    let mut last_status = String::new();
+    let mut warned_no_readiness = false;
+    let mut wait = SceneWait::default();
+    while started.elapsed() < deadline {
+        if is_listening(port) {
+            let snapshot = match scene_snapshot(client) {
+                Ok(snapshot) => Some(snapshot),
+                // Bridge a tremer durante o carregamento é normal: voltar a
+                // tentar em vez de abortar a espera.
+                Err(_) => None,
+            };
+            if let Some(snapshot) = snapshot {
+                let status = snapshot
+                    .status
+                    .clone()
+                    .unwrap_or_else(|| "a carregar".into());
+                if !quiet && status != last_status {
+                    eprintln!("[{:>5.1}s] {status}", started.elapsed().as_secs_f32());
+                    last_status = status;
+                }
+                if snapshot.ready.is_none() && !warned_no_readiness {
+                    warned_no_readiness = true;
+                    if !quiet {
+                        eprintln!(
+                            "aviso: pong sem prontidão; a espera da cena usa o pedido de troca"
+                        );
+                    }
+                }
+                match scene_wait_step(&mut wait, before, &snapshot, want) {
+                    SceneWaitStep::Ready => return Ok(true),
+                    SceneWaitStep::Stale => {
+                        if !quiet {
+                            eprintln!(
+                                "aviso: bridge sem época de cena; `--wait` aceita o `ready` após \
+                                 {SCENE_STABLE_POLLS} leituras (o véu pode ser o da cena anterior)"
+                            );
+                        }
+                        return Ok(true);
+                    }
+                    SceneWaitStep::Wait => {}
+                }
+            }
+        } else if !quiet && last_status.is_empty() {
+            eprintln!("à espera da bridge na porta {port}...");
+            last_status = "-".into();
+        }
+        std::thread::sleep(Duration::from_millis(500));
+    }
+    Ok(false)
 }
 
 /// Screenshot com um retry: durante o assentar de uma cena nova o pedido
@@ -1001,55 +1244,192 @@ fn session_log_path(world: Option<&Path>) -> Option<PathBuf> {
 
 /// Últimas `tail` linhas do ficheiro, filtradas por substring (sem
 /// maiúsculas).
+///
+/// A leitura é de trás para a frente em blocos de [`LOG_CHUNK`]: um log de
+/// centenas de MB não entra todo em memória (antes era `read_to_string` +
+/// `lines()`) e, sem `--grep` (ou com os matches recentes), pára mal junta as
+/// linhas pedidas. As linhas nunca são cortadas: os blocos são juntados às
+/// sobras da linha anterior antes de partir por `\n`.
 fn read_log_lines(path: &Path, tail: usize, grep: Option<&str>) -> Result<Vec<String>> {
-    let raw = std::fs::read_to_string(path)
-        .with_context(|| format!("a ler o log da sessão {}", path.display()))?;
     // `--tail 0` = nenhuma linha; o `max(1)` antigo devolvia sempre a última.
     if tail == 0 {
         return Ok(Vec::new());
     }
+    let mut file = std::fs::File::open(path)
+        .with_context(|| format!("a ler o log da sessão {}", path.display()))?;
+    let file_len = file.metadata().map(|meta| meta.len()).unwrap_or(0);
     let needle = grep.map(str::to_lowercase);
-    let lines: Vec<String> = raw
-        .lines()
-        .filter(|line| {
-            needle
-                .as_deref()
-                .map(|needle| line.to_lowercase().contains(needle))
-                .unwrap_or(true)
-        })
-        .map(str::to_string)
-        .collect();
-    let start = lines.len().saturating_sub(tail);
-    Ok(lines[start..].to_vec())
+    let matches = |line: &str| {
+        needle
+            .as_deref()
+            .map(|needle| line.to_lowercase().contains(needle))
+            .unwrap_or(true)
+    };
+    let mut length = file_len;
+    // `str::lines` não devolve a linha vazia depois do `\n` final: ler até
+    // antes desse `\n` mantém a contagem igual (a linha em branco que o
+    // ficheiro tenha antes continua a sair).
+    if length > 0 {
+        let mut last = [0u8; 1];
+        if file.seek(SeekFrom::Start(length - 1)).is_ok()
+            && file.read_exact(&mut last).is_ok()
+            && last[0] == b'\n'
+        {
+            length -= 1;
+        }
+    }
+    // Só um `\n` é UMA linha em branco (`str::lines("\\n")`); vazio é zero.
+    if length == 0 {
+        return Ok(if file_len > 0 && matches("") {
+            vec![String::new()]
+        } else {
+            Vec::new()
+        });
+    }
+    let mut collected: Vec<String> = Vec::new(); // mais recente primeiro
+    let mut pending: Vec<u8> = Vec::new(); // início da linha ainda por fechar
+    let mut pos = length;
+    'blocks: while pos > 0 {
+        let read_len = LOG_CHUNK.min(pos);
+        pos -= read_len;
+        let mut block = vec![0u8; read_len as usize];
+        file.seek(SeekFrom::Start(pos))?;
+        file.read_exact(&mut block)?;
+        block.extend_from_slice(&pending);
+        pending.clear();
+        let mut end = block.len();
+        while end > 0 {
+            let Some(split) = block[..end].iter().rposition(|&byte| byte == b'\n') else {
+                break;
+            };
+            let line = decode_log_line(&block[split + 1..end]);
+            if matches(&line) {
+                collected.push(line);
+                if collected.len() >= tail {
+                    break 'blocks;
+                }
+            }
+            end = split;
+        }
+        pending.extend_from_slice(&block[..end]);
+    }
+    // A primeira linha do ficheiro (a que sobra depois de chegar ao início)
+    // não termina em `\n` e não passou pelo ciclo — mesmo quando é vazia
+    // (um ficheiro que começa por `\n` tem uma primeira linha em branco).
+    if pos == 0 && length > 0 && collected.len() < tail {
+        let line = decode_log_line(&pending);
+        if matches(&line) {
+            collected.push(line);
+        }
+    }
+    collected.reverse();
+    Ok(collected)
+}
+
+/// Bytes de uma linha do log → `String` (lossy: um log com um byte inválido
+/// não pode rebentar a leitura) sem o `\r` do CRLF.
+fn decode_log_line(bytes: &[u8]) -> String {
+    let text = String::from_utf8_lossy(bytes);
+    text.strip_suffix('\r').unwrap_or(&text).to_string()
 }
 
 /// Filtra as entradas do ring da bridge (`viber.logs`:
 /// `{time, level, target, message}[]`) por substring. Procura em `message`,
 /// `level` e `target` (o `--grep` promete "linhas que contêm o texto"; só na
-/// mensagem, `--grep ERROR` não via nenhum erro).
+/// mensagem, `--grep ERROR` não via nenhum erro). Aceita a lista nua e o
+/// objecto `{entries: […], …}` (a forma de um ring novo): no objecto o filtro
+/// aplica-se a `entries` e o resto do payload fica.
 fn filter_log_entries(value: &Value, grep: Option<&str>) -> Value {
     let Some(grep) = grep else {
         return value.clone();
     };
     let needle = grep.to_lowercase();
+    let keep = |entries: &Vec<Value>| -> Vec<Value> {
+        entries
+            .iter()
+            .filter(|entry| {
+                ["message", "level", "target"].iter().any(|key| {
+                    entry
+                        .get(*key)
+                        .and_then(Value::as_str)
+                        .map(|field| field.to_lowercase().contains(&needle))
+                        .unwrap_or(false)
+                })
+            })
+            .cloned()
+            .collect()
+    };
     let Some(entries) = value.as_array() else {
+        // Forma com `entries`: filtra lá dentro (antes o `--grep` devolvia
+        // tudo em silêncio quando o ring vinha embrulhado num objecto).
+        if let (Some(entries), Some(object)) = (
+            value.get("entries").and_then(Value::as_array),
+            value.as_object(),
+        ) {
+            let mut out = object.clone();
+            out.insert("entries".into(), json!(keep(entries)));
+            return Value::Object(out);
+        }
         // Forma inesperada: devolver o que veio em vez de `[]` (mascarava).
         return value.clone();
     };
-    let filtered = entries
-        .iter()
-        .filter(|entry| {
-            ["message", "level", "target"].iter().any(|key| {
-                entry
-                    .get(*key)
-                    .and_then(Value::as_str)
-                    .map(|field| field.to_lowercase().contains(&needle))
-                    .unwrap_or(false)
-            })
-        })
-        .cloned()
-        .collect::<Vec<_>>();
-    json!(filtered)
+    json!(keep(entries))
+}
+
+/// Aplica o `--filter` à árvore devolvida pelo `viber.tree` (o monólito só
+/// aceita `max_depth`). Aceita a lista nua de nós (`viber.tree`) e o objecto
+/// `{entities|nodes: […], truncated}`.
+fn filter_tree(tree: &Value, filter: Option<&str>) -> Value {
+    let Some(filter) = filter else {
+        return tree.clone();
+    };
+    let needle = filter.to_lowercase();
+    let keep = |nodes: &Vec<Value>| -> Value {
+        json!(
+            nodes
+                .iter()
+                .filter(|node| {
+                    node.get("name")
+                        .and_then(Value::as_str)
+                        .map(|name| name.to_lowercase().contains(&needle))
+                        .unwrap_or(false)
+                })
+                .cloned()
+                .collect::<Vec<_>>()
+        )
+    };
+    match tree {
+        Value::Array(nodes) => keep(nodes),
+        Value::Object(object) => {
+            let mut out = object.clone();
+            for key in ["entities", "nodes"] {
+                if let Some(Value::Array(nodes)) = object.get(key) {
+                    out.insert(key.into(), keep(nodes));
+                }
+            }
+            Value::Object(out)
+        }
+        other => other.clone(),
+    }
+}
+
+/// Snapshot de `method` com fallback para o `viber.profiler` do monólito
+/// (que publica `memory` e `hitches`). Sem nenhum dos dois é ERRO: um sucesso
+/// vazio escondia que o bridge não serve o dado.
+fn profiler_field(client: &BridgeClient, method: &str, field: &str) -> Result<Value> {
+    let native = match client.call(method, json!({})) {
+        Ok(value) => return Ok(value),
+        Err(error) => error,
+    };
+    let profiler = client
+        .call(LEGACY_PROFILER, json!({}))
+        .map_err(|legacy| anyhow!("{method} e viber.profiler falharam ({native:#}; {legacy:#})"))?;
+    match profiler.get(field) {
+        Some(value) if !value.is_null() => Ok(value.clone()),
+        _ => bail!(
+            "o bridge não publica `{field}` (nem `{method}` nem `viber.profiler` com `{field}`)"
+        ),
+    }
 }
 
 fn pid_alive(pid: u32) -> bool {
@@ -1155,5 +1535,278 @@ mod tests {
         // Forma inesperada: devolve o valor em vez de uma lista vazia.
         let object = json!({ "entries": [] });
         assert_eq!(filter_log_entries(&object, Some("x")), object);
+    }
+
+    #[test]
+    fn filter_log_entries_filters_inside_an_entries_object() {
+        // Um ring novo pode vir embrulhado; o `--grep` tem de filtrar lá
+        // dentro (antes devolvia o objecto inteiro em silêncio).
+        let value = json!({
+            "entries": [
+                { "level": "INFO", "message": "mundo pronto" },
+                { "level": "ERROR", "message": "quest falhou" }
+            ],
+            "dropped": 3
+        });
+        let filtered = filter_log_entries(&value, Some("falhou"));
+        assert_eq!(filtered["entries"].as_array().unwrap().len(), 1);
+        assert_eq!(filtered["entries"][0]["message"], "quest falhou");
+        assert_eq!(filtered["dropped"], 3);
+    }
+
+    #[test]
+    fn filter_tree_applies_the_filter_to_the_legacy_list_and_object() {
+        // Regressão: `debug tree --filter` contra o `viber.tree` (só aceita
+        // `max_depth`) devolvia a árvore inteira — o filtro era ignorado.
+        let list = json!([
+            { "id": "1", "name": "Hero" },
+            { "id": "2", "name": "wolf" },
+            { "id": "3" }
+        ]);
+        let filtered = filter_tree(&list, Some("WOLF"));
+        assert_eq!(filtered.as_array().unwrap().len(), 1);
+        assert_eq!(filtered[0]["name"], "wolf");
+        assert_eq!(filter_tree(&list, None), list);
+        let object = json!({
+            "entities": [{ "name": "Hero" }, { "name": "crate" }],
+            "truncated": true
+        });
+        let filtered = filter_tree(&object, Some("crate"));
+        assert_eq!(filtered["entities"].as_array().unwrap().len(), 1);
+        assert_eq!(filtered["entities"][0]["name"], "crate");
+        assert_eq!(filtered["truncated"], true);
+    }
+
+    #[test]
+    fn scene_names_match_across_paths_and_extensions() {
+        assert!(scene_matches("main", "main"));
+        assert!(scene_matches("scenes/menu.bsn", "menu"));
+        assert!(scene_matches("menu", "scenes/menu.bsn"));
+        assert!(scene_matches("qa/city-forge", "qa/city-forge"));
+        assert!(!scene_matches("menu", "main"));
+        assert!(!scene_matches("", "main"));
+        assert!(!scene_matches("menu", ""));
+    }
+
+    fn marker(epoch: Option<u64>, ready: Option<bool>) -> SceneMarker {
+        SceneMarker { epoch, ready }
+    }
+
+    fn snapshot(scene: Option<&str>, epoch: Option<u64>, ready: Option<bool>) -> SceneSnapshot {
+        SceneSnapshot {
+            scene: scene.map(str::to_string),
+            epoch,
+            ready,
+            status: None,
+        }
+    }
+
+    #[test]
+    fn scene_wait_does_not_accept_the_previous_scene_ready() {
+        // O bug: o `ready` do ping ainda era o da cena anterior. A primeira
+        // leitura (mesma cena, mesma época) não pode fechar a espera.
+        let before = marker(Some(5), Some(true));
+        let mut wait = SceneWait::default();
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("main"), Some(5), Some(true)),
+                "main"
+            ),
+            SceneWaitStep::Wait
+        );
+        // A troca começou: época nova e véu em pé.
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("main"), Some(6), Some(false)),
+                "main"
+            ),
+            SceneWaitStep::Wait
+        );
+        // Véu saiu: agora é a cena nova.
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("main"), Some(6), Some(true)),
+                "main"
+            ),
+            SceneWaitStep::Ready
+        );
+    }
+
+    #[test]
+    fn scene_wait_needs_two_readings_when_the_veil_is_not_seen() {
+        // Troca para a MESMA cena: há um frame com a época já à frente mas
+        // com o `ready` ainda da anterior. Uma leitura não basta.
+        let before = marker(Some(5), Some(true));
+        let mut wait = SceneWait::default();
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("main"), Some(6), Some(true)),
+                "main"
+            ),
+            SceneWaitStep::Wait
+        );
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("main"), Some(6), Some(true)),
+                "main"
+            ),
+            SceneWaitStep::Ready
+        );
+    }
+
+    #[test]
+    fn scene_wait_ignores_the_old_scene_while_the_new_one_loads() {
+        let before = marker(Some(5), Some(true));
+        let mut wait = SceneWait::default();
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("main"), Some(6), Some(true)),
+                "house"
+            ),
+            SceneWaitStep::Wait
+        );
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("house"), Some(6), Some(false)),
+                "house"
+            ),
+            SceneWaitStep::Wait
+        );
+        assert_eq!(
+            scene_wait_step(
+                &mut wait,
+                &before,
+                &snapshot(Some("house"), Some(6), Some(true)),
+                "house"
+            ),
+            SceneWaitStep::Ready
+        );
+    }
+
+    #[test]
+    fn scene_wait_without_scene_info_falls_back_to_stability() {
+        // Runtime sem `viber.scene.current`: o véu visto chega; sem véu (um
+        // `ready` que nunca caiu) só ao fim da janela de estabilidade.
+        let before = marker(None, Some(true));
+        let mut wait = SceneWait::default();
+        for _ in 0..SCENE_STABLE_POLLS - 1 {
+            assert_eq!(
+                scene_wait_step(&mut wait, &before, &snapshot(None, None, Some(true)), "main"),
+                SceneWaitStep::Wait
+            );
+        }
+        assert_eq!(
+            scene_wait_step(&mut wait, &before, &snapshot(None, None, Some(true)), "main"),
+            SceneWaitStep::Stale
+        );
+        // Com o véu visto, a primeira leitura pronta fecha.
+        let mut wait = SceneWait::default();
+        assert_eq!(
+            scene_wait_step(&mut wait, &before, &snapshot(None, None, Some(false)), "main"),
+            SceneWaitStep::Wait
+        );
+        assert_eq!(
+            scene_wait_step(&mut wait, &before, &snapshot(None, None, Some(true)), "main"),
+            SceneWaitStep::Ready
+        );
+    }
+
+    #[test]
+    fn read_log_lines_is_chunked_and_keeps_lines_intact() {
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("big.log");
+        // Uma linha maior do que um bloco (o corte cai a meio dela) e muitas
+        // linhas pequenas: a leitura de trás para a frente tem de a manter
+        // inteira.
+        let long = format!("INICIO {}", "x".repeat((LOG_CHUNK as usize) + 123));
+        let mut content = String::new();
+        content.push_str(&long);
+        content.push('\n');
+        for index in 0..5_000 {
+            content.push_str(&format!("linha {index}\n"));
+        }
+        std::fs::write(&path, &content).unwrap();
+
+        let last = read_log_lines(&path, 3, None).unwrap();
+        assert_eq!(
+            last,
+            vec![
+                "linha 4997".to_string(),
+                "linha 4998".to_string(),
+                "linha 4999".to_string()
+            ]
+        );
+        // O grep pode casar só na primeira linha: tem de ler o ficheiro todo
+        // e devolver a linha longa intacta.
+        let hits = read_log_lines(&path, 10, Some("inicio")).unwrap();
+        assert_eq!(hits.len(), 1);
+        assert_eq!(hits[0], long);
+        // `str::lines` de referência (a contagem do ficheiro inteiro bate).
+        assert_eq!(
+            read_log_lines(&path, usize::MAX, None).unwrap(),
+            content.lines().map(str::to_string).collect::<Vec<_>>()
+        );
+    }
+
+    #[test]
+    fn read_log_lines_matches_str_lines_on_edge_cases() {
+        let dir = tempfile::tempdir().unwrap();
+        for (name, content) in [
+            ("empty.log", ""),
+            ("blank.log", "\n"),
+            ("no-eol.log", "a\nb"),
+            ("crlf.log", "a\r\nb\r\n"),
+            ("leading.log", "\na\nb\n"),
+            ("blanks.log", "a\n\n\nb\n"),
+        ] {
+            let path = dir.path().join(name);
+            std::fs::write(&path, content).unwrap();
+            assert_eq!(
+                read_log_lines(&path, usize::MAX, None).unwrap(),
+                content.lines().map(str::to_string).collect::<Vec<_>>(),
+                "{name}"
+            );
+        }
+    }
+
+    #[test]
+    fn profiler_field_falls_back_to_the_legacy_profiler() {
+        // Regressão: `debug memory`/`hitches` não tinham fallback e falhavam
+        // no monólito ("method not found").
+        let port = crate::testutil::mock_bridge(vec![
+            ("vael-tools/memory", Err("method not found")),
+            (
+                "viber.profiler",
+                Ok(json!({ "memory": { "rss_kb": 42 }, "hitches": {"count": 1} })),
+            ),
+        ]);
+        let client = BridgeClient::localhost(port);
+        let memory = profiler_field(&client, METHOD_MEMORY, "memory").unwrap();
+        assert_eq!(memory["rss_kb"], 42);
+    }
+
+    #[test]
+    fn profiler_field_is_an_error_when_nobody_publishes_it() {
+        let port = crate::testutil::mock_bridge(vec![
+            ("vael-tools/hitches", Err("method not found")),
+            ("viber.profiler", Ok(json!({ "memory": {} }))),
+        ]);
+        let client = BridgeClient::localhost(port);
+        let error = profiler_field(&client, METHOD_HITCHES, "hitches").unwrap_err();
+        assert!(format!("{error:#}").contains("hitches"), "{error:#}");
     }
 }

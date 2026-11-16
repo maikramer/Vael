@@ -10,7 +10,7 @@ use std::path::{Path, PathBuf};
 
 use anyhow::{Context, Result, bail};
 use bevy_ext_world::xml::XmlNode;
-use bevy_ext_world::xml::include::load_world;
+use bevy_ext_world::xml::include::load_world_in;
 use serde::Serialize;
 
 /// Relatório de `analyze`. O JSON é o contrato com agentes/CI.
@@ -96,8 +96,8 @@ pub fn resolve_world_path(input: Option<&Path>) -> Result<PathBuf> {
     // `main-scene:` diretamente. O parser completo fica no `bevy_ext_world`.
     if let Ok(config) = std::fs::read_to_string(dir.join("config.yaml"))
         && let Some(scene) = config.lines().find_map(|line| {
-            let (key, value) = line.split_once(':')?;
-            (key.trim() == "main-scene").then(|| value.trim().trim_matches('"').to_string())
+            let (key, value) = config_entry(line)?;
+            (key == "main-scene" && !value.is_empty()).then(|| value.to_string())
         })
     {
         let path = dir.join(scene);
@@ -127,6 +127,81 @@ pub fn resolve_world_path(input: Option<&Path>) -> Result<PathBuf> {
     )
 }
 
+/// Raiz do projeto de um ficheiro de mundo/módulo: o ancestral mais próximo
+/// com `world.bsn` ou `config.yaml`. Os `Include` `/…` e os assets resolvem
+/// SEMPRE contra ela (como no runtime) — com a pasta do ficheiro,
+/// `world/cities/discordia.bsn` procurava `world/cities/world/…` e
+/// `scenes/menu.bsn` dava os assets do pool por em falta.
+///
+/// Sem nenhum marcador (um mundo solto, ex.: um `qa/*.bsn` ao lado) fica a
+/// pasta do próprio ficheiro, como sempre foi.
+pub fn project_root_of(path: &Path) -> PathBuf {
+    let absolute = path
+        .canonicalize()
+        .or_else(|_| std::path::absolute(path))
+        .unwrap_or_else(|_| path.to_path_buf());
+    // Um ficheiro começa na pasta dele; uma pasta em si mesma.
+    let start = if absolute.is_dir() {
+        absolute.clone()
+    } else {
+        absolute
+            .parent()
+            .map(Path::to_path_buf)
+            .unwrap_or_else(|| PathBuf::from("."))
+    };
+    for candidate in start.ancestors() {
+        if candidate.join("world.bsn").is_file() || candidate.join("config.yaml").is_file() {
+            return candidate.to_path_buf();
+        }
+    }
+    start
+}
+
+/// Uma entrada `chave: valor` de uma linha do `config.yaml`: a chave aparada e
+/// o valor sem comentário inline nem quotes. O parser completo é o do
+/// `bevy_ext_world`; o `analyze` só precisa de uma chave e não pode assumir o
+/// projeto todo (o `config.yaml` pode ter blocos que o CLI não conhece).
+fn config_entry(line: &str) -> Option<(&str, &str)> {
+    let (key, value) = line.split_once(':')?;
+    Some((key.trim(), yaml_scalar(value)))
+}
+
+/// Valor escalar de YAML: corta o comentário `#` (só fora de quotes e no
+/// início ou depois de espaço, como o YAML) e as quotes à volta. O antigo
+/// `value.trim().trim_matches('"')` lia `world.bsn  # a cena` inteiro como
+/// caminho e a linha não resolvia.
+fn yaml_scalar(raw: &str) -> &str {
+    let raw = raw.trim_start();
+    let mut quote: Option<char> = None;
+    let mut end = raw.len();
+    for (index, c) in raw.char_indices() {
+        match c {
+            '"' | '\'' => {
+                if quote == Some(c) {
+                    quote = None;
+                } else if quote.is_none() {
+                    quote = Some(c);
+                }
+            }
+            '#' if quote.is_none()
+                && (index == 0
+                    || raw[..index]
+                        .chars()
+                        .next_back()
+                        .is_some_and(char::is_whitespace)) =>
+            {
+                end = index;
+                break;
+            }
+            _ => {}
+        }
+    }
+    raw[..end]
+        .trim()
+        .trim_matches(|c| c == '"' || c == '\'')
+        .trim()
+}
+
 /// Analisa um mundo. Erros de leitura/parse devolvem um relatório com `error`
 /// em vez de `Err`, para o CLI conseguir imprimir JSON mesmo em falha.
 pub fn analyze(input: Option<&Path>) -> AnalyzeReport {
@@ -134,11 +209,13 @@ pub fn analyze(input: Option<&Path>) -> AnalyzeReport {
         Ok(path) => path,
         Err(error) => return error_report(None, format!("{error:#}")),
     };
-    let loaded = match load_world(&path) {
+    // A raiz do PROJETO (não a pasta do ficheiro): é o que o runtime usa para
+    // os `/…` dos includes, os scripts e o pool de assets.
+    let root = project_root_of(&path);
+    let loaded = match load_world_in(&path, &root) {
         Ok(loaded) => loaded,
         Err(error) => return error_report(Some(&path), format!("{error:#}")),
     };
-    let root = path.parent().unwrap_or(Path::new("."));
     let mut report = AnalyzeReport {
         world: path.display().to_string(),
         static_world: root_attr(&loaded.root_attrs, "static")
@@ -175,7 +252,7 @@ pub fn analyze(input: Option<&Path>) -> AnalyzeReport {
     report.assets.references = assets.len();
     report.assets.missing = assets
         .into_iter()
-        .filter(|asset| !asset_exists(root, asset))
+        .filter(|asset| !asset_exists(&root, asset))
         .collect();
     for (name, count) in names {
         if count > 1 {
@@ -425,5 +502,58 @@ mod tests {
         let report = analyze(Some(&dir.path().join("world.xml")));
         assert!(report.error.is_some());
         assert!(report.strict_failed());
+    }
+
+    #[test]
+    fn project_root_is_the_ancestor_with_the_world() {
+        // Regressão: `analyze world/cities/discordia.bsn` procurava os
+        // `Include` em `world/cities/world/…` (pasta do módulo) e falhava.
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(dir.path().join("world/cities")).unwrap();
+        std::fs::write(dir.path().join("world.bsn"), "").unwrap();
+        let module = dir.path().join("world/cities/discordia.bsn");
+        std::fs::write(&module, "").unwrap();
+        let expected = dir.path().canonicalize().unwrap();
+        assert_eq!(project_root_of(&module), expected);
+        // A pasta do projeto também resolve para ela mesma.
+        assert_eq!(project_root_of(&expected), expected);
+    }
+
+    #[test]
+    fn project_root_falls_back_to_the_file_folder_for_a_loose_world() {
+        let dir = tempfile::tempdir().unwrap();
+        let loose = dir.path().join("qa-arena.bsn");
+        std::fs::write(&loose, "").unwrap();
+        assert_eq!(project_root_of(&loose), dir.path().canonicalize().unwrap());
+    }
+
+    #[test]
+    fn yaml_scalar_strips_comments_only_outside_quotes() {
+        // Regressão: `main-scene: world.bsn   # a cena` virava o caminho com
+        // o comentário colado e não resolvia.
+        assert_eq!(yaml_scalar(" world.bsn   # a cena"), "world.bsn");
+        assert_eq!(yaml_scalar("\"world.bsn\""), "world.bsn");
+        assert_eq!(yaml_scalar("'world.bsn'  # nota"), "world.bsn");
+        assert_eq!(yaml_scalar("a#b.bsn"), "a#b.bsn");
+        assert_eq!(yaml_scalar("\"a#b.bsn\"  # x"), "a#b.bsn");
+        assert_eq!(yaml_scalar(""), "");
+    }
+
+    #[test]
+    fn config_main_scene_ignores_inline_comment() {
+        let dir = tempfile::tempdir().unwrap();
+        std::fs::create_dir_all(dir.path().join("maps")).unwrap();
+        std::fs::write(dir.path().join("maps/game.xml"), "<world/>").unwrap();
+        std::fs::write(
+            dir.path().join("config.yaml"),
+            "project:\n  main-scene: maps/game.xml   # a cena de arranque\n",
+        )
+        .unwrap();
+        let resolved = resolve_world_path(Some(dir.path())).unwrap();
+        assert!(
+            resolved.ends_with("maps/game.xml"),
+            "{}",
+            resolved.display()
+        );
     }
 }

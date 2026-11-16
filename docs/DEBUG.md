@@ -53,7 +53,16 @@ vael-tools debug --port 15731 --json wait-ready --timeout 300
   por `vael::bridge_ready::BridgeReadyPlugin`; sem o espelho (jogo velho), o
   `wait-ready` pergunta ao `viber.ping`. `pending_models` conta só o anel do
   véu. Depois de `viber.scene.change` (ou `vael-tools debug scene --wait`),
-  voltar a esperar.
+  voltar a esperar. O `scene --wait` (e o passo `scene` do playbook) lê
+  `viber.scene.current` antes do pedido e só aceita o `ready` da cena NOVA
+  (id pedido **e** época do loader à frente); sem esse método, exige ter
+  visto o véu a subir (ou duas leituras prontas) — antes, o `ready` da cena
+  anterior por um frame fechava a espera cedo demais.
+- Playbook (`{"name": …, "steps": […]}`): no transcript, `steps` é o total
+  declarado e `executed` o que correu (numa paragem, `executed < steps`).
+  Caminhos relativos dentro dos passos (`screenshot.path`, `expect.file`)
+  resolvem contra a pasta do playbook; um caminho que só exista relativo ao
+  cwd (playbooks antigos) continua a valer.
 - Um reload do mundo completo por `scene` pode esgotar o teto com
   `spawn groups=false` e deixar o loader em `busy()` (quirk do monólito,
   pré-existente) — os pedidos seguintes levam "já há uma troca de cena em
@@ -101,7 +110,7 @@ ferramentas na sessão viva, sem reiniciar a engine:
 
 ```bash
 vael-tools debug --world world.bsn lua '_G.viber_dev = true return true'
-vael-tools debug --world world.bsn input key f1     # ou o MCP viber_input
+vael-tools debug --world world.bsn key f1         # ou o MCP `brp_extras`
 ```
 
 Não há save carregado: o estado começa limpo, como no **Novo Jogo** (o kit

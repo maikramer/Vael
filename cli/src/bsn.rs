@@ -85,7 +85,10 @@ fn resolve_root(paths: &[PathBuf], root: Option<&Path>) -> Result<PathBuf> {
     } else {
         first
     };
-    Ok(bevy_ext_world::project::root_of(&anchor))
+    // A raiz do PROJETO (o ancestral com `world.bsn`/`config.yaml`), não a
+    // pasta do módulo: os `<Include src="/world/…">` de um
+    // `world/cities/*.bsn` resolvem como no runtime.
+    Ok(crate::analyze::project_root_of(&anchor))
 }
 
 fn convert_files(

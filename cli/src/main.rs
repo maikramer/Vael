@@ -14,6 +14,8 @@ use clap::{Parser, Subcommand};
 mod debug;
 mod playbook;
 mod run;
+#[cfg(test)]
+mod testutil;
 
 #[derive(Parser)]
 #[command(

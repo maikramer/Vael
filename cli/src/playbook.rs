@@ -20,6 +20,12 @@
 //!
 //! O executor para no primeiro passo que falha (salvo `--continue-on-error`)
 //! e devolve exit 1; o transcript diz exatamente que passo e porquê.
+//!
+//! Caminhos relativos dentro do playbook (`screenshot.path`, `expect.file`)
+//! resolvem contra a pasta do PRÓPRIO playbook; um caminho que só exista
+//! relativo ao cwd (playbooks antigos) continua a valer. No transcript,
+//! `steps` é o nº de passos DECLARADOS e `executed` o nº que correu (com
+//! `--continue-on-error` são iguais; numa paragem, `executed < steps`).
 
 use std::path::{Path, PathBuf};
 use std::process::ExitCode;
@@ -32,8 +38,8 @@ use serde_json::{Value, json};
 use bevy_ext_bridge_protocol::BridgeClient;
 
 use crate::debug::{
-    capture_screenshot, expect_check, lua_response, poll_ready, scene_change, send_key,
-    state_snapshot, until_poll,
+    capture_screenshot, expect_check, lua_response, poll_ready_for_scene, scene_change,
+    scene_marker, send_key, state_snapshot, until_poll,
 };
 
 /// Passos do playbook. A tag `op` escolhe a variante (`snake_case`).
@@ -126,7 +132,10 @@ struct Entry {
 struct Transcript {
     name: Option<String>,
     ok: bool,
+    /// Passos DECLARADOS no ficheiro (o `executed` é o que correu de facto).
     steps: usize,
+    /// Passos executados até ao fim (ou até à paragem).
+    executed: usize,
     elapsed_ms: u128,
     entries: Vec<Entry>,
 }
@@ -148,11 +157,14 @@ pub fn execute(
     }
 
     let started = Instant::now();
+    // Pasta do playbook: os caminhos relativos dos passos resolvem contra ela
+    // (não contra o cwd de quem lança o CLI).
+    let base = playbook_base(file);
     let mut entries = Vec::new();
     let mut any_failed = false;
     for (index, step) in playbook.steps.iter().enumerate() {
         let at = Instant::now();
-        let outcome = run_step(client, port, step);
+        let outcome = run_step(client, port, step, &base);
         let ok = outcome.is_ok();
         let (error, result) = match outcome {
             Ok(result) => (None, result),
@@ -195,6 +207,7 @@ pub fn execute(
         name: playbook.name,
         ok: !any_failed,
         steps: playbook.steps.len(),
+        executed: entries.len(),
         elapsed_ms: started.elapsed().as_millis(),
         entries,
     };
@@ -211,10 +224,49 @@ pub fn execute(
     })
 }
 
+/// Pasta do playbook (o cwd quando o ficheiro não tem pasta — `x.json`).
+fn playbook_base(file: &Path) -> PathBuf {
+    match file.parent() {
+        Some(parent) if !parent.as_os_str().is_empty() => parent.to_path_buf(),
+        _ => PathBuf::from("."),
+    }
+}
+
+/// Resolve um caminho de um passo relativo à pasta do playbook, aceitando os
+/// playbooks antigos que o punham relativo ao cwd: um caminho que já existe
+/// (ou, para escrita, cuja pasta existe) no cwd ganha; senão é relativo ao
+/// playbook.
+fn resolve_step_path(base: &Path, path: &Path, writing: bool) -> PathBuf {
+    // Absoluto, ou o playbook está no cwd (nada a ancorar).
+    if path.is_absolute() || base == Path::new(".") {
+        return path.to_path_buf();
+    }
+    let anchored = base.join(path);
+    let present = |candidate: &Path| {
+        if writing {
+            candidate
+                .parent()
+                .map(Path::is_dir)
+                .unwrap_or_else(|| candidate.is_dir())
+        } else {
+            candidate.is_file()
+        }
+    };
+    if present(&anchored) || !present(path) {
+        // O playbook é o sítio certo — um caminho que não existe em lado
+        // nenhum fica ancorado (o erro diz onde o procurar).
+        anchored
+    } else {
+        // Playbook antigo que escrevia/lia do cwd.
+        path.to_path_buf()
+    }
+}
+
 fn run_step(
     client: &BridgeClient,
     port: u16,
     step: &PlaybookStep,
+    base: &Path,
 ) -> Result<Value> {
     match step {
         PlaybookStep::Lua { code } => Ok(lua_response(client, code)?
@@ -291,9 +343,13 @@ fn run_step(
         PlaybookStep::Expect { expect, file } => {
             let raw = match (expect, file) {
                 (Some(expect), None) => Some(serde_json::to_string(expect)?),
-                (None, Some(file)) => Some(std::fs::read_to_string(file).with_context(
-                    || format!("a ler {}", file.display()),
-                )?),
+                (None, Some(file)) => {
+                    let file = resolve_step_path(base, file, false);
+                    Some(
+                        std::fs::read_to_string(&file)
+                            .with_context(|| format!("a ler {}", file.display()))?,
+                    )
+                }
                 (Some(_), Some(_)) => bail!("usa `expect` ou `file`, não ambos"),
                 (None, None) => None,
             };
@@ -305,7 +361,11 @@ fn run_step(
             Ok(verdict)
         }
         PlaybookStep::Screenshot { path } => {
-            let path = path.clone().unwrap_or_else(|| "screenshot.png".into());
+            let path = resolve_step_path(
+                base,
+                &path.clone().unwrap_or_else(|| "screenshot.png".into()),
+                true,
+            );
             let (png, _source) = capture_screenshot(client, 3000)?;
             std::fs::write(&path, &png)
                 .with_context(|| format!("a escrever {}", path.display()))?;
@@ -329,10 +389,21 @@ fn run_step(
             wait,
             wait_timeout,
         } => {
+            let wait = wait.unwrap_or(true);
+            // Marca a cena ANTES da troca: o `ready` do ping pode ser o da
+            // cena anterior por um frame (o mesmo cuidado do `debug scene`).
+            let before = wait.then(|| scene_marker(client));
             let requested = scene_change(client, name, entry.as_deref())?;
-            let mut result = json!({ "requested": name, "change": requested });
-            if wait.unwrap_or(true) {
-                let ready = poll_ready(client, port, wait_timeout.unwrap_or(300), true)?;
+            let mut result = json!({ "requested": name, "entry": entry, "change": requested });
+            if let Some(before) = &before {
+                let ready = poll_ready_for_scene(
+                    client,
+                    port,
+                    name,
+                    before,
+                    wait_timeout.unwrap_or(300),
+                    true,
+                )?;
                 result["ready"] = json!(ready);
                 if !ready {
                     bail!("cena `{name}` não ficou pronta no timeout");
@@ -340,5 +411,80 @@ fn run_step(
             }
             Ok(result)
         }
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    #[test]
+    fn step_paths_resolve_against_the_playbook_folder() {
+        let dir = tempfile::tempdir().unwrap();
+        let base = dir.path().join("qa/playbooks");
+        std::fs::create_dir_all(base.join("out")).unwrap();
+        // Escrita: a pasta existe ao lado do playbook → ancora lá.
+        assert_eq!(
+            resolve_step_path(&base, Path::new("out/fim.png"), true),
+            base.join("out/fim.png")
+        );
+        // Leitura: o ficheiro existe ao lado do playbook.
+        std::fs::write(base.join("expect.json"), "{}").unwrap();
+        assert_eq!(
+            resolve_step_path(&base, Path::new("expect.json"), false),
+            base.join("expect.json")
+        );
+        // Retrocompat: um caminho que só existe relativo ao cwd (o playbook
+        // antigo escrevia no cwd).
+        assert_eq!(
+            resolve_step_path(&base, Path::new("Cargo.toml"), false),
+            Path::new("Cargo.toml")
+        );
+        // Um caminho que não existe em lado nenhum fica ancorado (o erro diz
+        // onde o procurar) e um absoluto não é tocado.
+        assert_eq!(
+            resolve_step_path(&base, Path::new("falta.json"), false),
+            base.join("falta.json")
+        );
+        assert_eq!(
+            resolve_step_path(&base, Path::new("/tmp/x.png"), true),
+            Path::new("/tmp/x.png")
+        );
+        // Playbook no cwd: nada a ancorar.
+        assert_eq!(
+            resolve_step_path(Path::new("."), Path::new("out/fim.png"), true),
+            Path::new("out/fim.png")
+        );
+    }
+
+    #[test]
+    fn transcript_counts_declared_and_executed_steps() {
+        // Regressão: o transcript dizia `steps: 3` com 2 `entries` e nada
+        // dizia quantos passos tinham corrido.
+        let dir = tempfile::tempdir().unwrap();
+        let file = dir.path().join("playbook.json");
+        std::fs::write(
+            &file,
+            r#"{"steps":[
+                {"op":"lua","code":"return 1"},
+                {"op":"lua","code":"return 2"},
+                {"op":"lua","code":"return 3"}
+            ]}"#,
+        )
+        .unwrap();
+        let port = crate::testutil::mock_bridge(vec![
+            ("viber.lua", Ok(json!({ "ok": true, "result": 1 }))),
+            ("viber.lua", Err("lua: falhou")),
+        ]);
+        let client = BridgeClient::localhost(port);
+        let transcript_path = dir.path().join("transcript.json");
+        let code = execute(&client, port, &file, false, true, Some(&transcript_path)).unwrap();
+        assert_eq!(code, ExitCode::FAILURE);
+        let transcript: Value =
+            serde_json::from_str(&std::fs::read_to_string(&transcript_path).unwrap()).unwrap();
+        assert_eq!(transcript["steps"], 3);
+        assert_eq!(transcript["executed"], 2);
+        assert_eq!(transcript["entries"].as_array().unwrap().len(), 2);
+        assert_eq!(transcript["ok"], false);
     }
 }

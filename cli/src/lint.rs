@@ -2,11 +2,11 @@
 //! classifica os problemas; as regras de scripts/cinematics do lint antigo
 //! entram por cima sem mudar o formato `Finding`.
 
-use std::path::Path;
+use std::path::{Path, PathBuf};
 
 use serde::Serialize;
 
-use crate::analyze::{analyze, resolve_world_path};
+use crate::analyze::{analyze, project_root_of, resolve_world_path};
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Serialize)]
 #[serde(rename_all = "lowercase")]
@@ -66,13 +66,11 @@ pub fn lint(input: Option<&Path>) -> LintReport {
             message: format!("asset em falta: {missing}"),
         });
     }
-    // Root = a pasta do mundo RESOLVIDO (o input cru pode ser uma pasta ou
-    // outro ficheiro; `scripts/` vive ao lado do mundo, como no `analyze`).
-    let world = resolve_world_path(input).ok();
-    let root = world
-        .as_deref()
-        .and_then(Path::parent)
-        .unwrap_or_else(|| Path::new("."));
+    // Root = a raiz do PROJETO (a pasta do ficheiro resolvido é a do módulo
+    // quando este vive em `world/**`; `scripts/` vive na raiz do jogo).
+    let root = resolve_world_path(input)
+        .map(|world| project_root_of(&world))
+        .unwrap_or_else(|_| PathBuf::from("."));
     for script in report.scripts {
         let rel = script.trim_start_matches('/');
         if !root.join("scripts").join(rel).is_file() {
