@@ -410,6 +410,18 @@ function M.classify(text, parsed, near_hostiles, opts)
   }
 end
 
+-- Timestamps no `viber.game()` são uptime do PROCESSO (o save guarda o
+-- número). Num arranque novo o uptime recomeça do zero, por isso um valor
+-- muito à frente do relógio atual é de outra execução e não vale como
+-- recarga/buff a decorrer. `window` é o máximo real de cada efeito.
+local function live_until(value, now, window)
+  local t = tonumber(value) or 0
+  if t - now > window then
+    return 0
+  end
+  return t
+end
+
 function M.cast(text, parsed)
   local trimmed = tostring(text or ""):gsub("^%s+", ""):gsub("%s+$", "")
   if trimmed == "" then
@@ -423,7 +435,10 @@ function M.cast(text, parsed)
 
   local g = viber.game()
   local now = (viber.time and viber.time()) or 0
-  local cd_until = tonumber(g.voice_cd_until) or 0
+  local cd_until = live_until(g.voice_cd_until, now, 30)
+  if cd_until == 0 and g.voice_cd_until ~= nil then
+    g.voice_cd_until = nil
+  end
   if now < cd_until then
     local rem = math.max(1, math.ceil(cd_until - now))
     viber.toast("A tua voz ainda ressoa (" .. tostring(rem) .. "s).")
@@ -448,7 +463,10 @@ function M.cast(text, parsed)
     return { ok = false, reason = "empty" }
   end
 
-  local stone_until = tonumber(g.voice_stone_boost_until) or 0
+  local stone_until = live_until(g.voice_stone_boost_until, now, 120)
+  if stone_until == 0 and g.voice_stone_boost_until ~= nil then
+    g.voice_stone_boost_until = nil
+  end
   local boosted = now < stone_until
   local cd_secs = boosted and 3.0 or 6.0
   g.voice_cd_until = now + cd_secs

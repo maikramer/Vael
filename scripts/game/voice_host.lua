@@ -28,6 +28,12 @@ local function handle_pact_kill(kind, _id)
   local pact_kind = g.voice_pact_kind
   local pact_until = tonumber(g.voice_pact_until) or 0
   local now = (viber.time and viber.time()) or 0
+  -- O prazo do Pacto é uptime do PROCESSO (vai no save como número): um
+  -- valor no futuro é de outra execução e não pode manter o pacto vivo por
+  -- minutos depois de carregar um save.
+  if pact_until - now > 120 then
+    pact_until = 0
+  end
   if not pact_kind or pact_kind == "" or now >= pact_until then
     return
   end
