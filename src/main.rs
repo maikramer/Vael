@@ -72,11 +72,24 @@ fn main() -> Result<()> {
     }
     let args = Args::parse();
 
+    // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos
+    // checkouts ainda não convertidos. Resolvido ANTES dos comandos que não
+    // abrem a App: `--export-settings`/`--qa-sim` leem/escrevem ficheiros do
+    // projeto e têm de usar a raiz DELE (a pasta do mundo), não a cwd de quem
+    // os invoca.
+    let world = args.world.clone().unwrap_or_else(|| {
+        if Path::new("world.bsn").is_file() {
+            PathBuf::from("world.bsn")
+        } else {
+            PathBuf::from("world.xml")
+        }
+    });
+    let project_root = project_root(&world)?;
+
     // Escreve `world/settings/*.bsn` com os valores de antes da cena
     // (ambiente, PostFX e espécies de flora) e sai.
     if args.export_settings {
-        let root = std::env::current_dir()?;
-        for path in vael::settings::export_settings(&root, args.force)? {
+        for path in vael::settings::export_settings(&project_root, args.force)? {
             println!("{}", path.display());
         }
         return Ok(());
@@ -84,19 +97,9 @@ fn main() -> Result<()> {
 
     // Simulação de cenários: só regras e conteúdo, sem engine nem GPU.
     if let Some(name) = args.qa_sim.as_deref() {
-        let root = std::env::current_dir()?;
-        std::process::exit(vael::qa::run_cli(&root, name, args.json));
+        std::process::exit(vael::qa::run_cli(&project_root, name, args.json));
     }
 
-    // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos
-    // checkouts ainda não convertidos.
-    let world = args.world.unwrap_or_else(|| {
-        if Path::new("world.bsn").is_file() {
-            PathBuf::from("world.bsn")
-        } else {
-            PathBuf::from("world.xml")
-        }
-    });
     let mut entry = args.entry;
     let mut scene = args.scene;
     let bridge = args.bridge;
@@ -293,6 +296,21 @@ fn brp_extras_enabled() -> bool {
     )
 }
 
+/// Raiz do projeto de um mundo: a pasta com `config.yaml`, `data/`, `quests/`
+/// e `world/` — a do próprio mundo quando ele é a raiz, ou a que o `Project`
+/// descobre para uma cena em `scenes/`.
+///
+/// Os comandos headless (`--export-settings`, `--qa-sim`) resolvem por aqui e
+/// não pela cwd: `vael <outro-sitio>/world.bsn --qa-sim all` tem de ler os
+/// cenários/conteúdo DELE, mesmo quando o processo arranca noutra pasta.
+fn project_root(world: &Path) -> Result<PathBuf> {
+    let requested = std::path::absolute(world)
+        .map_err(|err| anyhow::anyhow!("mundo inválido: {} ({err})", world.display()))?;
+    viber::app::world_base_dir(&requested)
+        .or_else(|| requested.parent().map(Path::to_path_buf))
+        .ok_or_else(|| anyhow::anyhow!("não foi possível resolver a raiz do projeto"))
+}
+
 /// `WxH` (ex.: `1280x720`) → tamanho físico da janela. Teto defensivo: um
 /// valor absurdo na env não pode abrir uma janela de 100000 px.
 fn parse_resolution(raw: &str) -> Option<(u32, u32)> {
@@ -351,5 +369,21 @@ mod tests {
         assert!(Args::try_parse_from(["vael", "--resolution", "100x100"]).is_err());
         assert!(Args::try_parse_from(["vael", "--resolution", "abc"]).is_err());
         assert!(Args::try_parse_from(["vael", "--resolution", "1280x720"]).is_ok());
+    }
+
+    /// A raiz dos comandos headless vem do mundo, não da cwd — e uma cena em
+    /// `scenes/` resolve para a raiz do projeto.
+    #[test]
+    fn a_raiz_do_projeto_vem_do_mundo() {
+        let base = Path::new(env!("CARGO_MANIFEST_DIR"));
+        let expected = base.canonicalize().expect("raiz canónica");
+        for world in ["world.bsn", "scenes/menu.bsn"] {
+            let root = project_root(&base.join(world)).expect("raiz");
+            assert_eq!(
+                root.canonicalize().expect("canónica"),
+                expected,
+                "{world} tem de resolver para a raiz do projeto"
+            );
+        }
     }
 }

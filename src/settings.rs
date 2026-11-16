@@ -190,8 +190,9 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
             }
         }
     }
-    std::fs::create_dir_all(&dir).with_context(|| format!("criar {}", dir.display()))?;
-    let mut written = Vec::new();
+    // Emite e VALIDA os quatro antes do primeiro `write`: uma falha de
+    // validação a meio também não pode deixar a exportação a metade.
+    let mut contents = Vec::with_capacity(files.len());
     for (name, body) in files {
         let path = dir.join(name);
         let text = format!(
@@ -199,6 +200,11 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
              // o inspector e os painéis da extensão vael_jackdaw gravam aqui.\n\n{body}"
         );
         jackdaw_bsn_check(&path, &text)?;
+        contents.push((path, text));
+    }
+    std::fs::create_dir_all(&dir).with_context(|| format!("criar {}", dir.display()))?;
+    let mut written = Vec::new();
+    for (path, text) in contents {
         std::fs::write(&path, text).with_context(|| format!("gravar {}", path.display()))?;
         written.push(path);
     }
