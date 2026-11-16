@@ -277,6 +277,12 @@ function on_update(dt)
   end
   local has, px, py, pz = viber.player_position()
   if not has then return end
+  -- Herói caído: os 2,2 s de `dying` antecedem o modal de morte e o [E]/1..9
+  -- ainda chegam aqui nessa janela. Um cadáver não conversa — e o grafo pode
+  -- aceitar/entregar quests (`quest_accept`/`quest_turn_in`), que pagam
+  -- ouro/XP/itens. Mesmo portão dos dadores e dos POIs.
+  local alive, hp = rules.player_hp()
+  if alive and hp <= 0 then return end
   local x, y, z = viber.position()
   local dist = math.sqrt((px - x) ^ 2 + (pz - z) ^ 2)
   if dist < viber.prop("talk_range") then
