@@ -316,6 +316,19 @@ struct SceneFadeOverlay;
 #[reflect(Resource)]
 pub struct PortalGrace(HashSet<Entity>);
 
+/// Corre o `SceneLoad` do runtime de terreno (`bevy_ext_terrain_runtime`:
+/// preload de texturas, `bootstrap` e marcação das raízes). É um label
+/// PRÓPRIO do crate (não depende do `bevy_ext_engine`), por isso o
+/// `run_schedule(SceneLoad)` da troca de cena não o corria: depois de
+/// menu → main o `TerrainRuntime` nunca voltava, os spawn groups ficavam
+/// presos ("a povoar o mundo...") até ao teto e o ecrã ficava preto.
+/// Entra na cadeia do `SceneLoad` do motor entre o `spawn::startup` (que
+/// publica o `PendingTerrain`) e o `nav::publish_nav_ground` (que lê o
+/// terreno).
+pub fn run_terrain_scene_load(world: &mut World) {
+    let _ = world.try_run_schedule(bevy_ext_terrain_runtime::host::SceneLoad);
+}
+
 /// Raízes existentes antes do `terrain::runtime::bootstrap` (ver [`mark_bootstrap_roots`]).
 #[derive(Resource, Debug, Default, Reflect)]
 #[reflect(Resource)]
@@ -853,21 +866,34 @@ fn stop_scene_loops(world: &mut World, doomed: &[(Entity, Option<String>)]) {
 pub fn unload_scene(world: &mut World) -> SweepReport {
     let started = world.resource::<SceneLoader>().started_tick;
     let mut query = world
-        .query_filtered::<(Entity, Has<SceneEntity>, SpawnDetails, Option<&Name>), (
+        .query_filtered::<(
+            Entity,
+            Has<SceneEntity>,
+            // O runtime de terreno extraído marca as SUAS raízes (o nó
+            // `terrain`, água, estradas…) com o `SceneEntity` do crate — um
+            // tipo distinto deste. Sem o contar, o terreno do menu sobrevivia
+            // à troca para `main` (dois terrenos sobrepostos: lajes
+            // flutuantes e o relevo errado ao longe).
+            Has<bevy_ext_terrain_runtime::host::SceneEntity>,
+            SpawnDetails,
+            Option<&Name>,
+        ), (
             // UI roots têm Node, não Transform: ficavam fora do sweep e o
             // HUD da cena anterior sobrevivia ao change_scene.
             Or<(With<Transform>, With<bevy::ui::Node>)>,
             Without<ChildOf>,
             Without<Persistent>,
+            Without<bevy_ext_terrain_runtime::host::Persistent>,
         )>();
     let this_run = world.change_tick();
     let doomed: Vec<(Entity, Option<String>)> = query
         .iter(world)
-        .filter(|(_, tagged, details, _)| {
+        .filter(|(_, tagged, host_tagged, details, _)| {
             *tagged
+                || *host_tagged
                 || started.is_some_and(|tick| details.spawn_tick().is_newer_than(tick, this_run))
         })
-        .map(|(entity, _, _, name)| (entity, name.map(|n| n.as_str().to_owned())))
+        .map(|(entity, _, _, _, name)| (entity, name.map(|n| n.as_str().to_owned())))
         .collect();
     let mut counts: std::collections::HashMap<String, usize> = Default::default();
     for (_, name) in &doomed {

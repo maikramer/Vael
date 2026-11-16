@@ -222,6 +222,12 @@ impl Plugin for VaelEnvironmentPlugin {
             // Desfaz o kick do frame anterior antes do `auto_exposure` do crate
             // ler a exposição (senão o kick realimentava a adaptação).
             .add_systems(PreUpdate, undo_exposure_kick)
+            // O céu sobrevive às trocas de cena (ver `persist_sky`).
+            .add_observer(persist_on_add::<bevy_elements::Sun>)
+            .add_observer(persist_on_add::<bevy_elements::Moon>)
+            .add_observer(persist_on_add::<bevy_elements::GroundFog>)
+            .add_observer(persist_on_add::<bevy::light::Atmosphere>)
+            .add_systems(PostStartup, persist_sky_meshes)
             // Gravar o `environment.bsn` com o jogo a correr aplica-se já.
             .add_systems(Update, apply_scene_settings.before(ElementsSystems::Clock))
             // O clima do crate alimenta o `WeatherState` da engine.
@@ -258,6 +264,15 @@ impl Plugin for VaelEnvironmentPlugin {
                     .after(viber::worldsys::interior_lighting_drive)
                     .after(viber::worldsys::interior_lighting_apply),
             )
+            // Piso de exposição nocturna (ver `night_exposure_floor`).
+            .add_systems(
+                Update,
+                night_exposure_floor
+                    .after(ElementsSystems::Celestial)
+                    .before(collect_env_info),
+            )
+            // Cascatas do sol pelo preset do jogo, por cima das do crate.
+            .add_systems(Update, fit_vael_sun_cascades.after(ElementsSystems::Celestial))
             // A névoa da engine é inserida por `biome_fog_system` (Update,
             // via Commands); este passe corre depois de os comandos assentarem.
             .add_systems(PostUpdate, (apply_weather_visibility, apply_exposure_kick))
@@ -277,6 +292,66 @@ impl Plugin for VaelEnvironmentPlugin {
             weather = ?start_weather_or(&scene),
             "vael: ambiente `bevy_elements` ligado"
         );
+    }
+}
+
+/// As entidades de céu do `bevy_elements` (sol, lua, atmosfera, névoa,
+/// estrelas, disco da lua) são raízes que o crate cria UMA vez. Sem
+/// `Persistent`, o `unload_scene` de uma troca de cena (menu → main,
+/// interiores) apagava-as e o crate não as recria (a atmosfera tem um
+/// "já spawnei") — depois de "Continuar" o céu ficava preto.
+fn persist_on_add<C: Component>(add: On<Add<C>>, mut commands: Commands) {
+    if let Ok(mut entity) = commands.get_entity(add.entity) {
+        entity.insert(viber::scene_loader::Persistent);
+    }
+}
+
+/// Estrelas e disco da lua: marcadores privados do crate, nascem no
+/// `Startup` — reconhecem-se pelo nome.
+fn persist_sky_meshes(mut commands: Commands, named: Query<(Entity, &Name), Without<ChildOf>>) {
+    for (entity, name) in &named {
+        if matches!(name.as_str(), "Stars" | "Moon disc") {
+            commands.entity(entity).insert(viber::scene_loader::Persistent);
+        }
+    }
+}
+
+/// EV100 mínimo da câmara de jogo (noite). O `auto_exposure` do crate é
+/// físico: ao luar mede EV ≈ −5 e multiplica a imagem ~2¹⁴ face ao dia. As
+/// luzes práticas, as chamas e os materiais do jogo estão calibrados para a
+/// exposição antiga (EV ~7–10) — a noite inteira saía branca/verde estourada
+/// (visto 2026-11-16 às 23:00 na vila, com e sem bloom). A lanterna do
+/// viajante (600 klm a 2,2 m do herói) e as práticas foram afinadas para a
+/// câmara a EV ~9,7: abaixo de ~8 o herói brilhava e o frame lavava. A 8 o
+/// chão ao luar fica escuro e as lanternas fazem a noite.
+/// `VAEL_NIGHT_EV_FLOOR` afina (QA).
+const NIGHT_EV_FLOOR: f32 = 8.0;
+
+fn night_ev_floor() -> f32 {
+    static FLOOR: std::sync::OnceLock<f32> = std::sync::OnceLock::new();
+    *FLOOR.get_or_init(|| {
+        std::env::var("VAEL_NIGHT_EV_FLOOR")
+            .ok()
+            .and_then(|raw| raw.trim().parse::<f32>().ok())
+            .filter(|v| v.is_finite())
+            .unwrap_or(NIGHT_EV_FLOOR)
+    })
+}
+
+/// Aplica [`NIGHT_EV_FLOOR`] às câmaras que o crate expõe sozinho (os
+/// interiores desligam o `auto_exposure` e fixam o seu EV) e republica o
+/// valor real no `ElementsExposure`, que é o que o resto lê para equilibrar.
+fn night_exposure_floor(
+    mut cameras: Query<(&ElementsCamera, &mut bevy::camera::Exposure)>,
+    mut published: ResMut<ElementsExposure>,
+) {
+    let floor = night_ev_floor();
+    for (camera, mut exposure) in &mut cameras {
+        if camera.auto_exposure && exposure.ev100 < floor {
+            exposure.ev100 = floor;
+            published.ev100 = floor;
+            published.exposure = bevy::camera::Exposure { ev100: floor }.exposure();
+        }
     }
 }
 
@@ -616,6 +691,11 @@ fn apply_exposure_kick(
 /// que sem atmosfera a camada de nuvens não é desenhada nessa vista — era ela
 /// que tapava o celeiro de branco em tempo nublado. A sala volta ao
 /// `GlobalAmbientLight` autoral e às PointLights; fora, a atmosfera volta.
+///
+/// Escreve só o que muda: uma escrita em `ElementsCamera` marca o componente
+/// `Changed` e o `redress_cameras` do crate volta a vestir a câmara nesse
+/// frame (inserts/removes e `ClearColor`). O mesmo vale para `Exposure`,
+/// `AmbientLight` e os mapas de ambiente, que têm outros donos.
 fn interior_elements_lighting(
     interior: Option<Res<InteriorLighting>>,
     global: Option<Res<GlobalAmbientLight>>,
@@ -634,37 +714,72 @@ fn interior_elements_lighting(
     let inside = interior.as_deref().is_some_and(|state| state.active);
     for (mut ambient, mut environment, mut exposure, mut camera, mut probe) in &mut cameras {
         if inside {
-            camera.atmosphere = false;
-            if let Some(environment) = environment.as_deref_mut() {
+            if camera.atmosphere {
+                camera.atmosphere = false;
+            }
+            let atmosphere_dark = environment
+                .as_deref()
+                .is_some_and(|environment| environment.intensity != INTERIOR_ATMOSPHERE_INTENSITY);
+            if atmosphere_dark
+                && let Some(environment) = environment.as_deref_mut()
+            {
                 environment.intensity = INTERIOR_ATMOSPHERE_INTENSITY;
             }
-            if let Some(probe) = probe.as_deref_mut() {
+            let probe_on = probe
+                .as_deref()
+                .is_some_and(|probe| probe.intensity != 0.0);
+            if probe_on
+                && let Some(probe) = probe.as_deref_mut()
+            {
                 probe.intensity = 0.0;
             }
             if let Some(global) = global.as_deref() {
-                ambient.color = global.color;
-                ambient.brightness = global.brightness;
+                if ambient.color != global.color {
+                    ambient.color = global.color;
+                }
+                if ambient.brightness != global.brightness {
+                    ambient.brightness = global.brightness;
+                }
             }
             // O `auto_exposure` do crate mede o CÉU (EV de dia); dentro da
             // sala isso deixava as lâmpadas 3-4 stops subexpostas. Desligar o
             // medidor NA CÂMARA é o que garante que ninguém reescreve o EV.
-            camera.auto_exposure = false;
-            exposure.ev100 = INTERIOR_EV100;
+            if camera.auto_exposure {
+                camera.auto_exposure = false;
+            }
+            if exposure.ev100 != INTERIOR_EV100 {
+                exposure.ev100 = INTERIOR_EV100;
+            }
             // O `interior_lighting_apply` da engine zero os direcionais, mas o
             // `drive_lights` do crate reescreve-os no set `Celestial`; este
-            // sistema corre DEPOIS dele, por isso ganha.
+            // sistema corre DEPOIS dele, por isso ganha. Aqui a escrita é por
+            // frame de propósito: é o único valor que o crate reescreve.
             for mut light in &mut suns {
                 light.illuminance = 0.0;
             }
         } else {
-            camera.atmosphere = true;
-            if let Some(environment) = environment.as_deref_mut() {
+            if !camera.atmosphere {
+                camera.atmosphere = true;
+            }
+            let atmosphere_lit = environment
+                .as_deref()
+                .is_some_and(|environment| environment.intensity != 1.0);
+            if atmosphere_lit
+                && let Some(environment) = environment.as_deref_mut()
+            {
                 environment.intensity = 1.0;
             }
-            if let Some(probe) = probe.as_deref_mut() {
+            let probe_lit = probe
+                .as_deref()
+                .is_some_and(|probe| probe.intensity != 1.0);
+            if probe_lit
+                && let Some(probe) = probe.as_deref_mut()
+            {
                 probe.intensity = 1.0;
             }
-            camera.auto_exposure = true;
+            if !camera.auto_exposure {
+                camera.auto_exposure = true;
+            }
             // O `update_ambient`/`drive_lights`/`auto_exposure` do crate
             // reescrevem o resto.
         }
@@ -755,8 +870,12 @@ fn interior_precipitation(
             commands.entity(entity).despawn();
             continue;
         }
-        transform.translation = center;
-        blocker.half_extents = half_extents;
+        if transform.translation != center {
+            transform.translation = center;
+        }
+        if blocker.half_extents != half_extents {
+            blocker.half_extents = half_extents;
+        }
         found = true;
     }
     if !found {
@@ -1062,5 +1181,100 @@ mod tests {
         let biome = 0.0008;
         assert!((weather_fog_density(biome, 40_000.0) - biome).abs() < 1e-9);
         assert!(weather_fog_density(0.0001, 300.0) > 0.006);
+    }
+
+    /// Só a TRANSIÇÃO escreve na câmara: um `ElementsCamera` tocado todos os
+    /// frames faz o `redress_cameras` do crate voltar a vestir a câmara sempre
+    /// (inserts/removes e `ClearColor`).
+    #[test]
+    fn interior_lighting_only_writes_on_a_change() {
+        use bevy::ecs::system::RunSystemOnce as _;
+
+        let mut world = World::default();
+        world.insert_resource(InteriorLighting {
+            active: true,
+            ..default()
+        });
+        world.insert_resource(GlobalAmbientLight {
+            color: Color::WHITE,
+            brightness: 2_000.0,
+            ..default()
+        });
+        let camera = world
+            .spawn((
+                ElementsCamera::default(),
+                AmbientLight::default(),
+                bevy::camera::Exposure::default(),
+                AtmosphereEnvironmentMapLight::default(),
+            ))
+            .id();
+
+        world.run_system_once(interior_elements_lighting).unwrap();
+        world.flush();
+        let inside = world.get::<ElementsCamera>(camera).expect("câmara");
+        assert!(!inside.atmosphere, "dentro da sala a atmosfera sai");
+        assert!(!inside.auto_exposure, "e o medidor de céu desliga");
+        let first = world
+            .get_entity(camera)
+            .unwrap()
+            .get_change_ticks::<ElementsCamera>()
+            .unwrap()
+            .changed;
+
+        world.run_system_once(interior_elements_lighting).unwrap();
+        world.flush();
+        let second = world
+            .get_entity(camera)
+            .unwrap()
+            .get_change_ticks::<ElementsCamera>()
+            .unwrap()
+            .changed;
+        assert_eq!(
+            first, second,
+            "sem transição não há escrita em `ElementsCamera` (nem `Changed` por frame)"
+        );
+
+        // Sair da sala volta a ligar atmosfera/exposição automática.
+        world.resource_mut::<InteriorLighting>().active = false;
+        world.run_system_once(interior_elements_lighting).unwrap();
+        world.flush();
+        let outside = world.get::<ElementsCamera>(camera).expect("câmara");
+        assert!(outside.atmosphere && outside.auto_exposure);
+    }
+}
+
+/// O `bevy_elements` dá ao sol 4 cascatas até 600 m (para o nevoeiro
+/// volumétrico receber luz até ao horizonte) e reimpõe-nas em cada frame no
+/// `fit_shadow_cascades`. O Vael tem o volumétrico desligado
+/// (`postfx.disabled`), e o passe de sombras é draw-bound: a 600 m varria
+/// todas as malhas do mapa — **10,6 ms de GPU** medidos a 2026-11-15 (RTX
+/// 4050, metade do frame). Aqui reaplica-se o alcance do preset da engine
+/// (`VIBER_SHADOW_CASCADES`/`VIBER_SHADOW_DISTANCE`; `equilibrado` = 2
+/// cascatas, 110 m). `VAEL_ELEMENTS_CASCADES=1` devolve as do crate (A/B).
+fn fit_vael_sun_cascades(
+    mut suns: Query<&mut bevy::light::CascadeShadowConfig, With<bevy_elements::Sun>>,
+    mut want: Local<Option<Option<bevy::light::CascadeShadowConfig>>>,
+) {
+    let want = want.get_or_insert_with(|| {
+        if std::env::var("VAEL_ELEMENTS_CASCADES").ok().as_deref() == Some("1") {
+            return None;
+        }
+        Some(
+            bevy::light::CascadeShadowConfigBuilder {
+                num_cascades: viber::recipes::sun_shadow_cascades(),
+                first_cascade_far_bound: 12.0,
+                maximum_distance: viber::recipes::sun_shadow_distance(),
+                ..default()
+            }
+            .build(),
+        )
+    });
+    let Some(want) = want.as_ref() else {
+        return;
+    };
+    for mut config in &mut suns {
+        if config.bounds != want.bounds || config.minimum_distance != want.minimum_distance {
+            *config = want.clone();
+        }
     }
 }
