@@ -134,6 +134,36 @@ function on_update(_dt)
           talk.say("Quando quiseres contar, estou aqui.")
         end,
       })
+    elseif p and p.report then
+      -- Sem o d1, o relato corre pelo NLU (o backend antigo da barra):
+      -- `quest_turn_in_parley` valida a palavra e é o ÚNICO caminho da
+      -- entrega parcial (`parley.partial`). Sem isto o único chamador do
+      -- `partial` era código morto e os 3 dadores de collect entregavam
+      -- tudo de uma vez.
+      talk.say(p.report.prompt or "Diz-me o que encontraste.")
+      talk.ask({
+        prompt = p.report.prompt,
+        example = p.report.example,
+        state = { npc = def and def.title or id, quest = id },
+        on_result = function(parsed, text)
+          local ok, msg = rules.quest_turn_in_parley(id, text, parsed)
+          if ok then
+            say(def and def.lines_complete, "Entregue.", 0)
+          else
+            talk.say(msg or p.report.hint or "Não te ouvi.")
+          end
+        end,
+        on_unavailable = function()
+          if rules.quest_turn_in(id) then
+            say(def and def.lines_complete, "Entregue.", 0)
+          else
+            say(def and def.lines_progress, "Ainda não tens o que a missão pede.", remaining)
+          end
+        end,
+        on_cancel = function()
+          talk.say("Quando quiseres contar, estou aqui.")
+        end,
+      })
     else
       if rules.quest_turn_in(id) then
         say(def and def.lines_complete, "Entregue.", 0)

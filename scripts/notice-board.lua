@@ -138,8 +138,21 @@ function on_update(dt)
       end
       local state = rules.quest_state(id)
       if state == "ready" then
-        if rules.quest_turn_in(id) then
+        -- Bounties de collect com `parley.partial` (city_wood): quando o
+        -- relato menciona o item, a entrega pode ser PARCIAL ("lenha, 3") —
+        -- consome n e reduz o que falta, como no dador. O relato que não
+        -- casa o expect (o d1 escolheu o cartaz por uma frase) entrega tudo.
+        local p = rules.quest_parley(id)
+        local ok, msg
+        if p and p.partial and p.report and rules.parley_matches(id, text, nil) then
+          ok, msg = rules.quest_turn_in_parley(id, text, nil)
+        else
+          ok = rules.quest_turn_in(id)
+        end
+        if ok then
           speak(id, "lines_complete")
+        elseif msg then
+          talk.say(msg)
         else
           speak(id, "lines_progress")
         end

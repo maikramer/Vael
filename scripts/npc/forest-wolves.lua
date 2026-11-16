@@ -91,6 +91,33 @@ function on_update(dt)
           talk.say("“Conta-me quando os tiveres.”")
         end,
       })
+    elseif p and p.report then
+      -- Sem o d1, o relato corre pelo NLU (`quest_turn_in_parley`): é o único
+      -- caminho da entrega parcial e mantém o fecho por relato.
+      talk.say(p.report.prompt or "Diz-me o que encontraste.")
+      talk.ask({
+        prompt = p.report.prompt,
+        example = p.report.example,
+        state = { npc = "Hald", quest = QUEST },
+        on_result = function(parsed, text)
+          local ok, msg = rules.quest_turn_in_parley(QUEST, text, parsed)
+          if ok then
+            say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+          else
+            talk.say(msg or p.report.hint or "Não te ouvi.")
+          end
+        end,
+        on_unavailable = function()
+          if rules.quest_turn_in(QUEST) then
+            say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
+          else
+            say_lines(def and def.lines_progress, "“Os lobos ainda andam por aí, forasteiro.”", remaining)
+          end
+        end,
+        on_cancel = function()
+          talk.say("“Conta-me quando os tiveres.”")
+        end,
+      })
     else
       if rules.quest_turn_in(QUEST) then
         say_lines(def and def.lines_complete, "“Bom trabalho. O gado respira.”", 0)
