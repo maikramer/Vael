@@ -26,28 +26,34 @@ O **juiz** é simbólico: requisitos, ordem e proibições. É determinístico,
 explicável e testável — e o modelo é o que permite escrever as ações e as
 regras em português em vez de comparar ids.
 
-## O protótipo: `hunter_oath`
+## As quatro regras (`data/verdicts.json`)
 
-Local: `judge-oath`, a 6 m do `bosque-shrine` (Bosque Encantado).
+Cada regra é um altar próprio: `script="judge-site.lua"` e a CustomProperty
+`verdict_id="<id>"` (o script lê `viber.prop("verdict_id")`). O primeiro [E]
+lê as marcas; os seguintes julgam o registo.
 
-- **Pista não verbal:** três props na ordem — uma estátua de lobo, um poço em
-  miniatura e um poste de tocha.
-- **Primeiro [E]:** o altar lê as marcas e abre a janela.
-- **Ações exigidas, por esta ordem:**
-  1. `matar` um lobo;
-  2. `visitar` o Poço da Encruzilhada (com [F] ou pela quest `forest_survey`);
-  3. `equipar` a tocha (V).
-- **Segundo [E]:** o juiz lê o registo desde a leitura das marcas e responde:
-  - `correct` (3/3, ordem certa) → 120 XP + vara abençoada;
-  - `partial` (falta uma ou a ordem ainda não fechou) → aviso, pode continuar;
-  - `wrong` (nenhuma marca ou ordem impossível) → a janela reinicia no
-    próximo [E].
+| id | site | `require` (com verbo, por esta ordem) | `forbid` | prémio |
+|---|---|---|---|---|
+| `hunter_oath` | `judge-oath` (Bosque Encantado, a ~6 m do `bosque-shrine`) | matar `wolf` → visitar `forest-crossroads-well` → equipar `torch` | — | 120 XP + `blessed_rod:1` |
+| `desert_ascetic` | `judge-desert` (`world/landmarks/desert.bsn`) | visitar `desert-arch` → matar `scorpion` → equipar `sword` | `item potion` | 50 XP + 30 ouro |
+| `swamp_purifier` | `judge-swamp` (`world/landmarks/swamp.bsn`) | visitar `swamp-shack` → matar `slime` → usar `antidote` | `criatura bandit` | 55 XP + 35 ouro |
+| `peaks_vigil` | `judge-peaks` (`world/landmarks/peaks.bsn`) | equipar `torch` → matar `shade` → visitar `peaks-crystal-mine` | — | 65 XP + 40 ouro |
+
+O `hunter_oath` é o único com **pista não verbal**: três props filhos do
+altar, na ordem — `judge-clue-wolf` (`wolf`), `judge-clue-well`
+(`medieval_well`) e `judge-clue-torch` (`torch_post`). As outras três regras
+dizem-se pelo `intro` no primeiro [E] (o altar não tem props de pista).
+
+`torch` e `sword` são os **kinds da arma na mão** (`scripts/game/equipment.lua`,
+o V troca Espada↔Tocha), não itens do `items.json`; `antidote`, `potion` e as
+criaturas são ids do conteúdo normal.
 
 ### Regra (`data/verdicts.json`)
 
 ```json
 {
   "id": "hunter_oath",
+  "site": "judge-oath",
   "intro": "Três marcas, na ordem. O altar pesa o que fizeste.",
   "require": [
     {"kind": "criatura", "id": "wolf", "verb": "matar"},
@@ -56,15 +62,25 @@ Local: `judge-oath`, a 6 m do `bosque-shrine` (Bosque Encantado).
   ],
   "order": ["matar", "visitar", "equipar"],
   "forbid": [],
+  "window": 900,
   "verdicts": {"correct": "…", "partial": "…", "wrong": "…"},
   "reward": {"xp": 120, "items": ["blessed_rod:1"]}
 }
 ```
 
-- `require` — todas têm de aparecer (cada uma com o verbo, se indicado).
-- `order` — os índices dos matches no registo têm de ser crescentes.
-- `forbid` — qualquer entidade proibida invalida o veredito.
-- `reward` — só no `correct`.
+- `require` — todas têm de aparecer; um `verb` só casa com uma ação desse
+  verbo (a mesma ação não cumpre dois requisitos).
+- `order` — as ações dos requisitos têm de aparecer por esta ordem no registo.
+- `forbid` — qualquer entidade proibida invalida o veredito (`wrong`), seja
+  qual for o verbo.
+- `window` — **reservado**: o `judge.lua` não o usa (o `t0` da leitura das
+  marcas já limita a janela). Fica no schema para o editor não o perder.
+- `reward` — só no `correct`; `judge.<id>.done` marca a regra no save.
+
+Um requisito `local` tem de ser um marco que uma quest `visit` liste (o lint
+de conteúdo recusa um `local` fora desses tokens): assim há sempre um caminho
+que escreve `visitar` — a varredura de pisada da quest. O [F] escreve-o na
+mesma para qualquer marco, tenha ou não quest.
 
 ## Registo de ações (`scripts/lib/actions.lua`)
 
@@ -79,18 +95,28 @@ o herói comprou poção em Discordia
 o herói vendeu pele de lobo em Discordia
 ```
 
-Ganchos já ligados:
+As entradas vivem no **store partilhado** do `viber.game()` (`act.seq` é o
+próximo índice; cada ação ocupa `act.<n>.v/.k/.i/.t`), por isso o Lua e o
+Rust escrevem no mesmo registo. Cap de **32** entradas; o `actions.since(t0)`
+descarta as entradas de um processo anterior (`t` no futuro face a
+`viber.time()`, que é o `Time` do Bevy).
+
+Ganchos ligados:
 
 | Ação | Onde |
 |---|---|
-| `matar` | `rules.award_kill` |
-| `visitar` | `rules.report_visit` (inclui [F] em marcos com `survey`) |
-| `equipar` | `game/equipment.lua` (V) |
-| `usar` | `game/hotbar.lua` (poção/antídoto) |
+| `matar` | `rules.award_kill` (`lib/fsm.lua` manda o abate) |
+| `visitar` | `rules.report_visit` (varredura de pisada, com a quest `visit` ativa), **[F]** em `src/ui/map.rs` (escreve `act.*` directamente) e o aceitar de uma quest (credita marcos já medidos) |
+| `equipar` | `game/equipment.lua` (V: Espada/Tocha) e o ecrã de equipamento em `src/ui/screens.rs` (itens com `slot`) |
+| `usar` | `game/hotbar.lua` (poção/antídoto/poção de musgo) |
 | `comprar` / `vender` | `game/shop.lua` |
+| `forjar` | `lib/craft.lua` |
+| `entoar` | `lib/voice.lua` |
 
-O registo vive em módulo (sessão), com cap de 32 entradas. O juiz filtra por
-`t0`, por isso ações anteriores à leitura da pista não contam.
+O **binómio do altar**: o `[F]` que mede um marco de uma quest de visita conta
+como `visitar` para o juiz; uma simples pisada no raio do marco só conta
+enquanto a quest `visit` que o lista estiver **ativa** (é o `scan_visits` que
+chama o `report_visit`).
 
 ## O juiz (`scripts/lib/judge.lua`)
 
@@ -98,14 +124,28 @@ O registo vive em módulo (sessão), com cap de 32 entradas. O juiz filtra por
 2. Para cada frase, chama `viber.nlu.parse` e resolve com `parley`.
 3. Faz o fallback determinístico com o `kind/id` guardado no registo (sem
    modelo, o jogo não fecha).
-4. Calcula `correct` / `partial` / `wrong` com `require` + `order` + `forbid`.
+4. Calcula `correct` / `partial` / `wrong` com `require` + `order` + `forbid`:
+   - `correct` — todas as marcas, na ordem certa;
+   - `partial` — todas as marcas mas ordem trocada (`reason = "order"`), ou
+     parte das marcas (`reason = "missing"`) — a janela continua aberta e o
+     próximo [E] volta a julgar o mesmo registo;
+   - `wrong` — uma proibição (`reason = "forbidden"`), nenhuma marca
+     (`reason = "empty"`) ou nada feito; o próximo [E] **reinicia** a janela
+     (`judge.reset`, as ações antigas não mancham a tentativa nova).
 5. `judge.reward` paga o `correct` e marca `judge.<id>.done` no save.
+
+O `judge-site.lua` imprime o `intro` no primeiro [E] e acrescenta
+`Marcas cumpridas: got/need` (ou `A ordem ritual foi quebrada`, ou
+`Um tabu violou o voto`) ao texto do veredito — o jogador sabe o que faltou
+sem texto gerado.
 
 ## Autorar uma regra nova
 
 1. Acrescentar a regra em `data/verdicts.json`.
-2. Pôr `prop-verdict_id="<id>"` numa entidade com `script="judge-site.lua"`.
-3. Rodear o sítio com os props que contam a pista (sem texto).
+2. Pôr `verdict_id="<id>"` numa entidade com `script="judge-site.lua"`
+   (CustomProperty do Jackdaw).
+3. Rodear o sítio com os props que contam a pista (sem texto) — ou escrever a
+   regra por palavras no `intro`.
 4. Testar:
    ```lua
    viber.load("lib/judge.lua").self_test()
@@ -123,29 +163,27 @@ O registo vive em módulo (sessão), com cap de 32 entradas. O juiz filtra por
 
 ## QA
 
-- `vael-tools analyze world.bsn` — exit 0.
+- `python3 tools/lint_content.py` — exit 0 (sites no mundo, requisitos
+  `local` cobertos por quests `visit`, verbos vs `order`, textos e prémios).
 - `judge.self_test()` — `true` (ordem certa, trocada, falta uma, proibido,
-  nada feito).
+  nada feito; e um caso por cada uma das quatro regras reais).
 - No bridge, com o modelo no loop: `correct got=3/3 order=true model=true`;
   ordem trocada → `partial`.
-- O prompt ao vivo do `judge-oath` ficou pendente: a engine partilhada caiu
-  durante o reload da cena (sessões concorrentes). O sítio está no XML, com os
-  props assentados; o script compila no `analyze`.
+- O teste ao vivo dos altares exige a cena `main`; a última verificação
+  headless é o `lint_content.py` (os quatro `site` existem no `world.bsn`).
 
 ## Próximos incrementos (o que torna isto único)
 
-- **Mais verbos**: oferecer, acender, dormir, dar, mentir, subornar — cada um
-  com o seu gancho, e o juiz passa a avaliar conduta, não só progresso.
+- **Quantidades e tempo**: `matar 3 lobos`, `visitar de noite`, `usar antes de
+  matar` — o registo já tem `t` e o modelo extrai `quantidade`, mas o juiz
+  ainda só compara verbos/entidades.
 - **Regras em prosa** compiladas no build: o designer escreve "mata um lobo,
   visita o poço e depois acende a tocha"; um script usa o modelo para extrair
-  `require`/`order` e escreve o JSON (o mesmo padrão do `build_quest_index.py`).
-- **Quantidades e tempo**: `matar 3 lobos`, `visitar de noite`, `usar antes de
-  matar` — o registo já tem `t` e o modelo extrai `quantidade`.
-- **Proibições sociais**: "não mates o guarda", "não uses fogo na floresta" —
-  `forbid` já existe.
-- **Veredito como ação do mundo**: portas, armadilhas, descontos, reputação de
-  NPC, uma quest que só abre para quem passou no julgamento.
-- **Explicação do veredito**: o diff (`missing`, `forbidden`, `order_ok`) já é
-  estruturado; o NPC pode dizer exatamente o que faltou, sem gerar texto.
-- **Múltiplas testemunhas**: dois altares com regras diferentes sobre o mesmo
-  registo de ações — o mesmo ato, vereditos distintos.
+  `require`/`order` e escreve o JSON (o mesmo padrão do
+  `build_quest_index.py`).
+- **Veredito como ação do mundo**: hoje o `correct` só paga o `reward`; falta
+  abrir portas, armar armadilhas, mexer no preço da loja ou na reputação do
+  NPC.
+- **Proibições sociais** mais largas: "não mates o guarda", "não uses fogo na
+  floresta" — o `forbid` já existe (`forbid` por entidade, sem verbo); falta
+  conteúdo que o use para além dos dois altares atuais.

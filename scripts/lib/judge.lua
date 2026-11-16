@@ -18,6 +18,8 @@ local actions = viber.load("lib/actions.lua")
 local decide = viber.load("lib/decide.lua")
 
 local defs
+-- Quantas entradas RECENTES vão ao modelo (as antigas só se forem uma ação
+-- exigida/proibida — ver `cap_entries`).
 local MAX_PARSE = 16
 -- Cache por frase: o juiz reavalia o mesmo registo a cada [E].
 local decision_cache = {}
@@ -82,10 +84,26 @@ function M.started(id)
   -- morreu com a sessão — devolver `false` faz o altar reabrir as marcas no
   -- [E] seguinte em vez de julgar um registo vazio (ou de ignorar ações até
   -- o relógio alcançar o valor gravado).
-  return t0 ~= nil and t0 <= viber.time()
+  if t0 == nil or t0 > viber.time() then
+    return false
+  end
+  -- O registo de ações também é do save: se ainda tem entradas de outro
+  -- processo (t no futuro), esta janela morreu com essa sessão. Limpa-o já e
+  -- obriga a um `start` novo — senão o altar julgava um registo vazio assim
+  -- que o uptime passasse o `t0` gravado.
+  if actions.stale() then
+    actions.clear()
+    return false
+  end
+  return true
 end
 
 function M.start(id)
+  -- Arranque de uma sessão de julgamento num processo novo: o log gravado
+  -- no save é de outra linha temporal (uptime recomeçado) e não pode contar.
+  if actions.stale() then
+    actions.clear()
+  end
   viber.game()["judge." .. tostring(id) .. ".t0"] = viber.time()
   viber.game()["judge." .. tostring(id) .. ".done"] = nil
 end
@@ -197,6 +215,50 @@ function M.evaluate_log(rule, entries)
   }
 end
 
+-- Corte do registo para a passagem pelo modelo (cada entrada custa uma
+-- inferência por requisito). A cauda entra sempre; o resto só se for
+-- EXACTAMENTE uma ação que a regra pede ou proíbe — sem isso, uma ação
+-- exigida antiga (regra com ordem longa) desaparecia e o veredicto ficava
+-- "missing" mesmo com o herói a ter cumprido o voto.
+local function cap_entries(rule, entries)
+  if #entries <= MAX_PARSE then
+    return entries
+  end
+  local reqs = rule.require or {}
+  local forbids = rule.forbid or {}
+  local keep = {}
+  for i = 1, #entries do
+    local e = entries[i]
+    for _, req in ipairs(reqs) do
+      if (not req.verb or e.verb == req.verb) and e.kind == req.kind and e.id == req.id then
+        keep[i] = true
+        break
+      end
+    end
+    if not keep[i] then
+      for _, f in ipairs(forbids) do
+        if e.kind == f.kind and e.id == f.id then
+          keep[i] = true
+          break
+        end
+      end
+    end
+  end
+  for i = #entries - MAX_PARSE + 1, #entries do
+    keep[i] = true
+  end
+  local out = {}
+  for i, e in ipairs(entries) do
+    if keep[i] then
+      out[#out + 1] = e
+    end
+  end
+  return out
+end
+
+-- Exposto para o harness (`self_test`) provar que o corte não perde ações.
+M.cap_entries = cap_entries
+
 -- Lê o registo desde `t0`, manda cada frase ao modelo e julga.
 function M.evaluate(id)
   local rule = M.get(id)
@@ -204,15 +266,7 @@ function M.evaluate(id)
     return nil
   end
   local t0 = tonumber(viber.game()["judge." .. tostring(id) .. ".t0"]) or 0
-  local entries = actions.since(t0)
-  -- Cap: um registo antigo não pode custar dezenas de inferências.
-  if #entries > MAX_PARSE then
-    local trimmed = {}
-    for i = #entries - MAX_PARSE + 1, #entries do
-      trimmed[#trimmed + 1] = entries[i]
-    end
-    entries = trimmed
-  end
+  local entries = cap_entries(rule, actions.since(t0))
   -- Caminho novo: o d1 diz qual requisito cada ação cumpre. A regra
   -- (ordem/proibições/recompensa) continua simbólica e explicável.
   if decide.ready() then
@@ -569,6 +623,46 @@ function M.self_test()
         errors[#errors + 1] = c.name .. ": need " .. tostring(r.need) .. " ~= " .. tostring(c.want_need)
       end
     end
+  end
+  -- Corte do registo (`cap_entries`): com mais de MAX_PARSE entradas, uma
+  -- ação EXIGIDA antiga e uma PROIBIDA antiga têm de sobreviver; as ações
+  -- irrelevantes do meio podem sair.
+  local long = {
+    e("matar", "criatura", "wolf"),
+    e("usar", "item", "potion"),
+    e("usar", "item", "antidote"),
+    e("usar", "item", "moss_potion"),
+  }
+  for i = 1, 20 do
+    long[#long + 1] = e("usar", "item", "stone" .. i)
+  end
+  long[#long + 1] = e("usar", "item", "stone")
+  local cap_rule = {
+    require = {
+      { kind = "criatura", id = "wolf", verb = "matar" },
+    },
+    order = { "matar" },
+    forbid = { { kind = "item", id = "stone" } },
+  }
+  local capped = M.cap_entries(cap_rule, long)
+  if capped[1] ~= long[1] then
+    errors[#errors + 1] = "corte: a ação exigida antiga saiu do registo"
+  end
+  local last = capped[#capped]
+  if last ~= long[#long] then
+    errors[#errors + 1] = "corte: a ação proibida antiga saiu do registo"
+  end
+  local cap_result = M.evaluate_log(cap_rule, capped)
+  if cap_result.verdict ~= "wrong" or cap_result.reason ~= "forbidden" then
+    errors[#errors + 1] = "corte: proibida antiga não invalidou o voto"
+  end
+  local only_req = {
+    require = { { kind = "criatura", id = "wolf", verb = "matar" } },
+    order = { "matar" },
+  }
+  local capped_req = M.cap_entries(only_req, long)
+  if M.evaluate_log(only_req, capped_req).verdict ~= "correct" then
+    errors[#errors + 1] = "corte: requisito antigo perdido no veredicto"
   end
   return #errors == 0, errors
 end

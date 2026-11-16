@@ -4,14 +4,30 @@
 -- ("o herói matou lobo em Floresta Sombria"). O `judge.lua` manda essa frase
 -- ao modelo, resolve as entidades e compara com a regra.
 --
--- O registo é de SESSÃO (módulo cacheado; sobrevive a trocas de cena, não a
--- um load). O juiz filtra por `t0` (quando o jogador leu a pista), por isso
--- ações antigas não contam.
+-- O registo vive no store PARTILHADO (`viber.game()`), não num módulo local:
+-- no BMS cada script tem a sua VM/contexto, por isso um log de módulo só via
+-- as ações do próprio script (o juiz não via as de `equipment.lua`/`combat.lua`
+-- e o Rust da UI não conseguia escrever nenhuma). Só primitivas — é o que o
+-- save guarda:
+--   act.seq          próximo n (0 = log vazio)
+--   act.first        primeira entrada ainda viva
+--   act.<n>.v        verbo (matar|visitar|equipar|usar|comprar|vender|entoar|colher|forjar)
+--   act.<n>.k        kind (criatura|local|item|…), opcional
+--   act.<n>.i        id
+--   act.<n>.t        segundos de `viber.time()` (uptime do PROCESSO)
+--
+-- O Rust da UI escreve as mesmas chaves (equipar/visitar); o leitor aceita
+-- uma entrada sem `t` e carimba-a agora. O `t` é do uptime, que recomeça do
+-- zero no arranque — por isso entradas com `t` no futuro são de um processo
+-- anterior e saem do registo (ver `since`/`stale`).
 local M = {}
 
 local MAX = 32
-local log = {}
 local data
+
+local function game()
+  return viber.game()
+end
 
 local function load_data()
   if data then
@@ -99,40 +115,157 @@ end
 
 M.render = render
 
--- verb: matar|visitar|equipar|usar|comprar|vender|entoar|colher
+local function key(n, field)
+  return "act." .. n .. "." .. field
+end
+
+-- Apaga as quatro chaves de uma entrada (primitivas; `nil` remove do store).
+local function forget(g, n)
+  g[key(n, "v")] = nil
+  g[key(n, "k")] = nil
+  g[key(n, "i")] = nil
+  g[key(n, "t")] = nil
+end
+
+-- Cursor do registo. Um save editado à mão com um número fraccionário (ou
+-- negativo) não pode gerar chaves "act.3.5.v": normaliza para inteiro ≥ 0.
+local function bounds(g)
+  local seq = math.floor(tonumber(g["act.seq"]) or 0)
+  local first = math.floor(tonumber(g["act.first"]) or 0)
+  if seq < 0 then
+    seq = 0
+  end
+  if first < 0 then
+    first = 0
+  end
+  if first > seq then
+    first = seq
+  end
+  return seq, first
+end
+
+-- Poda por idade: no máximo MAX entradas vivas (as mais recentes).
+local function prune(g, first, seq)
+  while seq - first > MAX do
+    forget(g, first)
+    first = first + 1
+  end
+  return first
+end
+
+-- verb: matar|visitar|equipar|usar|comprar|vender|entoar|colher|forjar
 -- kind: criatura|local|item (o tipo do id, para o fallback sem modelo)
 function M.record(verb, kind, id)
   if not verb or not id or id == "" then
     return
   end
-  log[#log + 1] = {
-    verb = verb,
-    kind = kind,
-    id = id,
-    text = render(verb, kind, id),
-    t = viber.time(),
-  }
-  if #log > MAX then
-    table.remove(log, 1)
+  local g = game()
+  local seq, first = bounds(g)
+  first = prune(g, first, seq)
+  local n = seq
+  g[key(n, "v")] = verb
+  if type(kind) == "string" and kind ~= "" then
+    g[key(n, "k")] = kind
+  else
+    g[key(n, "k")] = nil
   end
+  g[key(n, "i")] = id
+  g[key(n, "t")] = viber.time()
+  g["act.seq"] = n + 1
+  first = prune(g, first, n + 1)
+  g["act.first"] = first
+end
+
+-- Há entradas de um processo anterior? O `viber.time()` é o uptime do
+-- processo e recomeça do zero no arranque, por isso uma entrada gravada no
+-- save fica com `t` no futuro. O juiz limpa o registo no arranque da sessão.
+function M.stale()
+  local g = game()
+  local now = viber.time()
+  local seq, first = bounds(g)
+  for n = first, seq - 1 do
+    local t = tonumber(g[key(n, "t")])
+    if t and t > now then
+      return true
+    end
+  end
+  return false
 end
 
 function M.since(t0)
-  local out = {}
-  for _, e in ipairs(log) do
-    if e.t >= (t0 or 0) then
-      out[#out + 1] = e
+  t0 = tonumber(t0) or 0
+  local g = game()
+  local now = viber.time()
+  local seq, first = bounds(g)
+  first = prune(g, first, seq)
+  -- As entradas de outro processo formam um prefixo do registo (as novas
+  -- começam sempre depois da última gravada). Saem já: não contam para esta
+  -- janela nem ficam a crescer no save até à poda dos 32.
+  while first < seq do
+    local t = tonumber(g[key(first, "t")])
+    if not t then
+      -- Entrada escrita por fora (Rust) sem `t`: carimba agora.
+      t = now
+      g[key(first, "t")] = now
+    end
+    if t > now then
+      forget(g, first)
+      first = first + 1
+    else
+      break
     end
   end
+  local out = {}
+  for n = first, seq - 1 do
+    local verb = g[key(n, "v")]
+    local id = g[key(n, "i")]
+    if type(verb) ~= "string" or type(id) ~= "string" or id == "" then
+      -- Entrada incompleta (poda/escrita a meio, save editado): sai.
+      forget(g, n)
+    else
+      local kind = g[key(n, "k")]
+      if type(kind) ~= "string" or kind == "" then
+        kind = nil
+      end
+      local t = tonumber(g[key(n, "t")])
+      if not t then
+        t = now
+        g[key(n, "t")] = now
+      end
+      if t >= t0 and t <= now then
+        out[#out + 1] = {
+          verb = verb,
+          kind = kind,
+          id = id,
+          t = t,
+          text = render(verb, kind, id),
+        }
+      end
+    end
+  end
+  g["act.first"] = first
   return out
 end
 
 function M.all()
-  return log
+  return M.since(0)
 end
 
 function M.clear()
-  log = {}
+  local g = game()
+  -- Apaga por prefixo em vez de varrer `first..seq`: um save corrompido com
+  -- um cursor enorme (1e9) não pode prender o [E] num ciclo de mil milhões.
+  local stale = {}
+  for k in pairs(g) do
+    if type(k) == "string" and k:sub(1, 4) == "act." then
+      stale[#stale + 1] = k
+    end
+  end
+  for _, k in ipairs(stale) do
+    g[k] = nil
+  end
+  g["act.seq"] = 0
+  g["act.first"] = 0
 end
 
 return M
