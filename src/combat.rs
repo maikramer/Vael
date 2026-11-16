@@ -123,6 +123,11 @@ fn ensure_hp(kv: &mut CombatKv) {
 /// Não reabre enquanto a guarda está activa (`guard_until`) nem durante o
 /// lock que impede premir [L] em cadência e manter o parry aberto para sempre.
 pub fn guard(kv: &mut CombatKv, rules: &CombatRules, now: f64) {
+    // Um `now` não finito (nil/inf de um script antigo) deixava a guarda
+    // aberta para sempre: `now < guard_until` com `guard_until` infinito.
+    if !now.is_finite() {
+        return;
+    }
     if now < kv.guard_lock || now < kv.guard_until {
         return;
     }
@@ -548,6 +553,22 @@ mod tests {
         guard(&mut travado, &rules, 10.0);
         assert_eq!(travado.guard_start, None);
         assert_eq!(travado.guard_until, 20.0);
+    }
+
+    #[test]
+    fn guard_ignora_instante_nao_finito() {
+        let rules = regras();
+        let mut kv = CombatKv::default();
+        for now in [f64::INFINITY, f64::NEG_INFINITY, f64::NAN] {
+            guard(&mut kv, &rules, now);
+        }
+        assert_eq!(kv.guard_until, 0.0, "inf deixava a guarda aberta para sempre");
+        assert_eq!(kv.guard_start, None);
+        assert_eq!(kv.guard_lock, 0.0);
+
+        // Um `now` válido volta a abrir normalmente.
+        guard(&mut kv, &rules, 10.0);
+        assert_eq!(kv.guard_start, Some(10.0));
     }
 
     #[test]

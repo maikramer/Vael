@@ -21,6 +21,9 @@ use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
 
 use crate::player::PlayerMovementSet;
 
+/// Deslocamento lateral (m) da câmara com o ecrã de título aberto.
+const TITLE_FRAMING_SHIFT: f32 = 1.9;
+
 fn no_editor_camera(
     cameras: Query<(), With<bevy_ext_engine::editor_camera::EditorCamera>>,
 ) -> bool {
@@ -94,12 +97,21 @@ fn orbit_camera_follow(
             continue; // third-person: a câmara do Vael trata dela
         }
         let target_pos = match &settings.target {
-            Some(target_name) => names
-                .iter()
-                .find(|(_, name)| name.as_str() == target_name)
-                .and_then(|(entity, _)| globals.get(entity).ok())
-                .map(|global| global.translation())
-                .unwrap_or(Vec3::ZERO),
+            Some(target_name) => {
+                let Some((entity, _)) = names
+                    .iter()
+                    .find(|(_, name)| name.as_str() == target_name)
+                else {
+                    // Alvo nomeado que não existe (gralha no `.bsn`, entidade
+                    // ainda por spawnar): segurar a câmara onde está. Antes
+                    // saltava para o ORIGEM do mundo, um corte brutal.
+                    continue;
+                };
+                match globals.get(entity) {
+                    Ok(global) => global.translation(),
+                    Err(_) => continue,
+                }
+            }
             None => Vec3::ZERO,
         };
         let offset = camera_offset(
@@ -159,6 +171,8 @@ fn third_person_camera(
     runtime: Option<Res<viber::terrain::runtime::TerrainRuntime>>,
     interior: Option<Res<InteriorSceneConfig>>,
     a11y: Option<Res<bevy_ext_core::a11y::A11y>>,
+    modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
+    mut title_framing: Local<f32>,
 ) {
     // Clamp como no `player_movement`: o primeiro frame depois do véu (o
     // `Time<Virtual>` despausa) traz um delta enorme, e a mola do pitch/do
@@ -169,6 +183,18 @@ fn third_person_camera(
     // O shake decora em tempo REAL: durante o hit-stop a câmara continua a
     // tremer. Decai ANTES do early-return para não congelar no respawn.
     shake.trauma = (shake.trauma - SHAKE_DECAY * real.delta_secs()).max(0.0);
+    // Um trauma NaN vindo de fora (`viber.shake`, BRP/editor) não pode
+    // envenenar os offsets: `f32::max` já o limpa no decaimento, mas o
+    // valor lido neste frame ainda seria NaN.
+    if !shake.trauma.is_finite() {
+        shake.trauma = 0.0;
+    }
+    // A mola do kick NÃO se auto-cura (é integração linear): um impulso
+    // degenerado (`viber.camera_kick(inf)`, escrita BRP) deixava o offset
+    // NaN para sempre — a câmara desaparecia. Repor é o único caminho.
+    if !kick.offset.is_finite() || !kick.vel.is_finite() {
+        *kick = CameraKick::default();
+    }
     let shake_mul = a11y
         .as_deref()
         .map(bevy_ext_core::a11y::shake_scale)
@@ -196,6 +222,26 @@ fn third_person_camera(
     for (mut transform, mut cam) in &mut cameras {
         if cam.target.is_some() {
             continue; // câmara com alvo nomeado: follow rígido da engine
+        }
+        // Rede de segurança contra NaN: uma pose degenerada (colisão com
+        // terreno NaN, `OrbitCamera` autorado com lixo) ficava para sempre —
+        // o low-pass propaga o NaN e a câmara nunca mais desenhava. Re-inicia
+        // a partir do herói; o `initialized = false` faz o snap do bloco
+        // seguinte.
+        if !cam.current_pos.is_finite()
+            || !cam.follow_point.is_finite()
+            || !cam.smooth_yaw_deg.is_finite()
+            || !cam.yaw_deg.is_finite()
+        {
+            cam.yaw_deg = if cam.yaw_deg.is_finite() { cam.yaw_deg } else { 0.0 };
+            cam.smooth_yaw_deg = if cam.smooth_yaw_deg.is_finite() {
+                cam.smooth_yaw_deg
+            } else {
+                cam.yaw_deg
+            };
+            cam.current_pos = target_pos;
+            cam.follow_point = target_pos;
+            cam.initialized = false;
         }
         if let Some(scene) = interior_room {
             let (eye, look_at) = interior_camera_pose(scene, target_pos);
@@ -346,6 +392,16 @@ fn third_person_camera(
         );
         transform.translation = cam.current_pos + sway + shake_off + kick.offset;
         transform.look_at(cam.follow_point + Vec3::Y * LOOK_PIVOT_HEIGHT, Vec3::Y);
+        // Ecrã de título: o painel cobre a metade esquerda; a câmara desliza
+        // para a esquerda (mesma orientação) e o herói fica no terço direito
+        // em vez de cortado pela aresta do painel. Sai suave ao fechar.
+        let title_open = modals.as_deref().is_some_and(|m| m.is_open("title"));
+        let target = if title_open { 1.0 } else { 0.0 };
+        *title_framing += (target - *title_framing) * low_pass_factor(dt.max(1.0 / 60.0), 0.35);
+        if *title_framing > 1e-3 {
+            let left = transform.left();
+            transform.translation += left * (TITLE_FRAMING_SHIFT * *title_framing);
+        }
         if shake_roll.abs() > 1e-5 {
             let view = transform.forward();
             transform.rotate_axis(view, shake_roll);
@@ -366,7 +422,10 @@ fn script_camera(
         if cam.target.is_some() {
             continue;
         }
-        if free.active {
+        if free.active && free.pos.is_finite() && free.look.is_finite() {
+            // Uma pose não finita (`viber.camera_free`/`camera_pose` com lixo
+            // vindo do Lua) apagava a câmara de vez: a pose é copiada tal e
+            // qual para o `Transform` e o snapshot seguinte lia NaN.
             transform.translation = free.pos;
             let dir = free.look - free.pos;
             if dir.length_squared() > 1e-8 {
@@ -471,5 +530,49 @@ mod tests {
         assert!((camera.follow_point - Vec3::new(0.0, 1.6, 0.0)).length() < 1e-4);
         // A câmara fica no anel da sala, longe do herói em (3, 0.6, 4).
         assert!(transform.translation.distance(Vec3::new(3.0, 0.6, 4.0)) > 8.0);
+    }
+
+    /// Uma pose/kick degenerado não pode apagar a câmara para sempre: o
+    /// low-pass propaga NaN e a mola do kick não se auto-cura.
+    #[test]
+    fn camera_recupera_de_nan_em_vez_de_desaparecer() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .insert_resource(TimeUpdateStrategy::ManualDuration(Duration::from_millis(
+                16,
+            )))
+            .init_resource::<CameraShake>()
+            .insert_resource(CameraKick {
+                offset: Vec3::NAN,
+                vel: Vec3::NAN,
+            })
+            .add_systems(Update, third_person_camera);
+        app.world_mut().spawn((
+            Transform::from_xyz(0.0, 10.0, 0.0),
+            GlobalTransform::from_xyz(0.0, 10.0, 0.0),
+            Player::default(),
+        ));
+        let mut camera = test_camera(180.0);
+        camera.current_pos = Vec3::NAN;
+        camera.follow_point = Vec3::NAN;
+        camera.smooth_yaw_deg = f32::NAN;
+        let cam = app
+            .world_mut()
+            .spawn((Transform::default(), camera))
+            .id();
+        app.update();
+        let transform = *app.world().get::<Transform>(cam).unwrap();
+        assert!(
+            transform.translation.is_finite(),
+            "câmara NaN para sempre: {:?}",
+            transform.translation
+        );
+        assert!(
+            transform.translation.distance(Vec3::new(0.0, 11.5, -5.0)) < 0.5,
+            "volta ao follow normal, em {:?}",
+            transform.translation
+        );
+        let kick = app.world().resource::<CameraKick>();
+        assert!(kick.offset.is_finite() && kick.vel.is_finite());
     }
 }

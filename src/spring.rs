@@ -19,9 +19,14 @@ use viber::luau::components::LuaScriptRef;
 /// rigging — o mesmo nome em todos os quadrúpedes gerados).
 const MANE_PREFIX: &str = "headaccessory";
 
-/// Marca um rig com as cadeias já spawnadas (evitar duplicar por frame).
+/// Marca um rig com a cadeia já spawnada (evitar duplicar por frame). Guarda
+/// a entidade da cadeia para o rebind poder matá-la: `FootIkRigs` sai e volta
+/// (bind de tier/LOD) sem a subárvore morrer, e sem isto ficavam DUAS cadeias
+/// de mola no mesmo osso (física a dobrar).
 #[derive(Component)]
-struct SpringBound;
+struct SpringBound {
+    chain: bevy::ecs::entity::Entity,
+}
 
 pub struct VaelSpringPlugin;
 
@@ -96,16 +101,17 @@ fn walk(
 fn spring_bind_system(
     mut commands: Commands,
     rigs: Query<(Entity, &FootIkRigs, &LuaScriptRef), Without<SpringBound>>,
-    stale: Query<Entity, (With<SpringBound>, Without<FootIkRigs>)>,
+    stale: Query<(Entity, &SpringBound), Without<FootIkRigs>>,
     names: Query<&Name>,
     children: Query<&Children>,
 ) {
     if !springs_enabled() {
         return;
     }
-    for entity in &stale {
-        // Rebind de tier: as cadeias velhas morreram com a subárvore; voltar
-        // ao pendente para o novo rig ligar.
+    for (entity, bound) in &stale {
+        // Rebind de tier: as cadeias velhas morreram com a subárvore (ou não —
+        // matar na mesma é um no-op); voltar ao pendente para o novo rig ligar.
+        commands.entity(bound.chain).try_despawn();
         commands.entity(entity).remove::<SpringBound>();
     }
     for (entity, rig, script) in &rigs {
@@ -118,16 +124,16 @@ fn spring_bind_system(
         let Some((root, end)) = find_mane_chain(rig.root, &children, &names) else {
             continue;
         };
-        commands.entity(entity).insert(SpringBound);
-        // Defaults do Godot 4.7.2; sem colliders na primeira passada. Dono
-        // filho da raiz do rig (ciclo de vida da subárvore).
-        commands
+        let chain = commands
             .spawn((
                 Name::new("vael-spring-mane"),
                 SpringBoneChain::new(root, end),
                 ChildOf(rig.root),
             ))
             .id();
+        commands.entity(entity).insert(SpringBound { chain });
+        // Defaults do Godot 4.7.2; sem colliders na primeira passada. Dono
+        // filho da raiz do rig (ciclo de vida da subárvore).
         debug!("vael: spring da crina no lobo {entity:?} ({root:?}→{end:?})");
     }
 }

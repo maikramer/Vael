@@ -18,10 +18,20 @@ use serde_json::Value as Json;
 /// Número inteiro do save legacy: número JSON, `2.9` trunca para 2 e uma
 /// string numérica também conta (o `world_kv` plano guardava tudo em
 /// texto).
+///
+/// A string passa por `f64` quando não é um inteiro exato: `"2.9"` é o `2.9`
+/// do `tonumber` do Lua (floor → 2), não uma chave ilegível que perdia o
+/// valor na migração. Não finito (`"inf"`/`"NaN"`) não é número.
 pub(crate) fn json_i64(value: &Json) -> Option<i64> {
     match value {
         Json::Number(n) => n.as_i64().or_else(|| n.as_f64().map(|f| f.floor() as i64)),
-        Json::String(s) => s.parse().ok(),
+        Json::String(s) => s.trim().parse::<i64>().ok().or_else(|| {
+            s.trim()
+                .parse::<f64>()
+                .ok()
+                .filter(|f| f.is_finite())
+                .map(|f| f.floor() as i64)
+        }),
         _ => None,
     }
 }
@@ -234,6 +244,11 @@ mod tests {
         assert_eq!(json_i64(&json!("-3")), Some(-3));
         assert_eq!(json_i64(&json!("x")), None);
         assert_eq!(json_i64(&json!(true)), None);
+        // Uma string decimal trunca como o número (o `tonumber` do Lua).
+        assert_eq!(json_i64(&json!("2.9")), Some(2));
+        assert_eq!(json_i64(&json!(" 1e3 ")), Some(1000));
+        assert_eq!(json_i64(&json!("NaN")), None);
+        assert_eq!(json_i64(&json!("inf")), None);
         assert_eq!(json_f32(&json!(1.5)), Some(1.5));
         assert_eq!(json_f32(&json!("2.5")), Some(2.5));
         // Não finito não entra: o default fica melhor do que inf/NaN.

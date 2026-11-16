@@ -84,7 +84,17 @@ pub fn snapshot(
 ) -> ClockSnapshot {
     ClockSnapshot {
         hour: day_cycle.map(|clock| hour_from_minute(clock.minute_of_day)),
-        rain: weather.map_or(0.0, |weather| weather.rain.clamp(0.0, 1.0) as f64),
+        rain: weather.map_or(0.0, |weather| rain_fraction(weather.rain as f64)),
+    }
+}
+
+/// Chuva 0..1 a partir de um valor bruto: `NaN`/infinito vale 0 (um `rain` não
+/// finito chegava ao Lua como NaN e envenenava a aritmética dos scripts).
+fn rain_fraction(raw: f64) -> f64 {
+    if raw.is_finite() {
+        raw.clamp(0.0, 1.0)
+    } else {
+        0.0
     }
 }
 
@@ -102,7 +112,7 @@ pub const ELEMENTS_RAIN_MM_H: f64 = 8.0;
 /// Lua), por isso só a fração líquida conta.
 pub fn elements_rain(weather: &ElementsWeather) -> f64 {
     let liquid = weather.precipitation_mm_h * (1.0 - weather.snow_fraction());
-    (liquid as f64 / ELEMENTS_RAIN_MM_H).clamp(0.0, 1.0)
+    rain_fraction(liquid as f64 / ELEMENTS_RAIN_MM_H)
 }
 
 /// Snapshot a partir do relógio/clima do `bevy_elements` (ambiente novo).
@@ -126,7 +136,7 @@ pub fn hour(snapshot: &ClockSnapshot) -> Option<f64> {
 
 /// Intensidade de chuva de um snapshot (`M.rain` do Lua), presa a 0..1.
 pub fn rain(snapshot: &ClockSnapshot) -> f64 {
-    snapshot.rain.clamp(0.0, 1.0)
+    rain_fraction(snapshot.rain)
 }
 
 /// `true` entre as 20:00 e as 05:00; sem relógio é dia (`M.is_night`).
@@ -164,7 +174,7 @@ fn update_clock_snapshot(
     // inclui o `rain-scale` do bioma (o `bridge_weather`), como o antigo
     // `weather_drive`; o `elements_snapshot` cru não tem essa escala.
     if let Some(state) = weather.as_deref() {
-        next.rain = state.rain.clamp(0.0, 1.0) as f64;
+        next.rain = rain_fraction(state.rain as f64);
     }
     clock.set(next);
 }
@@ -300,6 +310,24 @@ mod tests {
             ..weather
         };
         assert_eq!(snapshot(None, Some(&negative)).rain, 0.0);
+    }
+
+    #[test]
+    fn chuva_nao_finita_vale_zero() {
+        assert_eq!(rain_fraction(f64::NAN), 0.0);
+        assert_eq!(rain_fraction(f64::INFINITY), 0.0);
+        assert_eq!(rain_fraction(-3.0), 0.0);
+        assert_eq!(rain_fraction(0.42), 0.42);
+        assert_eq!(rain(&snap(None, f64::NAN)), 0.0);
+
+        let weather = WeatherState {
+            wind: [0.0, 0.0],
+            wind_strength: 0.0,
+            clouds: 0.0,
+            rain: f32::NAN,
+            cycle: false,
+        };
+        assert_eq!(snapshot(None, Some(&weather)).rain, 0.0);
     }
 
     fn lua_com_bridge(clock: VaelClock) -> Lua {

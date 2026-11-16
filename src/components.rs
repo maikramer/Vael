@@ -81,7 +81,15 @@ pub struct Inventory {
 
 impl Inventory {
     /// Quantidade de um item (0 quando não existe).
+    ///
+    /// A chave em `items` ganha à do campo fixo, como em [`Self::entries`]: um
+    /// save editado à mão com os dois (ou um payload de outra versão) não
+    /// pode fazer o HUD/loja ler um valor e o espelho `item.<id>` escrever
+    /// outro.
     pub fn get(&self, id: &str) -> i64 {
+        if let Some(count) = self.items.get(id) {
+            return *count;
+        }
         match id {
             "gold" => self.gold,
             "wood" => self.wood,
@@ -92,12 +100,15 @@ impl Inventory {
             "antidote" => self.antidote,
             "bomb" => self.bomb,
             "moss_potion" => self.moss_potion,
-            other => self.items.get(other).copied().unwrap_or(0),
+            _ => 0,
         }
     }
 
     /// Escreve um item no campo fixo ou em `items`.
     pub fn set(&mut self, id: &str, n: i64) {
+        // A gravação no campo fixo tira a chave duplicada de `items`: manter
+        // as duas deixava `get`/`entries` a discordar depois do `set`.
+        self.items.remove(id);
         match id {
             "gold" => self.gold = n,
             "wood" => self.wood = n,
@@ -142,4 +153,38 @@ pub struct QuestLog {
     pub states: BTreeMap<String, String>,
     pub done: Vec<String>,
     pub tracked: Option<String>,
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    /// Uma chave duplicada (`gold` no campo fixo E em `items`, de um save
+    /// editado à mão ou de outra versão) não pode fazer `get` e `entries`
+    /// discordarem.
+    #[test]
+    fn chave_duplicada_em_items_ganha_consistentemente() {
+        let mut inventory = Inventory::default();
+        inventory.gold = 3;
+        inventory.items.insert("gold".into(), 9);
+
+        assert_eq!(inventory.get("gold"), 9);
+        let mirrored = inventory
+            .entries()
+            .into_iter()
+            .rev()
+            .find(|(id, _)| *id == "gold")
+            .map(|(_, count)| count);
+        assert_eq!(mirrored, Some(9), "o espelho `item.gold` também traz 9");
+
+        // Escrever no campo fixo limpa a chave duplicada.
+        inventory.set("gold", 5);
+        assert_eq!(inventory.get("gold"), 5);
+        assert!(!inventory.items.contains_key("gold"));
+        assert_eq!(
+            inventory.entries().into_iter().filter(|(id, _)| *id == "gold").count(),
+            1,
+            "uma só chave no espelho"
+        );
+    }
 }

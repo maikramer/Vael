@@ -176,14 +176,33 @@ pub fn add_xp(kv: &mut XpMap, rules: &XpRules, gain: f64) -> XpGain {
     let points_per_level = rules.points_per_level.max(0);
 
     xp += gain;
+    // `xp` e `gain` são finitos, mas a soma pode transbordar para `inf` (um
+    // save com `xp` colado ao teto do f64 + um ganho grande). Sem o clamp o
+    // `ensure_xp` seguinte lia um valor não finito e ZERAVA o XP do jogador.
+    if !xp.is_finite() {
+        xp = f64::MAX;
+    }
 
     let mut levels = 0i64;
     while xp >= xp_next && levels < MAX_LEVELS_PER_GAIN {
         xp -= xp_next;
-        xp_next = (xp_next * rules.growth).ceil().max(1.0);
+        let next = (xp_next * rules.growth).ceil();
+        // A meta também pode transbordar (`growth` > 1 com `xp_next` enorme).
+        xp_next = if next.is_finite() {
+            next.max(1.0)
+        } else {
+            f64::MAX
+        };
         level = level.saturating_add(1);
         skill_points = skill_points.saturating_add(points_per_level);
         levels = levels.saturating_add(1);
+    }
+
+    // O `xp -= xp_next` pode perder precisão em valores gigantes; a chave
+    // nunca pode ficar negativa nem não finita.
+    xp = if xp.is_finite() { xp.max(0.0) } else { 0.0 };
+    if !xp_next.is_finite() {
+        xp_next = f64::MAX;
     }
 
     kv.insert(KEY_XP.into(), xp);
@@ -212,7 +231,13 @@ pub fn add_skill_points(kv: &mut XpMap, n: f64) {
         Some(value) if value.is_finite() && value >= 0.0 => value.floor(),
         _ => 0.0,
     };
-    kv.insert(KEY_SKILL_POINTS.into(), current + n.floor());
+    // A soma pode transbordar para `inf` (save no teto do f64): satura em vez
+    // de gravar um valor não finito que o `ensure_xp` seguinte zerava.
+    let total = current + n.floor();
+    kv.insert(
+        KEY_SKILL_POINTS.into(),
+        if total.is_finite() { total } else { f64::MAX },
+    );
 }
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
@@ -581,6 +606,41 @@ mod tests {
         let mut negativo = mapa(&[(KEY_SKILL_POINTS, -3.0)]);
         add_skill_points(&mut negativo, 2.0);
         assert_eq!(negativo[KEY_SKILL_POINTS], 2.0);
+    }
+
+    #[test]
+    fn add_xp_no_teto_do_f64_satura_em_vez_de_infinito() {
+        // Save colado ao teto do f64 + um ganho gigante: a soma transbordava
+        // para `inf` e o `ensure_xp` seguinte zerava o XP todo.
+        let rules = regras();
+        let mut kv = mapa(&[
+            (KEY_XP, f64::MAX * 0.75),
+            (KEY_XP_NEXT, 100.0),
+            (KEY_LEVEL, 1.0),
+            (KEY_SKILL_POINTS, 0.0),
+        ]);
+        // 0,75 + 0,75 = 1,5 × MAX → transborda para `inf`.
+        let out = add_xp(&mut kv, &rules, f64::MAX * 0.75);
+        assert_eq!(out.levels, MAX_LEVELS_PER_GAIN, "o teto de níveis trava");
+        assert!(kv[KEY_XP].is_finite(), "xp={}", kv[KEY_XP]);
+        assert!(kv[KEY_XP_NEXT].is_finite(), "xp_next={}", kv[KEY_XP_NEXT]);
+        assert!(kv[KEY_LEVEL].is_finite());
+        assert!(kv[KEY_SKILL_POINTS].is_finite());
+        // O `ensure_xp` seguinte não pode ler um valor não finito e zerar tudo.
+        let state = ensure_xp(&mut kv, &rules);
+        assert!(state.xp > 0, "o XP não pode desaparecer no saneamento");
+    }
+
+    #[test]
+    fn add_skill_points_no_teto_satura_em_vez_de_infinito() {
+        let mut kv = mapa(&[(KEY_SKILL_POINTS, f64::MAX)]);
+        add_skill_points(&mut kv, f64::MAX);
+        assert!(
+            kv[KEY_SKILL_POINTS].is_finite(),
+            "pontos={}",
+            kv[KEY_SKILL_POINTS]
+        );
+        assert_eq!(kv[KEY_SKILL_POINTS], f64::MAX);
     }
 
     fn lua_com_bridge() -> (Lua, Table) {

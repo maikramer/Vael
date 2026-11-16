@@ -66,7 +66,7 @@ pub fn cede_rig_to_jackdaw(
         Option<&viber::ik::FootIk>,
     )>,
     parents: Query<&ChildOf>,
-    engine: Query<(), Or<(With<AnimatedScene>, With<CharacterAnimator>)>>,
+    engine: Query<Has<viber::ik::FootIk>, Or<(With<AnimatedScene>, With<CharacterAnimator>)>>,
     scenes: Query<&AnimatedScene>,
 ) {
     for (entity, mut set, scene, sources, origin, foot_ik) in &mut sets {
@@ -94,7 +94,11 @@ pub fn cede_rig_to_jackdaw(
         let mut at = Some(entity);
         for _ in 0..8 {
             let Some(current) = at else { break };
-            if engine.contains(current) {
+            // O `FootIk` que conta é o da entidade que PERDE o rig (`current`),
+            // não o do set: o marker no antepassado é que liga o IK ao rig, e
+            // testar o do set punha-o em duas entidades (ou em nenhuma quando
+            // o set só tinha o rig num pai).
+            if let Ok(has_foot_ik) = engine.get(current) {
                 if set.sources.is_empty()
                     && let Ok(scene) = scenes.get(current)
                     && let Some(path) = scene.gltf.path()
@@ -104,7 +108,7 @@ pub fn cede_rig_to_jackdaw(
                 commands
                     .entity(current)
                     .remove::<(AnimatedScene, CharacterAnimator)>();
-                if foot_ik.is_none() {
+                if !has_foot_ik && foot_ik.is_none() {
                     // O IK novo (bevy_skeleton_modifiers) só precisa do marker
                     // e dos ossos — o bind da engine `ik` trata do resto.
                     commands.entity(current).insert(viber::ik::FootIk);
@@ -158,6 +162,20 @@ fn play_unbound_gesture(
     }
 }
 
+/// O set é de locomoção: o `default_state` autorado está vazio ou é um dos
+/// estados que [`drive_locomotion`] conduz.
+///
+/// Um `default_state` fora da locomoção ("sit", "dead", "sleep") é AUTORIA:
+/// sem `AnimationState` o runtime toca-o e o controlador não lhe toca (antes,
+/// o `idle` era inserido em qualquer set que tivesse `idle` e o NPC acordava
+/// do "sit" no primeiro frame).
+pub fn is_locomotion_set(set: &AnimationSet) -> bool {
+    set.default_state.is_empty()
+        || LOCOMOTION
+            .iter()
+            .any(|name| set.default_state.eq_ignore_ascii_case(name))
+}
+
 /// O estado de locomoção para uma velocidade, entre os que o set define.
 pub fn locomotion_state(set: &AnimationSet, speed: f32) -> Option<&'static str> {
     let has = |name: &str| set.states.iter().any(|state| state.name == name);
@@ -200,12 +218,21 @@ fn drive_locomotion(
         };
         match state {
             None => {
-                commands
-                    .entity(entity)
-                    .try_insert(AnimationState(wanted.to_string()));
+                // Sem `AnimationState` o runtime toca o `default_state`
+                // autorado. Só criamos o componente num set de locomoção — ou
+                // quando o corpo já se mexe (um default "sit" não pode ficar
+                // sentado a andar/correr).
+                if is_locomotion_set(set) || wanted != "idle" {
+                    commands
+                        .entity(entity)
+                        .try_insert(AnimationState(wanted.to_string()));
+                }
             }
             Some(mut state) => {
-                let ours = state.0.is_empty() || LOCOMOTION.contains(&state.0.as_str());
+                // Vazio é "o default do set" (o runtime o resolve): num set de
+                // locomoção conduzimos; fora dela o vazio respeita a autoria.
+                let ours = (state.0.is_empty() && is_locomotion_set(set))
+                    || LOCOMOTION.contains(&state.0.as_str());
                 if ours && state.0 != wanted {
                     state.0 = wanted.to_string();
                 }
@@ -313,5 +340,55 @@ mod tests {
             app.world().get::<AnimationState>(entity).unwrap().0,
             "attack"
         );
+    }
+
+    /// Set com um `default_state` autorado fora da locomoção ("sit"): o runtime
+    /// é que o toca (sem `AnimationState`) e o controlador não o atropela.
+    #[test]
+    fn um_default_autorado_fora_da_locomocao_nao_e_atropelado() {
+        let mut app = app();
+        let mut seated = set(&["idle", "walk", "sit"]);
+        seated.default_state = "sit".into();
+        let entity = app
+            .world_mut()
+            .spawn((seated, GlobalTransform::default()))
+            .id();
+        app.update();
+        app.update();
+        assert!(
+            app.world().get::<AnimationState>(entity).is_none(),
+            "o default 'sit' é a autoria: nada de AnimationState('idle')"
+        );
+        // A mexer-se, a locomoção toma conta (o "sit" não fica a andar).
+        app.world_mut()
+            .entity_mut(entity)
+            .insert(GlobalTransform::from_xyz(5.0, 0.0, 0.0));
+        app.update();
+        assert_eq!(
+            app.world().get::<AnimationState>(entity).map(|s| s.0.as_str()),
+            Some("walk")
+        );
+    }
+
+    /// O caminho de sempre: sem `default_state` a locomoção manda desde o
+    /// primeiro frame.
+    #[test]
+    fn set_sem_default_state_e_conduzido_desde_logo() {
+        let mut app = app();
+        let entity = app
+            .world_mut()
+            .spawn((set(&["idle", "walk"]), GlobalTransform::default()))
+            .id();
+        app.update();
+        assert_eq!(
+            app.world().get::<AnimationState>(entity).map(|s| s.0.as_str()),
+            Some("idle")
+        );
+        assert!(is_locomotion_set(&set(&["walk"])));
+        let mut seated = set(&["idle", "sit"]);
+        seated.default_state = "sit".into();
+        assert!(!is_locomotion_set(&seated), "default fora da locomoção");
+        seated.default_state = "Idle".into();
+        assert!(is_locomotion_set(&seated), "sem distinguir maiúsculas");
     }
 }

@@ -12,10 +12,15 @@
 //! the runtime path.
 //!
 //! Gates:
-//! * `VAEL_PRIMITIVES=standard|off` keeps the engine's standard-material
-//!   fallback (A/B and escape hatch).
-//! * `VAEL_PRIMITIVES_DETAIL=minimal|low|medium|high|extreme` (default
-//!   `high`).
+//! * `VAEL_PRIMITIVES=standard|off` fica com o fallback de
+//!   `StandardMaterial` da engine: o plugin não monta o `GradMeshPlugin` e,
+//!   sem `Assets<GradMeshMaterial>`, o spawner da engine também cai no
+//!   StandardMaterial (A/B e escape hatch). O `VIBER_PRIMITIVES` da engine é
+//!   o mesmo gate visto do outro lado.
+//! * `VIBER_PRIMITIVES_DETAIL=minimal|low|medium|high|extreme` (default
+//!   `high`) é o detalhe dos meshes: quem escolhe no spawn é o spawner da
+//!   engine, por isso é `VIBER_*` que conta. `VAEL_PRIMITIVES_DETAIL` continua
+//!   a valer no caminho legado do marcador `PrimitivePart`.
 
 use std::collections::HashMap;
 
@@ -66,7 +71,11 @@ struct PrimitiveDetail(ShapeDetail);
 
 impl Default for PrimitiveDetail {
     fn default() -> Self {
-        Self(match env_value("VAEL_PRIMITIVES_DETAIL").as_deref() {
+        // O spawner da engine lê `VIBER_PRIMITIVES_DETAIL`; o caminho legado
+        // do marcador lê primeiro o mesmo nome para os dois concordarem.
+        let detail = env_value("VIBER_PRIMITIVES_DETAIL")
+            .or_else(|| env_value("VAEL_PRIMITIVES_DETAIL"));
+        Self(match detail.as_deref() {
             Some("minimal") => ShapeDetail::Minimal,
             Some("low") => ShapeDetail::Low,
             Some("medium") => ShapeDetail::Medium,

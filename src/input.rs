@@ -186,20 +186,32 @@ fn key_of(name: &str) -> Option<KeyCode> {
     }
 }
 
+/// Nome do botão de comando (o que o [`ActionMap`] guarda) → botão do gamepad.
+///
+/// A lista acompanha a do `ActionMap::default` e os nomes históricos que um
+/// save/manifesto antigo possa trazer: um nome em falta aqui é um bind ÓRFÃO
+/// (o `pad_of` devolvia `None` e o botão nunca disparava, em silêncio).
 fn pad_of(name: &str) -> Option<GamepadButton> {
-    Some(match name {
-        "south" => GamepadButton::South,
-        "east" => GamepadButton::East,
-        "west" => GamepadButton::West,
-        "north" => GamepadButton::North,
+    Some(match name.trim().to_ascii_lowercase().as_str() {
+        "south" | "a" => GamepadButton::South,
+        "east" | "b" => GamepadButton::East,
+        "west" | "x" => GamepadButton::West,
+        "north" | "y" => GamepadButton::North,
         "start" => GamepadButton::Start,
+        "select" | "back" => GamepadButton::Select,
+        "mode" | "guide" => GamepadButton::Mode,
+        "left_trigger" | "left_shoulder" | "lb" | "l1" => GamepadButton::LeftTrigger,
+        "right_trigger" | "right_shoulder" | "rb" | "r1" => GamepadButton::RightTrigger,
         // O bind por omissão do agachar (`ActionMap`) é `dpad_down`: sem esta
         // entrada o `pad_of` devolvia `None` e o botão nunca disparava.
-        "dpad_down" => GamepadButton::DPadDown,
-        "left_trigger" => GamepadButton::LeftTrigger,
-        "left_trigger2" => GamepadButton::LeftTrigger2,
-        "right_trigger" => GamepadButton::RightTrigger,
-        "right_trigger2" => GamepadButton::RightTrigger2,
+        "dpad_down" | "down" => GamepadButton::DPadDown,
+        "dpad_up" | "up" => GamepadButton::DPadUp,
+        "dpad_left" | "left" => GamepadButton::DPadLeft,
+        "dpad_right" | "right" => GamepadButton::DPadRight,
+        "left_trigger2" | "lt" | "l2" => GamepadButton::LeftTrigger2,
+        "right_trigger2" | "rt" | "r2" => GamepadButton::RightTrigger2,
+        "left_stick" | "l3" => GamepadButton::LeftThumb,
+        "right_stick" | "r3" => GamepadButton::RightThumb,
         _ => return None,
     })
 }
@@ -554,5 +566,26 @@ mod tests {
         assert_eq!(state.forward, 0.0);
         assert!(!state.attack_just);
         assert!(!app.world().resource::<VaelUiActions>().map);
+    }
+
+    /// Nenhum bind do `ActionMap` pode ser ÓRFÃO no gamepad: um nome sem
+    /// entrada no `pad_of` anulava o botão em silêncio (o agachar era o caso
+    /// deste teste quando `dpad_down` faltava).
+    #[test]
+    fn todos_os_binds_de_gamepad_do_action_map_mapeiam() {
+        let map = ActionMap::default();
+        for (action, binding) in &map.bindings {
+            let Some(pad) = binding.pad.as_deref() else {
+                continue;
+            };
+            assert!(
+                pad_of(pad).is_some(),
+                "{action:?}: o bind de gamepad '{pad}' não tem botão"
+            );
+        }
+        // Os dois lados do gatilho continuam distintos (sprint no shoulder).
+        assert_eq!(pad_of("left_trigger"), Some(GamepadButton::LeftTrigger));
+        assert_eq!(pad_of("left_trigger2"), Some(GamepadButton::LeftTrigger2));
+        assert_eq!(pad_of(" RIGHT_TRIGGER "), Some(GamepadButton::RightTrigger));
     }
 }
