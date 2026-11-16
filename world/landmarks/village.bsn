@@ -906,8 +906,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -989,8 +989,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -1180,55 +1180,6 @@ bevy_ecs::hierarchy::Children [
                     pose: true,
                 }
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216086489)
-            ]
-            --
-            #Group
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -6.0, y: 38.7304, z: 4.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Group",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6 38.7304 4" },
-                    bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                ],
-                text: "",
-                origin_file: "world/landmarks/village.xml",
-                origin_path: [0, 15],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086506)
-            bevy_ecs::hierarchy::Children [
-                #PointLight
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 1.8, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_light::point_light::PointLight {
-                    color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.698039, blue: 0.392157, alpha: 1.0 }),
-                    intensity: 130000.0,
-                    radius: 0.6,
-                    shadow_maps_enabled: false,
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "PointLight",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.8 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb264" },
-                        bevy_world_xml::bsn::WorldProp { key: "intensity", value: "130000" },
-                        bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.6" },
-                        bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    ],
-                    text: "",
-                    origin_file: "world/landmarks/village.xml",
-                    origin_path: [0, 15, 0],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086507)
             ]
             --
             #Entity
@@ -1897,8 +1848,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -1980,8 +1931,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -2047,8 +1998,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -2130,8 +2081,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -2999,8 +2950,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -3082,8 +3033,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -3879,8 +3830,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -3962,8 +3913,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -4029,8 +3980,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/village/iron_brazier_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
@@ -4112,8 +4063,8 @@ bevy_ecs::hierarchy::Children [
             bevy_ext_scene::ModelLod {
                 lod1: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod1.glb"),
                 lod2: core::option::Option::Some("/assets/meshes/terrain/stone_cairn_lod2.glb"),
-                d1: 30.0,
-                d2: 80.0,
+                near: core::option::Option::Some(30.0),
+                mid: core::option::Option::Some(80.0),
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
