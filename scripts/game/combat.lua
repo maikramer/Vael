@@ -118,6 +118,11 @@ end
 -- o alvo da barra. Devolve o hostil e a distância (ou nil).
 local function aim_target(st, px, py, pz, fx, fz, reach)
   local best, best_dist, best_score
+  -- Fallback (sem ninguém à frente): o hostil COLADO, mesmo nas costas. Num
+  -- grupo, o lobo que morde por trás nunca entrava na meia-frente e o herói
+  -- cortava o ar para a câmara enquanto apanhava (visto 2026-11-16). Só
+  -- dentro do alcance: um piparote no rato não vira o golpe para longe.
+  local close, close_dist
   local limit = reach + SOFT_LOCK_EXTRA
   for _, h in ipairs(rules.hostiles(limit) or {}) do
     -- Intocável (chefe a mudar de fase, verme enterrado) não é alvo: sem
@@ -133,10 +138,15 @@ local function aim_target(st, px, py, pz, fx, fz, reach)
         if not best_score or score < best_score then
           best, best_dist, best_score = h, dist, score
         end
+      elseif dist <= reach and (not close_dist or dist < close_dist) then
+        close, close_dist = h, dist
       end
     end
   end
-  return best, best_dist
+  if best then
+    return best, best_dist
+  end
+  return close, close_dist
 end
 
 local function start_swing(st)
@@ -296,7 +306,15 @@ local function resolve_swing(st, sw)
           local killed = rules.damage_enemy(h.id, dmg)
           dealt = dealt + dmg
           local g = viber.game()
-          if g and g.voice_buff_until and viber.time() < (tonumber(g.voice_buff_until) or 0) then
+          -- O Acorde dura ≤25 s de uptime (o save guarda o número). Muito à
+          -- frente do relógio atual = gravado noutro processo: sem o corte,
+          -- carregar um save deixava o burn/frost/choque "para sempre".
+          local buff_until = tonumber(g and g.voice_buff_until) or 0
+          local now_t = viber.time()
+          if buff_until - now_t > 60 then
+            buff_until = 0
+          end
+          if buff_until > now_t then
             local vk = g.voice_buff_kind
             if vk == "brasa" then
               rules.enemy_status(h.id, "burn", 3.5)
@@ -325,6 +343,10 @@ local function resolve_swing(st, sw)
             x = h.x, y = (h.y or py) + 1.8, z = h.z,
           })
           viber.burst("sparks", h.x or px, (h.y or py) + 1.1, h.z or pz,
+            crit and 22 or 14)
+          -- Puff no ponto do golpe: lê-se mesmo de dia, quando as faíscas
+          -- são pequenas contra o céu claro.
+          viber.burst("ground-dust", h.x or px, (h.y or py) + 0.9, h.z or pz,
             crit and 8 or 5)
           -- Marca de impacto no chão (decal genérico): lê-se o golpe depois
           -- de as partículas apagarem. O chão vem do terreno, não do centro
@@ -361,6 +383,7 @@ local function resolve_swing(st, sw)
       if type(alert) ~= "table" then
         alert = {}
         g.attack_alert = alert
+        alert = g.attack_alert or alert -- tabela partilhada: escreve no proxy
       end
       alert.x, alert.z = alert_x, alert_z
       alert.t = viber.time()
@@ -380,16 +403,9 @@ local function resolve_swing(st, sw)
     st.combo_hits = (st.combo_hits or 0) + hits
     st.combo_window = COMBO_WINDOW
     publish_combo(st)
-    -- Combo em texto 3D no mundo (bevy_rich_text3d): o HUD mantém o
-    -- contador persistente; a partir do 2.º golpe o total sobe acima do
-    -- herói. Vai por `viber.damage_number` para herdar a i18n e a ponte
-    -- `DamageNumberEvent` -> `WorldTextEvent`. Um golpe só já tem o número
-    -- de dano no alvo; "1 HITS" seria ruído.
-    if st.combo_hits >= 2 then
-      viber.damage_number(st.combo_hits .. " HITS", {
-        color = "#f5d68e", x = px, y = py + 2.8, z = pz,
-      })
-    end
+    -- O contador vive só no HUD (`publish_combo`). O texto 3D acima do
+    -- herói (a 2,8 m, com a câmara a ~5 m) saía GIGANTE por trás da barra do
+    -- alvo e duplicava o mesmo "N HITS" (visto 2026-11-16).
     viber.sound("hit", { x = px, y = py, z = pz })
     viber.hit_stop(kill_any and 0.09 or (crit_any and 0.07 or 0.05))
     viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))
@@ -400,6 +416,10 @@ local function resolve_swing(st, sw)
     end
   end
 end
+
+-- Cache da varredura da barra de alvo (ver `on_update`).
+local target_ids = nil
+local target_scan_t = 0
 
 function on_update(dt)
   local st = viber.state()
@@ -520,14 +540,22 @@ function on_update(dt)
   -- ── barra de alvo (ação nativa `lock`; o V é do equipamento) ──
   local has, _, py, _ = viber.player_position()
   if has then
-    local list = rules.hostiles(CYCLE_RANGE) or {}
-    local ids = {}
-    for _, h in ipairs(list) do
-      if math.abs((h.y or py) - py) <= 2.2 then
-        ids[#ids + 1] = h
+    -- O registo de hostis é lido pelo proxy partilhado (~1 ms por varredura
+    -- com centenas de criaturas, medido 2026-11-16): a barra lê-o a 10 Hz;
+    -- o `lock` força uma varredura nova no frame em que é premido.
+    local lock_pressed = viber.action ~= nil and viber.action("lock")
+    target_scan_t = target_scan_t - dt
+    if lock_pressed or target_scan_t <= 0 or not target_ids then
+      target_scan_t = 0.1
+      local list = rules.hostiles(CYCLE_RANGE) or {}
+      target_ids = {}
+      for _, h in ipairs(list) do
+        if math.abs((h.y or py) - py) <= 2.2 then
+          target_ids[#target_ids + 1] = h
+        end
       end
     end
-    local lock_pressed = viber.action ~= nil and viber.action("lock")
+    local ids = target_ids
     if lock_pressed then
       if #ids == 0 then
         -- Sem alvos, o cartão tem de sair JÁ: `st.target` nil impede o ramo

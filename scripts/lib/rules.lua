@@ -265,15 +265,6 @@ function M.gear()
   return gear
 end
 
--- Equipa/tira um item da mochila. Devolve "on" | "off" | "blocked" | nil.
-function M.equip_toggle(id)
-  local result = gear.toggle(id)
-  if result == "on" or result == "off" then
-    actions.record("equipar", "item", id)
-  end
-  return result
-end
-
 -- Cantil de cura [E]: cargas que só voltam no descanso (fogueira, curandeiro,
 -- renascer). A cura deixou de ser grátis de 12 em 12 s.
 local FLASK_BASE = 2
@@ -994,16 +985,23 @@ function M.hostiles_near(cx, cz, range)
   local game = g()
   local now = viber.time()
   local out = {}
+  -- Cada `e.campo` é uma leitura do proxy partilhado (string de caminho +
+  -- lookup no mapa): ler uma vez para locais. O registo tem centenas de
+  -- criaturas e isto corre várias vezes por frame (combate, áudio, spawns).
+  local reach = range or 2.4
   for id, e in pairs(game.enemies or {}) do
-    if type(id) == "number" and (e.hp or 0) > 0 and e.t and e.t <= now and (now - e.t) < 1.0 then
-      local dx, dz = (e.x or cx) - cx, (e.z or cz) - cz
+    local hp = type(id) == "number" and e.hp or 0
+    local t = hp > 0 and e.t
+    if t and t <= now and (now - t) < 1.0 then
+      local ex, ez = e.x, e.z
+      local dx, dz = (ex or cx) - cx, (ez or cz) - cz
       local dist = math.sqrt(dx * dx + dz * dz)
-      if dist <= (range or 2.4) then
+      if dist <= reach then
         out[#out + 1] = {
           id = id,
           kind = e.kind or "creature",
-          x = e.x, y = e.y, z = e.z,
-          hp = e.hp, max = e.max,
+          x = ex, y = e.y, z = ez,
+          hp = hp, max = e.max,
           distance = dist,
           forward_x = e.fx, forward_z = e.fz,
           -- Escudo erguido (lib/fsm.lua `shield`): o melee decide o bloqueio.
@@ -1036,13 +1034,14 @@ function M.hostiles_all()
   local now = viber.time()
   local out = {}
   for id, e in pairs(g().enemies or {}) do
-    if type(id) == "number" and (e.hp or 0) > 0
-        and e.t and e.t <= now and (now - e.t) < 1.0 then
+    local hp = type(id) == "number" and e.hp or 0
+    local t = hp > 0 and e.t
+    if t and t <= now and (now - t) < 1.0 then
       out[#out + 1] = {
         id = id,
         kind = e.kind or "creature",
         x = e.x, y = e.y, z = e.z,
-        hp = e.hp, max = e.max,
+        hp = hp, max = e.max,
       }
     end
   end
@@ -1209,17 +1208,10 @@ end
 -- Direção do dano: quatro faixas no HUD. O atacante pode estar à frente,
 -- atrás, à esquerda ou à direita do FORWARD do herói; usa-se o produto
 -- interno (frente/trás) contra o produto externo (lados).
-local DMG_EDGES = { "dmg-front", "dmg-back", "dmg-left", "dmg-right" }
 -- Faixa acesa e instante de apagar. O apagar é do `tick`: um `viber.after`
 -- pertence ao DONO do golpe (a criatura) e morre com ele — um despawn ou
 -- uma troca de cena dentro dos 0,35 s deixava a seta de dano presa no HUD.
 local dmg_edge, dmg_until = nil, 0
-
-local function clear_dmg_edges()
-  for _, id in ipairs(DMG_EDGES) do
-    viber.ui.set_visible(id, false)
-  end
-end
 
 local function flash_damage_direction(sx, sz)
   if not sx or not sz then
@@ -1244,8 +1236,9 @@ local function flash_damage_direction(sx, sz)
   else
     id = cross > 0 and "dmg-right" or "dmg-left"
   end
-  clear_dmg_edges()
-  viber.ui.set_visible(id, true)
+  -- As faixas são do HUD bevy_pf (`dmg_front`…, `src/ui/mod.rs`), que lê
+  -- `game.dmg_edge`/`dmg_until`; o `viber.ui.set_visible` antigo só gerava
+  -- avisos de elemento desconhecido a cada golpe.
   dmg_edge, dmg_until = id, viber.time() + 0.35
   -- O HUD visual é bevy_pf (`ui/hud.xaml`): publica a faixa acesa no KV.
   local game = g()
@@ -1269,6 +1262,27 @@ function sound_at_player(name)
   else
     viber.sound(name)
   end
+end
+
+-- Empurrão do golpe (m): o herói recua para longe de quem bateu. O
+-- `push_player` entra no controller como knockback (ação do tnua com o
+-- estado de animação `Knocked`) — sem isto o golpe não tinha reação nenhuma.
+local HIT_PUSH_M = 0.9
+
+local function push_from_hit(sx, sz)
+  if not sx or not sz or not viber.push_player then
+    return
+  end
+  local has, px, _, pz = viber.player_position()
+  if not has then
+    return
+  end
+  local dx, dz = px - sx, pz - sz
+  local len = math.sqrt(dx * dx + dz * dz)
+  if len < 1e-3 then
+    return
+  end
+  viber.push_player(dx / len * HIT_PUSH_M, dz / len * HIT_PUSH_M)
 end
 
 local function player_fx(text, color, sfx)
@@ -1422,6 +1436,7 @@ function M.damage_player(amount, sx, sz)
   end
   player_fx("-" .. math.floor(r.amount), "#ff6b6b", "hurt")
   flash_damage_direction(sx, sz)
+  push_from_hit(sx, sz)
   viber.shake(0.18)
   if r.died then
     start_death(g())
@@ -1523,8 +1538,7 @@ function M.tick(dt)
     -- pode gravar por cima do save que acabámos de carregar, e a faixa de
     -- dano acesa não fica no HUD da partida nova.
     save_at = nil
-    if dmg_edge then
-      viber.ui.set_visible(dmg_edge, false)
+    if dmg_edge or g().dmg_edge then
       local game = g()
       game.dmg_edge = nil
       game.dmg_until = nil
@@ -1554,8 +1568,12 @@ function M.tick(dt)
 
   -- Apaga a faixa de dano no tick (ver `dmg_edge`): o `viber.after` antigo
   -- era do atacante e um despawn dentro dos 0,35 s deixava-a acesa.
-  if dmg_edge and now >= dmg_until then
-    viber.ui.set_visible(dmg_edge, false)
+  -- Lê o estado PARTILHADO (`viber.game()`), não os locais: cada script
+  -- corre na sua própria VM, a faixa acende-se na VM da criatura que bateu e
+  -- quem corre este tick é outra — com os locais a faixa ficava acesa para
+  -- sempre no HUD (2026-11-15).
+  local edge = g().dmg_edge
+  if edge and now >= (tonumber(g().dmg_until) or 0) then
     local game = g()
     game.dmg_edge = nil
     game.dmg_until = nil

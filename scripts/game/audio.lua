@@ -69,6 +69,14 @@ function on_update(dt)
     return
   end
 
+  -- O registo de hostis é lido pelo proxy partilhado (centenas de
+  -- criaturas): por frame custava ~1,6 ms (medido 2026-11-16). O hold da
+  -- música dura 8 s — renovar a 4 Hz não se ouve.
+  st.scan_t = (st.scan_t or 0) - (dt or 0)
+  if st.scan_t > 0 then
+    return
+  end
+  st.scan_t = 0.25
   local hostile, boss = false, false
   for _, h in ipairs(rules.hostiles(COMBAT_RANGE)) do
     if (h.hp or 0) > 0 then
