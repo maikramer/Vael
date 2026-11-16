@@ -10,7 +10,10 @@ use std::path::{Path, PathBuf};
 use serde::Serialize;
 use serde::de::DeserializeOwned;
 use serde_json::Value;
-use vael_content::{DialogueFile, ItemsFile, LandmarksFile, ProgressionFile, QuestDef, QuestIndex};
+use vael_content::{
+    DialogueFile, ItemsFile, LandmarksFile, ProgressionFile, PuzzleDef, QuestDef, QuestIndex,
+    RecipesFile, RiddlesFile, VerdictsFile,
+};
 
 fn project_root() -> PathBuf {
     Path::new(env!("CARGO_MANIFEST_DIR"))
@@ -101,6 +104,38 @@ fn marcos_fazem_roundtrip() {
 }
 
 #[test]
+fn receitas_fazem_roundtrip() {
+    roundtrip::<RecipesFile>("data/recipes.json");
+}
+
+#[test]
+fn enigmas_fazem_roundtrip() {
+    roundtrip::<RiddlesFile>("data/riddles.json");
+}
+
+#[test]
+fn veredictos_fazem_roundtrip() {
+    roundtrip::<VerdictsFile>("data/verdicts.json");
+}
+
+#[test]
+fn puzzles_fazem_roundtrip() {
+    let dir = project_root().join("data").join("quest_puzzles");
+    let mut files: Vec<PathBuf> = fs::read_dir(&dir)
+        .unwrap()
+        .flatten()
+        .map(|entry| entry.path())
+        .filter(|path| path.extension().is_some_and(|ext| ext == "json"))
+        .collect();
+    files.sort();
+    assert!(!files.is_empty(), "data/quest_puzzles/ vazio");
+    for path in files {
+        let name = path.file_name().unwrap().to_str().unwrap();
+        roundtrip::<PuzzleDef>(&format!("data/quest_puzzles/{name}"));
+    }
+}
+
+#[test]
 fn quests_index_faz_roundtrip() {
     roundtrip::<QuestIndex>("quests/index.json");
 }
@@ -148,6 +183,91 @@ fn campos_desconhecidos_sobrevivem() {
     assert_eq!(item.extra.get("campo_futuro"), json.get("campo_futuro"));
     let after = serde_json::to_value(&item).unwrap();
     assert_eq!(after.get("campo_futuro"), json.get("campo_futuro"));
+}
+
+/// Os quatro documentos que não tinham `extra` (receitas, enigmas,
+/// veredictos e puzzles) têm de devolver o que não conhecem. Um campo novo do
+/// escritor não pode desaparecer só porque o editor foi gravado antes.
+#[test]
+fn campos_desconhecidos_sobrevivem_nos_schemas_novos() {
+    let futuro = serde_json::json!({ "por_autorar": true });
+
+    let recipe = serde_json::json!({
+        "id": "r", "out": "potion", "count": 1, "cost": { "berry": 1 },
+        "campo_futuro": futuro
+    });
+    let recipe: vael_content::RecipeDef = serde_json::from_value(recipe).unwrap();
+    assert_eq!(recipe.extra.get("campo_futuro"), Some(&futuro));
+    let after = serde_json::to_value(&recipe).unwrap();
+    assert_eq!(after.get("campo_futuro"), Some(&futuro));
+
+    let riddle = serde_json::json!({
+        "id": "r", "site": "s", "interact": "i",
+        "clue": { "kind": "props", "campo_futuro": futuro },
+        "prompt": "p", "example": "e",
+        "expect": [{ "kind": "item", "id": "stone" }],
+        "all": false, "hint": "h", "solved": "s",
+        "reward": { "xp": 1 },
+        "campo_futuro": futuro
+    });
+    let riddle: vael_content::RiddleDef = serde_json::from_value(riddle).unwrap();
+    assert_eq!(riddle.extra.get("campo_futuro"), Some(&futuro));
+    assert_eq!(riddle.clue.extra.get("campo_futuro"), Some(&futuro));
+    let after = serde_json::to_value(&riddle).unwrap();
+    assert_eq!(after.get("campo_futuro"), Some(&futuro));
+    assert_eq!(after["clue"].get("campo_futuro"), Some(&futuro));
+
+    let verdict = serde_json::json!({
+        "id": "v", "site": "s", "intro": "i",
+        "require": [{ "kind": "item", "id": "torch", "verb": "equipar",
+                      "campo_futuro": futuro }],
+        "order": ["equipar"],
+        "forbid": [{ "kind": "item", "id": "potion" }],
+        "window": 900,
+        "verdicts": { "correct": "c", "partial": "p", "wrong": "w",
+                      "campo_futuro": futuro },
+        "reward": {},
+        "campo_futuro": futuro
+    });
+    let verdict: vael_content::VerdictDef = serde_json::from_value(verdict).unwrap();
+    assert_eq!(verdict.extra.get("campo_futuro"), Some(&futuro));
+    assert_eq!(verdict.require[0].extra.get("campo_futuro"), Some(&futuro));
+    assert_eq!(verdict.verdicts.extra.get("campo_futuro"), Some(&futuro));
+    let after = serde_json::to_value(&verdict).unwrap();
+    assert_eq!(after.get("campo_futuro"), Some(&futuro));
+    assert_eq!(after["require"][0].get("campo_futuro"), Some(&futuro));
+    assert_eq!(after["verdicts"].get("campo_futuro"), Some(&futuro));
+
+    let puzzle = serde_json::json!({
+        "giver": "g", "intro": ["a"], "ask": "a", "example": "e",
+        "clues": [{ "key": "k", "description": "d", "reply": "r",
+                    "campo_futuro": futuro }],
+        "required": 1,
+        "no_answer": "n", "more": "m", "reveal": "r", "cancel": "c",
+        "final_prompt": "p", "final_example": "e",
+        "final_options": [{ "key": "k", "description": "d",
+                            "campo_futuro": futuro }],
+        "final_answer": "k",
+        "final_reply_ok": "o", "final_reply_bad": "b", "final_cancel": "c",
+        "hint": "h",
+        "endings": { "k": { "text": "t", "items": [],
+                            "campo_futuro": futuro } },
+        "after": ["a"],
+        "campo_futuro": futuro
+    });
+    let puzzle: vael_content::PuzzleDef = serde_json::from_value(puzzle).unwrap();
+    assert_eq!(puzzle.extra.get("campo_futuro"), Some(&futuro));
+    assert_eq!(puzzle.clues[0].extra.get("campo_futuro"), Some(&futuro));
+    assert_eq!(
+        puzzle.final_options[0].extra.get("campo_futuro"),
+        Some(&futuro)
+    );
+    assert_eq!(puzzle.endings["k"].extra.get("campo_futuro"), Some(&futuro));
+    let after = serde_json::to_value(&puzzle).unwrap();
+    assert_eq!(after.get("campo_futuro"), Some(&futuro));
+    assert_eq!(after["clues"][0].get("campo_futuro"), Some(&futuro));
+    assert_eq!(after["final_options"][0].get("campo_futuro"), Some(&futuro));
+    assert_eq!(after["endings"]["k"].get("campo_futuro"), Some(&futuro));
 }
 
 #[test]

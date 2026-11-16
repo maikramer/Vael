@@ -14,6 +14,9 @@
 //! - `sync_collect` lê a quantidade do cofre (`item.<target>`), grava
 //!   `min(have, need)` e promove a `ready`; uma quest `ready` que perdeu os
 //!   itens volta a `active`;
+//! - `report_craft` conta o produto forjado nos objetivos `craft` da quest
+//!   activa (o `M.report_craft` do Lua, chamado pelo `lib/craft.lua` e pelo
+//!   caminho Rust da forja — ver [`report_craft`]);
 //! - `scan_visits` marca `q.<id>.v.<marco>` quando o herói entra no raio do
 //!   marco (por omissão 12 m) e conta os marcadores da etapa;
 //! - `report_visit` (chamado pelo passeio/`[F]`/diálogo) continua no Lua; a
@@ -218,7 +221,8 @@ fn visit_radius(radius: f64) -> f64 {
 
 /// `report_kill`: progresso dos objetivos `kill` da quest activa.
 ///
-/// Devolve os ids que mudaram (ordem de [`QuestRules::order`]).
+/// Devolve os ids que mudaram (ordem de [`QuestRules::order`]). Um abate que
+/// não mexe no objetivo (progresso já na meta) não entra na lista.
 pub fn report_kill(rules: &QuestRules, kv: &mut QuestKv, kind: &str, elite: bool) -> Vec<String> {
     if kind.is_empty() {
         return Vec::new();
@@ -231,7 +235,66 @@ pub fn report_kill(rules: &QuestRules, kv: &mut QuestKv, kind: &str, elite: bool
         }
         let (have, need) = quest_progress(rules, kv, id);
         let next = have.saturating_add(1).min(need);
-        if quest_set_progress(rules, kv, id, next as f64).ok {
+        if advance_objective(rules, kv, id, have, next) {
+            changed.push(id.clone());
+        }
+    }
+    changed
+}
+
+/// Aplica `next` ao progresso e devolve `true` só quando o objetivo mudou.
+///
+/// `quest_set_progress` devolve `ok` para QUALQUER quest activa (mesmo quando
+/// o progresso gravado é o mesmo); os relatos contavam esse "avanço" a mais.
+/// Aqui comparam-se as três chaves que o objetivo usa — estado, progresso e
+/// etapa — antes e depois da escrita.
+fn advance_objective(
+    rules: &QuestRules,
+    kv: &mut QuestKv,
+    id: &str,
+    have: i64,
+    next: i64,
+) -> bool {
+    let state_before = quest_state(rules, kv, id);
+    let stage_before = stage_of(kv, id);
+    let out = quest_set_progress(rules, kv, id, next as f64);
+    out.ok
+        && (next != have
+            || quest_state(rules, kv, id) != state_before
+            || stage_of(kv, id) != stage_before)
+}
+
+/// `report_craft`: progresso dos objetivos `craft` da quest activa.
+///
+/// Espelha o `M.report_craft` de `scripts/lib/rules.lua`: cada quest `active`
+/// cujo objetivo em curso é `craft` com `target == item` soma `amount` ao
+/// progresso (sem passar da meta) e passa pela mesma promoção de
+/// [`quest_set_progress`] (`mark_ready`: avança a etapa ou fecha a quest).
+///
+/// Devolve os ids que mudaram (ordem de [`QuestRules::order`]). Um `amount`
+/// ≤ 0 não soma nada (o relato de uma forja nunca reduz progresso) e um
+/// objetivo que já estava na meta não é reportado como mudança.
+///
+/// Chamado pelo caminho Rust da forja (`src/ui/screens.rs::forge_click`); o
+/// `lib/craft.lua` continua a chamar o `M.report_craft` do Lua, que faz esta
+/// mesma aritmética sobre o `viber.game()`.
+pub fn report_craft(rules: &QuestRules, kv: &mut QuestKv, item: &str, amount: i64) -> Vec<String> {
+    if item.is_empty() {
+        return Vec::new();
+    }
+    let delta = amount.max(0);
+    let mut changed = Vec::new();
+    for id in &rules.order {
+        if quest_state(rules, kv, id) != STATE_ACTIVE {
+            continue;
+        }
+        let view = quest_objective(rules, kv, id);
+        if view.objective_type != "craft" || view.target != item {
+            continue;
+        }
+        let (have, need) = quest_progress(rules, kv, id);
+        let next = have.saturating_add(delta).min(need);
+        if advance_objective(rules, kv, id, have, next) {
             changed.push(id.clone());
         }
     }
@@ -1019,6 +1082,20 @@ mod tests {
             entry("pelt", objective("collect", "wolf_pelt", 3, 0.0)),
         );
         quests.insert(
+            "forge".to_string(),
+            entry("forge", objective("craft", "hunter_cloak", 2, 0.0)),
+        );
+        quests.insert(
+            "staged_forge".to_string(),
+            QuestEntry {
+                stages: vec![
+                    objective("kill", "wolf", 1, 0.0),
+                    objective("craft", "hunter_cloak", 1, 0.0),
+                ],
+                ..entry("staged_forge", objective("kill", "wolf", 1, 0.0))
+            },
+        );
+        quests.insert(
             "visits".to_string(),
             entry("visits", objective("visit", "well tower", 2, 10.0)),
         );
@@ -1100,6 +1177,77 @@ mod tests {
         assert_eq!(kv_number(&kv, "q.staged.stage"), 2, "etapa 1 cumprida");
         assert_eq!(kv_number(&kv, "q.staged.n"), 0);
         assert_eq!(kv.get("q.staged"), Some(&json_state("active")));
+    }
+
+    #[test]
+    fn advance_sem_mudanca_nao_conta_como_avanco() {
+        let rules = regras();
+        let mut kv = kv_text(&[("q.wolves", "active")]);
+        kv.insert("q.wolves.n".into(), json_int(1));
+        // Gravar o progresso que já lá está não é um avanço.
+        assert!(!advance_objective(&rules, &mut kv, "wolves", 1, 1));
+        assert_eq!(kv_number(&kv, "q.wolves.n"), 1);
+        assert!(advance_objective(&rules, &mut kv, "wolves", 1, 2));
+        assert_eq!(kv_number(&kv, "q.wolves.n"), 2);
+    }
+
+    #[test]
+    fn report_craft_soma_ao_objetivo_craft() {
+        let rules = regras();
+        let mut kv = kv_text(&[("q.forge", "active")]);
+
+        assert_eq!(
+            report_craft(&rules, &mut kv, "hunter_cloak", 1),
+            vec!["forge".to_string()]
+        );
+        assert_eq!(kv_number(&kv, "q.forge.n"), 1);
+        assert_eq!(kv.get("q.forge"), Some(&json_state("active")));
+
+        // Passar da meta não passa do `need` e promove a `ready`.
+        assert_eq!(
+            report_craft(&rules, &mut kv, "hunter_cloak", 5),
+            vec!["forge".to_string()]
+        );
+        assert_eq!(kv_number(&kv, "q.forge.n"), 2);
+        assert_eq!(kv.get("q.forge"), Some(&json_state("ready")));
+
+        // `ready` já não conta (só `active`, como no Lua).
+        assert!(report_craft(&rules, &mut kv, "hunter_cloak", 1).is_empty());
+        assert_eq!(kv_number(&kv, "q.forge.n"), 2);
+    }
+
+    #[test]
+    fn report_craft_ignora_outros_itens_e_amount_invalido() {
+        let rules = regras();
+        let mut kv = kv_text(&[("q.forge", "active")]);
+        assert!(report_craft(&rules, &mut kv, "espada", 1).is_empty());
+        assert!(report_craft(&rules, &mut kv, "", 1).is_empty());
+
+        // `amount` ≤ 0 não soma nem reduz o progresso (e não conta).
+        kv.insert("q.forge.n".into(), json_int(1));
+        assert!(report_craft(&rules, &mut kv, "hunter_cloak", 0).is_empty());
+        assert!(report_craft(&rules, &mut kv, "hunter_cloak", -3).is_empty());
+        assert_eq!(kv_number(&kv, "q.forge.n"), 1);
+
+        // Quest inactiva (por aceitar) não conta.
+        let mut novo = QuestKv::new();
+        assert!(report_craft(&rules, &mut novo, "hunter_cloak", 1).is_empty());
+        assert!(!novo.contains_key("q.forge.n"));
+    }
+
+    #[test]
+    fn report_craft_avanca_para_a_etapa_de_forja() {
+        let rules = regras();
+        let mut kv = kv_text(&[("q.staged_forge", "active")]);
+        // Etapa 1 (abate) cumprida: o objetivo em curso é a forja.
+        kv.insert("q.staged_forge.stage".into(), json_int(2));
+        let changed = report_craft(&rules, &mut kv, "hunter_cloak", 1);
+        assert_eq!(changed, vec!["staged_forge".to_string()]);
+        assert_eq!(
+            kv.get("q.staged_forge"),
+            Some(&json_state("ready")),
+            "a última etapa fecha a quest"
+        );
     }
 
     #[test]

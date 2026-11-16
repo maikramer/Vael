@@ -209,6 +209,118 @@ fn requires_desconhecido_e_aviso() {
     );
 }
 
+/// Um preço de loja a zero (ou um par buy/sell que devolve o mesmo ouro) é
+/// dinheiro de graça; os dois lados passam a erro.
+#[test]
+fn precos_impossiveis_sao_erro() {
+    let mut zero = item("pocao", "Poção");
+    zero.shop = Some(vael_content::ItemShop {
+        buy: Some(0),
+        ..Default::default()
+    });
+    let mut ciclo = item("erva", "Erva");
+    ciclo.shop = Some(vael_content::ItemShop {
+        buy: Some(10),
+        sell: Some(12),
+        ..Default::default()
+    });
+    let findings = vael_content::validate_items(&ItemsFile {
+        items: vec![zero, ciclo],
+        ..Default::default()
+    });
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding.message.contains("preço de loja `buy` zero")),
+        "faltou o erro do preço zero: {findings:?}"
+    );
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding.message.contains("sell 12 >= buy 10")),
+        "faltou o erro da máquina de dinheiro: {findings:?}"
+    );
+}
+
+/// `parley.match_expect` aceita QUALQUER expect: um marco do objetivo que
+/// falte no relato é um lugar que o jogador visitou e não consegue nomear.
+#[test]
+fn parley_tem_de_cobrir_os_marcos_do_objetivo() {
+    let mut quest = quest("survey");
+    quest.objective = obj("visit", "forja templo", 2);
+    quest.parley = Some(parley(vec![Expect {
+        kind: "local".into(),
+        id: "forja".into(),
+        ..Default::default()
+    }]));
+    let files = vec![QuestFile::new("survey_quests.json", vec![quest])];
+    let landmarks = LandmarksFile {
+        campfire_range: 12.0,
+        landmarks: vec![
+            LandmarkDef {
+                name: "forja".into(),
+                biome: "tower".into(),
+                label: "Forja".into(),
+                radius: 8.0,
+                ..Default::default()
+            },
+            LandmarkDef {
+                name: "templo".into(),
+                biome: "tower".into(),
+                label: "Templo".into(),
+                radius: 8.0,
+                ..Default::default()
+            },
+        ],
+        ..Default::default()
+    };
+    let mut world = world();
+    world.insert("templo");
+    let findings = validate_all(&ContentSnapshot {
+        items: &items(),
+        progression: &progression(),
+        landmarks: &landmarks,
+        quest_files: &files,
+        dialogues: &BTreeMap::new(),
+        locale: &BTreeMap::new(),
+        quest_index: &QuestIndex(vec!["survey_quests.json".to_string()]),
+        world: &world,
+    });
+    assert!(
+        findings.iter().any(|finding| finding
+            .message
+            .contains("o alvo `templo` não aparece no relato")),
+        "faltou o erro do marco em falta: {findings:?}"
+    );
+}
+
+/// Um `requires` em ciclo (direto ou por um intermediário) deixa as quests do
+/// ciclo inalcançáveis.
+#[test]
+fn ciclo_de_requires_e_erro() {
+    let mut a = quest("a");
+    a.requires = vec!["b".into()];
+    let mut b = quest("b");
+    b.requires = vec!["a".into()];
+    let files = vec![QuestFile::new("ciclo_quests.json", vec![a, b])];
+    let findings = validate_all(&ContentSnapshot {
+        items: &items(),
+        progression: &progression(),
+        landmarks: &landmarks(),
+        quest_files: &files,
+        dialogues: &BTreeMap::new(),
+        locale: &BTreeMap::new(),
+        quest_index: &QuestIndex(vec!["ciclo_quests.json".to_string()]),
+        world: &world(),
+    });
+    assert!(
+        findings
+            .iter()
+            .any(|finding| finding.message.contains("ciclo em `requires`")),
+        "faltou o erro do ciclo: {findings:?}"
+    );
+}
+
 #[test]
 fn dialogo_valida_start_goto_e_locale() {
     let mut nodes = BTreeMap::new();

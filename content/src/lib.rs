@@ -226,6 +226,8 @@ pub struct SkillDef {
 pub struct RecipesFile {
     pub version: u32,
     pub recipes: Vec<RecipeDef>,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -235,6 +237,8 @@ pub struct RecipeDef {
     pub out: String,
     pub count: i64,
     pub cost: BTreeMap<String, i64>,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 // ── data/landmarks.json ─────────────────────────────────────────────────
@@ -275,6 +279,8 @@ pub struct LandmarkDef {
 pub struct RiddlesFile {
     pub version: u32,
     pub riddles: Vec<RiddleDef>,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -295,17 +301,22 @@ pub struct RiddleDef {
     pub hint: String,
     pub solved: String,
     pub reward: Reward,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
 #[serde(default, rename_all = "snake_case")]
 pub struct RiddleClue {
     pub kind: String,
+    #[serde(skip_serializing_if = "String::is_empty")]
     pub sound: String,
     #[serde(skip_serializing_if = "is_zero_f64", serialize_with = "serialize_f64")]
     pub period: f64,
     #[serde(skip_serializing_if = "is_zero_f64", serialize_with = "serialize_f64")]
     pub radius: f64,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 /// Um alvo do NLU: `kind` (criatura/item/local) + id.
@@ -325,6 +336,8 @@ pub struct Expect {
 pub struct VerdictsFile {
     pub version: u32,
     pub rules: Vec<VerdictDef>,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -336,10 +349,14 @@ pub struct VerdictDef {
     pub require: Vec<Requirement>,
     pub order: Vec<String>,
     pub forbid: Vec<Requirement>,
+    /// Reservado: o `judge.lua` não o usa (o `t0` da leitura da pista já
+    /// limita a janela). Fica no schema para o editor não o perder.
     #[serde(serialize_with = "serialize_f64")]
     pub window: f64,
     pub verdicts: VerdictText,
     pub reward: Reward,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -347,7 +364,11 @@ pub struct VerdictDef {
 pub struct Requirement {
     pub kind: String,
     pub id: String,
+    /// Só os `require` o usam; um `forbid` sem verbo fica sem a chave no JSON.
+    #[serde(skip_serializing_if = "String::is_empty")]
     pub verb: String,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -356,6 +377,8 @@ pub struct VerdictText {
     pub correct: String,
     pub partial: String,
     pub wrong: String,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 /// Recompensa comum a quests, enigmas e veredictos (os campos que não se
@@ -396,8 +419,13 @@ pub struct PuzzleDef {
     pub final_reply_bad: String,
     pub final_cancel: String,
     pub hint: String,
+    /// Opcional: sem `endings` a resposta certa usa `final_reply_ok` e as
+    /// erradas `final_reply_bad`.
+    #[serde(skip_serializing_if = "BTreeMap::is_empty")]
     pub endings: BTreeMap<String, PuzzleEnding>,
     pub after: Vec<String>,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -406,7 +434,12 @@ pub struct PuzzleClue {
     pub key: String,
     pub description: String,
     pub reply: String,
+    /// Resposta alternativa quando a pista é pedida outra vez; ausente na
+    /// primeira.
+    #[serde(skip_serializing_if = "String::is_empty")]
     pub repeat: String,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -414,6 +447,8 @@ pub struct PuzzleClue {
 pub struct PuzzleOption {
     pub key: String,
     pub description: String,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 #[derive(Debug, Clone, Default, Deserialize, Serialize)]
@@ -421,6 +456,8 @@ pub struct PuzzleOption {
 pub struct PuzzleEnding {
     pub text: String,
     pub items: Vec<String>,
+    #[serde(flatten)]
+    pub extra: BTreeMap<String, serde_json::Value>,
 }
 
 // ── quests/*_quests.json ────────────────────────────────────────────────

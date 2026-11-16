@@ -13,7 +13,7 @@ use std::collections::{BTreeMap, BTreeSet};
 
 use crate::{
     DialogueFile, ItemsFile, LandmarkDef, LandmarksFile, Objective, ProgressionFile, QuestDef,
-    QuestIndex,
+    QuestIndex, Report,
 };
 
 /// Biomas aceites por quests (o `biome` do mapa/história).
@@ -154,13 +154,6 @@ pub struct ContentSnapshot<'a> {
 pub fn validate_all(snapshot: &ContentSnapshot<'_>) -> Vec<Finding> {
     let quest_ids = quest_ids(snapshot.quest_files);
     let landmark_names = landmark_names(snapshot.landmarks);
-    let item_ids: BTreeSet<&str> = snapshot
-        .items
-        .items
-        .iter()
-        .map(|item| item.id.as_str())
-        .filter(|id| !id.is_empty())
-        .collect();
 
     let mut findings = Vec::new();
     validate_index(snapshot.quest_files, snapshot.quest_index, &mut findings);
@@ -174,7 +167,7 @@ pub fn validate_all(snapshot: &ContentSnapshot<'_>) -> Vec<Finding> {
     findings.extend(validate_quests(
         snapshot.quest_files,
         snapshot.world,
-        &item_ids,
+        snapshot.items,
         &landmark_names,
         &quest_ids,
     ));
@@ -231,13 +224,54 @@ pub fn validate_items(file: &ItemsFile) -> Vec<Finding> {
                 format!("{}: item sem label", item.id),
             ));
         }
-        if let Some(shop) = &item.shop
-            && (shop.buy.is_some_and(|price| price < 0) || shop.sell.is_some_and(|price| price < 0))
+        if !matches!(item.kind.as_str(), "resource" | "item") {
+            // O editor e o `vault.rs` só distinguem `resource` do resto.
+            out.push(Finding::error(
+                "items",
+                format!("{}: kind `{}` desconhecido", item.id, item.kind),
+            ));
+        }
+        if let Some(stack) = item.stack
+            && (stack < 1 || (file.stack_max > 0 && stack > file.stack_max))
         {
             out.push(Finding::error(
                 "items",
-                format!("{}: preço de loja negativo", item.id),
+                format!(
+                    "{}: stack {stack} fora de 1..={}",
+                    item.id,
+                    file.stack_max.max(1)
+                ),
             ));
+        }
+        if let Some(shop) = &item.shop {
+            for (key, price) in [("buy", shop.buy), ("sell", shop.sell)] {
+                if let Some(price) = price
+                    && price < 0
+                {
+                    out.push(Finding::error(
+                        "items",
+                        format!("{}: preço de loja `{key}` negativo ({price})", item.id),
+                    ));
+                } else if price == Some(0) {
+                    out.push(Finding::error(
+                        "items",
+                        format!("{}: preço de loja `{key}` zero", item.id),
+                    ));
+                }
+            }
+            // Comprar e vender o mesmo item com `sell >= buy` é uma máquina
+            // de dinheiro: bastava alternar a loja.
+            if let (Some(buy), Some(sell)) = (shop.buy, shop.sell)
+                && sell >= buy
+            {
+                out.push(Finding::error(
+                    "items",
+                    format!(
+                        "{}: sell {sell} >= buy {buy} (dar e receber o mesmo ouro)",
+                        item.id
+                    ),
+                ));
+            }
         }
     }
     let ids: BTreeSet<&str> = file
@@ -257,6 +291,21 @@ pub fn validate_items(file: &ItemsFile) -> Vec<Finding> {
     out
 }
 
+/// Teto de uma pilha como o `vault.rs`/`economy.rs` o aplicam: os recursos
+/// param no `resource_cap`, os outros no `stack` do item ou no `stack_max`.
+pub(crate) fn stack_cap(file: &ItemsFile, id: &str) -> i64 {
+    let Some(item) = file.items.iter().find(|item| item.id == id) else {
+        return 0;
+    };
+    if item.kind == "resource" {
+        return file.resource_cap.max(0);
+    }
+    match item.stack {
+        Some(stack) if stack > 0 => stack,
+        _ => file.stack_max.max(0),
+    }
+}
+
 pub fn validate_progression(file: &ProgressionFile) -> Vec<Finding> {
     let mut out = Vec::new();
     if file.xp.base < 1 {
@@ -269,6 +318,26 @@ pub fn validate_progression(file: &ProgressionFile) -> Vec<Finding> {
         out.push(Finding::error(
             "progression",
             format!("xp.growth tem de ser > 1 (é {})", file.xp.growth),
+        ));
+    }
+    if file.xp.skill_points_per_level < 0 {
+        // 0 = usa o valor por omissão do `xp.rs`; negativo é cortado a 0.
+        out.push(Finding::error(
+            "progression",
+            format!(
+                "xp.skill_points_per_level não pode ser negativo (é {})",
+                file.xp.skill_points_per_level
+            ),
+        ));
+    }
+    if file.song_seed_talent_every < 0 {
+        // 0 desliga os pontos de talento por semente de canção.
+        out.push(Finding::error(
+            "progression",
+            format!(
+                "song_seed_talent_every não pode ser negativo (é {})",
+                file.song_seed_talent_every
+            ),
         ));
     }
     for (creature, xp) in &file.kill_xp {
@@ -304,6 +373,18 @@ pub fn validate_progression(file: &ProgressionFile) -> Vec<Finding> {
                 format!("{}: requires `{requires}` não existe", skill.id),
             ));
         }
+        if skill.requires.as_deref() == Some(skill.id.as_str()) && !skill.id.is_empty() {
+            out.push(Finding::error(
+                "progression",
+                format!("{}: requires ele próprio (nunca fica disponível)", skill.id),
+            ));
+        }
+        if skill.excludes.as_deref() == Some(skill.id.as_str()) && !skill.id.is_empty() {
+            out.push(Finding::error(
+                "progression",
+                format!("{}: exclui-se a si próprio", skill.id),
+            ));
+        }
         if let Some(excludes) = skill.excludes.as_deref().filter(|id| !id.is_empty()) {
             match file.skills.iter().find(|other| other.id == excludes) {
                 None => out.push(Finding::warning(
@@ -323,7 +404,36 @@ pub fn validate_progression(file: &ProgressionFile) -> Vec<Finding> {
             }
         }
     }
+
+    // Um ciclo em `requires` deixa os talentos do ciclo inalcançáveis para
+    // sempre (o nível não abre nenhum deles).
+    for skill in &file.skills {
+        if !skill.id.is_empty() && skill_requires_cycle(file, &skill.id) {
+            out.push(Finding::error(
+                "progression",
+                format!("{}: ciclo em `requires` (nunca fica disponível)", skill.id),
+            ));
+        }
+    }
     out
+}
+
+fn skill_requires_cycle(file: &ProgressionFile, start: &str) -> bool {
+    fn walk(file: &ProgressionFile, node: &str, path: &BTreeSet<&str>) -> bool {
+        if path.contains(node) {
+            return true;
+        }
+        let Some(skill) = file.skills.iter().find(|skill| skill.id == node) else {
+            return false;
+        };
+        let Some(next) = skill.requires.as_deref().filter(|id| !id.is_empty()) else {
+            return false;
+        };
+        let mut path = path.clone();
+        path.insert(node);
+        walk(file, next, &path)
+    }
+    walk(file, start, &BTreeSet::new())
 }
 
 pub fn validate_landmarks(
@@ -394,7 +504,7 @@ fn validate_landmark(
 pub fn validate_quests(
     files: &[QuestFile],
     world: &WorldNames,
-    item_ids: &BTreeSet<&str>,
+    items: &ItemsFile,
     landmark_names: &BTreeSet<&str>,
     quest_ids: &BTreeSet<String>,
 ) -> Vec<Finding> {
@@ -410,6 +520,13 @@ pub fn validate_quests(
         }
     }
 
+    let item_ids: BTreeSet<&str> = items
+        .items
+        .iter()
+        .map(|item| item.id.as_str())
+        .filter(|id| !id.is_empty())
+        .collect();
+
     for file in files {
         for quest in &file.quests {
             validate_quest(
@@ -418,14 +535,50 @@ pub fn validate_quests(
                 &counts,
                 &npcs,
                 world,
-                item_ids,
+                items,
+                &item_ids,
                 landmark_names,
                 quest_ids,
                 &mut out,
             );
         }
     }
+    // Cadeias de `requires` em ciclo: nenhuma quest do ciclo fica disponível.
+    for quest in files.iter().flat_map(|file| file.quests.iter()) {
+        if !quest.id.is_empty() && requires_cycle(files, &quest.id) {
+            out.push(Finding::error(
+                "quest-ref",
+                format!(
+                    "{}: ciclo em `requires` (a quest nunca fica disponível)",
+                    quest.id
+                ),
+            ));
+        }
+    }
     out
+}
+
+fn requires_cycle(files: &[QuestFile], start: &str) -> bool {
+    fn walk(files: &[QuestFile], node: &str, path: &BTreeSet<&str>) -> bool {
+        if path.contains(node) {
+            return true;
+        }
+        let Some(quest) = files
+            .iter()
+            .flat_map(|file| file.quests.iter())
+            .find(|quest| quest.id == node)
+        else {
+            return false;
+        };
+        let mut path = path.clone();
+        path.insert(node);
+        quest
+            .requires
+            .iter()
+            .filter(|id| !id.is_empty())
+            .any(|id| walk(files, id, &path))
+    }
+    walk(files, start, &BTreeSet::new())
 }
 
 #[allow(clippy::too_many_arguments)]
@@ -435,6 +588,7 @@ fn validate_quest(
     counts: &BTreeMap<&str, usize>,
     npcs: &BTreeMap<&str, &str>,
     world: &WorldNames,
+    items: &ItemsFile,
     item_ids: &BTreeSet<&str>,
     landmark_names: &BTreeSet<&str>,
     quest_ids: &BTreeSet<String>,
@@ -495,7 +649,7 @@ fn validate_quest(
         out.push(Finding::warning("quest-ref", at("lines_complete vazio")));
     }
 
-    validate_rewards(quest, &at, item_ids, out);
+    validate_rewards(quest, &at, items, item_ids, out);
     validate_parley(quest, &at, item_ids, landmark_names, out);
 
     for required in &quest.requires {
@@ -583,6 +737,7 @@ fn validate_objective(
 fn validate_rewards(
     quest: &QuestDef,
     at: &impl Fn(&str) -> String,
+    items: &ItemsFile,
     item_ids: &BTreeSet<&str>,
     out: &mut Vec<Finding>,
 ) {
@@ -615,15 +770,27 @@ fn validate_rewards(
                 "quest-ref",
                 at(&format!("recompensa `{id}` não é um item")),
             ));
+            continue;
         }
-        if let Some(count) = count {
-            match count.parse::<i64>() {
-                Ok(count) if count >= 1 => {}
-                _ => out.push(Finding::error(
-                    "quest-ref",
-                    at(&format!("recompensa `{entry}`: quantidade inválida")),
-                )),
+        match count.map(str::parse::<i64>) {
+            Some(Ok(count)) if count >= 1 => {
+                // O cofre para no tecto da pilha: `potion:200` paga 99 e
+                // perde o resto sem aviso.
+                let cap = stack_cap(items, id);
+                if cap > 0 && count > cap {
+                    out.push(Finding::error(
+                        "quest-ref",
+                        at(&format!(
+                            "recompensa `{entry}` acima do tecto de `{id}` ({cap})"
+                        )),
+                    ));
+                }
             }
+            Some(_) => out.push(Finding::error(
+                "quest-ref",
+                at(&format!("recompensa `{entry}`: quantidade inválida")),
+            )),
+            None => {}
         }
     }
 }
@@ -704,6 +871,58 @@ fn validate_parley(
             _ => {}
         }
     }
+
+    // O relato tem de cobrir o objetivo: `parley.match_expect` aceita
+    // QUALQUER um dos expects, por isso um local que falta na lista é um
+    // lugar que o jogador visitou e não consegue nomear — a entrega falha.
+    let target = quest.objective.target.trim();
+    match quest.objective.objective_type.as_str() {
+        "visit" if !target.is_empty() => {
+            let tokens: BTreeSet<&str> = target.split_whitespace().collect();
+            for expect in &report.expect {
+                if expect.kind == "local" && !tokens.contains(expect.id.as_str()) {
+                    out.push(Finding::error(
+                        "quest-ref",
+                        at(&format!(
+                            "parley: local `{}` não é alvo do objetivo `{target}`",
+                            expect.id
+                        )),
+                    ));
+                }
+            }
+            for token in &tokens {
+                if !report_names(report, "local", token) {
+                    out.push(Finding::error(
+                        "quest-ref",
+                        at(&format!(
+                            "parley: o alvo `{token}` não aparece no relato (não se pode nomear)"
+                        )),
+                    ));
+                }
+            }
+        }
+        "kill" if !target.is_empty() && !report_names(report, "criatura", target) => {
+            out.push(Finding::error(
+                "quest-ref",
+                at(&format!("parley: o alvo `{target}` não aparece no relato")),
+            ));
+        }
+        "collect" if !target.is_empty() && !report_names(report, "item", target) => {
+            out.push(Finding::error(
+                "quest-ref",
+                at(&format!("parley: o alvo `{target}` não aparece no relato")),
+            ));
+        }
+        _ => {}
+    }
+}
+
+/// O relato tem um `expect` deste `kind` com este id?
+fn report_names(report: &Report, kind: &str, id: &str) -> bool {
+    report
+        .expect
+        .iter()
+        .any(|expect| expect.kind == kind && expect.id == id)
 }
 
 pub fn validate_dialogues(
@@ -727,6 +946,10 @@ pub fn validate_dialogues(
             let node_at = |problem: &str| at(&format!("{id}: {problem}"));
             if id.is_empty() {
                 out.push(Finding::error("dialogue-ref", at("nó com id vazio")));
+            }
+            if node.speaker.is_empty() {
+                // Sem speaker o balão abre sem nome.
+                out.push(Finding::error("dialogue-ref", node_at("sem speaker")));
             }
             if node.text.is_empty() {
                 out.push(Finding::error("dialogue-ref", node_at("sem texto")));

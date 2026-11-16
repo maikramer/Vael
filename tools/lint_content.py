@@ -51,7 +51,12 @@ def cap_of(iid):
         return stack
     return max(0, stack_max)
 
+ITEM_KINDS = {'resource', 'item'}
 for iid, item in items.items():
+    kind = item.get('kind')
+    if kind not in ITEM_KINDS:
+        # O editor e o `vault.rs` só distinguem `resource` do resto.
+        err(f"items: {iid}: kind desconhecido '{kind}'")
     slot = item.get('slot')
     if slot is not None and slot not in SLOTS:
         err(f"items: {iid}: slot desconhecido '{slot}'")
@@ -67,6 +72,13 @@ for iid, item in items.items():
         price = shop.get(key)
         if price is not None and (not isinstance(price, int) or price < 0):
             err(f"items: {iid}: preço `{key}` inválido ({price})")
+        elif price == 0:
+            err(f"items: {iid}: preço `{key}` zero")
+    if shop.get('buy') is not None and shop.get('sell') is not None \
+            and shop['sell'] >= shop['buy']:
+        # Comprar e vender o mesmo item com `sell >= buy` é uma máquina de
+        # dinheiro: bastava alternar a loja.
+        err(f"items: {iid}: sell {shop['sell']} >= buy {shop['buy']}")
     stack = item.get('stack')
     if stack is not None and (not isinstance(stack, int) or stack < 1
                               or (stack_max > 0 and stack > stack_max)):
@@ -89,6 +101,8 @@ for r in recipes:
     seen_recipes.add(r.get('id'))
     if r.get('out') not in items:
         err(f"recipes: {rid}: produto desconhecido '{r.get('out')}'")
+    if r.get('out') == 'gold':
+        err(f"recipes: {rid}: produz ouro (dinheiro não se forja)")
     count = r.get('count', 1)
     if not isinstance(count, int) or count < 1:
         err(f"recipes: {rid}: quantidade produzida inválida ({count})")
@@ -97,6 +111,8 @@ for r in recipes:
     for iid, n in (r.get('cost') or {}).items():
         if iid not in items:
             err(f"recipes: {rid}: custo com item desconhecido '{iid}'")
+        if iid == r.get('out'):
+            err(f"recipes: {rid}: o custo inclui o próprio produto '{iid}'")
         if not isinstance(n, (int, float)) or n <= 0:
             err(f"recipes: {rid}: quantidade inválida para '{iid}'")
         elif iid in items and n > cap_of(iid):
@@ -121,6 +137,14 @@ if not isinstance(xp.get('base'), (int, float)) or xp.get('base', 0) < 1:
     err(f"progression: xp.base tem de ser >= 1 ({xp.get('base')})")
 if not isinstance(xp.get('growth'), (int, float)) or xp.get('growth', 0) <= 1:
     err(f"progression: xp.growth tem de ser > 1 ({xp.get('growth')})")
+sppl = xp.get('skill_points_per_level')
+if not isinstance(sppl, int) or sppl < 0:
+    # 0 = valor por omissão do `xp.rs`; negativo é cortado a 0.
+    err(f"progression: xp.skill_points_per_level não pode ser negativo ({sppl})")
+every = prog.get('song_seed_talent_every')
+if not isinstance(every, int) or every < 0:
+    # 0 desliga os pontos de talento por semente.
+    err(f"progression: song_seed_talent_every não pode ser negativo ({every})")
 for kind, value in (prog.get('kill_xp') or {}).items():
     if not isinstance(value, (int, float)) or value < 0:
         err(f"progression: kill_xp.{kind} inválido ({value})")
@@ -128,11 +152,29 @@ for sid, s in skills.items():
     req, exc = s.get('requires') or '', s.get('excludes') or ''
     if req and req not in skills:
         err(f"progression: {sid}: requires desconhecido '{req}'")
-    if exc:
-        if exc not in skills:
-            err(f"progression: {sid}: excludes desconhecido '{exc}'")
-        elif (skills[exc].get('excludes') or '') != sid:
-            err(f"progression: {sid} exclui {exc}, mas {exc} não exclui {sid}")
+    if req == sid:
+        err(f"progression: {sid}: requires ele próprio (nunca fica disponível)")
+    if exc and exc not in skills:
+        err(f"progression: {sid}: excludes desconhecido '{exc}'")
+    elif exc and (skills[exc].get('excludes') or '') != sid:
+        err(f"progression: {sid} exclui {exc}, mas {exc} não exclui {sid}")
+    if exc == sid:
+        err(f"progression: {sid}: exclui-se a si próprio")
+
+
+def talent_cycle(start):
+    """`requires` em ciclo: nenhum talento do ciclo fica disponível."""
+    def walk(node, path):
+        if node in path:
+            return True
+        nxt = (skills.get(node) or {}).get('requires') or ''
+        return bool(nxt) and nxt in skills and walk(nxt, path | {node})
+    return walk(start, set())
+
+
+for sid in skills:
+    if talent_cycle(sid):
+        err(f"progression: {sid}: ciclo em `requires`")
 
 landmarks_doc = load('data/landmarks.json') or {}
 landmark_names = {
@@ -268,9 +310,21 @@ for qid, q in quests.items():
         err(f"quest {qid}: sem objective nem stages")
     rewards = q.get('rewards') or {}
     for entry in rewards.get('items') or []:
-        name = str(entry).split(':')[0].strip()
+        name, _, count = str(entry).partition(':')
+        name = name.strip()
         if name not in items:
             err(f"quest {qid}: recompensa com item desconhecido '{name}'")
+            continue
+        try:
+            n = int(count) if count else 1
+        except ValueError:
+            err(f"quest {qid}: recompensa '{entry}' com quantidade inválida")
+            continue
+        if n < 1:
+            err(f"quest {qid}: recompensa '{entry}' com quantidade < 1")
+        elif n > cap_of(name):
+            # O cofre para no tecto da pilha: o resto da recompensa perde-se.
+            err(f"quest {qid}: recompensa '{entry}' acima do tecto de '{name}'")
     req = q.get('requires')
     for other in ([req] if isinstance(req, str) and req else (req or [])):
         if other not in quests:
@@ -342,6 +396,23 @@ for qid, q in quests.items():
                 err(f"quest {qid}: parley espera criatura sem alias '{eid}'")
             elif kind == 'local' and eid != '*' and eid not in landmark_names:
                 err(f"quest {qid}: parley espera local desconhecido '{eid}'")
+        # O relato tem de cobrir o objetivo: `parley.match_expect` aceita
+        # QUALQUER expect, por isso um marco que falta na lista é um lugar
+        # que o jogador visitou e não consegue nomear — a entrega falha.
+        obj = q.get('objective') or {}
+        target = str(obj.get('target') or '').strip()
+        ekind = {'visit': 'local', 'kill': 'criatura', 'collect': 'item'}.get(obj.get('type'))
+        if ekind and target:
+            named = {e.get('id') for e in expect or []
+                     if isinstance(e, dict) and e.get('kind') == ekind}
+            if obj.get('type') == 'visit':
+                tokens = set(target.split())
+                for missing in sorted(tokens - named):
+                    err(f"quest {qid}: parley não aceita o alvo visited '{missing}'")
+                for extra in sorted(named - tokens):
+                    err(f"quest {qid}: parley aceita '{extra}', que o objetivo não pede")
+            elif target not in named:
+                err(f"quest {qid}: parley não aceita o alvo '{target}'")
 
 # Marcos que uma quest de visita chega a registar no `actions.lua`
 # (`report_visit` só corre para tokens de objetivos `visit` ativos). É o
@@ -393,6 +464,14 @@ for r in riddles_doc.get('riddles', []):
     for mark in r.get('require_marks') or []:
         if mark not in landmark_names:
             err(f"riddles: {rid}: require_marks com marco desconhecido '{mark}'")
+    for key in ('interact', 'prompt', 'example', 'hint', 'solved'):
+        if not str(r.get(key) or '').strip():
+            err(f"riddles: {rid}: {key} vazio")
+    # `expect: [local *]` só faz sentido com `require_marks`: sem os marcos
+    # qualquer local serve e a resposta deixa de ser uma escolha.
+    stars = [e for e in expect or [] if isinstance(e, dict) and e.get('id') == '*']
+    if stars and not r.get('require_marks'):
+        err(f"riddles: {rid}: expect '*' sem require_marks")
     reward = r.get('reward')
     if not isinstance(reward, dict):
         err(f"riddles: {rid}: reward malformado")
@@ -402,9 +481,18 @@ for r in riddles_doc.get('riddles', []):
         if not isinstance(value, (int, float)) or value < 0:
             err(f"riddles: {rid}: reward.{key} inválido ({value})")
     for entry in reward.get('items') or []:
-        name = str(entry).split(':')[0].strip()
+        name, _, count = str(entry).partition(':')
+        name = name.strip()
         if name not in items:
             err(f"riddles: {rid}: recompensa com item desconhecido '{name}'")
+            continue
+        try:
+            n = int(count) if count else 1
+        except ValueError:
+            err(f"riddles: {rid}: recompensa '{entry}' com quantidade inválida")
+            continue
+        if n < 1 or n > cap_of(name):
+            err(f"riddles: {rid}: recompensa '{entry}' fora de 1..{cap_of(name)}")
 
 verdicts_doc = load('data/verdicts.json') or {}
 verdict_ids, verdict_sites = set(), set()
@@ -449,6 +537,10 @@ for v in verdicts_doc.get('rules', []):
         err(f"verdicts: {vid}: site '{site}' já usado por outra regra")
     else:
         verdict_sites.add(site)
+    if not str(v.get('intro') or '').strip():
+        # O `judge-site.lua` diz o `intro` no primeiro [E]; vazio = o altar
+        # não diz o que pesa.
+        err(f"verdicts: {vid}: intro vazio")
     require = v.get('require')
     if not isinstance(require, list) or not require:
         err(f"verdicts: {vid}: require vazio")
@@ -483,10 +575,21 @@ for v in verdicts_doc.get('rules', []):
         if not isinstance(value, (int, float)) or value < 0:
             err(f"verdicts: {vid}: reward.{key} inválido ({value})")
     for entry in reward.get('items') or []:
-        name = str(entry).split(':')[0].strip()
+        name, _, count = str(entry).partition(':')
+        name = name.strip()
         if name not in items:
             err(f"verdicts: {vid}: recompensa com item desconhecido '{name}'")
+            continue
+        try:
+            n = int(count) if count else 1
+        except ValueError:
+            err(f"verdicts: {vid}: recompensa '{entry}' com quantidade inválida")
+            continue
+        if n < 1 or n > cap_of(name):
+            err(f"verdicts: {vid}: recompensa '{entry}' fora de 1..{cap_of(name)}")
 
+puzzle_files = {os.path.basename(path)[:-5]
+                for path in glob.glob('data/quest_puzzles/*.json')}
 for path in sorted(glob.glob('data/quest_puzzles/*.json')):
     base = os.path.basename(path)[:-5]
     puzzle = load(path)
@@ -538,19 +641,82 @@ for path in sorted(glob.glob('data/quest_puzzles/*.json')):
     for key in ('ask', 'final_prompt'):
         if not str(puzzle.get(key) or '').strip():
             err(f"{path}: {key} vazio")
+    for key in ('giver', 'example', 'no_answer', 'more', 'reveal', 'cancel',
+                'final_example', 'final_reply_ok', 'final_reply_bad',
+                'final_cancel', 'hint'):
+        if not str(puzzle.get(key) or '').strip():
+            err(f"{path}: {key} vazio")
+    intro = puzzle.get('intro')
+    if not isinstance(intro, list) or not intro:
+        err(f"{path}: intro vazio")
+    after = puzzle.get('after')
+    if not isinstance(after, list) or not after:
+        err(f"{path}: after vazio (a cena não diz o que mudou)")
     endings = puzzle.get('endings')
     if endings is None:
         endings = {}
     if not isinstance(endings, dict):
         err(f"{path}: endings malformado")
         endings = {}
+    # Uma opção sem ending não é erro: o runtime cai no `final_reply_ok` (a
+    # resposta certa) ou no `final_reply_bad` + `hint`. Um ending fora das
+    # opções, esse, nunca é alcançado.
     for key, ending in endings.items():
         if key not in option_keys:
             err(f"{path}: ending '{key}' não é uma final_option")
+        if not str((ending or {}).get('text') or '').strip():
+            err(f"{path}: ending '{key}' sem texto")
         for entry in (ending or {}).get('items') or []:
-            name = str(entry).split(':')[0].strip()
+            name, _, count = str(entry).partition(':')
+            name = name.strip()
             if name not in items:
                 err(f"{path}: ending '{key}' com item desconhecido '{name}'")
+                continue
+            try:
+                n = int(count) if count else 1
+            except ValueError:
+                err(f"{path}: ending '{key}': '{entry}' com quantidade inválida")
+                continue
+            if n < 1 or n > cap_of(name):
+                err(f"{path}: ending '{key}': '{entry}' fora de 1..{cap_of(name)}")
+
+# Uma quest `decision` sem ficheiro de puzzle é um NPC mudo: o
+# `npc/decision-quest.lua` lê `data/quest_puzzles/<quest_id>.json` e, sem ele,
+# fica sem diálogo nem jeito de entregar.
+for qid, q in quests.items():
+    objectives = [q.get('objective')] + list(q.get('stages') or [])
+    if any(isinstance(obj, dict) and obj.get('type') == 'decision' for obj in objectives):
+        if qid not in puzzle_files:
+            err(f"quest {qid}: objetivo decision sem data/quest_puzzles/{qid}.json")
+
+# Placeholders: o único que o runtime substitui é `{remaining}` (o `say` dos
+# dadores). Qualquer outro chega ao ecrã em bruto.
+PLACEHOLDERS = {'remaining'}
+
+
+def scan_placeholders(label, value):
+    if isinstance(value, str):
+        for found in re.findall(r'\{([^{}]*)\}', value):
+            if found not in PLACEHOLDERS:
+                err(f"{label}: placeholder '{{{found}}}' desconhecido")
+    elif isinstance(value, list):
+        for item in value:
+            scan_placeholders(label, item)
+    elif isinstance(value, dict):
+        for item in value.values():
+            scan_placeholders(label, item)
+
+
+for qid, quest in quests.items():
+    scan_placeholders(f"quest {qid}", quest)
+for riddle in riddles_doc.get('riddles', []):
+    if isinstance(riddle, dict):
+        scan_placeholders(f"riddle {riddle.get('id')}", riddle)
+for rule in verdicts_doc.get('rules', []):
+    if isinstance(rule, dict):
+        scan_placeholders(f"verdict {rule.get('id')}", rule)
+for path in sorted(glob.glob('data/quest_puzzles/*.json')):
+    scan_placeholders(path, load(path) or {})
 
 pt, en = load('locale/pt.json') or {}, load('locale/en.json') or {}
 for key in sorted(set(pt) - set(en)):
@@ -576,6 +742,9 @@ for path in sorted(glob.glob('dialogues/*.json')):
         if not isinstance(node, dict):
             err(f"{path}: nó '{nid}' malformado")
             continue
+        if not str(node.get('speaker') or '').strip():
+            # Sem speaker o balão abre sem nome (ou herda o anterior).
+            err(f"{path}: nó '{nid}' sem speaker")
         text = str(node.get('text') or '')
         if not text:
             err(f"{path}: nó '{nid}' sem texto")
