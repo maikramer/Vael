@@ -21,13 +21,16 @@ Cenas QA (`scenes/qa/*.bsn`, chão plano, sem terreno — carregam em segundos):
   qa.py scene find TEXTO             entidades com nome no mundo (para --copy)
   qa.py scene quest ID               cena + cenário prontos para a quest ID
 
-Sem dependências fora da stdlib. O transporte da bridge vive no `vael-tools`
-(Rust) — este script só compõe cenários e passos.
+Sem dependências fora da stdlib. O transporte normal da bridge vive no
+`vael-tools` (Rust) — este script só compõe cenários e passos. `Bridge.rpc`
+fala JSON-RPC direto (HTTP/1.1) apenas para métodos que o CLI não expõe, como
+o `viber.raycast` das fixtures de paridade.
 """
 
 from __future__ import annotations
 
 import argparse
+import http.client
 import json
 import os
 import random
@@ -77,6 +80,14 @@ def scenario_path(name: str) -> Path:
     return SCEN_DIR / f"{name}.json"
 
 
+def display_path(path: Path) -> str:
+    """Caminho relativo à raiz quando possível (um cenário pode ser /tmp/x.json)."""
+    try:
+        return str(path.resolve().relative_to(ROOT))
+    except ValueError:
+        return str(path)
+
+
 def build_game(release: bool = True, log=None) -> Path:
     """`cargo build` do jogo ANTES do cronómetro do `ready`; devolve o binário."""
     cmd = ["cargo", "build", "--quiet", *(["--release"] if release else [])]
@@ -119,6 +130,47 @@ class Bridge:
         self.port = port
         self.timeout = timeout
 
+    def rpc(self, method: str, params: dict | None = None, timeout: float | None = None):
+        """Chamada JSON-RPC crua à bridge (métodos sem comando no CLI).
+
+        O protocolo é o do `bevy_ext_bridge_protocol`: JSON-RPC 2.0 sobre
+        HTTP/1.1, `POST /`, `Connection: close` — a bridge do jogo serve-o no
+        mesmo porto, por isso `viber.raycast` (e afins) chegam sem comando novo
+        no `vael-tools`.
+        """
+        body = json.dumps(
+            {"jsonrpc": "2.0", "id": 0, "method": method, "params": params or {}}
+        ).encode()
+        conn = http.client.HTTPConnection(
+            "127.0.0.1", self.port, timeout=timeout or self.timeout
+        )
+        try:
+            conn.request(
+                "POST",
+                "/",
+                body=body,
+                headers={"Content-Type": "application/json", "Connection": "close"},
+            )
+            response = conn.getresponse()
+            status, raw = response.status, response.read()
+        except OSError as err:
+            raise RuntimeError(f"bridge {self.port} não respondeu: {err}") from err
+        finally:
+            conn.close()
+        try:
+            payload = json.loads(raw or b"{}")
+        except json.JSONDecodeError as err:
+            raise RuntimeError(
+                f"bridge {self.port}: resposta não é JSON-RPC (HTTP {status}): "
+                f"{raw[:200]!r}"
+            ) from err
+        error = payload.get("error") if isinstance(payload, dict) else None
+        if error:
+            raise RuntimeError(
+                f"bridge error {error.get('code', 0)}: {error.get('message', '?')}"
+            )
+        return payload.get("result") if isinstance(payload, dict) else None
+
     def _debug(self, *args: str, check: bool = True, timeout: float | None = None):
         """`vael-tools debug --port P --json <sub> [...]` → resposta JSON."""
         cmd = [*tools_bin(), "debug", "--port", str(self.port), "--json", *args]
@@ -153,7 +205,9 @@ class Bridge:
                 "--state", params.get("state", "click"), timeout=timeout,
             )
             return {}
-        raise RuntimeError(f"método via vael-tools não suportado: {method}")
+        # Sem comando no CLI (ex.: `viber.raycast`): a bridge do jogo serve o
+        # método no mesmo porto, por isso é uma chamada JSON-RPC direta.
+        return self.rpc(method, params, timeout)
 
     def lua(self, code: str):
         res = self._debug("lua", "--", code)
@@ -161,18 +215,18 @@ class Bridge:
             raise RuntimeError((res or {}).get("error") or f"lua falhou: {res}")
         return res.get("result")
 
-    def ready(self) -> bool:
+    def listening(self) -> bool:
+        """Há um bridge a ouvir o porto (mesmo que o mundo ainda não carregou).
+
+        A ocupação é `listening` e não `ready`: um jogo a carregar já tem o
+        porto tomado — lançar outro na mesma porta dava "bind" falhado e os
+        passos corriam contra o primeiro jogo.
+        """
         try:
             probe = self._debug("probe", timeout=30)
         except Exception:
             return False
-        if not probe.get("listening"):
-            return False
-        ping = probe.get("ping") or {}
-        ready = ping.get("ready") if isinstance(ping, dict) else None
-        if isinstance(ready, dict):
-            return bool(ready.get("ready"))
-        return bool(ready)
+        return bool(probe.get("listening"))
 
     def wait_ready(self, timeout: float) -> bool:
         try:
@@ -425,7 +479,7 @@ def cmd_new(args) -> None:
     quest = quests[args.quest]
     path = scenario_path(args.name)
     if path.exists() and not args.force:
-        die(f"{path.relative_to(ROOT)} já existe (--force)")
+        die(f"{display_path(path)} já existe (--force)")
     live_kills = bool(getattr(args, "slay", False))
     steps, expect = steps_for(quest, args.stage or 1, args.state, live_kills)
     scenario: dict = {
@@ -449,7 +503,7 @@ def cmd_new(args) -> None:
     scenario["expect"] = expect
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(scenario, ensure_ascii=False, indent=2) + "\n")
-    print(path.relative_to(ROOT))
+    print(display_path(path))
 
 
 def cmd_sim(args) -> None:
@@ -522,7 +576,9 @@ def run_steps(bridge: Bridge, scen: dict, logs: Path, keep_going: bool) -> list[
                 break
     res = bridge.lua("return viber.vael.qa_check()")
     failures += res.get("failures") or []
-    screenshot(bridge.port, logs / "final.png")
+    if not screenshot(bridge.port, logs / "final.png"):
+        # Sem aviso, o "artefactos em …" apontava para uma pasta sem final.png.
+        print(f"  aviso: screenshot final falhou (sem {logs / 'final.png'})")
     return failures
 
 
@@ -544,7 +600,7 @@ def cmd_run(args) -> None:
     scen = merged(args.name)
     port = args.port
     bridge = Bridge(port)
-    if bridge.ready():
+    if bridge.listening():
         die(f"já há um jogo na porta {port} (usa --port ou qa.py apply)")
     logs = Path(tempfile.mkdtemp(prefix=f"vael-qa-{Path(args.name).name}-"))
     log = open(logs / "game.log", "w")
@@ -614,7 +670,7 @@ def cmd_snapshot(args) -> None:
     path = scenario_path(args.name)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(json.dumps(out, ensure_ascii=False, indent=2) + "\n")
-    print(path.relative_to(ROOT))
+    print(display_path(path))
 
 
 def cmd_state(args) -> None:

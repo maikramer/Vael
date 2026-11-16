@@ -59,6 +59,8 @@ if [ -n "${VAEL_TOOLS_BIN:-}" ]; then
   step "vael-tools lint"
   "$VAEL_TOOLS_BIN" lint 2>&1 | tail -8
   [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
+else
+  echo "saltado: o build do vael-tools falhou (ver acima)"
 fi
 
 step "traduções em falta"
@@ -69,9 +71,21 @@ python3 tools/i18n_extract.py | tail -6
 
 if [ $full -eq 1 ]; then
   step "testes do crate vael"
-  cargo test --release -p vael --quiet 2>&1 \
-    | grep -E 'FAILED|panicked|test result' | head -20
-  [ "${PIPESTATUS[0]}" -eq 0 ] || fail=1
+  # Sem `| head` no `cargo test`: com mais de 20 linhas de resultado (vários
+  # binários de teste) o `head` fechava o pipe, o `cargo test` morria com
+  # SIGPIPE e o `PIPESTATUS[0]` dava 141 — "FALHOU" com os testes a passar.
+  test_log="$(mktemp)"
+  cargo test --release -p vael --quiet >"$test_log" 2>&1
+  test_status=$?
+  matched="$(grep -cE 'FAILED|panicked|test result' "$test_log" || true)"
+  if [ "${matched:-0}" -gt 0 ]; then
+    grep -E 'FAILED|panicked|test result' "$test_log" | head -20
+  else
+    # Sem resumo (ex.: erro de compilação): mostra o fim do log em vez de nada.
+    tail -20 "$test_log"
+  fi
+  rm -f "$test_log"
+  [ "$test_status" -eq 0 ] || fail=1
 fi
 
 printf '\n%s\n' "$([ $fail -eq 0 ] && echo 'OK' || echo 'FALHOU')"

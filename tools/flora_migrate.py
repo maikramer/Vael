@@ -183,6 +183,13 @@ def migrate_text(text: str, path: str, report: list[str]) -> tuple[str, int]:
     _roots, flat = parse(text)
     edits: list[tuple[int, int, str]] = []
     converted = 0
+    # Um pai com DUAS árvores no visual: a estação é uma só (a primeira
+    # espécie) e as restantes só se apagam — sem isto saíam dois patches no
+    # mesmo `open_end` e o `edits sobrepostos` abortava a migração.
+    patched: set[int] = set()
+    # Spans que um patch de pai substituiu por inteiro (os filhos lá dentro
+    # já não precisam de edit próprio).
+    swallowed: list[tuple[int, int]] = []
 
     for node in flat:
         url = url_in(node.attrs)
@@ -208,10 +215,31 @@ def migrate_text(text: str, path: str, report: list[str]) -> tuple[str, int]:
         if parent is None or parent.tag not in ("Entity", "GameObject"):
             report.append(f"{path}: AVISO — {url} sem pai Entity/GameObject; ignorado")
             continue
-        remaining = [child for child in parent.children if child is not node]
+        if id(parent) in patched:
+            if not any(start <= node.start and node.end <= end for start, end in swallowed):
+                start, end = line_span(text, node.start, node.end)
+                edits.append((start, end, ""))
+            converted += 1
+            report.append(f"{path}: {url.rsplit('/', 1)[-1]} -> apagado (o pai já é estação)")
+            continue
+        patched.add(id(parent))
+        # Filhos que ficam depois de apagar TODAS as árvores visuais: se não
+        # sobra nenhum, o pai fecha-se em `… />` (o docstring), mesmo que
+        # esteja aqui a segunda árvore.
+        remaining = [
+            child
+            for child in parent.children
+            if child is not node
+            and not (
+                child.tag in ("GltfScene", "GLTFLoader")
+                and url_in(child.attrs)
+                and not inside_scatter(child)
+            )
+        ]
         if not remaining:
             # O pai fica vazio: um só edit no span inteiro do pai.
             edits.append((parent.start, parent.end, patch_open_tag(parent, species, True)))
+            swallowed.append((parent.start, parent.end))
         else:
             start, end = line_span(text, node.start, node.end)
             edits.append((start, end, ""))

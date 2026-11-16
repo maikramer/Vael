@@ -11,6 +11,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
 import struct
 import zlib
 from pathlib import Path
@@ -128,7 +129,11 @@ def main() -> None:
     draw = ImageDraw.Draw(image)
     draw.rectangle((0, 0, args.size - 1, args.size - 1), outline=(245, 158, 11), width=8)
     OUT.parent.mkdir(parents=True, exist_ok=True)
-    image.save(OUT, optimize=True)
+    # O PNG é o artefacto versionado: grava-se ao lado e troca-se, para uma
+    # interrupção não deixar `ui/vael_map.png` truncado (o jogo carrega-o).
+    temporary = OUT.with_name(OUT.name + ".tmp.png")
+    image.save(temporary, optimize=True)
+    os.replace(temporary, OUT)
     print(f"{OUT} ({args.size}×{args.size}, {OUT.stat().st_size / 1024:.0f} KiB)")
 
 

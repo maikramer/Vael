@@ -237,6 +237,12 @@ def cmd_capture(args) -> None:
             f"a fixture {out / 'rays.json'} não serve para comparar",
             file=sys.stderr,
         )
+        # O motivo importa: sem `viber.raycast` no bridge não há fixture de
+        # raios nenhuma (o `vael-tools/raycast` do protocolo ainda não tem
+        # handler no runtime).
+        reasons = sorted({(r.get("error") or "").strip()[:160] for r in results if r.get("error")})
+        for reason in reasons[:3]:
+            print(f"  - {reason}", file=sys.stderr)
 
     colliders = collider_fixture(bridge, origin)
     (out / "colliders.json").write_text(json.dumps(colliders, indent=1) + "\n")
@@ -262,6 +268,14 @@ def cmd_capture(args) -> None:
             print(f"perf: falhou ({err})", file=sys.stderr)
 
     if errors:
+        if args.allow_missing:
+            print(
+                "avian_baseline: --allow-missing: rays.json fica com os erros por "
+                "raio (o bridge não serve `viber.raycast`); meta/colliders/hero "
+                "continuam válidos, mas sem raios o `compare` não prova paridade",
+                file=sys.stderr,
+            )
+            return
         # Exit 1: uma captura sem raios não é uma baseline válida.
         sys.exit(1)
 
@@ -313,6 +327,8 @@ def cmd_hero(args) -> None:
     proc = hold_key(args.port, "w", 2000)
     walk_samples = sample(bridge, 2.3)
     proc.wait(timeout=10)
+    if proc.returncode != 0:
+        raise RuntimeError(f"`debug key w --hold-ms 2000` falhou (exit {proc.returncode})")
     settle(bridge, 0.4)
     after = player(bridge)
     walk = {
@@ -331,10 +347,17 @@ def cmd_hero(args) -> None:
     teleport(bridge, anchor)
     settle(bridge, 0.6)
     ground_y = float(player(bridge)["y"])
-    subprocess.run(
+    # Sem `check`: um `debug key` que falha deixava `peak` a 0 em silêncio e a
+    # fixture parecia "o herói não salta" em vez de "a tecla não chegou".
+    pressed = subprocess.run(
         [*tools_bin(), "debug", "--port", str(args.port), "key", "space"],
         capture_output=True, text=True, timeout=20,
     )
+    if pressed.returncode != 0:
+        raise RuntimeError(
+            f"`debug key space` falhou (exit {pressed.returncode}): "
+            f"{short(pressed.stderr.strip())}"
+        )
     jump_samples = sample(bridge, 1.2)
     peak = max((s["y"] for s in jump_samples), default=ground_y)
     end_y = jump_samples[-1]["y"] if jump_samples else ground_y
@@ -393,7 +416,9 @@ def cmd_compare(args) -> None:
         problems.append(f"rays: {len(rb)} vs {len(ra)} (mesma grelha?)")
     mismatched = 0
     worst = 0.0
-    for i, (b, a) in enumerate(zip(rb, ra)):
+    # `strict=False`: grelhas de tamanhos diferentes já foram reportadas acima
+    # e o resto compara-se no prefixo comum.
+    for i, (b, a) in enumerate(zip(rb, ra, strict=False)):
         # Um raio sem resultado (`error`) não é "sem hit": duas fixtures cheias
         # de erros comparavam iguais e davam "paridade OK" a mentir.
         if b.get("error") or a.get("error"):
@@ -485,6 +510,11 @@ def main() -> None:
     cap.add_argument("--out", default=str(DEFAULT_OUT))
     cap.add_argument("--timeout", type=float, default=180.0)
     cap.add_argument("--perf", action="store_true")
+    cap.add_argument(
+        "--allow-missing",
+        action="store_true",
+        help="não falha se o bridge não servir `viber.raycast` (fixture parcial)",
+    )
     cap.set_defaults(func=cmd_capture)
 
     hero = sub.add_parser("hero", help="invariantes de movimento do herói")

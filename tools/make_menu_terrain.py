@@ -5,8 +5,9 @@ O mundo de menu é pequeno e estático, por isso o terreno é autorado uma vez e
 guardado como `scenes/menu.data/terrain.ahgt` (o mesmo formato do
 `world.data/terrain.ahgt`): magic AHGT + meta JSON + grelha u16 deflate.
 
-A clareira é plana (8.2 m) até aos 16 m de raio; fora dela o terreno sobe em
-colinas suaves e fecha-se numa crista a norte (z negativo), atrás das tendas.
+A clareira é plana (8.2 m) até aos 14 m de raio; a transição para o terreno
+ondulado vai até aos 28 m e a norte (z negativo) fecha-se numa crista atrás
+das tendas.
 O herói entra a sul (z positivo) e olha para a fogueira na origem.
 
 Uso: python3 tools/make_menu_terrain.py
@@ -14,6 +15,7 @@ Uso: python3 tools/make_menu_terrain.py
 
 import json
 import math
+import os
 import struct
 import zlib
 from pathlib import Path
@@ -127,7 +129,11 @@ def main() -> None:
     ).encode()
     header = b"AHGT" + struct.pack("<HHH", 1, SIDE, SIDE) + b"\0" * 6
     header += struct.pack("<I", len(meta))
-    OUT.write_bytes(header + meta + payload)
+    # Troca atómica: o `terrain.ahgt` é estado do mundo (vai ao git); um Ctrl-C
+    # a meio do `write_bytes` deixava-o truncado.
+    temporary = OUT.with_name(OUT.name + ".tmp")
+    temporary.write_bytes(header + meta + payload)
+    os.replace(temporary, OUT)
 
     print(f"{OUT} — {SIDE}x{SIDE}, {OUT.stat().st_size / 1024:.0f} KiB")
     for name, x, z in [

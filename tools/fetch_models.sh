@@ -28,6 +28,13 @@ for name in nlu d1; do
         echo "aviso: assets/public/$name é um link pendurado ($(readlink "$dest")); a repor" >&2
         rm -f "$dest"
     fi
-    ln -s "../../../CelerAI/models/$name" "$dest" || cp -r "$src" "$dest"
-    echo "link: assets/public/$name -> CelerAI/models/$name"
+    # Confirma que o link RESOLVE (`-d` segue o symlink): um `ln -s` com o
+    # caminho relativo errado saía "link:" e o jogo ficava sem modelos.
+    if ln -s "../../../CelerAI/models/$name" "$dest" && [ -d "$dest" ]; then
+        echo "link: assets/public/$name -> CelerAI/models/$name"
+    else
+        rm -f "$dest"
+        cp -r "$src" "$dest"
+        echo "copiado: assets/public/$name (o symlink não resolveu)"
+    fi
 done
