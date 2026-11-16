@@ -1309,8 +1309,10 @@ impl bevy::app::Plugin for BmsBridgePlugin {
                 // scripts no frame corrente são drenados e aplicados no
                 // mesmo frame (`apply_bms_commands` corre depois do dreno).
                 (
+                    probe_scripts_start, // `VAEL_PERF_DIAG`
                     send_on_update,
                     event_handler::<OnScriptUpdate, LuaScriptingPlugin>,
+                    probe_scripts_end, // `VAEL_PERF_DIAG`
                 )
                     .chain()
                     .in_set(VaelScripts)
@@ -1338,6 +1340,21 @@ pub struct OnScriptUpdate;
 /// aplicam comandos, depois do dreno (`apply_bms_commands`).
 #[derive(bevy::ecs::schedule::SystemSet, Debug, Hash, PartialEq, Eq, Clone)]
 pub struct VaelScripts;
+
+// `VAEL_PERF_DIAG`
+static PROBE_SCRIPTS_T0: std::sync::Mutex<Option<std::time::Instant>> = std::sync::Mutex::new(None);
+fn probe_scripts_start() {
+    // Sem `VAEL_PERF_DIAG` não se toca no `Mutex` — o par start/end corre em
+    // todo o frame e a medição não pode custar nada quando está desligada.
+    if bevy_engine_core::perf_probe::enabled() {
+        *PROBE_SCRIPTS_T0.lock().unwrap() = Some(std::time::Instant::now());
+    }
+}
+fn probe_scripts_end() {
+    if let Some(t0) = PROBE_SCRIPTS_T0.lock().unwrap().take() {
+        bevy_engine_core::perf_probe::record("on_update(scripts)", t0.elapsed().as_secs_f64() * 1000.0);
+    }
+}
 
 impl IntoCallbackLabel for OnScriptUpdate {
     fn into_callback_label() -> CallbackLabel {
@@ -1395,6 +1412,7 @@ fn mirror_script_components(
     mut removed: RemovedComponents<LuaScriptRef>,
     mut mirror: ResMut<ScriptMirrorState>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("mirror_script_components"); // `VAEL_PERF_DIAG`
     for (entity, lref) in &added {
         let path = script_asset_path(&lref.path);
         let handle: Handle<ScriptAsset> = server.load(&path);
@@ -1421,6 +1439,7 @@ fn parse_script_exports(
     mirror: Res<ScriptMirrorState>,
     mut exports: ResMut<BmsScriptExports>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("parse_script_exports"); // `VAEL_PERF_DIAG`
     if mirror.by_entity.is_empty() {
         return;
     }
@@ -1457,7 +1476,15 @@ fn send_on_update(
     mut pending: Local<HashMap<Entity, f64>>,
     mut frame: Local<u64>,
     mut writer: MessageWriter<ScriptCallbackMessage>,
+    mut counts: Local<HashMap<String, u32>>,
 ) {
+    if perf_count_scripts() && *frame % 600 == 599 {
+        let mut v: Vec<_> = counts.drain().collect();
+        v.sort_by(|a, b| b.1.cmp(&a.1));
+        for (path, n) in v.iter().take(25) {
+            info!("PERFSCRIPT {:6.1}/frame {path}", *n as f32 / 600.0);
+        }
+    }
     let dt = time.delta_secs_f64();
     *frame = frame.wrapping_add(1);
     let hero = players.iter().next().map(GlobalTransform::translation);
@@ -1465,6 +1492,9 @@ fn send_on_update(
     for (entity, (handle, path)) in &mirror.by_entity {
         let acc = pending.entry(*entity).or_insert(0.0);
         *acc += dt;
+        if script_skipped(path) {
+            continue;
+        }
         let every = script_update_interval(path, hero, transforms.get(*entity).ok());
         if every > 1 && (*frame + u64::from(entity.index().index())) % every != 0 {
             continue;
@@ -1473,6 +1503,9 @@ fn send_on_update(
         // recebe um salto enorme de tempo de uma vez.
         let step = acc.min(0.5);
         *acc = 0.0;
+        if perf_count_scripts() {
+            *counts.entry(path.clone()).or_default() += 1;
+        }
         writer.write(ScriptCallbackMessage::new_for_script_entity(
             OnScriptUpdate::into_callback_label(),
             vec![ScriptValue::Float(step)],
@@ -1482,13 +1515,43 @@ fn send_on_update(
     }
 }
 
-/// Raio (m) até onde um script do mundo corre a cada frame.
-const SCRIPT_LOD_NEAR_M: f32 = 48.0;
+/// Diagnóstico: `VAEL_SCRIPT_SKIP=prefixo,…` não despacha o `on_update`
+/// dos scripts cujo caminho começa por um dos prefixos (bisseção de custo).
+fn script_skipped(path: &str) -> bool {
+    static SKIP: std::sync::OnceLock<Vec<String>> = std::sync::OnceLock::new();
+    SKIP.get_or_init(|| {
+        std::env::var("VAEL_SCRIPT_SKIP")
+            .ok()
+            .map(|raw| {
+                raw.split(',')
+                    .map(str::trim)
+                    .filter(|p| !p.is_empty())
+                    .map(str::to_owned)
+                    .collect()
+            })
+            .unwrap_or_default()
+    })
+    .iter()
+    .any(|prefix| path.starts_with(prefix.as_str()))
+}
+
+fn perf_count_scripts() -> bool {
+    static ON: std::sync::OnceLock<bool> = std::sync::OnceLock::new();
+    *ON.get_or_init(|| std::env::var("VAEL_PERF_DIAG").ok().as_deref() == Some("1"))
+}
+
+/// Raio (m) até onde um script do mundo corre a cada frame (prompts de
+/// interação, combate corpo a corpo).
+const SCRIPT_LOD_NEAR_M: f32 = 24.0;
+/// Raio (m) até onde corre a cada [`SCRIPT_LOD_CLOSE_EVERY`] frames.
+const SCRIPT_LOD_CLOSE_M: f32 = 60.0;
+const SCRIPT_LOD_CLOSE_EVERY: u64 = 2;
 /// Raio (m) até onde corre a cada [`SCRIPT_LOD_MID_EVERY`] frames.
 const SCRIPT_LOD_MID_M: f32 = 120.0;
-const SCRIPT_LOD_MID_EVERY: u64 = 3;
-/// Além do raio médio: a cada N frames.
-const SCRIPT_LOD_FAR_EVERY: u64 = 10;
+const SCRIPT_LOD_MID_EVERY: u64 = 4;
+/// Além do raio médio: a cada N frames (o `dt` acumula; 2,5 Hz a 60 fps —
+/// o registo de hostis aceita entradas com menos de 1 s).
+const SCRIPT_LOD_FAR_EVERY: u64 = 24;
 
 /// De quantos em quantos frames corre o `on_update` deste script.
 fn script_update_interval(path: &str, hero: Option<Vec3>, at: Option<&GlobalTransform>) -> u64 {
@@ -1498,9 +1561,20 @@ fn script_update_interval(path: &str, hero: Option<Vec3>, at: Option<&GlobalTran
     let (Some(hero), Some(at), false) = (hero, at, global) else {
         return 1;
     };
-    let d = at.translation().distance(hero);
+    // `VAEL_SCRIPT_LOD_SCALE` escala os raios (A/B; 0 = tudo "longe").
+    static SCALE: std::sync::OnceLock<f32> = std::sync::OnceLock::new();
+    let scale = *SCALE.get_or_init(|| {
+        std::env::var("VAEL_SCRIPT_LOD_SCALE")
+            .ok()
+            .and_then(|v| v.trim().parse::<f32>().ok())
+            .filter(|v| v.is_finite() && *v >= 0.0)
+            .unwrap_or(1.0)
+    });
+    let d = at.translation().distance(hero) / scale.max(1e-3);
     if d <= SCRIPT_LOD_NEAR_M {
         1
+    } else if d <= SCRIPT_LOD_CLOSE_M {
+        SCRIPT_LOD_CLOSE_EVERY
     } else if d <= SCRIPT_LOD_MID_M {
         SCRIPT_LOD_MID_EVERY
     } else {
@@ -1512,6 +1586,7 @@ fn script_update_interval(path: &str, hero: Option<Vec3>, at: Option<&GlobalTran
 /// `drain_commands` do BMS, converte cada variante para o `ScriptCommand`
 /// do monólito e aplica com [`apply_script_command`].
 pub fn apply_bms_commands(world: &mut World) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("apply_bms_commands"); // `VAEL_PERF_DIAG`
     // Lê e avança um cursor LOCAL (o recurso fica com o avançado — os
     // borrows do World são por fases).
     let (pending, cursor) = {
@@ -2299,6 +2374,7 @@ fn publish_host_state(
     mut road_water: Local<Option<std::sync::Arc<super::ctx::SurfaceRegistries>>>,
     mut slots_timer: Local<Option<f64>>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("publish_host_state"); // `VAEL_PERF_DIAG`
     // Sem o plugin BMS no app não há estado a preencher (e o custo de
     // publicar seria lixo puro).
     let Some(state) = state.as_deref_mut() else {

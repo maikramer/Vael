@@ -514,6 +514,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     // Probes regionais (src/probes.rs): bounce de bioma nos pads com tint,
     // parallax-corrected. DEFAULT ON — `VIBER_PROBES=0` desliga.
     app.add_plugins(crate::probes::RegionalProbesPlugin);
+    app.add_plugins(crate::probes::ProbeFreezePlugin);
     // Céu/dia/noite, IBL e probes regionais resolvem o modelo por AQUI (o
     // subscriber de tracing já existe): é a linha que confirma na QA que o
     // gate `<Sky model>`/`VIBER_SKY_MODEL` chegou ao render e ao IBL.
@@ -709,6 +710,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     });
     app.add_plugins(streaming::StreamingPlugin);
     app.add_plugins(crate::gltf_residency::GltfResidencyPlugin);
+    app.add_plugins(crate::instance_residency::InstanceResidencyPlugin);
     app.add_plugins(foliage::FoliagePlugin);
     // `VIBER_DRAW_DIAG=1`: malhas/triângulos por vista (câmara, cascatas, lanternas).
     app.add_plugins(crate::draw_diag::DrawDiagPlugin);
@@ -941,6 +943,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
         crate::scene_loader::SceneLoad,
         (
             spawn::startup,
+            crate::scene_loader::run_terrain_scene_load,
             nav::publish_nav_ground,
             nav::apply_navmesh_tag,
             nav::spawn_archipelago,

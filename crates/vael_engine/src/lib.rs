@@ -80,6 +80,7 @@ pub mod frame_pacing;
 pub mod fx_specs;
 pub mod glb_bounds;
 pub mod gltf_residency;
+pub mod instance_residency;
 pub mod graphics;
 pub mod hud;
 pub mod ibl;

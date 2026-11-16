@@ -589,8 +589,10 @@ fn campfire_banner_system(
     // entidade quase todo o tempo).
     let near = players.iter().next().is_some_and(|player| {
         camps.iter().any(|(name, c)| {
-            contains_ignore_ascii_case(name.as_str(), "campfire")
-                && c.translation().distance_squared(player.translation()) < 3.5 * 3.5
+            // Distância primeiro: são ~90k entidades com nome e a comparação
+            // de string era o custo do scan.
+            c.translation().distance_squared(player.translation()) < 3.5 * 3.5
+                && contains_ignore_ascii_case(name.as_str(), "campfire")
         })
     });
     for mut visibility in banner.iter_mut() {

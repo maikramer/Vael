@@ -56,6 +56,7 @@ pub mod input;
 pub mod jump_trace;
 pub mod lights;
 pub mod live_edit;
+pub mod perf_diag;
 pub mod player;
 pub mod primitives;
 pub mod qa;
@@ -236,6 +237,7 @@ impl Plugin for VaelPlugin {
         app.add_plugins(animation::VaelAnimationPlugin);
         // Look-at da cabeça: NPCs/criaturas viram-se para o herói no alcance.
         app.add_plugins(head_look::VaelHeadLookPlugin);
+        app.add_plugins(perf_diag::VaelPerfDiagPlugin);
         // Spring bones: mola na crina dos lobos (demo do crate).
         app.add_plugins(spring::VaelSpringPlugin);
         #[cfg(feature = "hanabi")]

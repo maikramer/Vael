@@ -74,6 +74,9 @@ pub const UNLOAD_HYSTERESIS: f32 = 1.3;
 /// frame nesse arranque. Aqui o véu fecha primeiro; o resto entra depois.
 pub const DEFAULT_LOAD_BUDGET: usize = 8;
 
+/// Em jogo, a residência avalia-se a cada N frames.
+const EVAL_EVERY: u32 = 4;
+
 /// Descargas por frame (um teleporte não pode desmontar o mundo num frame).
 pub const DEFAULT_UNLOAD_BUDGET: usize = 8;
 
@@ -261,6 +264,7 @@ pub fn drive_gltf_residency(
     readiness: Option<Res<WorldReadiness>>,
     time: Option<Res<Time>>,
     mut clock: Local<f32>,
+    mut eval_frame: Local<u32>,
     specs: Query<(
         Entity,
         &GltfSceneSpec,
@@ -291,6 +295,14 @@ pub fn drive_gltf_residency(
     };
     let ready_r = ready_radius();
     let booting = readiness.as_deref().is_none_or(|r| !r.ready);
+    // Em jogo a varredura (milhares de âncoras) corre a cada
+    // `EVAL_EVERY` frames, com o orçamento multiplicado na mesma proporção
+    // (~0,65 ms/frame poupados, medido 2026-11-16). No arranque, todos.
+    *eval_frame = eval_frame.wrapping_add(1);
+    if !booting && *eval_frame % EVAL_EVERY != 0 {
+        return;
+    }
+    let budget_scale = if booting { 1 } else { EVAL_EVERY as usize };
 
     let mut to_load: Vec<(f32, f32, Entity)> = Vec::new();
     let mut to_unload: Vec<Entity> = Vec::new();
@@ -338,7 +350,7 @@ pub fn drive_gltf_residency(
     to_load.sort_by(|a, b| a.0.total_cmp(&b.0));
     // Atrás do véu só entra o anel que o segura: o largo competiria com ele e
     // com o bake dos colliders do terreno (frames de ~1 s medidos no arranque).
-    let mut budget = if booting { 0 } else { load_budget() };
+    let mut budget = if booting { 0 } else { load_budget() * budget_scale };
     let mut activated = 0usize;
     for (_, d_ready, entity) in to_load {
         let essential = d_ready <= ready_r;
@@ -366,7 +378,7 @@ pub fn drive_gltf_residency(
     residency.resident = resident + activated;
     residency.deferred = deferred.saturating_sub(activated);
 
-    let mut budget = unload_budget();
+    let mut budget = unload_budget() * budget_scale;
     let mut unloaded = 0usize;
     for entity in to_unload {
         if budget == 0 {
@@ -374,10 +386,10 @@ pub fn drive_gltf_residency(
         }
         budget -= 1;
         let instance = specs.get(entity).ok().and_then(|s| s.6);
-        if let (Some(spawner), Some(instance)) = (spawner.as_mut(), instance) {
+        if let (Some(_), Some(instance)) = (spawner.as_mut(), instance) {
             // Só o `WorldInstanceSpawner` sabe desmontar a instância inteira
             // (incluindo entidades que já saíram da hierarquia).
-            spawner.despawn_instance(**instance);
+            despawn_instance_now(&mut commands, instance);
         }
         commands.entity(entity).remove::<(
             WorldAssetRoot,
@@ -450,6 +462,20 @@ fn activate(
         anchor.insert(crate::prop_tint::TransmissiveGltf);
     }
     residency.activated_total += 1;
+}
+
+/// Desmonta a instância JÁ (numa command, por ordem): o
+/// `WorldInstanceSpawner::despawn_instance` é uma fila, e o hook `on_remove`
+/// do `WorldAssetRoot` (removido logo a seguir) desregistava a instância
+/// antes de a fila correr — as entidades da cena ficavam no mundo e a
+/// "descarga" não libertava nada.
+pub fn despawn_instance_now(commands: &mut Commands, instance: &WorldInstance) {
+    let id = **instance;
+    commands.queue(move |world: &mut World| {
+        world.resource_scope(|world, mut spawner: Mut<WorldInstanceSpawner>| {
+            spawner.despawn_instance_sync(world, &id);
+        });
+    });
 }
 
 pub struct GltfResidencyPlugin;

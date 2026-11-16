@@ -64,7 +64,7 @@ pub use bevy_ext_engine::ibl::IBL_INTENSITY;
 /// Marcador do probe do IBL (um só, tamanho do mundo).
 #[derive(Component, Reflect)]
 #[reflect(Component)]
-struct SkyIblProbe;
+pub(crate) struct SkyIblProbe;
 
 /// Mantém o [`LightProbe`] do IBL: gera o cubemap base na primeira frame
 /// útil (depois do primeiro `atmosphere_drive`) e regenera quando a fase do
@@ -150,7 +150,13 @@ fn update_sky_cubemap(
     // relógio guardam `Some(None)` = nunca mais mexer — regenerar por frame
     // era o estado acidental pré-r3 e custava um re-filtro GPU por frame).
     mut last_phase: Local<Option<Option<u32>>>,
-    current: Query<&GeneratedEnvironmentMapLight, With<SkyIblProbe>>,
+    current: Query<
+        (
+            Option<&GeneratedEnvironmentMapLight>,
+            Option<&crate::probes::FrozenEnvMap>,
+        ),
+        With<SkyIblProbe>,
+    >,
 ) {
     let phase = day_phase(clock.as_deref());
     // Uma edição viva do `<Sky model>`/coeficientes troca o `SkyModelState`
@@ -192,10 +198,12 @@ fn update_sky_cubemap(
     let old = current
         .single()
         .ok()
+        .and_then(|(live, frozen)| live.or(frozen.map(|f| &f.0)))
         .map(|c| c.environment_map.clone())
         .filter(|h| *h != Handle::default());
     commands
         .entity(probe_entity)
+        .remove::<crate::probes::FrozenEnvMap>()
         .insert(GeneratedEnvironmentMapLight {
             environment_map: handle,
             intensity: IBL_INTENSITY,

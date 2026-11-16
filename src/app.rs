@@ -276,6 +276,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // (bounce de bioma, default ON `VIBER_PROBES=0` desliga).
     app.add_plugins(viber::water_ssr::WaterSsrPlugin);
     app.add_plugins(viber::probes::RegionalProbesPlugin);
+    app.add_plugins(viber::probes::ProbeFreezePlugin);
     info!(
         "sky: modelo {} (attr <Sky model> / VIBER_SKY_MODEL)",
         match sky_config.model {
@@ -426,6 +427,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // próximo e o resto do mundo entra atrás do herói. `VIBER_GLTF_STREAMING=0`
     // volta a carregar tudo no arranque.
     app.add_plugins(viber::gltf_residency::GltfResidencyPlugin);
+    app.add_plugins(viber::instance_residency::InstanceResidencyPlugin);
     app.add_plugins(viber::foliage::FoliagePlugin);
     app.add_plugins(viber::draw_diag::DrawDiagPlugin);
     app.add_plugins(viber::frame_pacing::FramePacingPlugin);
@@ -462,12 +464,14 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // Host Luau (BMS 0.24): a superfície `viber.*` vive no bevy_ext_luau
     // (ondas F2-F8) e o `BmsBridgePlugin` do monólito publica o estado do
     // mundo (ScriptHostState) e aplica os comandos dos scripts com a
-    // maquinaria de sempre. Os contextos são por entidade: os instaladores
-    // `viber.vael` do jogo (cofre/XP/quests/…) correm por contexto novo
-    // através do registo (`crate::script_host`).
-    app.add_plugins(bevy_ext_luau::VaelScriptingPlugin {
-        extra_initializers: crate::script_host::extra_initializers(),
-    });
+    // maquinaria de sempre. Os contextos são por entidade; os instaladores
+    // `viber.vael` do jogo (cofre/XP/quests/…) registam-se no registo GLOBAL
+    // do crate (`crate::script_host::register_installer`) e correm por
+    // contexto novo E na REPL do bridge (`viber.lua`) — sem `extra_initializers`.
+    app.add_plugins(bevy_ext_luau::VaelScriptingPlugin::default());
+    // Publica o hook (fn pointer, uma vez por processo) que corre os
+    // instaladores locais do jogo nos contextos BMS E na REPL do bridge.
+    crate::script_host::install_context_hook();
     app.add_plugins(viber::luau::bms_bridge::BmsBridgePlugin);
     // Adaptadores de host da G-1: publicam o mundo para os crates de
     // áudio/IA (sem eles music_driver/script_sound_loops ficam mudos e a
@@ -596,6 +600,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         viber::scene_loader::SceneLoad,
         (
             spawn::startup,
+            viber::scene_loader::run_terrain_scene_load,
             viber::nav::publish_nav_ground,
             viber::nav::apply_navmesh_tag,
             viber::nav::spawn_archipelago,

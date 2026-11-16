@@ -84,6 +84,78 @@ impl Plugin for RegionalProbesPlugin {
     }
 }
 
+/// Congela os probes de cubemap estático (o IBL mundial e os regionais).
+///
+/// O `GeneratedEnvironmentMapLight` do Bevy refiltra o cubemap na GPU (cópia,
+/// SPD, convoluções Lambert + GGX por mip) e recria os bind groups em TODOS
+/// os frames, mesmo com a fonte igual — com o mundial + 7 regionais eram
+/// ~0,9 ms de GPU e ~2 ms da render thread por frame (2026-11-15), para
+/// cubemaps que só mudam por fase do dia. Uns frames depois de (re)entrar, o
+/// componente sai e fica só o `EnvironmentMapLight` com as texturas já
+/// filtradas; o repaint por fase volta a inserir o gerador (e tira este).
+/// `VIBER_PROBE_FREEZE=0` mantém o refiltro por frame (A/B).
+pub struct ProbeFreezePlugin;
+
+impl Plugin for ProbeFreezePlugin {
+    fn build(&self, app: &mut App) {
+        if std::env::var("VIBER_PROBE_FREEZE").ok().as_deref() == Some("0") {
+            return;
+        }
+        app.add_systems(PostUpdate, freeze_static_probes);
+    }
+}
+
+/// O gerador de um probe congelado (o repaint lê daqui o handle antigo).
+#[derive(Component, Clone)]
+pub(crate) struct FrozenEnvMap(pub GeneratedEnvironmentMapLight);
+
+/// Frames desde a última (re)inserção do gerador.
+#[derive(Component)]
+struct EnvMapSettle(u8);
+
+/// Frames de filtro antes de congelar: o alvo nasce no 1.º (Update), o
+/// render filtra no seguinte; margem para o asset fonte subir para a GPU.
+const PROBE_FREEZE_FRAMES: u8 = 6;
+
+#[allow(clippy::type_complexity)]
+fn freeze_static_probes(
+    mut commands: Commands,
+    mut probes: Query<
+        (
+            Entity,
+            Ref<GeneratedEnvironmentMapLight>,
+            Option<&mut EnvMapSettle>,
+        ),
+        (
+            With<bevy::light::EnvironmentMapLight>,
+            Or<(With<RegionalProbe>, With<crate::ibl::SkyIblProbe>)>,
+        ),
+    >,
+    images: Res<Assets<Image>>,
+) {
+    for (entity, generated, settle) in &mut probes {
+        let Some(mut settle) = settle else {
+            commands.entity(entity).insert(EnvMapSettle(0));
+            continue;
+        };
+        if generated.is_changed() {
+            settle.0 = 0;
+            continue;
+        }
+        // A fonte tem de existir (senão o filtro ainda nem correu).
+        if !images.contains(&generated.environment_map) {
+            continue;
+        }
+        settle.0 = settle.0.saturating_add(1);
+        if settle.0 >= PROBE_FREEZE_FRAMES {
+            commands
+                .entity(entity)
+                .remove::<(GeneratedEnvironmentMapLight, EnvMapSettle)>()
+                .insert(FrozenEnvMap((*generated).clone()));
+        }
+    }
+}
+
 /// Região a conter o ponto (even-odd point-in-polygon). A 1.ª que der match.
 fn region_at(regions: &BiomeRegions, p: Vec2) -> Option<&BiomeRegionData> {
     regions.list.iter().find(|r| {
@@ -152,7 +224,15 @@ fn update_regional_probes(
     atmosphere: Option<Res<AtmosphereState>>,
     model_state: Option<Res<crate::sky::SkyModelState>>,
     mut images: ResMut<Assets<Image>>,
-    probes: Query<(Entity, &ProbeTint, &GeneratedEnvironmentMapLight), With<RegionalProbe>>,
+    probes: Query<
+        (
+            Entity,
+            &ProbeTint,
+            Option<&GeneratedEnvironmentMapLight>,
+            Option<&FrozenEnvMap>,
+        ),
+        With<RegionalProbe>,
+    >,
     mut spawned: Local<bool>,
     // Quantos probes a última passagem de spawn criou. Distingue "ainda não
     // há pads com tint" (0) de "a cena foi descarregada e levou os probes".
@@ -231,7 +311,10 @@ fn update_regional_probes(
         // Repaint por fase: trocar o handle do cubemap mantendo o tint de
         // cada probe (o filtro GPU do bevy re-corre no asset novo; o velho
         // sai dos Assets explicitamente — o padrão do IBL mundial).
-        for (entity, tint, current) in &probes {
+        for (entity, tint, live, frozen) in &probes {
+            let Some(current) = live.or(frozen.map(|f| &f.0)) else {
+                continue;
+            };
             let old = current.environment_map.clone();
             let handle = images.add(crate::ibl::sky_cubemap_tinted(
                 &atmosphere,
@@ -240,6 +323,7 @@ fn update_regional_probes(
             ));
             commands
                 .entity(entity)
+                .remove::<FrozenEnvMap>()
                 .try_insert(GeneratedEnvironmentMapLight {
                     environment_map: handle,
                     intensity: 1.0,

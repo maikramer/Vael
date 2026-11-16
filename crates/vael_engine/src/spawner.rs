@@ -1109,7 +1109,7 @@ fn spawn_instance(
     let mut entity = commands.spawn((
         transform,
         Visibility::Inherited,
-        WorldAssetRoot(scene),
+        WorldAssetRoot(scene.clone()),
         ChildOf(group.editor_group),
     ));
     // LOD de render: o mesmo raio para todas as instâncias do grupo (ver
@@ -1228,6 +1228,23 @@ fn spawn_instance(
             group.template_trigger,
             group.template_script.is_some(),
         );
+    }
+    // Cenário puro (sem script/colisor/props/links/LOD): a cena só fica
+    // montada perto (`instance_residency`).
+    let no_lod = lod_scenes.iter().all(Option::is_none);
+    if crate::instance_residency::enabled()
+        && !group.dynamic
+        && group.template_script.is_none()
+        && group.template_collider.is_none()
+        && group.spec.template_props.is_empty()
+        && group.spec.template_links.is_empty()
+        && no_lod
+    {
+        entity.insert(crate::instance_residency::ResidentInstance::new(
+            scene,
+            cull.radius,
+            true,
+        ));
     }
 }
 
