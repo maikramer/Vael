@@ -77,7 +77,13 @@ local function tick_respawns(game, px, pz)
       done = done + 1
     end
     if drop then
-      table.remove(queue, i)
+      -- `table.remove` é cru no Luau e a fila é uma tabela PARTILHADA do
+      -- `viber.game()` (proxy): desloca à mão pelo `__newindex`.
+      local n = #queue
+      for j = i, n - 1 do
+        queue[j] = queue[j + 1]
+      end
+      queue[n] = nil
     else
       i = i + 1
     end

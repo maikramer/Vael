@@ -232,6 +232,7 @@ function on_update(dt)
       if type(alert) ~= "table" then
         alert = {}
         g.attack_alert = alert
+        alert = g.attack_alert or alert -- tabela partilhada: escreve no proxy
       end
       alert.x, alert.z = px, pz
       alert.t = viber.time()

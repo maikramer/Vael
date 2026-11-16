@@ -91,11 +91,23 @@ local clock = viber.load("lib/clock.lua")
 -- top-level deste módulo mudava a cada hot-reload de `lib/fsm.lua` e recriava
 -- TODOS os registos com vida cheia a meio de uma luta.
 local function session_tag()
+  -- Token PRIMITIVO (string): as tabelas do `viber.game()` são partilhadas
+  -- entre VMs por cópia, por isso uma tabela como token de identidade
+  -- nunca voltava igual (`entry.session ~= session` em todos os frames —
+  -- o registo era recriado a cada frame, a cadência do golpe voltava a 0 e
+  -- as criaturas chegavam ao herói sem nunca atacar). O load substitui o
+  -- estado e leva a chave: o token novo marca a linha temporal nova.
+  -- Vive numa tabela partilhada (fora do save; o load limpa-a).
   local game = viber.game()
-  local tag = game.fsm_session
-  if type(tag) ~= "table" then
-    tag = {}
-    game.fsm_session = tag
+  local fsm_state = game.fsm
+  if type(fsm_state) ~= "table" then
+    game.fsm = {}
+    fsm_state = game.fsm
+  end
+  local tag = fsm_state.session
+  if type(tag) ~= "string" then
+    tag = string.format("%.6f:%d", viber.time(), math.random(1, 1000000000))
+    fsm_state.session = tag
   end
   return tag
 end
@@ -136,8 +148,16 @@ local RESPAWN_SECS = 240
 local POSTGAME_ELITE = 0.22
 local CAST_COLOR = "#b04cff"
 local CHARGE_COLOR = "#ff3b1f"
+-- Distância mínima (m) ao herói, centro a centro; abaixo dela a criatura
+-- recua a `BACKOFF_SPEED` m/s (ver o "espaço pessoal" no update).
+local MIN_GAP = 0.9
+local BACKOFF_SPEED = 3.0
+
 -- A barra de chefe do HUD apaga-se este tempo após o último sinal (s).
 M.BOSS_BAR_TTL = 1.5
+
+-- Distância (m) ao herói a partir da qual a criatura só refresca o registo.
+local FAR_IDLE = 90
 
 local function dist2(ax, az, bx, bz)
   return math.sqrt((ax - bx) ^ 2 + (az - bz) ^ 2)
@@ -658,6 +678,28 @@ function M.new(cfg)
     local st = viber.state() -- POR ENTIDADE (no top-level partilhava entre instâncias)
     local id = viber.self_id()
     local g = viber.game()
+    -- LOD de comportamento: longe do herói (e sem aggro) a criatura só mantém
+    -- o registo fresco. A máquina inteira custa dezenas de leituras do
+    -- `viber.game()` partilhado por chamada; com ~250 criaturas no mundo era
+    -- ~3 ms/frame (medido 2026-11-16) para bichos que ninguém vê de perto.
+    -- Só depois de uma passagem completa nesta sessão (`st.far_session`,
+    -- escrito abaixo com o registo garantido); o passeio pára até o herói
+    -- voltar a entrar no raio.
+    if st.far_session and not st.dead and not cfg.boss
+        and (st.aggro_until or 0) < viber.time() then
+      local has_p, fpx, _, fpz = viber.player_position()
+      if has_p then
+        local fx, _, fz = viber.position()
+        if dist2(fx, fz, fpx, fpz) > FAR_IDLE then
+          local reg = g.enemies
+          local e = id and reg and reg[id] or nil
+          if e and e.session == st.far_session then
+            e.t = viber.time()
+            return
+          end
+        end
+      end
+    end
     local session = session_tag()
     -- Marca se o portão abriu NESTE frame: o registo é criado logo a seguir
     -- e o reset de "linha temporal nova" não pode apagar o `awake` que
@@ -760,6 +802,13 @@ function M.new(cfg)
     local entry = id and g.enemies[id] or nil
     -- Save/restart deixa registos de OUTRA sessão. Uma pausa longa da MESMA
     -- sessão (menu, LOD) conserva o HP em vez de recriar a criatura cheia.
+    -- Morto à espera do despawn: o abate já tirou a entrada do registo e o
+    -- `entity_despawn` só chega no fim do frame. Recriar aqui ressuscitava
+    -- a criatura com vida cheia (e o registo ficava com um fantasma depois
+    -- do despawn — a mira suave e o portão do chefe contavam-no).
+    if entry == nil and st.dead and st.dead_session == session then
+      return
+    end
     local stale = entry ~= nil
       and (entry.t == nil or entry.t > now + 1.0 or entry.session ~= session)
     if entry == nil or stale then
@@ -803,8 +852,16 @@ function M.new(cfg)
         if id then g.elites[id] = true end
       end
       st.hp, st.max_hp = entry.hp, entry.max
-      if id then g.enemies[id] = entry end
+      if id then
+        g.enemies[id] = entry
+        -- O registo é PARTILHADO entre VMs (o `viber.game()` copia a
+        -- tabela para o store): o resto deste frame escreve no proxy, não
+        -- na cópia local.
+        entry = g.enemies[id] or entry
+      end
     end
+    -- Registo garantido nesta sessão: o atalho "longe" acima pode usá-lo.
+    st.far_session = session
     -- Elite: uma vez por entidade, no primeiro update.
     local promoted = false
     if st.elite == nil then
@@ -844,6 +901,7 @@ function M.new(cfg)
     if entry.hp <= 0 then
       if not st.dead then
         st.dead = true
+        st.dead_session = session
         if cfg.boss then
           g["boss_dead." .. cfg.kind] = true
         end
@@ -913,6 +971,20 @@ function M.new(cfg)
     end
 
     local dist = dist2(px, pz, x, z)
+    -- Espaço pessoal: o `move_towards` não conhece a cápsula do herói e o
+    -- lunge do golpe encurta a distância — um lobo acabava DENTRO do herói
+    -- (0,1 m, malhas sobrepostas; visto 2026-11-16). Abaixo do mínimo a
+    -- criatura recua para fora antes de decidir o resto do frame.
+    local min_gap = cfg.min_gap or MIN_GAP
+    if dist < min_gap and not st.burrowed then
+      local ax, az
+      if dist > 1e-3 then
+        ax, az = (x - px) / dist, (z - pz) / dist
+      else
+        ax, az = -(st.hx or 0), -(st.hz or 1)
+      end
+      viber.move_towards(x + ax * 2.0, z + az * 2.0, BACKOFF_SPEED)
+    end
     -- A janela de aggro força só a FSM a chase (o golpe mede a distância REAL).
     local fsm_dist = dist
     if (st.aggro_until or 0) > viber.time() then fsm_dist = 0 end
@@ -1038,7 +1110,11 @@ function M.new(cfg)
           return
         end
       end
-      if dist > cfg.range then
+      -- Metade da folga de alcance: as cápsulas (herói + criatura) param o
+      -- passo a ~1,4 m e um alcance de 1,4–1,6 m ficava na fronteira — a
+      -- criatura colava ao herói sem nunca armar o golpe. A resolução já
+      -- aceita `range + REACH_SLACK`, por isso o golpe ainda aterra.
+      if dist > cfg.range + REACH_SLACK * 0.5 then
         step(st, x, z, px, pz, chase_speed(st))
         -- Ao chegar ao alcance, o 1.º golpe sai a meio da cadência (não
         -- depois de uma cadência inteira parada a olhar). Só semeia a
