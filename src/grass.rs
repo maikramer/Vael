@@ -429,6 +429,10 @@ fn spec_with_runtime_knobs(spec: &GrassSettingsSpec) -> GrassSettingsSpec {
         // (capacidade/fatias continuam a vir dele em qualquer caso).
         out.quality = quality_spec(quality());
         out.shadows = shadows_for(quality()) != bevy_ext_grass::GrassShadows::Off;
+        // A densidade também: o `Desempenho` pede 0,6× e o `sync_settings_spec`
+        // do crate copia este spec para a `GrassSettings` no 1.º `Update` — sem
+        // esta linha o tier era substituído pelo 1,0 do default.
+        out.density_scale = graphics::grass_density_scale();
     }
     // `VIBER_GRASS=0` desliga mesmo (a cena pode desligar; não pode religar).
     out.enabled &= gate_on("VIBER_GRASS");
@@ -872,7 +876,8 @@ mod tests {
     }
 
     /// Sem nada autorado no `grass.bsn`, o tier dos `graphics:` escolhe a
-    /// qualidade e as sombras (o crate substitui a `GrassSettings` pelo spec).
+    /// qualidade, as sombras e a densidade (o crate substitui a `GrassSettings`
+    /// pelo spec).
     #[test]
     fn spec_default_segue_o_tier_dos_graphics() {
         let out = spec_with_runtime_knobs(&GrassSettingsSpec::default());
@@ -880,6 +885,11 @@ mod tests {
         assert_eq!(
             out.shadows,
             shadows_for(quality()) != bevy_ext_grass::GrassShadows::Off
+        );
+        assert_eq!(
+            out.density_scale,
+            graphics::grass_density_scale(),
+            "a densidade do tier não pode cair no 1,0 do default"
         );
     }
 
