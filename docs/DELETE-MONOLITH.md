@@ -7,6 +7,35 @@
 > monólito são os métodos legacy `viber.*` (`lua`, `burst`, `trace`,
 > `raycast`) e o runtime de gameplay.
 
+## ✅ 2026-11-15 (fim do dia) — O CRATE FOI APAGADO
+
+O `bevy_ext_viber_engine` **saiu do monorepo** (`bevy_extensions` `6cd198e`) e
+o runtime vivo mudou-se para este repo como **`crates/vael_engine`**
+(pacote `vael_engine`, `[lib] name = "bevy_ext_viber_engine"` para os
+TypePaths do wire ficarem congelados; a dependency key `viber` mantém os
+imports do jogo). O que foi feito nessa sessão:
+
+| Peça | Estado |
+|---|---|
+| Host Luau vivo | **apagado** (`88a17f1`, −9.4k). O host é o BMS (`bevy_ext_luau`); `vael_engine/src/luau/` fica só com o `bms_bridge` (aplicador) + comandos |
+| Contratos do host | movidos ao `bevy_ext_luau` (`27dc0be`: components/ecs/repl) e re-roteados nos consumers (`f998f20`) |
+| `viber.lua` (REPL) | avalia na instância dedicada do `bevy_ext_luau` (`df87662` + `repl.rs`); `qa.py` segue-a (`28f16d1`) |
+| Gate `scripts_enabled` | restaurado (`2326dd1`) — é o "fora do Edit", não de scripts |
+| Forks vendored | saem de dentro do crate para `bevy_extensions/vendor/` (workspace próprio); `bevy_ext_physics` aponta lá |
+| Contratos em falta no core | `INTERACT_RANGE_SCALE`/`interact_range_scale`/`scaled_interact_range` e `enemy_next_state` no `bevy_ext_core`; re-export no `bevy_ext_ai` |
+| `ScriptCommand` | o do `bevy_ext_luau` completa os variants que o bridge aplica (`FireProjectileTemplate`, `MoveBy`, `SetLocomotion`, `TeleportPlayer`) |
+| Água → áudio | `audio_host` publica `HostWaterBodies` do `TerrainRuntime` (loops lago/rio e cachoeiras) |
+| Testes | `cargo test -p vael_engine --lib` = **605/605**; `cargo test --release -p vael --lib --no-run` passa |
+
+**O que falta** para o Vael se livrar do alias `viber`: esvaziar
+`crates/vael_engine` para os `bevy_ext_*`/módulos do Vael. O inventário
+antigo abaixo continua a servir de mapa por peça (spawner 2.0k, recipes 7.7k +
+spawn 3.4k, scene_loader 1.4k, bake 2.7k, audit 2.5k, lint 1.4k, particles
+2.2k, player 1.7k, water_ssr 1.3k, sky 0.85k, ibl 0.6k, session 0.7k,
+profiler 3.1k, bridge/ 6k, main.rs 4.2k …) e os **531 usos de `viber::`** no
+`src/` do Vael passam a apontar aos crates finais. As secções datadas abaixo
+são o histórico da execução (não o estado actual).
+
 Estudo de 2026-11-15 para a **eliminação completa** do crate
 `crates/bevy_ext_viber_engine` (o monólito do runtime de gameplay). Sucede o
 [`EXIT-MAP.md`](EXIT-MAP.md) (que mapeou peça→destino) e o

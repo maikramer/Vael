@@ -548,6 +548,15 @@ fn plant_stations(
             continue;
         }
         let variant = variant_of(name, u32::MAX);
+        // A cota é a LOCAL de propósito, não a altitude de mundo: as estações
+        // vivem sob `biome.forest.vegetation`, um grupo a +38,7304 m (o mesmo
+        // offset do `GATE_FLOOR_Y`). O `cold_look_y` default de 55 m locais
+        // vale ~94 m de mundo — as serras (o `.ahgt` vai aos 198 m; 97 % do
+        // terreno está acima dos 55 m de MUNDO), enquanto a floresta e o vale
+        // ficam aos 5–20 m locais (40–60 de mundo). Comparar com a altitude
+        // de mundo pintaria o vale inteiro de frio. `docs/FLORA.md` também
+        // diz "55 m locais"; a vegetação escalada por `Scatter` confirma as
+        // 439 estações acima da cota nas encostas.
         let cold = transform.translation.y > state.cold_look_y;
         if plant_on_entity(&mut commands, &state, entity, prop, variant, cold) {
             planted += 1;

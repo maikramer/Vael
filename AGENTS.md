@@ -1,7 +1,10 @@
 # AGENTS.md — Vael
 
-Jogo. A engine vive em `../bevy_extensions/crates/bevy_ext_viber_engine`
-(o checkout `../Viber` foi aposentado a 2026-11-13). O editor oficial é o **Jackdaw
+Jogo. A engine são os crates `bevy_ext_*` em `../bevy_extensions`; o
+runtime de gameplay que ainda não foi esvaziado para lá vive aqui, em
+`crates/vael_engine` (o antigo `bevy_ext_viber_engine`, APAGADO do monorepo a
+2026-11-15 — ver [`docs/DELETE-MONOLITH.md`](docs/DELETE-MONOLITH.md)). O
+checkout `../Viber` foi aposentado a 2026-11-13. O editor oficial é o **Jackdaw
 0.20 instalado**: `jd open .` abre este projeto; as extensões do Vael entram
 como `.jdext` assinados. O crate `editor/` é legado (já não é o fluxo).
 As ferramentas de geração são o checkout irmão `../AiGameKit` (CLIs no PATH).
@@ -14,7 +17,7 @@ Os modelos de IA (NLU e decisão) e os seus runtimes são o checkout irmão
 | Checkout | Quando |
 |----------|--------|
 | `.` (Vael) | Mundo, scripts, quests, cenas, pool `assets/` e o CLI `vael-tools` (`cli/`) |
-| `../bevy_extensions/crates/bevy_ext_viber_engine` | Bug ou API em falta na engine. `cargo test` lá (excluído do workspace; corre standalone). O runtime de gameplay ainda é o monólito |
+| `crates/vael_engine` (aqui) | Runtime de gameplay transitório (o antigo monólito). Bug ou API em falta na engine: `cargo test -p vael_engine --lib` aqui. Esvazia-se para os `bevy_ext_*` |
 | `editor/` | **Legado**: editor próprio sobre Jackdaw. O fluxo é o Jackdaw oficial (`jd open .`) + extensões `.jdext` |
 | `../bevy_extensions` | Crates `bevy_ext_*`/`bevy_voxel_terrain`, o bridge (`bevy_ext_bridge_protocol`/`_runtime`) e extensões genéricas em `extensions/` |
 | `../AiGameKit` | Gerar ou corrigir uma tool. Não abras o monorepo no workspace por defeito |
@@ -317,7 +320,7 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
 - Depois de editar: `vael-tools analyze` (exit 1 em erro).
 - O import do editor Jackdaw 0.20.x rejeita a requirement exata de Bevy: o
   gate sonda `0.20.0` e `0.20.MAX`, e `bevy = "=0.20.1"` não admite nenhum.
-  Manter `bevy = "0.20.1"` (como no `bevy_ext_viber_engine`); o `jackdaw.toml` grava
+  Manter `bevy = "0.20.1"` (como nos crates `bevy_ext_*`); o `jackdaw.toml` grava
   `bevy = "0.20"`. O `main.rs` aceita `--jackdaw-extract-schema` (descoberta
   de componentes do `jd`).
 - Céu e tempo são do `bevy_elements` (`src/environment.rs`): NÃO repor
@@ -361,9 +364,8 @@ Para `--scene/--entry/--bridge` o atalho é o `vael-tools run`, que lança
 `target/release/vael` (outro artefacto: release no `target/` do workspace) ou o
 `VAEL_BIN` — `VAEL_BIN=.jackdaw/target/game/debug/vael` reaproveita o build do
 `jd`. O `viber` foi aposentado: o CLI vive em `cli/` (`vael-tools`) e o bridge
-em `bevy_extensions` (`bevy_ext_bridge_*`). Para testar a engine sozinha: `cd
-../bevy_extensions/crates/bevy_ext_viber_engine && cargo run -- run
-../Vael/world.bsn`.
+em `bevy_extensions` (`bevy_ext_bridge_*`). Os testes do runtime de gameplay:
+`cargo test -p vael_engine --lib`.
 
 Arranque directo: `--scene main` salta a cena de menu e `--entry dev` (a
 `<SceneEntry name="dev">` de `world.bsn`) faz `scripts/lib/dev.lua` marcar
@@ -420,8 +422,8 @@ Quatro checkouts irmãos, cada um com o seu remoto:
 
 | Repo | Papel |
 |------|--------|
-| `Vael` | Mundo, quests, scripts, pool `assets/` e o CLI `vael-tools` (`cli/`). Binários versionados vão em Git LFS |
-| `bevy_extensions` | Engine de gameplay (`crates/bevy_ext_viber_engine`), o bridge (`bevy_ext_bridge_protocol`/`_runtime`) e os pacotes publicáveis `bevy_ext_*`. O checkout `Viber` foi aposentado a 2026-11-13 |
+| `Vael` | Mundo, quests, scripts, pool `assets/`, o CLI `vael-tools` (`cli/`) e o runtime transitório `crates/vael_engine`. Binários versionados vão em Git LFS |
+| `bevy_extensions` | A engine (`bevy_ext_*`), o bridge (`bevy_ext_bridge_protocol`/`_runtime`) e os forks vendored em `vendor/`. O monólito `bevy_ext_viber_engine` foi apagado a 2026-11-15; o checkout `Viber` aposentou-se a 2026-11-13 |
 | `AiGameKit` | Geração. CLIs no PATH (`gameassets`, `text3d`, `vramd`) |
 | `CelerAI` | Modelos NLU/d1 (`models/`, LFS) e crates de inferência. A engine compila-as por path-dep `../CelerAI/crates/*` |
 
