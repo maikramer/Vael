@@ -19,6 +19,9 @@ resolver = "3"
 # Partículas GPU (protótipo): um efeito de brasas nas fogueiras, atrás de
 # `VAEL_HANABI=1`. Default off para não pagar o pipeline no build normal.
 hanabi = ["dep:bevy_hanabi"]
+# Harness de playtest (`bevy_playtest`): só em builds de teste/QA. O binário
+# normal e o release ficam sem o crate (ver `[dev-dependencies]`).
+playtest = ["dep:bevy_playtest", "bevy_playtest/takeover"]
 
 [dependencies]
 anyhow = "1"
@@ -65,6 +68,10 @@ bevy_rich_text3d = "0.8.1"
 # Atributos/stats: grafo de dependências com expressões, modificadores e
 # requisitos. O crate fixa `bevy ^0.20.1`, a mesma versão do Vael.
 bevy_gauge = "0.6"
+# Harness de playtest (opcional): bot determinístico, oráculos e takeover
+# headless. Fixa Bevy 0.20.1, o mesmo do jogo. PIN EXATO: 0.10.0 saiu a
+# 2026-11-16 e a API ainda está a estabilizar.
+bevy_playtest = { version = "=0.10.0", optional = true }
 # Runtime do editor Jackdaw: descoberta de componentes (o `jd` lança o jogo
 # com `--jackdaw-extract-schema`) e Play/PIE (`JACKDAW_PIE`). Sem PIE fica
 # inerte. A versão acompanha o `jackdaw.toml` ([jackdaw] version = "0.20.2").
@@ -146,6 +153,12 @@ bevy_ext_gradmesh = { path = "../bevy_extensions/crates/bevy_ext_gradmesh", feat
 # do runtime e o plugin das primitivas procedurais.
 bevy_kira_audio = { version = "0.27.1", features = ["ogg"] }
 bevy_gradmesh = "0.3.9"
+
+[dev-dependencies]
+# Self dev-dependency: ativa a feature `playtest` só nos builds de teste
+# (incluindo `cargo test`), mantendo o binário/release sem o harness.
+vael = { path = ".", features = ["playtest"] }
+tempfile = "3"
 
 # Perfil de desenvolvimento igual ao da engine: o jogo linka a engine inteira
 # em cada binário de teste; debuginfo desempacotado e só line-tables mantêm o

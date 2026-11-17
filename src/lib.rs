@@ -58,6 +58,8 @@ pub mod lights;
 pub mod live_edit;
 pub mod perf_diag;
 pub mod player;
+#[cfg(feature = "playtest")]
+pub mod playtest_support;
 pub mod primitives;
 pub mod qa;
 pub mod quest;
@@ -243,6 +245,12 @@ impl Plugin for VaelPlugin {
         app.add_plugins(perf_diag::VaelPerfDiagPlugin);
         // Spring bones: mola na crina dos lobos (demo do crate).
         app.add_plugins(spring::VaelSpringPlugin);
+        // Invariantes do jogo para o harness `bevy_playtest`: só durante um
+        // cenário (sem o env o plugin nem entra, incluindo no build normal).
+        #[cfg(feature = "playtest")]
+        if std::env::var_os("BEVY_PLAYTEST_SCENARIO").is_some() {
+            app.add_plugins(playtest_support::VaelPlaytestPlugin);
+        }
         #[cfg(feature = "hanabi")]
         app.add_plugins(hanabi_fx::VaelHanabiPlugin);
     }

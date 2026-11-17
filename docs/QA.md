@@ -2,18 +2,23 @@
 
 Testar uma quest no mundo inteiro custa minutos de carregamento, o prólogo,
 andar até ao dador e jogar as etapas anteriores. As ferramentas de QA cortam
-isso em três camadas, todas a partir do MESMO ficheiro de cenário:
+isso em várias camadas; as de cenário partem do MESMO ficheiro, o playtest e o
+oráculo visual têm cenários/tours próprios:
 
 | Camada | Custo | O que prova | Comando |
 |--------|-------|-------------|---------|
 | Simulação | ms, sem janela | regras: quests, cadeias, cofre, forja (receitas), XP, entregas | `python3 tools/qa.py sim all` · `cargo test --release --test qa_scenarios` |
 | Cena QA ao vivo | 10–30 s | scripts Lua reais, diálogo [E], criaturas, bigorna, HUD | `python3 tools/qa.py run <cenário>` |
 | Mundo `main` + cenário | minutos | posição real, streaming, colisões, o resto do mundo | cenário com `"scene": "main"` |
+| Playtest (`bevy_playtest`) | minutos, GPU | chaos/teclas guiadas, oráculos + invariantes do Vael, seeds/soak | `cargo test --features playtest --test playtest_scenarios -- --ignored --test-threads=1` |
+| Oráculo visual (`d1-ultra`) | minutos, GPU + API | frames a 10 Hz + estado; conformidade visual/jogabilidade | `python3 tools/playtest_vision.py --tour qa/vision/tours/...` |
 | Jackdaw "Play (QA)" | o Play | iterar a olho, hot reload do cenário e da cena | `python3 tools/qa.py use <cenário>` |
 
 Código: `src/qa.rs` (modelo, resolução, simulação, plugin, `viber.vael.qa_*`),
-`tools/qa.py` (CLI), `tests/qa_scenarios.rs` (gate). Skill dos agentes:
-`.cursor/skills/vael-qa/SKILL.md`.
+`tools/qa.py` (CLI), `tests/qa_scenarios.rs` (gate), `tests/playtest_scenarios.rs`
++ `playtests/*.json` (bateria in-process), `src/playtest_support.rs` (invariantes)
+e `tools/playtest_vision.py` (oráculo visual). Detalhe: [`PLAYTEST.md`](PLAYTEST.md).
+Skill dos agentes: `.cursor/skills/vael-qa/SKILL.md`.
 
 ## Cenário
 

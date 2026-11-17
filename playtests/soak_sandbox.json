@@ -1,0 +1,24 @@
+{
+  "name": "soak_sandbox",
+  "bot": {
+    "type": "chaos",
+    "seed": 42,
+    "input_rate_hz": 10,
+    "raw_surface": {
+      "keys": [
+        "KeyW", "KeyA", "KeyS", "KeyD",
+        "ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight",
+        "Space", "ShiftLeft", "KeyE", "KeyJ", "KeyC", "KeyR", "KeyB",
+        "KeyQ", "KeyV", "Tab", "Digit1", "Digit2", "Digit3", "Digit4",
+        "KeyM", "KeyG", "KeyF"
+      ],
+      "mouse_buttons": ["Left", "Right"]
+    }
+  },
+  "tps": 60,
+  "simulated_time": true,
+  "single_threaded": true,
+  "strict_warnings": false,
+  "duration_s": 600.0,
+  "liveness": { "mode": "real_time", "timeout_s": 10.0 }
+}

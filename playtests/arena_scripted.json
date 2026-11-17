@@ -1,0 +1,36 @@
+{
+  "name": "arena_scripted",
+  "bot": {
+    "type": "synthetic_keyboard",
+    "seed": 7,
+    "input_rate_hz": 10,
+    "key_presses": [
+      { "frame": 0, "key": "KeyW", "hold_frames": 90 },
+      { "frame": 60, "key": "Space" },
+      { "frame": 90, "key": "KeyJ" },
+      { "frame": 120, "key": "KeyJ" },
+      { "frame": 150, "key": "KeyE" },
+      { "frame": 180, "key": "KeyW", "hold_frames": 60 },
+      { "frame": 240, "key": "KeyR" },
+      { "frame": 270, "key": "KeyC" },
+      { "frame": 300, "key": "KeyB" },
+      { "frame": 330, "key": "Digit1" },
+      { "frame": 360, "key": "Space" },
+      { "frame": 390, "key": "KeyJ" },
+      { "frame": 420, "key": "KeyJ" },
+      { "frame": 450, "key": "KeyV" },
+      { "frame": 480, "key": "Tab" }
+    ],
+    "mouse_clicks": [
+      { "frame": 100, "x": 320.0, "y": 180.0, "button": "left", "hold_frames": 2 },
+      { "frame": 200, "x": 320.0, "y": 180.0, "button": "left", "hold_frames": 2 },
+      { "frame": 400, "x": 320.0, "y": 180.0, "button": "left", "hold_frames": 2 }
+    ]
+  },
+  "tps": 60,
+  "simulated_time": true,
+  "single_threaded": true,
+  "strict_warnings": false,
+  "duration_s": 12.0,
+  "liveness": { "mode": "real_time", "timeout_s": 8.0 }
+}

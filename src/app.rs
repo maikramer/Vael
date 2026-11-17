@@ -33,6 +33,26 @@ pub struct VaelAppOptions {
     pub default_plugins: Option<fn(PluginGroupBuilder) -> PluginGroupBuilder>,
 }
 
+/// Opções da App COMPLETA do jogo (`build_game_app`): o que o `main` e os
+/// testes de playtest partilham. Inclui a resolução do cenário QA e da cena,
+/// para o harness poder arrancar o jogo e só depois começar o cenário.
+pub struct VaelGameOptions {
+    /// Mundo pedido (posicional do CLI ou `world.bsn` por omissão).
+    pub world: PathBuf,
+    /// `--scene`: cena explícita (ganha ao `start-scene`/cenário).
+    pub scene: Option<String>,
+    /// `--entry`: entrada de chegada na cena.
+    pub entry: Option<String>,
+    /// `--scenario` ou `VAEL_SCENARIO`: cenário QA a aplicar.
+    pub scenario: Option<String>,
+    /// Porta da bridge; `None` = sem bridge.
+    pub bridge_port: Option<u16>,
+    /// Resolução da janela (`WxH` já parseado).
+    pub resolution: Option<(u32, u32)>,
+    /// Pasta de saves do cenário QA; `None` = `VAEL_QA_SAVE_DIR`/temp.
+    pub qa_save_dir: Option<PathBuf>,
+}
+
 /// Tamanho do shadow map da DIRECIONAL (`VIBER_DIR_SHADOW_SIZE`, default
 /// 4096). É UMA textura de 4 camadas (~268 MB a 4096, metade a 2048).
 fn dir_shadow_size() -> usize {
@@ -76,6 +96,14 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         identity,
         default_plugins,
     } = opts;
+    // O IBL da engine pinta um cubemap a partir do `<Sky>` antigo; com o
+    // `bevy_elements` a luz vem da atmosfera do crate. Tem de ficar definido
+    // antes de qualquer thread dos plugins nascer — o `main` já o faz cedo,
+    // mas os testes de playtest chamam `build_game_app` directamente.
+    if crate::elements_enabled() {
+        // SAFETY: single-threaded, antes da composição dos plugins.
+        unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
+    }
     // Absoluto desde já: o asset root e o base_dir do terreno não podem
     // depender do CWD (o bevy resolve roots relativas contra o exe).
     let path = &std::path::absolute(path)?;
@@ -235,7 +263,11 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // O modelo do céu: o IBL e os probes regionais usam a MESMA radiância.
     app.insert_resource(viber::sky::SkyModelState::from_config(&sky_config));
 
-    let mut plugins = bevy::DefaultPlugins
+    #[cfg(feature = "playtest")]
+    let base = bevy_playtest::PlaytestDefaultPlugins;
+    #[cfg(not(feature = "playtest"))]
+    let base = bevy::DefaultPlugins;
+    let mut plugins = base
         .set(bevy::window::WindowPlugin {
             primary_window: Some(bevy::window::Window {
                 title,
@@ -263,7 +295,14 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         bevy::log::LogPlugin::default()
     };
     log_plugin.filter = log_filter;
-    plugins = plugins.set(log_plugin);
+    // Sob takeover o `PlaytestDefaultPlugins` já removeu o `LogPlugin` para o
+    // harness instalar o seu subscriber. Re-adicioná-lo aqui perdia a captura
+    // de logs — e os invariantes que falham por `ERROR` deixavam de contar.
+    let playtest_takeover =
+        cfg!(feature = "playtest") && std::env::var_os("BEVY_PLAYTEST_SCENARIO").is_some();
+    if !playtest_takeover {
+        plugins = plugins.set(log_plugin);
+    }
     if gpu_profiling_enabled() {
         use bevy::render::settings::{WgpuFeatures, WgpuSettings};
         let base = WgpuSettings::default();
@@ -719,3 +758,210 @@ fn dump_schedules(world: &mut World) {
     }
 }
 
+/// Grupo `DefaultPlugins` do jogo, passado ao `build_app` com o wrapper do
+/// PIE: o `maybe_windowless` só altera o grupo quando o editor pede uma
+/// sessão sem janela (`JACKDAW_PIE_WINDOWLESS`); sem PIE é o grupo da engine.
+fn jackdaw_plugins(plugins: PluginGroupBuilder) -> PluginGroupBuilder {
+    jackdaw_runtime::maybe_windowless(plugins)
+}
+
+/// Porta do runtime de ferramentas quando o jogo não pede `--bridge`.
+fn default_tools_port() -> u16 {
+    // A mesma porta histórica da bridge; o namespace separa os métodos.
+    15702
+}
+
+/// `VAEL_TOOLS=1` ou PIE ligam o runtime sem `--bridge`.
+fn tools_enabled() -> bool {
+    let flag = std::env::var("VAEL_TOOLS")
+        .map(|raw| {
+            !matches!(
+                raw.trim().to_ascii_lowercase().as_str(),
+                "0" | "false" | "off" | "no"
+            )
+        })
+        .unwrap_or(false);
+    flag || std::env::var_os("JACKDAW_PIE").is_some()
+}
+
+/// `VAEL_BRP_EXTRAS=0` desliga o `BrpExtrasPlugin` (default ligado quando as
+/// ferramentas estão): é A/B com o CLI, não um segundo interruptor para lembrar.
+fn brp_extras_enabled() -> bool {
+    !matches!(
+        std::env::var("VAEL_BRP_EXTRAS")
+            .unwrap_or_default()
+            .trim()
+            .to_ascii_lowercase()
+            .as_str(),
+        "0" | "false" | "off" | "no"
+    )
+}
+
+/// App COMPLETA do jogo: resolve o cenário QA/cena, monta o `build_app` e
+/// acrescenta os plugins do Vael, UI e ferramentas. O `main` só a corre; os
+/// testes de playtest constroem-na, bootam até `WorldReadiness.ready` e só
+/// então entregam a App ao `run_scenario` (o driver do harness não espera
+/// pelo carregamento assíncrono do Vael).
+pub fn build_game_app(opts: VaelGameOptions) -> Result<App> {
+    let VaelGameOptions {
+        world,
+        mut scene,
+        mut entry,
+        scenario,
+        bridge_port,
+        resolution,
+        qa_save_dir,
+    } = opts;
+    // Absoluto: o cwd não pode decidir onde vivem o config, os assets e o save.
+    let requested = std::path::absolute(&world)
+        .map_err(|err| anyhow::anyhow!("mundo inválido: {} ({err})", world.display()))?;
+    let scenario_name = scenario
+        .or_else(|| std::env::var("VAEL_SCENARIO").ok())
+        .filter(|name| !name.trim().is_empty());
+    // Cenário de QA: escolhe a cena/entrada/hora/clima quando a linha de
+    // comandos não as dá (o Play (QA) do Jackdaw só passa a env).
+    let scenario = match scenario_name.as_deref() {
+        Some(name) => {
+            let base = requested.parent().map(Path::to_path_buf).unwrap_or_default();
+            let loaded = crate::qa::load_scenario(&base, name)
+                .map_err(|err| anyhow::anyhow!("cenário {name}: {err}"))?;
+            let s = &loaded.scenario;
+            if scene.is_none() {
+                scene = s.scene.clone();
+            }
+            if entry.is_none() {
+                entry = s.entry.clone().or_else(|| {
+                    // Em `main`, `dev` salta título e prólogo.
+                    (scene.as_deref() == Some("main")).then(|| "dev".to_string())
+                });
+            }
+            // SAFETY: single-threaded, antes de `build_app`.
+            if let Some(hour) = s.hour
+                && std::env::var_os("VAEL_START_HOUR").is_none()
+            {
+                unsafe { std::env::set_var("VAEL_START_HOUR", hour.to_string()) };
+            }
+            if let Some(weather) = &s.weather
+                && std::env::var_os("VAEL_START_WEATHER").is_none()
+            {
+                unsafe { std::env::set_var("VAEL_START_WEATHER", weather) };
+            }
+            Some(loaded)
+        }
+        None => None,
+    };
+    // `--scene` escolhe outra cena do projeto; sem ele, a cena principal cede
+    // ao `start-scene` (o acampamento atrás do título), como o `vael-tools run`.
+    let world = viber::scene_loader::resolve_run_path(&requested, scene.as_deref())?;
+    let root = viber::app::world_base_dir(&world)
+        .or_else(|| world.parent().map(Path::to_path_buf))
+        .ok_or_else(|| anyhow::anyhow!("não foi possível resolver a raiz do projeto"))?;
+    let mut app = build_app(
+        &world,
+        VaelAppOptions {
+            start_entry: entry.clone(),
+            bridge_port,
+            // A identidade da bridge é o mundo que o utilizador pediu, não a
+            // cena de arranque resolvida (senão `--scene main` respondia menu).
+            identity: requested.clone(),
+            // Play do Jackdaw em modo embedded: o runtime desliga a janela
+            // quando o editor pede `JACKDAW_PIE_WINDOWLESS`. Fora do PIE o
+            // wrapper devolve o grupo intacto.
+            default_plugins: Some(jackdaw_plugins),
+        },
+    )?;
+    // A janela primária nasce no `WindowPlugin` (já no `build_app`): mudar a
+    // resolução aqui chega antes do `run` criar a janela do SO.
+    if let Some((width, height)) = resolution {
+        let mut windows = app.world_mut().query::<&mut bevy::window::Window>();
+        if let Some(mut window) = windows.iter_mut(app.world_mut()).next() {
+            window.resolution = bevy::window::WindowResolution::new(width, height);
+        }
+    }
+    app.insert_resource(crate::VaelProjectRoot(root.clone()));
+    // Saves de QA à parte: um autosave do cenário não pode pisar o slot do
+    // jogador. Isto vale também para o menu sem cenário (o teste de playtest
+    // e o tour visual passam uma pasta/`VAEL_QA_SAVE_DIR`); com cenário e sem
+    // pasta explícita, mantém-se o `$TMPDIR/vael-qa-saves` de sempre.
+    let qa_dir = qa_save_dir
+        .or_else(|| std::env::var_os("VAEL_QA_SAVE_DIR").map(PathBuf::from))
+        .or_else(|| {
+            scenario
+                .is_some()
+                .then(|| std::env::temp_dir().join("vael-qa-saves"))
+        });
+    if let Some(dir) = qa_dir {
+        let _ = std::fs::create_dir_all(&dir);
+        app.insert_resource(bevy_ext_save::SaveDir(Some(dir)));
+    }
+    if let Some(loaded) = &scenario {
+        app.insert_resource(crate::qa::QaRequest {
+            name: scenario_name
+                .clone()
+                .unwrap_or_else(|| loaded.name.clone()),
+        });
+    }
+    app.add_plugins(crate::VaelPlugin);
+    // UI do jogo em XAML (bevy_pf): precisa do `DefaultPlugins` e dos
+    // resources do Vael já registados.
+    app.add_plugins(crate::ui::VaelUiPlugin);
+    // Runtime de ferramentas: acrescenta `vael-tools/*` ao `bevy_remote` que
+    // o `build_app` já abriu (ou abre o seu, quando não há --bridge). O
+    // bridge legacy `viber.*` continua no mesmo servidor para compatibilidade.
+    if bridge_port.is_some() || tools_enabled() {
+        let port = bridge_port.unwrap_or_else(default_tools_port);
+        app.add_plugins(bevy_ext_bridge_runtime::BridgeToolsPlugin { port });
+        // Prontidão do carregamento para o `vael-tools/ping` (sem isto, o
+        // pong do runtime novo não tinha `ready` e o `wait-ready` do CLI
+        // voltava cedo, com o véu em pé).
+        app.add_plugins(crate::bridge_ready::BridgeReadyPlugin);
+        // O `input.key` sintético é aplicado no `PreUpdate`; tem de correr
+        // ANTES do `gather_actions` do jogo para o `just_pressed` (salto,
+        // ataque, interagir) entrar no `ActionState` no mesmo frame.
+        app.configure_sets(
+            bevy::app::PreUpdate,
+            bevy_ext_bridge_runtime::BridgeToolsInput
+                .before(viber::input_map::gather_actions)
+                .before(jackdaw_input::ActionSystems),
+        );
+        // Debugger remoto do Jackdaw no mesmo servidor BRP: o `RemotePlugin`
+        // já existe, por isso o plugin só injeta os métodos `jackdaw/*` no
+        // `finish` (snapshot da cena, `entity_bsn`/`apply_bsn`, pause/step,
+        // diagnósticos, archetypes/schedules). O editor liga-se a 15702 por
+        // defeito — a porta do runtime quando o Play não passa `--bridge`.
+        app.add_plugins(
+            jackdaw_remote::JackdawRemotePlugin::default()
+                .with_port(port)
+                .with_app_name("Vael"),
+        );
+        // Tools MCP nativas (`bevy_brp_mcp` 0.23 → stdio no ZCode): o plugin
+        // injeta `brp_extras/*` (screenshot, teclas/rato/gamepad, diagnósticos,
+        // shutdown) no mesmo servidor BRP — o `RemoteHttpPlugin` já existe, por
+        // isso a porta dele é ignorada. `VAEL_BRP_EXTRAS=0` desliga (A/B).
+        if brp_extras_enabled() {
+            app.add_plugins(bevy_brp_extras::BrpExtrasPlugin::default());
+        }
+    }
+    info!(
+        world = %world.display(),
+        requested = %requested.display(),
+        root = %root.display(),
+        scene = ?scene,
+        entry = ?entry,
+        scenario = ?scenario.as_ref().map(|loaded| loaded.name.as_str()),
+        bridge = ?bridge_port,
+        gameplay = false,
+        scripts = "compat",
+        "vael: arranque"
+    );
+    Ok(app)
+}
+
+/// Prontidão do carregamento (véu/`WorldReadiness`), para o harness de
+/// playtest bootar a App antes de entregá-la ao `run_scenario`. Sem o recurso
+/// (apps mínimas de teste) considera-se pronta.
+pub fn world_ready(app: &App) -> bool {
+    app.world()
+        .get_resource::<viber::world_ready::WorldReadiness>()
+        .is_none_or(|readiness| readiness.ready)
+}

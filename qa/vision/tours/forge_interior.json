@@ -1,0 +1,17 @@
+{
+  "name": "forge_interior",
+  "qa_scenario": "interiors/forge",
+  "context": "Interior da forja: bigorna, bancada, porta de saída. Verifica iluminação interior, UI de diálogo e ausência de câmara dentro das paredes.",
+  "baseline": true,
+  "steps": [
+    { "wait": 2.0 },
+    { "key": "e" },
+    { "wait": 2.0 },
+    { "key": "e" },
+    { "wait": 1.0 },
+    { "key": "m" },
+    { "wait": 2.0 },
+    { "key": "escape" },
+    { "wait": 1.0 }
+  ]
+}

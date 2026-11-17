@@ -123,6 +123,8 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `tools/bsn_tidy.py` | organiza os filhos de topo de um mundo `.bsn` em pastas do Outliner (idempotente) |
 | `tools/make_map.py` | gera `ui/vael_map.png` (hillshade reproduzível do `world.data/terrain.ahgt`, sem GPU) |
 | `tools/make_menu_terrain.py` | gera o terreno da cena de menu (`scenes/menu.data/terrain.ahgt`) |
+| `playtests/*.json` | cenários do harness `bevy_playtest` (bot/oráculos/invariantes; `docs/PLAYTEST.md`) |
+| `qa/vision/tours/*.json` | tours do oráculo visual; `tools/playtest_vision.py` (captura + `liquid/d1-ultra`) |
 | `scenes/menu.bsn` | cena de arranque: acampamento pequeno atrás do título |
 | `scenes/interiors/` | salas `.bsn` (cenas próprias, sem terreno) |
 | `quests/*.json` | 37 quests + `index.json`; lidas por `scripts/lib/rules.lua` (reiniciar o jogo; sem `cargo build`) |
@@ -378,6 +380,11 @@ porta). **Esperar pelo carregamento**: o véu sai com o anel próximo do herói
 (`VIBER_GLTF_READY_RADIUS`, 150 m), GPU, herói assente — o resto do mundo entra
 por distância depois (ver a *gotcha* dos GLB) e demora — dezenas de segundos,
 mais com builds ao lado.
+Playtest de bugs: `cargo test --features playtest --test playtest_scenarios --
+--ignored --test-threads=1` (GPU; cenários em `playtests/`; seeds/soak em
+`docs/PLAYTEST.md`) e `python3 tools/playtest_vision.py --tour
+qa/vision/tours/...` (captura ~10 Hz + `liquid/d1-ultra`, chave em
+`secrets.env`).
 Depois de lançar (ou de `debug scene --wait`): `vael-tools debug --port <p>
 wait-ready` antes de screenshot/input; o `ready` vem do espelho
 `BridgeReadiness` (`src/bridge_ready.rs`) no ping novo (e do `viber.ping` em

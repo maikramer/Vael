@@ -1,0 +1,13 @@
+{
+  "name": "portal_roundtrip",
+  "qa_scenario": "interiors/forge",
+  "context": "Transição interior → mundo → interior pelo portal. Verifica o véu de loading, a cena de destino e a câmara ao chegar.",
+  "baseline": false,
+  "steps": [
+    { "wait": 2.0 },
+    { "scene": "main", "entry": "dev", "wait": 3.0, "timeout": 240.0 },
+    { "wait": 2.0 },
+    { "scene": "interiors/forge", "entry": "from-town", "wait": 3.0, "timeout": 120.0 },
+    { "wait": 2.0 }
+  ]
+}

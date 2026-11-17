@@ -1,0 +1,17 @@
+{
+  "name": "main_landmark",
+  "qa_scenario": "world/forge_stage2",
+  "context": "Mundo principal: vila/forja, streaming de GLB por distância, terreno e vegetação. Verifica LOD, texturas e ausência de objectos flutuantes.",
+  "baseline": false,
+  "steps": [
+    { "wait": 3.0 },
+    { "goto": "npc_blacksmith" },
+    { "wait": 2.0 },
+    { "key": "m" },
+    { "wait": 2.0 },
+    { "key": "escape" },
+    { "wait": 1.0 },
+    { "key": "f" },
+    { "wait": 1.0 }
+  ]
+}

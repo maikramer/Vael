@@ -23,6 +23,7 @@ deve ser corrigido no mesmo commit.
 | [`SAVE.md`](SAVE.md) | save nativo (`moonshine-save`), slots, merge do estado e o que persiste | **vivo** |
 | [`DEBUG.md`](DEBUG.md) | arranque directo (`--scene main --entry dev`), F1/F2 e efeitos no save | **vivo** |
 | [`QA.md`](QA.md) | cenas QA leves, cenários de teste (quests, itens, talentos, posição), simulação e `tools/qa.py` | **vivo** |
+| [`PLAYTEST.md`](PLAYTEST.md) | bateria `bevy_playtest` in-process (cenários, seeds, soak, invariantes) e oráculo visual+estado `liquid/d1-ultra` | **vivo** |
 | [`FLORA.md`](FLORA.md) | árvores procedurais, estações, pools, colheita e gates | **vivo** |
 | [`PRIMITIVES.md`](PRIMITIVES.md) | tags de primitivas (lathe/sweep/extruded/…), presets de material, colisores e preview no Jackdaw | **vivo** |
 | [`AUDIO.md`](AUDIO.md) | direção sonora, layers por bioma, manifests e regen | **vivo** |

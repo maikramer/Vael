@@ -1,0 +1,19 @@
+{
+  "name": "sandbox_hud",
+  "qa_scenario": "sandbox",
+  "context": "Sandbox plano de QA: herói, HUD (vida, quest, recursos), chão texturado. Verifica HUD e movimento sem artefactos.",
+  "baseline": false,
+  "steps": [
+    { "wait": 2.0 },
+    { "key": "w" },
+    { "wait": 1.0 },
+    { "key": "space" },
+    { "wait": 1.0 },
+    { "key": "m" },
+    { "wait": 2.0 },
+    { "key": "escape" },
+    { "wait": 1.0 },
+    { "key": "e" },
+    { "wait": 1.0 }
+  ]
+}
