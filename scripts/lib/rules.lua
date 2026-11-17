@@ -47,6 +47,11 @@ local PROGRESSION = load_data("data/progression.json", {})
 -- O tecto das pilhas e o kit de arranque vivem em `src/vault.rs`; aqui fica
 -- só o `stack_max` global que `M.stack_max` publica.
 local STACK = tonumber(ITEMS_DATA.stack_max) or 99
+-- Velocidade base do herói em m/s (o `viber.set_player_speed` fala m/s).
+-- Tem de casar com `VaelController::DEFAULT_SPEED` (src/player.rs) e com o
+-- `BASE_SPEED` do `bevy_ext_core`; o sprint multiplica por
+-- `sprint_multiplier` (1.5) no controller.
+local HERO_BASE_SPEED = 4.0
 local ITEM_ORDER = {}
 local ITEM_BY_ID = {}
 local RESOURCES = {}
@@ -1462,8 +1467,15 @@ local function sync_passives()
     game.max_hp = new_max
     game.hp = math.max(0, math.min(new_max, (game.hp or new_max) + delta))
   end
-  -- O gelo abranda o herói enquanto dura (multiplica as passivas).
-  local speed = stats.speed_mult * ((num("frost", 0) > 0) and STATUS.frost.slow or 1.0)
+  -- Velocidade ABSOLUTA (m/s): `viber.set_player_speed` do host novo fala
+  -- m/s; a API antiga do monólito falava multiplicador e passava
+  -- `stats.speed_mult` (1.0) direto — o herói ficava a 1 m/s (4× mais
+  -- lento, sem nunca chegar ao gate do clip de corrida).
+  -- `HERO_BASE_SPEED` espelha `VaelController::DEFAULT_SPEED` (src/player.rs)
+  -- e `BASE_SPEED` do core.
+  local speed = HERO_BASE_SPEED
+    * stats.speed_mult
+    * ((num("frost", 0) > 0) and STATUS.frost.slow or 1.0)
   if viber.set_player_speed and M._speed ~= speed then
     M._speed = speed
     viber.set_player_speed(speed)

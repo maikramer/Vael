@@ -420,6 +420,15 @@ impl VaelController {
     pub const DEFAULT_SPEED: f32 = 4.0;
 }
 
+/// Velocidades (m/s) que os CLIPS de locomoção do `hero_lod0.glb` percorrem de
+/// facto — medidas do deslocamento do pé em apoio (FK do GLB, 2026-11-16): o
+/// `walk` anda ~0.75 m/s e o `run` ~4.1 (o `sprint`, que o driver da engine
+/// não usa, ~6.1). NÃO são as velocidades de jogo: o herói anda a 4.0 e
+/// sprint a 6.0. Servem de nominal ao playback — a diferença entre as duas
+/// coisas é o que fazia a marcha parecer câmara lenta com os pés a patinar.
+pub const HERO_WALK_CLIP_SPEED: f32 = 0.75;
+pub const HERO_RUN_CLIP_SPEED: f32 = 4.1;
+
 impl Default for VaelController {
     fn default() -> Self {
         Self {
@@ -487,6 +496,7 @@ fn attach_controllers(
             Entity,
             Option<&VaelController>,
             Option<&viber::terrain::WaterKinematics>,
+            Option<&viber::animation::LocomotionProfile>,
             &mut Player,
         ),
         With<Player>,
@@ -495,8 +505,20 @@ fn attach_controllers(
     let passive_speed = passive
         .as_deref()
         .map_or(VaelController::DEFAULT_SPEED, HeroSpeedPassive::speed_or_default);
-    for (entity, controller, kin, mut engine_player) in &mut players {
+    for (entity, controller, kin, profile, mut engine_player) in &mut players {
         commands.entity(entity).insert((VaelPlayer, PlayerBody));
+        // Nominais dos clips do rig (ver [`HERO_WALK_CLIP_SPEED`]): o driver da
+        // animação passa a escolher o clip pela velocidade e a escalar o
+        // playback contra a nominal certa. Só quando falta — re-inserir todos
+        // os frames marcava o componente como mudado sem razão.
+        if profile.is_none() {
+            commands
+                .entity(entity)
+                .insert(viber::animation::LocomotionProfile::authored(
+                    HERO_WALK_CLIP_SPEED,
+                    HERO_RUN_CLIP_SPEED,
+                ));
+        }
         match controller {
             None => {
                 let speed = passive_speed;
