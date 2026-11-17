@@ -61,6 +61,8 @@ struct Args {
 }
 
 fn main() -> Result<()> {
+    // Traço do arranque: a primeira marca é o processo, não o primeiro frame.
+    bevy_ext_core::boot::start();
     // O IBL da engine pinta um cubemap a partir do `<Sky>`/`AtmosphereState`
     // antigos. Com o ambiente novo (`bevy_elements`) a luz do céu vem da
     // atmosfera do crate (`AtmosphereEnvironmentMapLight`); dois IBLs
@@ -69,6 +71,16 @@ fn main() -> Result<()> {
     if vael::elements_enabled() {
         // SAFETY: single-threaded, antes da composição da App.
         unsafe { std::env::set_var("VIBER_NO_IBL", "1") };
+    }
+    // Culling das malhas estáticas na GPU (`NoCpuCulling` + indirect draws).
+    // O piloto do Bevy 0.19 era opt-in por causa de backends sem GPU culling
+    // (DX12/WebGL); o Vael corre em Vulkan com GPU preprocessing completo
+    // ("GPU preprocessing is fully supported", log de arranque) e mediu-se
+    // ~1,4 ms/frame de `check_visibility` a menos. Quem precisar do caminho
+    // antigo põe `VIBER_GPU_CULLING=0`.
+    if std::env::var_os("VIBER_GPU_CULLING").is_none() {
+        // SAFETY: idem — nenhuma outra thread lê o ambiente ainda.
+        unsafe { std::env::set_var("VIBER_GPU_CULLING", "1") };
     }
     let args = Args::parse();
 

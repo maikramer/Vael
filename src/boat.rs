@@ -630,18 +630,40 @@ pub fn leave_boat_now(world: &mut World) {
 /// - sem nada por aplicar: espelha as poses dos barcos VIVOS. Sem barcos
 ///   (interior, menu) conserva a última pose conhecida do `main` — é isso que
 ///   faz um barco voltar ao sítio onde ficou quando o herói reentra no mundo.
+#[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn drive_boat_states(
     mut commands: Commands,
     mut states: ResMut<BoatStates>,
-    mut boats: Query<(Entity, &Name, &mut Transform, &mut FloatState), With<Boat>>,
+    // `ParamSet`, não três queries soltas: `p0` escreve `Transform`/`FloatState`
+    // e os filtros `Changed<>` de `p1`/`p2` LEEM os mesmos componentes, e o
+    // Bevy valida isso no arranque do sistema (`error[B0001]`) mesmo que nunca
+    // sejam usados no mesmo frame.
+    mut params: ParamSet<(
+        Query<(Entity, &Name, &mut Transform, &mut FloatState), With<Boat>>,
+        Query<
+            (),
+            (
+                With<Boat>,
+                Or<(Added<Boat>, Changed<Transform>, Changed<FloatState>)>,
+            ),
+        >,
+        Query<(), (With<Player>, Or<(Added<RidingBoat>, Changed<RidingBoat>)>)>,
+    )>,
+    mut removed_boats: RemovedComponents<Boat>,
     names: Query<(Entity, &Name), With<Boat>>,
     players: Query<(Entity, Option<&RidingBoat>), With<Player>>,
+    mut removed_riders: RemovedComponents<RidingBoat>,
+    mut needs_sync: Local<bool>,
 ) {
     let player = players.iter().next();
 
     let applied_pending = states.pending;
     if applied_pending {
         states.pending = false;
+        *needs_sync = true;
+        // A query sai do `ParamSet` uma vez: `params.p0().iter_mut()` deixava o
+        // temporário cair a meio do `let … else` (E0716).
+        let mut boats = params.p0();
         for pose in &states.poses {
             let Some((_, _, mut transform, mut float)) = boats
                 .iter_mut()
@@ -683,6 +705,7 @@ fn drive_boat_states(
                             .insert((RidingBoat { boat }, RigidBodyDisabled));
                     }
                     states.riding_pending = false;
+                    *needs_sync = true;
                 }
             }
             // Os barcos já nasceram e nenhum é o guardado: o barco saiu do
@@ -703,25 +726,67 @@ fn drive_boat_states(
         return;
     }
 
-    let mut poses: Vec<BoatPose> = boats
-        .iter_mut()
-        .map(|(_, name, transform, float)| BoatPose {
-            name: name.as_str().to_string(),
-            position: transform.translation,
-            yaw: float.yaw,
-        })
-        .collect();
-    if !poses.is_empty() {
-        poses.sort_by(|a, b| a.name.cmp(&b.name));
-        states.poses = poses;
+    let removed_boat_count = removed_boats.read().count();
+    let removed_rider_count = removed_riders.read().count();
+    if !*needs_sync
+        && params.p1().is_empty()
+        && removed_boat_count == 0
+        && params.p2().is_empty()
+        && removed_rider_count == 0
+    {
+        return;
     }
-    if let Some((_, riding)) = player {
-        states.riding = riding.and_then(|riding| {
-            names
-                .get(riding.boat)
-                .ok()
-                .map(|(_, name)| name.as_str().to_string())
-        });
+    *needs_sync = false;
+
+    let desired_riding = player.and_then(|(_, riding)| {
+        riding.and_then(|r| names.get(r.boat).ok().map(|(_, n)| n.as_str()))
+    });
+    let riding_differs = player.is_some() && states.riding.as_deref() != desired_riding;
+
+    let boat_count = params.p0().iter().len();
+    let poses_differ = if boat_count == 0 {
+        false
+    } else if states.poses.len() != boat_count {
+        true
+    } else {
+        params.p0().iter().any(|(_, name, transform, float)| {
+            match states.poses.iter().find(|p| p.name == name.as_str()) {
+                Some(prev) => prev.position != transform.translation || prev.yaw != float.yaw,
+                None => true,
+            }
+        })
+    };
+
+    if poses_differ {
+        // Atualiza no lugar sempre que a lista de nomes não mudou, evitando alocar `Vec`/`String`.
+        let names_match = states.poses.len() == boat_count
+            && params
+                .p0()
+                .iter()
+                .all(|(_, n, _, _)| states.poses.iter().any(|p| p.name == n.as_str()));
+        if names_match {
+            for (_, name, transform, float) in params.p0().iter() {
+                if let Some(p) = states.poses.iter_mut().find(|p| p.name == name.as_str()) {
+                    p.position = transform.translation;
+                    p.yaw = float.yaw;
+                }
+            }
+        } else {
+            let mut poses: Vec<BoatPose> = params
+                .p0()
+                .iter()
+                .map(|(_, name, transform, float)| BoatPose {
+                    name: name.as_str().to_string(),
+                    position: transform.translation,
+                    yaw: float.yaw,
+                })
+                .collect();
+            poses.sort_by(|a, b| a.name.cmp(&b.name));
+            states.poses = poses;
+        }
+    }
+    if riding_differs {
+        states.riding = desired_riding.map(str::to_string);
     }
 }
 
@@ -919,9 +984,23 @@ fn seat_riders(
     }
 }
 
-fn animate_oars(boats: Query<&Boat>, mut oars: Query<(&Oar, &ChildOf, &mut Transform)>) {
+fn animate_oars(
+    changed_boats: Query<&Boat, Changed<Boat>>,
+    added_oars: Query<(), Added<Oar>>,
+    all_boats: Query<&Boat>,
+    mut oars: Query<(&Oar, &ChildOf, &mut Transform)>,
+) {
+    if changed_boats.is_empty() && added_oars.is_empty() {
+        return;
+    }
+    let check_all = !added_oars.is_empty();
     for (oar, parent, mut transform) in &mut oars {
-        let Ok(boat) = boats.get(parent.parent()) else {
+        let boat = if check_all {
+            all_boats.get(parent.parent())
+        } else {
+            changed_boats.get(parent.parent())
+        };
+        let Ok(boat) = boat else {
             continue;
         };
         let phase = boat.oar_phase;

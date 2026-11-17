@@ -545,7 +545,17 @@ fn bridge_atmosphere(
     next.moon_dir = sun.moon_direction;
     // A chuva fecha um pouco a exposição (o mesmo law do `atmosphere_drive`).
     next.exposure_scale *= 1.0 - 0.08 * elements_rain(&weather) as f32;
-    *atmosphere = next;
+    let cur = atmosphere.as_ref();
+    let changed = cur.sun_dir.distance_squared(next.sun_dir) > 1e-8
+        || cur.moon_dir.distance_squared(next.moon_dir) > 1e-8
+        || (cur.day - next.day).abs() > 1e-5
+        || (cur.night - next.night).abs() > 1e-5
+        || (cur.golden - next.golden).abs() > 1e-5
+        || (cur.exposure_scale - next.exposure_scale).abs() > 1e-5
+        || (cur.bloom_boost - next.bloom_boost).abs() > 1e-5;
+    if changed {
+        *atmosphere = next;
+    }
 }
 
 /// Leva o clima do crate para o `WeatherState` da engine.
@@ -622,11 +632,16 @@ fn apply_weather_visibility(
         return;
     }
     for mut fog in &mut cameras {
-        if let FogFalloff::ExponentialSquared { density } = &mut fog.falloff {
-            let next = weather_fog_density(*density, weather.visibility_m);
-            if (next - *density).abs() > 1e-6 {
-                *density = next;
-            }
+        // Read `fog.falloff` immutably BEFORE matching `&mut fog.falloff` so
+        // unchanged cameras do not trigger `Mut::deref_mut` (`Changed<DistanceFog>`).
+        let FogFalloff::ExponentialSquared { density } = fog.as_ref().falloff else {
+            continue;
+        };
+        let next = weather_fog_density(density, weather.visibility_m);
+        if (next - density).abs() > 1e-6
+            && let FogFalloff::ExponentialSquared { density } = &mut fog.falloff
+        {
+            *density = next;
         }
     }
 }
@@ -899,22 +914,26 @@ fn bridge_ui_clock(
     clock: Res<WorldClock>,
     weather: Res<Weather>,
     mut data: ResMut<viber::ui::UiData>,
+    mut last_hm: Local<Option<(u32, u32)>>,
 ) {
     let minutes = (clock.hour * 60.0).rem_euclid(1440.0);
-    let text = format!(
-        "{:02}:{:02}",
+    let hm = (
         (minutes / 60.0).floor() as u32,
-        (minutes % 60.0).floor() as u32
+        (minutes % 60.0).floor() as u32,
     );
-    if data.clock != text {
-        data.clock = text;
+    if *last_hm != Some(hm) {
+        *last_hm = Some(hm);
+        let text = format!("{:02}:{:02}", hm.0, hm.1);
+        if data.as_ref().clock != text {
+            data.clock = text;
+        }
     }
     let fraction = (clock.hour.rem_euclid(24.0) / 24.0) as f32;
-    if data.day_fraction != fraction {
+    if (data.as_ref().day_fraction - fraction).abs() > 1e-4 {
         data.day_fraction = fraction;
     }
     let rain = elements_rain(&weather) as f32;
-    if data.weather_rain != rain {
+    if (data.as_ref().weather_rain - rain).abs() > 1e-3 {
         data.weather_rain = rain;
     }
 }

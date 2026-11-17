@@ -80,6 +80,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // depender do CWD (o bevy resolve roots relativas contra o exe).
     let path = &std::path::absolute(path)?;
     let world = viber::app::load_world(path)?;
+    bevy_ext_core::boot::mark("world.parse");
     // O runtime só corre mundos ESTÁTICOS (`<world static="true">`).
     if !world.static_world {
         bail!(
@@ -112,10 +113,28 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // Shaders ESPECIALIZADOS por mundo (céu/água/camadas): consts WGSL do
     // projeto — vêm SEMPRE da cena principal (contrato de conteúdo).
     let project = viber::project::Project::discover(path);
+    // O parse da cena principal (com resolução de prefabs: ~1,4 s no
+    // `world.bsn` do Vael) só serve para ler `<Sky>`/`<DayCycle>`/`<Water>`/
+    // `<Layer>` das consts WGSL do projeto. Quando nem o documento nem os seus
+    // `<Include>` autoram nenhum desses tags, o resultado são os DEFAULTS — e o
+    // parse é trabalho deitado fora (no Vael nenhum ficheiro os autora desde
+    // que céu/clima passaram para o `bevy_elements`). A varredura de texto
+    // responde em milissegundos; `VIBER_MAIN_SHADER_CONFIG=parse` força o
+    // caminho antigo (um tag que só exista dentro de um prefab não é visto).
+    let main_scene = project.main_scene_path();
+    let wants_shader_config = || {
+        std::env::var("VIBER_MAIN_SHADER_CONFIG").is_ok_and(|value| value == "parse")
+            || bevy_ext_world::bsn::authors_tags(
+                &main_scene,
+                &world_dir_pre,
+                &["Sky", "DayCycle", "Water", "Layer"],
+            )
+    };
     let main_world = if project.declared
         && project.scene_id(path).as_deref() != Some(viber::project::MAIN_SCENE)
+        && wants_shader_config()
     {
-        match viber::app::load_world(&project.main_scene_path()) {
+        match viber::app::load_world(&main_scene) {
             Ok(main) => Some(main),
             Err(error) => {
                 warn!(
@@ -127,6 +146,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     } else {
         None
     };
+    // A segunda leitura só acontece quando a cena de arranque não é a principal
+    // (o menu é o caso normal): é o parse mais caro do arranque depois do
+    // primeiro, e é ele que a fase seguinte do plano ataca.
+    bevy_ext_core::boot::mark("main_scene.parse");
     let shader_entities = &main_world.as_ref().unwrap_or(&world).entities;
     let sky_config = viber::sky::SkyConfig::from_world(shader_entities).with_env_override();
     // As configs de água/camadas vêm do glue IR→shader do monólito
@@ -669,5 +692,30 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             timed(Group::Spawner, viber::spawner::instantiate_spawn_groups),
         ),
     );
+    bevy_ext_core::boot::mark("app.build");
+    // Diagnóstico: `VAEL_DUMP_SCHEDULES=1` lista os sistemas de cada schedule
+    // com âncora (`Last`, `PostUpdate`, …). Serve para saber QUEM está dentro
+    // de um schedule caro: a tab rica só mostra os sistemas que passam pelo
+    // `timed`, e um plugin externo que corra em `Last` não aparece em lado
+    // nenhum (medido a 2026-11-16: `sched.last` a 12–14 ms sem nada conhecido
+    // lá dentro).
+    app.add_systems(bevy::app::Startup, dump_schedules);
     Ok(app)
 }
+
+fn dump_schedules(world: &mut World) {
+    if std::env::var_os("VAEL_DUMP_SCHEDULES").is_none() {
+        return;
+    }
+    for label in [bevy::app::Last, bevy::app::PostUpdate, bevy::app::PreUpdate] {
+        let Some(schedule) = world.get_schedule(label) else {
+            continue;
+        };
+        let names: Vec<&str> = schedule
+            .systems()
+            .map(|entry| entry.system.name())
+            .collect();
+        info!("schedule {label:?}: {} sistemas {names:?}", names.len());
+    }
+}
+

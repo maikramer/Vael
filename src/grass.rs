@@ -520,10 +520,16 @@ fn drive_wind(weather: Option<Res<WeatherState>>, mut wind: ResMut<GrassWind>) {
         return;
     };
     let direction = Vec2::new(weather.wind[0], weather.wind[1]);
-    if direction.length_squared() > 1e-6 {
-        wind.direction = direction.normalize();
-    }
+    let next_dir = (direction.length_squared() > 1e-6).then(|| direction.normalize());
     let strength = (weather.wind_strength * 0.66).clamp(0.0, 1.0);
+    let dir_changed = next_dir
+        .is_some_and(|dir| wind.as_ref().direction.distance_squared(dir) > 1e-6);
+    if !dir_changed && (wind.as_ref().strength - strength).abs() <= 1e-4 {
+        return;
+    }
+    if let Some(dir) = next_dir {
+        wind.direction = dir;
+    }
     wind.strength = strength;
     wind.gust_scale = (28.0 - 18.0 * strength).clamp(8.0, 30.0);
     wind.gust_speed = (3.0 + 9.0 * strength).clamp(2.0, 12.0);

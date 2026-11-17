@@ -64,6 +64,20 @@ pub fn upload_budget_disabled() -> bool {
     std::env::var("VIBER_UPLOAD_MB").is_ok_and(|v| matches!(v.trim(), "off" | "0"))
 }
 
+/// `VAEL_WAIT_BAKES=0`: o véu deixa de esperar pelos bakes de impostores.
+///
+/// Por omissão **espera** — e a 2026-11-16 isso revelou-se o comportamento
+/// honesto: sem esperar, o véu saía ~4 s mais cedo e o ecrã abria com terreno e
+/// HUD mas **sem props** (capturado em série). A causa não eram as bakes: era a
+/// condição de upload e a falta de instanciação das cenas (ver `instantiating` e
+/// `gpu_uploading` em [`update_world_readiness`]). Com as duas corrigidas, o
+/// `=0` também mostra a vista completa; esperar continua a ser o default porque
+/// as bakes correm por cima da fila de upload e não custam tempo de parede
+/// mensurável.
+pub fn wait_for_bakes() -> bool {
+    !std::env::var("VAEL_WAIT_BAKES").is_ok_and(|v| matches!(v.trim(), "0" | "false" | "off"))
+}
+
 /// Orçamento efetivo do carregamento (bytes).
 pub fn loading_upload_budget() -> usize {
     std::env::var("VIBER_UPLOAD_MB")
@@ -344,10 +358,19 @@ fn probe_pipelines(
 }
 
 /// Orçamento de subida: só atrás do véu; em jogo, sem limite.
+///
+/// Publica também o `LoadingStreaming` que o terreno lê: com o véu em cima a
+/// vaga de colunas a seguir ao bootstrap é trabalho de carga e ao orçamento
+/// normal (4 caixas/frame) segurava o véu vários segundos.
 fn set_upload_budget(
     readiness: Res<WorldReadiness>,
     budget: Option<ResMut<RenderAssetBytesPerFrame>>,
+    mut loading: Option<ResMut<bevy_engine_core::cinematic::LoadingStreaming>>,
 ) {
+    let world_loading = !readiness.ready;
+    if let Some(loading) = loading.as_deref_mut() {
+        loading.0 = world_loading;
+    }
     let Some(mut budget) = budget else {
         return;
     };
@@ -355,7 +378,7 @@ fn set_upload_budget(
     if upload_budget_disabled() {
         return;
     }
-    let max = (!readiness.ready).then(loading_upload_budget);
+    let max = world_loading.then(loading_upload_budget);
     if budget.max_bytes != max {
         budget.max_bytes = max;
     }
@@ -418,6 +441,10 @@ fn update_world_readiness(
         .as_deref()
         .is_some_and(|l| l.phase == LoaderPhase::Swap);
     if !readiness.started || (swapping && readiness.ready) {
+        // Primeiro `PostUpdate`: tudo o que é síncrono (parse, spawn, terreno)
+        // já correu, e a contagem do véu começa aqui. A marca fecha a metade
+        // do arranque que o `mundo pronto em X s` não via.
+        bevy_engine_core::boot::mark("first_frame");
         readiness.restart(now);
     }
 
@@ -456,10 +483,31 @@ fn update_world_readiness(
             None => false,
         })
         .count();
-    let pending_models = pending_models + unrequested;
+    // Âncoras do anel com a raiz pedida mas SEM instância. O
+    // `gltf_scene_spawner` tira o `GltfScenePending` no frame em que o handle
+    // carrega e escreve o `WorldAssetRoot`; a subárvore só é montada pelo
+    // `world_instance_spawner` no frame seguinte (e pode demorar mais com a
+    // fila cheia). Entre os dois a âncora não era pendente NEM "por pedir":
+    // era invisível, e o véu abria com o mundo por instanciar — ecrã só com
+    // terreno e HUD, zero props (visto 2026-11-16; as bakes de impostores
+    // tapavam-no por acaso, ao atrasar o véu ~4 s).
+    let instantiating = anchors
+        .iter()
+        .filter(|(_, pending, root, instance, failed)| {
+            *root && !*instance && !*pending && !*failed
+        })
+        .filter(|(transform, ..)| match hero {
+            Some(hero) if ready_radius.is_finite() => {
+                transform.translation().distance(hero) <= ready_radius
+            }
+            Some(_) => true,
+            None => false,
+        })
+        .count();
+    let pending_models = pending_models + unrequested + instantiating;
     // Colunas do terreno por meshar perto da câmara: sem isto o véu saía com
     // o chão ainda por desenhar.
-    let baking = bake_cameras
+    let bakes_active = bake_cameras
         .iter()
         .filter(|(camera, target)| {
             camera.is_active
@@ -467,6 +515,10 @@ fn update_world_readiness(
                 && matches!(target, bevy::camera::RenderTarget::Image(_))
         })
         .count();
+    // `VAEL_WAIT_BAKES=0` tira os bakes da condição do véu (A/B): são ~42
+    // variantes × 16 câmaras. Com as condições de instanciação e de upload
+    // honestas (ver abaixo) a vista sai completa nos dois braços.
+    let baking = if wait_for_bakes() { bakes_active } else { 0 };
     let compiling = pipeline_probe
         .as_deref()
         .map_or(0, |probe| probe.0.load(Ordering::Relaxed));
@@ -486,10 +538,27 @@ fn update_world_readiness(
         .as_deref()
         .is_none_or(|g| g.groups.iter().all(|g| g.done));
 
-    let gpu_uploading = match (&probe, budget.as_deref().and_then(|b| b.max_bytes)) {
-        (Some(probe), Some(max)) => probe.0.load(Ordering::Relaxed) >= max,
-        _ => false,
-    };
+    // "Ainda a subir" = o render world ESCREVEU alguma coisa neste frame.
+    //
+    // Comparar com o teto (`>= max`) não servia: o limiter do Bevy clampa o
+    // último asset que não cabe e deixa os seguintes para o frame a seguir, por
+    // isso um frame com fila cheia pode escrever muito abaixo do teto (medido:
+    // 380 KB e 29 MB com o mundo por subir). O véu contava esses frames como
+    // parados e abria com os props invisíveis — as bakes de impostores tapavam
+    // o buraco por acaso, ao atrasar o véu ~4 s. Com `bytes_written > 0` e os
+    // `STABLE_FRAMES` já exigidos, o véu só sai depois de 12 frames sem
+    // escrever nada (fila drenada).
+    let gpu_uploading = probe
+        .as_deref()
+        .is_some_and(|probe| probe.0.load(Ordering::Relaxed) > 0);
+    // Diagnóstico: os números crus da sonda (`bytes_written` do frame anterior
+    // vs o teto) — sem eles não se distingue "fila a drenar" de "sonda a ler 0".
+    let upload_debug = (
+        probe
+            .as_deref()
+            .map_or(0, |p| p.0.load(Ordering::Relaxed)),
+        budget.as_deref().and_then(|b| b.max_bytes).unwrap_or(0),
+    );
 
     let r = readiness.as_mut();
     r.gpu_uploading = gpu_uploading;
@@ -506,16 +575,19 @@ fn update_world_readiness(
     // é a medição do que segura o véu.
     if r.elapsed_secs.floor() != ((now - r.started_at) as f32 - time.delta_secs()).floor() {
         debug!(
-            "carregamento t={:.1}s frame={} modelos {}/{} (por pedir {}) texturas={} herói={} spawn_groups={} gpu_fila={} terreno_ocupado={} pipelines={} bakes={} (players={} settling={} gated={})",
+            "carregamento t={:.1}s frame={} modelos {}/{} (por pedir {} instanciando {}) texturas={} herói={} spawn_groups={} gpu_fila={} [{}B/{}B] terreno_ocupado={} pipelines={} bakes={} (players={} settling={} gated={})",
             r.elapsed_secs,
             frame.0,
             r.total_models.saturating_sub(pending_models),
             r.total_models,
             unrequested,
+            instantiating,
             textures_ready,
             player_ready,
             spawn_groups_ready,
             gpu_uploading,
+            upload_debug.0,
+            upload_debug.1,
             terrain_busy,
             compiling,
             baking,
@@ -561,6 +633,13 @@ fn update_world_readiness(
                 "mundo pronto em {:.2}s ({} modelos, época {})",
                 r.elapsed_secs, r.total_models, r.epoch
             );
+        }
+        // O tempo do véu começa no primeiro `PostUpdate`: o parse do `.bsn`, o
+        // spawn do mundo, o bootstrap do terreno e as pools de flora já cá
+        // estavam e não apareciam em lado nenhum. Uma linha, uma vez.
+        bevy_engine_core::boot::mark("veil");
+        if bevy_engine_core::boot::enabled() {
+            info!("{}", bevy_engine_core::boot::report());
         }
     }
 }

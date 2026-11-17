@@ -23,6 +23,7 @@ use bevy_ext_bridge_protocol::{
     BridgeClient, LEGACY_CLICK, LEGACY_KEY, LEGACY_LOGS, LEGACY_LUA, LEGACY_MOVE, LEGACY_PING,
     LEGACY_PROFILER, LEGACY_PROFILER_MARK, LEGACY_PROFILER_TAB, LEGACY_TEXT, LEGACY_TREE,
     METHOD_FRAME_STATS, METHOD_HITCHES, METHOD_LOGS, METHOD_MARK, METHOD_MEMORY, METHOD_PAUSE,
+    METHOD_PERF,
     METHOD_PLAY, METHOD_STEP, METHOD_TREE, SessionPaths, is_listening, normalize_key, resolve_port,
 };
 
@@ -108,6 +109,14 @@ pub enum DebugCommand {
     },
     /// Memória do processo (RSS/HWM/threads).
     Memory,
+    /// Ms/chamada por sistema (probes do core) — mede a sessão a quente, sem env
+    /// nem reinício. `--reset` zera a janela antes de ler.
+    Perf {
+        #[arg(long)]
+        reset: bool,
+        #[arg(long)]
+        json: bool,
+    },
     /// Hitches recentes.
     Hitches,
     /// Snapshot do profiler (`--record` grava uma série).
@@ -122,9 +131,15 @@ pub enum DebugCommand {
         /// Grava uma série durante N segundos (`-o` para JSONL).
         #[arg(long)]
         record: Option<u64>,
+        /// Número de amostras (atalho para `--record`, com `--hz` a 2).
+        #[arg(long, conflicts_with = "record")]
+        samples: Option<u64>,
         /// Amostras por segundo do `--record`.
         #[arg(long, default_value_t = 2.0)]
         hz: f64,
+        /// Não resume a série (só grava).
+        #[arg(long)]
+        no_summary: bool,
         #[arg(short, long)]
         output: Option<PathBuf>,
     },
@@ -371,6 +386,14 @@ pub fn run(
                 &json!({ "source": "bridge", "entries": entries }),
             )?;
         }
+        DebugCommand::Perf { reset, json } => {
+            let value = client.call(METHOD_PERF, json!({ "reset": reset }))?;
+            if json || json_out {
+                println!("{}", serde_json::to_string_pretty(&value)?);
+            } else {
+                println!("{}", perf_table(&value));
+            }
+        }
         DebugCommand::Memory => {
             let value = profiler_field(&client, METHOD_MEMORY, "memory")?;
             println!("{}", serde_json::to_string_pretty(&value)?);
@@ -384,10 +407,16 @@ pub fn run(
             json,
             hitches,
             record,
+            samples,
             hz,
+            no_summary,
             output,
         } => {
             let json = json || json_out;
+            let record = record.or_else(|| samples.map(|count| {
+                // `--samples N` é a forma antiga: N amostras no `hz` pedido.
+                (count as f64 / hz.max(0.1)).ceil() as u64
+            }));
             if hitches {
                 let value = client.call(METHOD_HITCHES, json!({}))?;
                 println!("{}", serde_json::to_string_pretty(&value)?);
@@ -406,24 +435,27 @@ pub fn run(
                     let value = client
                         .call(METHOD_FRAME_STATS, json!({}))
                         .or_else(|_| client.call(LEGACY_PROFILER_TAB, json!({ "tab": tab })))?;
-                    match file.as_mut() {
-                        Some(file) => {
-                            writeln!(file, "{value}")?;
-                        }
-                        // Sem `-o` as amostras são JSONL no stdout. Com
-                        // `--json` o stdout tem de ser UM documento: a série
-                        // é impressa junta no fim (antes iam linhas soltas).
-                        None if json => series.push(value),
-                        // Sem `-o`, as amostras iam para o vazio (o comando
-                        // saía com 0 e sem output): JSONL no stdout.
-                        None => println!("{value}"),
+                    if let Some(file) = file.as_mut() {
+                        writeln!(file, "{value}")?;
+                    } else if !json {
+                        // Sem `-o` e sem `--json` as amostras são JSONL no
+                        // stdout; o resumo vai para stderr para não quebrar o
+                        // stream.
+                        println!("{value}");
                     }
+                    series.push(value);
                     // Sem `sleep` depois da última amostra (com `--hz` baixo
                     // eram segundos a mais no fim do comando).
                     if sample + 1 < samples {
                         std::thread::sleep(std::time::Duration::from_secs_f64(1.0 / hz));
                     }
                 }
+                let summary = if no_summary {
+                    Value::Null
+                } else {
+                    let memory = client.call(METHOD_MEMORY, json!({})).ok();
+                    summarize_series(&series, memory.as_ref())
+                };
                 if let Some(path) = &output {
                     if json {
                         // `--json` = só JSON no stdout (o "perf:" era texto
@@ -433,10 +465,12 @@ pub fn run(
                             serde_json::to_string_pretty(&json!({
                                 "samples": samples,
                                 "path": path.display().to_string(),
+                                "summary": summary,
                             }))?
                         );
                     } else {
                         println!("perf: {} amostra(s) em {}", samples, path.display());
+                        print_summary(&summary);
                     }
                 } else if json {
                     println!(
@@ -444,8 +478,11 @@ pub fn run(
                         serde_json::to_string_pretty(&json!({
                             "samples": samples,
                             "series": series,
+                            "summary": summary,
                         }))?
                     );
+                } else {
+                    print_summary(&summary);
                 }
             } else {
                 let value = client
@@ -1451,6 +1488,120 @@ fn emit(json_out: bool, human: String, value: &Value) -> Result<()> {
     Ok(())
 }
 
+/// Resume uma série do `--record`.
+///
+/// As duas formas de resposta existem: o método nativo devolve
+/// `avg_ms`/`p95_ms`/`p99_ms`/`max_ms`/`fps`/`hitches` (janela de 240 frames) e
+/// a tab FRAMES legada devolve `frame_ms{avg,max,p95}`/`hitches{count}`. A
+/// média é a média das janelas; `worst_ms` e `hitch_count` são o pior caso de
+/// qualquer janela — janelas de 4 s sobrepõem-se, por isso somar os hitches de
+/// todas as amostras inflacionava a contagem.
+fn summarize_series(series: &[Value], memory: Option<&Value>) -> Value {
+    fn field<'a>(value: &'a Value, path: &[&str]) -> Option<&'a Value> {
+        let mut current = value;
+        for key in path {
+            current = current.get(*key)?;
+        }
+        (!current.is_null()).then_some(current)
+    }
+    fn number(value: &Value, paths: &[&[&str]]) -> Option<f64> {
+        paths
+            .iter()
+            .find_map(|path| field(value, path).and_then(Value::as_f64))
+    }
+
+    let mut avg: Vec<f64> = Vec::new();
+    let mut p95: Vec<f64> = Vec::new();
+    let mut fps: Vec<f64> = Vec::new();
+    let mut worst = 0.0f64;
+    let mut hitch_count = 0u64;
+    for sample in series {
+        if let Some(value) = number(sample, &[&["avg_ms"], &["frame_ms", "avg"]]) {
+            avg.push(value);
+        }
+        if let Some(value) = number(sample, &[&["p95_ms"], &["frame_ms", "p95"]]) {
+            p95.push(value);
+        }
+        if let Some(value) = number(sample, &[&["fps"]]) {
+            fps.push(value);
+        }
+        if let Some(value) = number(sample, &[&["max_ms"], &["frame_ms", "max"]]) {
+            worst = worst.max(value);
+        }
+        // Nativo: array de hitches da janela. Legado: contador.
+        let hitches = field(sample, &["hitches"]).map(|hitches| {
+            hitches
+                .as_array()
+                .map_or_else(|| hitches.get("count").and_then(Value::as_u64).unwrap_or(0), |a| {
+                    a.len() as u64
+                })
+        });
+        hitch_count = hitch_count.max(hitches.unwrap_or(0));
+    }
+    let mean = |values: &[f64]| {
+        if values.is_empty() {
+            Value::Null
+        } else {
+            json!(values.iter().sum::<f64>() / values.len() as f64)
+        }
+    };
+    let mut summary = json!({
+        "samples": series.len(),
+        "avg_ms": mean(&avg),
+        "p95_ms": mean(&p95),
+        "fps": mean(&fps),
+        "worst_ms": if worst > 0.0 { json!(worst) } else { Value::Null },
+        "hitch_count": hitch_count,
+    });
+    if let Some(memory) = memory {
+        // `vael-tools/memory` (rss_kb/hwm_kb) ou o legado (rss_mb/peak_rss_mb).
+        let rss_kb = field(memory, &["rss_kb"])
+            .and_then(Value::as_u64)
+            .or_else(|| {
+                field(memory, &["rss_mb"])
+                    .and_then(Value::as_f64)
+                    .map(|mb| (mb * 1024.0) as u64)
+            });
+        if let Some(rss_kb) = rss_kb {
+            summary["rss_kb"] = json!(rss_kb);
+        }
+    }
+    summary
+}
+
+/// O resumo em texto (uma linha), para o modo humano e para o stderr do JSONL.
+fn print_summary(summary: &Value) {
+    if summary.is_null() {
+        return;
+    }
+    let number = |key: &str| summary.get(key).and_then(Value::as_f64);
+    let mut parts = vec![format!(
+        "{} amostra(s)",
+        summary.get("samples").and_then(Value::as_u64).unwrap_or(0)
+    )];
+    if let Some(avg) = number("avg_ms") {
+        parts.push(format!("média {avg:.1} ms"));
+    }
+    if let Some(p95) = number("p95_ms") {
+        parts.push(format!("p95 {p95:.1} ms"));
+    }
+    if let Some(worst) = number("worst_ms") {
+        parts.push(format!("pior {worst:.1} ms"));
+    }
+    if let Some(fps) = number("fps") {
+        parts.push(format!("{fps:.1} fps"));
+    }
+    let hitches = summary
+        .get("hitch_count")
+        .and_then(Value::as_u64)
+        .unwrap_or(0);
+    parts.push(format!("{hitches} hitch(es) por janela"));
+    if let Some(rss_kb) = summary.get("rss_kb").and_then(Value::as_u64) {
+        parts.push(format!("RSS {:.0} MB", rss_kb as f64 / 1024.0));
+    }
+    eprintln!("perf: {}", parts.join(" · "));
+}
+
 fn call_fallback(
     client: &BridgeClient,
     method: &str,
@@ -1808,5 +1959,82 @@ mod tests {
         let client = BridgeClient::localhost(port);
         let error = profiler_field(&client, METHOD_HITCHES, "hitches").unwrap_err();
         assert!(format!("{error:#}").contains("hitches"), "{error:#}");
+    }
+}
+
+/// A tabela de `vael-tools/perf` em texto, uma linha por sistema.
+fn perf_table(value: &Value) -> String {
+    let Some(rows) = value.get("systems").and_then(Value::as_array) else {
+        return "perf: o jogo não tem probes (runtime velho?)".to_string();
+    };
+    if rows.is_empty() {
+        return "perf: sem amostras — joga uns segundos e repete".to_string();
+    }
+    let mut out = String::from("  ms/chamada  chamadas  sistema\n");
+    for row in rows {
+        let ms = row.get("ms").and_then(Value::as_f64).unwrap_or(0.0);
+        let calls = row.get("calls").and_then(Value::as_u64).unwrap_or(0);
+        let system = row.get("system").and_then(Value::as_str).unwrap_or("?");
+        out.push_str(&format!("{ms:>12.3}{calls:>10}  {system}\n"));
+    }
+    out
+}
+
+#[cfg(test)]
+mod summary_tests {
+    use super::*;
+
+    #[test]
+    fn summarizes_the_native_payload() {
+        let series = vec![
+            json!({"avg_ms": 16.0, "p95_ms": 20.0, "max_ms": 30.0, "fps": 60.0,
+                   "hitches": [{"frame_ms": 60.0}]}),
+            json!({"avg_ms": 18.0, "p95_ms": 24.0, "max_ms": 51.0, "fps": 55.0,
+                   "hitches": []}),
+        ];
+        let memory = json!({"rss_kb": 1048576u64});
+        let summary = summarize_series(&series, Some(&memory));
+        assert_eq!(summary["samples"], 2);
+        assert_eq!(summary["avg_ms"], 17.0);
+        assert_eq!(summary["p95_ms"], 22.0);
+        assert_eq!(summary["worst_ms"], 51.0, "the worst frame of any window");
+        assert_eq!(summary["fps"], 57.5);
+        assert_eq!(summary["hitch_count"], 1, "per-window max, not a sum");
+        assert_eq!(summary["rss_kb"], 1048576u64);
+    }
+
+    #[test]
+    fn summarizes_the_legacy_tab() {
+        let series = vec![json!({
+            "frame_ms": {"avg": 20.0, "p95": 31.0, "max": 80.0},
+            "hitches": {"count": 4},
+            "memory": {"rss_mb": 2048.0},
+        })];
+        let summary = summarize_series(&series, None);
+        assert_eq!(summary["avg_ms"], 20.0);
+        assert_eq!(summary["worst_ms"], 80.0);
+        assert_eq!(summary["hitch_count"], 4);
+        assert!(summary["fps"].is_null(), "the legacy tab has no fps field");
+    }
+
+    #[test]
+    fn the_perf_table_lists_systems() {
+        let value = json!({"systems": [
+            {"system": "luau.send", "ms": 0.14, "calls": 600},
+            {"system": "ik.targets", "ms": 0.09, "calls": 600},
+        ]});
+        let table = perf_table(&value);
+        assert!(table.contains("luau.send") && table.contains("ik.targets"), "{table}");
+        assert!(table.contains("0.140"), "{table}");
+        assert!(perf_table(&json!({"systems": []})).contains("sem amostras"));
+        assert!(perf_table(&json!({})).contains("não tem probes"));
+    }
+
+    #[test]
+    fn an_empty_series_summarizes_to_nulls() {
+        let summary = summarize_series(&[], None);
+        assert_eq!(summary["samples"], 0);
+        assert!(summary["avg_ms"].is_null());
+        assert!(summary["worst_ms"].is_null());
     }
 }

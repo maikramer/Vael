@@ -19,7 +19,7 @@
 //! (por ficheiro GLB — todas as instâncias da mesma copa partilham o tint,
 //! como na referência).
 
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 
 use bevy::asset::AssetId;
 use bevy::color::LinearRgba;
@@ -51,6 +51,8 @@ fn day_tint(day: f32) -> [f32; 3] {
 #[reflect(Resource)]
 struct PropTintState {
     originals: HashMap<AssetId<StandardMaterial>, LinearRgba>,
+    #[reflect(ignore)]
+    seen: HashSet<AssetId<StandardMaterial>>,
     last_tint: Option<[f32; 3]>,
     /// Nº de materiais na última passada: um roster maior (glTF a carregar
     /// depois de o tint estabilizar) força uma passada fora do early-out de
@@ -101,12 +103,14 @@ fn patch_transmissive_gltf(
     )>,
     mesh_materials: Query<&MeshMaterial3d<StandardMaterial>>,
     mut patched: Local<std::collections::HashSet<bevy::asset::AssetId<StandardMaterial>>>,
+    mut stack: Local<Vec<Entity>>,
 ) {
     // O `WorldAssetRoot` só existe depois do gltf carregar e a cena spawnar
     // — a primeira passada vê a hierarquia completa; no fim o marcador sai
     // para não re-percorrer a árvore todos os frames.
     for (entity, _root, _marker) in roots.iter() {
-        let mut stack = vec![entity];
+        stack.clear();
+        stack.push(entity);
         // Falso enquanto houver um material ainda não carregado: aí o
         // marcador FICA (o `WorldAssetRoot` aparece quando a CENA carrega;
         // os sub-assets — materiais — chegam em paralelo).
@@ -185,21 +189,32 @@ fn prop_daynight_tint(
     if let Some((ids, tint, cursor)) = &mut sweep {
         let (start, end) = sweep_slice(ids.len(), *cursor, PROP_TINT_BUDGET);
         for id in ids[start..end].iter() {
-            let Some(mut material) = materials.get_mut(*id) else {
-                continue;
+            // Check read-only BEFORE `get_mut` so skipped or unchanged
+            // materials do not trigger `AssetEvent::Modified` / bind-group churn.
+            let next_color = {
+                let Some(material) = materials.get(*id) else {
+                    continue;
+                };
+                if material.unlit || material.emissive != LinearRgba::BLACK {
+                    continue;
+                }
+                let cur = material.base_color.to_linear();
+                let original = *state.originals.entry(*id).or_insert(cur);
+                let target = tinted_base_color(original, *tint, cur.alpha);
+                let target_lin = target.to_linear();
+                if (target_lin.red - cur.red).abs() <= 1e-4
+                    && (target_lin.green - cur.green).abs() <= 1e-4
+                    && (target_lin.blue - cur.blue).abs() <= 1e-4
+                {
+                    continue;
+                }
+                Some(target)
             };
-            // Auto-iluminados ficam de fora: marcadores e vidros acesos. (O
-            // filtro corre ao montar o roster; o re-check protege materiais
-            // que ficaram emissivos desde então.)
-            if material.unlit || material.emissive != LinearRgba::BLACK {
-                continue;
+            if let Some(target) = next_color
+                && let Some(mut material) = materials.get_mut(*id)
+            {
+                material.base_color = target;
             }
-            let original = *state
-                .originals
-                .entry(*id)
-                .or_insert_with(|| material.base_color.to_linear());
-            let current_alpha = material.base_color.to_linear().alpha;
-            material.base_color = tinted_base_color(original, *tint, current_alpha);
         }
         *cursor = end;
         if *cursor >= ids.len() {
@@ -226,14 +241,14 @@ fn prop_daynight_tint(
     }
     state.throttle = 0.25;
 
-    // ids são Copy — o Vec termina o borrow imutável antes do get_mut.
-    let ids: Vec<_> = materials.ids().collect();
     // Materiais que já não existem (troca de cena / glTF recarregado) não
     // podem ficar para sempre no mapa de originais: o asset é removido e o
     // `AssetId` nunca volta, mas a entrada ficava.
     state.originals.retain(|id, _| materials.contains(*id));
-    let roster_changed = ids.len() != state.last_len;
-    state.last_len = ids.len();
+    state.seen.retain(|id| materials.contains(*id));
+    let current_len = materials.len();
+    let roster_changed = current_len != state.last_len;
+    state.last_len = current_len;
 
     // Dentro de um interior o tint fica de DIA: a sala é iluminada pelo
     // ambiente fixo (ver `worldsys::InteriorLighting`) e escurecer os
@@ -247,26 +262,35 @@ fn prop_daynight_tint(
             .unwrap_or(1.0)
     };
     let tint = day_tint(day);
-    if let Some(last) = state.last_tint
-        && !roster_changed
-        && (tint[0] - last[0]).abs() < 1e-3
-        && (tint[1] - last[1]).abs() < 1e-3
-        && (tint[2] - last[2]).abs() < 1e-3
-    {
+    let tint_unchanged = state.last_tint.is_some_and(|last| {
+        (tint[0] - last[0]).abs() < 1e-3
+            && (tint[1] - last[1]).abs() < 1e-3
+            && (tint[2] - last[2]).abs() < 1e-3
+    });
+    if tint_unchanged && !roster_changed {
         return;
     }
 
-    // Monta o roster ELEGÍVEL uma vez (unlit/emissivos fora) e abre a
-    // passagem orçamentada — o `get_mut` do filtro seria de leitura, mas o
-    // roster filtrado poupa o cursor de saltar metade dos ids.
-    let eligible: Vec<AssetId<StandardMaterial>> = ids
-        .into_iter()
-        .filter(|id| {
-            materials
-                .get(*id)
-                .is_some_and(|material| !material.unlit && material.emissive == LinearRgba::BLACK)
-        })
-        .collect();
+    // Monta o roster ELEGÍVEL uma vez (unlit/emissivos fora). Quando o tint
+    // não mudou mas o roster cresceu (glTF novo), só varre os ids ainda não
+    // vistos em vez de reconstruir bind groups de todo o mundo.
+    let mut eligible: Vec<AssetId<StandardMaterial>> = Vec::new();
+    for id in materials.ids() {
+        let is_new = state.seen.insert(id);
+        if tint_unchanged && !is_new {
+            continue;
+        }
+        if materials
+            .get(id)
+            .is_some_and(|material| !material.unlit && material.emissive == LinearRgba::BLACK)
+        {
+            eligible.push(id);
+        }
+    }
+    if eligible.is_empty() {
+        state.last_tint = Some(tint);
+        return;
+    }
     state.sweep = Some((eligible, tint, 0));
 }
 

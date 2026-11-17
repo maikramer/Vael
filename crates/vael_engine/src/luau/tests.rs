@@ -11,22 +11,15 @@ use bevy::prelude::*;
 
 /// CharacterAnimator mínimo com os clips dados (1 s cada, nós 1..n).
 fn test_animator(names: &[&str]) -> crate::animation::CharacterAnimator {
-    crate::animation::CharacterAnimator {
-        clip_names: names.iter().map(|s| s.to_string()).collect(),
-        nodes: (0..names.len())
+    crate::animation::CharacterAnimator::new(
+        names.iter().map(|s| s.to_string()).collect(),
+        (0..names.len())
             .map(|i| bevy::animation::graph::AnimationNodeIndex::new(i + 1))
             .collect(),
-        durations: vec![1.0; names.len()],
-        player: Entity::PLACEHOLDER,
-        state: None,
-        current: None,
-        action_time: 0.0,
-        locked: false,
-        air_time: 0.0,
-        speed: 0.0,
-        last_pos: None,
-        locomotion: None,
-    }
+        vec![1.0; names.len()],
+        Entity::PLACEHOLDER,
+        None,
+    )
 }
 
 #[test]

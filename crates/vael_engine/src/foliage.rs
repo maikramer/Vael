@@ -11,7 +11,9 @@
 //! histerese (`BATCH_CULL`) e morrem quando as fontes despawnam (troca de
 //! cena/streaming). Gate: `VIBER_FOLIAGE_BATCH=0`.
 
-use std::collections::HashMap;
+use std::borrow::Cow;
+use std::collections::{HashMap, HashSet};
+use std::sync::OnceLock;
 
 use bevy::mesh::{Indices, Mesh, PrimitiveTopology, VertexAttributeValues};
 use bevy::prelude::*;
@@ -33,10 +35,13 @@ pub fn batch_wanted(
 }
 
 pub fn batch_enabled() -> bool {
-    !matches!(
-        std::env::var("VIBER_FOLIAGE_BATCH").ok().as_deref(),
-        Some("0" | "false" | "off")
-    )
+    static ENABLED: OnceLock<bool> = OnceLock::new();
+    *ENABLED.get_or_init(|| {
+        !matches!(
+            std::env::var("VIBER_FOLIAGE_BATCH").ok().as_deref(),
+            Some("0" | "false" | "off")
+        )
+    })
 }
 
 #[derive(Component, Reflect)]
@@ -88,15 +93,17 @@ pub fn append_mesh(
     xform: Mat4,
 ) {
     let base = positions.len() as u32;
-    let normal_mat = xform.inverse().transpose();
+    positions.reserve(src_pos.len());
+    normals.reserve(src_pos.len());
+    uvs.reserve(src_pos.len());
+    indices.reserve(src_idx.len());
+    let normal_mat = Mat3::from_mat4(xform).inverse().transpose();
     for p in src_pos {
         let v = xform.transform_point3(Vec3::from_array(*p));
         positions.push(v.to_array());
     }
     for n in src_nrm {
-        let v = normal_mat
-            .transform_vector3(Vec3::from_array(*n))
-            .normalize_or_zero();
+        let v = (normal_mat * Vec3::from_array(*n)).normalize_or_zero();
         normals.push(v.to_array());
     }
     if normals.len() < positions.len() {
@@ -112,18 +119,20 @@ pub fn append_mesh(
     }
 }
 
-fn triples(values: &VertexAttributeValues) -> Option<Vec<[f32; 3]>> {
+fn triples_slice(values: &VertexAttributeValues) -> Option<&[[f32; 3]]> {
     match values {
-        VertexAttributeValues::Float32x3(v) => Some(v.clone()),
+        VertexAttributeValues::Float32x3(v) => Some(v.as_slice()),
         _ => None,
     }
 }
 
 pub const BATCH_RADIUS: f32 = 80.0;
+const BATCH_RADIUS_SQ: f32 = BATCH_RADIUS * BATCH_RADIUS;
 /// Histerese do cull dos tiles fundidos: um tile criado a 80 m não morre no
 /// frame seguinte; só quando a câmara se afasta de vez. 96 m (e não 112)
 /// mantém a vegetação perto do `CullDistance` de 80 m que a fonte já tinha.
 pub const BATCH_CULL: f32 = 96.0;
+const BATCH_CULL_SQ: f32 = BATCH_CULL * BATCH_CULL;
 
 fn tile_center(key: IVec2) -> Vec2 {
     Vec2::new(
@@ -132,18 +141,116 @@ fn tile_center(key: IVec2) -> Vec2 {
     )
 }
 
+type TileGroupKey = (IVec2, AssetId<Mesh>, AssetId<StandardMaterial>);
+
+struct PendingGroup {
+    mesh: Handle<Mesh>,
+    material: Handle<StandardMaterial>,
+    members: Vec<(Entity, Mat4)>,
+}
+
+/// Spatial tile index and scratch buffers for [`batch_tiles`], avoiding
+/// full-world `SimpleFoliage` scans and per-frame `HashMap`/`HashSet` churn.
+#[derive(Default)]
+pub struct FoliageTileCache {
+    seeded: bool,
+    entity_tile: HashMap<Entity, IVec2>,
+    by_tile: HashMap<IVec2, Vec<Entity>>,
+    last_scan_eye: Option<Vec2>,
+    more_work: bool,
+    pending_meshes: Vec<AssetId<Mesh>>,
+    existing: HashSet<TileGroupKey>,
+    groups: HashMap<TileGroupKey, PendingGroup>,
+    culled: Vec<(Entity, Vec<Entity>, Handle<Mesh>)>,
+}
+
+impl FoliageTileCache {
+    fn insert_or_move(&mut self, entity: Entity, tile: IVec2) {
+        if let Some(&old_tile) = self.entity_tile.get(&entity) {
+            if old_tile == tile {
+                return;
+            }
+            self.remove_from_bucket(entity, old_tile);
+        }
+        self.entity_tile.insert(entity, tile);
+        self.by_tile.entry(tile).or_default().push(entity);
+    }
+
+    fn remove_entity(&mut self, entity: Entity) {
+        if let Some(old_tile) = self.entity_tile.remove(&entity) {
+            self.remove_from_bucket(entity, old_tile);
+        }
+    }
+
+    fn remove_from_bucket(&mut self, entity: Entity, tile: IVec2) {
+        if let Some(bucket) = self.by_tile.get_mut(&tile) {
+            if let Some(idx) = bucket.iter().position(|&e| e == entity) {
+                bucket.swap_remove(idx);
+            }
+            if bucket.is_empty() {
+                self.by_tile.remove(&tile);
+            }
+        }
+    }
+}
+
+#[allow(clippy::type_complexity)]
+#[allow(clippy::too_many_arguments)]
 pub fn batch_tiles(
     mut commands: Commands,
     camera: crate::editor_camera::EyeCameraQuery,
     editor_camera: Query<&GlobalTransform, With<crate::editor_camera::EditorCamera>>,
     mut mesh_assets: ResMut<Assets<Mesh>>,
     foliage: Query<(Entity, &GlobalTransform, &SimpleFoliage, &Visibility)>,
+    spatial_updates: Query<
+        (Entity, &GlobalTransform),
+        (
+            With<SimpleFoliage>,
+            Or<(Added<SimpleFoliage>, Changed<GlobalTransform>)>,
+        ),
+    >,
+    vis_changed: Query<(), (With<SimpleFoliage>, Changed<Visibility>)>,
+    mut removed: RemovedComponents<SimpleFoliage>,
     live: Query<(), With<SimpleFoliage>>,
     tiles: Query<(Entity, &FoliageTile)>,
+    mut cache: Local<FoliageTileCache>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("foliage.batch");
+    // `Local` chega por `Deref`; o re-empréstimo deixa os campos serem
+    // emprestados em separado (`by_tile.get` + `groups.entry`).
+    let cache = &mut *cache;
     if !batch_enabled() {
         return;
     }
+
+    // Drain removed components & update spatial index even if no camera exists
+    // yet so the index stays coherent across camera swaps or tests.
+    let mut any_removed = false;
+    for entity in removed.read() {
+        cache.remove_entity(entity);
+        any_removed = true;
+    }
+    let mut spatial_changed = false;
+    if !cache.seeded {
+        for (entity, xf, _, _) in &foliage {
+            let pos = xf.translation();
+            cache.insert_or_move(entity, tile_of(pos.x, pos.z));
+        }
+        cache.seeded = true;
+        spatial_changed = true;
+    } else {
+        for (entity, xf) in &spatial_updates {
+            let pos = xf.translation();
+            cache.insert_or_move(entity, tile_of(pos.x, pos.z));
+            spatial_changed = true;
+        }
+    }
+
+    let pending_ready = cache
+        .pending_meshes
+        .iter()
+        .any(|id| mesh_assets.get(*id).is_some());
+
     // Em `--camera free` há duas Camera3d; a ordem da query escolhia a
     // câmara do editor e batchava a folhagem do lado errado.
     let Some(cam) = crate::editor_camera::active_camera_eye(&editor_camera, &camera) else {
@@ -155,16 +262,20 @@ pub fn batch_tiles(
     // 1. Cull dos tiles fundidos que ficaram para trás. Sem isto, caminhar
     //    pelo mapa acumulava uma mesh fundida por tile para sempre e as
     //    fontes escondidas nunca voltavam a ser candidatas.
-    let mut culled = Vec::new();
+    cache.culled.clear();
+    let mut stale_culled = false;
     for (entity, tile) in &tiles {
         // Fonte despawnada (troca de cena, streaming) ou câmara longe: o
         // tile fundido não pode sobreviver à cena que o gerou.
-        let stale = tile.members.iter().any(|member| !live.contains(*member));
-        if stale || tile_center(tile.key).distance(eye_xz) > BATCH_CULL {
-            culled.push((entity, tile.members.clone(), tile.mesh.clone()));
+        let stale = any_removed && tile.members.iter().any(|member| !live.contains(*member));
+        if stale || tile_center(tile.key).distance_squared(eye_xz) > BATCH_CULL_SQ {
+            stale_culled |= stale;
+            cache
+                .culled
+                .push((entity, tile.members.clone(), tile.mesh.clone()));
         }
     }
-    for (entity, members, mesh) in culled {
+    for (entity, members, mesh) in cache.culled.drain(..) {
         mesh_assets.remove(&mesh);
         for member in members {
             commands.entity(member).try_insert(Visibility::Inherited);
@@ -172,79 +283,115 @@ pub fn batch_tiles(
         commands.entity(entity).despawn();
     }
 
-    // 2. Agrupa por (tile, mesh, material). O material entra na chave: dois
-    //    props com a mesma mesh mas materiais distintos não podem partilhar
-    //    o draw (o primeiro material pintava os dois).
-    let existing: std::collections::HashSet<(IVec2, AssetId<Mesh>, AssetId<StandardMaterial>)> =
-        tiles
-            .iter()
-            .map(|(_, tile)| (tile.key, tile.mesh_id, tile.material_id))
-            .collect();
-    let mut groups: HashMap<
-        (IVec2, AssetId<Mesh>, AssetId<StandardMaterial>),
-        Vec<(Entity, Mat4, Handle<Mesh>, Handle<StandardMaterial>)>,
-    > = HashMap::new();
-    for (entity, xf, simple, vis) in &foliage {
-        if *vis == Visibility::Hidden {
-            continue;
-        }
-        let pos = xf.translation();
-        let t_key = tile_of(pos.x, pos.z);
-        if tile_center(t_key).distance(eye_xz) > BATCH_RADIUS {
-            continue;
-        }
-        let key = (t_key, simple.mesh.id(), simple.material.id());
-        if existing.contains(&key) {
-            continue;
-        }
-        groups.entry(key).or_default().push((
-            entity,
-            xf.to_matrix(),
-            simple.mesh.clone(),
-            simple.material.clone(),
-        ));
+    let moved = cache
+        .last_scan_eye
+        .is_none_or(|prev| prev.distance_squared(eye_xz) > 0.25);
+    let need_scan = cache.more_work
+        || spatial_changed
+        || stale_culled
+        || moved
+        || !vis_changed.is_empty()
+        || pending_ready;
+    if !need_scan {
+        return;
     }
+
+    // 2. Agrupa por (tile, mesh, material) varrendo apenas os tiles dentro de
+    //    BATCH_RADIUS em vez de todo o mundo.
+    cache.last_scan_eye = Some(eye_xz);
+    cache.existing.clear();
+    for (_, tile) in &tiles {
+        cache
+            .existing
+            .insert((tile.key, tile.mesh_id, tile.material_id));
+    }
+    cache.groups.clear();
+    let min_tx = ((eye_xz.x - BATCH_RADIUS) / TILE).floor() as i32 - 1;
+    let max_tx = ((eye_xz.x + BATCH_RADIUS) / TILE).ceil() as i32 + 1;
+    let min_ty = ((eye_xz.y - BATCH_RADIUS) / TILE).floor() as i32 - 1;
+    let max_ty = ((eye_xz.y + BATCH_RADIUS) / TILE).ceil() as i32 + 1;
+    for ty in min_ty..=max_ty {
+        for tx in min_tx..=max_tx {
+            let t_key = IVec2::new(tx, ty);
+            if tile_center(t_key).distance_squared(eye_xz) > BATCH_RADIUS_SQ {
+                continue;
+            }
+            let Some(tile_entities) = cache.by_tile.get(&t_key) else {
+                continue;
+            };
+            for &entity in tile_entities {
+                let Ok((_, xf, simple, vis)) = foliage.get(entity) else {
+                    continue;
+                };
+                if *vis == Visibility::Hidden {
+                    continue;
+                }
+                let key = (t_key, simple.mesh.id(), simple.material.id());
+                if cache.existing.contains(&key) {
+                    continue;
+                }
+                cache
+                    .groups
+                    .entry(key)
+                    .or_insert_with(|| PendingGroup {
+                        mesh: simple.mesh.clone(),
+                        material: simple.material.clone(),
+                        members: Vec::new(),
+                    })
+                    .members
+                    .push((entity, xf.to_matrix()));
+            }
+        }
+    }
+
     const MAX_BATCHES_PER_FRAME: usize = 8;
     let mut built_this_frame = 0usize;
-    for ((key, mesh_id, material_id), members) in groups {
+    cache.more_work = false;
+    cache.pending_meshes.clear();
+    for ((key, mesh_id, material_id), group) in cache.groups.drain() {
         if built_this_frame >= MAX_BATCHES_PER_FRAME {
+            cache.more_work = true;
             break;
         }
-        if members.len() < 2 {
+        if group.members.len() < 2 {
             continue;
         }
-        let Some(src) = mesh_assets.get(&members[0].2) else {
+        let Some(src) = mesh_assets.get(&group.mesh) else {
+            if !cache.pending_meshes.contains(&mesh_id) {
+                cache.pending_meshes.push(mesh_id);
+            }
             continue;
         };
-        let Some(src_pos) = src.attribute(Mesh::ATTRIBUTE_POSITION).and_then(triples) else {
+        let Some(src_pos) = src.attribute(Mesh::ATTRIBUTE_POSITION).and_then(triples_slice) else {
             continue;
         };
         let src_nrm = src
             .attribute(Mesh::ATTRIBUTE_NORMAL)
-            .and_then(triples)
-            .unwrap_or_default();
-        let src_uv = match src.attribute(Mesh::ATTRIBUTE_UV_0) {
-            Some(VertexAttributeValues::Float32x2(v)) => v.clone(),
-            _ => Vec::new(),
+            .and_then(triples_slice)
+            .unwrap_or(&[]);
+        let src_uv: &[[f32; 2]] = match src.attribute(Mesh::ATTRIBUTE_UV_0) {
+            Some(VertexAttributeValues::Float32x2(v)) => v.as_slice(),
+            _ => &[],
         };
-        let src_idx: Vec<u32> = match src.indices() {
-            Some(Indices::U32(v)) => v.clone(),
-            Some(Indices::U16(v)) => v.iter().map(|i| *i as u32).collect(),
-            None => (0..src_pos.len() as u32).collect(),
+        let src_idx: Cow<'_, [u32]> = match src.indices() {
+            Some(Indices::U32(v)) => Cow::Borrowed(v.as_slice()),
+            Some(Indices::U16(v)) => Cow::Owned(v.iter().map(|i| *i as u32).collect()),
+            None => Cow::Owned((0..src_pos.len() as u32).collect()),
         };
-        let mut positions = Vec::new();
-        let mut normals = Vec::new();
-        let mut uvs = Vec::new();
-        let mut indices = Vec::new();
-        for (_, matrix, _, _) in &members {
+        let count = group.members.len();
+        let mut positions = Vec::with_capacity(count * src_pos.len());
+        let mut normals = Vec::with_capacity(count * src_pos.len());
+        let mut uvs = Vec::with_capacity(count * src_pos.len());
+        let mut indices = Vec::with_capacity(count * src_idx.len());
+        for (_, matrix) in &group.members {
             append_mesh(
                 &mut positions,
                 &mut normals,
                 &mut uvs,
                 &mut indices,
-                &src_pos,
-                &src_nrm,
-                &src_uv,
+                src_pos,
+                src_nrm,
+                src_uv,
                 &src_idx,
                 *matrix,
             );
@@ -258,8 +405,7 @@ pub fn batch_tiles(
         mesh.insert_attribute(Mesh::ATTRIBUTE_UV_0, uvs);
         mesh.insert_indices(Indices::U32(indices));
         let handle = mesh_assets.add(mesh);
-        let material = members[0].3.clone();
-        let member_entities: Vec<Entity> = members.iter().map(|(e, _, _, _)| *e).collect();
+        let member_entities: Vec<Entity> = group.members.iter().map(|(e, _)| *e).collect();
         commands.spawn((
             Name::new("batch:foliage"),
             FoliageTile {
@@ -270,7 +416,7 @@ pub fn batch_tiles(
                 mesh: handle.clone(),
             },
             Mesh3d(handle),
-            MeshMaterial3d(material),
+            MeshMaterial3d(group.material),
             Transform::default(),
         ));
         for entity in member_entities {
@@ -301,6 +447,7 @@ pub fn arm_candidates(
         Option<&crate::physics::PendingCollider>,
     )>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("foliage.arm");
     fn collect_meshes(
         root: Entity,
         children: &Query<&Children>,
@@ -549,5 +696,116 @@ mod tests {
             app.world().get::<FoliageCandidate>(root).is_none(),
             "o candidato que não qualifica é largado"
         );
+    }
+
+    #[test]
+    fn append_mesh_non_uniform_scale_normals_match_inverse_transpose() {
+        let mut p = Vec::new();
+        let mut n = Vec::new();
+        let mut u = Vec::new();
+        let mut i = Vec::new();
+        let xform = Mat4::from_scale_rotation_translation(
+            Vec3::new(2.0, 1.0, 0.5),
+            Quat::from_rotation_y(0.7),
+            Vec3::new(3.0, 4.0, -5.0),
+        );
+        let src_p = [[1.0, 0.0, 0.0], [0.0, 1.0, 0.0], [0.0, 0.0, 1.0]];
+        let src_n = [[0.6, 0.8, 0.0], [0.0, 0.6, 0.8], [0.577, 0.577, 0.577]];
+        append_mesh(&mut p, &mut n, &mut u, &mut i, &src_p, &src_n, &[], &[0, 1, 2], xform);
+        let expected_mat = xform.inverse().transpose();
+        for (idx, got) in n.iter().enumerate() {
+            let exp = expected_mat
+                .transform_vector3(Vec3::from_array(src_n[idx]))
+                .normalize_or_zero();
+            assert!((Vec3::from_array(*got) - exp).length() < 1e-5);
+        }
+    }
+
+    #[test]
+    fn batch_tiles_spatial_cache_culls_and_rebatches() {
+        let mut app = App::new();
+        let mut meshes = Assets::<Mesh>::default();
+        let mut tri = Mesh::new(
+            PrimitiveTopology::TriangleList,
+            bevy::asset::RenderAssetUsages::default(),
+        );
+        tri.insert_attribute(
+            Mesh::ATTRIBUTE_POSITION,
+            vec![[0.0, 0.0, 0.0], [1.0, 0.0, 0.0], [0.0, 1.0, 0.0]],
+        );
+        tri.insert_indices(Indices::U32(vec![0, 1, 2]));
+        let mesh_h = meshes.add(tri);
+        let mat_h = Handle::<StandardMaterial>::default();
+        app.insert_resource(meshes);
+        app.add_systems(Update, batch_tiles);
+
+        let cam = app
+            .world_mut()
+            .spawn((Camera3d::default(), GlobalTransform::from_xyz(0.0, 0.0, 0.0)))
+            .id();
+        let e1 = app
+            .world_mut()
+            .spawn((
+                GlobalTransform::from_xyz(2.0, 0.0, 2.0),
+                Visibility::Inherited,
+                SimpleFoliage {
+                    mesh: mesh_h.clone(),
+                    material: mat_h.clone(),
+                },
+            ))
+            .id();
+        let e2 = app
+            .world_mut()
+            .spawn((
+                GlobalTransform::from_xyz(4.0, 0.0, 4.0),
+                Visibility::Inherited,
+                SimpleFoliage {
+                    mesh: mesh_h.clone(),
+                    material: mat_h.clone(),
+                },
+            ))
+            .id();
+        let e3 = app
+            .world_mut()
+            .spawn((
+                GlobalTransform::from_xyz(6.0, 0.0, 6.0),
+                Visibility::Inherited,
+                SimpleFoliage {
+                    mesh: mesh_h.clone(),
+                    material: mat_h.clone(),
+                },
+            ))
+            .id();
+
+        app.update();
+        assert_eq!(app.world_mut().query::<&FoliageTile>().iter(app.world()).count(), 1);
+        assert_eq!(app.world().get::<Visibility>(e1), Some(&Visibility::Hidden));
+
+        // Stationary second frame keeps the batched tile.
+        app.update();
+        assert_eq!(app.world_mut().query::<&FoliageTile>().iter(app.world()).count(), 1);
+
+        // Despawn one member: tile becomes stale, remaining 2 revert and rebatch next frame.
+        app.world_mut().despawn(e3);
+        app.update();
+        assert_eq!(app.world_mut().query::<&FoliageTile>().iter(app.world()).count(), 0);
+        assert_eq!(app.world().get::<Visibility>(e1), Some(&Visibility::Inherited));
+        assert_eq!(app.world().get::<Visibility>(e2), Some(&Visibility::Inherited));
+
+        app.update();
+        assert_eq!(app.world_mut().query::<&FoliageTile>().iter(app.world()).count(), 1);
+
+        // Move camera outside BATCH_CULL -> tile despawns and sources become Inherited.
+        *app.world_mut().get_mut::<GlobalTransform>(cam).unwrap() =
+            GlobalTransform::from_xyz(200.0, 0.0, 0.0);
+        app.update();
+        assert_eq!(app.world_mut().query::<&FoliageTile>().iter(app.world()).count(), 0);
+        assert_eq!(app.world().get::<Visibility>(e1), Some(&Visibility::Inherited));
+
+        // Move camera back -> tile rebatches cleanly from spatial cache.
+        *app.world_mut().get_mut::<GlobalTransform>(cam).unwrap() =
+            GlobalTransform::from_xyz(0.0, 0.0, 0.0);
+        app.update();
+        assert_eq!(app.world_mut().query::<&FoliageTile>().iter(app.world()).count(), 1);
     }
 }

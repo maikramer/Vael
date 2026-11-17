@@ -142,3 +142,78 @@ sessão sem flora/WIP concorrente.
 
 
 
+
+## Arranque medido de ponta a ponta (2026-11-16)
+
+Primeira medição que **inclui** o trabalho síncrono antes do primeiro
+`PostUpdate`: `bevy_ext_core::boot` marca cada fase e o véu imprime a tabela
+(`boot: …`, ver `docs/DEBUG.md`). Duas execuções limpas, a mesma pose
+(`VAEL_SCENARIO=_base`, `--scene main --entry dev`, `1280x720`,
+`VIBER_QUALITY=high`, `VIBER_FPS_CAP=60`):
+
+| fase | ms | o que é |
+|---|---:|---|
+| `world.parse` | 1577–1698 | `.bsn` + resolução de prefabs (main thread) |
+| `main_scene.parse` | +0–1 | segunda leitura do mundo para os shaders (só ≠ 0 com `--scene` ≠ main) |
+| `app.build` | +333–375 | plugins, config, materiais |
+| `flora.pools` | +115–122 | 7 pools / 42 variantes |
+| `spawn.startup` | +231–257 | entidades do mundo |
+| `terrain.bootstrap` | +3700–4039 | heightmap 365, features 364, cliffs 476, paint 51, **splat 801**, rocks+mods 207, **voxel_columns 1466**, water 26, roads 59 |
+| `first_frame` | +4652–4916 | resto do `Startup` + frame 1 (uploads de GPU, pipelines) |
+| `veil` | 20825–26988 | o que o véu espera |
+| **total** | **32153–37777** | processo → jogável |
+
+O véu, segundo a segundo (`world_ready=debug`), não espera pelo que se pensa:
+
+1. **t≈6–7 s** — os 629 GLB do anel de 150 m entram **num frame** (`6/629 →
+   629/629`); o decode custa 1,4 s de CPU (418 ficheiros, 1.03 GB → 1.19 GB).
+2. **t≈7–17 s** — `gpu_fila=true` e `pipelines≈102`: upload orçado a 256 MB/
+   frame e compilação; o **frame 2 sozinho leva ~6,5 s**.
+3. **t≈17–22 s** — tudo pronto excepto `bakes=64`: as 64 câmaras de impostores
+   (42 variantes × 16 câmaras). ~5 s.
+4. **t≈23–28 s** — `terreno_ocupado=true` **depois** dos bakes: as câmaras de
+   bake morrem, "a primeira `Camera3d` da query" muda e o terreno re-escolhe o
+   LOD do mundo inteiro (~5 s a 4 caixas/frame).
+
+Regime em jogo (após o véu, mesma pose): `frame_ms` avg **23,5–24,7 ms**
+(p95 ~32, pior 40), 58–62k entidades, 739 colunas, 4 118 colliders, RSS
+**10,5 GB**, 217 scripts activos de 473. Os sistemas com nome das crates não
+aparecem na tab rica (os shims `timed` delas são pass-through): `sched.post_update`
+8,8 ms + `sched.update` 8,4 + `render.render` 7,7 + `render.prepare` 4,0 +
+`bevy.check_visibility` 3,7 é onde o tempo está.
+
+**Atenção à medição**: qualquer `cargo`/teste concorrente invalida os números
+(com 16 `rustc` a load 26, `world.parse` foi de 1665 → 3948 ms). O
+`world.parse` é o sentinela de ruído: acima de ~2000 ms, repetir.
+
+## Correção: o véu levantava antes do mundo estar visível (2026-11-16)
+
+Os números da secção anterior estavam **a favor do lado errado**: o véu saía
+com terreno e HUD mas sem props, e o mundo enchia-se nos 2-3 s seguintes. As
+capturas tiradas no *instante* do véu (`screenshot` imediatamente após
+`wait-ready`) mostram a diferença; tirar a captura 2 s depois esconde-a porque
+a vista já se encheu.
+
+Duas condições do `WorldReadiness` estavam a mentir:
+
+- **upload**: `bytes_written >= teto` raramente é verdade — o limiter do Bevy
+  clampa o último asset que não cabe, por isso um frame com fila cheia escreve
+  muito abaixo do teto (380 KB, 29 MB medidos). Passou a `bytes_written > 0`
+  (12 frames sem escrever = fila drenada);
+- **instanciação**: âncora com `WorldAssetRoot` e sem `WorldInstance` não
+  contava para nada.
+
+Com o gate honesto, o arranque (`_base`, `--scene main --entry dev`, `high`,
+1280×720, máquina limpa) fica **~29-35 s** (variância de 5-6 s entre corridas;
+`world.parse` 1,5-1,8 s é o sentinela: acima de ~2 s há carga concorrente).
+Era o custo que já existia, só não era contado. Upload budget maior é pior
+(512 MB → 29,7 s; 1024 MB → 31,8 s; 256 MB → 28,5 s na melhor corrida).
+
+O que **passou a ser visível** no traço e continua por atacar, por ordem:
+
+1. `first_frame` 4,2-5,3 s (623 cenas glTF instanciadas + uploads num punhado
+   de frames);
+2. `terrain.bootstrap` 3,4-3,8 s (`voxel_columns` ~1,3 s, splat ~0,7 s);
+3. `world.parse` 1,5-1,8 s (resolução de prefabs);
+4. a fila de upload (~2 GB com teto de 256 MB/frame) — é ela que fixa o fim do
+   véu desde a correção.

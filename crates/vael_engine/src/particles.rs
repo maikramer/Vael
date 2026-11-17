@@ -688,9 +688,29 @@ pub fn write_billboards(
     fade: BillboardFade,
     capacity: usize,
 ) -> usize {
+    write_billboards_range(mesh, particles, emitter_pos, camera_pos, fade, capacity, None)
+}
+
+/// Writes up to `capacity` live particles into `mesh`, only clearing previously
+/// populated quad slots `[live..prev_live]` when `prev_live` is known (otherwise
+/// clears `[live..capacity]` so standalone callers with dirty meshes stay exact).
+fn write_billboards_range(
+    mesh: &mut bevy::mesh::Mesh,
+    particles: &[LiveParticle],
+    emitter_pos: Vec3,
+    camera_pos: Vec3,
+    fade: BillboardFade,
+    capacity: usize,
+    prev_live: Option<usize>,
+) -> usize {
     let end_size_factor = fade.end_size_factor;
     let capacity = capacity.max(1);
     let live = particles.len().min(capacity);
+    let near_fade_sq = if fade.near_fade_m > 0.0 {
+        fade.near_fade_m * fade.near_fade_m
+    } else {
+        0.0
+    };
 
     let to_camera = (camera_pos - emitter_pos).normalize_or_zero();
     let mut right = Vec3::Y.cross(to_camera).normalize_or_zero();
@@ -735,10 +755,6 @@ pub fn write_billboards(
     };
     debug_assert_eq!(positions.len(), capacity * 4);
     debug_assert_eq!(colors.len(), capacity * 4);
-    // Dead slots must fall back to degenerate zero-area quads — in-place
-    // writing keeps the previous frame's vertices otherwise.
-    positions.fill([0.0; 3]);
-    colors.fill([0.0; 4]);
 
     for (index, p) in particles.iter().take(live).enumerate() {
         // max_life a 0 (start-life-min: 0 no XML) dava 0/0 = NaN no t e a
@@ -753,14 +769,34 @@ pub fn write_billboards(
         // chegar ao chão — e por isso "não havia chuva" no `simple-rpg`).
         // O mesh fica em espaço LOCAL; `emitter_pos` só serve para o eixo
         // até à câmara e para a distância do fade.
-        let world_pos = emitter_pos + p.pos;
-        let alpha = fade.alpha(t, world_pos.distance(camera_pos));
+        let dist = if near_fade_sq > 0.0 {
+            let dist_sq = (emitter_pos + p.pos).distance_squared(camera_pos);
+            if dist_sq < near_fade_sq {
+                dist_sq.sqrt()
+            } else {
+                fade.near_fade_m
+            }
+        } else {
+            0.0
+        };
+        let alpha = fade.alpha(t, dist);
         let base = index * 4;
         let corners = billboard_corner_offsets(p.size * scale, p.size_y * scale, right, up);
+        let color = [p.color[0], p.color[1], p.color[2], alpha];
         for (corner, offset) in corners.into_iter().enumerate() {
             positions[base + corner] = (p.pos + offset).to_array();
-            colors[base + corner] = [p.color[0], p.color[1], p.color[2], alpha];
+            colors[base + corner] = color;
         }
+    }
+
+    // Dead slots must fall back to degenerate zero-area quads — only zero slots
+    // beyond `live` that could previously have been populated.
+    let clear_end_quads = prev_live.unwrap_or(capacity).min(capacity);
+    if clear_end_quads > live {
+        let start = live * 4;
+        let end = clear_end_quads * 4;
+        positions[start..end].fill([0.0; 3]);
+        colors[start..end].fill([0.0; 4]);
     }
 
     live
@@ -929,13 +965,14 @@ pub(crate) fn emitter_sprite_bind(
     };
     for (entity, material_handle) in &unbound {
         commands.entity(entity).insert(SpriteBound);
-        if let Some(mut material) = materials.get_mut(&material_handle.0) {
-            // Os materiais do `BurstPool` são PARTILHADOS e já vêm ligados:
-            // só escreve — e só marca `Changed`, com o bind group novo que
-            // isso custa — na primeira vez que um material vé esta textura.
-            if material.base_color_texture.is_none() {
-                material.base_color_texture = Some(sprite.texture.clone());
-            }
+        // Check read-only BEFORE `get_mut`: calling `Assets::get_mut` marks
+        // the shared material modified (`AssetEvent::Modified`) and triggers
+        // a bind-group rebuild even when `base_color_texture` is already set.
+        let needs_bind = materials
+            .get(&material_handle.0)
+            .is_some_and(|material| material.base_color_texture.is_none());
+        if needs_bind && let Some(mut material) = materials.get_mut(&material_handle.0) {
+            material.base_color_texture = Some(sprite.texture.clone());
         }
     }
 }
@@ -968,9 +1005,14 @@ pub const EMITTER_CULL_DISTANCE: f32 = 110.0;
 /// correr em todos os frames; só a escrita é espaçada — uma chama a 40 m a
 /// 30 Hz não se distingue de uma a 60.
 pub fn write_interval(distance: f32) -> u32 {
-    if distance < 25.0 {
+    write_interval_sq(distance * distance)
+}
+
+#[inline]
+fn write_interval_sq(distance_sq: f32) -> u32 {
+    if distance_sq < 25.0 * 25.0 {
         1
-    } else if distance < 55.0 {
+    } else if distance_sq < 55.0 * 55.0 {
         2
     } else {
         4
@@ -981,13 +1023,22 @@ pub fn write_interval(distance: f32) -> u32 {
 /// between simulated and cleared every frame.
 pub const EMITTER_CULL_HYSTERESIS: f32 = 12.0;
 
+const EMITTER_CULL_DISTANCE_SQ: f32 = EMITTER_CULL_DISTANCE * EMITTER_CULL_DISTANCE;
+const EMITTER_RESUME_DISTANCE_SQ: f32 =
+    (EMITTER_CULL_DISTANCE - EMITTER_CULL_HYSTERESIS) * (EMITTER_CULL_DISTANCE - EMITTER_CULL_HYSTERESIS);
+
 /// Distance state for one emitter: `true` once it is past the cull distance
 /// and has had its mesh cleared.
 pub fn cull_state(distance: f32, previously_culled: bool) -> bool {
+    cull_state_sq(distance * distance, previously_culled)
+}
+
+#[inline]
+fn cull_state_sq(distance_sq: f32, previously_culled: bool) -> bool {
     if previously_culled {
-        distance > EMITTER_CULL_DISTANCE - EMITTER_CULL_HYSTERESIS
+        distance_sq > EMITTER_RESUME_DISTANCE_SQ
     } else {
-        distance > EMITTER_CULL_DISTANCE
+        distance_sq > EMITTER_CULL_DISTANCE_SQ
     }
 }
 
@@ -1007,6 +1058,9 @@ pub struct ParticleEmitter {
     /// chuva com intensidade a 0 fica `Visibility::Hidden` mas o emissor
     /// continua vivo e a pagar a escrita.
     pub idle: bool,
+    /// Number of live particle quads currently populated in the mesh so we
+    /// only zero the shrunk tail instead of rewriting all `capacity * 4` slots.
+    pub(crate) last_written_live: usize,
 }
 
 /// Gate de emissor vazio: sem partículas vivas, o mesh já está degenerado e a
@@ -1055,24 +1109,29 @@ pub fn particle_emitter_update(
     *frame = frame.wrapping_add(1);
     for (entity, transform, mut emitter, mesh_handle) in &mut emitters {
         let position = transform.translation();
-        let distance = position.distance(camera_pos);
-        let culled = cull_state(distance, emitter.culled);
+        let distance_sq = position.distance_squared(camera_pos);
+        let culled = cull_state_sq(distance_sq, emitter.culled);
         if culled {
             // Clear once on the way out, then leave the emitter alone.
             if !emitter.culled {
                 emitter.culled = true;
                 emitter.sim.particles.clear();
-                if let Some(mut mesh) = meshes.get_mut(&mesh_handle.0) {
+                let prev_live = emitter.last_written_live;
+                if prev_live > 0
+                    && let Some(mut mesh) = meshes.get_mut(&mesh_handle.0)
+                {
                     let capacity = emitter.capacity;
-                    write_billboards(
+                    write_billboards_range(
                         &mut mesh,
                         &[],
                         position,
                         camera_pos,
                         BillboardFade::default(),
                         capacity,
+                        Some(prev_live),
                     );
                 }
+                emitter.last_written_live = 0;
             }
             emitter.idle = true;
             continue;
@@ -1089,27 +1148,46 @@ pub fn particle_emitter_update(
                 continue;
             }
             emitter.idle = true;
+            let prev_live = emitter.last_written_live;
+            if prev_live > 0
+                && let Some(mut mesh) = meshes.get_mut(&mesh_handle.0)
+            {
+                let capacity = emitter.capacity;
+                write_billboards_range(
+                    &mut mesh,
+                    &[],
+                    position,
+                    camera_pos,
+                    BillboardFade::default(),
+                    capacity,
+                    Some(prev_live),
+                );
+            }
+            emitter.last_written_live = 0;
+            continue;
         } else {
             emitter.idle = false;
         }
         // Escrita espaçada pela distância, desfasada por entidade para os
         // uploads não caírem todos no mesmo frame. A transição para vazio
         // (acima) escreve sempre.
-        let interval = write_interval(distance);
-        if interval > 1 && !emitter.idle && (frame.wrapping_add(entity.index_u32())) % interval != 0
-        {
+        let interval = write_interval_sq(distance_sq);
+        if interval > 1 && (frame.wrapping_add(entity.index_u32())) % interval != 0 {
             continue;
         }
         if let Some(mut mesh) = meshes.get_mut(&mesh_handle.0) {
             let fade = BillboardFade::from_resolved(&emitter.sim.resolved);
-            write_billboards(
+            let prev_live = emitter.last_written_live;
+            let written = write_billboards_range(
                 &mut mesh,
                 &emitter.sim.particles,
                 position,
                 camera_pos,
                 fade,
                 emitter.capacity,
+                Some(prev_live),
             );
+            emitter.last_written_live = written;
         }
     }
 }
@@ -1222,6 +1300,15 @@ pub fn spawn_burst(commands: &mut Commands, spec: &ParticleSpec, position: Vec3,
         if !world.contains_resource::<BurstPool>() {
             world.init_resource::<BurstPool>();
         }
+        // O `spawn_parsed`/`spawn_entity` removem os stores do World enquanto
+        // correm (para não aliasar `&mut World`). Um burst apanhado nessa
+        // janela é cosmético: criar stores novos aqui perdia os handles no
+        // reinsert do spawner e o render ficava com uma malha sem atributos.
+        if !world.contains_resource::<Assets<Mesh>>()
+            || !world.contains_resource::<Assets<StandardMaterial>>()
+        {
+            return;
+        }
         let capacity = mesh_bucket(count + 8);
         let mut sim = EmitterSim::seeded(&spec, position);
         sim.burst(count, capacity);
@@ -1258,6 +1345,7 @@ pub fn spawn_burst(commands: &mut Commands, spec: &ParticleSpec, position: Vec3,
                 capacity,
                 culled: false,
                 idle: false,
+                last_written_live: 0,
             },
             ParticleBurst { timer: lifetime },
             Name::new("fx:burst"),
@@ -1295,6 +1383,7 @@ pub fn spawn_looping_in_world(world: &mut World, spec: &ParticleSpec, position: 
                 idle: false,
                 capacity,
                 culled: false,
+                last_written_live: 0,
             },
             Name::new("fx:ambient"),
         ))
@@ -1374,10 +1463,40 @@ pub enum FxAction {
 }
 
 pub fn fx_action(distance: f32, radius: f32, mounted: bool) -> FxAction {
-    match (mounted, distance) {
-        (false, d) if d <= radius => FxAction::Mount,
-        (true, d) if d > radius + FX_DESPAWN_BAND => FxAction::Dismount,
+    fx_action_sq(distance * distance, radius * radius, (radius + FX_DESPAWN_BAND).powi(2), mounted)
+}
+
+#[inline]
+fn fx_action_sq(distance_sq: f32, radius_sq: f32, despawn_sq: f32, mounted: bool) -> FxAction {
+    match (mounted, distance_sq) {
+        (false, d) if d <= radius_sq => FxAction::Mount,
+        (true, d) if d > despawn_sq => FxAction::Dismount,
         _ => FxAction::Keep,
+    }
+}
+
+/// Zeros previously populated particle quads before returning a mesh to
+/// [`BurstPool`] so a recycled mesh cannot flash a stale frame.
+fn zero_emitter_mesh(meshes: &mut Assets<Mesh>, mesh_handle: &Handle<Mesh>, prev_live: usize) {
+    if prev_live == 0 {
+        return;
+    }
+    let Some(mut mesh_asset) = meshes.get_mut(mesh_handle) else {
+        return;
+    };
+    let max_verts = prev_live.saturating_mul(4);
+    for (attribute, values) in mesh_asset.attributes_mut() {
+        if *attribute == bevy::mesh::Mesh::ATTRIBUTE_POSITION
+            && let bevy::mesh::VertexAttributeValues::Float32x3(positions) = values
+        {
+            let n = max_verts.min(positions.len());
+            positions[..n].fill([0.0; 3]);
+        } else if *attribute == bevy::mesh::Mesh::ATTRIBUTE_COLOR
+            && let bevy::mesh::VertexAttributeValues::Float32x4(colors) = values
+        {
+            let n = max_verts.min(colors.len());
+            colors[..n].fill([0.0; 4]);
+        }
     }
 }
 
@@ -1445,6 +1564,7 @@ fn mount_ambient_fx(
             capacity,
             culled: false,
             idle: false,
+            last_written_live: 0,
         },
     ));
 }
@@ -1460,12 +1580,7 @@ fn dismount_ambient_fx(
     meshes: &mut Assets<Mesh>,
     pool: &mut BurstPool,
 ) {
-    if let Some(mut mesh_asset) = meshes.get_mut(&mesh.0)
-        && let Some(bevy::mesh::VertexAttributeValues::Float32x3(positions)) =
-            mesh_asset.attribute_mut(bevy::mesh::Mesh::ATTRIBUTE_POSITION)
-    {
-        positions.fill([0.0; 3]);
-    }
+    zero_emitter_mesh(meshes, &mesh.0, emitter.last_written_live);
     pool.park_mesh(emitter.capacity, mesh.0.clone());
     // `try_remove`: mesmo motivo do `try_insert` do mount (entidade morta
     // pelo unload da cena entre o scan e o apply).
@@ -1499,7 +1614,8 @@ pub fn ambient_fx_manager(
     editor: Query<&GlobalTransform, With<crate::editor_camera::EditorCamera>>,
     cameras: crate::editor_camera::EyeCameraQuery,
     any_camera: Query<&GlobalTransform, With<Camera>>,
-    mut markers: Query<AmbientFxItem<'_, '_>>,
+    markers: Query<AmbientFxItem<'_, '_>>,
+    unmounted: Query<(Entity, &GlobalTransform, &AmbientFx), Without<ParticleEmitter>>,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut pool: ResMut<BurstPool>,
@@ -1507,38 +1623,45 @@ pub fn ambient_fx_manager(
     mut scan: Local<f32>,
     mut last_camera: Local<Option<Vec3>>,
 ) {
+    let lifecycle = fx_lifecycle_enabled();
+    if !lifecycle && unmounted.is_empty() {
+        return;
+    }
     let Some(camera) = simulation_camera(&editor, &cameras, &any_camera) else {
         return;
     };
     let camera_pos = camera.translation();
     *scan -= time.delta_secs();
-    let jumped = last_camera.is_some_and(|last| last.distance(camera_pos) > FX_RESCAN_JUMP);
+    let jumped =
+        last_camera.is_some_and(|last| last.distance_squared(camera_pos) > FX_RESCAN_JUMP * FX_RESCAN_JUMP);
     if *scan > 0.0 && !jumped {
         return;
     }
     *scan = FX_SCAN_INTERVAL;
     *last_camera = Some(camera_pos);
+    if !lifecycle {
+        // Without lifecycle, mounted markers never dismount — mount any newly
+        // spawned unmounted markers directly without scanning already-live ones.
+        for (entity, transform, fx) in &unmounted {
+            mount_ambient_fx(
+                &mut commands,
+                entity,
+                &fx.spec,
+                transform.translation(),
+                &mut meshes,
+                &mut materials,
+                &mut pool,
+            );
+        }
+        return;
+    }
     let radius = fx_spawn_radius();
-    let lifecycle = fx_lifecycle_enabled();
-    // Sem o lifecycle (default): monta tudo ao longo dos frames, nunca
-    // desmonta — o comportamento/controlo de antes.
-    let mut budget = if lifecycle {
-        FX_SPAWN_BUDGET
-    } else {
-        usize::MAX
-    };
-    for (entity, transform, fx, active) in &mut markers {
-        let distance = transform.translation().distance(camera_pos);
-        let action = if lifecycle {
-            fx_action(distance, radius, active.is_some())
-        } else if active.is_none() {
-            // Default (sem `VIBER_FX_LIFECYCLE=1`): monta tudo, nunca
-            // desmonta — o mundo de antes, ao longo dos frames.
-            FxAction::Mount
-        } else {
-            FxAction::Keep
-        };
-        match action {
+    let radius_sq = radius * radius;
+    let despawn_sq = (radius + FX_DESPAWN_BAND).powi(2);
+    let mut budget = FX_SPAWN_BUDGET;
+    for (entity, transform, fx, active) in &markers {
+        let distance_sq = transform.translation().distance_squared(camera_pos);
+        match fx_action_sq(distance_sq, radius_sq, despawn_sq, active.is_some()) {
             FxAction::Mount if budget > 0 => {
                 budget -= 1;
                 mount_ambient_fx(
@@ -1587,12 +1710,7 @@ fn burst_despawn_system(
     for (entity, mut burst, emitter, mesh) in &mut bursts {
         burst.timer -= dt;
         if burst.timer <= 0.0 {
-            if let Some(mut mesh_asset) = meshes.get_mut(&mesh.0)
-                && let Some(bevy::mesh::VertexAttributeValues::Float32x3(positions)) =
-                    mesh_asset.attribute_mut(bevy::mesh::Mesh::ATTRIBUTE_POSITION)
-            {
-                positions.fill([0.0; 3]);
-            }
+            zero_emitter_mesh(&mut meshes, &mesh.0, emitter.last_written_live);
             pool.park_mesh(emitter.capacity, mesh.0.clone());
             commands.entity(entity).try_despawn();
         }

@@ -42,6 +42,7 @@ pub fn drive_character_animation(
     mut graphs: ResMut<Assets<AnimationGraph>>,
     time: Res<Time>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("anim.drive");
     let dt = time.delta_secs().max(1e-4);
     let hero_positions: Vec<Vec3> = hero.iter().map(GlobalTransform::translation).collect();
     for (transform, mut animator, activation, profile) in &mut characters {
@@ -156,6 +157,7 @@ pub fn freeze_distant_animation(
         Option<&InheritedVisibility>,
     )>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("anim.freeze");
     // Todos os heróis: com 2+ players o `single()` falhava e NENHUM rig era
     // congelado (a otimização inteira morria em co-op). A distância é à mais
     // próxima — um NPC entre os dois heróis continua a animar.
@@ -202,18 +204,14 @@ pub fn freeze_distant_animation(
 #[cfg(test)]
 pub fn test_animator(player: Entity) -> CharacterAnimator {
     CharacterAnimator {
-        clip_names: vec!["idle".into()],
-        nodes: vec![AnimationNodeIndex::new(1)],
-        durations: vec![1.0],
-        player,
         state: Some(AnimState::Idle),
-        current: None,
-        action_time: 0.0,
-        locked: false,
-        air_time: 0.0,
-        speed: 0.0,
-        last_pos: None,
-        locomotion: None,
+        ..CharacterAnimator::new(
+            vec!["idle".into()],
+            vec![AnimationNodeIndex::new(1)],
+            vec![1.0],
+            player,
+            None,
+        )
     }
 }
 
@@ -265,20 +263,13 @@ mod tests {
         let nodes = (0..names.len())
             .map(|i| AnimationNodeIndex::new(i + 1))
             .collect();
-        CharacterAnimator {
-            durations: vec![1.0; names.len()],
+        CharacterAnimator::new(
             clip_names,
             nodes,
-            player: Entity::PLACEHOLDER,
-            state: None,
-            current: None,
-            action_time: 0.0,
-            locked: false,
-            air_time: 0.0,
-            speed: 0.0,
-            last_pos: None,
-            locomotion: None,
-        }
+            vec![1.0; names.len()],
+            Entity::PLACEHOLDER,
+            None,
+        )
     }
 
     #[test]

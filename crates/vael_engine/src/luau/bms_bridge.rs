@@ -1412,6 +1412,7 @@ fn mirror_script_components(
     mut removed: RemovedComponents<LuaScriptRef>,
     mut mirror: ResMut<ScriptMirrorState>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("luau.mirror");
     let _probe = bevy_engine_core::perf_probe::Probe::new("mirror_script_components"); // `VAEL_PERF_DIAG`
     for (entity, lref) in &added {
         let path = script_asset_path(&lref.path);
@@ -1478,6 +1479,7 @@ fn send_on_update(
     mut writer: MessageWriter<ScriptCallbackMessage>,
     mut counts: Local<HashMap<String, u32>>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("luau.send");
     if perf_count_scripts() && *frame % 600 == 599 {
         let mut v: Vec<_> = counts.drain().collect();
         v.sort_by(|a, b| b.1.cmp(&a.1));
@@ -1548,10 +1550,16 @@ const SCRIPT_LOD_CLOSE_M: f32 = 60.0;
 const SCRIPT_LOD_CLOSE_EVERY: u64 = 2;
 /// Raio (m) até onde corre a cada [`SCRIPT_LOD_MID_EVERY`] frames.
 const SCRIPT_LOD_MID_M: f32 = 120.0;
-const SCRIPT_LOD_MID_EVERY: u64 = 4;
+/// A partir dos 120 m o script é invisível (o anel do véu são 150 m, mas a
+/// câmara joga a 20-30 m): 6 frames em vez de 4 corta ~1/3 dos despachos
+/// nessa banda sem nada notório. Medido a 2026-11-16: `on_update(scripts)`
+/// custava 4,3 ms/frame.
+const SCRIPT_LOD_MID_EVERY: u64 = 6;
 /// Além do raio médio: a cada N frames (o `dt` acumula; 2,5 Hz a 60 fps —
 /// o registo de hostis aceita entradas com menos de 1 s).
-const SCRIPT_LOD_FAR_EVERY: u64 = 24;
+/// A >120 m. 48 frames (0,8 s a 60 fps) para a AI de longe: o jogador não
+/// distingue um slime a 130 m a reagir em 0,4 s ou 0,8 s.
+const SCRIPT_LOD_FAR_EVERY: u64 = 48;
 
 /// De quantos em quantos frames corre o `on_update` deste script.
 fn script_update_interval(path: &str, hero: Option<Vec3>, at: Option<&GlobalTransform>) -> u64 {
@@ -1586,6 +1594,7 @@ fn script_update_interval(path: &str, hero: Option<Vec3>, at: Option<&GlobalTran
 /// `drain_commands` do BMS, converte cada variante para o `ScriptCommand`
 /// do monólito e aplica com [`apply_script_command`].
 pub fn apply_bms_commands(world: &mut World) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("luau.apply");
     let _probe = bevy_engine_core::perf_probe::Probe::new("apply_bms_commands"); // `VAEL_PERF_DIAG`
     // Lê e avança um cursor LOCAL (o recurso fica com o avançado — os
     // borrows do World são por fases).
@@ -2374,6 +2383,7 @@ fn publish_host_state(
     mut road_water: Local<Option<std::sync::Arc<super::ctx::SurfaceRegistries>>>,
     mut slots_timer: Local<Option<f64>>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("luau.publish_state");
     let _probe = bevy_engine_core::perf_probe::Probe::new("publish_host_state"); // `VAEL_PERF_DIAG`
     // Sem o plugin BMS no app não há estado a preencher (e o custo de
     // publicar seria lixo puro).
@@ -2426,12 +2436,15 @@ fn publish_host_state(
 
     // Esquema `--@export` por path — em modo BMS o [`parse_script_exports`]
     // extrai-o dos assets e o publisher copia-o.
-    state.exports = std::sync::Arc::new(
-        res.bms_exports
-            .as_deref()
-            .map(BmsScriptExports::snapshot)
-            .unwrap_or_default(),
-    );
+    {
+        // No lugar: `release_snapshot_maps` largou a cópia dos globals, por
+        // isso o `make_mut` não clona o mapa (era um `Arc::new` por frame).
+        let exports = std::sync::Arc::make_mut(&mut state.exports);
+        exports.clear();
+        if let Some(bms) = res.bms_exports.as_deref() {
+            exports.extend(BmsScriptExports::snapshot(bms));
+        }
+    }
 
     // Foco de interação por tecla (o `viber.interacted` do BMS só aceita o
     // vencedor) e o gate de `UiInput` focado (teclas são texto).
@@ -2519,15 +2532,23 @@ fn publish_host_state(
 
     // HP por entidade COM vitais (sem o herói) e hostis vivos — o mesmo
     // par de loops do `luau_update` (hostis com HP ≤ 0 saem).
-    let mut hp_snapshot: HashMap<i64, (f32, f32)> = HashMap::new();
-    for (entity, health, _) in &queries.healths {
-        hp_snapshot.insert(entity.to_bits() as i64, (health.current, health.max));
+    {
+        let hp_snapshot = std::sync::Arc::make_mut(&mut state.hp_snapshot);
+        hp_snapshot.clear();
+        for (entity, health, _) in &queries.healths {
+            hp_snapshot.insert(entity.to_bits() as i64, (health.current, health.max));
+        }
     }
-    state.hostiles = std::sync::Arc::new(queries
+    // `snap` empresta OUTRO campo do `state`: o `make_mut` dos hostis empresta
+    // `state.hostiles` mut, e campos distintos são empréstimos disjuntos.
+    let snap: &HashMap<i64, (f32, f32)> = &state.hp_snapshot;
+    let hostiles = std::sync::Arc::make_mut(&mut state.hostiles);
+    hostiles.clear();
+    hostiles.extend(queries
         .hostiles
         .iter()
         .filter_map(|(entity, script, global)| {
-            let Some(&(current, max)) = hp_snapshot.get(&(entity.to_bits() as i64)) else {
+            let Some(&(current, max)) = snap.get(&(entity.to_bits() as i64)) else {
                 return None;
             };
             if current <= 0.0 {
@@ -2546,26 +2567,31 @@ fn publish_host_state(
                 forward: Vec2::new(forward.x, forward.z),
             })
         })
-        .collect());
-    state.hp_snapshot = std::sync::Arc::new(hp_snapshot);
+        .collect::<Vec<_>>());
 
     // Props autorais (`viber.nearby`/`viber.prop`) — dados, não regra.
-    state.props = std::sync::Arc::new(
-        queries
-            .script_props
-            .iter()
-            .map(|(entity, props)| (entity.to_bits() as i64, props.0.clone()))
-            .collect(),
-    );
+    {
+        let props = std::sync::Arc::make_mut(&mut state.props);
+        props.clear();
+        props.extend(
+            queries
+                .script_props
+                .iter()
+                .map(|(entity, props)| (entity.to_bits() as i64, props.0.clone())),
+        );
+    }
 
     // Grupos por entidade (bits → nomes) para `viber.group`/`in_group`.
-    state.groups = std::sync::Arc::new(
-        queries
-            .groups
-            .iter()
-            .map(|(entity, member_of)| (entity.to_bits() as i64, member_of.0.as_ref().clone()))
-            .collect(),
-    );
+    {
+        let groups = std::sync::Arc::make_mut(&mut state.groups);
+        groups.clear();
+        groups.extend(
+            queries
+                .groups
+                .iter()
+                .map(|(entity, member_of)| (entity.to_bits() as i64, member_of.0.as_ref().clone())),
+        );
+    }
 
     // Biblioteca de prototypes: imutável pós-arranque — só re-semeia
     // quando muda (ou na 1.ª vez).

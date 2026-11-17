@@ -48,12 +48,16 @@
 //! O crate é novo e o README declara-o "Vibe Coded": está pinado `=0.5.0` no
 //! `Cargo.toml` e todo o contacto com ele vive neste ficheiro.
 
+use bevy::camera::primitives::{CubemapFrusta, Sphere};
+use bevy::camera::visibility::{CubemapVisibleEntities, VisibilityClass};
 use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
+use bevy::render::sync_world::SyncToRenderWorld;
 use bevy::transform::TransformSystems;
 use bevy_lights::{
-    FIRE_EDGE_LUX, FireKind, FlamePlugin, FlameSite, FlickerPlugin, FocusRule, FuelBed, LightPool,
-    LightPoolPlugin, LightsSystems, PoolCandidate, PoolLight, Rank,
+    FIRE_EDGE_LUX, FireKind, Flame, FlameEmbers, FlamePlugin, FlameSite, FlameSmoke,
+    FlickerPlugin, FocusRule, FuelBed, LightPool, LightPoolPlugin, LightsSystems, PoolCandidate,
+    PoolLight, Rank,
 };
 use viber::ambient::{AuthoredShadowLight, TravellerLantern};
 use viber::particles::{AmbientFx, ParticleEmitter};
@@ -101,6 +105,22 @@ struct VaelFire {
     kind: FireKind,
     phase: f32,
 }
+
+/// Visuals for a [`VaelFire`] are currently unmounted because it is beyond
+/// [`FIRE_DISMOUNT_RADIUS`]. Re-mounted on a child entity once within [`FIRE_MOUNT_RADIUS`].
+#[derive(Component)]
+struct VaelFireCulled;
+
+/// Child entity holding [`FlameSite`], [`FuelBed`], embers and smoke after
+/// re-mounting a culled fire (kept on a child because `bevy_lights::Flamed`
+/// is crate-private on the site entity).
+#[derive(Component)]
+struct VaelFireVisual(Entity);
+
+const FIRE_MOUNT_RADIUS: f32 = 140.0;
+const FIRE_DISMOUNT_RADIUS: f32 = 165.0;
+const FIRE_MOUNT_RADIUS_SQ: f32 = FIRE_MOUNT_RADIUS * FIRE_MOUNT_RADIUS;
+const FIRE_DISMOUNT_RADIUS_SQ: f32 = FIRE_DISMOUNT_RADIUS * FIRE_DISMOUNT_RADIUS;
 
 /// Candidato de **preenchimento** criado por [`fill_dark_fires`] para um fogo
 /// sem `PointLight`. É uma raiz nossa (não vem do spawner da cena): sem ser
@@ -220,7 +240,12 @@ impl Plugin for VaelPracticalLightsPlugin {
             // identidade e os pareamentos luz↔fogo saem errados.
             .add_systems(
                 PostUpdate,
-                (migrate_fire_emitters, adopt_fire_lights, fill_dark_fires)
+                (
+                    migrate_fire_emitters,
+                    adopt_fire_lights,
+                    fill_dark_fires,
+                    cull_distant_fires,
+                )
                     .chain()
                     .after(TransformSystems::Propagate),
             );
@@ -332,16 +357,28 @@ fn drive_focus(
 /// fez, em vez de a aplicar duas vezes.
 fn drive_practical_intensity(
     atmosphere: Option<Res<AtmosphereState>>,
-    mut candidates: Query<(&mut PoolCandidate, &VaelPractical)>,
+    mut candidates: ParamSet<(
+        Query<(&mut PoolCandidate, &VaelPractical)>,
+        Query<
+            (&mut PoolCandidate, &VaelPractical),
+            Or<(Added<PoolCandidate>, Added<VaelPractical>, Changed<VaelPractical>)>,
+        >,
+    )>,
+    mut last_night: Local<Option<f32>>,
 ) {
     let night = atmosphere.map(|a| a.night).unwrap_or(0.0).clamp(0.0, 1.0);
+    let night_changed = last_night.is_none_or(|prev| (prev - night).abs() >= 1e-4);
+    if !night_changed && candidates.p1().is_empty() {
+        return;
+    }
+    *last_night = Some(night);
     let torch = torch_pool_gain(night);
     // Um fogo VISÍVEL (chama no ecrã) é a fonte que a noite deve ler: leva o
     // seu próprio ganho, acima do dos preenchimentos (`warm_fill_gain`, ×3).
     // Com o ×8 partilhado, os preenchimentos soltos da vila ofuscavam as
     // tochas e a chama "não emitia" (2026-11-16).
     let fire = 1.0 + (FIRE_NIGHT_GAIN - 1.0) * night;
-    for (mut candidate, practical) in &mut candidates {
+    let update = |(mut candidate, practical): (Mut<PoolCandidate>, &VaelPractical)| {
         let gain = if practical.torch { torch } else { fire };
         let mut target = torch_pool_target(practical.base, gain);
         let depth = candidate.depth.unwrap_or(bevy_lights::FLICKER_DEPTH);
@@ -351,6 +388,15 @@ fn drive_practical_intensity(
         }
         if (candidate.intensity - target).abs() > 1.0 {
             candidate.intensity = target;
+        }
+    };
+    if night_changed {
+        for item in &mut candidates.p0() {
+            update(item);
+        }
+    } else {
+        for item in &mut candidates.p1() {
+            update(item);
         }
     }
 }
@@ -456,7 +502,14 @@ fn adopt_fire_lights(
                     torch: shadow.is_some(),
                 },
             ))
-            .remove::<PointLight>();
+            .remove::<(
+                PointLight,
+                CubemapFrusta,
+                CubemapVisibleEntities,
+                VisibilityClass,
+                Sphere,
+                SyncToRenderWorld,
+            )>();
     }
 }
 
@@ -612,12 +665,40 @@ fn gate_shadows_by_night(
 /// chama precisa da visibilidade e o `lineage` do mundo não muda). O gestor
 /// da engine nunca despawna o marcador, por isso sem esta remoção as
 /// partículas continuavam a correr.
+fn insert_fire_visuals(entity_commands: &mut EntityCommands, kind: FireKind, phase: f32, pos: Vec3) {
+    entity_commands.try_insert((
+        FlameSite {
+            height: kind.height(),
+            phase,
+            kindle: 0.0,
+            diameter: Some(kind.diameter()),
+            depth: kind.depth(),
+            depth_fade: false,
+            fire: None,
+            color: Some(fire_color()),
+        },
+        FuelBed {
+            diameter: kind.diameter().max(0.2),
+            seed: seed_for(pos),
+            ..default()
+        },
+    ));
+    if let Some(embers) = kind.embers() {
+        entity_commands.try_insert(embers);
+    }
+    if let Some(smoke) = kind.smoke() {
+        entity_commands.try_insert(smoke);
+    }
+}
+
 fn migrate_fire_emitters(
     mut commands: Commands,
     config: Res<PracticalConfig>,
+    focus: Query<&GlobalTransform, With<VaelLightFocus>>,
     fires: Query<(Entity, &GlobalTransform, &AmbientFx), Added<AmbientFx>>,
     already: Query<(), With<VaelFire>>,
 ) {
+    let focus_pos = focus.iter().next().map(GlobalTransform::translation);
     for (entity, transform, fx) in &fires {
         if already.contains(entity) {
             continue;
@@ -627,31 +708,14 @@ fn migrate_fire_emitters(
         };
         let pos = transform.translation();
         let phase = phase_for(pos);
+        let far = focus_pos.is_some_and(|fp| pos.distance_squared(fp) > FIRE_DISMOUNT_RADIUS_SQ);
         let mut bundle = commands.entity(entity);
         bundle.try_insert(VaelFire { kind, phase });
         if config.flames {
-            bundle.try_insert((
-                FlameSite {
-                    height: kind.height(),
-                    phase,
-                    kindle: 0.0,
-                    diameter: Some(kind.diameter()),
-                    depth: kind.depth(),
-                    depth_fade: false,
-                    fire: None,
-                    color: Some(fire_color()),
-                },
-                FuelBed {
-                    diameter: kind.diameter().max(0.2),
-                    seed: seed_for(pos),
-                    ..default()
-                },
-            ));
-            if let Some(embers) = kind.embers() {
-                bundle.try_insert(embers);
-            }
-            if let Some(smoke) = kind.smoke() {
-                bundle.try_insert(smoke);
+            if far {
+                bundle.try_insert(VaelFireCulled);
+            } else {
+                insert_fire_visuals(&mut bundle, kind, phase, pos);
             }
         }
         if config.migrate_particles {
@@ -662,6 +726,74 @@ fn migrate_fire_emitters(
                 NotShadowCaster,
                 ParticleEmitter,
             )>();
+        }
+    }
+}
+
+/// Mounts/unmounts `bevy_lights` flame/bed/embers/smoke visuals by distance so
+/// distant fires (~240+ off-screen anchors) stop mutating `Transform`/`Aabb`/
+/// `MeshTag` every frame while keeping all fires within [`FIRE_MOUNT_RADIUS`] live.
+#[allow(clippy::type_complexity)]
+fn cull_distant_fires(
+    mut commands: Commands,
+    config: Res<PracticalConfig>,
+    focus: Query<&GlobalTransform, With<VaelLightFocus>>,
+    fires: Query<(
+        Entity,
+        &GlobalTransform,
+        &VaelFire,
+        Has<VaelFireCulled>,
+        Option<&VaelFireVisual>,
+        Option<&Children>,
+    )>,
+    new_fires: Query<(), Or<(Added<VaelFire>, (With<VaelFire>, Changed<GlobalTransform>))>>,
+    flames: Query<(), With<Flame>>,
+    mut last_focus: Local<Option<Vec3>>,
+) {
+    if !config.flames {
+        return;
+    }
+    let Some(focus_tf) = focus.iter().next() else {
+        return;
+    };
+    let focus_pos = focus_tf.translation();
+    let moved = last_focus.is_none_or(|prev| prev.distance_squared(focus_pos) > 16.0);
+    if !moved && new_fires.is_empty() {
+        return;
+    }
+    *last_focus = Some(focus_pos);
+
+    for (entity, transform, fire, culled, visual, children) in &fires {
+        let pos = transform.translation();
+        let dist_sq = pos.distance_squared(focus_pos);
+        if !culled && dist_sq > FIRE_DISMOUNT_RADIUS_SQ {
+            let mut ec = commands.entity(entity);
+            ec.try_remove::<(FlameSite, FuelBed, FlameEmbers, FlameSmoke, VaelFireVisual)>()
+                .try_insert(VaelFireCulled);
+            if let Some(VaelFireVisual(child)) = visual {
+                commands.entity(*child).try_despawn();
+            } else if let Some(children) = children {
+                for &kid in children {
+                    if flames.contains(kid) {
+                        commands.entity(kid).try_despawn();
+                    }
+                }
+            }
+        } else if culled && dist_sq <= FIRE_MOUNT_RADIUS_SQ {
+            let mut child_id = Entity::PLACEHOLDER;
+            commands.entity(entity).with_children(|parent| {
+                let mut child = parent.spawn((
+                    Name::new("vael:fire-visual"),
+                    Transform::default(),
+                    Visibility::Inherited,
+                ));
+                insert_fire_visuals(&mut child, fire.kind, fire.phase, pos);
+                child_id = child.id();
+            });
+            commands
+                .entity(entity)
+                .try_remove::<VaelFireCulled>()
+                .try_insert(VaelFireVisual(child_id));
         }
     }
 }
@@ -1044,5 +1176,66 @@ mod tests {
             world.get::<VaelFireOwner>(fire),
             Some(VaelFireOwner::Light(entity)) if *entity == real
         ));
+    }
+
+    #[test]
+    fn cull_distant_fires_unmounts_and_remounts_visuals() {
+        let mut app = App::new();
+        app.insert_resource(PracticalConfig::default())
+            .add_systems(Update, (migrate_fire_emitters, cull_distant_fires).chain());
+
+        let focus = app
+            .world_mut()
+            .spawn((
+                VaelLightFocus,
+                GlobalTransform::from_translation(Vec3::ZERO),
+            ))
+            .id();
+        let near = app
+            .world_mut()
+            .spawn((
+                AmbientFx {
+                    spec: spec("fire", Some(30.0)),
+                },
+                GlobalTransform::from_translation(Vec3::new(10.0, 0.0, 0.0)),
+                Visibility::Inherited,
+            ))
+            .id();
+        let far = app
+            .world_mut()
+            .spawn((
+                AmbientFx {
+                    spec: spec("fire", Some(30.0)),
+                },
+                GlobalTransform::from_translation(Vec3::new(300.0, 0.0, 0.0)),
+                Visibility::Inherited,
+            ))
+            .id();
+
+        app.update();
+        assert!(app.world().get::<FlameSite>(near).is_some());
+        assert!(app.world().get::<VaelFireCulled>(far).is_some());
+        assert!(app.world().get::<FlameSite>(far).is_none());
+
+        // Move focus near `far` -> `far` mounts visual child, `near` unmounts.
+        *app.world_mut().get_mut::<GlobalTransform>(focus).unwrap() =
+            GlobalTransform::from_translation(Vec3::new(290.0, 0.0, 0.0));
+        app.update();
+        let visual = app
+            .world()
+            .get::<VaelFireVisual>(far)
+            .expect("visual child mounted")
+            .0;
+        assert!(app.world().get::<FlameSite>(visual).is_some());
+        assert!(app.world().get::<FuelBed>(visual).is_some());
+        assert!(app.world().get::<VaelFireCulled>(near).is_some());
+        assert!(app.world().get::<FlameSite>(near).is_none());
+
+        // Move focus back -> `far` visual child despawned and marked culled again.
+        *app.world_mut().get_mut::<GlobalTransform>(focus).unwrap() =
+            GlobalTransform::from_translation(Vec3::ZERO);
+        app.update();
+        assert!(app.world().get_entity(visual).is_err());
+        assert!(app.world().get::<VaelFireCulled>(far).is_some());
     }
 }

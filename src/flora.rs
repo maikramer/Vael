@@ -436,6 +436,7 @@ fn fill_pools(
         impostor = lod.distances.impostor,
         "flora: pools das espécies construídos"
     );
+    bevy_ext_core::boot::mark("flora.pools");
 }
 
 /// Gravar o `flora.bsn` no editor reconstrói os pools no mesmo handle: as
@@ -516,28 +517,48 @@ fn plant_on_entity(
     true
 }
 
+/// Marca entidades com [`ScriptProps`] já inspecionadas que não têm `prop-flora`,
+/// para que o `plant_stations` não varra NPCs/portas/baús todos os frames.
+#[derive(Component)]
+struct FloraChecked;
+
 /// Lê as estações do mundo (`prop-flora`) e planta as árvores que faltam.
+#[allow(clippy::type_complexity)]
 fn plant_stations(
     mut commands: Commands,
-    stations: Query<(Entity, &ScriptProps, Option<&Name>, &Transform), Without<FloraPlanted>>,
+    stations: Query<
+        (
+            Entity,
+            &ScriptProps,
+            Option<&Name>,
+            &Transform,
+            Has<FloraChecked>,
+        ),
+        (
+            Without<FloraPlanted>,
+            Or<(Without<FloraChecked>, Changed<ScriptProps>)>,
+        ),
+    >,
     mut state: ResMut<FloraPools>,
+    mut flora_enabled: Local<Option<bool>>,
 ) {
-    if !env_on("VAEL_FLORA") {
+    let enabled = *flora_enabled.get_or_insert_with(|| env_on("VAEL_FLORA"));
+    if !enabled || state.pools.is_empty() {
         return;
     }
     let mut planted = 0;
-    for (entity, props, name, transform) in &stations {
+    for (entity, props, name, transform, already_checked) in &stations {
         let prop = props
             .0
             .iter()
             .find(|(key, _)| key == "flora")
             .map(|(_, value)| value.as_str());
         let Some(prop) = prop else {
+            if !already_checked {
+                commands.entity(entity).insert(FloraChecked);
+            }
             continue;
         };
-        if state.pools.is_empty() {
-            return;
-        }
         if !state.pools.contains_key(prop) {
             if state.warned.insert(prop.to_string()) {
                 warn!(
@@ -743,9 +764,18 @@ fn drop_leaves_on_gust(
 /// O cone é **estreito** (raio 1 m no peito, ~1/3 junto à câmara): só o que
 /// tapa o corpo esbate. Um raio largo (4 m era o antigo) apagava árvores ao
 /// lado do herói, mesmo sem nada à frente.
+#[allow(clippy::type_complexity)]
 fn see_through_trees(
     mut commands: Commands,
-    cameras: Query<(Entity, &Camera, &RenderTarget, Option<&SeeThroughTrees>), With<Camera3d>>,
+    mut cameras: Query<
+        (
+            Entity,
+            &Camera,
+            &RenderTarget,
+            Option<&mut SeeThroughTrees>,
+        ),
+        With<Camera3d>,
+    >,
     player: Query<&GlobalTransform, With<VaelPlayer>>,
 ) {
     let Some(chest) = player
@@ -755,7 +785,7 @@ fn see_through_trees(
     else {
         return;
     };
-    for (entity, camera, target, existing) in &cameras {
+    for (entity, camera, target, existing) in &mut cameras {
         if !camera.is_active || !matches!(target, RenderTarget::Window(_)) {
             continue;
         }
@@ -772,8 +802,21 @@ fn see_through_trees(
             in_front: Some(0.9),
             floor: None,
         };
-        if existing != Some(&fade) {
-            commands.entity(entity).insert(fade);
+        match existing {
+            Some(mut cur) => {
+                if cur.target.distance_squared(chest) > 1e-6
+                    || (cur.radius - fade.radius).abs() > 1e-6
+                    || (cur.keep - fade.keep).abs() > 1e-6
+                    || (cur.inner - fade.inner).abs() > 1e-6
+                    || cur.in_front != fade.in_front
+                    || cur.floor != fade.floor
+                {
+                    *cur = fade;
+                }
+            }
+            None => {
+                commands.entity(entity).insert(fade);
+            }
         }
     }
 }

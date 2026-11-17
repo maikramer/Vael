@@ -83,6 +83,84 @@ vael-tools debug --port 15731 --json wait-ready --timeout 300
   `VIBER_UPLOAD_MB` (subida para a GPU por frame, só atrás do véu; default
   256, `off` desliga). Em jogo não há limite: o Bevy tira da GPU um asset
   modificado quando o orçamento esgota e o mundo ficava negro.
+- Custo do decode de GLB: o log do `gltf_residency` passa a trazer também
+  `gltf decode: N ficheiros (M reescritos), X MB -> Y MB (×r), Z ms de CPU
+  (dequant …), K relabels UASTC, U sem suporte` sempre que entram ficheiros
+  novos no intervalo. `BEVY_EXT_GLTF_STATS=1` liga o `GltfStatsPlugin` (linha
+  própria a cada 5 s) e `BEVY_EXT_GLTF_MIPS=inline` volta a gerar a cadeia de
+  mips na main thread (A/B). A bench do decoder corre fora do jogo:
+  `cargo run -p bevy_ext_gltf --release --example decode_bench -- --root
+  assets/public` (com `--features legacy` descodifica os mesmos bytes com o
+  decoder antigo, verifica que o output é idêntico e mostra o A/B; nos 676 GLB
+  do pool: 2303 → 677 ms, p50 1.38 → 0.18 ms, pico de RSS 122 → 69 MB).
+
+### Arranque: o traço real (`boot:`)
+
+O `mundo pronto em X s` **começa no primeiro `PostUpdate`**. Tudo o que corre
+antes — o parse do `.bsn` com prefabs, o `spawn::startup`, o `bootstrap` do
+terreno e as pools de flora — não aparecia em lado nenhum. O
+`bevy_ext_core::boot` mede desde o processo e o véu imprime a tabela uma vez:
+
+```text
+boot: world.parse 1665 ms (+1665) · main_scene.parse 1666 ms (+0) ·
+app.build 1999 ms (+333) · flora.pools 2117 ms (+118) ·
+spawn.startup 2374 ms (+257) · terrain.bootstrap 6412 ms (+4039) ·
+first_frame 11328 ms (+4916) · veil 32153 ms (+20825) · total 32153 ms
+```
+
+- As fases novas marcam-se com `bevy_ext_core::boot::mark("nome")`;
+  `bevy_ext_core::boot::start()` é a primeira linha da `main`.
+- `VAEL_BOOT_TRACE=0` cala a linha (a medição continua, é barata).
+- `main_scene.parse` só é ≠ 0 quando a cena de arranque não é a principal (o
+  menu paga um parse completo do `world.bsn` só para ler `<Sky>`/água).
+- `first_frame` é o resto do `Startup` + o primeiro frame (uploads de GPU,
+  pipelines); `veil` é o que o véu espera.
+- Para saber **o que** o véu espera segundo a segundo:
+  `RUST_LOG=bevy_ext_viber_engine::world_ready=debug` (o `t=… modelos N/M …
+  terreno_ocupado=… bakes=…` é o estado de cada condição).
+- Regime: `vael-tools debug prof --record 10 --hz 2` passou a resumir
+  (`perf: 20 amostra(s) · média 23.5 ms · p95 30.8 ms · pior 40.1 ms ·
+  42.6 fps · N hitch(es) · RSS …`); `--no-summary` volta ao JSONL puro e
+  `--samples N` é o nome antigo. A atribuição por sistema continua na tab rica:
+  `debug lua 'return viber.debug.prof()'`.
+- **VRAM: uma instância de cada vez, mesmo em QA automatizado.** O pico de VRAM
+  do arranque é a fase dos impostores (42 variantes × atlases 2048×512 + 64
+  câmaras). Com 6 GiB, uma segunda instância do jogo — outro `vael-tools run`,
+  um `playtest` em paralelo, ou um build a ocupar a GPU — dá `Out of Memory`
+  em `Texture::create_view` e o processo sai com **SIGSEGV no teardown**
+  (`exit 139`, sem stack útil). A duas instâncias, a que chega depois ao pico
+  morre; não é bug de lógica. Também invalida qualquer medição de tempos: com
+  16 `rustc` a load 26 o `world.parse` foi de 1665 → 3948 ms.
+
+### O véu só sai com o mundo **visível** (corrigido a 2026-11-16)
+
+O véu já se levantou com terreno e HUD mas **sem props** — e as bakes de
+impostores tapavam-no por acaso, ao atrasar o véu ~4 s. Duas condições estavam
+a mentir:
+
+1. **Upload**: `gpu_uploading` comparava `bytes_written >= teto`, mas o limiter
+   do Bevy clampa o último asset que não cabe e deixa os seguintes para o frame
+   seguinte — um frame com fila cheia escreve muito abaixo do teto (medido:
+   380 KB e 29 MB com o mundo por subir). Agora conta **`bytes_written > 0`**:
+   com os `STABLE_FRAMES` (12) já exigidos, o véu só sai depois de 12 frames
+   sem escrever nada (fila drenada). O log de debug mostra os números crus,
+   `gpu_fila=… [123B/268435456B]`.
+2. **Instanciação**: uma âncora com `WorldAssetRoot` e ainda **sem
+   `WorldInstance`** não era pendente nem "por pedir" — era invisível. Conta-se
+   agora (`instanciando N` na linha de debug).
+
+Consequências medidas:
+
+- o `mundo pronto em X s` **subiu** (~29-35 s), porque antes abria cedo: o
+  número antigo era falso. É o custo honesto de ter o mundo no ecrã.
+- `VIBER_UPLOAD_MB` maior é **pior** (512 MB: 29,7 s; 1024 MB: 31,8 s; 256 MB:
+  28,5 s numa corrida, com 5-6 s de variância entre corridas).
+- `VAEL_WAIT_BAKES=0` deixa de partir a vista (as duas condições acima
+  corrigidas); o default continua a esperar porque as bakes correm por cima da
+  fila de upload e não custam tempo de parede.
+- Captura de verificação: `vael-tools debug --port P screenshot -o /tmp/v.png`
+  **no instante** do véu (não 2 s depois — a vista enche-se nesse intervalo e
+  esconde o bug).
 
 ## Ferramentas de debug ([F1]/[F2])
 

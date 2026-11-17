@@ -528,6 +528,7 @@ fn set_fade(world: &mut World, alpha: f32) {
 
 /// A máquina (exclusiva, em `Last`): fade → troca → espera → fade.
 pub fn drive_scene_loader(world: &mut World) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("scene.drive_loader");
     let dt = world
         .get_resource::<Time<Real>>()
         .map(|t| t.delta_secs())

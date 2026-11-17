@@ -442,6 +442,7 @@ pub fn startup(world: &mut World) {
     spawn_parsed(world, pending, false);
     // Tudo o que esta cena pôs na raiz morre no próximo descarregamento.
     mark_new_roots(world, &before, crate::scene_loader::SceneEntity);
+    bevy_engine_core::boot::mark("spawn.startup");
 }
 
 /// Raízes (sem pai) existentes agora.

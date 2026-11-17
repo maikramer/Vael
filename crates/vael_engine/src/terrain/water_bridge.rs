@@ -11,10 +11,12 @@
 //! - partículas (`WaterSplashEvent` → `spawn_burst`) e o marcador
 //!   `WaterBodied` no herói/criaturas.
 
+use bevy::platform::collections::{HashMap, HashSet};
 use bevy::prelude::*;
 use avian3d::prelude::Collider;
 
 use bevy_ext_water::obstacles::obstacles_signature;
+use bevy_ext_water::waves::bodies_signature;
 use bevy_ext_water::{
     SplashPreset, WaterBodied, WaterEnvironment, WaterFocus, WaterObstacles, WaterSplashEvent,
 };
@@ -138,12 +140,34 @@ struct VoxelObstacleCache {
 
 #[derive(Default)]
 struct ColliderObstacleCache {
-    generation: u32,
-    map: bevy::platform::collections::HashMap<Entity, CachedCollider>,
+    seeded: bool,
+    water_key: Option<(u64, usize, usize)>,
+    all_reaches: Vec<(Vec2, f32)>,
+    reaches_scratch: Vec<(Vec2, f32)>,
+    seen_gen: u32,
+    map: HashMap<Entity, CachedCollider>,
+    /// Apenas colliders que realmente cortam alguma lâmina (`!obstacles.is_empty()`),
+    /// indexados por tiles de `VOXEL_TILE_M`. Evita varrer todos os colliders secos do mundo.
+    wet_cells: HashMap<IVec2, Vec<Entity>>,
+    dirty: HashSet<Entity>,
+    removed: HashSet<Entity>,
+}
+
+impl ColliderObstacleCache {
+    fn reset_for_water(&mut self, key: (u64, usize, usize), water: &[bevy_ext_water::WaterBody]) {
+        self.seeded = false;
+        self.water_key = Some(key);
+        self.all_reaches.clear();
+        self.all_reaches.extend(water.iter().map(water_body_reach));
+        self.map.clear();
+        self.wet_cells.clear();
+        self.dirty.clear();
+        self.removed.clear();
+    }
 }
 
 struct CachedCollider {
-    generation: u32,
+    seen_gen: u32,
     translation: Vec3,
     rotation: Quat,
     /// Identidade da forma (`SharedShape` partilhado): troca de collider
@@ -151,7 +175,88 @@ struct CachedCollider {
     shape: usize,
     wmin: Vec3,
     wmax: Vec3,
+    cell_min: IVec2,
+    cell_max: IVec2,
     obstacles: Vec<WaterObstacle>,
+}
+
+fn aabb_cell_bounds(wmin: Vec3, wmax: Vec3) -> (IVec2, IVec2) {
+    let c0 = (wmin.xz() / VOXEL_TILE_M).floor().as_ivec2();
+    let c1 = (wmax.xz() / VOXEL_TILE_M).floor().as_ivec2();
+    (c0, c1)
+}
+
+fn wet_cells_remove(
+    wet_cells: &mut HashMap<IVec2, Vec<Entity>>,
+    entity: Entity,
+    c0: IVec2,
+    c1: IVec2,
+) {
+    for tz in c0.y..=c1.y {
+        for tx in c0.x..=c1.x {
+            let key = IVec2::new(tx, tz);
+            if let Some(list) = wet_cells.get_mut(&key) {
+                if let Some(pos) = list.iter().position(|&e| e == entity) {
+                    list.swap_remove(pos);
+                }
+                if list.is_empty() {
+                    wet_cells.remove(&key);
+                }
+            }
+        }
+    }
+}
+
+fn wet_cells_insert(
+    wet_cells: &mut HashMap<IVec2, Vec<Entity>>,
+    entity: Entity,
+    c0: IVec2,
+    c1: IVec2,
+) {
+    for tz in c0.y..=c1.y {
+        for tx in c0.x..=c1.x {
+            wet_cells.entry(IVec2::new(tx, tz)).or_default().push(entity);
+        }
+    }
+}
+
+#[allow(clippy::too_many_arguments)]
+fn compute_collider_entry(
+    rt: &TerrainRuntime,
+    all_reaches: &[(Vec2, f32)],
+    global: &GlobalTransform,
+    collider: &Collider,
+) -> (Vec3, Quat, usize, Vec3, Vec3, Vec<WaterObstacle>) {
+    let placement = global.compute_transform();
+    let shape = std::sync::Arc::as_ptr(&collider.shape_scaled().0) as *const () as usize;
+    let iso = Transform {
+        translation: placement.translation,
+        rotation: placement.rotation,
+        scale: Vec3::ONE,
+    };
+    let local = collider.shape_scaled().compute_local_aabb();
+    let local_min = Vec3::new(local.mins.x, local.mins.y, local.mins.z);
+    let local_max = Vec3::new(local.maxs.x, local.maxs.y, local.maxs.z);
+    let (wmin, wmax) = rotated_aabb(&iso, local_min, local_max);
+    let mut entry_obstacles = Vec::new();
+    let wet = all_reaches
+        .iter()
+        .any(|&(c, r)| rect_touches_circle(wmin.xz(), wmax.xz(), c, r + 0.5));
+    if wet
+        && let Some((wy_min, wy_max)) = water_surface_range_in_aabb(rt, wmin.xz(), wmax.xz())
+        && wmax.y >= wy_min - OBSTACLE_SLICE_BELOW_M
+        && wmin.y <= wy_max + OBSTACLE_SLICE_ABOVE_M
+    {
+        collect_collider_water_obstacles(collider, iso, wy_min, wy_max, &mut entry_obstacles);
+    }
+    (
+        placement.translation,
+        placement.rotation,
+        shape,
+        wmin,
+        wmax,
+        entry_obstacles,
+    )
 }
 
 /// Lado (m) de um tile do cache de obstáculos voxel. Inteiro: as amostras
@@ -160,18 +265,19 @@ const VOXEL_TILE_M: f32 = 32.0;
 
 /// Recolhe os obstáculos que cortam a lâmina dentro da janela de 128 m.
 ///
-/// Só corre quando um collider muda (added/moved/removed) ou a janela anda:
-/// a conversão de trimesh/compound é cara e a lista é estável a maior parte
-/// dos frames.
+/// Só corre quando um collider de obstáculo muda (added/moved/removed) ou a
+/// janela anda: mantém um cache incremental + grelha espacial dos colliders que
+/// tocam água para evitar varrer os milhares de colliders secos do mundo.
 #[allow(clippy::type_complexity, clippy::too_many_arguments)]
 fn sync_water_obstacles(
     terrain: Option<Res<TerrainRuntime>>,
     waves: Option<Res<WaterWaveWorld>>,
     obstacle_q: Query<(Entity, &GlobalTransform, &Collider), WaterObstacleFilter>,
     changed_obs: Query<
-        (),
+        Entity,
         (
             With<Collider>,
+            WaterObstacleFilter,
             Or<(Added<Collider>, Changed<GlobalTransform>, Changed<Collider>)>,
         ),
     >,
@@ -180,6 +286,7 @@ fn sync_water_obstacles(
     mut last_origin: Local<Option<IVec2>>,
     mut voxel_cache: Local<Option<VoxelObstacleCache>>,
     mut collider_cache: Local<ColliderObstacleCache>,
+    mut found_scratch: Local<Vec<WaterObstacle>>,
     mut pending: Local<bool>,
     mut last_run: Local<f32>,
     time: Res<Time>,
@@ -188,14 +295,55 @@ fn sync_water_obstacles(
         return;
     };
     let window_moved = last_origin.is_none_or(|o| o != waves.origin_cell_1m);
-    // Um collider qualquer a mexer-se (armas, props dinâmicos, hitboxes) fazia
-    // isto correr TODOS os frames — e cada corrida refazia o scan voxel de
-    // 129×129 amostras da janela (~18 ms/frame medido a 2026-11-15). As
-    // mudanças de collider acumulam e aplicam-se no máximo a ~8 Hz; a janela a
-    // andar continua imediata.
-    if !changed_obs.is_empty() || removed_obs.read().count() > 0 {
+
+    if rt.water.is_empty() {
+        if collider_cache.seeded {
+            collider_cache.map.clear();
+            collider_cache.wet_cells.clear();
+            collider_cache.dirty.clear();
+            collider_cache.removed.clear();
+            collider_cache.seeded = false;
+            collider_cache.water_key = None;
+        }
+        let _ = removed_obs.read().count();
+        *last_origin = Some(waves.origin_cell_1m);
+        *pending = false;
+        if !obstacles.obstacles.is_empty() {
+            obstacles.set(Vec::new());
+        }
+        return;
+    }
+
+    let water_key = (
+        bodies_signature(&rt.water),
+        rt.water.len(),
+        rt.water.as_ptr() as usize,
+    );
+    if collider_cache.water_key != Some(water_key) {
+        collider_cache.reset_for_water(water_key, &rt.water);
         *pending = true;
     }
+
+    // Regista mudanças antes do throttle (Bevy consome `Changed`/`RemovedComponents`
+    // no fim do sistema mesmo quando há early return).
+    if collider_cache.seeded {
+        for entity in &changed_obs {
+            collider_cache.removed.remove(&entity);
+            collider_cache.dirty.insert(entity);
+            *pending = true;
+        }
+        for entity in removed_obs.read() {
+            collider_cache.dirty.remove(&entity);
+            if collider_cache.map.contains_key(&entity) {
+                collider_cache.removed.insert(entity);
+                *pending = true;
+            }
+        }
+    } else {
+        let _ = removed_obs.read().count();
+        *pending = true;
+    }
+
     let now = time.elapsed_secs();
     let throttled = now - *last_run < COLLIDER_REFRESH_S;
     if !window_moved && !(*pending && !throttled) {
@@ -205,138 +353,213 @@ fn sync_water_obstacles(
     *last_run = now;
     *last_origin = Some(waves.origin_cell_1m);
 
-    let mut found: Vec<WaterObstacle> = Vec::new();
-    if !rt.water.is_empty() {
-        let ox = waves.origin_cell_1m.x as f32 * DOMAIN_SNAP_M;
-        let oz = waves.origin_cell_1m.y as f32 * DOMAIN_SNAP_M;
-        let pad = OBSTACLE_HALO_M + 14.0;
-        let win_min = Vec2::new(ox - pad, oz - pad);
-        let win_max = Vec2::new(ox + WAVE_WORLD_SIZE + pad, oz + WAVE_WORLD_SIZE + pad);
+    let ox = waves.origin_cell_1m.x as f32 * DOMAIN_SNAP_M;
+    let oz = waves.origin_cell_1m.y as f32 * DOMAIN_SNAP_M;
+    let pad = OBSTACLE_HALO_M + 14.0;
+    let win_min = Vec2::new(ox - pad, oz - pad);
+    let win_max = Vec2::new(ox + WAVE_WORLD_SIZE + pad, oz + WAVE_WORLD_SIZE + pad);
 
-        // Corpos de água cujo alcance toca a janela: sem nenhum, não há lâmina
-        // a cortar e nem os colliders nem o voxel precisam de ser vistos.
-        let reaches: Vec<(Vec2, f32)> = rt
-            .water
+    // Corpos de água cujo alcance toca a janela: sem nenhum, não há lâmina
+    // a cortar e nem os colliders nem o voxel precisam de ser vistos.
+    let cache = &mut *collider_cache;
+    cache.reaches_scratch.clear();
+    cache.reaches_scratch.extend(
+        cache
+            .all_reaches
             .iter()
-            .map(water_body_reach)
-            .filter(|&(c, r)| rect_touches_circle(win_min, win_max, c, r))
-            .collect();
-        if reaches.is_empty() {
-            if !obstacles.obstacles.is_empty() {
-                obstacles.set(Vec::new());
-            }
-            return;
+            .copied()
+            .filter(|&(c, r)| rect_touches_circle(win_min, win_max, c, r)),
+    );
+    if cache.reaches_scratch.is_empty() {
+        if !obstacles.obstacles.is_empty() {
+            obstacles.set(Vec::new());
         }
-        // Por collider, o resultado (AABB de mundo + cortes na lâmina) só
-        // depende da pose e da forma: cache por entidade, refeito só para os
-        // que mexeram. Antes cada recolha refazia `compute_local_aabb` (O(nº
-        // vértices) nos convexos) e ~36 amostras de água por collider da
-        // janela — a ~8 Hz, ~6 ms por recolha ao pé do rio.
-        let all_reaches: Vec<(Vec2, f32)> = rt.water.iter().map(water_body_reach).collect();
-        collider_cache.generation = collider_cache.generation.wrapping_add(1);
-        let generation = collider_cache.generation;
+        return;
+    }
+
+    let mut any_wet_changed = false;
+    if !cache.seeded {
+        cache.seeded = true;
+        cache.dirty.clear();
+        cache.removed.clear();
         for (entity, global, collider) in &obstacle_q {
+            let (translation, rotation, shape, wmin, wmax, entry_obstacles) =
+                compute_collider_entry(&rt, &cache.all_reaches, global, collider);
+            let (cell_min, cell_max) = if entry_obstacles.is_empty() {
+                (IVec2::ZERO, IVec2::ZERO)
+            } else {
+                any_wet_changed = true;
+                let (c0, c1) = aabb_cell_bounds(wmin, wmax);
+                wet_cells_insert(&mut cache.wet_cells, entity, c0, c1);
+                (c0, c1)
+            };
+            cache.map.insert(
+                entity,
+                CachedCollider {
+                    seen_gen: 0,
+                    translation,
+                    rotation,
+                    shape,
+                    wmin,
+                    wmax,
+                    cell_min,
+                    cell_max,
+                    obstacles: entry_obstacles,
+                },
+            );
+        }
+        any_wet_changed = true;
+    } else {
+        for entity in cache.removed.drain() {
+            if let Some(old) = cache.map.remove(&entity)
+                && !old.obstacles.is_empty()
+            {
+                wet_cells_remove(&mut cache.wet_cells, entity, old.cell_min, old.cell_max);
+                any_wet_changed = true;
+            }
+        }
+        for entity in cache.dirty.drain() {
+            let Ok((_, global, collider)) = obstacle_q.get(entity) else {
+                if let Some(old) = cache.map.remove(&entity)
+                    && !old.obstacles.is_empty()
+                {
+                    wet_cells_remove(&mut cache.wet_cells, entity, old.cell_min, old.cell_max);
+                    any_wet_changed = true;
+                }
+                continue;
+            };
             let placement = global.compute_transform();
             let shape = std::sync::Arc::as_ptr(&collider.shape_scaled().0) as *const () as usize;
-            let entry = collider_cache.map.entry(entity).or_insert_with(|| CachedCollider {
-                generation,
-                translation: Vec3::NAN,
-                rotation: Quat::IDENTITY,
-                shape: 0,
-                wmin: Vec3::ZERO,
-                wmax: Vec3::ZERO,
-                obstacles: Vec::new(),
-            });
-            entry.generation = generation;
-            if entry.translation != placement.translation
-                || entry.rotation != placement.rotation
-                || entry.shape != shape
-            {
-                let iso = Transform {
-                    translation: placement.translation,
-                    rotation: placement.rotation,
-                    scale: Vec3::ONE,
-                };
-                let local = collider.shape_scaled().compute_local_aabb();
-                let local_min = Vec3::new(local.mins.x, local.mins.y, local.mins.z);
-                let local_max = Vec3::new(local.maxs.x, local.maxs.y, local.maxs.z);
-                let (wmin, wmax) = rotated_aabb(&iso, local_min, local_max);
-                entry.translation = placement.translation;
-                entry.rotation = placement.rotation;
-                entry.shape = shape;
-                entry.wmin = wmin;
-                entry.wmax = wmax;
-                entry.obstacles.clear();
-                let wet = all_reaches
-                    .iter()
-                    .any(|&(c, r)| rect_touches_circle(wmin.xz(), wmax.xz(), c, r + 0.5));
-                if wet
-                    && let Some((wy_min, wy_max)) =
-                        water_surface_range_in_aabb(&rt, wmin.xz(), wmax.xz())
-                    && wmax.y >= wy_min - OBSTACLE_SLICE_BELOW_M
-                    && wmin.y <= wy_max + OBSTACLE_SLICE_ABOVE_M
-                {
-                    collect_collider_water_obstacles(
-                        collider,
-                        iso,
-                        wy_min,
-                        wy_max,
-                        &mut entry.obstacles,
-                    );
-                }
-            }
-            let (wmin, wmax) = (entry.wmin, entry.wmax);
-            if wmax.x < win_min.x || wmin.x > win_max.x || wmax.z < win_min.y || wmin.z > win_max.y
+            if let Some(existing) = cache.map.get(&entity)
+                && existing.translation == placement.translation
+                && existing.rotation == placement.rotation
+                && existing.shape == shape
             {
                 continue;
             }
-            found.extend(entry.obstacles.iter().cloned());
-        }
-        collider_cache.map.retain(|_, entry| entry.generation == generation);
-
-        // Os sólidos voxel só dependem do terreno: cache em tiles de
-        // `VOXEL_TILE_M` (amostras nas mesmas coordenadas inteiras do scan da
-        // janela), invalidado pela revisão das edições/campo voxel. A janela
-        // anda 1 m de cada vez; sem isto cada metro andado refazia ~16k
-        // amostras.
-        let key = VoxelObstacleKey {
-            revision: rt.deltas.revision(),
-            voxel: std::sync::Arc::as_ptr(&rt.voxel) as usize,
-            water_bodies: rt.water.len(),
-        };
-        let cache = voxel_cache.get_or_insert_with(|| VoxelObstacleCache {
-            key,
-            tiles: Default::default(),
-        });
-        if cache.key != key {
-            cache.key = key;
-            cache.tiles.clear();
-        }
-        let lo = Vec2::new(ox, oz);
-        let hi = Vec2::new(ox + WAVE_WORLD_SIZE, oz + WAVE_WORLD_SIZE);
-        let t0 = (lo / VOXEL_TILE_M).floor().as_ivec2();
-        let t1 = (hi / VOXEL_TILE_M).floor().as_ivec2();
-        for tz in t0.y..=t1.y {
-            for tx in t0.x..=t1.x {
-                let tile = cache.tiles.entry(IVec2::new(tx, tz)).or_insert_with(|| {
-                    let min = Vec2::new(tx as f32, tz as f32) * VOXEL_TILE_M;
-                    // `collect` amostra [min, max] inclusive: o último ponto
-                    // pertence ao tile seguinte.
-                    let max = min + Vec2::splat(VOXEL_TILE_M - 1.0);
-                    let mut out = Vec::new();
-                    collect_voxel_water_obstacles(&rt, min, max, &mut out);
-                    out
-                });
-                found.extend(tile.iter().filter(|o| {
-                    let c = o.center;
-                    c.x >= lo.x && c.x <= hi.x && c.y >= lo.y && c.y <= hi.y
-                }).cloned());
+            let (translation, rotation, shape, wmin, wmax, entry_obstacles) =
+                compute_collider_entry(&rt, &cache.all_reaches, global, collider);
+            if let Some(old) = cache.map.get(&entity)
+                && !old.obstacles.is_empty()
+            {
+                wet_cells_remove(&mut cache.wet_cells, entity, old.cell_min, old.cell_max);
+                any_wet_changed = true;
             }
+            let (cell_min, cell_max) = if entry_obstacles.is_empty() {
+                (IVec2::ZERO, IVec2::ZERO)
+            } else {
+                any_wet_changed = true;
+                let (c0, c1) = aabb_cell_bounds(wmin, wmax);
+                wet_cells_insert(&mut cache.wet_cells, entity, c0, c1);
+                (c0, c1)
+            };
+            cache.map.insert(
+                entity,
+                CachedCollider {
+                    seen_gen: 0,
+                    translation,
+                    rotation,
+                    shape,
+                    wmin,
+                    wmax,
+                    cell_min,
+                    cell_max,
+                    obstacles: entry_obstacles,
+                },
+            );
         }
     }
 
-    if obstacles_signature(&found) != obstacles_signature(&obstacles.obstacles) {
-        obstacles.set(found);
+    let key = VoxelObstacleKey {
+        revision: rt.deltas.revision(),
+        voxel: std::sync::Arc::as_ptr(&rt.voxel) as usize,
+        water_bodies: rt.water.len(),
+    };
+    let vcache = voxel_cache.get_or_insert_with(|| VoxelObstacleCache {
+        key,
+        tiles: Default::default(),
+    });
+    let voxel_key_changed = vcache.key != key;
+    if voxel_key_changed {
+        vcache.key = key;
+        vcache.tiles.clear();
+    }
+
+    if !window_moved && !any_wet_changed && !voxel_key_changed {
+        return;
+    }
+
+    let found = &mut *found_scratch;
+    found.clear();
+
+    // Só visita colliders molhados cujos tiles tocam `[win_min, win_max]`.
+    cache.seen_gen = cache.seen_gen.wrapping_add(1);
+    let seen_gen = cache.seen_gen;
+    let wt0 = (win_min / VOXEL_TILE_M).floor().as_ivec2();
+    let wt1 = (win_max / VOXEL_TILE_M).floor().as_ivec2();
+    let mut stale_entities: Vec<Entity> = Vec::new();
+    for tz in wt0.y..=wt1.y {
+        for tx in wt0.x..=wt1.x {
+            let Some(entities) = cache.wet_cells.get(&IVec2::new(tx, tz)) else {
+                continue;
+            };
+            for &entity in entities {
+                let Some(entry) = cache.map.get_mut(&entity) else {
+                    continue;
+                };
+                if entry.seen_gen == seen_gen {
+                    continue;
+                }
+                entry.seen_gen = seen_gen;
+                if !obstacle_q.contains(entity) {
+                    stale_entities.push(entity);
+                    continue;
+                }
+                let (wmin, wmax) = (entry.wmin, entry.wmax);
+                if wmax.x < win_min.x || wmin.x > win_max.x || wmax.z < win_min.y || wmin.z > win_max.y {
+                    continue;
+                }
+                found.extend(entry.obstacles.iter().cloned());
+            }
+        }
+    }
+    for entity in stale_entities {
+        if let Some(old) = cache.map.remove(&entity)
+            && !old.obstacles.is_empty()
+        {
+            wet_cells_remove(&mut cache.wet_cells, entity, old.cell_min, old.cell_max);
+        }
+    }
+
+    // Os sólidos voxel só dependem do terreno: cache em tiles de `VOXEL_TILE_M`.
+    let lo = Vec2::new(ox, oz);
+    let hi = Vec2::new(ox + WAVE_WORLD_SIZE, oz + WAVE_WORLD_SIZE);
+    let t0 = (lo / VOXEL_TILE_M).floor().as_ivec2();
+    let t1 = (hi / VOXEL_TILE_M).floor().as_ivec2();
+    for tz in t0.y..=t1.y {
+        for tx in t0.x..=t1.x {
+            let tile = vcache.tiles.entry(IVec2::new(tx, tz)).or_insert_with(|| {
+                let min = Vec2::new(tx as f32, tz as f32) * VOXEL_TILE_M;
+                // `collect` amostra [min, max] inclusive: o último ponto
+                // pertence ao tile seguinte.
+                let max = min + Vec2::splat(VOXEL_TILE_M - 1.0);
+                let mut out = Vec::new();
+                collect_voxel_water_obstacles(&rt, min, max, &mut out);
+                out
+            });
+            found.extend(
+                tile.iter()
+                    .filter(|o| {
+                        let c = o.center;
+                        c.x >= lo.x && c.x <= hi.x && c.y >= lo.y && c.y <= hi.y
+                    })
+                    .cloned(),
+            );
+        }
+    }
+
+    if obstacles_signature(found) != obstacles_signature(&obstacles.obstacles) {
+        obstacles.set(found.clone());
     }
 }
 

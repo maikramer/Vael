@@ -382,6 +382,7 @@ fn counters_json(counters: &GameCounters) -> serde_json::Value {
 /// atribuição) e o gravador de traces. Corre no `Last` — depois do
 /// `PostUpdate`, com todos os sistemas instrumentados do frame já medidos.
 fn end_frame(world: &mut World) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("prof.end_frame");
     // Tempo REAL: o `Time` genérico segue o virtual (pausa do editor,
     // `set_time_scale`, `max_delta` de 250 ms) — com scale 0 todos os frames
     // mediam 0 ms e um hitch de 600 ms era registado como 250.

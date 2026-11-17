@@ -76,6 +76,7 @@ pub fn stream_voxel_colliders(
     meshes: Res<Assets<Mesh>>,
     mut repairs: Local<u32>,
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("physics.stream_colliders");
     status.ready = false;
     status.ready_players.clear();
     let Some(runtime) = runtime else { return };

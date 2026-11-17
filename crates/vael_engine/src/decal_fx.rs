@@ -123,15 +123,20 @@ pub fn fade_decals(
             continue;
         }
         // Fade nos últimos 55 % da vida: o impacto lê-se primeiro.
-        let alpha = if k < 0.45 {
-            1.0
-        } else {
-            1.0 - (k - 0.45) / 0.55
-        };
+        // Skip material `get_mut` during the initial flat plateau (`alpha == 1.0`)
+        // because `spawn_decals` already creates the material at full alpha and
+        // `Assets::get_mut` would re-extract / rebuild GPU bind groups every frame.
+        if k < 0.45 {
+            continue;
+        }
+        let alpha = 1.0 - (k - 0.45) / 0.55;
         let rgba = decal.base.to_srgba();
-        if let Some(mut material) = materials.get_mut(&decal.material) {
-            material.base.base_color =
-                Color::srgba(rgba.red, rgba.green, rgba.blue, rgba.alpha * alpha);
+        let target_alpha = rgba.alpha * alpha;
+        let needs_write = materials
+            .get(&decal.material)
+            .is_some_and(|material| (material.base.base_color.alpha() - target_alpha).abs() > 1e-3);
+        if needs_write && let Some(mut material) = materials.get_mut(&decal.material) {
+            material.base.base_color = Color::srgba(rgba.red, rgba.green, rgba.blue, target_alpha);
         }
     }
 }

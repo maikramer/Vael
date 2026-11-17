@@ -768,6 +768,9 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     // `WorldTiledTextures` é consumido aqui; escrever o sampler noutro
     // sistema reabria a corrida clamp/REPEAT das texturas de chão).
     app.add_plugins(textures::TexturesPlugin);
+    // Contadores do decode de GLB (`BEVY_EXT_GLTF_STATS=1` para uma linha a
+    // cada 5 s): a carga acontece antes de haver frames para o profiler ver.
+    app.add_plugins(crate::meshopt::GltfStatsPlugin);
     // Fase 2: Luau — SEM host na engine standalone (2026-11-15, onda final
     // do DELETE-MONOLITH): o host vivo (`LuauScriptPlugin`) morreu. Os
     // scripts de comportamento correm no BMS (`bevy_ext_luau`) e é o JOGO

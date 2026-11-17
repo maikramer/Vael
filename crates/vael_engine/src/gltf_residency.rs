@@ -127,11 +127,13 @@ pub fn load_radius() -> f32 {
 }
 
 fn load_budget() -> usize {
-    env_budget("VIBER_GLTF_LOAD_BUDGET", DEFAULT_LOAD_BUDGET)
+    static B: OnceLock<usize> = OnceLock::new();
+    *B.get_or_init(|| env_budget("VIBER_GLTF_LOAD_BUDGET", DEFAULT_LOAD_BUDGET))
 }
 
 fn unload_budget() -> usize {
-    env_budget("VIBER_GLTF_UNLOAD_BUDGET", DEFAULT_UNLOAD_BUDGET)
+    static B: OnceLock<usize> = OnceLock::new();
+    *B.get_or_init(|| env_budget("VIBER_GLTF_UNLOAD_BUDGET", DEFAULT_UNLOAD_BUDGET))
 }
 
 /// O que um `<GltfScene>` precisa para voltar a pedir o GLB: vive na âncora
@@ -209,9 +211,85 @@ impl GltfResidency {
         self.learned.get(url).copied()
     }
 
-    fn learn(&mut self, url: &str, radius: f32) {
-        let slot = self.learned.entry(url.to_owned()).or_insert(radius);
-        *slot = slot.max(radius);
+    fn learn(&mut self, url: &str, radius: f32) -> bool {
+        if let Some(slot) = self.learned.get_mut(url) {
+            if radius > *slot {
+                *slot = radius;
+                return true;
+            }
+            return false;
+        }
+        self.learned.insert(url.to_owned(), radius);
+        true
+    }
+}
+
+const CELL_SIZE: f32 = 128.0;
+
+#[inline]
+fn cell_of(pos: Vec3) -> IVec2 {
+    IVec2::new(
+        (pos.x / CELL_SIZE).floor() as i32,
+        (pos.z / CELL_SIZE).floor() as i32,
+    )
+}
+
+#[inline]
+fn cell_dist_sq_xz(cell: IVec2, pos: Vec3) -> f32 {
+    let min_x = cell.x as f32 * CELL_SIZE;
+    let max_x = min_x + CELL_SIZE;
+    let min_z = cell.y as f32 * CELL_SIZE;
+    let max_z = min_z + CELL_SIZE;
+    let cx = pos.x.clamp(min_x, max_x);
+    let cz = pos.z.clamp(min_z, max_z);
+    let dx = pos.x - cx;
+    let dz = pos.z - cz;
+    dx * dx + dz * dz
+}
+
+#[derive(Default)]
+pub struct GltfResidencyCache {
+    seeded: bool,
+    entity_cell: HashMap<Entity, IVec2>,
+    by_cell: HashMap<IVec2, Vec<Entity>>,
+    max_learned_cull: f32,
+    dirty: bool,
+    has_load_overflow: bool,
+    has_unload_overflow: bool,
+    last_booting: Option<bool>,
+    last_focus: Option<Vec3>,
+    last_eye: Option<Vec3>,
+    to_load: Vec<(f32, f32, Entity)>,
+    to_unload: Vec<Entity>,
+}
+
+impl GltfResidencyCache {
+    fn insert_or_move(&mut self, entity: Entity, cell: IVec2) {
+        if let Some(&old) = self.entity_cell.get(&entity) {
+            if old == cell {
+                return;
+            }
+            self.remove_from_bucket(entity, old);
+        }
+        self.entity_cell.insert(entity, cell);
+        self.by_cell.entry(cell).or_default().push(entity);
+    }
+
+    fn remove_entity(&mut self, entity: Entity) {
+        if let Some(old) = self.entity_cell.remove(&entity) {
+            self.remove_from_bucket(entity, old);
+        }
+    }
+
+    fn remove_from_bucket(&mut self, entity: Entity, cell: IVec2) {
+        if let Some(bucket) = self.by_cell.get_mut(&cell) {
+            if let Some(idx) = bucket.iter().position(|&e| e == entity) {
+                bucket.swap_remove(idx);
+            }
+            if bucket.is_empty() {
+                self.by_cell.remove(&cell);
+            }
+        }
     }
 }
 
@@ -250,33 +328,131 @@ fn scripted(
 
 /// Decide, por frame, que `<GltfScene>` pedem o GLB e quais o largam.
 #[allow(clippy::too_many_arguments)]
+#[allow(clippy::type_complexity)]
 pub fn drive_gltf_residency(
     mut commands: Commands,
     mut residency: ResMut<GltfResidency>,
     mut spawner: Option<ResMut<WorldInstanceSpawner>>,
-    server: Option<Res<AssetServer>>,
-    mode: Option<Res<crate::app::RunMode>>,
-    editor: Query<&GlobalTransform, With<crate::editor_camera::EditorCamera>>,
-    cameras: crate::editor_camera::EyeCameraQuery,
-    players: Query<Option<&GlobalTransform>, With<Player>>,
-    scripts: Query<(), With<LuaScriptRef>>,
-    parents: Query<&ChildOf>,
-    readiness: Option<Res<WorldReadiness>>,
-    time: Option<Res<Time>>,
-    mut clock: Local<f32>,
-    mut eval_frame: Local<u32>,
-    specs: Query<(
-        Entity,
-        &GltfSceneSpec,
-        &GlobalTransform,
-        Option<&CullDistance>,
-        Has<GltfScenePending>,
-        Has<WorldAssetRoot>,
-        Option<&WorldInstance>,
-        Has<CharacterAnimator>,
-        Has<GltfSceneFailed>,
-    )>,
+    // Os acessos vão em DOIS tuplos: um sistema do Bevy aceita no máximo 16
+    // parâmetros e este driver precisa de 26 (cache espacial, `Added`/`Changed`
+    // e `RemovedComponents` do streaming). Um tuplo é UM `SystemParam` — os
+    // nomes e os acessos no corpo ficam exatamente os mesmos.
+    world: (
+        Option<Res<AssetServer>>,
+        Option<Res<crate::app::RunMode>>,
+        Query<&GlobalTransform, With<crate::editor_camera::EditorCamera>>,
+        crate::editor_camera::EyeCameraQuery,
+        Query<Option<&GlobalTransform>, With<Player>>,
+        Query<(), With<LuaScriptRef>>,
+        Query<&ChildOf>,
+        Option<Res<WorldReadiness>>,
+        Option<Res<Time>>,
+        Local<f32>,
+        // Último `files` visto no `DecodeStats` — o log do decode só escreve
+        // quando entraram ficheiros novos no intervalo.
+        Local<u64>,
+        Local<u32>,
+        Local<GltfResidencyCache>,
+    ),
+    anchors: (
+        Query<
+            (Entity, &GlobalTransform, Option<&CullDistance>, &GltfSceneSpec),
+            (With<GltfSceneSpec>, Without<GltfSceneFailed>),
+        >,
+        Query<
+            (Entity, &GlobalTransform),
+            (
+                With<GltfSceneSpec>,
+                Without<GltfSceneFailed>,
+                Or<(Added<GltfSceneSpec>, Changed<GlobalTransform>)>,
+            ),
+        >,
+        Query<
+            (&GltfSceneSpec, &CullDistance),
+            (
+                With<GltfSceneSpec>,
+                Without<GltfSceneFailed>,
+                Or<(Added<CullDistance>, Changed<CullDistance>)>,
+            ),
+        >,
+        Query<
+            (),
+            (
+                With<GltfSceneSpec>,
+                Or<(
+                    Added<GltfScenePending>,
+                    Added<WorldAssetRoot>,
+                    Added<WorldInstance>,
+                    Added<GltfSceneFailed>,
+                )>,
+            ),
+        >,
+        Query<Entity, (With<GltfSceneSpec>, Added<GltfSceneFailed>)>,
+        RemovedComponents<GltfSceneSpec>,
+        RemovedComponents<WorldAssetRoot>,
+        RemovedComponents<GltfScenePending>,
+        Query<
+            (
+                Entity,
+                &GltfSceneSpec,
+                &GlobalTransform,
+                Option<&CullDistance>,
+                Option<&WorldInstance>,
+                Has<CharacterAnimator>,
+            ),
+            (
+                With<GltfSceneSpec>,
+                Without<GltfSceneFailed>,
+                Or<(
+                    With<GltfScenePending>,
+                    With<WorldAssetRoot>,
+                    With<WorldInstance>,
+                )>,
+            ),
+        >,
+        Query<
+            (&GltfSceneSpec, &GlobalTransform, Option<&CullDistance>),
+            (
+                Without<GltfSceneFailed>,
+                Without<GltfScenePending>,
+                Without<WorldAssetRoot>,
+                Without<WorldInstance>,
+            ),
+        >,
+    ),
 ) {
+    let _probe = bevy_engine_core::perf_probe::Probe::new("residency.gltf");
+    let (
+        server,
+        mode,
+        editor,
+        cameras,
+        players,
+        scripts,
+        parents,
+        readiness,
+        time,
+        mut clock,
+        mut decode_files,
+        mut eval_frame,
+        mut cache,
+    ) = world;
+    let (
+        all_anchors,
+        spatial_updates,
+        cull_updates,
+        state_changed,
+        failed_added,
+        mut removed_specs,
+        mut removed_root,
+        mut removed_pending,
+        residents,
+        deferred_only,
+    ) = anchors;
+    // `Local` chega aqui por `Deref`: sem este re-empréstimo o borrow checker
+    // tratava `cache.by_cell.get(..)` e `cache.to_load.push(..)` (campos
+    // disjuntos) como empréstimos do `Local` inteiro e recusava o corpo.
+    let cache = &mut *cache;
     if !enabled() {
         return;
     }
@@ -284,6 +460,50 @@ pub fn drive_gltf_residency(
     if mode.as_deref() == Some(&crate::app::RunMode::Edit) {
         return;
     }
+
+    // Maintain spatial cell index and drain RemovedComponents EVERY frame so no
+    // 2-frame Bevy removal event can expire during EVAL_EVERY throttling.
+    for entity in removed_specs.read() {
+        cache.remove_entity(entity);
+        cache.dirty = true;
+    }
+    for entity in &failed_added {
+        cache.remove_entity(entity);
+        cache.dirty = true;
+    }
+    for _ in removed_root.read() {
+        cache.dirty = true;
+    }
+    for _ in removed_pending.read() {
+        cache.dirty = true;
+    }
+    if !state_changed.is_empty() {
+        cache.dirty = true;
+    }
+    if !cache.seeded {
+        for (entity, global, cull, spec) in &all_anchors {
+            cache.insert_or_move(entity, cell_of(global.translation()));
+            if let Some(cull) = cull {
+                if residency.learn(&spec.url, cull.radius) {
+                    cache.max_learned_cull = cache.max_learned_cull.max(cull.radius);
+                }
+            }
+        }
+        cache.seeded = true;
+        cache.dirty = true;
+    } else {
+        for (entity, global) in &spatial_updates {
+            cache.insert_or_move(entity, cell_of(global.translation()));
+            cache.dirty = true;
+        }
+        for (spec, cull) in &cull_updates {
+            if residency.learn(&spec.url, cull.radius) {
+                cache.max_learned_cull = cache.max_learned_cull.max(cull.radius);
+            }
+            cache.dirty = true;
+        }
+    }
+
     let Some(server) = server.as_deref() else {
         return;
     };
@@ -302,65 +522,129 @@ pub fn drive_gltf_residency(
     if !booting && *eval_frame % EVAL_EVERY != 0 {
         return;
     }
+
+    let focus_moved = cache
+        .last_focus
+        .is_none_or(|prev| prev.distance_squared(focus) > 0.25);
+    let eye_moved = match (cache.last_eye, eye) {
+        (None, None) => false,
+        (Some(a), Some(b)) => a.distance_squared(b) > 0.25,
+        _ => true,
+    };
+    let booting_changed = cache.last_booting != Some(booting);
+    let need_eval = cache.dirty
+        || cache.has_load_overflow
+        || cache.has_unload_overflow
+        || focus_moved
+        || eye_moved
+        || booting_changed;
+    if !need_eval {
+        return;
+    }
+
+    cache.dirty = false;
+    cache.last_focus = Some(focus);
+    cache.last_eye = eye;
+    cache.last_booting = Some(booting);
     let budget_scale = if booting { 1 } else { EVAL_EVERY as usize };
 
-    let mut to_load: Vec<(f32, f32, Entity)> = Vec::new();
-    let mut to_unload: Vec<Entity> = Vec::new();
+    cache.to_load.clear();
+    cache.to_unload.clear();
     let mut resident = 0usize;
-    let mut deferred = 0usize;
-    for (entity, spec, global, cull, pending, root, instance, animator, failed) in &specs {
-        if failed {
-            // Um URL quebrado não é residente nem adiado: está morto.
-            continue;
-        }
-        // Corte recente: o `AutoCull` acabou de medir o bbox desta instância.
-        if let Some(cull) = cull {
-            residency.learn(&spec.url, cull.radius);
-        }
+    for (entity, spec, global, cull, _instance, animator) in &residents {
+        resident += 1;
         let p = global.translation();
-        let d = focus.distance(p).min(
-            eye.map_or(f32::MAX, |e| e.distance(p)),
-        );
-        let is_resident = pending || root || instance.is_some();
-        if is_resident {
-            resident += 1;
-            let keep = residency_radius(cull.map(|c| c.radius)).max(
-                residency.learned_cull(&spec.url).unwrap_or(0.0),
-            );
-            if d > keep * UNLOAD_HYSTERESIS {
-                // `animator`: a subárvore tem um rig bindado — o
-                // `CharacterAnimator` guarda a entidade do `AnimationPlayer`.
-                if !animator && !scripted(entity, &parents, &scripts) {
-                    to_unload.push(entity);
-                }
+        let d_sq = focus
+            .distance_squared(p)
+            .min(eye.map_or(f32::MAX, |e| e.distance_squared(p)));
+        let keep = residency_radius(cull.map(|c| c.radius))
+            .max(residency.learned_cull(&spec.url).unwrap_or(0.0));
+        let keep_cutoff = keep * UNLOAD_HYSTERESIS;
+        if d_sq > keep_cutoff * keep_cutoff {
+            // `animator`: a subárvore tem um rig bindado — o
+            // `CharacterAnimator` guarda a entidade do `AnimationPlayer`.
+            if !animator && !scripted(entity, &parents, &scripts) {
+                cache.to_unload.push(entity);
             }
-        } else {
-            deferred += 1;
+        }
+    }
+
+    let search_r = load_radius()
+        .max(ready_r + CULL_MARGIN)
+        .max(cache.max_learned_cull + CULL_MARGIN);
+    let search_r_sq = search_r * search_r;
+    let f_min_x = ((focus.x - search_r) / CELL_SIZE).floor() as i32;
+    let f_max_x = ((focus.x + search_r) / CELL_SIZE).floor() as i32;
+    let f_min_z = ((focus.z - search_r) / CELL_SIZE).floor() as i32;
+    let f_max_z = ((focus.z + search_r) / CELL_SIZE).floor() as i32;
+
+    let mut check_cell = |cell: IVec2| {
+        if cell_dist_sq_xz(cell, focus) > search_r_sq
+            && !eye.is_some_and(|e| cell_dist_sq_xz(cell, e) <= search_r_sq)
+        {
+            return;
+        }
+        let Some(entities) = cache.by_cell.get(&cell) else {
+            return;
+        };
+        for &entity in entities {
+            let Ok((spec, global, cull)) = deferred_only.get(entity) else {
+                continue;
+            };
+            let p = global.translation();
+            let d_sq = focus
+                .distance_squared(p)
+                .min(eye.map_or(f32::MAX, |e| e.distance_squared(p)));
             let load_at = residency_radius(
                 cull.map(|c| c.radius)
                     .or_else(|| residency.learned_cull(&spec.url)),
             );
-            if d <= load_at {
-                let d_ready = hero.map_or(f32::MAX, |h| h.distance(p));
-                to_load.push((d, d_ready, entity));
+            if d_sq <= load_at * load_at {
+                let d_ready_sq = hero.map_or(f32::MAX, |h| h.distance_squared(p));
+                cache.to_load.push((d_sq, d_ready_sq, entity));
+            }
+        }
+    };
+
+    for cz in f_min_z..=f_max_z {
+        for cx in f_min_x..=f_max_x {
+            check_cell(IVec2::new(cx, cz));
+        }
+    }
+    if let Some(e) = eye {
+        let e_min_x = ((e.x - search_r) / CELL_SIZE).floor() as i32;
+        let e_max_x = ((e.x + search_r) / CELL_SIZE).floor() as i32;
+        let e_min_z = ((e.z - search_r) / CELL_SIZE).floor() as i32;
+        let e_max_z = ((e.z + search_r) / CELL_SIZE).floor() as i32;
+        for cz in e_min_z..=e_max_z {
+            for cx in e_min_x..=e_max_x {
+                if cx >= f_min_x && cx <= f_max_x && cz >= f_min_z && cz <= f_max_z {
+                    continue;
+                }
+                check_cell(IVec2::new(cx, cz));
             }
         }
     }
+
+    let deferred = cache.entity_cell.len().saturating_sub(resident);
     // O mais perto primeiro: o anel do véu fecha antes de o largo começar.
-    to_load.sort_by(|a, b| a.0.total_cmp(&b.0));
+    cache.to_load.sort_by(|a, b| a.0.total_cmp(&b.0));
     // Atrás do véu só entra o anel que o segura: o largo competiria com ele e
     // com o bake dos colliders do terreno (frames de ~1 s medidos no arranque).
     let mut budget = if booting { 0 } else { load_budget() * budget_scale };
+    let ready_r_sq = ready_r * ready_r;
     let mut activated = 0usize;
-    for (_, d_ready, entity) in to_load {
-        let essential = d_ready <= ready_r;
+    let mut load_overflow = false;
+    for &(_, d_ready_sq, entity) in &cache.to_load {
+        let essential = d_ready_sq <= ready_r_sq;
         if !essential {
             if budget == 0 {
+                load_overflow = true;
                 continue;
             }
             budget -= 1;
         }
-        let Ok((_, spec, _, cull, _, _, _, _, _)) = specs.get(entity) else {
+        let Ok((spec, _, cull)) = deferred_only.get(entity) else {
             continue;
         };
         activate(
@@ -373,6 +657,7 @@ pub fn drive_gltf_residency(
         );
         activated += 1;
     }
+    cache.has_load_overflow = load_overflow && !booting;
     // Os contadores são o retrato do FIM do frame: uma activação conta como
     // residente já neste frame (era `deferred` no início).
     residency.resident = resident + activated;
@@ -380,12 +665,14 @@ pub fn drive_gltf_residency(
 
     let mut budget = unload_budget() * budget_scale;
     let mut unloaded = 0usize;
-    for entity in to_unload {
+    let mut unload_overflow = false;
+    for &entity in &cache.to_unload {
         if budget == 0 {
+            unload_overflow = true;
             break;
         }
         budget -= 1;
-        let instance = specs.get(entity).ok().and_then(|s| s.6);
+        let instance = residents.get(entity).ok().and_then(|s| s.4);
         if let (Some(_), Some(instance)) = (spawner.as_mut(), instance) {
             // Só o `WorldInstanceSpawner` sabe desmontar a instância inteira
             // (incluindo entidades que já saíram da hierarquia).
@@ -403,6 +690,7 @@ pub fn drive_gltf_residency(
         residency.unloaded_total += 1;
         unloaded += 1;
     }
+    cache.has_unload_overflow = unload_overflow;
     residency.resident = residency.resident.saturating_sub(unloaded);
     residency.deferred += unloaded;
 
@@ -422,6 +710,26 @@ pub fn drive_gltf_residency(
                     unloaded,
                     residency.activated_total,
                     residency.unloaded_total
+                );
+            }
+            // O custo do decode é invisível de fora e é exactamente o que a
+            // passagem única do `bevy_ext_gltf` veio cortar (bytes, tempo de
+            // CPU e o pico de memória que o RSS não mostra por si).
+            let decode = crate::meshopt::decode_stats();
+            if decode.files != *decode_files {
+                *decode_files = decode.files;
+                info!(
+                    "gltf decode: {} ficheiros ({} reescritos), {:.1} MB -> {:.1} MB (×{:.2}), \
+                     {:.0} ms de CPU (dequant {:.0} ms), {} relabels UASTC, {} sem suporte",
+                    decode.files,
+                    decode.rewritten,
+                    decode.bytes_in as f64 / 1e6,
+                    decode.bytes_out as f64 / 1e6,
+                    decode.ratio(),
+                    decode.decode_nanos as f64 / 1e6,
+                    decode.dequant_nanos as f64 / 1e6,
+                    decode.uastc_relabels,
+                    decode.unsupported,
                 );
             }
         }
@@ -627,5 +935,66 @@ mod tests {
             app.world().get::<WorldAssetRoot>(npc).is_some(),
             "NPC com script não perde a subárvore"
         );
+    }
+
+    #[test]
+    fn spatial_cache_loads_on_approach_and_unloads_when_leaving() {
+        let mut app = test_app(Vec3::ZERO);
+        // `WorldReadiness` tem campos privados (a época corrente): o default
+        // dá-os e só o `ready` público é que o teste precisa de forçar.
+        let mut readiness = WorldReadiness::default();
+        readiness.ready = true;
+        app.insert_resource(readiness);
+        let prop = anchor(&mut app, Vec3::new(1000.0, 0.0, 0.0));
+        app.world_mut()
+            .entity_mut(prop)
+            .insert(CullDistance::new(80.0));
+
+        for _ in 0..EVAL_EVERY {
+            app.update();
+        }
+        assert!(app.world().get::<GltfScenePending>(prop).is_none());
+
+        // Move hero close to prop (~100m away).
+        let player = app
+            .world_mut()
+            .query_filtered::<Entity, With<Player>>()
+            .single(app.world())
+            .unwrap();
+        app.world_mut()
+            .get_mut::<Transform>(player)
+            .unwrap()
+            .translation = Vec3::new(900.0, 0.0, 0.0);
+        for _ in 0..EVAL_EVERY {
+            app.update();
+        }
+        assert!(app.world().get::<GltfScenePending>(prop).is_some());
+
+        // Stationary ticks keep it resident.
+        for _ in 0..EVAL_EVERY {
+            app.update();
+        }
+        assert!(app.world().get::<GltfScenePending>(prop).is_some());
+
+        // Move hero back to origin (1000m > keep * 1.3) -> unloads.
+        app.world_mut()
+            .get_mut::<Transform>(player)
+            .unwrap()
+            .translation = Vec3::ZERO;
+        for _ in 0..EVAL_EVERY {
+            app.update();
+        }
+        assert!(app.world().get::<GltfScenePending>(prop).is_none());
+        assert_eq!(app.world().resource::<GltfResidency>().unloaded_total, 1);
+    }
+
+    #[test]
+    fn learned_cull_keeps_largest_radius_without_shrinking() {
+        let mut residency = GltfResidency::default();
+        assert!(residency.learn("trees/oak.glb", 80.0));
+        assert!(!residency.learn("trees/oak.glb", 60.0));
+        assert_eq!(residency.learned_cull("trees/oak.glb"), Some(80.0));
+        assert!(residency.learn("trees/oak.glb", 140.0));
+        assert_eq!(residency.learned_cull("trees/oak.glb"), Some(140.0));
     }
 }
