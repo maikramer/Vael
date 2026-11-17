@@ -746,15 +746,26 @@ fn dump_schedules(world: &mut World) {
     if std::env::var_os("VAEL_DUMP_SCHEDULES").is_none() {
         return;
     }
-    for label in [bevy::app::Last, bevy::app::PostUpdate, bevy::app::PreUpdate] {
-        let Some(schedule) = world.get_schedule(label) else {
-            continue;
+    dump_schedule(world, bevy::app::Last);
+    dump_schedule(world, bevy::app::PostUpdate);
+    dump_schedule(world, bevy::app::PreUpdate);
+}
+
+/// O Bevy 0.20 não expõe `World::get_schedule` (os labels são tipos
+/// diferentes): o `try_schedule_scope` remove o schedule, empresta-o e
+/// reinsere-o — é o único caminho público para o ler.
+fn dump_schedule(world: &mut World, label: impl bevy::ecs::schedule::ScheduleLabel) {
+    let tag = format!("{label:?}");
+    let found = world.try_schedule_scope(label, |_, schedule| {
+        let Ok(systems) = schedule.systems() else {
+            info!("schedule {tag}: executor por inicializar");
+            return;
         };
-        let names: Vec<&str> = schedule
-            .systems()
-            .map(|entry| entry.system.name())
-            .collect();
-        info!("schedule {label:?}: {} sistemas {names:?}", names.len());
+        let names: Vec<String> = systems.map(|(_, system)| system.name().to_string()).collect();
+        info!("schedule {tag}: {} sistemas {names:?}", names.len());
+    });
+    if found.is_err() {
+        info!("schedule {tag}: ausente");
     }
 }
 
