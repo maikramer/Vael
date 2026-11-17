@@ -2218,69 +2218,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_a.post-w-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.80 0.00 -7.20" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.8 0.0 -7.2" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_a.xml",
         origin_path: [70],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081546)
+    jackdaw_scene_types::node_id::SceneNodeId(3654303496967749978)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/house_a.xml",
             origin_path: [70, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081547)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/house_a.xml",
-            origin_path: [70, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081548)
+        jackdaw_scene_types::node_id::SceneNodeId(1649095048731259341)
     ]
     --
     #"interior.v2.house_a.post-w-lantern"
@@ -2365,69 +2337,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_a.post-e-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.80 0.00 -7.20" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.8 0.0 -7.2" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_a.xml",
         origin_path: [72],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081552)
+    jackdaw_scene_types::node_id::SceneNodeId(3605811407013130464)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/house_a.xml",
             origin_path: [72, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081553)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/house_a.xml",
-            origin_path: [72, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081554)
+        jackdaw_scene_types::node_id::SceneNodeId(3645584796040424095)
     ]
     --
     #"interior.v2.house_a.post-e-lantern"
@@ -2509,89 +2453,44 @@ bevy_ecs::hierarchy::Children [
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -4.8, y: 0.0, z: 7.75 },
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.house_a.tapestry-n" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.80 0.00 7.75" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.8 0.0 7.75" },
         ],
         text: "",
         origin_file: "scenes/interiors/house_a.xml",
         origin_path: [74],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081558)
+    jackdaw_scene_types::node_id::SceneNodeId(1216654203566608093)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.96, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.96 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.69 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/house_a.xml",
             origin_path: [74, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081559)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.52 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a3e2e" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/house_a.xml",
-            origin_path: [74, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081560)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.95 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/house_a.xml",
-            origin_path: [74, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081561)
+        jackdaw_scene_types::node_id::SceneNodeId(1180742288100334342)
     ]
     --
     #"interior.v2.house_a.hearth-smoke"

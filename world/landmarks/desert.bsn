@@ -3369,14 +3369,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"mojao-deserto-1"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 184.0, y: 50.75, z: 58.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.258819, z: 0.0, w: 0.965926 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.6, y: 0.9, z: 0.9 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3384,48 +3384,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "184 50.75 58" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 30 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-deserto-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "184.0 50.75 58.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
                 origin_path: [0, 63],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085778)
+            jackdaw_scene_types::node_id::SceneNodeId(2936332598760231343)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_cairn"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.45, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.45 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.8 0.45 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a88464" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",
                     origin_path: [0, 63, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085779)
+                jackdaw_scene_types::node_id::SceneNodeId(1952438212271242839)
             ]
             --
-            #Entity
+            #"mojao-deserto-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 196.0, y: 51.439999, z: 70.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.4, y: 0.8, z: 0.8 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3433,48 +3428,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "196 51.44 70" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -25 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-deserto-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "196.0 51.439999 70.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
                 origin_path: [0, 64],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085780)
+            jackdaw_scene_types::node_id::SceneNodeId(3492003657476111450)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_cairn"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.4, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.4 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.4 0.4" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9c7c5c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",
                     origin_path: [0, 64, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085781)
+                jackdaw_scene_types::node_id::SceneNodeId(2579724071381026148)
             ]
             --
-            #Entity
+            #"mojao-deserto-3"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 186.0, y: 51.290001, z: 70.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.5373, z: 0.0, w: 0.843391 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.3, y: 1.3, z: 1.3 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.2, y: 0.7, z: 0.7 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/stone_cairn_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3482,38 +3472,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "186 51.29 70" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 65 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-deserto-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "186.0 51.290001 70.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
                 origin_path: [0, 65],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085782)
+            jackdaw_scene_types::node_id::SceneNodeId(1609790232663715297)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_cairn"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.35 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.6 0.35 0.35" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a08060" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/stone_cairn_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",
                     origin_path: [0, 65, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085783)
+                jackdaw_scene_types::node_id::SceneNodeId(3733376175412905671)
             ]
             --
             #Entity

@@ -2391,69 +2391,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.post-w-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-10.00 0.00 -4.40" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-10.0 0.0 -4.4" },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
         origin_path: [72],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081427)
+    jackdaw_scene_types::node_id::SceneNodeId(1205633957688637833)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/forge.xml",
             origin_path: [72, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081428)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/forge.xml",
-            origin_path: [72, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081429)
+        jackdaw_scene_types::node_id::SceneNodeId(1606781479141372333)
     ]
     --
     #"interior.v2.forge.post-w-lantern"
@@ -2538,69 +2510,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.post-e-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.00 0.00 -4.40" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "10.0 0.0 -4.4" },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
         origin_path: [74],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081433)
+    jackdaw_scene_types::node_id::SceneNodeId(1381228995038975822)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/forge.xml",
             origin_path: [74, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081434)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/forge.xml",
-            origin_path: [74, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081435)
+        jackdaw_scene_types::node_id::SceneNodeId(1998187957247250693)
     ]
     --
     #"interior.v2.forge.post-e-lantern"
@@ -2682,178 +2626,88 @@ bevy_ecs::hierarchy::Children [
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -4.2, y: 0.0, z: 7.76 },
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.banner-nw" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.20 0.00 7.76" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.2 0.0 7.76" },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
         origin_path: [76],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081439)
+    jackdaw_scene_types::node_id::SceneNodeId(3998159703885151283)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 2.0, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.00 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.60 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/forge.xml",
             origin_path: [76, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081440)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.56 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/forge.xml",
-            origin_path: [76, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081441)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.91, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.91 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/forge.xml",
-            origin_path: [76, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081442)
+        jackdaw_scene_types::node_id::SceneNodeId(3717960774391867233)
     ]
     --
     #"interior.v2.forge.banner-ne"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 4.2, y: 0.0, z: 7.76 },
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.forge.banner-ne" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.20 0.00 7.76" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.2 0.0 7.76" },
         ],
         text: "",
         origin_file: "scenes/interiors/forge.xml",
         origin_path: [77],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081443)
+    jackdaw_scene_types::node_id::SceneNodeId(1270628194553642402)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 2.0, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.00 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.60 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/forge.xml",
             origin_path: [77, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081444)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.56 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/forge.xml",
-            origin_path: [77, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081445)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.91, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.91 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/forge.xml",
-            origin_path: [77, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081446)
+        jackdaw_scene_types::node_id::SceneNodeId(3864813306808504501)
     ]
     --
     #"interior.v2.forge.furnace-smoke"

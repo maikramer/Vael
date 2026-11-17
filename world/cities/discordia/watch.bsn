@@ -424,138 +424,41 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.watch-banner" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.60 0.00 30.00" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -45 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "26.6 0.0 30.0" },
             ],
             text: "",
             origin_file: "world/cities/discordia/watch.xml",
             origin_path: [45],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083937)
+        jackdaw_scene_types::node_id::SceneNodeId(2710261970514640297)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene banner_stand"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.16 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.16 0.24" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/watch.xml",
                 origin_path: [45, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083938)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.05 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.07 1.85 0.07" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/watch.xml",
-                origin_path: [45, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083939)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 3.65 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.04 0.04" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/watch.xml",
-                origin_path: [45, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083940)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.90 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.68 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#2f4d6b" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/watch.xml",
-                origin_path: [45, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083941)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.18 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.07 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/watch.xml",
-                origin_path: [45, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083942)
+            jackdaw_scene_types::node_id::SceneNodeId(1774222189555297910)
         ]
     ]
 ]

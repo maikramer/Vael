@@ -2819,11 +2819,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"menir-floresta-1"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 90.0, y: 51.5606, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2831,46 +2834,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "90 51.5606 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "90.0 51.5606 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 55],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085967)
+            jackdaw_scene_types::node_id::SceneNodeId(2536937196522988910)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 55, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085968)
+                jackdaw_scene_types::node_id::SceneNodeId(2152614682382310509)
             ]
             --
-            #Entity
+            #"menir-floresta-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 94.0, y: 50.744301, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2878,46 +2878,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "94 50.7443 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "94.0 50.744301 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 56],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085969)
+            jackdaw_scene_types::node_id::SceneNodeId(3973945301201399987)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 56, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085970)
+                jackdaw_scene_types::node_id::SceneNodeId(3377177741320554874)
             ]
             --
-            #Entity
+            #"menir-floresta-3"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 98.0, y: 49.966999, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2925,46 +2922,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "98 49.967 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "98.0 49.966999 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 57],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085971)
+            jackdaw_scene_types::node_id::SceneNodeId(1166988831895645909)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 57, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085972)
+                jackdaw_scene_types::node_id::SceneNodeId(3116373783703678693)
             ]
             --
-            #Entity
+            #"menir-floresta-4"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 102.0, y: 49.369598, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2972,46 +2966,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "102 49.3696 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "102.0 49.369598 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 58],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085973)
+            jackdaw_scene_types::node_id::SceneNodeId(2980610221854370367)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 58, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085974)
+                jackdaw_scene_types::node_id::SceneNodeId(4346568678104358304)
             ]
             --
-            #Entity
+            #"menir-floresta-5"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 106.0, y: 49.341099, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3019,46 +3010,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "106 49.3411 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "106.0 49.341099 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 59],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085975)
+            jackdaw_scene_types::node_id::SceneNodeId(1327684606395275722)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 59, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085976)
+                jackdaw_scene_types::node_id::SceneNodeId(3174783450363710927)
             ]
             --
-            #Entity
+            #"menir-floresta-6"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 110.0, y: 49.7416, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3066,46 +3054,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "110 49.7416 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "110.0 49.7416 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 60],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085977)
+            jackdaw_scene_types::node_id::SceneNodeId(2607571764934361846)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 60, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085978)
+                jackdaw_scene_types::node_id::SceneNodeId(2469991609831661065)
             ]
             --
-            #Entity
+            #"menir-floresta-7"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 114.0, y: 50.411098, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3113,46 +3098,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "114 50.4111 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-7" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "114.0 50.411098 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 61],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085979)
+            jackdaw_scene_types::node_id::SceneNodeId(3610647191401837003)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 61, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085980)
+                jackdaw_scene_types::node_id::SceneNodeId(3508357101585111760)
             ]
             --
-            #Entity
+            #"menir-floresta-8"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 118.0, y: 51.970699, z: 251.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.052336, z: 0.0, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.605, y: 1.114, z: 0.763 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/city_wall_seg_b_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3160,46 +3142,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "118 51.9707 251" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.0 4.4 0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "menir-floresta-8" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "118.0 51.970699 251.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 62],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085981)
+            jackdaw_scene_types::node_id::SceneNodeId(2032603302960479841)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene city_wall_seg_b"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.2, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.2 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.0 2.2 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/city_wall_seg_b_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 62, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085982)
+                jackdaw_scene_types::node_id::SceneNodeId(2795617024674121070)
             ]
             --
-            #Entity
+            #"laje-floresta-1"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 48.700001, z: 221.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3207,45 +3186,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.7 221" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 48.700001 221.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 63],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085983)
+            jackdaw_scene_types::node_id::SceneNodeId(3136130655207364336)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 63, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085984)
+                jackdaw_scene_types::node_id::SceneNodeId(2729116609300387486)
             ]
             --
-            #Entity
+            #"laje-floresta-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 48.422199, z: 220.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3253,45 +3230,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 48.4222 220" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 48.422199 220.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 64],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085985)
+            jackdaw_scene_types::node_id::SceneNodeId(2173244453310847151)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 64, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085986)
+                jackdaw_scene_types::node_id::SceneNodeId(2556034595988604863)
             ]
             --
-            #Entity
+            #"laje-floresta-3"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 47.997299, z: 219.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3299,45 +3274,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 47.9973 219" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 47.997299 219.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 65],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085987)
+            jackdaw_scene_types::node_id::SceneNodeId(2277159440320552530)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 65, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085988)
+                jackdaw_scene_types::node_id::SceneNodeId(1471637950910658961)
             ]
             --
-            #Entity
+            #"laje-floresta-4"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 47.459999, z: 218.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3345,45 +3318,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 47.46 218" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 47.459999 218.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 66],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085989)
+            jackdaw_scene_types::node_id::SceneNodeId(2293576077976908345)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 66, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085990)
+                jackdaw_scene_types::node_id::SceneNodeId(4118264317857505006)
             ]
             --
-            #Entity
+            #"laje-floresta-5"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 46.872501, z: 217.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3391,45 +3362,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 46.8725 217" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 46.872501 217.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 67],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085991)
+            jackdaw_scene_types::node_id::SceneNodeId(2176909076312832606)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 67, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085992)
+                jackdaw_scene_types::node_id::SceneNodeId(4353583495203290316)
             ]
             --
-            #Entity
+            #"laje-floresta-6"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 46.298, z: 216.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3437,45 +3406,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 46.298 216" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 46.298 216.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 68],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085993)
+            jackdaw_scene_types::node_id::SceneNodeId(4222282703103436191)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 68, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085994)
+                jackdaw_scene_types::node_id::SceneNodeId(4044221668756168833)
             ]
             --
-            #Entity
+            #"laje-floresta-7"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 45.7985, z: 215.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3483,45 +3450,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 45.7985 215" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-7" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 45.7985 215.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 69],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085995)
+            jackdaw_scene_types::node_id::SceneNodeId(1823455303145870581)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 69, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085996)
+                jackdaw_scene_types::node_id::SceneNodeId(2821510756057693976)
             ]
             --
-            #Entity
+            #"laje-floresta-8"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 104.0, y: 45.419201, z: 214.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 1.8, y: 0.25, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3529,38 +3494,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104 45.4192 214" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 4.4 0.3 1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "laje-floresta-8" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "104.0 45.419201 214.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/forest.xml",
                 origin_path: [0, 70],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085997)
+            jackdaw_scene_types::node_id::SceneNodeId(3087311163802028092)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.15, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.15 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.2 0.15 0.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d887c" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/forest.xml",
                     origin_path: [0, 70, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216085998)
+                jackdaw_scene_types::node_id::SceneNodeId(1313297057482632463)
             ]
             --
             #"sceneref.v3.forest-circle-crystal-w"

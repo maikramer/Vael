@@ -1,0 +1,166 @@
+# Grupo worldprops — props que substituem os objetos ainda feitos de primitivas
+# (bandeiras, carroças, carrinho de mina, cais, paliçada, varal, leiras, derrick,
+# portão do mercado e abrigo do posto). Consumidos por URL/prefab no mundo.
+# Regenerar: cd assets && gameassets resume --profile game.yaml --manifest manifests/props-world
+output_dir: ../public/assets
+meshes_subdir: meshes/props
+images_subdir: images/props
+assets:
+  - id: banner_stand
+    idea:
+      cartoon fantasy tall wooden banner stand, single thick round wooden pole
+      planted in a low grey stone plinth, short horizontal cross arm at the top,
+      long rectangular cloth banner hanging from the arm, deep red cloth with
+      gold trim and a simple heraldic emblem, weathered timber, painterly
+      storybook style, white background, straight front view
+    kind: environment
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [1.6, 4.8, 1.2]
+  - id: hand_cart
+    seed: 70201
+    idea:
+      cartoon fantasy wooden hand cart, one single clean open rectangular cargo
+      box made of straight planks with four square corner brackets, two round
+      spoked wheels on a straight axle at the back, two straight pull shafts
+      pointing forward low to the ground, empty open top, simple clean silhouette,
+      no canopy, no lid, weathered warm brown timber, painterly storybook style,
+      white background, side view
+    kind: prop
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [1.5, 1.5, 3.8]
+  - id: covered_wagon
+    seed: 70207
+    idea:
+      cartoon fantasy covered wagon, simple clean wooden box body on four round
+      spoked wheels, one smooth curved pale canvas canopy over the top like a
+      half cylinder, two straight wooden pull shafts at the front, tidy readable
+      silhouette, medieval pilgrim caravan wagon, no tears, painterly storybook
+      style, white background, three quarter side view
+    kind: prop
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [2.6, 2.8, 5.2]
+  - id: minecart
+    seed: 70141
+    idea:
+      cartoon fantasy mine ore cart, small heavy wooden hopper made of thick
+      planks with dark iron bands, four small solid iron wheels on short axles,
+      empty inside, ore dust stains, painterly storybook style, white
+      background, three quarter view
+    kind: prop
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [1.4, 1.1, 1.9]
+  - id: mine_rail
+    seed: 70147
+    idea:
+      cartoon fantasy mine rail track segment, two parallel dark iron rails on
+      short weathered wooden sleepers, straight flat run, gravel dust, no cart,
+      painterly storybook style, white background, top three quarter view
+    kind: prop
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [1.3, 0.2, 5.6]
+  - id: jetty
+    seed: 70151
+    idea:
+      cartoon fantasy wooden fishing jetty segment, rough plank deck on thick
+      round timber piles driven into the water, a couple of crates and a coiled
+      rope at the end, weathered grey-brown timber, painterly storybook style,
+      white background, three quarter view
+    kind: environment
+    category: building
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [2.8, 2.6, 6.6]
+  - id: clothesline
+    seed: 70163
+    idea:
+      cartoon fantasy clothesline, two rough wooden posts holding a sagging rope,
+      three simple linen and wool garments hanging from it, dry grass at the
+      base, painterly storybook style, white background, front view
+    kind: prop
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [4.6, 2.1, 0.35]
+  - id: crop_row
+    seed: 70169
+    idea:
+      cartoon fantasy vegetable crop row, low raised bed of dark tilled soil
+      with a neat row of leafy green cabbages and small sprouts, short wooden
+      edging planks, painterly storybook style, white background, top three
+      quarter view
+    kind: prop
+    category: prop
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [2.0, 0.7, 1.0]
+  - id: mine_derrick
+    seed: 70173
+    idea:
+      cartoon fantasy mine derrick, tall wooden A frame headframe of rough beams
+      over a square shaft opening, iron pulley wheel and hanging rope at the
+      top, cross braces, weathered timber with dark iron bolts, painterly
+      storybook style, white background, front three quarter view
+    kind: environment
+    category: building
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [5.2, 4.2, 4.4]
+  - id: market_gate
+    seed: 70179
+    idea:
+      cartoon fantasy wooden market gate arch, two square timber posts with
+      stone footings, long horizontal lintel beam, small triangular pennant
+      banners in red gold and blue hanging from the beam, open passage below,
+      warm brown timber, painterly storybook style, white background, straight
+      front view
+    kind: environment
+    category: building
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [6.0, 3.9, 0.9]
+  - id: assay_shelter
+    seed: 70183
+    idea:
+      cartoon fantasy miners lean to shelter, open fronted wooden hut with four
+      rough posts, slanted plank roof, low stone base and a workbench inside,
+      no walls on the front, weathered timber, painterly storybook style, white
+      background, three quarter front view
+    kind: environment
+    category: building
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [3.6, 2.8, 3.0]
+  - id: ruined_tower
+    seed: 70189
+    idea:
+      cartoon fantasy ruined stone watchtower, broken cylindrical tower stump
+      with a jagged collapsed top, missing roof, cracked mossy stone blocks,
+      dark empty window slit, rubble at the base, painterly storybook style,
+      white background, three quarter view
+    kind: environment
+    category: building
+    pipeline: [3d, paint, lod, collision]
+    omni:
+      control_type: bbox
+      size_m: [3.2, 8.0, 3.2]

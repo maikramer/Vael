@@ -138,268 +138,62 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/ruined_tower_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "torre-quebrada" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 100.2701 360" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "140.0 100.270103 360.0" },
             ],
             text: "",
             origin_file: "world/landforms/rampart.xml",
             origin_path: [0, 5],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085584)
+        jackdaw_scene_types::node_id::SceneNodeId(1418642853933988058)
         bevy_ecs::hierarchy::Children [
-            #"torre-corpo"
+            #"GltfScene ruined_tower"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Lathe",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "name", value: "torre-corpo" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "3.2 0 3.2 1.2 2.7 1.4 2.7 4.4 2.55 4.6 2.55 8 2.4 8.2 2.4 12.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "segments", value: "32" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a948a" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/ruined_tower_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",
                 origin_path: [0, 5, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085585)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.7, y: 13.1, z: 0.4 },
-                rotation: glam::Quat { x: 0.009562, y: 0.121494, z: 0.077874, w: 0.989486 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.7 13.1 0.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.5 0.9 1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 14 9" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#847e74" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085586)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.6, y: 12.4, z: -1.7 },
-                rotation: glam::Quat { x: 0.019945, y: -0.189764, z: -0.102608, w: 0.97625 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.6 12.4 -1.7" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.1 0.7 1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -22 -12" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#807a70" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085587)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.2, y: 11.6, z: 2.28 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_ext_scene::ColliderSpec
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.2 11.6 2.28" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.7 0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#2a2620" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "1" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085588)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.6, y: 13.9, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.6 13.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.32" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.22" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a4038" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085589)
+            jackdaw_scene_types::node_id::SceneNodeId(2180524904755401805)
             --
             #PointLight
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.6, y: 14.5, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 8.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.627451, blue: 0.313726, alpha: 1.0 }),
-                intensity: 6000.0,
-                radius: 1.6,
-                shadow_maps_enabled: false,
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "PointLight",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.6 14.5 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffa050" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "6000" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400.0" },
                     bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 8],
+                origin_path: [0, 5, 1],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085590)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.4, y: 0.5, z: 4.6 },
-                rotation: glam::Quat { x: 0.039677, y: 0.323141, z: 0.11523, w: 0.938471 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.4 0.5 4.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.3 0.5 0.9" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 38 14" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7e786e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085591)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.8, y: 0.4, z: 5.4 },
-                rotation: glam::Quat { x: 0.018054, y: -0.258189, z: -0.06738, w: 0.963573 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.8 0.4 5.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.0 0.4 0.7" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -30 -8" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#827c72" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085592)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 3.2, y: 0.45, z: 3.4 },
-                rotation: glam::Quat { x: 0.098274, y: 0.505575, z: 0.163555, w: 0.841419 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "3.2 0.45 3.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.8 0.45 0.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 62 22" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a746a" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 11],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085593)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.6, y: 0.4, z: 3.0 },
-                rotation: glam::Quat { x: 0.100967, y: -0.027054, z: 0.257401, w: 0.960634 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.6 0.4 3.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.7" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "12 0 30" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "3" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7e786e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [0, 5, 12],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085594)
+            jackdaw_scene_types::node_id::SceneNodeId(2180524904755401806)
         ]
         --
         #"crescente-do-ermo"
@@ -470,294 +264,136 @@ bevy_ecs::hierarchy::Children [
             seed: 96,
         }
         --
-        #"sceneref.v2.rampart-wall-n"
+        #"muralha-quebrada-1"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 140.0, y: 100.270134, z: 366.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.6, y: 0.8, z: 0.5 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-wall-n" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "140.00 100.27 366.00" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "muralha-quebrada-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "140.0 100.270134 366.0" },
             ],
             text: "",
             origin_file: "world/landforms/rampart.xml",
             origin_path: [30],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085595)
+        jackdaw_scene_types::node_id::SceneNodeId(2309388498435674280)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene form_outcrop_2"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.90 0.55 0.36" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#857c6f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",
                 origin_path: [30, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085596)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.45, y: 1.38, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.45 1.38 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.30 0.34" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a7266" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [30, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085597)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.4, y: 1.28, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.40 1.28 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.22 0.34" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e8578" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [30, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085598)
+            jackdaw_scene_types::node_id::SceneNodeId(4347523239419226530)
         ]
         --
-        #"sceneref.v2.rampart-wall-e"
+        #"muralha-quebrada-2"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 146.0, y: 100.270134, z: 360.0 },
             rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.6, y: 0.8, z: 0.5 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-wall-e" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "146.00 100.27 360.00" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "muralha-quebrada-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "146.0 100.270134 360.0" },
             ],
             text: "",
             origin_file: "world/landforms/rampart.xml",
             origin_path: [31],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085599)
+        jackdaw_scene_types::node_id::SceneNodeId(1956549163554234185)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene form_outcrop_2"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.80 0.55 0.36" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#857c6f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",
                 origin_path: [31, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085600)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.35, y: 1.38, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.35 1.38 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.30 0.34" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a7266" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [31, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085601)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.3, y: 1.28, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.30 1.28 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.22 0.34" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e8578" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [31, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085602)
+            jackdaw_scene_types::node_id::SceneNodeId(2887856426829079078)
         ]
         --
-        #"sceneref.v2.rampart-wall-se"
+        #"muralha-quebrada-3"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 144.4, y: 100.270134, z: 355.5 },
             rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.6, y: 0.8, z: 0.5 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.rampart-wall-se" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "144.40 100.27 355.50" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 45 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "muralha-quebrada-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "144.4 100.270134 355.5" },
             ],
             text: "",
             origin_file: "world/landforms/rampart.xml",
             origin_path: [32],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216085603)
+        jackdaw_scene_types::node_id::SceneNodeId(4340681912931487372)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene form_outcrop_2"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.55, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.8" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.55 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.30 0.55 0.36" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#857c6f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/landforms/rampart.xml",
                 origin_path: [32, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085604)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.85, y: 1.38, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.85 1.38 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.38 0.30 0.34" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a7266" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [32, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085605)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.8, y: 1.28, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.80 1.28 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.22 0.34" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e8578" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                ],
-                text: "",
-                origin_file: "world/landforms/rampart.xml",
-                origin_path: [32, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216085606)
+            jackdaw_scene_types::node_id::SceneNodeId(4316751618784470751)
         ]
         --
         #"sceneref.v2.rampart-pillar-sw1"

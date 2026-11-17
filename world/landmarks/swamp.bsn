@@ -1030,14 +1030,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"rocha-pantano"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -268.0, y: 32.369999, z: 88.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.5, y: 0.5, z: 1.5 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1045,37 +1045,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-268 32.37 88" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "rocha-pantano" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-268.0 32.369999 88.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 72],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086408)
+            jackdaw_scene_types::node_id::SceneNodeId(2812729725122156929)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.25 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.25 0.75" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6f7568" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 72, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086409)
+                jackdaw_scene_types::node_id::SceneNodeId(3319195273564329788)
             ]
             --
             #"sceneref.v3.swamp-altar-brazier-w"
@@ -3900,14 +3896,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"mojao-pantano-1"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -236.0, y: 26.84, z: 12.0 },
                 rotation: glam::Quat { x: 0.002736, y: 0.104493, z: 0.026034, w: 0.994181 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 1.25, z: 0.2 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3915,48 +3911,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236 26.84 12" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 12 3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236.0 26.84 12.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 62],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086388)
+            jackdaw_scene_types::node_id::SceneNodeId(4002374844487670725)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_pillar"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.62, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.62 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.62 0.1" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f8278" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 62, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086389)
+                jackdaw_scene_types::node_id::SceneNodeId(3180754868449205907)
             ]
             --
-            #Entity
+            #"mojao-pantano-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -233.0, y: 26.85, z: 15.0 },
                 rotation: glam::Quat { x: 0.001217, y: -0.069746, z: -0.01741, w: 0.997412 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 1.25, z: 0.2 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -3964,48 +3955,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-233 26.85 15" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -8 -2" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-233.0 26.85 15.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 63],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086390)
+            jackdaw_scene_types::node_id::SceneNodeId(3606965341524753473)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_pillar"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.62, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.62 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.62 0.1" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f8278" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 63, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086391)
+                jackdaw_scene_types::node_id::SceneNodeId(2563468970390466428)
             ]
             --
-            #Entity
+            #"mojao-pantano-3"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -230.0, y: 26.84, z: 18.0 },
                 rotation: glam::Quat { x: 0.00606, y: 0.173542, z: 0.034369, w: 0.984208 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 1.25, z: 0.2 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4013,48 +3999,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-230 26.84 18" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 4" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-230.0 26.84 18.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 64],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086392)
+            jackdaw_scene_types::node_id::SceneNodeId(3994215871124468717)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_pillar"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.62, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.62 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.62 0.1" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f8278" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 64, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086393)
+                jackdaw_scene_types::node_id::SceneNodeId(1597560056450740180)
             ]
             --
-            #Entity
+            #"mojao-pantano-4"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -233.0, y: 26.799999, z: 21.0 },
                 rotation: glam::Quat { x: 0.003417, y: -0.130481, z: -0.025953, w: 0.991105 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 1.25, z: 0.2 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4062,48 +4043,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-233 26.8 21" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -15 -3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-233.0 26.799999 21.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 65],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086394)
+            jackdaw_scene_types::node_id::SceneNodeId(3577233130305887401)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_pillar"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.62, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.62 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.62 0.1" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f8278" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 65, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086395)
+                jackdaw_scene_types::node_id::SceneNodeId(2945386776257208349)
             ]
             --
-            #Entity
+            #"mojao-pantano-5"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -236.0, y: 26.83, z: 24.0 },
                 rotation: glam::Quat { x: 0.000913, y: 0.052328, z: 0.017428, w: 0.998477 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 1.25, z: 0.2 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4111,48 +4087,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236 26.83 24" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 2" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-236.0 26.83 24.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 66],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086396)
+            jackdaw_scene_types::node_id::SceneNodeId(2096332026211538560)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_pillar"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.62, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.62 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.62 0.1" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f8278" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 66, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086397)
+                jackdaw_scene_types::node_id::SceneNodeId(3334545765539170538)
             ]
             --
-            #Entity
+            #"mojao-pantano-6"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -239.0, y: 27.0, z: 27.0 },
                 rotation: glam::Quat { x: 0.001814, y: -0.207904, z: -0.008536, w: 0.97811 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.55, y: 0.35, z: 0.55 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 0.9, y: 1.25, z: 0.2 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4160,38 +4131,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-239 27.0 27" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -24 -1" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "mojao-pantano-6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-239.0 27.0 27.0" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/swamp.xml",
                 origin_path: [0, 67],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216086398)
+            jackdaw_scene_types::node_id::SceneNodeId(4023658071231896456)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene stone_pillar"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.62, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.62 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.62 0.1" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f8278" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/swamp.xml",
                     origin_path: [0, 67, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216086399)
+                jackdaw_scene_types::node_id::SceneNodeId(2170754895724680877)
             ]
             --
             #"sceneref.v3.swamp-lagoon-torch"

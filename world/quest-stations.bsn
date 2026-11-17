@@ -857,11 +857,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-8"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -12.0, y: 40.75, z: -58.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -869,81 +872,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12 40.75 -58" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-8" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-12.0 40.75 -58.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 131],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087799)
+            jackdaw_scene_types::node_id::SceneNodeId(2506284327821656849)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 131, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087800)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 131, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087801)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 131, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087802)
+                jackdaw_scene_types::node_id::SceneNodeId(3072989610741828448)
             ]
             --
             #Entity
@@ -1404,11 +1359,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-9"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -28.0, y: 39.169998, z: -83.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1416,81 +1374,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28 39.17 -83" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-9" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.0 39.169998 -83.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 155],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087851)
+            jackdaw_scene_types::node_id::SceneNodeId(1634759034567426724)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 155, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087852)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 155, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087853)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 155, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087854)
+                jackdaw_scene_types::node_id::SceneNodeId(2665521799973787050)
             ]
             --
             #Entity
@@ -2952,11 +2862,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -28.0, y: 42.82, z: 80.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -2964,81 +2877,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28 42.82 80" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 20 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-28.0 42.82 80.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 51],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087626)
+            jackdaw_scene_types::node_id::SceneNodeId(1843136754553460149)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 51, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087627)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 51, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087628)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 51, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087629)
+                jackdaw_scene_types::node_id::SceneNodeId(3430992495758512259)
             ]
             --
             #Entity
@@ -3992,11 +3857,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-7"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -84.0, y: 32.119999, z: 30.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4004,81 +3872,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84 32.12 30" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-7" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-84.0 32.119999 30.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 125],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087785)
+            jackdaw_scene_types::node_id::SceneNodeId(3087028155302722468)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 125, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087786)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 125, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087787)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 125, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087788)
+                jackdaw_scene_types::node_id::SceneNodeId(1599531221127519386)
             ]
             --
             #"sceneref.v3.qs-farm-torch"
@@ -5052,11 +4872,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-3"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 55.0, y: 39.130001, z: -17.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5064,81 +4887,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "55 39.13 -17" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "55.0 39.130001 -17.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 62],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087650)
+            jackdaw_scene_types::node_id::SceneNodeId(2996174198165205084)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 62, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087651)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 62, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087652)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 62, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087653)
+                jackdaw_scene_types::node_id::SceneNodeId(2881930736783480434)
             ]
             --
             #Entity
@@ -5311,11 +5086,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-5"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 77.0, y: 40.18, z: -35.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5323,81 +5101,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "77 40.18 -35" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "77.0 40.18 -35.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 82],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087694)
+            jackdaw_scene_types::node_id::SceneNodeId(1803566547136719472)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 82, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087695)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 82, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087696)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 82, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087697)
+                jackdaw_scene_types::node_id::SceneNodeId(4439483025822367023)
             ]
             --
             #Entity
@@ -6978,11 +6708,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-1"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 29.0, y: 46.41, z: 84.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6990,81 +6723,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "29 46.41 84" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "29.0 46.41 84.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 45],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087612)
+            jackdaw_scene_types::node_id::SceneNodeId(3047769213998831274)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 45, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087613)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 45, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087614)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 45, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087615)
+                jackdaw_scene_types::node_id::SceneNodeId(3243922586031305275)
             ]
             --
             #Entity
@@ -7239,11 +6924,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-4"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 64.0, y: 40.049999, z: 14.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -7251,81 +6939,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "64 40.05 14" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "64.0 40.049999 14.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 66],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087660)
+            jackdaw_scene_types::node_id::SceneNodeId(1951172350093480636)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 66, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087661)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 66, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087662)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 66, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087663)
+                jackdaw_scene_types::node_id::SceneNodeId(1342855585235291901)
             ]
             --
             #Entity
@@ -7689,11 +7329,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"estandarte-quest-stations-6"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 91.0, y: 41.09, z: 10.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.85, y: 0.85, z: 0.85 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -7701,81 +7344,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "91 41.09 10" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-quest-stations-6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "91.0 41.09 10.0" },
                 ],
                 text: "",
                 origin_file: "world/quest-stations.xml",
                 origin_path: [0, 90],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087712)
+            jackdaw_scene_types::node_id::SceneNodeId(2597372699123829469)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/quest-stations.xml",
                     origin_path: [0, 90, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087713)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 3.95, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.95 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 90, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087714)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.85, y: 2.85, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.85 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.75 0.13 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d9b25a" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.6" },
-                    ],
-                    text: "",
-                    origin_file: "world/quest-stations.xml",
-                    origin_path: [0, 90, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216087715)
+                jackdaw_scene_types::node_id::SceneNodeId(2812040489885619559)
             ]
             --
             #Entity

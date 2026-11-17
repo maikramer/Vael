@@ -62,137 +62,41 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "battlefield-banner" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 0 -265" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770.0 0.0 -265.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 1],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216087968)
+        jackdaw_scene_types::node_id::SceneNodeId(1170644134779391352)
         bevy_ecs::hierarchy::Children [
-            #Cylinder
+            #"GltfScene banner_stand"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "2.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 1, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087969)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a83030" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 1, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087970)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.85, y: 2.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 2.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.55 0.03" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#a83030" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 1, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087971)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.1 0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 1, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087972)
-            --
-            #PointLight
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 4.6, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.815686, blue: 0.627451, alpha: 1.0 }),
-                intensity: 3400.0,
-                radius: 0.8,
-                shadow_maps_enabled: false,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd0a0" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.8" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 1, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216087973)
+            jackdaw_scene_types::node_id::SceneNodeId(3632267343553597511)
         ]
         --
         #"battlefield-wreck"
@@ -1077,11 +981,14 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216088014)
         ]
         --
-        #Entity
+        #"estandarte-battlefield-2"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -790.0, y: -1.43, z: -260.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1089,89 +996,43 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-790 -1.43 -260" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-battlefield-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-790.0 -1.43 -260.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 21],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088015)
+        jackdaw_scene_types::node_id::SceneNodeId(4077288890255571423)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene banner_stand"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 21, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088016)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 21, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088017)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.1 0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 21, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088018)
+            jackdaw_scene_types::node_id::SceneNodeId(1745075375455378792)
         ]
         --
-        #Entity
+        #"estandarte-battlefield-3"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -750.0, y: -0.77, z: -270.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1179,89 +1040,43 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-750 -0.77 -270" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-battlefield-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-750.0 -0.77 -270.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 22],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088019)
+        jackdaw_scene_types::node_id::SceneNodeId(1170318340376294476)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene banner_stand"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 22, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088020)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 22, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088021)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.1 0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 22, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088022)
+            jackdaw_scene_types::node_id::SceneNodeId(3129695939338916410)
         ]
         --
-        #Entity
+        #"estandarte-battlefield-4"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -770.0, y: -0.07, z: -285.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1269,92 +1084,43 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770 -0.07 -285" },
-                bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 0.3 5.0 0.3" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "estandarte-battlefield-4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-770.0 -0.07 -285.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 23],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088023)
+        jackdaw_scene_types::node_id::SceneNodeId(1294300866468762877)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene banner_stand"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.6, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 2.6 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.09 2.6 0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e4630" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 23, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088024)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.85, y: 3.9, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.85 3.9 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.85 1.0 0.03" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a2a2a" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 23, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088025)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.1, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.1 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.1 0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 23, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088026)
+            jackdaw_scene_types::node_id::SceneNodeId(3184072489996780429)
         ]
         --
-        #Entity
+        #"lenha-batalha-1"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -790.0, y: -1.1, z: -275.0 },
             rotation: glam::Quat { x: 0.0, y: 0.087156, z: 0.0, w: 0.996195 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1362,100 +1128,43 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-790 -1.1 -275" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 10 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "lenha-batalha-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-790.0 -1.1 -275.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 24],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088027)
+        jackdaw_scene_types::node_id::SceneNodeId(4498066468966250922)
         bevy_ecs::hierarchy::Children [
-            #Cylinder
+            #"GltfScene log_pile"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 24, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088028)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.65 0.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 24, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088029)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.95 -0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 24, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088030)
+            jackdaw_scene_types::node_id::SceneNodeId(2360468273456372096)
         ]
         --
-        #Entity
+        #"lenha-batalha-2"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -755.0, y: -0.58, z: -262.0 },
             rotation: glam::Quat { x: 0.0, y: 0.043619, z: 0.0, w: 0.999048 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1463,100 +1172,43 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-755 -0.58 -262" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 5 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "lenha-batalha-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-755.0 -0.58 -262.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 25],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088031)
+        jackdaw_scene_types::node_id::SceneNodeId(3957829902085330382)
         bevy_ecs::hierarchy::Children [
-            #Cylinder
+            #"GltfScene log_pile"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 25, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088032)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.65 0.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 25, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088033)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.95 -0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 25, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088034)
+            jackdaw_scene_types::node_id::SceneNodeId(3186310902087099219)
         ]
         --
-        #Entity
+        #"lenha-batalha-3"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -765.0, y: -0.36, z: -290.0 },
             rotation: glam::Quat { x: 0.0, y: 0.300706, z: 0.0, w: 0.953717 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1564,100 +1216,43 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-765 -0.36 -290" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 35 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "lenha-batalha-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-765.0 -0.36 -290.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 26],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088035)
+        jackdaw_scene_types::node_id::SceneNodeId(3228175044875660237)
         bevy_ecs::hierarchy::Children [
-            #Cylinder
+            #"GltfScene log_pile"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 26, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088036)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.65 0.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 26, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088037)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.95 -0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 26, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088038)
+            jackdaw_scene_types::node_id::SceneNodeId(2591881454043746568)
         ]
         --
-        #Entity
+        #"lenha-batalha-4"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -785.0, y: -0.65, z: -285.0 },
             rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.2, z: 0.8 }, offset_y: 0.0 },
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/log_pile_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1665,90 +1260,33 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-785 -0.65 -285" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 0" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "lenha-batalha-4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-785.0 -0.65 -285.0" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [0, 27],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088039)
+        jackdaw_scene_types::node_id::SceneNodeId(4149892260262587049)
         bevy_ecs::hierarchy::Children [
-            #Cylinder
+            #"GltfScene log_pile"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.35 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/log_pile_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [0, 27, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088040)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.65, z: 0.18 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.65 0.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 27, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088041)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.12 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.95 -0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.11" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [0, 27, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088042)
+            jackdaw_scene_types::node_id::SceneNodeId(2027256439349183452)
         ]
         --
         #Entity
@@ -1880,707 +1418,136 @@ bevy_ecs::hierarchy::Children [
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"sceneref.v2.battlefield-bastion-w"
+        #"bastiao-1"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -781.5, y: -0.6366, z: -274.2 },
             rotation: glam::Quat { x: 0.0, y: 0.207912, z: 0.0, w: 0.978148 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 2.2, y: 0.8, z: 0.5 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-bastion-w" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-781.50 -0.64 -274.20" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 24 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "bastiao-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-781.5 -0.6366 -274.2" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [60],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088049)
+        jackdaw_scene_types::node_id::SceneNodeId(3003093183767251034)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene form_outcrop_2"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.25 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.80 0.30 0.72" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6f6d68" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [60, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088050)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.15, y: 0.95, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.15 0.95 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.45 0.55 0.44" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7c7870" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088051)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.3, y: 0.8, z: 0.05 },
-                rotation: glam::Quat { x: -0.001826, y: 0.052304, z: -0.034852, w: 0.998021 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.30 0.80 0.05" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 -4" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.10 0.42 0.44" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#747068" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088052)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.05, y: 1.72, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.043619, w: 0.999048 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.05 1.72 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 5" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.28 0.42" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#858178" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088053)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.55, y: 1.68, z: 0.0 },
-                rotation: glam::Quat { x: 0.002663, y: -0.043538, z: -0.06099, w: 0.997185 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.55 1.68 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -5 -7" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.24 0.40" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7970" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088054)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.78 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.75 0.78" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.50 0.08 0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#493c31" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088055)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.24159, y: 0.012661, z: -0.050781, w: 0.968966 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -6" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088056)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.241839, y: 0.006333, z: -0.025399, w: 0.969963 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -3" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088057)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.241922, y: 0.0, z: 0.0, w: 0.970296 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088058)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.241839, y: -0.006333, z: 0.025399, w: 0.969963 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 3" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088059)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.24159, y: -0.012661, z: 0.050781, w: 0.968966 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 6" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [60, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088060)
+            jackdaw_scene_types::node_id::SceneNodeId(1269350052313344123)
         ]
         --
-        #"sceneref.v2.battlefield-bastion-e"
+        #"bastiao-2"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -757.8, y: -0.3695, z: -274.8 },
             rotation: glam::Quat { x: 0.0, y: -0.241922, z: 0.0, w: 0.970296 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 2.2, y: 0.8, z: 0.5 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-bastion-e" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-757.80 -0.37 -274.80" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -28 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "bastiao-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-757.8 -0.3695 -274.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [61],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088061)
+        jackdaw_scene_types::node_id::SceneNodeId(1342498772289828724)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene form_outcrop_2"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.25, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.25 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.80 0.30 0.72" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6f6d68" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [61, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088062)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.15, y: 0.95, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.15 0.95 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.45 0.55 0.44" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7c7870" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088063)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.3, y: 0.8, z: 0.05 },
-                rotation: glam::Quat { x: -0.001826, y: 0.052304, z: -0.034852, w: 0.998021 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.30 0.80 0.05" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 6 -4" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.10 0.42 0.44" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#747068" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088064)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.05, y: 1.72, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.043619, w: 0.999048 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.05 1.72 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 5" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.28 0.42" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#858178" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088065)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.55, y: 1.68, z: 0.0 },
-                rotation: glam::Quat { x: 0.002663, y: -0.043538, z: -0.06099, w: 0.997185 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.55 1.68 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -5 -7" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.45 0.24 0.40" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7d7970" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088066)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.78 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.75 0.78" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.50 0.08 0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#493c31" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088067)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.24159, y: 0.012661, z: -0.050781, w: 0.968966 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -6" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088068)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.241839, y: 0.006333, z: -0.025399, w: 0.969963 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 -3" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088069)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.241922, y: 0.0, z: 0.0, w: 0.970296 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088070)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.241839, y: -0.006333, z: 0.025399, w: 0.969963 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 3" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088071)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.0, y: 0.72, z: 0.92 },
-                rotation: glam::Quat { x: 0.24159, y: -0.012661, z: 0.050781, w: 0.968966 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.00 0.72 0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "28 0 6" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.09" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.95" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#45382c" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [61, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088072)
+            jackdaw_scene_types::node_id::SceneNodeId(2412718965966285849)
         ]
         --
-        #"sceneref.v2.battlefield-arch"
+        #"arco-batalha"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -771.5, y: -0.4893, z: -254.8 },
             rotation: glam::Quat { x: 0.0, y: 0.069756, z: 0.0, w: 0.997564 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.37, y: 1.71, z: 0.74 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_arch_3_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.battlefield-arch" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-771.50 -0.49 -254.80" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 8 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "arco-batalha" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-771.5 -0.4893 -254.8" },
             ],
             text: "",
             origin_file: "world/scenes/battlefield.xml",
             origin_path: [62],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088073)
+        jackdaw_scene_types::node_id::SceneNodeId(2240969700170016195)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene form_arch_3"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.2, y: 1.65, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.20 1.65 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 1.75 0.55" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7a766e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_arch_3_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/battlefield.xml",
                 origin_path: [62, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088074)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.2, y: 1.4, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.052336, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.20 1.40 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -6" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 1.45 0.55" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#736f67" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [62, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088075)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.35, y: 3.25, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.078459, w: 0.996917 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.35 3.25 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -9" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.05 0.42 0.58" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#69655f" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/scenes/battlefield.xml",
-                origin_path: [62, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088076)
+            jackdaw_scene_types::node_id::SceneNodeId(3397893083032614420)
         ]
         --
         #"sceneref.v2.battlefield-ash"

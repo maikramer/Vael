@@ -2254,356 +2254,176 @@ bevy_ecs::hierarchy::Children [
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -5.6, y: 0.0, z: 9.75 },
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.longhouse.banner-nw" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.60 0.00 9.75" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-5.6 0.0 9.75" },
         ],
         text: "",
         origin_file: "scenes/interiors/longhouse.xml",
         origin_path: [63],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081849)
+    jackdaw_scene_types::node_id::SceneNodeId(4444396968631695081)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 2.06, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.06 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.79 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/longhouse.xml",
             origin_path: [63, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081850)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.62 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [63, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081851)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d6b058" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [63, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081852)
+        jackdaw_scene_types::node_id::SceneNodeId(1930964707132164250)
     ]
     --
     #"interior.v2.longhouse.banner-ne"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 5.6, y: 0.0, z: 9.75 },
         rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.longhouse.banner-ne" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.60 0.00 9.75" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.6 0.0 9.75" },
         ],
         text: "",
         origin_file: "scenes/interiors/longhouse.xml",
         origin_path: [64],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081853)
+    jackdaw_scene_types::node_id::SceneNodeId(3123008043101344170)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 2.06, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.06 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.79 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/longhouse.xml",
             origin_path: [64, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081854)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.62 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#35556e" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [64, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081855)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d6b058" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [64, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081856)
+        jackdaw_scene_types::node_id::SceneNodeId(1194779719694020430)
     ]
     --
     #"interior.v2.longhouse.banner-w"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -13.75, y: 0.0, z: 4.6 },
         rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.longhouse.banner-w" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.75 0.00 4.60" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.75 0.0 4.6" },
         ],
         text: "",
         origin_file: "scenes/interiors/longhouse.xml",
         origin_path: [65],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081857)
+    jackdaw_scene_types::node_id::SceneNodeId(3397561565036807068)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 2.04, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.04 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.69 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/longhouse.xml",
             origin_path: [65, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081858)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.60 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [65, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081859)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.87, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.87 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [65, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081860)
+        jackdaw_scene_types::node_id::SceneNodeId(3262937315137032504)
     ]
     --
     #"interior.v2.longhouse.banner-e"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 13.75, y: 0.0, z: 4.6 },
         rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.longhouse.banner-e" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.75 0.00 4.60" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.75 0.0 4.6" },
         ],
         text: "",
         origin_file: "scenes/interiors/longhouse.xml",
         origin_path: [66],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081861)
+    jackdaw_scene_types::node_id::SceneNodeId(2577152943500928398)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 2.04, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.04 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.69 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/longhouse.xml",
             origin_path: [66, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081862)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.60 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8e2b2b" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [66, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081863)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.87, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.87 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.55 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#d6b058" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [66, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081864)
+        jackdaw_scene_types::node_id::SceneNodeId(3690122498372103844)
     ]
     --
     #"interior.v2.longhouse.bookshelf-nw"
@@ -3222,69 +3042,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.longhouse.post-w-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.40 0.00 -8.80" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-4.4 0.0 -8.8" },
         ],
         text: "",
         origin_file: "scenes/interiors/longhouse.xml",
         origin_path: [78],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081889)
+    jackdaw_scene_types::node_id::SceneNodeId(1189612757023563971)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/longhouse.xml",
             origin_path: [78, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081890)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [78, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081891)
+        jackdaw_scene_types::node_id::SceneNodeId(3778124819941674659)
     ]
     --
     #"interior.v2.longhouse.post-w-lantern"
@@ -3369,69 +3161,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.longhouse.post-e-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.40 0.00 -8.80" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.4 0.0 -8.8" },
         ],
         text: "",
         origin_file: "scenes/interiors/longhouse.xml",
         origin_path: [80],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081895)
+    jackdaw_scene_types::node_id::SceneNodeId(2325126268068209507)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/longhouse.xml",
             origin_path: [80, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081896)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/longhouse.xml",
-            origin_path: [80, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081897)
+        jackdaw_scene_types::node_id::SceneNodeId(3809448900866832058)
     ]
     --
     #"interior.v2.longhouse.post-e-lantern"

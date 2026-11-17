@@ -1433,14 +1433,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw_scene_types::node_id::SceneNodeId(1551948037216084752)
             ]
             --
-            #Entity
+            #"entulho-cidadela-1"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -900.0, y: 189.470001, z: -300.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.052336, w: 0.99863 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.8, y: 1.08, z: 1.35 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -1448,38 +1448,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-900 189.47 -300" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-1" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-900.0 189.470001 -300.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 122],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084770)
+            jackdaw_scene_types::node_id::SceneNodeId(4254392499411545764)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.54 0.68" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 122, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084771)
+                jackdaw_scene_types::node_id::SceneNodeId(3389574760361601219)
             ]
             --
             #Entity
@@ -4588,11 +4583,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"entulho-cidadela-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -860.0, y: 189.270004, z: -300.0 },
                 rotation: glam::Quat { x: 0.022134, y: 0.316532, z: 0.066152, w: 0.946014 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4600,46 +4598,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-860 189.27 -300" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 37 8" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.4 0.84 1.0499999999999998" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-860.0 189.270004 -300.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 123],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084772)
+            jackdaw_scene_types::node_id::SceneNodeId(3552065593961171491)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.42 0.52" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 123, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084773)
+                jackdaw_scene_types::node_id::SceneNodeId(4544350592604213150)
             ]
             --
-            #Entity
+            #"entulho-cidadela-3"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -880.0, y: 189.669998, z: -320.0 },
                 rotation: glam::Quat { x: -0.031497, y: 0.60099, z: -0.041797, w: 0.797541 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4647,46 +4642,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880 189.67 -320" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 74 -6" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.2 1.32 1.6500000000000001" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-3" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880.0 189.669998 -320.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 124],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084774)
+            jackdaw_scene_types::node_id::SceneNodeId(3839966158861553072)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.1 0.66 0.83" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 124, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084775)
+                jackdaw_scene_types::node_id::SceneNodeId(1923025442923951943)
             ]
             --
-            #Entity
+            #"entulho-cidadela-4"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -880.0, y: 189.369995, z: -280.0 },
                 rotation: glam::Quat { x: 0.057488, y: 0.822119, z: 0.03951, w: 0.565027 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4694,46 +4686,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880 189.37 -280" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 111 8" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.6 0.96 1.2000000000000002" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-880.0 189.369995 -280.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 125],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084776)
+            jackdaw_scene_types::node_id::SceneNodeId(2630058189934584187)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.8 0.48 0.6" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 125, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084777)
+                jackdaw_scene_types::node_id::SceneNodeId(2063289571329708934)
             ]
             --
-            #Entity
+            #"entulho-cidadela-5"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -892.0, y: 189.169998, z: -288.0 },
                 rotation: glam::Quat { x: -0.050309, y: 0.959944, z: -0.014426, w: 0.27526 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4741,46 +4730,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-892 189.17 -288" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 148 -6" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.2 0.72 0.8999999999999999" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-892.0 189.169998 -288.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 126],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084778)
+            jackdaw_scene_types::node_id::SceneNodeId(2952439404794958755)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.6 0.36 0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 126, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084779)
+                jackdaw_scene_types::node_id::SceneNodeId(2616957502948492262)
             ]
             --
-            #Entity
+            #"entulho-cidadela-6"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -868.0, y: 189.570007, z: -312.0 },
                 rotation: glam::Quat { x: 0.003043, y: 0.043513, z: 0.06969, w: 0.996615 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4788,39 +4774,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-868 189.57 -312" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 5 8" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 1.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-6" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-868.0 189.570007 -312.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 127],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084780)
+            jackdaw_scene_types::node_id::SceneNodeId(1828577695386048980)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.0 0.6 0.75" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 127, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084781)
+                jackdaw_scene_types::node_id::SceneNodeId(3427942950189739445)
             ]
             --
             #Entity
@@ -4955,14 +4935,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"entulho-cidadela-7"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -886.0, y: 189.470001, z: -354.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.043619, w: 0.999048 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.8, y: 1.08, z: 1.44 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4970,48 +4950,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886 189.47 -354" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -5" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-7" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886.0 189.470001 -354.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 132],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084790)
+            jackdaw_scene_types::node_id::SceneNodeId(1944956691387000163)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.54 0.72" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 132, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084791)
+                jackdaw_scene_types::node_id::SceneNodeId(3298846714198425597)
             ]
             --
-            #Entity
+            #"entulho-cidadela-8"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -874.0, y: 189.770004, z: -350.0 },
                 rotation: glam::Quat { x: 0.02138, y: 0.349554, z: 0.057182, w: 0.934925 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.4, y: 1.44, z: 1.92 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5019,48 +4994,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874 189.77 -350" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 41 7" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-8" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874.0 189.770004 -350.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 133],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084792)
+            jackdaw_scene_types::node_id::SceneNodeId(1871293686034925277)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.2 0.72 0.96" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 133, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084793)
+                jackdaw_scene_types::node_id::SceneNodeId(1573946920507921925)
             ]
             --
-            #Entity
+            #"entulho-cidadela-9"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -886.0, y: 189.270004, z: -340.0 },
                 rotation: glam::Quat { x: -0.028617, y: 0.655435, z: -0.03292, w: 0.753991 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.4, y: 0.84, z: 1.12 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5068,45 +5038,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886 189.27 -340" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 82 -5" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-9" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886.0 189.270004 -340.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 134],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084794)
+            jackdaw_scene_types::node_id::SceneNodeId(2068452709097064834)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.42 0.56" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 134, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084795)
+                jackdaw_scene_types::node_id::SceneNodeId(2576595660858959103)
             ]
             --
-            #Entity
+            #"entulho-cidadela-10"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -874.0, y: 189.570007, z: -336.0 },
                 rotation: glam::Quat { x: 0.053651, y: 0.877178, z: 0.02913, w: 0.476269 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5114,49 +5082,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874 189.57 -336" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 123 7" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-10" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874.0 189.570007 -336.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 135],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084796)
+            jackdaw_scene_types::node_id::SceneNodeId(3369197297205654797)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.0 0.6 0.8" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 135, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084797)
+                jackdaw_scene_types::node_id::SceneNodeId(2286700459872125782)
             ]
             --
-            #Entity
+            #"entulho-cidadela-11"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -886.0, y: 189.369995, z: -326.0 },
                 rotation: glam::Quat { x: -0.043195, y: 0.989326, z: -0.006071, w: 0.139041 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.6, y: 0.96, z: 1.28 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5164,48 +5126,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886 189.37 -326" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 164 -5" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-11" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886.0 189.369995 -326.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 136],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084798)
+            jackdaw_scene_types::node_id::SceneNodeId(3862350885396130942)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.8 0.48 0.64" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 136, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084799)
+                jackdaw_scene_types::node_id::SceneNodeId(3768051958908970494)
             ]
             --
-            #Entity
+            #"entulho-cidadela-12"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -874.0, y: 189.669998, z: -322.0 },
                 rotation: glam::Quat { x: 0.013213, y: 0.216036, z: 0.059601, w: 0.974475 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.2, y: 1.32, z: 1.76 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5213,48 +5170,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874 189.67 -322" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 25 7" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-12" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874.0 189.669998 -322.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 137],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084800)
+            jackdaw_scene_types::node_id::SceneNodeId(3670157114416343401)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.1 0.66 0.88" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 137, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084801)
+                jackdaw_scene_types::node_id::SceneNodeId(1217798955493822025)
             ]
             --
-            #Entity
+            #"entulho-cidadela-13"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -886.0, y: 189.169998, z: -312.0 },
                 rotation: glam::Quat { x: -0.023757, y: 0.544121, z: -0.036582, w: 0.837872 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.2, y: 0.72, z: 0.96 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5262,48 +5214,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886 189.17 -312" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 66 -5" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-13" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-886.0 189.169998 -312.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 138],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084802)
+            jackdaw_scene_types::node_id::SceneNodeId(3356957600120783971)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.6 0.36 0.48" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 138, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084803)
+                jackdaw_scene_types::node_id::SceneNodeId(2123882204029731361)
             ]
             --
-            #Entity
+            #"entulho-cidadela-14"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -874.0, y: 189.470001, z: -308.0 },
                 rotation: glam::Quat { x: 0.049074, y: 0.802357, z: 0.036313, w: 0.593713 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.8, y: 1.08, z: 1.44 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5311,48 +5258,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874 189.47 -308" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 107 7" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-14" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-874.0 189.470001 -308.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 139],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084804)
+            jackdaw_scene_types::node_id::SceneNodeId(2077211378666180495)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.54 0.72" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 139, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084805)
+                jackdaw_scene_types::node_id::SceneNodeId(1167936868759541142)
             ]
             --
-            #Entity
+            #"entulho-cidadela-15"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -890.0, y: 189.270004, z: -334.0 },
                 rotation: glam::Quat { x: -0.04193, y: 0.960347, z: -0.012023, w: 0.275375 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.4, y: 0.84, z: 1.12 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5360,45 +5302,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-890 189.27 -334" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 148 -5" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-15" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-890.0 189.270004 -334.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 140],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084806)
+            jackdaw_scene_types::node_id::SceneNodeId(3443720572949114646)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.42 0.56" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 140, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084807)
+                jackdaw_scene_types::node_id::SceneNodeId(1490975043297368192)
             ]
             --
-            #Entity
+            #"entulho-cidadela-16"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -870.0, y: 189.570007, z: -330.0 },
                 rotation: glam::Quat { x: 0.00479, y: 0.078313, z: 0.06086, w: 0.995058 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -5406,39 +5346,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-870 189.57 -330" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 9 7" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-16" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-870.0 189.570007 -330.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 141],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084808)
+            jackdaw_scene_types::node_id::SceneNodeId(4352260845638004920)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.0 0.6 0.8" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 141, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084809)
+                jackdaw_scene_types::node_id::SceneNodeId(1331066627986883572)
             ]
             --
             #Entity
@@ -6153,14 +6087,14 @@ bevy_ecs::hierarchy::Children [
                 jackdaw::prefab::components::PrefabEntityId(0)
             ]
             --
-            #Entity
+            #"entulho-cidadela-17"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -824.0, y: 189.369995, z: -304.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.034899, w: 0.999391 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.6, y: 0.96, z: 1.28 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6168,48 +6102,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-824 189.37 -304" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -4" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-17" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-824.0 189.369995 -304.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 162],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084848)
+            jackdaw_scene_types::node_id::SceneNodeId(1707219534843551826)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.8 0.48 0.64" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 162, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084849)
+                jackdaw_scene_types::node_id::SceneNodeId(2761973606752363716)
             ]
             --
-            #Entity
+            #"entulho-cidadela-18"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -830.0, y: 189.169998, z: -296.0 },
                 rotation: glam::Quat { x: 0.019181, y: 0.365999, z: 0.048694, w: 0.929142 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.2, y: 0.72, z: 0.96 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6217,45 +6146,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-830 189.17 -296" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 43 6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-18" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-830.0 189.169998 -296.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 163],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084850)
+            jackdaw_scene_types::node_id::SceneNodeId(4266070984719088599)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.6 0.36 0.48" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 163, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084851)
+                jackdaw_scene_types::node_id::SceneNodeId(4341415007777075980)
             ]
             --
-            #Entity
+            #"entulho-cidadela-19"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -836.0, y: 189.570007, z: -304.0 },
                 rotation: glam::Quat { x: -0.023801, y: 0.681583, z: -0.025524, w: 0.730908 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6263,49 +6190,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-836 189.57 -304" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 86 -4" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 2.0 1.2 1.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-19" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-836.0 189.570007 -304.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 164],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084852)
+            jackdaw_scene_types::node_id::SceneNodeId(2014351367765732494)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.0 0.6 0.8" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 164, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084853)
+                jackdaw_scene_types::node_id::SceneNodeId(4593396967792624490)
             ]
             --
-            #Entity
+            #"entulho-cidadela-20"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -842.0, y: 189.270004, z: -296.0 },
                 rotation: glam::Quat { x: 0.047238, y: 0.901348, z: 0.022531, w: 0.429921 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.4, y: 0.84, z: 1.12 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6313,48 +6234,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-842 189.27 -296" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 129 6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-20" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-842.0 189.270004 -296.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 165],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084854)
+            jackdaw_scene_types::node_id::SceneNodeId(3946749779455084903)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.7 0.42 0.56" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 165, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084855)
+                jackdaw_scene_types::node_id::SceneNodeId(1750240695855291963)
             ]
             --
-            #Entity
+            #"entulho-cidadela-21"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -848.0, y: 189.669998, z: -304.0 },
                 rotation: glam::Quat { x: -0.034814, y: 0.996956, z: -0.002434, w: 0.069714 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 2.2, y: 1.32, z: 1.76 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6362,45 +6278,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-848 189.67 -304" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 172 -4" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-21" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-848.0 189.669998 -304.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 166],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084856)
+            jackdaw_scene_types::node_id::SceneNodeId(4348902201348709795)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.1 0.66 0.88" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 166, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084857)
+                jackdaw_scene_types::node_id::SceneNodeId(2066308671667739314)
             ]
             --
-            #Entity
+            #"entulho-cidadela-22"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -854.0, y: 189.070007, z: -296.0 },
                 rotation: glam::Quat { x: 0.015738, y: 0.300294, z: 0.049914, w: 0.95241 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
+            }
+            bevy_ext_scene::ColliderSpec {
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6408,49 +6322,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-854 189.07 -296" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 35 6" },
-                    bevy_world_xml::bsn::WorldProp { key: "collider", value: "shape: box; size: 1.0 0.6 0.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-22" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-854.0 189.070007 -296.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 167],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084858)
+            jackdaw_scene_types::node_id::SceneNodeId(2466935232589861816)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.5 0.3 0.4" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 167, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084859)
+                jackdaw_scene_types::node_id::SceneNodeId(3454857669979496034)
             ]
             --
-            #Entity
+            #"entulho-cidadela-23"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -860.0, y: 189.470001, z: -304.0 },
                 rotation: glam::Quat { x: -0.021963, y: 0.628937, z: -0.027122, w: 0.776673 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.8, y: 1.08, z: 1.44 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6458,48 +6366,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-860 189.47 -304" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 78 -4" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-23" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-860.0 189.470001 -304.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 168],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084860)
+            jackdaw_scene_types::node_id::SceneNodeId(4374701059815793710)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.9 0.54 0.72" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 168, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084861)
+                jackdaw_scene_types::node_id::SceneNodeId(4292576951047487245)
             ]
             --
-            #Entity
+            #"entulho-cidadela-24"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -866.0, y: 189.169998, z: -296.0 },
                 rotation: glam::Quat { x: 0.045551, y: 0.869163, z: 0.025771, w: 0.491749 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.2, y: 0.72, z: 0.96 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6507,48 +6410,43 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-866 189.17 -296" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 121 6" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-24" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-866.0 189.169998 -296.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 169],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084862)
+            jackdaw_scene_types::node_id::SceneNodeId(4139686051260763132)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.6 0.36 0.48" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 169, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084863)
+                jackdaw_scene_types::node_id::SceneNodeId(3334174399122524900)
             ]
             --
-            #Entity
+            #"entulho-cidadela-25"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: -872.0, y: 189.369995, z: -304.0 },
                 rotation: glam::Quat { x: -0.03456, y: 0.989665, z: -0.004857, w: 0.139088 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+                scale: glam::Vec3 { x: 0.8, y: 0.6, z: 0.7 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.6, y: 0.96, z: 1.28 }, offset_y: 0.0 },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/form_outcrop_2_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -6556,38 +6454,33 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-872 189.37 -304" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 164 -4" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "entulho-cidadela-25" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-872.0 189.369995 -304.0" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [0, 170],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084864)
+            jackdaw_scene_types::node_id::SceneNodeId(4532064886330912986)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene form_outcrop_2"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.8 0.48 0.64" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2.5" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8579" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.95" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/terrain/form_outcrop_2_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [0, 170, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084865)
+                jackdaw_scene_types::node_id::SceneNodeId(1321396618111336639)
             ]
             --
             #Entity
@@ -7197,138 +7090,41 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Auto,
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+            }
+            bevy_ext_scene::BodySpec {
+                kind: bevy_ext_scene::BodyKind::Fixed,
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Composition",
+                tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.cidadela-banner-gate" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-816.20 188.57 -295.60" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-816.2 188.574 -295.6" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [200],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084896)
+            jackdaw_scene_types::node_id::SceneNodeId(4379946368792059525)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.16 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.16 0.24" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [200, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084897)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                        bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.05 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.07 1.85 0.07" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [200, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084898)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 3.65 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.04 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [200, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084899)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.90 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.68 0.02" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b282b" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                        bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [200, 3],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084900)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.18 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.07 0.02" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [200, 4],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084901)
+                jackdaw_scene_types::node_id::SceneNodeId(3503063779935254023)
             ]
             --
             #"sceneref.v3.cidadela-banner-watch"
@@ -7338,138 +7134,41 @@ bevy_ecs::hierarchy::Children [
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Auto,
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+            }
+            bevy_ext_scene::BodySpec {
+                kind: bevy_ext_scene::BodyKind::Fixed,
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Composition",
+                tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.cidadela-banner-watch" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-866.60 188.57 -340.60" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 160 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-866.6 188.574 -340.6" },
                 ],
                 text: "",
                 origin_file: "world/fantasy/cidadela-caida.xml",
                 origin_path: [201],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216084902)
+            jackdaw_scene_types::node_id::SceneNodeId(2429789460078385540)
             bevy_ecs::hierarchy::Children [
-                #Box
+                #"GltfScene banner_stand"
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 0.16, z: 0.0 },
+                    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
+                    tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.16 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.16 0.24" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/fantasy/cidadela-caida.xml",
                     origin_path: [201, 0],
                     pose: true,
                 }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084903)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.0, y: 2.05, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                        bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.05 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.07 1.85 0.07" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [201, 1],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084904)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.42, y: 3.65, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                        bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 3.65 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.46 0.04 0.04" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [201, 2],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084905)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.42, y: 2.9, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.90 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.68 0.02" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6b282b" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                        bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [201, 3],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084906)
-                --
-                #Box
-                bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 0.42, y: 2.18, z: 0.0 },
-                    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-                }
-                bevy_world_xml::bsn::WorldNode {
-                    tag: "Box",
-                    attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.18 0.00" },
-                        bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.36 0.07 0.02" },
-                        bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                        bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                        bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-                    ],
-                    text: "",
-                    origin_file: "world/fantasy/cidadela-caida.xml",
-                    origin_path: [201, 4],
-                    pose: true,
-                }
-                jackdaw_scene_types::node_id::SceneNodeId(1551948037216084907)
+                jackdaw_scene_types::node_id::SceneNodeId(3445064740135538589)
             ]
             --
             #"sceneref.v3.cidadela-brazier-gate"

@@ -1570,9 +1570,13 @@ fn attach_physics(entity: &mut EntityWorldMut, ctx: &mut SpawnCtx, spec: &Entity
                 return;
             }
             // Root-absolute asset paths are unapproved in bevy; strip the '/'.
-            let handle = ctx
-                .asset_server
-                .load(url.trim_start_matches('/').to_string());
+            // `load_gltf` relaxa o validador tal como o caminho dos templates
+            // de spawner: um `*_collision.glb` que declare basisu ou
+            // quantização falhava aqui e passava lá — a assimetria era real.
+            let handle = crate::meshopt::load_gltf(
+                ctx.asset_server,
+                url.trim_start_matches('/').to_string(),
+            );
             entity.insert(PendingCollider {
                 shape: physics.collider.clone(),
                 gltf: Some(handle),

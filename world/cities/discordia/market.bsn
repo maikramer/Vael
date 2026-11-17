@@ -409,310 +409,48 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083600)
         ]
         --
-        #"sceneref.v2.market-gate-plaza"
+        #"portao-mercado-1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 13.8, y: 0.000049, z: -10.8 },
+            translation: glam::Vec3 { x: 13.8, y: 4.9e-05, z: -10.8 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/market_gate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-gate-plaza" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.80 0.00 -10.80" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-mercado-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.8 4.9e-05 -10.8" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
             origin_path: [40],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083601)
+        jackdaw_scene_types::node_id::SceneNodeId(3139481811640656416)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene market_gate"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.4, y: 0.17, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.40 0.17 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.20 0.17 0.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.88" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/market_gate_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/market.xml",
                 origin_path: [40, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083602)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.4, y: 1.895, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.40 1.89 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.10 1.69 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e432b" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083603)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.06, y: 3.13, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.382683, w: 0.92388 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.06 3.13 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -45" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 0.34 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b25" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083604)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.4, y: 0.17, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.40 0.17 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.20 0.17 0.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.88" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083605)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.4, y: 1.895, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.40 1.89 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.10 1.69 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e432b" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083606)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.06, y: 3.13, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.382683, w: 0.92388 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.06 3.13 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 45" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 0.34 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b25" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083607)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 3.55, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 3.55 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.82 0.10 0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083608)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 3.19, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 3.19 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.36 0.05 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#66492f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083609)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.95, y: 2.93, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.95 2.93 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083610)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.78, y: 2.93, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.78 2.93 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083611)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.78, y: 2.93, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.78 2.93 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#35556e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083612)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.95, y: 2.93, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.95 2.93 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [40, 11],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083613)
+            jackdaw_scene_types::node_id::SceneNodeId(3268703483298715422)
         ]
         --
         #"sceneref.v2.market-gate-lantern"
@@ -790,310 +528,48 @@ bevy_ecs::hierarchy::Children [
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216083616)
         ]
         --
-        #"sceneref.v2.market-arch-south"
+        #"portao-mercado-2"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 15.2, y: 0.000049, z: -22.8 },
+            translation: glam::Vec3 { x: 15.2, y: 4.9e-05, z: -22.8 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/market_gate_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-arch-south" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15.20 0.00 -22.80" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-mercado-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15.2 4.9e-05 -22.8" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
             origin_path: [42],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083617)
+        jackdaw_scene_types::node_id::SceneNodeId(1608680500556738745)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene market_gate"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 0.17, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.00 0.17 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.20 0.17 0.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.88" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/market_gate_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/market.xml",
                 origin_path: [42, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083618)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -2.0, y: 1.795, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.00 1.79 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.10 1.59 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e432b" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083619)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.66, y: 2.93, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.382683, w: 0.92388 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.66 2.93 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -45" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 0.34 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b25" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083620)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.0, y: 0.17, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/cobblestone_road/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.00 0.17 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.20 0.17 0.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8a8275" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.88" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083621)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 2.0, y: 1.795, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.00 1.79 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.10 1.59 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5e432b" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083622)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.66, y: 2.93, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.382683, w: 0.92388 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.66 2.93 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 45" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 0.34 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b25" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083623)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 3.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 3.35 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "2.42 0.10 0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083624)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.99, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.99 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.96 0.05 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#66492f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083625)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.55, y: 2.73, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.55 2.73 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#35556e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083626)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.78, y: 2.73, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.78 2.73 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083627)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.78, y: 2.73, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.78 2.73 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9a3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083628)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.55, y: 2.73, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.55 2.73 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.24 0.28 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#35556e" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [42, 11],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083629)
+            jackdaw_scene_types::node_id::SceneNodeId(1608552215334607241)
         ]
         --
         #"sceneref.v2.market-south-lantern"
@@ -1418,98 +894,48 @@ bevy_ecs::hierarchy::Children [
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"sceneref.v2.market-signpost"
+        #"placa-mercado"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 17.3, y: 0.000049, z: -12.7 },
+            translation: glam::Vec3 { x: 17.3, y: 4.9e-05, z: -12.7 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 0.5, y: 0.5, z: 0.5 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/notice_board_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-signpost" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.30 0.00 -12.70" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "placa-mercado" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.3 4.9e-05 -12.7" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
             origin_path: [49],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083643)
+        jackdaw_scene_types::node_id::SceneNodeId(4107582078811084739)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene notice_board"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.45, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.45 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.08 1.45 0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/notice_board_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/market.xml",
                 origin_path: [49, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083644)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.42, y: 2.74, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.42 2.74 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.06 0.06" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#593f28" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [49, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083645)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.36, y: 2.4, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.36 2.40 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.22 0.22 0.02" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.1" },
-                ],
-                text: "",
-                origin_file: "world/cities/discordia/market.xml",
-                origin_path: [49, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216083646)
+            jackdaw_scene_types::node_id::SceneNodeId(2880323505584425307)
         ]
         --
         #"sceneref.v2.market-signpost-lantern"

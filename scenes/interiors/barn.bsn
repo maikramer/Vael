@@ -2199,69 +2199,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.post-w-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.20 0.00 -1.00" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-7.2 0.0 -1.0" },
         ],
         text: "",
         origin_file: "scenes/interiors/barn.xml",
         origin_path: [73],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081151)
+    jackdaw_scene_types::node_id::SceneNodeId(1679078469677078891)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/barn.xml",
             origin_path: [73, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081152)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [73, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081153)
+        jackdaw_scene_types::node_id::SceneNodeId(3911125262766635571)
     ]
     --
     #"interior.v2.barn.post-w-lantern"
@@ -2346,69 +2318,41 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::ColliderSpec {
-        shape: bevy_ext_scene::ColliderShape::Auto,
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.post-e-stand" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.20 0.00 -1.00" },
-            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.2 0.0 -1.0" },
         ],
         text: "",
         origin_file: "scenes/interiors/barn.xml",
         origin_path: [75],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081157)
+    jackdaw_scene_types::node_id::SceneNodeId(1507159143421339263)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene torch_post"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.12, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.12 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.06 1.12 0.06" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#543b24" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/barn.xml",
             origin_path: [75, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081158)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -0.28, y: 2.2, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.28 2.20 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.32 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4a3320" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.86" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [75, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081159)
+        jackdaw_scene_types::node_id::SceneNodeId(2108752830144559173)
     ]
     --
     #"interior.v2.barn.post-e-lantern"
@@ -2490,178 +2434,88 @@ bevy_ecs::hierarchy::Children [
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: -13.75, y: 0.0, z: 5.2 },
         rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.banner-w" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.75 0.00 5.20" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-13.75 0.0 5.2" },
         ],
         text: "",
         origin_file: "scenes/interiors/barn.xml",
         origin_path: [77],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081163)
+    jackdaw_scene_types::node_id::SceneNodeId(1685288015556264337)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.96, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.96 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.62 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/barn.xml",
             origin_path: [77, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081164)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.52 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5b6e35" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [77, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081165)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.95 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [77, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081166)
+        jackdaw_scene_types::node_id::SceneNodeId(3742113670797432468)
     ]
     --
     #"interior.v2.barn.banner-e"
     bevy_transform::components::transform::Transform {
         translation: glam::Vec3 { x: 13.75, y: 0.0, z: 5.2 },
         rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
-        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        scale: glam::Vec3 { x: 0.62, y: 0.62, z: 0.62 },
+    }
+    bevy_ext_scene::ColliderSpec {
+        shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/banner_stand_collision.glb", base: true },
+    }
+    bevy_ext_scene::BodySpec {
+        kind: bevy_ext_scene::BodyKind::Fixed,
     }
     bevy_world_xml::bsn::WorldNode {
-        tag: "Composition",
+        tag: "Entity",
         attrs: [
             bevy_world_xml::bsn::WorldProp { key: "name", value: "interior.v2.barn.banner-e" },
-            bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.75 0.00 5.20" },
-            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -90 0" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "13.75 0.0 5.2" },
         ],
         text: "",
         origin_file: "scenes/interiors/barn.xml",
         origin_path: [78],
         pose: true,
     }
-    jackdaw_scene_types::node_id::SceneNodeId(1551948037216081167)
+    jackdaw_scene_types::node_id::SceneNodeId(1990265996351587288)
     bevy_ecs::hierarchy::Children [
-        #"Box"
+        #"GltfScene banner_stand"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.96, z: 0.0 },
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
+            tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                bevy_world_xml::bsn::WorldProp { key: "normal-map", value: "/assets/textures/wood_planks/normal.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.96 0.00" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.62 0.04 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3722" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
             ],
             text: "",
             origin_file: "scenes/interiors/barn.xml",
             origin_path: [78, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081168)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 1.4, z: 0.03 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.40 0.03" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.52 0.01" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5b6e35" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.92" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.0" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [78, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081169)
-        --
-        #"Box"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.04 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "Box",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.95 0.04" },
-                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.48 0.07 0.02" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c99846" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.45" },
-                bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.35" },
-            ],
-            text: "",
-            origin_file: "scenes/interiors/barn.xml",
-            origin_path: [78, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216081170)
+        jackdaw_scene_types::node_id::SceneNodeId(2903744867313422037)
     ]
     --
     #"interior.v2.barn.dust-motes"

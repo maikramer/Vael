@@ -1263,275 +1263,48 @@ bevy_ecs::hierarchy::Children [
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
-        #"sceneref.v2.smugglers-jetty"
+        #"cais-contrabandistas"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -100.5, y: -0.6771, z: 230.5 },
             rotation: glam::Quat { x: 0.0, y: -0.292372, z: 0.0, w: 0.956305 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/jetty_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.smugglers-jetty" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100.50 -0.68 230.50" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -34 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "cais-contrabandistas" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-100.5 -0.6771 230.5" },
             ],
             text: "",
             origin_file: "world/scenes/smugglers.xml",
             origin_path: [45],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088372)
+        jackdaw_scene_types::node_id::SceneNodeId(1719688317710799921)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene jetty"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.35, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.35 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.35 0.09 3.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7b634b" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/jetty_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/smugglers.xml",
                 origin_path: [45, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088373)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: -2.2 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 -2.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.30 0.08 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5c4835" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088374)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.30 0.08 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5c4835" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088375)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 2.2 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.4" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 2.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.30 0.08 0.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5c4835" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088376)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.15, y: -0.35, z: -2.6 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.15 -0.35 -2.60" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.15" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088377)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.15, y: -0.35, z: -2.6 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.15 -0.35 -2.60" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.15" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088378)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -1.15, y: -0.35, z: 2.6 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.15 -0.35 2.60" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.15" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088379)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 1.15, y: -0.35, z: 2.6 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.15 -0.35 2.60" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.12" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.15" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4f3e2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088380)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.95, y: 1.55, z: -2.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.95 1.55 -2.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.1" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.25" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5c4734" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088381)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.15, y: 2.55, z: -2.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.104528, w: 0.994522 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.15 2.55 -2.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 12" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "1.15 0.08 0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#5c4734" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088382)
+            jackdaw_scene_types::node_id::SceneNodeId(4341752205346703309)
             --
             #PointLight
             bevy_transform::components::transform::Transform {
@@ -1539,334 +1312,64 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.713725, blue: 0.384314, alpha: 1.0 }),
-                intensity: 4400.0,
-                radius: 0.35,
-                shadow_maps_enabled: false,
-            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "PointLight",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.65 2.15 -2.00" },
                     bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb662" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4400" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "4400.0" },
                     bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
                     bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.35" },
                 ],
                 text: "",
                 origin_file: "world/scenes/smugglers.xml",
-                origin_path: [45, 10],
+                origin_path: [45, 1],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088383)
+            jackdaw_scene_types::node_id::SceneNodeId(4341752205346703310)
         ]
         --
-        #"sceneref.v2.smugglers-palisade"
+        #"palicada-contrabandistas"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -81.0, y: 0.2717, z: 239.5 },
             rotation: glam::Quat { x: 0.0, y: 0.121869, z: 0.0, w: 0.992546 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 2.2, y: 2.2, z: 2.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/farm/fence_segment_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.smugglers-palisade" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-81.00 0.27 239.50" },
-                bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 14 0" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "palicada-contrabandistas" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-81.0 0.2717 239.5" },
             ],
             text: "",
             origin_file: "world/scenes/smugglers.xml",
             origin_path: [46],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216088384)
+        jackdaw_scene_types::node_id::SceneNodeId(3943025284995710226)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene fence_segment"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.85, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.85 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.08 0.09 3.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4d3d2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/farm/fence_segment_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/scenes/smugglers.xml",
                 origin_path: [46, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088385)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.65, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.65 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.08 0.09 3.20" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#4d3d2e" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088386)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.08, z: -2.8 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: -0.01309, w: 0.999914 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.08 -2.80" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 -1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088387)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.22, z: -2.1 },
-                rotation: glam::Quat { x: 0.001709, y: 0.130515, z: 0.012978, w: 0.99136 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.22 -2.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 15 1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.32" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088388)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.36, z: -1.4 },
-                rotation: glam::Quat { x: -0.003388, y: 0.258797, z: -0.012644, w: 0.965843 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.36 -1.40" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 30 -1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.46" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088389)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.08, z: -0.7 },
-                rotation: glam::Quat { x: 0.005009, y: 0.382651, z: 0.012093, w: 0.9238 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.08 -0.70" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 45 1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088390)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.22, z: 0.0 },
-                rotation: glam::Quat { x: -0.006545, y: 0.499957, z: -0.011336, w: 0.865951 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.22 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 60 -1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.32" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088391)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.36, z: 0.7 },
-                rotation: glam::Quat { x: 0.007968, y: 0.608709, z: 0.010385, w: 0.793285 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.36 0.70" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 75 1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.46" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 7],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088392)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.08, z: 1.4 },
-                rotation: glam::Quat { x: -0.009256, y: 0.707046, z: -0.009256, w: 0.707046 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.08 1.40" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 90 -1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.18" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 8],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088393)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.22, z: 2.1 },
-                rotation: glam::Quat { x: 0.010385, y: 0.793285, z: 0.007968, w: 0.608709 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.22 2.10" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 105 1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.32" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 9],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088394)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 1.36, z: 2.8 },
-                rotation: glam::Quat { x: -0.011336, y: 0.865951, z: -0.006545, w: 0.499957 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 1.36 2.80" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 120 -1.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.13" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "1.46" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/wood_planks/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#584636" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "wood" },
-                ],
-                text: "",
-                origin_file: "world/scenes/smugglers.xml",
-                origin_path: [46, 10],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216088395)
+            jackdaw_scene_types::node_id::SceneNodeId(2565191163094599201)
         ]
         --
         #"sceneref.v2.smugglers-cargo-1"

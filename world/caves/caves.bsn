@@ -3811,192 +3811,48 @@ bevy_ecs::hierarchy::Children [
     }
     jackdaw_scene_types::node_id::SceneNodeId(1551948037216082740)
     bevy_ecs::hierarchy::Children [
-        #minecart
+        #"carrinho-mina"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/minecart_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "minecart" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "carrinho-mina" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.0 0.0 0.0" },
             ],
             text: "",
             origin_file: "world/caves/caves.xml",
             origin_path: [79, 0],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082741)
+        jackdaw_scene_types::node_id::SceneNodeId(1452027569927292117)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene minecart"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.75, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.75 0" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.12 0.45" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/minecart_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/caves/caves.xml",
                 origin_path: [79, 0, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082742)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.95, z: 0.45 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.95 0.45" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.2 0.04" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/caves/caves.xml",
-                origin_path: [79, 0, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082743)
-            --
-            #Box
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.95, z: -0.45 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.95 -0.45" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.65 0.2 0.04" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/wood_planks/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "1.0" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#6d5238" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-                ],
-                text: "",
-                origin_file: "world/caves/caves.xml",
-                origin_path: [79, 0, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082744)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.45, y: 0.32, z: 0.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.45 0.32 0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.26" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.05" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#3a3a3a" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                ],
-                text: "",
-                origin_file: "world/caves/caves.xml",
-                origin_path: [79, 0, 3],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082745)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.45, y: 0.32, z: 0.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.45 0.32 0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.26" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.05" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#3a3a3a" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                ],
-                text: "",
-                origin_file: "world/caves/caves.xml",
-                origin_path: [79, 0, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082746)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -0.45, y: 0.32, z: -0.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.45 0.32 -0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.26" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.05" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#3a3a3a" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                ],
-                text: "",
-                origin_file: "world/caves/caves.xml",
-                origin_path: [79, 0, 5],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082747)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.45, y: 0.32, z: -0.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.707107, w: 0.707107 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.45 0.32 -0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.26" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.05" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 90" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#3a3a3a" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.6" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                ],
-                text: "",
-                origin_file: "world/caves/caves.xml",
-                origin_path: [79, 0, 6],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082748)
+            jackdaw_scene_types::node_id::SceneNodeId(4062419196386143608)
         ]
     ]
     --

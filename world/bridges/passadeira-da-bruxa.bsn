@@ -140,540 +140,243 @@ bevy_ecs::hierarchy::Children [
         }
         jackdaw_scene_types::node_id::SceneNodeId(1551948037216082413)
         --
-        #"sceneref.v2.passadeira-pillar-1"
+        #"braseiro-passadeira-1"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -52.2, y: 1.5307, z: 205.2 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.passadeira-pillar-1" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-52.20 1.53 205.20" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "braseiro-passadeira-1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-52.2 1.5307 205.2" },
             ],
             text: "",
             origin_file: "world/bridges/passadeira-da-bruxa.xml",
             origin_path: [30],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082414)
+        jackdaw_scene_types::node_id::SceneNodeId(1684777295028629751)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene torch_post"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.26 0.42" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f7c75" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [30, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082415)
+            jackdaw_scene_types::node_id::SceneNodeId(4508593260084980505)
             --
-            #Lathe
+            #PointLight
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Lathe",
+                tag: "PointLight",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.46 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.34 0 0.30 0.22 0.24 1.15 0.32 1.32 0.28 1.48" },
-                    bevy_world_xml::bsn::WorldProp { key: "segments", value: "12" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d8980" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [30, 1],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082416)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.02 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.24" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#36332f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.65" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [30, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082417)
-            --
-            #ParticleSystem
-            jackdaw::prefab::components::IsA {
-                source: "world/prefabs/fx/fire.bsn",
-                deleted: [],
-            }
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldOrigin {
-                file: "world/bridges/passadeira-da-bruxa.xml",
-                path: [30, 3],
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082418)
-            jackdaw::prefab::components::PrefabEntityId(0)
-            --
-            #PointLight
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.705882, blue: 0.360784, alpha: 1.0 }),
-                intensity: 3400.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.35 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [30, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082419)
+            jackdaw_scene_types::node_id::SceneNodeId(4508593260084980506)
         ]
         --
-        #"sceneref.v2.passadeira-pillar-2"
+        #"braseiro-passadeira-2"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -45.8, y: 1.7076, z: 205.2 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.passadeira-pillar-2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-45.80 1.71 205.20" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "braseiro-passadeira-2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-45.8 1.7076 205.2" },
             ],
             text: "",
             origin_file: "world/bridges/passadeira-da-bruxa.xml",
             origin_path: [31],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082420)
+        jackdaw_scene_types::node_id::SceneNodeId(4594793077644485932)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene torch_post"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.26 0.42" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f7c75" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [31, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082421)
+            jackdaw_scene_types::node_id::SceneNodeId(2154099563390176235)
             --
-            #Lathe
+            #PointLight
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Lathe",
+                tag: "PointLight",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.46 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.34 0 0.30 0.22 0.24 1.15 0.32 1.32 0.28 1.48" },
-                    bevy_world_xml::bsn::WorldProp { key: "segments", value: "12" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d8980" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [31, 1],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082422)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.02 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.24" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#36332f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.65" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [31, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082423)
-            --
-            #ParticleSystem
-            jackdaw::prefab::components::IsA {
-                source: "world/prefabs/fx/fire.bsn",
-                deleted: [],
-            }
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldOrigin {
-                file: "world/bridges/passadeira-da-bruxa.xml",
-                path: [31, 3],
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082424)
-            jackdaw::prefab::components::PrefabEntityId(0)
-            --
-            #PointLight
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.705882, blue: 0.360784, alpha: 1.0 }),
-                intensity: 3400.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.35 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [31, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082425)
+            jackdaw_scene_types::node_id::SceneNodeId(2154099563390176236)
         ]
         --
-        #"sceneref.v2.passadeira-pillar-3"
+        #"braseiro-passadeira-3"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -51.8, y: 1.4419, z: 223.8 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.passadeira-pillar-3" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-51.80 1.44 223.80" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "braseiro-passadeira-3" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-51.8 1.4419 223.8" },
             ],
             text: "",
             origin_file: "world/bridges/passadeira-da-bruxa.xml",
             origin_path: [32],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082426)
+        jackdaw_scene_types::node_id::SceneNodeId(4297506146431117197)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene torch_post"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.26 0.42" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f7c75" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [32, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082427)
+            jackdaw_scene_types::node_id::SceneNodeId(3082477612679425525)
             --
-            #Lathe
+            #PointLight
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Lathe",
+                tag: "PointLight",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.46 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.34 0 0.30 0.22 0.24 1.15 0.32 1.32 0.28 1.48" },
-                    bevy_world_xml::bsn::WorldProp { key: "segments", value: "12" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d8980" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
+                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [32, 1],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082428)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.02 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.24" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#36332f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.65" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [32, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082429)
-            --
-            #ParticleSystem
-            jackdaw::prefab::components::IsA {
-                source: "world/prefabs/fx/fire.bsn",
-                deleted: [],
-            }
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldOrigin {
-                file: "world/bridges/passadeira-da-bruxa.xml",
-                path: [32, 3],
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082430)
-            jackdaw::prefab::components::PrefabEntityId(0)
-            --
-            #PointLight
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.35, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.419608, green: 0.878431, blue: 0.603922, alpha: 1.0 }),
-                intensity: 3400.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "PointLight",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.35 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x6be09a" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400" },
-                    bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [32, 4],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082431)
+            jackdaw_scene_types::node_id::SceneNodeId(3082477612679425526)
         ]
         --
-        #"sceneref.v2.passadeira-pillar-4"
+        #"braseiro-passadeira-4"
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: -46.2, y: 1.6707, z: 223.8 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            scale: glam::Vec3 { x: 1.1, y: 1.1, z: 1.1 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Auto,
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/torch_post_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
         }
         bevy_world_xml::bsn::WorldNode {
-            tag: "Composition",
+            tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.passadeira-pillar-4" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-46.20 1.67 223.80" },
-                bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "braseiro-passadeira-4" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-46.2 1.6707 223.8" },
             ],
             text: "",
             origin_file: "world/bridges/passadeira-da-bruxa.xml",
             origin_path: [33],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216082432)
+        jackdaw_scene_types::node_id::SceneNodeId(3396072170108801730)
         bevy_ecs::hierarchy::Children [
-            #Box
+            #"GltfScene torch_post"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.22, z: 0.0 },
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
-                tag: "Box",
+                tag: "GltfScene",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.22 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-size", value: "0.42 0.26 0.42" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#7f7c75" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/torch_post_lod0.glb" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
                 origin_path: [33, 0],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082433)
-            --
-            #Lathe
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 0.46, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Lathe",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 0.46 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "profile", value: "0.34 0 0.30 0.22 0.24 1.15 0.32 1.32 0.28 1.48" },
-                    bevy_world_xml::bsn::WorldProp { key: "segments", value: "12" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/mountain_stone/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/mountain_stone/normal.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "2" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#8d8980" },
-                    bevy_world_xml::bsn::WorldProp { key: "preset", value: "stone" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [33, 1],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082434)
-            --
-            #Cylinder
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.02, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldNode {
-                tag: "Cylinder",
-                attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.02 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.24" },
-                    bevy_world_xml::bsn::WorldProp { key: "half-height", value: "0.08" },
-                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#36332f" },
-                    bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "metallic", value: "0.65" },
-                ],
-                text: "",
-                origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [33, 2],
-                pose: true,
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082435)
-            --
-            #ParticleSystem
-            jackdaw::prefab::components::IsA {
-                source: "world/prefabs/fx/fire.bsn",
-                deleted: [],
-            }
-            bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 0.0, y: 2.15, z: 0.0 },
-                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-            }
-            bevy_world_xml::bsn::WorldOrigin {
-                file: "world/bridges/passadeira-da-bruxa.xml",
-                path: [33, 3],
-            }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082436)
-            jackdaw::prefab::components::PrefabEntityId(0)
+            jackdaw_scene_types::node_id::SceneNodeId(4149868742466156551)
             --
             #PointLight
             bevy_transform::components::transform::Transform {
@@ -681,27 +384,20 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
-            bevy_light::point_light::PointLight {
-                color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.419608, green: 0.878431, blue: 0.603922, alpha: 1.0 }),
-                intensity: 3400.0,
-                radius: 0.4,
-                shadow_maps_enabled: false,
-            }
             bevy_world_xml::bsn::WorldNode {
                 tag: "PointLight",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.00 2.35 0.00" },
-                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0x6be09a" },
-                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400" },
+                    bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffb45c" },
+                    bevy_world_xml::bsn::WorldProp { key: "intensity", value: "3400.0" },
                     bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
                     bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.4" },
                 ],
                 text: "",
                 origin_file: "world/bridges/passadeira-da-bruxa.xml",
-                origin_path: [33, 4],
+                origin_path: [33, 1],
                 pose: true,
             }
-            jackdaw_scene_types::node_id::SceneNodeId(1551948037216082437)
+            jackdaw_scene_types::node_id::SceneNodeId(4149868742466156552)
         ]
         --
         #"sceneref.v2.passadeira-cairn"
