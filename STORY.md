@@ -4,6 +4,8 @@
 > Nota e as cinemáticas. Quem escreve conteúdo novo (falas, missões, cenas) lê isto
 > primeiro: nomes, tom e cronologia vivem aqui.
 
+A continuação do Capítulo I, o segredo da coluna, a sequência M01–M14 e os desfechos estão no [enredo da campanha principal](docs/CAMPANHA_PRINCIPAL.md). O [GDD de O Silêncio de Vael](GDD.md) orienta o desenho de jogo e a produção.
+
 ## O mundo
 
 **O Vale** é uma bacia verde rodeada por quatro terras que já foram mansas. No meio

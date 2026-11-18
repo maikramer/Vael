@@ -6,6 +6,12 @@ tem o seu próprio contrato em [`../../bevy_extensions/AGENTS.md`](../../bevy_ex
 Quando um doc e o código divergem, o código e o `AGENTS.md` ganham — e o doc
 deve ser corrigido no mesmo commit.
 
+## Mundo e campanha
+
+- [GDD de O Silêncio de Vael](../GDD.md) — experiência, sistemas, progressão, acessibilidade e critérios de produção.
+- [Enredo e missões principais](CAMPANHA_PRINCIPAL.md) — história completa, percurso M01–M14 e consequências das escolhas. Contém o final.
+- [Bíblia narrativa](../STORY.md) — geografia, elenco, voz e acontecimentos do primeiro capítulo.
+
 ## Estado atual
 
 | Documento | Responde a | Estado |
@@ -25,6 +31,7 @@ deve ser corrigido no mesmo commit.
 | [`QA.md`](QA.md) | cenas QA leves, cenários de teste (quests, itens, talentos, posição), simulação e `tools/qa.py` | **vivo** |
 | [`PLAYTEST.md`](PLAYTEST.md) | bateria `bevy_playtest` in-process (cenários, seeds, soak, invariantes) e oráculo visual+estado `liquid/d1-ultra` | **vivo** |
 | [`FLORA.md`](FLORA.md) | árvores procedurais, estações, pools, colheita e gates | **vivo** |
+| [`GROUND.md`](GROUND.md) | manto de neve, rastos e sombra de nuvem no chão do `.ahgt` | **vivo** |
 | [`PRIMITIVES.md`](PRIMITIVES.md) | tags de primitivas (lathe/sweep/extruded/…), presets de material, colisores e preview no Jackdaw | **vivo** |
 | [`AUDIO.md`](AUDIO.md) | direção sonora, layers por bioma, manifests e regen | **vivo** |
 | [`REMOTE_GPU.md`](REMOTE_GPU.md) | `vramd` na rede, bundles e GPU remota | **vivo** |
