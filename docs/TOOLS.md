@@ -52,6 +52,7 @@ stderr com exit 1; as primitivas de teste têm exit semântico — `wait-ready`,
 | `ping`, `probe`, `wait-ready [--json]` | `wait-ready` espera o `ready` (véu de carregamento saído) antes de screenshots/input |
 | `engines [--json] [--prune]` | Sessões conhecidas com estado de vida (pid + porta); `--prune` apaga as mortas |
 | `screenshot -o f.png`, `burst -o f.png --frames 9 --skip 0` | Captura única ou folha de N frames (screenshot tem 1 retry transitório) |
+| `video --seconds 5 --fps 15 -o movimento.mp4` | Grava a janela do jogo. Aceita câmera lenta, recorte e relatório JSON com a contagem de quadros repetidos. [Exemplo na arena](DEBUG.md#gravar-movimentos-na-arena) |
 | `tree [--filter TEXTO]`, `logs [--tail N --grep T --source file\|bridge\|auto]`, `memory`, `hitches` | Estado do jogo. `logs` lê o ficheiro da sessão (completo desde o boot) ou o ring do jogo (`bridge`) |
 | `prof --tab frames`, `--hitches`, `--record 30 --hz 2 -o perf.jsonl` | Profiler |
 | `mark`, `key --hold-ms`, `text`, `click`, `move` | Trace e input sintético |

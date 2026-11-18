@@ -14,6 +14,7 @@ use clap::{Parser, Subcommand};
 mod debug;
 mod playbook;
 mod run;
+mod video;
 #[cfg(test)]
 mod testutil;
 

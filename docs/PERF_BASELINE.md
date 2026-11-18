@@ -217,3 +217,120 @@ O que **passou a ser visível** no traço e continua por atacar, por ordem:
 3. `world.parse` 1,5-1,8 s (resolução de prefabs);
 4. a fila de upload (~2 GB com teto de 256 MB/frame) — é ela que fixa o fim do
    véu desde a correção.
+
+## Vila e encosta em 18 de novembro de 2026
+
+Build release do Vael, i7-12650H, RTX 4050 Laptop de 6 GiB, Vulkan, janela
+1280×720, preset `equilibrado` e VSync padrão. O painel estava a 59,95 Hz.
+As duas versões carregaram o mesmo mundo, uma instância do Vael de cada
+vez, com saves de QA separados, céu limpo e relógio parado às 8 h.
+
+| Cena | FPS antes | FPS depois | p95 antes | p95 depois |
+|---|---:|---:|---:|---:|
+| Portão da vila | 30,0 | 56,8 | 37,5 ms | 24,1 ms |
+| Encosta com vegetação | 30,0 | 55,2 | 38,5 ms | 27,4 ms |
+| Caminhada na encosta | 36,3 | 54,9 | 38,1 ms | 25,3 ms |
+
+Cada célula agrega três janelas disjuntas de 240 frames de
+`vael-tools debug prof --json`. O FPS é 1000 dividido pela média dos
+tempos de frame. O p95 é o percentil das 720 observações da cena.
+O arranque fica fora destas amostras.
+
+Para repetir, abrir `world.bsn --scene main --entry dev --bridge 15887
+--resolution 1280x720` com `VAEL_START_HOUR=8` e `VAEL_START_WEATHER=Clear`.
+Depois de `wait-ready`, pausar o relógio com `viber.vael.env_pause(true)`.
+Nos enquadramentos fixos, usar `viber.camera_free(true)`, colocar o herói
+no XZ indicado e esperar 12 s para o streaming. Na tabela abaixo, `h`
+é a altura do terreno no XZ do herói. Recolher as três amostras com 10 s
+entre leituras.
+
+| Cena | Herói XZ | Câmara XYZ | Alvo XYZ |
+|---|---|---|---|
+| Portão | (0, 44) | (4, h+4, 50) | (0, h+1,6, 35) |
+| Encosta | (50, 75) | (50, h+4, 75) | (40, h+2, 60) |
+
+Para a caminhada, abrir uma sessão com a câmara de jogo, começar em
+(50, 75), esperar 4 s e manter W premido. Recolher uma janela ao fim de
+10 s e repetir três vezes a partir do mesmo ponto. O deslocamento
+registado nas duas versões foi de aproximadamente 40 m por passagem.
+
+Com a versão otimizada e `VIBER_PRESENT_MODE=immediate`, as mesmas vistas
+fixas registaram 57,7 FPS na vila e 55,5 FPS na encosta. A apresentação
+imediata foi usada só nesta medição adicional.
+
+## Oito cenários e estabilidade em 18 de novembro de 2026
+
+Comparação incremental, depois da otimização da vila e da encosta. As duas
+compilações release partiram da mesma cópia do código e usaram o mesmo mundo.
+RTX 4050 Laptop de 6 GiB, i7-12650H, Vulkan, 1280 × 720, preset
+`equilibrado`, VSync no painel de 59,95 Hz. Um jogo de cada vez na GPU.
+
+O roteiro mede 10 s desde o teleporte, espera 5 s, mede mais 12 s com a
+câmara parada e 12 s segurando W com a câmara do jogador. As leituras
+sobrepostas do profiler foram unidas para contar cada frame uma vez.
+O relógio do jogo, as criaturas e o clima continuaram ativos. A sessão de nevasca começou às 15 h com 0,30 m de neve no chão. A
+sessão de chuva começou às 21 h e a de céu limpo às 9 h. Cada sessão
+percorreu dois locais.
+A distância percorrida e o clima efetivo ficam no JSON de cada local.
+
+| Local | Entrada FPS | Parado FPS | Caminhada FPS | Caminhada p95 (ms) | Caminhada p99 (ms) |
+|---|---:|---:|---:|---:|---:|
+| Picos Gelados · nevasca | 34,6 → 44,6 | 51,4 → 53,5 | 40,9 → 46,3 | 40,8 → 28,6 | 55,9 → 36,7 |
+| Portão da vila · nevasca | 40,1 → 45,9 | 49,7 → 50,1 | 42,0 → 47,2 | 38,8 → 27,5 | 47,5 → 31,2 |
+| Pântano · chuva noturna | 33,7 → 44,7 | 38,9 → 47,2 | 30,1 → 39,2 | 53,8 → 33,5 | 66,8 → 40,9 |
+| Floresta · chuva noturna | 27,4 → 36,3 | 28,7 → 38,5 | 37,1 → 50,6 | 35,0 → 26,9 | 41,6 → 31,4 |
+| Margem do deserto · manhã limpa | 42,5 → 46,2 | 50,7 → 51,1 | 57,2 → 57,8 | 22,5 → 21,6 | 26,7 → 25,8 |
+| Ermo distante · manhã limpa | 53,8 → 57,0 | 59,7 → 59,8 | 58,3 → 59,2 | 21,0 → 19,1 | 23,6 → 22,8 |
+
+Cada par mostra antes → depois. O p99 é o tempo abaixo do qual ficaram
+99% dos frames. O agregado usa todos os frames das seis rotas em cada
+fase. As amostras de entrada incluem o carregamento local após o teleporte.
+
+| Agregado das seis rotas | FPS | p95 (ms) | p99 (ms) | Frames acima de 50 ms |
+|---|---:|---:|---:|---:|
+| Entrada | 38,7 → 45,8 | 42,1 → 30,9 | 73,3 → 46,9 | 65 → 27 |
+| Câmara parada | 46,5 → 50,0 | 34,8 → 27,2 | 38,1 → 30,2 | 2 → 0 |
+| Caminhada | 44,2 → 50,0 | 35,0 → 28,0 | 51,9 → 33,9 | 38 → 9 |
+
+A arena e a forja usam os tours de QA do jogo. A arena envia a sequência de
+ataques, esquiva e habilidades. Na forja, o tour interage e abre o mapa.
+Os resultados incluem o tempo de resposta aos comandos.
+
+| Tour | FPS | p95 (ms) | p99 (ms) |
+|---|---:|---:|---:|
+| Arena | 59,7 → 59,7 | 18,1 → 17,9 | 19,6 → 19,5 |
+| Forja | 59,7 → 59,7 | 18,2 → 18,1 | 22,7 → 20,6 |
+
+Para reproduzir a matriz completa, compilar com `cargo build --release --bin vael` e executar `python tools/perf_routes.py /tmp/vael-rotas` a partir
+da raiz do Vael. O roteiro usa saves temporários e grava PNGs, distâncias,
+clima, tempos de frame e dados do profiler. As opções `--weather Rain` e
+`--tour arena_combat` permitem repetir uma condição. Com
+`VIBER_PROF_GPU=1`, cada fase inclui também os tempos das passagens da GPU.
+
+As alterações reutilizam as alturas e as inclinações do terreno ao atualizar
+a neve, preparam a cobertura de neve dos objetos em segundo plano e leem as
+amostras dos blocos de terreno diretamente pelos índices da grade. As faces
+de transição continuam a consultar o terreno a meia célula. O teste de
+equivalência compara posições, normais, UVs, cores e índices com o gerador
+anterior, incluindo escavações e transições de resolução.
+
+Na floresta chuvosa, a lua permanecia acima do horizonte e as nuvens
+reduziam seu feixe a uma fração diminuta de lux. Antes do ajuste lunar,
+o perfil de GPU registrou 8,9 ms na passagem de sombras por vista com a
+câmera parada. O jogo agora pula o mapa de sombras da lua abaixo de
+0,0000001 lux e o retoma quando o luar volta. A lanterna, as fogueiras e
+as sombras das noites claras continuam ativas. Na captura equivalente, a
+passagem de sombras por vista saiu do perfil. As vistas auxiliares ainda
+custaram 11,3 ms. Essas duas medições com timestamps de GPU ficaram fora
+das tabelas de FPS.
+
+Nas capturas noturnas de antes e depois, a diferença absoluta média foi
+de 0,28 nível de cor por canal na floresta e 0,31 no pântano, em uma
+escala de 0 a 255. Criaturas, clima e partículas estavam em movimento.
+Na margem do deserto apareceu uma variação de brilho entre partidas. Em
+uma repetição com o relógio pausado, a variação se inverteu entre as
+versões. Esses registros permitem conferir as cenas, com a equivalência
+da geometria coberta separadamente nos testes.
+
+Cada célula da tabela vem de uma passagem por versão. Interprete diferenças
+pequenas perto do limite do VSync à luz da variação entre partidas.

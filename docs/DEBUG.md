@@ -25,6 +25,52 @@ O resultado é o estado de um **Novo Jogo** sem o título e sem o prólogo:
 | Jogador em `(0, 150, 0)` | Igual: a entrada `dev` usa a mesma pose e assenta no chão |
 | Regras, quests, loja, saves | Normais — é o jogo a sério |
 
+## Gravar movimentos na arena
+
+Com o executável FFmpeg no PATH e suporte a `libx264`, abra a arena a partir da raiz do Vael.
+
+```bash
+target/release/vael --scenario combat/arena --bridge 15885 --resolution 800x450
+```
+
+Noutro terminal, espere o carregamento e grave seis segundos. Pode jogar normalmente
+ou enviar entradas pelo bridge durante a captura.
+
+```bash
+vael-tools debug --port 15885 wait-ready
+vael-tools debug --port 15885 video --seconds 6 --fps 15 -o combate.mp4
+```
+
+Para rever a preparação e o contato do golpe a metade da velocidade, use
+`--slow-motion 2`. O recorte opcional usa pixels da janela, na ordem
+`x,y,largura,altura`. Numa janela de 800×450, este exemplo grava o centro.
+
+```bash
+vael-tools debug --port 15885 --json video --seconds 3 --fps 20 \
+  --slow-motion 2 --region 200,75,400,300 -o golpe.mp4
+ffplay golpe.mp4
+```
+
+No ffplay, use espaço para pausar e `s` para avançar um quadro. A captura lê a
+janela renderizada pelo jogo e gera um MP4 H.264 sem áudio. Mantenha a janela
+visível. `--fps` limita a amostragem. Se a leitura do renderer demorar, o vídeo
+mantém a última imagem até à próxima captura para preservar o tempo do movimento.
+O relatório JSON indica `captured_frames`, `repeated_frames`, `capture_hz` e
+`playback_seconds`. Um recorte menor reduz o custo da codificação PNG quando
+o bridge expõe `brp_extras/screenshot`.
+
+Se um ataque inteiro cair entre duas capturas, reduza a velocidade da
+simulação antes de repetir o ataque. A 25%, cada segundo de animação ocupa
+quatro segundos de captura. Leia a velocidade inicial para a restaurar depois.
+O exemplo parte de uma sessão a velocidade normal.
+
+```bash
+vael-tools debug --port 15885 lua 'return viber.debug.time_scale()'
+vael-tools debug --port 15885 lua 'viber.debug.set_time_scale(0.25)'
+vael-tools debug --port 15885 video --seconds 8 -o ataque-detalhe.mp4
+vael-tools debug --port 15885 lua 'viber.debug.set_time_scale(1)'
+```
+
 ## Esperar pelo carregamento (agentes/QA)
 
 O ecrã de carregamento sai com o **anel próximo**: os `<GltfScene>` a menos de

@@ -72,6 +72,8 @@ pub enum DebugCommand {
         #[arg(long, default_value_t = 0)]
         delay_ms: u64,
     },
+    /// Grava movimentos da janela do jogo num MP4 pelo bridge local.
+    Video(crate::video::VideoArgs),
     /// Captura N frames numa folha única (flicker/movimento sem N PNGs).
     Burst {
         #[arg(short, long, default_value = "burst.png")]
@@ -316,6 +318,20 @@ pub fn run(
                 json_out,
                 format!("screenshot: {} ({} bytes)", output.display(), png.len()),
                 &json!({ "path": output.display().to_string(), "bytes": png.len() }),
+            )?;
+        }
+        DebugCommand::Video(args) => {
+            let report = crate::video::record(&client, &args)?;
+            emit(
+                json_out,
+                format!(
+                    "{} — {} imagens capturadas, {:.1} por segundo, {} quadros no MP4",
+                    args.output.display(),
+                    report.captured_frames,
+                    report.capture_hz,
+                    report.video_frames
+                ),
+                &serde_json::to_value(report)?,
             )?;
         }
         DebugCommand::Burst {

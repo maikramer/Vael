@@ -8,11 +8,11 @@
 //! os frames ocupem o mesmo número de vblanks.
 //!
 //! `VIBER_FPS_CAP`:
-//! * `auto` (omissão) — escolhe o divisor mais rápido que o jogo sustenta
+//! * `auto` — escolhe o divisor mais rápido que o jogo sustenta
 //!   (p90 do trabalho por frame com 8 % de folga). Desce logo que falha,
 //!   sobe só depois de [`UPSHIFT_SECONDS`] seguidos com folga.
 //! * `N` — alvo fixo em fps (não é arredondado ao refresh).
-//! * `0` / `off` — sem pacing (o comportamento antigo).
+//! * `0` / `off` (omissão) — apresenta assim que o frame estiver pronto.
 
 use std::time::{Duration, Instant};
 
@@ -50,8 +50,9 @@ pub enum PacingMode {
 impl PacingMode {
     pub fn parse(raw: Option<&str>) -> Self {
         match raw.map(|r| r.trim().to_ascii_lowercase()) {
-            None => Self::Auto,
-            Some(r) if r.is_empty() || r == "auto" => Self::Auto,
+            None => Self::Off,
+            Some(r) if r == "auto" => Self::Auto,
+            Some(r) if r.is_empty() => Self::Off,
             Some(r) if r == "0" || r == "off" || r == "false" => Self::Off,
             Some(r) => match r.parse::<f32>() {
                 Ok(fps) if fps.is_finite() && fps > 0.0 => Self::Fixed(fps),
@@ -246,7 +247,9 @@ mod tests {
 
     #[test]
     fn parse_modes() {
-        assert_eq!(PacingMode::parse(None), PacingMode::Auto);
+        assert_eq!(PacingMode::parse(None), PacingMode::Off);
+        assert_eq!(PacingMode::parse(Some(" ")), PacingMode::Off);
+        assert_eq!(PacingMode::parse(Some("auto")), PacingMode::Auto);
         assert_eq!(PacingMode::parse(Some("off")), PacingMode::Off);
         assert_eq!(PacingMode::parse(Some("0")), PacingMode::Off);
         assert_eq!(PacingMode::parse(Some("48")), PacingMode::Fixed(48.0));
