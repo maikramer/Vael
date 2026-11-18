@@ -16,20 +16,32 @@
 use std::f32::consts::PI;
 use std::path::{Path, PathBuf};
 
-use avian3d::prelude::RigidBodyDisabled;
+mod mooring;
+mod rowing;
+mod shore;
+pub use mooring::Mooring;
+
+use avian3d::prelude::{
+    AngularInertia, AngularVelocity, CenterOfMass, Collider, Friction, LinearVelocity, Mass,
+    MaxLinearSpeed, NoAutoAngularInertia, NoAutoCenterOfMass, NoAutoMass, Position, RigidBody,
+    RigidBodyDisabled, Rotation, SleepingDisabled, SweptCcd,
+};
 use bevy::prelude::*;
 use bevy_ext_core::Player;
+use bevy_ext_water::buoyancy::avian::{AvianBuoyancyPlugin, AvianFloating};
 use serde::{Deserialize, Serialize};
 
 use crate::player::VaelController;
 use viber::recipes::spawn::OrbitCamera;
 use viber::terrain::runtime::TerrainRuntime;
-use viber::terrain::{FloatState, FloatingBody, WaterKinematics};
+use viber::terrain::{
+    FloatState, FloatingBody, WaterKinematics, WaterWaveWorld, WaveImpulseRequest,
+};
 
 /// Distância (m) do herói ao barco para entrar.
 pub const BOARD_RADIUS: f32 = 3.4;
 /// Assento do herói no barco (pés no piso interior, entre os travessões).
-pub const SEAT_LOCAL: Vec3 = Vec3::new(0.0, -0.38, -0.42);
+pub const SEAT_LOCAL: Vec3 = Vec3::new(0.0, -0.38, 0.09);
 /// Meia-boca, meia-altura e meia-comprimento do casco (m).
 pub const HULL_HALF: Vec3 = Vec3::new(0.80, 0.30, 2.20);
 /// Centro da caixa de carena no referencial do barco (origem = linha de água
@@ -55,17 +67,28 @@ pub struct Boat {
     pub turn_rate: f32,
     /// Fase da remada (animação dos remos).
     pub oar_phase: f32,
+    /// Amplitude atual das pás (0 = recolhidas, 1 = remada completa).
+    pub oar_effort: f32,
+    /// Sentido da puxada (1 para avançar, -1 para recuar).
+    pub oar_direction: f32,
+    /// Contacto anterior de cada pá, para detetar a entrada na água.
+    pub blade_wet: [bool; 2],
+    pub mooring: Option<Mooring>,
 }
 
 impl Default for Boat {
     fn default() -> Self {
         Self {
             accel: 3.2,
-            reverse: 0.45,
+            reverse: 0.78,
             max_speed: 4.0,
             sprint_mult: 1.5,
             turn_rate: 0.95,
             oar_phase: 0.0,
+            oar_effort: 0.0,
+            oar_direction: 1.0,
+            blade_wet: [false; 2],
+            mooring: None,
         }
     }
 }
@@ -82,6 +105,8 @@ pub struct RidingBoat {
 pub struct Oar {
     /// -1 = bombordo, +1 = estibordo.
     pub side: f32,
+    /// Last evaluated palm socket, in hull space, for the water contact solve.
+    grip: Option<Vec3>,
 }
 
 /// Os barcos de `data/boats.json` já nasceram nesta cena.
@@ -101,6 +126,8 @@ pub struct BoatPose {
     pub name: String,
     pub position: Vec3,
     pub yaw: f32,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub mooring: Option<Mooring>,
 }
 
 /// Estado dos barcos entre cenas: o `spawn_boats` consulta as poses ANTES das
@@ -175,7 +202,7 @@ pub fn rowboat_body() -> FloatingBody {
         angular_drag: 3.1,
         heave_drag: 5.0,
         heave_quadratic: 0.9,
-        wave_response: 1.0,
+        wave_response: 1.8,
         max_speed: 9.0,
         ground_stiffness: 14000.0,
         ground_damping: 1200.0,
@@ -247,39 +274,41 @@ impl MeshBuilder {
         let c = center;
         let h = half;
         let p = |x: f32, y: f32, z: f32| Vec3::new(c.x + x * h.x, c.y + y * h.y, c.z + z * h.z);
+        // As faces abaixo percorrem a caixa vistas de dentro.
+        let mut face = |a, b, c, d| self.quad(d, c, b, a);
         // topo / fundo
-        self.quad(
+        face(
             p(-1., 1., -1.),
             p(1., 1., -1.),
             p(1., 1., 1.),
             p(-1., 1., 1.),
         );
-        self.quad(
+        face(
             p(-1., -1., 1.),
             p(1., -1., 1.),
             p(1., -1., -1.),
             p(-1., -1., -1.),
         );
         // lados
-        self.quad(
+        face(
             p(-1., -1., 1.),
             p(-1., 1., 1.),
             p(1., 1., 1.),
             p(1., -1., 1.),
         );
-        self.quad(
+        face(
             p(1., -1., -1.),
             p(1., 1., -1.),
             p(-1., 1., -1.),
             p(-1., -1., -1.),
         );
-        self.quad(
+        face(
             p(-1., -1., -1.),
             p(-1., 1., -1.),
             p(-1., 1., 1.),
             p(-1., -1., 1.),
         );
-        self.quad(
+        face(
             p(1., -1., 1.),
             p(1., 1., 1.),
             p(1., 1., -1.),
@@ -307,12 +336,12 @@ fn hull_taper(t: f32) -> f32 {
 
 /// Cota da borda (gunwale) ao longo do comprimento — sobe nas pontas.
 fn hull_sheer(t: f32) -> f32 {
-    0.06 + 0.16 * (1.0 - (PI * t).sin().powf(0.8))
+    0.06 + 0.16 * (1.0 - (PI * t).sin().max(0.0).powf(0.8))
 }
 
 /// Cota da quilha ao longo do comprimento — rocker nas pontas.
 fn hull_keel(t: f32) -> f32 {
-    -0.54 + 0.22 * (1.0 - (PI * t).sin().powf(0.9))
+    -0.54 + 0.22 * (1.0 - (PI * t).sin().max(0.0).powf(0.9))
 }
 
 /// Ponto do casco: `u` ∈ [-1, 1] (bombordo → estibordo) e `inset` 0 = casco
@@ -341,55 +370,124 @@ pub fn rowboat_hull_mesh() -> Mesh {
             let t0 = i as f32 / STATIONS as f32;
             let t1 = (i + 1) as f32 / STATIONS as f32;
             for j in 0..US - 1 {
-                b.quad(
-                    hull_point(t0, us[j], inset),
-                    hull_point(t1, us[j], inset),
-                    hull_point(t1, us[j + 1], inset),
-                    hull_point(t0, us[j + 1], inset),
-                );
+                let a = hull_point(t0, us[j], inset);
+                let b1 = hull_point(t1, us[j], inset);
+                let c = hull_point(t1, us[j + 1], inset);
+                let d = hull_point(t0, us[j + 1], inset);
+                if inset == 0.0 {
+                    b.quad(d, c, b1, a);
+                } else {
+                    b.quad(a, b1, c, d);
+                }
             }
         }
     }
-    // Rio: fecha a espessura entre a borda exterior e a interior.
+    // A borda acompanha o comprimento, ligando apenas os dois lábios.
     for i in 0..STATIONS {
         let t0 = i as f32 / STATIONS as f32;
         let t1 = (i + 1) as f32 / STATIONS as f32;
-        for j in 0..US - 1 {
+        for side in [-1.0, 1.0] {
+            let (a, z) = if side > 0.0 { (t1, t0) } else { (t0, t1) };
             b.quad(
-                hull_point(t0, us[j], 0.0),
-                hull_point(t0, us[j + 1], 0.0),
-                hull_point(t0, us[j + 1], 1.0),
-                hull_point(t0, us[j], 1.0),
+                hull_point(a, side, 0.0),
+                hull_point(z, side, 0.0),
+                hull_point(z, side, 1.0),
+                hull_point(a, side, 1.0),
             );
-            let _ = t1;
         }
     }
-    // Transom (fecha popa e proa entre exterior e interior).
     for t in [0.0_f32, 1.0] {
-        for j in 0..US - 1 {
-            b.quad(
-                hull_point(t, us[j], 0.0),
-                hull_point(t, us[j + 1], 0.0),
-                hull_point(t, us[j + 1], 1.0),
-                hull_point(t, us[j], 1.0),
-            );
+        let top = Vec3::new(0.0, hull_sheer(t), hull_point(t, 0.0, 0.0).z);
+        for pair in us.windows(2) {
+            let a = hull_point(t, pair[0], 0.0);
+            let c = hull_point(t, pair[1], 0.0);
+            if t > 0.5 {
+                b.tri(a, c, top);
+            } else {
+                b.tri(c, a, top);
+            }
         }
     }
 
     // Bancos (thwarts): dois travessões e o assento do remador.
     b.box_part(Vec3::new(0.0, -0.27, -0.85), Vec3::new(0.63, 0.045, 0.15));
     b.box_part(Vec3::new(0.0, -0.27, 0.75), Vec3::new(0.58, 0.045, 0.14));
-    b.box_part(Vec3::new(0.0, -0.27, 0.05), Vec3::new(0.60, 0.045, 0.16));
+    b.box_part(Vec3::new(0.0, -0.05, 0.05), Vec3::new(0.60, 0.045, 0.16));
 
     b.into_mesh()
 }
 
-/// Malha de um remo: haste ao longo de +Z e pá no extremo.
+fn hull_physics(body: &FloatingBody) -> impl Bundle {
+    let inertia = Vec3::new(
+        HULL_HALF.y.powi(2) + HULL_HALF.z.powi(2),
+        HULL_HALF.x.powi(2) + HULL_HALF.z.powi(2),
+        HULL_HALF.x.powi(2) + HULL_HALF.y.powi(2),
+    ) * (body.mass / 3.0);
+    let points: Vec<_> = (0..=8)
+        .flat_map(|i| (-2..=2).map(move |j| hull_point(i as f32 / 8.0, j as f32 / 2.0, 0.0)))
+        .collect();
+    (
+        RigidBody::Dynamic,
+        Collider::convex_hull(&points).expect("rowboat hull has volume"),
+        Mass(body.mass),
+        AngularInertia::new(inertia),
+        CenterOfMass(body.center_of_mass),
+        NoAutoMass,
+        NoAutoAngularInertia,
+        NoAutoCenterOfMass,
+        SleepingDisabled,
+        SweptCcd::new(),
+        Friction::new(0.6),
+        MaxLinearSpeed(body.max_speed),
+        AvianFloating,
+    )
+}
+
+// Local +Z runs from the inboard handle to the blade.
+const OAR_GRIP_Z: f32 = -0.55;
+const OAR_BUTT_Z: f32 = OAR_GRIP_Z - 0.035;
+const OAR_BLADE_Z: f32 = 1.90;
+
+/// Turned wooden handle, tapered loom and thin blade, in one continuous surface.
 pub fn rowboat_oar_mesh() -> Mesh {
-    let mut b = MeshBuilder::default();
-    b.box_part(Vec3::new(0.0, 0.0, 0.95), Vec3::new(0.035, 0.035, 0.95));
-    b.box_part(Vec3::new(0.0, 0.0, 1.90), Vec3::new(0.11, 0.016, 0.22));
-    b.into_mesh()
+    let mut mesh = MeshBuilder::default();
+    let rings = [
+        (OAR_BUTT_Z, 0.015, 0.015),
+        (OAR_BUTT_Z + 0.006, 0.023, 0.023),
+        (OAR_GRIP_Z + 0.080, 0.021, 0.021),
+        (-0.32, 0.026, 0.026),
+        (0.02, 0.034, 0.034),
+        (1.42, 0.026, 0.026),
+        (1.62, 0.056, 0.022),
+        (OAR_BLADE_Z, 0.101, 0.015),
+        (2.09, 0.104, 0.010),
+        (2.14, 0.087, 0.008),
+        (2.16, 0.055, 0.006),
+    ];
+    const SIDES: usize = 12;
+    let vertex = |(z, rx, ry): (f32, f32, f32), index: usize| {
+        let (sin, cos) = (2.0 * PI * index as f32 / SIDES as f32).sin_cos();
+        Vec3::new(rx * cos, ry * sin, z)
+    };
+    let last = rings[rings.len() - 1];
+    for i in 0..SIDES {
+        let j = (i + 1) % SIDES;
+        mesh.tri(
+            Vec3::Z * OAR_BUTT_Z,
+            vertex(rings[0], j),
+            vertex(rings[0], i),
+        );
+        for pair in rings.windows(2) {
+            mesh.quad(
+                vertex(pair[0], i),
+                vertex(pair[0], j),
+                vertex(pair[1], j),
+                vertex(pair[1], i),
+            );
+        }
+        mesh.tri(Vec3::Z * last.0, vertex(last, i), vertex(last, j));
+    }
+    mesh.into_mesh()
 }
 
 // ── plugin ─────────────────────────────────────────────────────────────────
@@ -398,7 +496,8 @@ pub struct VaelBoatPlugin;
 
 impl Plugin for VaelBoatPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<BoatsSpawned>()
+        app.add_plugins(AvianBuoyancyPlugin::<TerrainRuntime>::default())
+            .init_resource::<BoatsSpawned>()
             .init_resource::<BoatStates>()
             .add_systems(Startup, load_boat_assets)
             .add_systems(viber::scene_loader::SceneLoad, despawn_boats_on_scene_load)
@@ -408,14 +507,25 @@ impl Plugin for VaelBoatPlugin {
                     spawn_boats,
                     drive_boat_states,
                     recover_missing_boat,
+                    shore::update_landing,
                     board_or_leave_boat,
                     drive_boats,
                     seat_riders,
-                    animate_oars,
+                    rowing::choose_rider_state,
+                    mooring::draw,
                 )
                     .chain()
                     .after(crate::player::PlayerMovementSet)
+                    .before(viber::animation::drive_player_animation)
                     .run_if(crate::player::no_editor_camera),
+            )
+            .add_systems(
+                Update,
+                rowing::sync_rowing_clip.after(viber::animation::drive_player_animation),
+            )
+            .add_systems(
+                PostUpdate,
+                rowing::animate_oars.after(TransformSystems::Propagate),
             );
     }
 }
@@ -427,6 +537,8 @@ struct BoatAssets {
     oars: Handle<Mesh>,
     wood: Handle<StandardMaterial>,
     trim: Handle<StandardMaterial>,
+    rope: Handle<StandardMaterial>,
+    rod: Handle<Mesh>,
 }
 
 fn load_boat_assets(
@@ -449,6 +561,8 @@ fn load_boat_assets(
     commands.insert_resource(BoatAssets {
         hull: meshes.add(rowboat_hull_mesh()),
         oars: meshes.add(rowboat_oar_mesh()),
+        rod: meshes.add(Cylinder::new(1.0, 1.0).mesh().resolution(10)),
+        rope: materials.add(Color::srgb(0.69, 0.50, 0.26)),
         wood,
         trim,
     });
@@ -504,9 +618,7 @@ fn spawn_boats(
     let config = BoatsConfig::load(&config_path);
     for spawn in &config.boats {
         // A pose guardada (save ou visita anterior ao `main`) ganha à
-        // autorada — mas só enquanto o sítio guardado ainda tiver água: um
-        // mundo regenerado com a costa noutro lado não pode fazer o barco
-        // desaparecer.
+        // autorada. Um barco amarrado pode ter a quilha em areia seca.
         let saved = states.as_deref().and_then(|states| {
             states
                 .poses
@@ -514,17 +626,17 @@ fn spawn_boats(
                 .find(|pose| pose.name == spawn.name)
                 .filter(|pose| {
                     pose.position.is_finite()
-                        && terrain
-                            .water_surface_at(pose.position.x, pose.position.z)
-                            .is_some()
+                        && (pose.mooring.is_some()
+                            || terrain
+                                .water_surface_at(pose.position.x, pose.position.z)
+                                .is_some())
                 })
         });
-        let (x, z) = saved.map_or((spawn.x, spawn.z), |pose| (pose.position.x, pose.position.z));
+        let (x, z) = saved.map_or((spawn.x, spawn.z), |pose| {
+            (pose.position.x, pose.position.z)
+        });
         let yaw = saved.map_or(spawn.yaw, |pose| pose.yaw);
-        let Some(surface) = terrain.water_surface_at(x, z) else {
-            warn!("vael: barco `{}` sem água em ({}, {})", spawn.name, x, z);
-            continue;
-        };
+        let mooring = saved.and_then(|pose| pose.mooring);
         let body = rowboat_body();
         let mut state = FloatState {
             yaw,
@@ -532,49 +644,59 @@ fn spawn_boats(
         };
         // Um save guardou a cota de equilíbrio: nasce já lá em vez de
         // recalcular a partir da superfície (que pode ter mudado).
-        let saved_y = saved.map(|pose| pose.position.y).filter(|y| y.is_finite());
-        let mut position = match saved_y {
-            Some(y) => Vec3::new(x, y, z),
-            None => Vec3::new(x, surface + body.rest_height(), z),
-        };
-        // Assenta já no equilíbrio (evita o "plop" de 0,5 m no arranque).
-        let sample = |p: Vec2| {
+        let Some(y) = saved.map(|pose| pose.position.y).or_else(|| {
             terrain
-                .water_domain_at(p.x, p.y)
-                .map(|d| viber::terrain::FloatSample {
-                    surface_y: Some(d.surface_y),
-                    bed_y: terrain.in_field(p.x, p.y).then(|| terrain.sample(p.x, p.y)),
-                    flow: d.flow,
-                })
-                .unwrap_or(viber::terrain::FloatSample::dry(
-                    terrain.in_field(p.x, p.y).then(|| terrain.sample(p.x, p.y)),
-                ))
+                .water_surface_at(x, z)
+                .map(|surface| surface + body.rest_height())
+        }) else {
+            warn!("vael: barco `{}` sem água em ({}, {})", spawn.name, x, z);
+            continue;
         };
-        for _ in 0..4 {
-            viber::terrain::water_buoyancy::step_float(
-                &body,
-                &mut state,
-                &mut position,
-                1.0 / 30.0,
-                sample,
-                |_, _| 0.0,
-            );
+        let mut position = Vec3::new(x, y, z);
+        if mooring.is_none() {
+            // Assenta já no equilíbrio (evita o "plop" de 0,5 m no arranque).
+            let sample = |p: Vec2| {
+                terrain
+                    .water_domain_at(p.x, p.y)
+                    .map(|d| viber::terrain::FloatSample {
+                        surface_y: Some(d.surface_y),
+                        bed_y: terrain.in_field(p.x, p.y).then(|| terrain.sample(p.x, p.y)),
+                        flow: d.flow,
+                    })
+                    .unwrap_or(viber::terrain::FloatSample::dry(
+                        terrain.in_field(p.x, p.y).then(|| terrain.sample(p.x, p.y)),
+                    ))
+            };
+            for _ in 0..4 {
+                viber::terrain::water_buoyancy::step_float(
+                    &body,
+                    &mut state,
+                    &mut position,
+                    1.0 / 30.0,
+                    sample,
+                    |_, _| 0.0,
+                );
+            }
         }
-
         let spawn_tf = Transform {
             translation: position,
-            rotation: state.rotation(),
+            rotation: mooring.map_or_else(|| state.rotation(), |m| m.rotation),
             ..Default::default()
         };
+        let physics = hull_physics(&body);
         let boat = commands
             .spawn((
                 Name::new(spawn.name.clone()),
                 spawn_tf,
+                physics,
                 GlobalTransform::from(spawn_tf),
                 Visibility::Inherited,
                 body,
                 state,
-                Boat::default(),
+                Boat {
+                    mooring,
+                    ..Default::default()
+                },
                 WaterKinematics {
                     velocity: Vec3::ZERO,
                     body_radius: HULL_HALF.z.max(HULL_HALF.x) + 0.4,
@@ -582,6 +704,9 @@ fn spawn_boats(
                 },
             ))
             .id();
+        if mooring.is_some() {
+            commands.entity(boat).insert(RigidBody::Static);
+        }
         commands.spawn((
             Name::new(format!("{}:casco", spawn.name)),
             Mesh3d(assets.hull.clone()),
@@ -593,8 +718,8 @@ fn spawn_boats(
                 Name::new(format!("{}:remo", spawn.name)),
                 Mesh3d(assets.oars.clone()),
                 MeshMaterial3d(assets.trim.clone()),
-                Transform::from_xyz(0.76 * side, 0.02, 0.22),
-                Oar { side },
+                rowing::stowed_oar(side),
+                Oar { side, grip: None },
                 ChildOf(boat),
             ));
         }
@@ -639,12 +764,12 @@ fn drive_boat_states(
     // Bevy valida isso no arranque do sistema (`error[B0001]`) mesmo que nunca
     // sejam usados no mesmo frame.
     mut params: ParamSet<(
-        Query<(Entity, &Name, &mut Transform, &mut FloatState), With<Boat>>,
+        Query<(Entity, &Name, &mut Transform, &mut FloatState, &mut Boat)>,
         Query<
             (),
             (
                 With<Boat>,
-                Or<(Added<Boat>, Changed<Transform>, Changed<FloatState>)>,
+                Or<(Changed<Boat>, Changed<Transform>, Changed<FloatState>)>,
             ),
         >,
         Query<(), (With<Player>, Or<(Added<RidingBoat>, Changed<RidingBoat>)>)>,
@@ -665,14 +790,25 @@ fn drive_boat_states(
         // temporário cair a meio do `let … else` (E0716).
         let mut boats = params.p0();
         for pose in &states.poses {
-            let Some((_, _, mut transform, mut float)) = boats
+            let Some((entity, _, mut transform, mut float, mut boat)) = boats
                 .iter_mut()
-                .find(|(_, name, _, _)| name.as_str() == pose.name)
+                .find(|(_, name, _, _, _)| name.as_str() == pose.name)
             else {
                 continue;
             };
             transform.translation = pose.position;
-            transform.rotation = Quat::from_rotation_y(pose.yaw);
+            let mooring = pose
+                .mooring
+                .filter(|_| states.riding.as_deref() != Some(pose.name.as_str()));
+            mooring::set(&mut commands, entity, &mut boat, mooring);
+            transform.rotation =
+                mooring.map_or_else(|| Quat::from_rotation_y(pose.yaw), |m| m.rotation);
+            commands.entity(entity).insert((
+                Position(pose.position),
+                Rotation(transform.rotation),
+                LinearVelocity::ZERO,
+                AngularVelocity::ZERO,
+            ));
             float.yaw = pose.yaw;
             float.velocity = Vec3::ZERO;
             float.pitch = 0.0;
@@ -749,9 +885,13 @@ fn drive_boat_states(
     } else if states.poses.len() != boat_count {
         true
     } else {
-        params.p0().iter().any(|(_, name, transform, float)| {
+        params.p0().iter().any(|(_, name, transform, float, boat)| {
             match states.poses.iter().find(|p| p.name == name.as_str()) {
-                Some(prev) => prev.position != transform.translation || prev.yaw != float.yaw,
+                Some(prev) => {
+                    prev.position != transform.translation
+                        || prev.yaw != float.yaw
+                        || prev.mooring != boat.mooring
+                }
                 None => true,
             }
         })
@@ -763,22 +903,24 @@ fn drive_boat_states(
             && params
                 .p0()
                 .iter()
-                .all(|(_, n, _, _)| states.poses.iter().any(|p| p.name == n.as_str()));
+                .all(|(_, n, _, _, _)| states.poses.iter().any(|p| p.name == n.as_str()));
         if names_match {
-            for (_, name, transform, float) in params.p0().iter() {
+            for (_, name, transform, float, boat) in params.p0().iter() {
                 if let Some(p) = states.poses.iter_mut().find(|p| p.name == name.as_str()) {
                     p.position = transform.translation;
                     p.yaw = float.yaw;
+                    p.mooring = boat.mooring;
                 }
             }
         } else {
             let mut poses: Vec<BoatPose> = params
                 .p0()
                 .iter()
-                .map(|(_, name, transform, float)| BoatPose {
+                .map(|(_, name, transform, float, boat)| BoatPose {
                     name: name.as_str().to_string(),
                     position: transform.translation,
                     yaw: float.yaw,
+                    mooring: boat.mooring,
                 })
                 .collect();
             poses.sort_by(|a, b| a.name.cmp(&b.name));
@@ -825,6 +967,9 @@ fn board_or_leave_boat(
     actions: Option<Res<viber::input_map::ActionState>>,
     typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
+    terrain: Option<Res<TerrainRuntime>>,
+    spatial: avian3d::prelude::SpatialQuery,
+    sensors: Query<(), With<avian3d::prelude::Sensor>>,
     mut players: Query<
         (
             Entity,
@@ -834,7 +979,13 @@ fn board_or_leave_boat(
         ),
         With<Player>,
     >,
-    boats: Query<(Entity, &Transform, &FloatState), With<Boat>>,
+    mut boats: Query<(
+        Entity,
+        &Transform,
+        &FloatState,
+        Option<&shore::Landing>,
+        &mut Boat,
+    )>,
     mut cameras: Query<&mut OrbitCamera>,
 ) {
     // Um menu aberto (mapa/diário/pausa) ou a barra de fala com o foco
@@ -853,15 +1004,27 @@ fn board_or_leave_boat(
 
     if let Some(riding) = riding {
         // Sair: repõe o corpo e larga o herói ao lado do casco.
-        let Ok((_, boat_tf, float)) = boats.get(riding.boat) else {
+        let Ok((_, boat_tf, float, landing, mut boat)) = boats.get_mut(riding.boat) else {
             commands
                 .entity(player)
                 .remove::<(RidingBoat, RigidBodyDisabled)>();
             return;
         };
-        let side = boat_tf.rotation * Vec3::X;
-        let mut drop = boat_tf.translation + side * 1.15;
-        drop.y = boat_tf.translation.y + 0.20;
+        let filter = avian3d::prelude::SpatialQueryFilter::default()
+            .with_excluded_entities([player, riding.boat]);
+        let Some(drop) = landing.map(|s| s.0).or_else(|| {
+            shore::swim_exit(boat_tf, terrain.as_deref()?, &spatial, &filter, &sensors)
+        }) else {
+            return;
+        };
+        if let (Some(spot), Some(rt)) = (landing, terrain.as_deref()) {
+            mooring::set(
+                &mut commands,
+                riding.boat,
+                &mut boat,
+                Some(Mooring::at(spot.0, boat_tf, rt)),
+            );
+        }
         let rotation = Quat::from_rotation_y(float.yaw);
         commands.entity(player).insert((
             Transform {
@@ -883,8 +1046,13 @@ fn board_or_leave_boat(
 
     // Entrar: o barco mais próximo dentro do raio.
     let mut best: Option<(Entity, f32)> = None;
-    for (entity, boat_tf, _) in &boats {
-        let d = boat_tf.translation.distance(player_tf.translation);
+    for (entity, boat_tf, _, _, boat) in &boats {
+        let mut d = boat_tf.translation.distance(player_tf.translation);
+        if let Some(m) = boat.mooring
+            && m.stake.distance(player_tf.translation) < 1.4
+        {
+            d = d.min(BOARD_RADIUS);
+        }
         if d <= BOARD_RADIUS && best.is_none_or(|(_, bd)| d < bd) {
             best = Some((entity, d));
         }
@@ -897,7 +1065,8 @@ fn board_or_leave_boat(
         .entity(player)
         .insert((RidingBoat { boat }, RigidBodyDisabled));
     // A câmara já nasce atrás do barco em vez de varrer 180°.
-    if let Ok((_, _, float)) = boats.get(boat) {
+    if let Ok((_, _, float, _, mut vessel)) = boats.get_mut(boat) {
+        mooring::set(&mut commands, boat, &mut vessel, None);
         for mut cam in &mut cameras {
             cam.yaw_deg = float.yaw.to_degrees() + 180.0;
             cam.smooth_yaw_deg = cam.yaw_deg;
@@ -912,15 +1081,20 @@ fn drive_boats(
     actions: Option<Res<viber::input_map::ActionState>>,
     typing: Option<Res<viber::ui::widgets::UiFocusedInput>>,
     menus: Option<Res<bevy_ext_core::MenusOpen>>,
-    mut boats: Query<(&mut Boat, &mut FloatState), With<Boat>>,
+    terrain: Option<Res<TerrainRuntime>>,
+    mut waves: Option<ResMut<WaterWaveWorld>>,
+    oars: Query<(&ChildOf, &Oar)>,
+    mut boats: Query<(
+        Entity,
+        &Transform,
+        &mut Boat,
+        &FloatState,
+        &mut LinearVelocity,
+        &mut AngularVelocity,
+    )>,
     riders: Query<&RidingBoat>,
 ) {
-    let Some(riding) = riders.iter().next() else {
-        return;
-    };
-    let Ok((mut boat, mut float)) = boats.get_mut(riding.boat) else {
-        return;
-    };
+    let ridden = riders.iter().next().map(|rider| rider.boat);
     let blocked = menus.as_ref().is_some_and(|menus| menus.any())
         || typing.as_ref().is_some_and(|typing| typing.0.is_some());
     let (throttle, steer, sprint) = if blocked {
@@ -943,11 +1117,97 @@ fn drive_boats(
     if dt <= 0.0 {
         return;
     }
-    let speed = float.velocity.xz().length();
-    float.velocity = row_thrust(float.velocity, float.yaw, throttle, sprint, &boat, dt);
-    float.yaw = row_yaw(float.yaw, steer, speed, &boat, dt);
-    // A remada anima com o esforço (avançar/recuar), não com a velocidade.
-    boat.oar_phase += (0.6 + throttle.abs() * 2.6) * dt * throttle.signum();
+    for (entity, hull, mut boat, float, mut linear, mut angular) in &mut boats {
+        let aboard = Some(entity) == ridden;
+        if !aboard && boat.oar_effort == 0.0 {
+            continue;
+        }
+        let target = if aboard { throttle } else { 0.0 };
+        advance_stroke(&mut boat, target, sprint, dt);
+        let effort = boat.oar_effort;
+        let pulling = target * boat.oar_direction > 0.001;
+        let mut grips = [None; 2];
+        for (parent, oar) in &oars {
+            if parent.parent() == entity {
+                grips[usize::from(oar.side > 0.0)] = oar.grip;
+            }
+        }
+        let mut immersed = 0;
+        for (i, side) in [-1.0, 1.0].into_iter().enumerate() {
+            let pose = rowing::oar_pose(&boat, side, grips[i]);
+            let tip = hull.transform_point(pose.transform_point(Vec3::Z * OAR_BLADE_Z));
+            let wet = aboard
+                && effort > 0.001
+                && terrain
+                    .as_ref()
+                    .and_then(|t| t.water_domain_at(tip.x, tip.z))
+                    .is_some_and(|d| d.depth > 0.10 && tip.y <= d.surface_y);
+            if wet {
+                immersed += 1;
+                if !boat.blade_wet[i]
+                    && let Some(waves) = waves.as_deref_mut()
+                {
+                    waves.push_impulse(WaveImpulseRequest {
+                        pos: tip.xz(),
+                        vel: Vec2::ZERO,
+                        radius: 0.40,
+                        strength: 0.10 + 0.08 * effort,
+                        foam: 0.28 + 0.18 * effort,
+                        is_wake: false,
+                    });
+                }
+            }
+            boat.blade_wet[i] = wet;
+        }
+        if aboard {
+            let yaw = hull.rotation.to_euler(EulerRot::YXZ).0;
+            let speed = linear.0.xz().length();
+            let forward = Vec3::new(yaw.sin(), 0.0, yaw.cos());
+            let along = linear.0.dot(forward);
+            // Check the boat's way immediately when the rower backs water.
+            if target * along < 0.0 && float.submerged > 0.01 {
+                linear.0 -= forward * along.signum() * along.abs().min(5.5 * target.abs() * dt);
+            }
+            // A bow on the bank can leave both blades above water. Push off
+            // the bed only if there is water within reach beyond the stern.
+            if target < -0.001 && float.grounded {
+                let stern = hull.translation - forward * (HULL_HALF.z + 0.65);
+                if terrain
+                    .as_ref()
+                    .and_then(|t| t.water_domain_at(stern.x, stern.z))
+                    .is_some_and(|d| d.depth > 0.12)
+                {
+                    let push = (along + 1.5).max(0.0).min(12.0 * target.abs() * dt);
+                    linear.0 -= forward * push;
+                }
+            }
+            // A bank can roll a light hull past its stable range. Right an
+            // occupied boat progressively, leaving normal wave motion alone.
+            let deck_up = hull.rotation * Vec3::Y;
+            if deck_up.y < 0.82 {
+                let axis = deck_up.cross(Vec3::Y).try_normalize().unwrap_or(forward);
+                let righting = 12.0 * (0.82 - deck_up.y);
+                let tilt_rate = angular.0 - angular.y * Vec3::Y;
+                angular.0 += (axis * righting - 3.0 * tilt_rate) * dt;
+            }
+            if pulling {
+                let (phase, rate) = stroke_timing(boat.oar_phase);
+                let drive = phase.sin().max(0.0) * rate * PI * immersed as f32 * 0.5;
+                linear.0 = row_thrust(
+                    linear.0,
+                    yaw,
+                    boat.oar_direction * effort,
+                    sprint,
+                    &boat,
+                    dt * drive,
+                );
+            }
+            if steer.abs() > 0.001 {
+                let target = row_yaw(0.0, steer, speed, &boat, 1.0);
+                angular.y += (target - angular.y).clamp(-2.8 * dt, 2.8 * dt);
+            }
+        }
+    }
 }
 
 #[allow(clippy::type_complexity)]
@@ -964,14 +1224,12 @@ fn seat_riders(
     boats: Query<(&Transform, &FloatState), (With<Boat>, Without<Player>)>,
 ) {
     for (mut transform, mut engine_player, mut controller, riding) in &mut players {
-        let Ok((boat_tf, float)) = boats.get(riding.boat) else {
+        let Ok((boat_tf, _)) = boats.get(riding.boat) else {
             continue;
         };
         transform.translation = boat_tf.translation + boat_tf.rotation * SEAT_LOCAL;
-        transform.rotation = Quat::from_rotation_y(float.yaw);
-        // Velocidade ZERO para a animação (o herói vai sentado/em pé, não a
-        // caminhar a 3 m/s). A câmara não precisa dela: assenta atrás do
-        // `facing` do herói, que é o yaw do barco.
+        transform.rotation = boat_tf.rotation * Quat::from_rotation_y(PI);
+        // A velocidade do casco não é marcha do herói sentado.
         engine_player.vel_x = 0.0;
         engine_player.vel_z = 0.0;
         engine_player.vel_y = 0.0;
@@ -984,35 +1242,155 @@ fn seat_riders(
     }
 }
 
-fn animate_oars(
-    changed_boats: Query<&Boat, Changed<Boat>>,
-    added_oars: Query<(), Added<Oar>>,
-    all_boats: Query<&Boat>,
-    mut oars: Query<(&Oar, &ChildOf, &mut Transform)>,
-) {
-    if changed_boats.is_empty() && added_oars.is_empty() {
-        return;
+fn oar_pivot(side: f32) -> Vec3 {
+    Vec3::new(0.76 * side, 0.17, -0.07)
+}
+
+fn advance_stroke(boat: &mut Boat, target: f32, sprint: bool, dt: f32) {
+    let current = boat.oar_direction * boat.oar_effort;
+    let effort = current + (target - current).clamp(-4.0 * dt, 4.0 * dt);
+    boat.oar_effort = effort.abs();
+    if effort != 0.0 {
+        if effort.signum() != boat.oar_direction {
+            // Cross neutral with the hands centered; start the next drive now
+            // instead of waiting through the previous direction's recovery.
+            boat.oar_phase = 0.45;
+        }
+        boat.oar_direction = effort.signum();
+        let cadence = if sprint && target > 0.0 { 4.7 } else { 3.5 };
+        boat.oar_phase = (boat.oar_phase + cadence * dt).rem_euclid(2.0 * PI);
+    } else if target == 0.0 {
+        boat.oar_phase = 0.0;
     }
-    let check_all = !added_oars.is_empty();
-    for (oar, parent, mut transform) in &mut oars {
-        let boat = if check_all {
-            all_boats.get(parent.parent())
-        } else {
-            changed_boats.get(parent.parent())
-        };
-        let Ok(boat) = boat else {
-            continue;
-        };
-        let phase = boat.oar_phase;
-        let sweep = phase.sin() * 0.55 * oar.side;
-        let dip = (phase.cos() * 0.16 + 0.05) * oar.side;
-        transform.rotation = Quat::from_rotation_y(sweep) * Quat::from_rotation_x(-0.22 + dip);
-    }
+}
+
+// Quicker loaded drive and a longer recovery, with continuous angular speed.
+// The derivative also preserves the integrated thrust per full stroke.
+fn stroke_timing(clock: f32) -> (f32, f32) {
+    (clock + 0.28 * (1.0 - clock.cos()), 1.0 + 0.28 * clock.sin())
+}
+
+fn oar_rotation(boat: &Boat, side: f32) -> Quat {
+    let (pull, sweep) = stroke_timing(boat.oar_phase).0.sin_cos();
+    let yaw = side * (PI * 0.5 - 0.30 * sweep * boat.oar_direction * boat.oar_effort);
+    let dip = 0.045 + boat.oar_effort * (0.155 + 0.29 * pull);
+    // Square just before entry, hold through the drive and feather at extraction.
+    let square = ((pull + 0.34) / 0.72).clamp(0.0, 1.0);
+    let feather = side * boat.oar_effort * 1.38 * square * square * (3.0 - 2.0 * square);
+    Quat::from_rotation_y(yaw) * Quat::from_rotation_x(dip) * Quat::from_rotation_z(feather)
 }
 
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    fn lake_with_rowboat() -> (App, Entity) {
+        use avian3d::prelude::PhysicsPlugins;
+        use bevy::time::TimeUpdateStrategy;
+        use bevy_ext_water::{WaterBody, WaterDomainSample, WaterSource, obstacles::WaterObstacle};
+        #[derive(Resource)]
+        struct Lake;
+        impl WaterSource for Lake {
+            fn bodies(&self) -> &[WaterBody] {
+                &[]
+            }
+            fn bed_y(&self, _: f32, _: f32) -> Option<f32> {
+                Some(-3.0)
+            }
+            fn domain_at(&self, _: Vec2, _: &[WaterObstacle]) -> Option<WaterDomainSample> {
+                Some(WaterDomainSample {
+                    surface_y: 0.,
+                    depth: 3.,
+                    flow: Vec2::ZERO,
+                    plunge: 0.,
+                })
+            }
+        }
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            TransformPlugin,
+            AssetPlugin::default(),
+            PhysicsPlugins::default(),
+            bevy_ext_water::WaterBuoyancyPlugin::<Lake>::default(),
+            AvianBuoyancyPlugin::<Lake>::default(),
+        ));
+        app.init_asset::<Mesh>();
+        app.insert_resource(Lake);
+        app.insert_resource(TimeUpdateStrategy::ManualDuration(
+            std::time::Duration::from_secs_f64(1.0 / 60.0),
+        ));
+        let body = rowboat_body();
+        let boat = app
+            .world_mut()
+            .spawn((
+                hull_physics(&body),
+                Transform::from_xyz(0., body.rest_height(), 0.),
+                body,
+                FloatState::default(),
+            ))
+            .id();
+        app.finish();
+        app.cleanup();
+        (app, boat)
+    }
+
+    #[test]
+    fn moored_hull_resumes_floating_without_a_launch_impulse() {
+        let (mut app, boat) = lake_with_rowboat();
+        for _ in 0..120 {
+            app.update();
+        }
+        app.world_mut().entity_mut(boat).insert((
+            RigidBody::Static,
+            LinearVelocity::ZERO,
+            AngularVelocity::ZERO,
+        ));
+        let tied_y = app.world().get::<Position>(boat).unwrap().y;
+        for _ in 0..600 {
+            app.update();
+        }
+        assert_eq!(app.world().get::<Position>(boat).unwrap().y, tied_y);
+        app.world_mut().entity_mut(boat).insert(RigidBody::Dynamic);
+        for _ in 0..120 {
+            app.update();
+            let rise = app.world().get::<Position>(boat).unwrap().y - tied_y;
+            assert!(rise < 0.25, "hull rose {rise:.3} m on release");
+        }
+    }
+
+    #[test]
+    fn floating_hull_rocks_and_stops_against_a_thin_obstacle() {
+        let (mut app, boat) = lake_with_rowboat();
+        app.world_mut().spawn((
+            RigidBody::Static,
+            Collider::cuboid(12.0, 6.0, 0.16),
+            Transform::from_xyz(0., 0., 5.0),
+        ));
+        let mut min_roll = f32::INFINITY;
+        let mut max_roll = f32::NEG_INFINITY;
+        for _ in 0..150 {
+            app.update();
+            let state = app.world().get::<FloatState>(boat).unwrap();
+            min_roll = min_roll.min(state.roll);
+            max_roll = max_roll.max(state.roll);
+        }
+        assert!(
+            max_roll - min_roll > 0.02,
+            "roll range {min_roll}..{max_roll}"
+        );
+        assert!(app.world().get::<Position>(boat).unwrap().y.abs() < 0.8);
+        app.world_mut().get_mut::<LinearVelocity>(boat).unwrap().0 = Vec3::Z * 8.5;
+        let mut furthest = 0.0_f32;
+        for _ in 0..100 {
+            app.update();
+            furthest = furthest.max(app.world().get::<Position>(boat).unwrap().z);
+        }
+        assert!(
+            (2.5..3.1).contains(&furthest),
+            "bow contact at centre z={furthest}"
+        );
+    }
 
     #[test]
     fn row_thrust_accelerates_clamps_and_reverses() {
@@ -1035,6 +1413,38 @@ mod tests {
     }
 
     #[test]
+    fn rower_tracks_the_oars_at_rest_under_power_and_in_reverse() {
+        let mut boat = Boat::default();
+        let seated = rowing::rowing_clip_time(&boat);
+        boat.oar_effort = 1.0;
+        let catch = rowing::rowing_clip_time(&boat);
+        boat.oar_phase = PI;
+        let finish = rowing::rowing_clip_time(&boat);
+        assert!(catch < seated && seated < finish);
+        boat.oar_direction = -1.0;
+        assert!(rowing::rowing_clip_time(&boat) < seated);
+        boat.oar_effort = 0.0;
+        assert_eq!(rowing::rowing_clip_time(&boat), seated);
+    }
+
+    #[test]
+    fn blades_dip_together_outside_the_hull_then_clear_the_surface() {
+        let height = rowboat_body().rest_height();
+        let mut boat = Boat {
+            oar_effort: 1.0,
+            ..Default::default()
+        };
+        for side in [-1.0, 1.0] {
+            for (phase, wet) in [(PI * 0.5, true), (PI * 1.5, false)] {
+                boat.oar_phase = phase;
+                let tip = oar_pivot(side) + oar_rotation(&boat, side) * (Vec3::Z * OAR_BLADE_Z);
+                assert!(tip.x * side > HULL_HALF.x + 1.0);
+                assert_eq!(height + tip.y < 0.0, wet);
+            }
+        }
+    }
+
+    #[test]
     fn row_yaw_scales_with_speed_and_sign() {
         let boat = Boat::default();
         let still = row_yaw(0.0, 1.0, 0.0, &boat, 0.5);
@@ -1054,6 +1464,7 @@ mod tests {
             panic!("posições do casco");
         };
         assert!(pos.len() > 600, "casco detalhado: {} vértices", pos.len());
+        assert!(pos.iter().flatten().all(|v| v.is_finite()));
         let zs = pos.iter().map(|p| p[2]);
         let z_min = zs.clone().fold(f32::INFINITY, f32::min);
         let z_max = zs.fold(f32::NEG_INFINITY, f32::max);
@@ -1066,6 +1477,13 @@ mod tests {
         else {
             panic!("posições dos remos");
         };
+        let butt = opos.iter().map(|p| p[2]).fold(f32::INFINITY, f32::min);
+        assert!((OAR_GRIP_Z - butt - 0.035).abs() < 1e-5);
+        assert!(
+            opos.iter()
+                .filter(|p| p[2] < OAR_GRIP_Z + 0.085)
+                .all(|p| p[0].hypot(p[1]) <= 0.024)
+        );
         let max_z = opos.iter().map(|p| p[2]).fold(f32::NEG_INFINITY, f32::max);
         assert!(max_z > 2.0, "o remo passa do bordo: {max_z}");
     }
@@ -1084,6 +1502,47 @@ mod tests {
     /// O estado aplicado pelo load: posição/yaw aos barcos vivos e o embarque
     /// outra vez ligado ao barco pelo nome.
     #[test]
+    fn loaded_mooring_freezes_the_hull_and_a_free_save_releases_it() {
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .init_resource::<BoatStates>()
+            .add_systems(Update, drive_boat_states);
+        let id = app
+            .world_mut()
+            .spawn((
+                Name::new("barco"),
+                Boat::default(),
+                Transform::default(),
+                FloatState::default(),
+                RigidBody::Dynamic,
+            ))
+            .id();
+        let tie = Mooring {
+            stake: Vec3::new(8.0, 1.0, 5.0),
+            rotation: Quat::from_euler(EulerRot::YXZ, 0.5, 0.04, -0.1),
+        };
+        let mut pose = BoatPose {
+            name: "barco".into(),
+            position: Vec3::new(6.0, 1.0, 4.0),
+            yaw: 0.5,
+            mooring: Some(tie),
+        };
+        app.insert_resource(BoatStates::from_save(vec![pose.clone()], None));
+        app.update();
+        assert_eq!(app.world().get::<RigidBody>(id), Some(&RigidBody::Static));
+        assert_eq!(
+            app.world().get::<Transform>(id).unwrap().rotation,
+            tie.rotation
+        );
+        assert_eq!(app.world().get::<Boat>(id).unwrap().mooring, Some(tie));
+        pose.mooring = None;
+        app.insert_resource(BoatStates::from_save(vec![pose], None));
+        app.update();
+        assert_eq!(app.world().get::<RigidBody>(id), Some(&RigidBody::Dynamic));
+        assert_eq!(app.world().get::<Boat>(id).unwrap().mooring, None);
+    }
+
+    #[test]
     fn boat_states_aplicam_a_pose_guardada_e_o_embarque() {
         let mut app = App::new();
         app.add_plugins(MinimalPlugins)
@@ -1094,6 +1553,7 @@ mod tests {
                 name: "barco-a".into(),
                 position: Vec3::new(10.0, 1.0, -4.0),
                 yaw: 0.75,
+                mooring: None,
             }],
             Some("barco-a".into()),
         );
@@ -1172,6 +1632,7 @@ mod tests {
                 name: "barco-a".into(),
                 position: Vec3::new(10.0, 1.0, -4.0),
                 yaw: 0.75,
+                mooring: None,
             }],
             None,
         );
@@ -1223,6 +1684,7 @@ mod tests {
             name: "barco-a".into(),
             position: Vec3::new(1.0, 2.0, 3.0),
             yaw: -0.5,
+            mooring: None,
         };
         let text = serde_json::to_string(&pose).expect("serializa");
         assert_eq!(serde_json::from_str::<BoatPose>(&text).unwrap(), pose);

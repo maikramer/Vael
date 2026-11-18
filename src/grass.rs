@@ -25,7 +25,7 @@ use crate::settings::{SceneSetting, SceneSettingList};
 use bevy::math::Vec2;
 use bevy::prelude::*;
 use bevy_ext_grass::{
-    FieldPlan, GrassBakeConfig, GrassBiomeId, GrassFieldLayout, GrassPlantSpec,
+    FieldPlan, GrassBakeConfig, GrassBiomeId, GrassBiomeSnow, GrassFieldLayout, GrassPlantSpec,
     GrassPlugin as ExtGrassPlugin, GrassPluginConfig, GrassProvider, GrassQuality, GrassSettings,
     GrassSettingsSpec, GrassSettingsSpecValue, GrassSite, GrassStyleSpec, GrassStyleSpecSet,
     GrassTerrain, GrassTint, GrassTrampler, GrassTramplerDisc, GrassWind,
@@ -338,6 +338,7 @@ impl Plugin for VaelGrassPlugin {
                 sync_grass_specs.before(bevy_ext_grass::GrassSystems::SyncSpecs),
                 drive_wind,
                 drive_tint,
+                drive_biome_snow,
                 tag_tramplers.before(bevy_ext_grass::GrassSystems::SyncSpecs),
             ),
         );
@@ -522,8 +523,8 @@ fn drive_wind(weather: Option<Res<WeatherState>>, mut wind: ResMut<GrassWind>) {
     let direction = Vec2::new(weather.wind[0], weather.wind[1]);
     let next_dir = (direction.length_squared() > 1e-6).then(|| direction.normalize());
     let strength = (weather.wind_strength * 0.66).clamp(0.0, 1.0);
-    let dir_changed = next_dir
-        .is_some_and(|dir| wind.as_ref().direction.distance_squared(dir) > 1e-6);
+    let dir_changed =
+        next_dir.is_some_and(|dir| wind.as_ref().direction.distance_squared(dir) > 1e-6);
     if !dir_changed && (wind.as_ref().strength - strength).abs() <= 1e-4 {
         return;
     }
@@ -560,6 +561,96 @@ fn drive_tint(
     {
         tint.0 = next;
     }
+}
+
+/// Cada campo de bioma branqueia pela média do manto nos pontos do polígono
+/// que caem na janela de neve. O `bevy_grass` só tem uma tinta por campo.
+fn drive_biome_snow(
+    pack: Option<Res<viber::terrain::SnowState>>,
+    regions: Option<Res<BiomeRegions>>,
+    mut snow: ResMut<GrassBiomeSnow>,
+    mut samples: Local<Vec<(u16, Vec<Vec2>)>>,
+    mut built: Local<u64>,
+    time: Res<Time>,
+    mut wait: Local<f32>,
+) {
+    *wait -= time.delta_secs();
+    let key = regions
+        .as_ref()
+        .map(|regions| regions.list.len() as u64)
+        .unwrap_or(0);
+    if *built != key.wrapping_add(1) {
+        *samples = regions
+            .as_deref()
+            .map(biome_sample_points)
+            .unwrap_or_default();
+        *built = key.wrapping_add(1);
+    }
+    if *wait > 0.0 {
+        return;
+    }
+    *wait = 0.5;
+    let mut next = [0.0f32; 8];
+    if let Some(pack) = pack.as_deref().filter(|pack| pack.draws()) {
+        for (id, points) in samples.iter() {
+            if *id < 8 {
+                let cover = (pack.mean_points(points) * 32.0).round() / 32.0;
+                next[*id as usize] = next[*id as usize].max(cover);
+            }
+        }
+    }
+    if snow.cover != next {
+        snow.cover = next;
+    }
+}
+
+fn biome_sample_points(regions: &BiomeRegions) -> Vec<(u16, Vec<Vec2>)> {
+    let mut out: Vec<(u16, Vec<Vec2>)> = Vec::new();
+    for region in &regions.list {
+        let id = biome_id(&region.id);
+        let points = sample_polygon(&region.polygon, 24);
+        if let Some(slot) = out.iter_mut().find(|(have, _)| *have == id) {
+            slot.1.extend(points);
+        } else {
+            out.push((id, points));
+        }
+    }
+    out
+}
+
+fn sample_polygon(polygon: &[[f32; 2]], cap: usize) -> Vec<Vec2> {
+    if polygon.is_empty() {
+        return Vec::new();
+    }
+    let mut min = Vec2::splat(f32::MAX);
+    let mut max = Vec2::splat(f32::MIN);
+    for point in polygon {
+        let v = Vec2::new(point[0], point[1]);
+        min = min.min(v);
+        max = max.max(v);
+    }
+    let span = (max - min).max(Vec2::splat(1.0));
+    let step = (span.x.max(span.y) / 6.0).max(32.0);
+    let mut points = Vec::new();
+    let mut z = min.y;
+    while z <= max.y && points.len() < cap {
+        let mut x = min.x;
+        while x <= max.x && points.len() < cap {
+            let point = Vec2::new(x, z);
+            if viber::ambient::point_in_polygon(point.x, point.y, polygon) {
+                points.push(point);
+            }
+            x += step;
+        }
+        z += step;
+    }
+    if points.is_empty() {
+        let sum = polygon
+            .iter()
+            .fold(Vec2::ZERO, |acc, point| acc + Vec2::new(point[0], point[1]));
+        points.push(sum / polygon.len() as f32);
+    }
+    points
 }
 
 /// Herói, NPCs e criaturas animadas dobram a relva. O collider avian dá a

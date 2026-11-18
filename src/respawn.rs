@@ -189,18 +189,23 @@ fn drop_purse(world: &mut World, position: Vec3) {
 }
 
 /// `(dying, death_pending)` do `viber.game()`.
-fn death_flags(kv: &BTreeMap<String, Value>) -> (f32, bool) {
-    let dying = kv
-        .get("dying")
-        .and_then(crate::compat::json_f32)
-        .filter(|dying| dying.is_finite())
-        .unwrap_or(0.0);
-    let pending = match kv.get("death_pending") {
-        Some(Value::Bool(flag)) => *flag,
-        Some(value) => crate::compat::json_bool(value).unwrap_or(false),
-        None => false,
-    };
-    (dying, pending)
+fn death_flags() -> (f32, bool) {
+    use viber::luau::game::{game_value_to_json, with_game_store};
+
+    with_game_store(|store| {
+        let dying = store.get("dying").map(game_value_to_json);
+        let pending = store.get("death_pending").map(game_value_to_json);
+        (
+            dying.as_ref()
+                .and_then(crate::compat::json_f32)
+                .filter(|value| value.is_finite())
+                .unwrap_or(0.0),
+            pending.as_ref()
+                .and_then(crate::compat::json_bool)
+                .unwrap_or(false),
+        )
+    })
+    .unwrap_or_default()
 }
 
 /// A morte COMEÇOU neste frame? `before`/`after` são `death_flags` antes e
@@ -224,7 +229,7 @@ pub struct DeathWatch {
 }
 
 fn watch_death_before_tick(mut watch: ResMut<DeathWatch>) {
-    watch.before = death_flags(&game_to_json_process());
+    watch.before = death_flags();
 }
 
 /// Uma morte que nasceu no tick da autoridade (DoT, ou 0 HP de um save) não
@@ -237,7 +242,7 @@ fn death_started_in_rust(world: &mut World) {
     {
         return;
     }
-    let after = death_flags(&game_to_json_process());
+    let after = death_flags();
     let Some(before) = world.get_resource::<DeathWatch>().map(|watch| watch.before) else {
         return;
     };

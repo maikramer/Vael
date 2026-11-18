@@ -16,6 +16,7 @@ use std::path::{Path, PathBuf};
 use std::sync::{Mutex, OnceLock};
 
 use bevy::prelude::*;
+use bevy_elements::{CivilDate, WorldClock};
 use bevy_ext_save::{SaveDir, SaveSlotInfo, WorldSaveKey};
 use moonshine_save::prelude::*;
 use serde::{Deserialize, Serialize};
@@ -30,7 +31,7 @@ use viber::terrain::runtime::TerrainRuntime;
 use viber::ui::UiWriter;
 
 use crate::boat::BoatStates;
-use crate::save::{VAEL_SAVE_VERSION, VaelSave};
+use crate::save::{SavedCalendar, VAEL_SAVE_VERSION, VaelSave};
 
 /// Payload refletido do save. Tudo o que não é `Reflect` (legacy do
 /// `VaelSave`, KV do Lua, rebinds) fica em strings JSON.
@@ -181,9 +182,7 @@ fn process_save_requests(world: &mut World) {
             state.pending_save = Some((tmp.clone(), path.clone(), meta));
             state.save_done = false;
         }
-        world.trigger_save(
-            SaveWorld::default_into_file(tmp).include_resource::<VaelSaveFile>(),
-        );
+        world.trigger_save(SaveWorld::default_into_file(tmp).include_resource::<VaelSaveFile>());
         info!(path = %path.display(), "vael save: gravado");
     } else {
         let path = native_path(world, slot);
@@ -213,15 +212,16 @@ fn process_save_requests(world: &mut World) {
 }
 
 fn finish_native_save(world: &mut World) {
-    let Some((tmp, path, meta)) = world
-        .get_resource_mut::<NativeSaveState>()
-        .and_then(|mut state| {
-            if !state.save_done {
-                return None;
-            }
-            state.save_done = false;
-            state.pending_save.take()
-        })
+    let Some((tmp, path, meta)) =
+        world
+            .get_resource_mut::<NativeSaveState>()
+            .and_then(|mut state| {
+                if !state.save_done {
+                    return None;
+                }
+                state.save_done = false;
+                state.pending_save.take()
+            })
     else {
         return;
     };
@@ -350,6 +350,14 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
         save.boats = states.poses.clone();
         save.riding_boat = states.riding.clone();
     }
+    if let Some(clock) = world.get_resource::<WorldClock>() {
+        save.calendar = Some(SavedCalendar {
+            year: clock.date.year,
+            month: clock.date.month,
+            day: clock.date.day,
+            hour: clock.hour,
+        });
+    }
     let world_kv_json = serde_json::to_string(&kv).unwrap_or_default();
     let save_json = serde_json::to_string(&save).unwrap_or_default();
     // `Transform` e não `GlobalTransform`: o `Update` corre antes da
@@ -440,6 +448,13 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     let mut boats = BoatStates::default();
     match serde_json::from_str::<VaelSave>(&payload.save_json) {
         Ok(save) => {
+            if let Some(at) = save.calendar
+                && let Some(mut clock) = world.get_resource_mut::<WorldClock>()
+                && (0.0..24.0).contains(&at.hour)
+            {
+                clock.date = CivilDate::new(at.year, at.month, at.day);
+                clock.hour = at.hour;
+            }
             boats = BoatStates::from_save(save.boats.clone(), save.riding_boat.clone());
             world.insert_resource(save);
         }
@@ -488,7 +503,10 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     // desconhecido deixava a tabela vazia e o HUD mostrava as chaves `@…`
     // cruas até o jogador escolher outro idioma.
     if let Some(mut locale) = world.get_resource_mut::<Locale>()
-        && locale.dir.join(format!("{}.json", payload.locale)).is_file()
+        && locale
+            .dir
+            .join(format!("{}.json", payload.locale))
+            .is_file()
     {
         locale.set_lang(&payload.locale);
     }
@@ -511,11 +529,15 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
         .and_then(|scene| scene.id.as_deref())
         .is_some_and(|id| id == payload.scene);
     if scene_matches {
+        crate::harvest::reload_trees(world);
+        crate::rocks::reload(world);
         if let Some(position) = position {
             crate::respawn::teleport_player(world, position);
         }
     } else {
-        let arrival = position.map(Arrival::Position).unwrap_or(Arrival::Entry(None));
+        let arrival = position
+            .map(Arrival::Position)
+            .unwrap_or(Arrival::Entry(None));
         let mut change = ChangeScene::new(payload.scene.clone(), arrival.clone());
         change.came_from = payload
             .came_from_scene
@@ -534,9 +556,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
                 fallback.came_from = None;
                 recovered = request_change(world, fallback).is_ok();
             }
-            if !recovered
-                && let Some(position) = position
-            {
+            if !recovered && let Some(position) = position {
                 crate::respawn::teleport_player(world, position);
             }
         }
@@ -586,7 +606,10 @@ fn meta_path(path: &Path) -> PathBuf {
 
 /// Temporário da gravação (o `finish_native_save` renomeia-o para o slot).
 fn tmp_path(path: &Path) -> PathBuf {
-    let mut name = path.file_name().map(|name| name.to_os_string()).unwrap_or_default();
+    let mut name = path
+        .file_name()
+        .map(|name| name.to_os_string())
+        .unwrap_or_default();
     name.push(".tmp");
     path.with_file_name(name)
 }
@@ -674,7 +697,9 @@ fn legacy_slots(world_key: Option<&str>, save_dir: Option<&Path>) -> Vec<SaveSlo
             Some(slot),
         )));
     }
-    stamp.push(file_stamp(&bevy_ext_save::save_path_for(world_key, save_dir)));
+    stamp.push(file_stamp(&bevy_ext_save::save_path_for(
+        world_key, save_dir,
+    )));
 
     let cache = CACHE.get_or_init(|| Mutex::new(None));
     let mut cached = cache
@@ -1082,6 +1107,34 @@ mod tests {
         let _ = std::fs::remove_dir_all(&dir);
     }
 
+    #[test]
+    fn autumn_date_and_hour_survive_loading_a_slot() {
+        let _guard = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .unwrap();
+        let mut world = World::new();
+        let date = CivilDate::new(2028, 11, 4);
+        world.insert_resource(WorldClock::new(date).at_hour(16.75));
+        let mut payload = capture(&mut world).unwrap();
+        world.insert_resource(WorldClock::default().with_time_scale(42.0));
+        apply_payload(&mut world, &payload);
+        let loaded = world.resource::<WorldClock>();
+        assert_eq!(
+            (loaded.date, loaded.hour, loaded.time_scale),
+            (date, 16.75, 42.0)
+        );
+
+        let mut old: Value = serde_json::from_str(&payload.save_json).unwrap();
+        old.as_object_mut().unwrap().remove("calendar");
+        payload.save_json = old.to_string();
+        world.insert_resource(WorldClock::default());
+        apply_payload(&mut world, &payload);
+        assert_eq!(
+            world.resource::<WorldClock>().date,
+            WorldClock::default().date
+        );
+    }
+
     /// O `capture` guarda a pose dos barcos e o `apply_payload` volta a pô-la
     /// por aplicar — o `drive_boat_states` é que a aplica às entidades.
     #[test]
@@ -1095,6 +1148,7 @@ mod tests {
             name: "barco-a".into(),
             position: Vec3::new(4.0, 1.5, -8.0),
             yaw: 0.5,
+            mooring: None,
         };
         let mut world = World::new();
         world.init_resource::<VaelSave>();

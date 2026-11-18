@@ -428,10 +428,7 @@ fn status_resists(
     }
     let equipped: Vec<String> = state.equipped.values().cloned().collect();
     for id in equipped {
-        if let Some(count) = kv
-            .get(&crate::gear::item_key(&id))
-            .and_then(Value::as_f64)
-        {
+        if let Some(count) = kv.get(&crate::gear::item_key(&id)).and_then(Value::as_f64) {
             state.held.insert(id, count);
         }
     }
@@ -790,7 +787,11 @@ mod tests {
         let rules = crate::gear::GearRules::from_content(&content);
         let mut engine = None;
         let resists = status_resists(&rules, &equipado, &mut engine);
-        assert!((resists.venom - 0.5).abs() < 1e-4, "venom={}", resists.venom);
+        assert!(
+            (resists.venom - 0.5).abs() < 1e-4,
+            "venom={}",
+            resists.venom
+        );
         assert!((resists.burn - 0.4).abs() < 1e-4, "burn={}", resists.burn);
 
         // A peça saiu da mochila: o efeito dela não conta (marca órfã).
@@ -842,10 +843,7 @@ mod tests {
 
         #[derive(Resource, Default)]
         struct DeathSignals(Vec<VaelDeathStarted>);
-        fn collect(
-            mut reader: MessageReader<VaelDeathStarted>,
-            mut out: ResMut<DeathSignals>,
-        ) {
+        fn collect(mut reader: MessageReader<VaelDeathStarted>, mut out: ResMut<DeathSignals>) {
             for signal in reader.read() {
                 out.0.push(*signal);
             }

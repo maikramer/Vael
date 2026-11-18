@@ -248,13 +248,7 @@ pub fn report_kill(rules: &QuestRules, kv: &mut QuestKv, kind: &str, elite: bool
 /// o progresso gravado é o mesmo); os relatos contavam esse "avanço" a mais.
 /// Aqui comparam-se as três chaves que o objetivo usa — estado, progresso e
 /// etapa — antes e depois da escrita.
-fn advance_objective(
-    rules: &QuestRules,
-    kv: &mut QuestKv,
-    id: &str,
-    have: i64,
-    next: i64,
-) -> bool {
+fn advance_objective(rules: &QuestRules, kv: &mut QuestKv, id: &str, have: i64, next: i64) -> bool {
     let state_before = quest_state(rules, kv, id);
     let stage_before = stage_of(kv, id);
     let out = quest_set_progress(rules, kv, id, next as f64);
@@ -826,17 +820,18 @@ fn ensure_gate(kv: &mut QuestKv, rust: bool) {
 /// pode deixar o Lua a saltar os relatos numa sessão sem Rust.
 fn enforce_quest_events_gate(config: Res<VaelQuestEventsConfig>) {
     // Store do processo: o `viber.game()` de todos os contextos BMS lê daqui.
-    let current = matches!(
-        game_to_json_process().get(RUST_GATE_KEY),
-        Some(Json::Bool(true))
-    );
+    let current = viber::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
     if config.rust == current {
         return;
     }
     let mut patch = QuestKv::new();
     patch.insert(
         RUST_GATE_KEY.to_string(),
-        if config.rust { Json::Bool(true) } else { Json::Null },
+        if config.rust {
+            Json::Bool(true)
+        } else {
+            Json::Null
+        },
     );
     apply_patch_json(&patch);
 }

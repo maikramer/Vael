@@ -222,9 +222,7 @@ impl Plugin for VaelVaultPlugin {
 /// Arranque: instala `viber.vael` nos contextos BMS (via registo).
 ///
 /// Público dentro do crate para o plugin do XP ordenar depois dele.
-pub(crate) fn install_vault_api(
-    content: Option<Res<VaelContent>>,
-) {
+pub(crate) fn install_vault_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
         warn!("vael: cofre sem conteúdo carregado — `viber.vael` não instalado");
         return;

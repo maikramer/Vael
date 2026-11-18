@@ -36,6 +36,7 @@ use crate::worldsys::{AtmosphereState, WeatherState};
 /// Colliders que são paredes/pilares para a corrente (não o chão voxel, não
 /// os npcs/herói/corpos de ragdoll).
 pub type WaterObstacleFilter = (
+    Without<bevy_ext_water::buoyancy::avian::AvianFloating>,
     Without<crate::physics::VoxelCollider>,
     Without<crate::ai::AiLocomotion>,
     Without<crate::player::Player>,

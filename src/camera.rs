@@ -98,9 +98,7 @@ fn orbit_camera_follow(
         }
         let target_pos = match &settings.target {
             Some(target_name) => {
-                let Some((entity, _)) = names
-                    .iter()
-                    .find(|(_, name)| name.as_str() == target_name)
+                let Some((entity, _)) = names.iter().find(|(_, name)| name.as_str() == target_name)
                 else {
                     // Alvo nomeado que não existe (gralha no `.bsn`, entidade
                     // ainda por spawnar): segurar a câmara onde está. Antes
@@ -164,6 +162,7 @@ fn third_person_camera(
             Option<&ChildOf>,
             &Player,
             Has<bevy_ext_core::TeleportSettle>,
+            Has<crate::boat::RidingBoat>,
         ),
         Without<OrbitCamera>,
     >,
@@ -205,7 +204,7 @@ fn third_person_camera(
     let (kick_off, kick_vel) = kick_spring_step(kick.offset, kick.vel, dt);
     kick.offset = kick_off;
     kick.vel = kick_vel;
-    let Some((local, parent, player, teleporting)) = players.iter().next() else {
+    let Some((local, parent, player, teleporting, rowing)) = players.iter().next() else {
         return;
     };
     // Pose DESTE frame: o writeback do Avian acabou de a escrever no `Transform` e a
@@ -233,7 +232,11 @@ fn third_person_camera(
             || !cam.smooth_yaw_deg.is_finite()
             || !cam.yaw_deg.is_finite()
         {
-            cam.yaw_deg = if cam.yaw_deg.is_finite() { cam.yaw_deg } else { 0.0 };
+            cam.yaw_deg = if cam.yaw_deg.is_finite() {
+                cam.yaw_deg
+            } else {
+                0.0
+            };
             cam.smooth_yaw_deg = if cam.smooth_yaw_deg.is_finite() {
                 cam.smooth_yaw_deg
             } else {
@@ -274,7 +277,8 @@ fn third_person_camera(
         let (fx, fz) = cam.yaw_deg.to_radians().sin_cos();
         let alignment = heading.map_or(0.0, |(hx, hz)| hx * -fx + hz * -fz);
         // O modelo da pipeline olha +Z (não o -Z do `forward()`).
-        let facing = target.rotation() * Vec3::Z;
+        // The rower faces the stern. Keep the follow camera looking toward the bow.
+        let facing = target.rotation() * if rowing { Vec3::NEG_Z } else { Vec3::Z };
         let behind_facing = behind_yaw_deg(facing.x, facing.z);
         let settle_allowed = player.last_moving_time.is_finite();
         cam.yaw_deg = auto_camera_yaw(
@@ -391,7 +395,9 @@ fn third_person_camera(
             noise_pm1(now * 0.35, 3) * 0.05 + noise_pm1(now * 1.1, 8) * 0.02,
         );
         transform.translation = cam.current_pos + sway + shake_off + kick.offset;
-        transform.look_at(cam.follow_point + Vec3::Y * LOOK_PIVOT_HEIGHT, Vec3::Y);
+        // Seated chest height keeps both grips and the waterline in view.
+        let look_height = if rowing { 0.90 } else { LOOK_PIVOT_HEIGHT };
+        transform.look_at(cam.follow_point + Vec3::Y * look_height, Vec3::Y);
         // Ecrã de título: o painel cobre a metade esquerda; a câmara desliza
         // para a esquerda (mesma orientação) e o herói fica no terço direito
         // em vez de cortado pela aresta do painel. Sai suave ao fechar.
@@ -556,10 +562,7 @@ mod tests {
         camera.current_pos = Vec3::NAN;
         camera.follow_point = Vec3::NAN;
         camera.smooth_yaw_deg = f32::NAN;
-        let cam = app
-            .world_mut()
-            .spawn((Transform::default(), camera))
-            .id();
+        let cam = app.world_mut().spawn((Transform::default(), camera)).id();
         app.update();
         let transform = *app.world().get::<Transform>(cam).unwrap();
         assert!(

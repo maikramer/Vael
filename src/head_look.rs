@@ -14,7 +14,7 @@
 use bevy::platform::collections::HashMap;
 use bevy::prelude::*;
 use bevy_ext_core::{Player, vitals::Hostile};
-use viber::ik::{FootIkRigs, HeadLookAt, HEAD_LOOK_WEIGHT};
+use viber::ik::{FootIkRigs, HEAD_LOOK_WEIGHT, HeadLookAt};
 use viber::luau::components::LuaScriptRef;
 
 /// Alcance do olhar: quem tem script (townsfolk, mercadores) até 6 m.
@@ -107,7 +107,9 @@ fn drive_head_look(
             continue;
         }
         if want.at.distance(want.target_pos) <= want.enter {
-            commands.entity(*entity).try_insert(HeadLookAt::toward(want.target));
+            commands
+                .entity(*entity)
+                .try_insert(HeadLookAt::toward(want.target));
         }
     }
 }
@@ -164,7 +166,9 @@ mod tests {
     }
 
     fn weight(app: &App, entity: Entity) -> Option<f32> {
-        app.world().get::<HeadLookAt>(entity).map(|look| look.weight)
+        app.world()
+            .get::<HeadLookAt>(entity)
+            .map(|look| look.weight)
     }
 
     #[test]
@@ -173,7 +177,10 @@ mod tests {
         let player = hero(&mut app, Vec3::ZERO);
         let npc = npc(&mut app, Vec3::new(NPC_RANGE - 0.1, 0.0, 0.0));
         app.update();
-        let look = app.world().get::<HeadLookAt>(npc).expect("entrou no alcance");
+        let look = app
+            .world()
+            .get::<HeadLookAt>(npc)
+            .expect("entrou no alcance");
         assert_eq!(look.target, player);
         assert_eq!(look.weight, HEAD_LOOK_WEIGHT);
 
@@ -183,7 +190,11 @@ mod tests {
         assert_eq!(weight(&app, npc), Some(HEAD_LOOK_WEIGHT), "dentro da folga");
 
         // Fora da folga: larga.
-        move_to(&mut app, npc, Vec3::new(NPC_RANGE * EXIT_FACTOR + 0.1, 0.0, 0.0));
+        move_to(
+            &mut app,
+            npc,
+            Vec3::new(NPC_RANGE * EXIT_FACTOR + 0.1, 0.0, 0.0),
+        );
         app.update();
         assert_eq!(weight(&app, npc), Some(0.0));
         // Já inactivo, o limite volta a ser o de ENTRADA: não reentra a 6.1 m.
@@ -199,11 +210,7 @@ mod tests {
         let far = Vec3::new(NPC_RANGE + 1.0, 0.0, 0.0);
         let mob = app
             .world_mut()
-            .spawn((
-                GlobalTransform::from_translation(far),
-                rig(),
-                Hostile,
-            ))
+            .spawn((GlobalTransform::from_translation(far), rig(), Hostile))
             .id();
         app.update();
         assert_eq!(weight(&app, mob), Some(HEAD_LOOK_WEIGHT));

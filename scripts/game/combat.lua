@@ -45,8 +45,7 @@ local SWING_BLEND = 0.1
 local RECOVERY = 0.16
 local FINISHER_COMMIT = 0.75
 -- Mira suave: o golpe vira o herói para o hostil mais provável à frente
--- (o alvo da barra ganha) e avança um passo curto até ele.
-local SOFT_LOCK_EXTRA = 2.0
+-- (o alvo escolhido ganha) e avança um passo curto até ele.
 local SOFT_LOCK_ARC = 0.0 -- meia-frente
 local LUNGE_MIN, LUNGE_MAX = 0.25, 1.2
 -- Durante o windup o herói anda a 25 %: já não desliza em pose de golpe.
@@ -92,7 +91,7 @@ end
 -- passou para Lua: a coluna e a animação `shake` nunca apareciam.
 local function publish_combo(st)
   local n = st.combo_hits or 0
-  local text = n > 0 and (n .. " HITS") or ""
+  local text = n == 1 and "1 HIT" or (n > 1 and (n .. " HITS") or "")
   if st.combo_text == text then
     return
   end
@@ -115,7 +114,7 @@ local function show_target(kind, hp, max_hp)
 end
 
 -- Hostil para onde o golpe deve virar: perto, à frente e, de preferência,
--- o alvo da barra. Devolve o hostil e a distância (ou nil).
+-- o alvo escolhido pelo jogador. Devolve o hostil e a distância (ou nil).
 local function aim_target(st, px, py, pz, fx, fz, reach)
   local best, best_dist, best_score
   -- Fallback (sem ninguém à frente): o hostil COLADO, mesmo nas costas. Num
@@ -123,7 +122,7 @@ local function aim_target(st, px, py, pz, fx, fz, reach)
   -- cortava o ar para a câmara enquanto apanhava (visto 2026-11-16). Só
   -- dentro do alcance: um piparote no rato não vira o golpe para longe.
   local close, close_dist
-  local limit = reach + SOFT_LOCK_EXTRA
+  local limit = reach + LUNGE_MAX
   for _, h in ipairs(rules.hostiles(limit) or {}) do
     -- Intocável (chefe a mudar de fase, verme enterrado) não é alvo: sem
     -- isto a mira suave virava o golpe para quem o `damage_enemy` recusa.
@@ -132,9 +131,10 @@ local function aim_target(st, px, py, pz, fx, fz, reach)
       local dx, dz = (h.x or px) - px, (h.z or pz) - pz
       local dist = math.sqrt(dx * dx + dz * dz)
       local dot = dist > 1e-3 and (fx * dx + fz * dz) / dist or 1
-      local locked = h.id == st.target
+      local locked = h.id == st.locked_target
       if dist <= limit and (dot >= SOFT_LOCK_ARC or (locked and dot >= -0.5)) then
-        local score = dist - dot * 2.0 - (locked and 1.5 or 0)
+        if locked then return h, dist end
+        local score = dist - dot * 2.0
         if not best_score or score < best_score then
           best, best_dist, best_score = h, dist, score
         end
@@ -176,6 +176,7 @@ local function start_swing(st)
   local occupy = duration / speed
   local fraction = IMPACT_FRACTION[clip] or 0.35
   local delay = math.min(0.6, math.max(0.12, duration * fraction / speed))
+  local reach = (weapon.range or MELEE_RANGE) + (step >= 2 and FINISHER_RANGE - MELEE_RANGE or 0)
   if step >= 2 then
     st.attack_t = math.max(delay + RECOVERY, occupy * FINISHER_COMMIT)
   else
@@ -189,15 +190,17 @@ local function start_swing(st)
   local has, px, py, pz = viber.player_position()
   local lunge = LUNGE_MIN
   if has then
-    local reach = weapon.range or MELEE_RANGE
     local target, dist = aim_target(st, px, py, pz, fx, fz, reach)
-    if target and dist > 1e-3 then
-      fx, fz = ((target.x or px) - px) / dist, ((target.z or pz) - pz) / dist
-      -- Fecha a distância até ~metade do alcance; colado, só o passo mínimo.
-      lunge = math.max(LUNGE_MIN, math.min(LUNGE_MAX, dist - reach * 0.55))
+    if target then
+      if not st.locked_target then st.target = target.id end
+      if dist > 1e-3 then
+        fx, fz = ((target.x or px) - px) / dist, ((target.z or pz) - pz) / dist
+      end
+      -- Já em contacto, mantém os pés plantados.
+      lunge = math.clamp(dist - reach * 0.55, 0, LUNGE_MAX)
     end
   end
-  st.swing = { t = delay, step = step, fx = fx, fz = fz }
+  st.swing = { t = delay, step = step, fx = fx, fz = fz, range = reach, damage = weapon.damage or BASE_DAMAGE }
   if viber.vael and viber.vael.attack_motion then
     viber.vael.attack_motion({
       secs = delay + 0.08, slow = ATTACK_SLOW, lunge = lunge, fx = fx, fz = fz,
@@ -229,12 +232,10 @@ local function resolve_swing(st, sw)
   local step = sw.step or 0
   local finisher = step >= 2
   -- Alcance e dano base vêm da arma equipada; o remate alcança +0,5 m.
-  local weapon = rules.weapon()
-  local reach = weapon.range or MELEE_RANGE
-  local range = finisher and (reach + (FINISHER_RANGE - MELEE_RANGE)) or reach
+  local range = sw.range or (finisher and FINISHER_RANGE or MELEE_RANGE)
   local arc = finisher and FINISHER_ARC or ATTACK_ARC
   local bonus = stats()
-  local base_damage = weapon.damage or BASE_DAMAGE
+  local base_damage = sw.damage or BASE_DAMAGE
   local crit_mult = CRIT_MULT + rules.stat("crit_mult")
   local execute_frac = EXECUTE_FRAC + rules.stat("execute")
   local shock_chance = rules.stat("shock_chance")
@@ -245,7 +246,7 @@ local function resolve_swing(st, sw)
     knockback = 1.0
   end
   local dealt = 0
-  local hits, crit_any, kill_any = 0, false, false
+  local hits, open_hits, crit_any, kill_any = 0, 0, false, false
   local alert_x, alert_z
   for _, h in ipairs(rules.hostiles(range + 1.0) or {}) do
     local hp = h.hp or 0
@@ -303,8 +304,8 @@ local function resolve_swing(st, sw)
               end
             end
           end
-          local killed = rules.damage_enemy(h.id, dmg)
-          dealt = dealt + dmg
+          local killed, _, removed = rules.damage_enemy(h.id, dmg, blocked)
+          dealt = dealt + removed
           local g = viber.game()
           -- O Acorde dura ≤25 s de uptime (o save guarda o número). Muito à
           -- frente do relógio atual = gravado noutro processo: sem o corte,
@@ -333,12 +334,15 @@ local function resolve_swing(st, sw)
           if viber.hit_flash then
             viber.hit_flash(h.id)
           end
-          viber.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
+          if not blocked then
+            open_hits = open_hits + 1
+            viber.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
+          end
           if viber.entity_knockback and not blocked and not BOSSES[h.kind or ""] then
             local meters = (crit and 0.65 or (finisher and 0.55 or 0.45)) * knockback
             viber.entity_knockback(h.id, ux, uz, meters * 6.0)
           end
-          viber.damage_number((blocked and "BLOQUEIO -" or "-") .. math.floor(dmg), {
+          viber.damage_number((blocked and "BLOQUEIO -" or "-") .. math.floor(removed), {
             color = blocked and "#9aa3ad" or ((crit or execute) and "#ff8c47" or "#f5efe0"),
             x = h.x, y = (h.y or py) + 1.8, z = h.z,
           })
@@ -365,7 +369,7 @@ local function resolve_swing(st, sw)
           if alert_x == nil then
             alert_x, alert_z = h.x or px, h.z or pz
           end
-          crit_any = crit_any or crit
+          crit_any = crit_any or (crit and not blocked)
           kill_any = kill_any or killed
         end
       end
@@ -406,6 +410,11 @@ local function resolve_swing(st, sw)
     -- O contador vive só no HUD (`publish_combo`). O texto 3D acima do
     -- herói (a 2,8 m, com a câmara a ~5 m) saía GIGANTE por trás da barra do
     -- alvo e duplicava o mesmo "N HITS" (visto 2026-11-16).
+    if open_hits == 0 and not kill_any then
+      viber.hit_stop(0.025)
+      viber.shake(0.06)
+      return
+    end
     viber.sound("hit", { x = px, y = py, z = pz })
     viber.hit_stop(kill_any and 0.09 or (crit_any and 0.07 or 0.05))
     viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))
@@ -433,32 +442,12 @@ function on_update(dt)
   local sid = tonumber(game.session_id) or 0
   local playtime = tonumber(game.playtime_secs) or 0
   local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
-  if st.session ~= sid or loaded then
-    st.session = sid
-    st.swing = nil
-    st.attack_t = 0
-    st.chain_timer = 0
-    st.chain_step = 0
-    st.buffer_queued = false
-    st.buffer_t = 0
-    st.combo_hits = 0
-    st.combo_window = 0
-    st.target = nil
-    st.last_hp = nil
-    publish_combo(st)
-    viber.ui.set("target", 0)
-    viber.ui.set("target.alive", false)
-    viber.ui.set("target.name", "")
-  end
   st.playtime = playtime
-
-  -- Troca de cena (portal/interior) NÃO muda a sessão: sem isto um golpe
-  -- pendente aterrava já na cena nova, no sítio onde o herói entrou (o
-  -- `resolve_swing` lê a posição ATUAL), e a barra de alvo/combo do mundo
-  -- anterior ficava no HUD.
   local scene = viber.scene_name and viber.scene_name() or nil
-  if st.scene ~= scene then
-    st.scene = scene
+  if st.session ~= sid or loaded or st.scene ~= scene then
+    st.session, st.scene = sid, scene
+    target_ids, target_scan_t = nil, 0
+    st.locked_target = nil
     st.swing = nil
     st.attack_t = 0
     st.chain_timer = 0
@@ -525,6 +514,7 @@ function on_update(dt)
     st.combo_hits = 0
     st.combo_window = 0
     publish_combo(st)
+    st.target, st.locked_target = nil, nil
     viber.ui.set("target.alive", false)
     viber.ui.set("target.name", "")
     return
@@ -550,7 +540,7 @@ function on_update(dt)
       local list = rules.hostiles(CYCLE_RANGE) or {}
       target_ids = {}
       for _, h in ipairs(list) do
-        if math.abs((h.y or py) - py) <= 2.2 then
+        if not h.invuln and math.abs((h.y or py) - py) <= VERTICAL then
           target_ids[#target_ids + 1] = h
         end
       end
@@ -561,7 +551,7 @@ function on_update(dt)
         -- Sem alvos, o cartão tem de sair JÁ: `st.target` nil impede o ramo
         -- de limpeza abaixo (que só corre com um alvo pendente) e o nome/vida
         -- do alvo que acabou de sair ficava preso no HUD.
-        st.target = nil
+        st.target, st.locked_target = nil, nil
         viber.ui.set("target", 0)
         viber.ui.set("target.alive", false)
         viber.ui.set("target.name", "")
@@ -574,6 +564,7 @@ function on_update(dt)
           end
         end
         st.target = ids[at].id
+        st.locked_target = st.target
       end
     end
     local shown
@@ -584,6 +575,7 @@ function on_update(dt)
       end
     end
     if not shown then
+      st.locked_target = nil
       shown = ids[1]
       st.target = shown and shown.id or nil
     end
@@ -601,6 +593,13 @@ function on_update(dt)
   end
 
   -- ── melee ──
+  if viber.ui.get("boat.grip") == "oars" then
+    -- Boarding consumes a pending or buffered swing as well as new input.
+    st.swing = nil
+    st.attack_t, st.chain_timer, st.chain_step = 0, 0, 0
+    st.buffer_queued, st.buffer_t = false, 0
+    return
+  end
   -- Com a TOCHA na mão não há arma para atacar: o `equip.kind` é publicado
   -- por game/equipment.lua (o V troca Espada↔Tocha). Sem este portão o
   -- herói "atacava com o lampião" (swing + dano com o GLB da lanterna).
@@ -626,6 +625,8 @@ function on_update(dt)
       viber.toast("Tocha na mão — troca com V para atacar.")
     end
     pressed = false
+    st.swing = nil
+    st.attack_t, st.chain_timer = 0, 0
     -- Um golpe em BUFFER (premido com a espada) não pode sair do bolso
     -- depois da troca: o portão da tocha fechava a tecla, não o buffer.
     st.buffer_queued = false
@@ -636,21 +637,9 @@ function on_update(dt)
   local dodge = viber.game().hero_dodge
   local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - viber.time()) or 0
   local dodging = dodge_left > 0 and dodge_left < 1.0
-  if dodging and st.swing then
+  if dodging then
     st.swing = nil
     st.attack_t = 0
-  end
-  local busy = dodging or (st.attack_t or 0) > 0 or st.swing ~= nil
-  if pressed then
-    if busy then
-      st.buffer_queued = true
-      st.buffer_t = BUFFER_SECS
-    else
-      start_swing(st)
-    end
-  elseif st.buffer_queued and not busy and not torch then
-    st.buffer_queued = false
-    start_swing(st)
   end
   if st.swing then
     st.swing.t = st.swing.t - dt
@@ -659,5 +648,18 @@ function on_update(dt)
       st.swing = nil
       resolve_swing(st, sw)
     end
+  end
+  local busy = dodging or (st.attack_t or 0) > 0 or st.swing ~= nil
+  if pressed then
+    if busy then
+      st.buffer_queued = true
+      st.buffer_t = BUFFER_SECS
+    else
+      st.buffer_queued = false
+      start_swing(st)
+    end
+  elseif st.buffer_queued and not busy and not torch then
+    st.buffer_queued = false
+    start_swing(st)
   end
 end

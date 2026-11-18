@@ -212,7 +212,7 @@ pub const TEMPLATES: &[NodeTemplate] = &[
         group: TemplateGroup::Feature,
         tag: "grounddecal",
         label: "Paving area (praça/largo pavimentado em grelha)",
-        snippet: r##"<GroundDecal name="plaza" at="0 0" size="34 34" paving="1" feather="2" texture="/assets/textures/cobblestone_road/albedo.ktx2" texture-scale="3.5" base-color="#9d9891" roughness="0.9" />"##,
+        snippet: r##"<GroundDecal name="plaza" at="0 0" size="34 34" paving="1" paving-wobble="0.7" feather="2" texture="/assets/textures/cobblestone_road/albedo.ktx2" texture-scale="3.5" base-color="#9d9891" roughness="0.9" />"##,
     },
     NodeTemplate {
         group: TemplateGroup::Feature,

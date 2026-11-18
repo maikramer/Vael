@@ -11,6 +11,7 @@
 
 use bevy::prelude::*;
 use bevy::reflect::Reflect;
+use bevy_elements::{CivilDate, Season, Weather};
 use bevy_pf::prelude::*;
 use serde_json::Value;
 use viber::ui::UiData;
@@ -94,6 +95,8 @@ pub struct HudVm {
     pub combo_text: String,
 
     pub clock: String,
+    /// Data e estação (`21 jun · Verão`), com `· neve` ou `· chuva` quando cai.
+    pub season: String,
     pub day: f64,
     pub zone_name: String,
     pub wet: bool,
@@ -144,6 +147,7 @@ pub struct HudVm {
     pub lbl_boss: String,
     pub lbl_rage: String,
     pub lbl_clock: String,
+    pub lbl_season: String,
     pub lbl_net: String,
     pub lbl_rain: String,
     pub lbl_attack: String,
@@ -312,6 +316,61 @@ fn legacy_text(save: &VaelSave, key: &str) -> String {
         .to_string()
 }
 
+/// Linha da estação no cartão do relógio: `21 jun · Verão`, e `· neve` ou
+/// `· chuva` quando a precipitação é essa.
+#[must_use]
+pub fn season_line(date: CivilDate, weather: Option<&Weather>, lang: &str) -> String {
+    let english = lang.eq_ignore_ascii_case("en");
+    let season = match Season::of_month(date.month, false) {
+        Season::Spring => {
+            if english {
+                "Spring"
+            } else {
+                "Primavera"
+            }
+        }
+        Season::Summer => {
+            if english {
+                "Summer"
+            } else {
+                "Verão"
+            }
+        }
+        Season::Autumn => {
+            if english {
+                "Autumn"
+            } else {
+                "Outono"
+            }
+        }
+        Season::Winter => {
+            if english {
+                "Winter"
+            } else {
+                "Inverno"
+            }
+        }
+    };
+    let month = if english {
+        [
+            "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+        ]
+    } else {
+        [
+            "jan", "fev", "mar", "abr", "mai", "jun", "jul", "ago", "set", "out", "nov", "dez",
+        ]
+    }[(date.month.clamp(1, 12) - 1) as usize];
+    let mut line = format!("{} {month} · {season}", date.day);
+    if let Some(weather) = weather.filter(|weather| weather.precipitation_mm_h > 0.2) {
+        if weather.snow_fraction() > 0.5 {
+            line.push_str(if english { " · snow" } else { " · neve" });
+        } else {
+            line.push_str(if english { " · rain" } else { " · chuva" });
+        }
+    }
+    line
+}
+
 /// Sistema de sincronização: HUD lê o estado e publica no view-model.
 #[allow(clippy::too_many_arguments)]
 fn sync_hud(
@@ -321,6 +380,8 @@ fn sync_hud(
     ui: Option<Res<UiData>>,
     modals: Option<Res<UiModalsOpen>>,
     travel: Option<Res<map::MapTravelState>>,
+    clock: Option<Res<bevy_elements::WorldClock>>,
+    weather: Option<Res<Weather>>,
     time: Res<Time>,
     vm: Res<VaelHudVm>,
 ) {
@@ -448,6 +509,10 @@ fn sync_hud(
         m.combo_active = bind_flag(binds, "combo");
         m.combo_text = bind_text(binds, "combo.text");
 
+        m.season = clock
+            .as_deref()
+            .map(|clock| season_line(clock.date, weather.as_deref(), lang))
+            .unwrap_or_default();
         if let Some(ui) = ui {
             m.clock = ui.clock.clone();
             m.day = ui.day_fraction.clamp(0.0, 1.0) as f64;
@@ -504,10 +569,16 @@ fn sync_hud(
         m.lbl_boss = label(content, lang, "hud.boss", "CHEFE");
         m.lbl_rage = label(content, lang, "hud.rage", "FÚRIA");
         m.lbl_clock = label(content, lang, "hud.clock", "HORA LOCAL");
+        m.lbl_season = label(content, lang, "hud.season", "ESTAÇÃO");
         m.lbl_net = label(content, lang, "hud.net", "REDE");
         m.lbl_rain = label(content, lang, "hud.rain", "CHUVA");
-        m.lbl_attack = label(content, lang, "hud.attack", "J  ATACAR");
-        m.lbl_guard = label(content, lang, "hud.guard", "L  DEFENDER");
+        if bind_text(binds, "boat.grip") == "oars" {
+            m.lbl_attack = label(content, lang, "hud.row_forward", "W  REMAR");
+            m.lbl_guard = label(content, lang, "hud.row_back", "S  RÉ");
+        } else {
+            m.lbl_attack = label(content, lang, "hud.attack", "J  ATACAR");
+            m.lbl_guard = label(content, lang, "hud.guard", "L  DEFENDER");
+        }
         m.lbl_dash = label(content, lang, "hud.dash", "Esquiva");
         m.lbl_flask = label(content, lang, "hud.flask", "Cantil");
         m.lbl_strike = label(content, lang, "hud.strike", "Impacto");
@@ -523,6 +594,39 @@ fn sync_hud(
 mod tests {
     use super::*;
     use bevy::asset::AssetPlugin;
+
+    #[test]
+    fn junho_e_verao_e_a_neve_aparece_na_linha() {
+        let june = CivilDate::new(2026, 6, 21);
+        assert_eq!(season_line(june, None, "pt"), "21 jun · Verão");
+        assert_eq!(season_line(june, None, "en"), "21 Jun · Summer");
+        let snow = Weather {
+            temperature_c: -5.0,
+            precipitation_mm_h: 1.5,
+            snow_possible: 1.0,
+            ..Weather {
+                cloud_cover: 0.0,
+                precipitation_mm_h: 0.0,
+                temperature_c: 0.0,
+                relative_humidity: 0.0,
+                wind_speed_ms: 0.0,
+                wind_direction: Vec2::X,
+                gustiness: 0.0,
+                visibility_m: 10_000.0,
+                storminess: 0.0,
+                dust: 0.0,
+                snow_possible: 0.0,
+            }
+        };
+        assert_eq!(
+            season_line(june, Some(&snow), "pt"),
+            "21 jun · Verão · neve"
+        );
+        assert_eq!(
+            season_line(CivilDate::new(2026, 12, 21), None, "pt"),
+            "21 dez · Inverno"
+        );
+    }
 
     #[test]
     fn skin_font_regista_a_familia_no_primeiro_update() {

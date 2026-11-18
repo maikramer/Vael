@@ -16,6 +16,11 @@ local SWING_COOLDOWN = 0.4
 local RANGE_DEFAULT = 3.5
 local SPEED = 1.4
 local PICK_SPEED = 1.0
+-- No clip chop de 1,50 s a lâmina cruza a frente do herói aos 0,43 s.
+local CHOP_DURATION = 0.90
+local MINE_DURATION = 0.98
+local MINE_CONTACT = MINE_DURATION * 0.41
+local CHOP_CONTACT = CHOP_DURATION * (0.43 / 1.50)
 local IMPACT_FRACTION = 0.35
 local IMPACT_MIN, IMPACT_MAX = 0.12, 0.45
 local FALLBACK_DURATION = 0.5
@@ -39,8 +44,8 @@ local LABEL = { fall = "Cortar", pick = "Colher frutas" }
 local CLIP = { chop = "chop", mine = "mine", pick = "gather" }
 local HIT_SFX = { chop = "chop_hit", mine = "mine_hit", pick = "harvest" }
 local BREAK_SFX = { chop = "chop_break", mine = "mine_break", pick = "harvest" }
-local HIT_BURST = { chop = "leaves", mine = "sparks", pick = "leaves" }
-local BREAK_BURST = { chop = "leaves", mine = "ground-dust", pick = "leaves" }
+local HIT_BURST = { mine = "sparks", pick = "leaves" }
+local BREAK_BURST = { mine = "ground-dust", pick = "leaves" }
 
 -- `break-style: shatter` é a pedra E o tronco caído. O tipo do recurso
 -- decide a ferramenta: sem isto a lenha (resource-kind="wood") era picada
@@ -169,6 +174,8 @@ local function prop_data(entity)
       or replace_scale < 0.05 or replace_scale > 20 then
     replace_scale = 1
   end
+  local height = tonumber(c["cut-height"])
+  if not height or not (height > 0 and height < math.huge) then height = 0.5 end
   return {
     id = entity.id,
     name = entity.name or "",
@@ -177,6 +184,7 @@ local function prop_data(entity)
     z = entity.z,
     distance = entity.distance or 0,
     hits = hits,
+    cut_height = math.clamp(height, 0.05, 3),
     style = style,
     popup = c["popup-text"] or "",
     popup_color = popup_color,
@@ -197,7 +205,7 @@ local function nearest(st)
   local best
   for _, entity in ipairs(list) do
     local prop = prop_data(entity)
-    if prop and not st.broken[prop.id] then
+    if prop and not st.broken[prop.id] and prop.id ~= st.just_felled then
       if prop.distance <= effective_range(prop.range) then
         if not best or prop.distance < best.distance then
           best = prop
@@ -230,6 +238,11 @@ local function publish_tool(st, prop)
       tool = ""
     end
   end
+  local aim = tool == "mine" and prop.id or nil
+  if st.mine_aim ~= aim and viber.vael and viber.vael.aim_pick then
+    viber.vael.aim_pick(aim)
+    st.mine_aim = aim
+  end
   if st.tool == tool then
     return
   end
@@ -240,9 +253,14 @@ end
 local function swing(st, prop)
   local tool = tool_of(prop.style, prop.kind)
   local clip = CLIP[tool]
-  st.cooldown = SWING_COOLDOWN
+  local duration = tool == "chop" and CHOP_DURATION or tool == "mine" and MINE_DURATION
+  local contact = tool == "chop" and CHOP_CONTACT or MINE_CONTACT
+  st.cooldown = duration and duration * 0.86 or SWING_COOLDOWN
+  if duration then st.grip_t = duration end
   st.swing = {
-    t = impact_delay(clip, tool),
+    t = duration and contact or impact_delay(clip, tool),
+    range = effective_range(prop.range),
+    cut_height = prop.cut_height,
     id = prop.id,
     hits = prop.hits or 3,
     style = prop.style or "burst",
@@ -259,11 +277,20 @@ local function swing(st, prop)
   }
   local pid = viber.player_id()
   if pid then
-    viber.play_clip(clip, { speed = speed_of(tool), id = pid })
+    if duration then
+      viber.play_clip(clip, { duration = duration, blend = 0.065, id = pid })
+      local ok, px, _, pz = viber.player_position()
+      if ok and viber.vael and viber.vael.attack_motion then
+        viber.vael.attack_motion({ secs = contact + 0.08, slow = 0.25,
+          fx = prop.x - px, fz = prop.z - pz })
+      end
+    else
+      viber.play_clip(clip, { speed = speed_of(tool), id = pid })
+    end
   end
 end
 
-local function break_prop(st, sw)
+local function break_prop(st, sw, emit)
   local style = sw.style or "burst"
   local tool = tool_of(style, sw.kind)
   -- A lista de substitutos é FECHADA: um `replacement` com gralha não pode
@@ -284,6 +311,7 @@ local function break_prop(st, sw)
       if got > 0 then
         rules.vault_take(sw.kind, got)
       end
+      if emit then emit(false) end
       viber.damage_number("Bolsa cheia", {
         color = "#ffb347", x = sw.x, y = (sw.y or 0) + 1.4, z = sw.z,
       })
@@ -291,8 +319,12 @@ local function break_prop(st, sw)
       return
     end
   end
-  viber.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
-  viber.sound(BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
+  if emit then emit(true) end
+  if tool ~= "chop" then
+    viber.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
+  end
+  local fell = replacement == "" and style == "fall" and viber.vael and viber.vael.fell_tree
+  viber.sound(fell and "chop_hit" or BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
   if sw.popup ~= "" then
     local text = sw.popup
     if got > 0 then
@@ -307,7 +339,7 @@ local function break_prop(st, sw)
   -- arranque se o nome estiver no save (props nomeados). Guarda-se também a
   -- pose/escala do substituto: a árvore sem frutas é um PROTÓTIPO e não
   -- sobrevive sozinha a um reload.
-  if sw.name ~= "" then
+  if sw.name ~= "" and not fell then
     local game = viber.game()
     game["harvested." .. sw.name] = true
     st.reaped_names = st.reaped_names or {}
@@ -348,7 +380,13 @@ local function break_prop(st, sw)
   else
     viber.entity_despawn(sw.id)
   end
-  st.broken[sw.id] = true
+  if fell then
+    -- A estação perde os props no pós-frame. O mesmo id volta a ser colhível após o rebrote.
+    st.just_felled = sw.id
+    st.fell_guard = 0.4
+  else
+    st.broken[sw.id] = true
+  end
   st.hits[sw.id] = nil
   -- O `st.near` em cache (10 Hz) ainda apontava para este prop: sem isto o
   -- prompt/ferramenta ficavam no ecrã até à varredura seguinte.
@@ -364,7 +402,7 @@ local function impact(st)
   end
   -- O prop pode ter desaparecido entre o golpe e o impacto (outro sistema,
   -- despawn, troca de cena): topple/despawn com bits mortos rebenta o chunk.
-  local exists = viber.entity_position(sw.id)
+  local exists, x, y, z = viber.entity_position(sw.id)
   if not exists then
     st.hits[sw.id] = nil
     -- O alvo em cache também já não existe: o prompt não pode ficar no ecrã.
@@ -373,14 +411,31 @@ local function impact(st)
   end
   local hits = (st.hits[sw.id] or 0) + 1
   local tool = tool_of(sw.style, sw.kind)
+  local emit
+  if tool == "chop" or tool == "mine" then
+    local ok, px, py, pz = viber.player_position()
+    if not ok then return end
+    local dx, dy, dz = px - x, py - y, pz - z
+    local dodge = viber.game().hero_dodge
+    local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - viber.time()) or 0
+    local reach = sw.range or effective_range(RANGE_DEFAULT)
+    if dx * dx + dy * dy + dz * dz > reach * reach
+        or (dodge_left > 0 and dodge_left < 1) then return end
+    local fx = viber.vael and viber.vael[tool == "chop" and "wood_hit" or "rock_hit"]
+    if fx then
+      emit = function(final_hit) fx(sw.id, x, y, z, dx, dz, sw.cut_height or 0.5, final_hit) end
+    end
+  end
   if hits >= sw.hits then
-    break_prop(st, sw)
+    break_prop(st, sw, emit)
     return
   end
+  if emit then emit(false) end
   st.hits[sw.id] = hits
   viber.sound(HIT_SFX[tool] or "whoosh", {
     x = sw.x, y = sw.y, z = sw.z,
   })
+  if tool ~= "pick" then return end
   viber.burst(HIT_BURST[tool] or "sparks", sw.x, (sw.y or 0) + 1.0, sw.z, 7)
   if viber.hit_flash then
     viber.hit_flash(sw.id)
@@ -395,13 +450,20 @@ end
 local function reap_saved(st)
   local game = viber.game()
   st.reaped_names = st.reaped_names or {}
+  local flora_names = {}
+  for key in pairs(game) do
+    if type(key) == "string" then
+      local name = key:match("^flora%-fell%.([^@]+)@.+%.dx$")
+      if name then flora_names[name] = true end
+    end
+  end
   for key in pairs(game) do
     if type(key) == "string" and key:sub(1, 10) == "harvested." then
       local name = key:sub(11)
       -- Árvore tombada com o `bevy_flora` (`flora-fell.<nome>.*`): o restauro
       -- é do Rust (`reap_saved`), que a deita com toco em vez de a apagar.
       local flora_fell = name ~= "" and game["flora-fell." .. name .. ".dx"] ~= nil
-      if name ~= "" and not flora_fell and not st.reaped_names[name] then
+      if name ~= "" and not flora_names[name] and not flora_fell and not st.reaped_names[name] then
         -- Só conta como reposto quando a entidade EXISTE nesta cena. Marcar
         -- antes de a encontrar deixava a árvore colhida de fora do save:
         -- ao entrar na cena onde ela vive, `reaped_names` já a saltava e a
@@ -450,6 +512,9 @@ function on_update(dt)
     st.reap_t = 1.0
     reap_saved(st)
   end
+  st.grip_t = math.max(0, (st.grip_t or 0) - dt)
+  st.fell_guard = math.max(0, (st.fell_guard or 0) - dt)
+  if st.fell_guard == 0 then st.just_felled = nil end
   st.cooldown = math.max(0, (st.cooldown or 0) - dt)
   -- Título aberto (vive sobre `main` no arranque directo): [J] é da UI e o
   -- herói está parado atrás do véu. Sem o portão, machado/picareta batiam
@@ -458,6 +523,7 @@ function on_update(dt)
   if (viber.scene_name and viber.scene_name() == "menu")
       or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
     st.swing = nil
+    st.grip_t = 0
     publish_tool(st, nil)
     publish(st, nil)
     return
@@ -465,8 +531,9 @@ function on_update(dt)
   -- Menu aberto ou herói caído: o golpe que estava armado não aterra por
   -- baixo (antes o `impact` corria primeiro e a árvore caía com o diário
   -- aberto ou depois da morte).
-  if viber.menu_open() then
+  if viber.menu_open() or viber.ui.get("boat.grip") == "oars" then
     st.swing = nil
+    st.grip_t = 0
     publish_tool(st, nil)
     publish(st, nil)
     return
@@ -474,6 +541,7 @@ function on_update(dt)
   local alive, hp = rules.player_hp()
   if alive and hp <= 0 then
     st.swing = nil
+    st.grip_t = 0
     publish_tool(st, nil)
     publish(st, nil)
     return
@@ -498,7 +566,7 @@ function on_update(dt)
     prop = nil
     st.prompting = false
   end
-  publish_tool(st, prop)
+  if st.grip_t <= 0 then publish_tool(st, prop) end
   publish(st, prop)
   -- O rato é do combate ([J]/clique). A colheita responde só ao J: com o
   -- clique também a colher, um clique perto de uma árvore disparava o golpe
@@ -518,5 +586,6 @@ function on_update(dt)
     return
   end
   st.near = target
+  publish_tool(st, target)
   swing(st, target)
 end

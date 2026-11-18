@@ -55,16 +55,13 @@ use bevy::prelude::*;
 use bevy::render::sync_world::SyncToRenderWorld;
 use bevy::transform::TransformSystems;
 use bevy_lights::{
-    FIRE_EDGE_LUX, FireKind, Flame, FlameEmbers, FlamePlugin, FlameSite, FlameSmoke,
-    FlickerPlugin, FocusRule, FuelBed, LightPool, LightPoolPlugin, LightsSystems, PoolCandidate,
-    PoolLight, Rank,
+    FIRE_EDGE_LUX, FireKind, Flame, FlameEmbers, FlamePlugin, FlameSite, FlameSmoke, FlickerPlugin,
+    FocusRule, FuelBed, LightPool, LightPoolPlugin, LightsSystems, PoolCandidate, PoolLight, Rank,
 };
 use viber::ambient::{AuthoredShadowLight, TravellerLantern};
 use viber::particles::{AmbientFx, ParticleEmitter};
 use viber::player::Player;
-use viber::postfx::{
-    NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target,
-};
+use viber::postfx::{NightGainExempt, torch_pool_gain, torch_pool_is_warm, torch_pool_target};
 // O `ParticleSpec` da ENGINE (o que o `AmbientFx` carrega), não o do
 // `bevy_ext_scene`: são tipos distintos com o mesmo nome.
 use viber::recipes::ParticleSpec;
@@ -361,7 +358,11 @@ fn drive_practical_intensity(
         Query<(&mut PoolCandidate, &VaelPractical)>,
         Query<
             (&mut PoolCandidate, &VaelPractical),
-            Or<(Added<PoolCandidate>, Added<VaelPractical>, Changed<VaelPractical>)>,
+            Or<(
+                Added<PoolCandidate>,
+                Added<VaelPractical>,
+                Changed<VaelPractical>,
+            )>,
         >,
     )>,
     mut last_night: Local<Option<f32>>,
@@ -521,10 +522,7 @@ fn adopt_fire_lights(
 fn fill_dark_fires(
     mut commands: Commands,
     config: Res<PracticalConfig>,
-    fires: Query<
-        (Entity, &GlobalTransform, &VaelFire, Option<&VaelFireOwner>),
-        Added<VaelFire>,
-    >,
+    fires: Query<(Entity, &GlobalTransform, &VaelFire, Option<&VaelFireOwner>), Added<VaelFire>>,
     alive: Query<(), Or<(With<PoolCandidate>, With<PointLight>)>>,
     adopted: Query<&GlobalTransform, (With<PoolCandidate>, With<VaelPractical>)>,
     lights: Query<
@@ -665,7 +663,12 @@ fn gate_shadows_by_night(
 /// chama precisa da visibilidade e o `lineage` do mundo não muda). O gestor
 /// da engine nunca despawna o marcador, por isso sem esta remoção as
 /// partículas continuavam a correr.
-fn insert_fire_visuals(entity_commands: &mut EntityCommands, kind: FireKind, phase: f32, pos: Vec3) {
+fn insert_fire_visuals(
+    entity_commands: &mut EntityCommands,
+    kind: FireKind,
+    phase: f32,
+    pos: Vec3,
+) {
     entity_commands.try_insert((
         FlameSite {
             height: kind.height(),

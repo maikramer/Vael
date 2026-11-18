@@ -47,24 +47,25 @@
 --@export tocha-rz: number = 0
 --@export tocha-escala: number(0.01..20) = 0.4
 --
+-- O centro do cabo a 16 cm do pomo coincide com a palma de hand_r no clip chop.
 --@group Machado
 --@export machado-modelo: string = assets/meshes/props/felling_axe_lod0.glb -- GLB do machado
---@export machado-x: number = 0.08 -- posição no osso, em metros
---@export machado-y: number = 0.05
---@export machado-z: number = 0.01
---@export machado-rx: number = -25.394 -- rotação no osso, em graus
---@export machado-ry: number = 167.115
---@export machado-rz: number = -34.95
+--@export machado-x: number = 0.150 -- posição no osso, em metros
+--@export machado-y: number = 0.054
+--@export machado-z: number = 0.059
+--@export machado-rx: number = -48.217 -- rotação no osso, em graus
+--@export machado-ry: number = -16.576
+--@export machado-rz: number = 56.540
 --@export machado-escala: number(0.01..20) = 1
 --
 --@group Picareta
 --@export picareta-modelo: string = assets/meshes/props/pickaxe_lod0.glb -- GLB da picareta
---@export picareta-x: number = 0.06 -- posição no osso, em metros
---@export picareta-y: number = 0.05
---@export picareta-z: number = 0.07
---@export picareta-rx: number = 55.185 -- rotação no osso, em graus
---@export picareta-ry: number = -67.976
---@export picareta-rz: number = 115.164
+--@export picareta-x: number = 0.076 -- posição no osso, em metros
+--@export picareta-y: number = 0.009
+--@export picareta-z: number = 0.105
+--@export picareta-rx: number = -31.25 -- rotação no osso, em graus
+--@export picareta-ry: number = -54.54
+--@export picareta-rz: number = 35.81
 --@export picareta-escala: number(0.01..20) = 1
 --
 -- A tocha usa o GLB da lanterna pendurada do pool (não há tocha de mão
@@ -240,6 +241,10 @@ function on_update(dt)
   local grip = harvest_grip or grip_for(prefix)
   local grip_key = (harvest_grip and ("tool:" .. tool) or ("item:" .. index .. ":" .. weapon_id))
     .. "|" .. grip_signature(grip)
+  -- The two oars occupy both hands. Keep the selected item in the save so
+  -- leaving the boat restores the current grip.
+  local rowing = st.role == "main" and viber.ui.get("boat.grip") == "oars"
+  if rowing then grip_key = "oars" end
   if st.grip_key ~= grip_key then
     st.grip_key = grip_key
     st.tries = 0
@@ -256,14 +261,15 @@ function on_update(dt)
     st.kind = kind
     viber.ui.set("equip.kind", kind)
   end
-  if viber.lantern and st.lantern_kind ~= kind then
-    st.lantern_kind = kind
-    viber.lantern(kind == "torch" and TORCH_LIGHT or 0)
+  local held_torch = kind == "torch" and not rowing
+  if viber.lantern and st.lantern_kind ~= held_torch then
+    st.lantern_kind = held_torch
+    viber.lantern(held_torch and TORCH_LIGHT or 0)
   end
   -- Braço à frente com a tocha: rotação ADITIVA no `upperarm_r`, somada à
   -- animação de idle/walk/run. `st.arm` guarda o valor enviado para o
   -- hot-reload reaplicar quando `braco-tocha` mudar.
-  local arm = (kind == "torch") and math.rad(viber.prop("braco-tocha")) or 0
+  local arm = held_torch and math.rad(viber.prop("braco-tocha")) or 0
   if viber.bone_offset and st.arm ~= arm then
     st.arm = arm
     viber.bone_offset("upperarm_r", arm, 0, 0)
@@ -277,5 +283,9 @@ function on_update(dt)
     return
   end
   st.tries = 1
-  viber.attach("weapon", grip.url, grip)
+  if rowing then
+    viber.detach("weapon")
+  else
+    viber.attach("weapon", grip.url, grip)
+  end
 end

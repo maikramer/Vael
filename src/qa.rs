@@ -1624,17 +1624,12 @@ pub fn reset_patch(current: &QuestKv, plan: &QuestKv) -> QuestKv {
 /// corre-o em cada contexto novo; os valores vivem num static RwLock que
 /// o cenário actualiza — re-aplicar um cenário muda os globals a nascer).
 fn seed_qa_globals(plan: &Plan) {
-    static QA_GLOBALS: std::sync::RwLock<Option<(bool, bool)>> =
-        std::sync::RwLock::new(None);
+    static QA_GLOBALS: std::sync::RwLock<Option<(bool, bool)>> = std::sync::RwLock::new(None);
     if let Ok(mut guard) = QA_GLOBALS.write() {
         *guard = Some((plan.god, plan.dev));
     }
     bevy_ext_luau::add_context_installer(|lua| {
-        let Some((god, dev)) = QA_GLOBALS
-            .read()
-            .ok()
-            .and_then(|guard| *guard)
-        else {
+        let Some((god, dev)) = QA_GLOBALS.read().ok().and_then(|guard| *guard) else {
             return Ok(());
         };
         let _ = lua.globals().set("vael_qa_god", god);

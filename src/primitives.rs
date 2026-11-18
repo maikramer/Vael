@@ -73,8 +73,8 @@ impl Default for PrimitiveDetail {
     fn default() -> Self {
         // O spawner da engine lê `VIBER_PRIMITIVES_DETAIL`; o caminho legado
         // do marcador lê primeiro o mesmo nome para os dois concordarem.
-        let detail = env_value("VIBER_PRIMITIVES_DETAIL")
-            .or_else(|| env_value("VAEL_PRIMITIVES_DETAIL"));
+        let detail =
+            env_value("VIBER_PRIMITIVES_DETAIL").or_else(|| env_value("VAEL_PRIMITIVES_DETAIL"));
         Self(match detail.as_deref() {
             Some("minimal") => ShapeDetail::Minimal,
             Some("low") => ShapeDetail::Low,

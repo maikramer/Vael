@@ -512,10 +512,7 @@ fn enforce_travel_gate(config: Res<VaelTravelConfig>) {
 /// Escreve a chave só quando o valor guardado não corresponde ao modo — no
 /// STORE do processo, o `viber.game()` de todos os contextos BMS.
 fn write_gate(rust: bool) {
-    let on = matches!(
-        viber::luau::game::game_to_json_process().get(RUST_GATE_KEY),
-        Some(JsonValue::Bool(true))
-    );
+    let on = viber::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
     if on != rust {
         let mut patch = std::collections::BTreeMap::new();
         patch.insert(
@@ -531,10 +528,7 @@ fn write_gate(rust: bool) {
 }
 
 /// Arranque: acrescenta as funções de viagem à tabela `viber.vael`.
-fn install_travel_api(
-    content: Option<Res<VaelContent>>,
-    state: Res<TravelState>,
-) {
+fn install_travel_api(content: Option<Res<VaelContent>>, state: Res<TravelState>) {
     let Some(content) = content else {
         warn!("vael: viagem sem conteúdo carregado — `viber.vael` não estendido");
         return;

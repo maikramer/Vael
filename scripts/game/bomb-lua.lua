@@ -47,10 +47,7 @@ function on_update(dt)
   st.boom = true
   local x, y, z = viber.position()
   -- A explosão pega fogo a quem apanha (3 s de queimadura).
-  for _, h in ipairs(rules.hostiles_near(x, z, RADIUS)) do
-    rules.enemy_status(h.id, "burn", 3)
-  end
-  rules.radial_damage(x, z, RADIUS, DAMAGE, KNOCKBACK)
+  rules.radial_damage(x, z, RADIUS, DAMAGE, KNOCKBACK, y, 3)
   -- Aggro-chain: a explosão acorda os aliados a 15 m (o nativo emitia um
   -- `AttackAlert` no centro; a engine já não tem produtor e o `lib/fsm.lua`
   -- lê esta tabela do jogo).
@@ -66,7 +63,7 @@ function on_update(dt)
   alert.seq = (alert.seq or 0) + 1
   viber.burst("ground-dust", x, y + 0.2, z, 6)
   viber.burst("magic", x, y + 0.6, z, 4)
-  viber.ring(x, z, RADIUS * 0.9)
+  viber.ring(x, z, RADIUS)
   viber.shake(0.28)
   viber.kick(0, 0.45, 0)
   viber.hit_stop(0.07)

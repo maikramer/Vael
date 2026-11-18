@@ -143,9 +143,8 @@ fn sign_nearest(world: &mut World) {
     // [F] no mesmo marco (antes do snapshot) assinavam e reportavam a visita
     // duas vezes.
     let live = viber::luau::game::game_to_json_process();
-    let marked_live = |name: &str| {
-        matches!(live.get(&format!("mark.{name}")), Some(Value::Bool(true)))
-    };
+    let marked_live =
+        |name: &str| matches!(live.get(&format!("mark.{name}")), Some(Value::Bool(true)));
     for mark in &rules.landmarks {
         if is_surveyed(&save, &mark.name) || marked_live(&mark.name) {
             continue;

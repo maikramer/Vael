@@ -343,7 +343,10 @@ fn quest_progress(save: &VaelSave, id: &str) -> f64 {
 
 /// Idioma da UI escolhido no save (`lang`, default `pt`).
 pub(crate) fn save_lang(save: &VaelSave) -> &str {
-    save.legacy.get("lang").and_then(Value::as_str).unwrap_or("pt")
+    save.legacy
+        .get("lang")
+        .and_then(Value::as_str)
+        .unwrap_or("pt")
 }
 
 /// O cartão do HUD: a missão seguida (`tracked_quest`) ganha; sem ela, a de

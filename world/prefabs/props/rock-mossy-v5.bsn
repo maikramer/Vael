@@ -8,6 +8,12 @@ bevy_ext_scene::ModelLod {
     lod1: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod1.glb"),
     lod2: core::option::Option::Some("/assets/meshes/props/rock_mossy_lod2.glb"),
 }
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/rock_mossy_lod0.glb" },
+}
+bevy_ext_scene::BodySpec {
+    kind: bevy_ext_scene::BodyKind::Fixed,
+}
 bevy_world_xml::bsn::WorldNode {
     tag: "GltfScene",
     attrs: [

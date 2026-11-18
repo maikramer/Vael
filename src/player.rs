@@ -10,7 +10,7 @@
 
 use std::sync::{Arc, Mutex};
 
-use avian3d::prelude::{CollisionLayers, Collider, LinearVelocity, Position, Rotation, Sensor};
+use avian3d::prelude::{Collider, CollisionLayers, LinearVelocity, Position, Rotation, Sensor};
 use bevy::prelude::*;
 use bevy_ext_core::{
     GROUND_PROBE, KNOCKBACK_EPSILON, Knockback, Player, PlayerBody, TeleportSettle, footstep_due,
@@ -20,13 +20,13 @@ use bevy_tnua::TnuaToggle;
 use bevy_tnua::builtins::{
     TnuaBuiltinClimb, TnuaBuiltinClimbConfig, TnuaBuiltinCrouch, TnuaBuiltinCrouchConfig,
     TnuaBuiltinDash, TnuaBuiltinDashConfig, TnuaBuiltinJump, TnuaBuiltinJumpConfig,
-    TnuaBuiltinKnockback, TnuaBuiltinKnockbackConfig, TnuaBuiltinWallSlide,
-    TnuaBuiltinWallSlideConfig, TnuaBuiltinWalk, TnuaBuiltinWalkConfig, TnuaBuiltinWalkHeadroom,
+    TnuaBuiltinKnockback, TnuaBuiltinKnockbackConfig, TnuaBuiltinWalk, TnuaBuiltinWalkConfig,
+    TnuaBuiltinWalkHeadroom, TnuaBuiltinWallSlide, TnuaBuiltinWallSlideConfig,
 };
+use bevy_tnua::builtins::{TnuaBuiltinCrouchMemory, TnuaBuiltinJumpMemory};
 use bevy_tnua::prelude::TnuaController;
 use bevy_tnua::radar_lens::{TnuaBlipSpatialRelation, TnuaRadarLens};
 use bevy_tnua::{TnuaAnimatingState, TnuaAnimatingStateDirective, TnuaObstacleRadar};
-use bevy_tnua::builtins::{TnuaBuiltinCrouchMemory, TnuaBuiltinJumpMemory};
 use bevy_tnua_physics_integration_layer::math::{AdjustPrecision, AsF32, Float, Vector3};
 use bevy_tnua_physics_integration_layer::spatial_ext::{TnuaPointProjectionResult, TnuaSpatialExt};
 use mlua::{Lua, Table, Value};
@@ -96,8 +96,7 @@ pub fn vael_hero_config(jump_height: f32) -> VaelHeroSchemeConfig {
         basis: TnuaBuiltinWalkConfig {
             speed: 1.0,
             // Medido a partir do disco elevado (HERO_SENSOR_LIFT na engine).
-            float_height: viber::player::HERO_FLOAT_HEIGHT
-                + viber::player::HERO_SENSOR_LIFT,
+            float_height: viber::player::HERO_FLOAT_HEIGHT + viber::player::HERO_SENSOR_LIFT,
             cling_distance: viber::player::HERO_CLING_DISTANCE,
             spring_strength: 400.0,
             spring_dampening: 1.2,
@@ -180,8 +179,11 @@ pub const HERO_CROUCH_HEIGHT: f32 = 1.15;
 pub const CROUCH_SLOW: f32 = 0.45;
 /// Paredes (deslize + salto de parede) ativas por omissão;
 /// `VAEL_WALL_MOVES=0` desliga (A/B contra o comportamento antigo).
-static WALL_MOVES: std::sync::LazyLock<bool> =
-    std::sync::LazyLock::new(|| std::env::var("VAEL_WALL_MOVES").map(|v| v != "0").unwrap_or(true));
+static WALL_MOVES: std::sync::LazyLock<bool> = std::sync::LazyLock::new(|| {
+    std::env::var("VAEL_WALL_MOVES")
+        .map(|v| v != "0")
+        .unwrap_or(true)
+});
 /// Janela (s) do buffer de salto: o pedido alimenta a ação do tnua durante
 /// este tempo e o crate dispara quando o sensor de chão o permitir (na hora
 /// ou logo à frente da aterragem — `input_buffer_time` do asset).
@@ -502,9 +504,10 @@ fn attach_controllers(
         With<Player>,
     >,
 ) {
-    let passive_speed = passive
-        .as_deref()
-        .map_or(VaelController::DEFAULT_SPEED, HeroSpeedPassive::speed_or_default);
+    let passive_speed = passive.as_deref().map_or(
+        VaelController::DEFAULT_SPEED,
+        HeroSpeedPassive::speed_or_default,
+    );
     for (entity, controller, kin, profile, mut engine_player) in &mut players {
         commands.entity(entity).insert((VaelPlayer, PlayerBody));
         // Nominais dos clips do rig (ver [`HERO_WALK_CLIP_SPEED`]): o driver da
@@ -962,8 +965,7 @@ fn hero_jump_sfx(
     heroes: Query<(&Position, &TnuaController<VaelHeroScheme>)>,
 ) {
     for (position, tnua) in &heroes {
-        if tnua.action_flow_status().just_starting()
-            == Some(VaelHeroSchemeActionDiscriminant::Jump)
+        if tnua.action_flow_status().just_starting() == Some(VaelHeroSchemeActionDiscriminant::Jump)
         {
             sfx.write(bevy_ext_core::SfxEvent {
                 clip: bevy_ext_core::SfxClip::Jump,
@@ -1052,9 +1054,9 @@ enum VaelAnimState {
 fn map_anim_state(state: VaelAnimState) -> Option<bevy_ext_core::animation::AnimState> {
     use bevy_ext_core::animation::AnimState;
     match state {
-        VaelAnimState::EngineDecides => None,
+        VaelAnimState::EngineDecides | VaelAnimState::Knocked => None,
         VaelAnimState::Jumping => Some(AnimState::Jump),
-        VaelAnimState::Falling | VaelAnimState::Knocked | VaelAnimState::OnWall => {
+        VaelAnimState::Falling | VaelAnimState::OnWall => {
             Some(AnimState::Fall)
         }
         VaelAnimState::Dashing => Some(AnimState::Run),
@@ -1213,9 +1215,8 @@ fn player_movement(
             // atrás dele (visto 2026-11-15: herói a y=−546 na cena `menu`,
             // título sobre fundo de névoa sem o acampamento).
             if boat.is_none()
-                && let Some(rt) = runtime.filter(|rt| {
-                    rt.in_field(transform.translation.x, transform.translation.z)
-                })
+                && let Some(rt) = runtime
+                    .filter(|rt| rt.in_field(transform.translation.x, transform.translation.z))
             {
                 let (px, py, pz) = (
                     transform.translation.x,
@@ -1456,7 +1457,7 @@ fn player_movement(
             }
         }
         let settling = match settle.as_deref_mut() {
-        Some(state) if state.frames > 0 => {
+            Some(state) if state.frames > 0 => {
                 if state.tick(time.delta_secs()) {
                     commands.entity(entity).remove::<TeleportSettle>();
                 }
@@ -1655,7 +1656,11 @@ fn player_movement(
             1.0
         };
         let flow_drift = water_flow_drift(submersion, water_flow);
-        let crouch_slow = if crouch_held && with_body { CROUCH_SLOW } else { 1.0 };
+        let crouch_slow = if crouch_held && with_body {
+            CROUCH_SLOW
+        } else {
+            1.0
+        };
         let desired = dir
             * controller.speed
             * sprint_mult
@@ -1689,7 +1694,9 @@ fn player_movement(
             if done {
                 controller.dodge = None;
             }
-        } else if tnua.is_none() && let Some((_, burst)) = controller.dodge.as_mut() {
+        } else if tnua.is_none()
+            && let Some((_, burst)) = controller.dodge.as_mut()
+        {
             // Sem corpo: o Burst move de facto (integra no Transform).
             let speed = burst.speed() * water_drag;
             let burst_dir = burst.dir;
@@ -1810,9 +1817,7 @@ fn player_movement(
                 // Alimentar SEM consumir: a janela continua aberta e o tnua
                 // pode segurar o pedido até aterrar. Em deslize de parede o
                 // mesmo gatilho dispara o WallJump (lança contra a normal).
-                if let Some(VaelHeroSchemeActionState::WallSlide(state, _)) =
-                    &tnua.current_action
-                {
+                if let Some(VaelHeroSchemeActionState::WallSlide(state, _)) = &tnua.current_action {
                     let normal = *state.input.normal;
                     tnua.action(VaelHeroScheme::WallJump(TnuaBuiltinJump {
                         horizontal_displacement: Some(normal),
@@ -1875,16 +1880,14 @@ fn player_movement(
                 currently_sliding_on = Some(*wall);
             }
             for blip in lens.iter_blips() {
-                if let TnuaBlipSpatialRelation::Aeside(blip_direction) =
-                    blip.spatial_relation(0.5)
+                if let TnuaBlipSpatialRelation::Aeside(blip_direction) = blip.spatial_relation(0.5)
                 {
                     let should_slide = if currently_sliding_on == Some(blip.entity()) {
                         -0.5 < blip_direction.dot(dir)
                     } else {
                         0.5 < blip_direction.dot(dir)
                     };
-                    if should_slide
-                        && let Ok(normal) = Dir3::new(blip.normal_from_closest_point())
+                    if should_slide && let Ok(normal) = Dir3::new(blip.normal_from_closest_point())
                     {
                         tnua.action(VaelHeroScheme::WallSlide(
                             TnuaBuiltinWallSlide {
@@ -1921,8 +1924,7 @@ fn player_movement(
                 if walls.climbables.get(blip.entity()).is_err() {
                     continue;
                 }
-                if let TnuaBlipSpatialRelation::Aeside(blip_direction) =
-                    blip.spatial_relation(0.5)
+                if let TnuaBlipSpatialRelation::Aeside(blip_direction) = blip.spatial_relation(0.5)
                     && blip_direction.dot(dir) < 0.3
                 {
                     continue;
@@ -1981,11 +1983,7 @@ fn player_movement(
             warn!(
                 "vael-player: herói caiu do mundo a y={:.1} (superfície {:.1}) — resgatado \
                  (terrain_ready={} settling={} ground={:.1})",
-                transform.translation.y,
-                top,
-                terrain_ready,
-                settling,
-                ground
+                transform.translation.y, top, terrain_ready, settling, ground
             );
             transform.translation.y = top;
             py = top;
@@ -2016,11 +2014,7 @@ fn player_movement(
                 warn!(
                     "vael-player: brecha perto da superfície: py={:.2} ground={:.2} \
                      terrain_ready={} settling={} vel_y={:.1}",
-                    py,
-                    ground,
-                    terrain_ready,
-                    settling,
-                    controller.vel_y
+                    py, ground, terrain_ready, settling, controller.vel_y
                 );
             }
         }
@@ -2465,7 +2459,10 @@ mod tests {
         assert!((water_column_submersion(surface, depth, surface, 99.0) - 1.0).abs() < 1e-5);
         // Pousado no leito (a cápsula flutua 0.9 m acima dele): está na água.
         let na_agua = water_column_submersion(surface, depth, surface, 97.9);
-        assert!(na_agua > 2.0, "no fundo do lago ainda está submerso: {na_agua}");
+        assert!(
+            na_agua > 2.0,
+            "no fundo do lago ainda está submerso: {na_agua}"
+        );
         // Gruta 7 m abaixo do leito: fora da coluna (antes nadava na rocha).
         assert_eq!(water_column_submersion(surface, depth, surface, 90.0), 0.0);
         // Acima da superfície: seco.
@@ -2473,13 +2470,20 @@ mod tests {
         // Lixo não envenena a submersão.
         assert_eq!(water_column_submersion(f32::NAN, depth, surface, 99.0), 0.0);
         assert_eq!(water_column_submersion(surface, depth, f32::NAN, 99.0), 0.0);
-        assert_eq!(water_column_submersion(surface, depth, surface, f32::NAN), 0.0);
+        assert_eq!(
+            water_column_submersion(surface, depth, surface, f32::NAN),
+            0.0
+        );
     }
 
     #[test]
     fn water_helpers_are_nan_safe() {
         assert_eq!(water_submersion_drag(f32::NAN), 1.0);
-        assert_eq!(water_submersion_drag(f32::INFINITY), 1.0, "sem trava inventada");
+        assert_eq!(
+            water_submersion_drag(f32::INFINITY),
+            1.0,
+            "sem trava inventada"
+        );
         assert_eq!(water_flow_drift(f32::NAN, Vec2::X), Vec2::ZERO);
         assert_eq!(water_flow_drift(1.0, Vec2::NAN), Vec2::ZERO);
         let (vy, in_water, plunge) =
@@ -2513,7 +2517,11 @@ mod tests {
         let mut passive = HeroSpeedPassive::default();
         assert_eq!(passive.speed_or_default(), VaelController::DEFAULT_SPEED);
         passive.remember(2.4);
-        assert_eq!(passive.speed_or_default(), 2.4, "o controller nasce com ela");
+        assert_eq!(
+            passive.speed_or_default(),
+            2.4,
+            "o controller nasce com ela"
+        );
         // Lixo não entra (e não apaga a última boa).
         passive.remember(f32::NAN);
         passive.remember(0.0);
@@ -2527,7 +2535,9 @@ mod tests {
         app.add_plugins(MinimalPlugins)
             .init_resource::<HeroSpeedPassive>()
             .add_systems(Update, attach_controllers);
-        app.world_mut().resource_mut::<HeroSpeedPassive>().remember(2.4);
+        app.world_mut()
+            .resource_mut::<HeroSpeedPassive>()
+            .remember(2.4);
         let hero = app.world_mut().spawn(Player::default()).id();
         app.update();
         let seeded = app
@@ -2569,9 +2579,13 @@ mod tests {
 
     #[test]
     fn borda_do_mundo_repoe_dentro_do_disco() {
-        assert_eq!(border_clamped_xz(10.0, 0.0, 100.0), None, "dentro: nada a fazer");
-        let clamped = border_clamped_xz(200.0, 0.0, 100.0)
-            .expect("fora do disco volta para dentro");
+        assert_eq!(
+            border_clamped_xz(10.0, 0.0, 100.0),
+            None,
+            "dentro: nada a fazer"
+        );
+        let clamped =
+            border_clamped_xz(200.0, 0.0, 100.0).expect("fora do disco volta para dentro");
         assert!((clamped.length() - 100.0).abs() < 1e-4);
         let clamped = border_clamped_xz(300.0, 400.0, 100.0).unwrap();
         assert!((clamped.length() - 100.0).abs() < 1e-4);

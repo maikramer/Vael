@@ -613,13 +613,17 @@ mod tests {
         let mut engine = StatEngine::new(AttributeRules::default());
         let rules = regras();
         let mut state = estado(Some("amuleto"));
-        let snap = engine.snapshot(&rules, &mut state, &BTreeSet::new()).clone();
+        let snap = engine
+            .snapshot(&rules, &mut state, &BTreeSet::new())
+            .clone();
         assert_eq!(snap.stat("damage"), 8.0);
 
         // Vendido/entregue: a contagem sai e a marca `gear.charm` fica (é a
         // leitura que tem de a limpar).
         state.held.insert("amuleto".into(), 0.0);
-        let snap = engine.snapshot(&rules, &mut state, &BTreeSet::new()).clone();
+        let snap = engine
+            .snapshot(&rules, &mut state, &BTreeSet::new())
+            .clone();
         assert_eq!(snap.stat("damage"), 0.0, "o amuleto vendido não conta");
         assert_eq!(snap.stat("defense"), 0.0);
         assert!(

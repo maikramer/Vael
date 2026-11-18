@@ -29,8 +29,6 @@ use std::path::PathBuf;
 use bevy::prelude::*;
 
 pub mod animation;
-pub mod head_look;
-pub mod spring;
 pub mod app;
 pub mod boat;
 pub mod bridge_ready;
@@ -45,11 +43,16 @@ pub mod economy;
 pub mod editor_link;
 pub mod environment;
 pub mod flora;
+pub mod rocks;
+mod fauna;
 pub mod gear;
 pub mod grass;
+pub mod ground;
+pub mod snow_caps;
 #[cfg(feature = "hanabi")]
 pub mod hanabi_fx;
 pub mod harvest;
+pub mod head_look;
 pub mod hud;
 pub mod hud_ui;
 pub mod input;
@@ -68,10 +71,11 @@ pub mod respawn;
 pub mod rules_authority;
 pub mod rules_shadow;
 pub mod save;
-pub mod script_host;
 pub mod save_native;
+pub mod script_host;
 pub mod settings;
 pub mod speech;
+pub mod spring;
 pub mod state_sync;
 pub mod stats;
 pub mod travel;
@@ -223,6 +227,12 @@ impl Plugin for VaelPlugin {
         // partir do `TerrainRuntime`, vento do `WeatherState` e trampling.
         // Vive aqui, não na engine. Fora da tupla (15 é o teto do Bevy).
         app.add_plugins(grass::VaelGrassPlugin);
+        app.add_plugins(rocks::QuarryPlugin);
+        app.add_plugins(fauna::FaunaPlugin);
+        // Neve, rastos e sombra de nuvem no chão do `.ahgt`.
+        app.add_plugins(ground::VaelGroundPlugin);
+        // Tampas de neve volumétricas em telhados e props (+ abrigo do chão).
+        app.add_plugins(snow_caps::VaelSnowCapsPlugin);
         // Barcos a remos: casco procedural, flutuação (engine), embarque/
         // saída com E e condução com WASD. Fora da tupla acima (15 é o teto).
         app.add_plugins(boat::VaelBoatPlugin);

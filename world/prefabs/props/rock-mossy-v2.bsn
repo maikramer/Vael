@@ -4,6 +4,12 @@ bevy_transform::components::transform::Transform {
     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
 }
+bevy_ext_scene::ColliderSpec {
+    shape: bevy_ext_scene::ColliderShape::ConvexHull { url: "/assets/meshes/props/rock_mossy_lod0.glb" },
+}
+bevy_ext_scene::BodySpec {
+    kind: bevy_ext_scene::BodyKind::Fixed,
+}
 bevy_world_xml::bsn::WorldNode {
     tag: "GltfScene",
     attrs: [

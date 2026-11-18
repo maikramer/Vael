@@ -50,6 +50,7 @@ fn make_test_runtime(grid: BrushGrid, water: Vec<WaterBody>) -> TerrainRuntime {
         grid: Arc::new(grid),
         water,
         roads: Vec::new(),
+        paving: Default::default(),
         pads: Vec::new(),
         voxel: Arc::new(VoxelField::new(Vec::new(), 256.0, 64.0)),
         deltas: Arc::new(DeltaGrid::default()),
@@ -206,19 +207,7 @@ fn two_pass_water_materials_sync_with_atmosphere_weather_and_preserve_passes() {
         rain: 0.85,
         cycle: true,
     });
-    // A crate lê o ambiente neutro (o `WaterBridgePlugin` da engine é quem o
-    // escreve a partir do `WeatherState`/`AtmosphereState`).
-    app.insert_resource(viber::terrain::WaterEnvironment {
-        wind: [0.8, 0.6],
-        wind_strength: 1.25,
-        rain: 0.85,
-        sun_dir: Vec3::new(0.2, 0.7, -0.5).normalize(),
-        day: 1.0,
-        zenith: [0.12, 0.34, 0.78],
-        horizon: [0.48, 0.66, 0.85],
-        sun_tint: [1.0, 0.92, 0.78],
-        ..Default::default()
-    });
+    app.add_plugins(viber::terrain::water_bridge::WaterBridgePlugin);
 
     let absorb_handle =
         app.world_mut()
@@ -382,10 +371,10 @@ fn water_shaders_preserve_two_pass_and_ssr_contracts() {
     assert!(WATER_WGSL.contains("prepass_depth"));
     assert!(WATER_WGSL.contains("pass1_mul"));
     assert!(WATER_WGSL.contains("fog_zero"));
-    assert!(WATER_WGSL.contains("sample_domain_bank_grad"));
+    assert!(WATER_WGSL.contains("dom_all.bank_grad"));
     assert!(WATER_WGSL.contains("bank_shear_foam"));
     assert!(WATER_WGSL.contains("sample_obstacle"));
-    assert!(WATER_WGSL.contains("sample_domain_flow"));
+    assert!(WATER_WGSL.contains("dom_all.flow"));
     assert!(WATER_WGSL.contains("obs_collide_foam"));
     assert!(WATER_WAVES_WGSL.contains("fn step_sim"));
     assert!(WATER_WAVES_WGSL.contains("fn gradient_export"));
@@ -466,8 +455,11 @@ fn river_current_collides_with_boulders_and_updates_when_broken() {
         .init_asset::<Shader>()
         .init_asset::<WaterMaterial>();
     app.add_plugins(WaterWavePlugin);
+    app.insert_resource(TimeUpdateStrategy::ManualDuration(
+        std::time::Duration::from_secs_f32(1.0 / 60.0),
+    ));
     // Os obstáculos vêm dos colliders avian via o adapter do jogo.
-    app.add_plugins(viber::terrain::WaterBridgePlugin);
+    app.add_plugins(viber::terrain::water_bridge::WaterBridgePlugin);
     app.insert_resource(rt);
 
     let rock_entity = app
@@ -495,9 +487,11 @@ fn river_current_collides_with_boulders_and_updates_when_broken() {
         "obstacle_tex asset should hold rock halo"
     );
 
-    // Shattering/removing the boulder clears the collision mask on next frame.
+    // Collider updates are batched every 125 ms. Advance through a batch.
     app.world_mut().despawn(rock_entity);
-    app.update();
+    for _ in 0..9 {
+        app.update();
+    }
 
     let waves = app.world().resource::<WaterWaveWorld>();
     assert!(waves.active_obstacles.is_empty());

@@ -14,8 +14,6 @@ use std::path::{Path, PathBuf};
 use anyhow::{Result, bail};
 use bevy::app::PluginGroupBuilder;
 use bevy::prelude::*;
-use bevy_kira_audio::AudioApp;
-use bevy_kira_audio::prelude::{Mix, ReverbBuilder};
 
 use viber::profiler::{Group, timed};
 use viber::recipes::spawn::{self, PendingWorld};
@@ -276,6 +274,8 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
             }),
             ..Default::default()
         })
+        // Kira owns playback. Rodio otherwise opens a second, silent output stream.
+        .disable::<bevy::audio::AudioPlugin>()
         .set(bevy::asset::AssetPlugin {
             file_path: asset_root.to_string_lossy().into_owned(),
             ..Default::default()
@@ -347,22 +347,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
         }
     );
     // Áudio: backend kira com buses tipados (música/SFX/voz/ambiente) e
-    // reverb por track; o bevy_audio/rodio fica sem players.
+    // reverb por track.
     app.add_plugins(bevy_kira_audio::AudioPlugin);
-    app.add_audio_channel::<viber::music::MusicBus>();
-    let mut sfx_track = bevy_kira_audio::AudioTrack::new();
-    let sfx_reverb = sfx_track.add_effect(ReverbBuilder::new().mix(Mix(0.0)));
-    app.add_audio_channel_with_track::<viber::music::SfxBus>(sfx_track);
-    let mut voice_track = bevy_kira_audio::AudioTrack::new();
-    let voice_reverb = voice_track.add_effect(ReverbBuilder::new().mix(Mix(0.0)));
-    app.add_audio_channel_with_track::<viber::music::VoiceBus>(voice_track);
-    app.add_audio_channel::<viber::music::AmbienceBus>();
-    app.init_resource::<viber::music::AudioDuck>();
-    app.init_resource::<viber::music::AudioReverb>();
-    app.insert_resource(viber::music::ReverbHandles {
-        sfx: Some(sfx_reverb),
-        voice: Some(voice_reverb),
-    });
+    viber::music::install_mixer(&mut app);
     // Bridge de debug + registo de sessão (o agente que lançou o jogo lê a
     // linha do eprintln para apontar o `vael-tools debug` a ESTA engine).
     if let Some(port) = bridge_port {
@@ -506,16 +493,15 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // faz colliders; o herói é do JOGO: o scheme e o tuning do tnua vivem
     // aqui (`VaelHeroScheme`/`vael_hero_config` em `src/player.rs`) — o
     // plugin da engine é genérico sobre o scheme.
-    app.add_plugins(
-        viber::player::HeroPhysicsPlugin::<crate::player::VaelHeroScheme>::new(
-            crate::player::vael_hero_config,
-        ),
-    );
+    app.add_plugins(viber::player::HeroPhysicsPlugin::<
+        crate::player::VaelHeroScheme,
+    >::new(crate::player::vael_hero_config));
     app.add_plugins(viber::postfx::PostFxPlugin);
     app.add_plugins(viber::postfx_toggle::PostFxDebugTogglePlugin);
     app.add_plugins(viber::adaptive_quality::AdaptiveQualityPlugin);
     app.add_plugins(viber::spawn_gate::SpawnGatePlugin);
-    // (Projéteis: gameplay da engine — o Vael corre com `gameplay:false`.)
+    // Os arqueiros do mapa usam o template e a fila do bridge Luau.
+    app.add_plugins(viber::projectile::ProjectilePlugin);
     app.add_plugins(viber::ibl::SkyIblPlugin);
     app.add_plugins(viber::terrain::TerrainPlugin);
     app.add_plugins(viber::terrain::runtime::TerrainFeaturesPlugin);
@@ -761,7 +747,9 @@ fn dump_schedule(world: &mut World, label: impl bevy::ecs::schedule::ScheduleLab
             info!("schedule {tag}: executor por inicializar");
             return;
         };
-        let names: Vec<String> = systems.map(|(_, system)| system.name().to_string()).collect();
+        let names: Vec<String> = systems
+            .map(|(_, system)| system.name().to_string())
+            .collect();
         info!("schedule {tag}: {} sistemas {names:?}", names.len());
     });
     if found.is_err() {
@@ -833,7 +821,10 @@ pub fn build_game_app(opts: VaelGameOptions) -> Result<App> {
     // comandos não as dá (o Play (QA) do Jackdaw só passa a env).
     let scenario = match scenario_name.as_deref() {
         Some(name) => {
-            let base = requested.parent().map(Path::to_path_buf).unwrap_or_default();
+            let base = requested
+                .parent()
+                .map(Path::to_path_buf)
+                .unwrap_or_default();
             let loaded = crate::qa::load_scenario(&base, name)
                 .map_err(|err| anyhow::anyhow!("cenário {name}: {err}"))?;
             let s = &loaded.scenario;
@@ -907,9 +898,7 @@ pub fn build_game_app(opts: VaelGameOptions) -> Result<App> {
     }
     if let Some(loaded) = &scenario {
         app.insert_resource(crate::qa::QaRequest {
-            name: scenario_name
-                .clone()
-                .unwrap_or_else(|| loaded.name.clone()),
+            name: scenario_name.clone().unwrap_or_else(|| loaded.name.clone()),
         });
     }
     app.add_plugins(crate::VaelPlugin);

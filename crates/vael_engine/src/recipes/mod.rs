@@ -3779,6 +3779,8 @@ impl PavingAttrs {
             "paving-inner-corner" => self.style.inner_corner = values::parse_f32(value, kctx)?,
             "paving-priority" => self.style.priority = values::parse_f32(value, kctx)? as i32,
             "paving-chunk" => self.style.chunk = values::parse_f32(value, kctx)?,
+            "paving-wobble" => self.style.wobble = values::parse_f32(value, kctx)?,
+            "paving-feather" => self.style.feather = values::parse_f32(value, kctx)?,
             "paving-round" => self.style.round = values::parse_bool(value, kctx)?,
             _ => return Ok(false),
         }
@@ -3811,7 +3813,12 @@ fn finish_terrain(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
         // inherits whatever it does not override itself.
         if matches!(
             key.as_str(),
-            "paving-cell" | "paving-corner" | "paving-inner-corner" | "paving-chunk"
+            "paving-cell"
+                | "paving-corner"
+                | "paving-inner-corner"
+                | "paving-chunk"
+                | "paving-wobble"
+                | "paving-feather"
         ) {
             let mut defaults = PavingAttrs {
                 style: spec.paving.clone(),

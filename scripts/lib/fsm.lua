@@ -126,6 +126,7 @@ local TELEGRAPH_COLOR = "#ffb347"
 -- Stagger (s) de um flinch normal / com windup cancelado / de chefe.
 local STAGGER = 0.3
 local STAGGER_INTERRUPT = 0.5
+local PARRY_RECOVER = 0.85
 local STAGGER_BOSS = 0.7
 -- Cor do aviso de disparo dos atiradores.
 local SHOT_COLOR = "#ff6a3d"
@@ -269,13 +270,17 @@ function M.new(cfg)
   end
 
   -- Dano recebido desde o último frame → flinch / poise / aggro.
-  local function react_to_damage(st, hp, max)
+  local function react_to_damage(st, hp, max, shield_chip)
     local lost = (st.hp or hp) - hp
     st.hp = hp
     if lost <= 0 then
       return
     end
     self.alert()
+    -- Um corte que ressalta no escudo tira vida, mas a guarda só abre
+    -- com o remate, pelas costas ou quando outro golpe o interrompe.
+    lost = lost - shield_chip
+    if lost < 1e-6 then return end
     local stagger
     if cfg.poise and cfg.poise > 0 then
       st.poise_dmg = (st.poise_dmg or 0) + lost
@@ -339,14 +344,22 @@ function M.new(cfg)
       else
         st.ax, st.az = x, z
       end
-      viber.play_clip(sp.clip or "roar,attack")
+      viber.play_clip(sp.clip or "roar,attack", { blend = 0.08, duration = st.pt + cfg.recover })
       if sp.label then viber.toast(sp.label) end
       viber.sound("roar")
     else
       st.phase, st.pt, st.kind = "windup", cfg.windup, "normal"
-      viber.play_clip("attack")
+      -- Fixa o círculo à frente no arranque. Aviso e impacto leem a
+      -- mesma zona mesmo que o herói mude de lado durante a animação.
+      local x, _, z = viber.position()
+      local reach = cfg.range + REACH_SLACK
+      st.ax = x + (st.hx or 0) * reach * 0.45
+      st.az = z + (st.hz or 1) * reach * 0.45
+      st.radius = reach * 0.55
+      viber.ring(st.ax, st.az, st.radius, TELEGRAPH_COLOR)
+      viber.play_clip("attack", { blend = 0.08, duration = cfg.windup + cfg.recover })
     end
-    st.pulse = 0
+    st.pulse = st.kind == "normal" and TELEGRAPH_PULSE or 0
   end
 
   -- Começa um disparo (atiradores): aviso curto, dispara no fim do windup.
@@ -356,13 +369,13 @@ function M.new(cfg)
       st.phase, st.pt, st.kind = "windup", cfg.caster.windup or 1.2, "cast"
       st.ax, st.az = px, pz
       st.pulse = 0
-      viber.play_clip("cast,roar,attack")
+      viber.play_clip("spellcast,cast,roar,attack", { blend = 0.08, duration = st.pt + cfg.recover })
       return
     end
     if not cfg.ranged then return end
     st.phase, st.pt, st.kind = "windup", cfg.ranged.windup or 0.7, "shot"
     st.pulse = 0
-    viber.play_clip("shoot,attack")
+    viber.play_clip("shoot,attack", { blend = 0.08, duration = st.pt + cfg.recover })
   end
 
   -- Investida: trava, marca o corredor e arranca em linha recta. A direcção
@@ -379,7 +392,7 @@ function M.new(cfg)
     st.ax, st.az = x + dx * st.clen, z + dz * st.clen
     st.pulse = 0
     st.hx, st.hz = dx, dz
-    viber.play_clip("roar,attack")
+    viber.play_clip("roar,attack", { blend = 0.08, duration = st.pt })
     viber.sound("roar")
     return true
   end
@@ -466,10 +479,10 @@ function M.new(cfg)
         viber.damage_number("ESQUIVA", { color = "#9fd8ff", x = px, y = py + 2.0, z = pz })
       end
     else
-      if dist2(px, pz, x, z) <= cfg.range + REACH_SLACK and math.abs(py - y) <= REACH_VERTICAL then
-        if rules.damage_player(dmg(st), x, z) and cfg.on_attack then
-          cfg.on_attack()
-        end
+      if dist2(px, pz, st.ax, st.az) <= st.radius and math.abs(py - y) <= REACH_VERTICAL then
+        local entered, parried = rules.damage_player(dmg(st), x, z)
+        if entered and cfg.on_attack then cfg.on_attack() end
+        return parried
       else
         viber.sound("whoosh")
         viber.damage_number("ESQUIVA", { color = "#9fd8ff", x = px, y = py + 2.0, z = pz })
@@ -479,13 +492,14 @@ function M.new(cfg)
 
   -- Fase de ataque ativa (windup/recover/stagger): devolve true se consumiu
   -- o frame (a criatura não anda nem reavalia a FSM).
-  local function tick_phase(st, dt, px, pz, x, z)
+  local function tick_phase(st, dt, px, hero_y, pz, x, y, z)
     if not st.phase then return false end
     st.pt = (st.pt or 0) - dt
     if st.phase == "windup" then
       -- Hot-reload a meio do golpe pode tirar o especial/arco da config:
       -- aborta o golpe em curso em vez de indexar nil e matar o script.
-      if (st.kind == "special" and not special_of(st))
+      if (st.kind == "normal" and not st.radius)
+          or (st.kind == "special" and not special_of(st))
           or (st.kind == "shot" and not cfg.ranged)
           or (st.kind == "cast" and not cfg.caster)
           or (st.kind == "charge" and not charge_of(st))
@@ -538,12 +552,10 @@ function M.new(cfg)
       else
         if st.pulse <= 0 then
           st.pulse = TELEGRAPH_PULSE
-          -- O anel é o aviso do alcance REAL do impacto (`range + slack`);
-          -- com `range + 0.3` dava para ficar de fora do círculo e levar.
-          viber.ring(x, z, cfg.range + REACH_SLACK, TELEGRAPH_COLOR)
+          viber.ring(st.ax, st.az, st.radius, TELEGRAPH_COLOR)
         end
       end
-      if st.kind == "charge" then
+      if st.kind == "charge" or st.kind == "normal" then
         -- Direcção TRANCADA: o corpo aponta o corredor, não segue o herói.
         viber.face_towards(st.ax, st.az)
       elseif st.kind ~= "emerge" then
@@ -562,8 +574,12 @@ function M.new(cfg)
           viber.play_clip("roar,attack")
           viber.sound("roar")
         end
-        land_attack(st)
+        local parried = land_attack(st)
         st.phase, st.pt = "recover", cfg.recover
+        if parried and not cfg.boss then
+          st.phase, st.pt = "stagger", math.max(cfg.recover, PARRY_RECOVER)
+          viber.play_clip("hit")
+        end
         st.t = 0
       end
     elseif st.phase == "charging" then
@@ -573,7 +589,8 @@ function M.new(cfg)
         return true
       end
       step(st, x, z, st.ax, st.az, ch.speed or 10)
-      if not st.charge_hit and dist2(px, pz, x, z) <= (ch.width or 1.5) then
+      if not st.charge_hit and math.abs(hero_y - y) <= REACH_VERTICAL
+          and dist2(px, pz, x, z) <= (ch.width or 1.5) then
         st.charge_hit = true
         if rules.damage_player(dmg(st) * (ch.mult or 1.8), x, z) then
           -- Atropelado: o herói é atirado para a frente da investida.
@@ -738,7 +755,7 @@ function M.new(cfg)
       st.first_done = true
       cfg.on_first()
     end
-    local has, px, _, pz = viber.player_position()
+    local has, px, hero_y, pz = viber.player_position()
     -- O registo vivo não pode envelhecer durante uma pausa (menu, cinemática,
     -- LOD): `M.hostiles` só lista entradas com `t` fresco e a recriação
     -- devolvia HP cheio a um inimigo já ferido.
@@ -951,8 +968,10 @@ function M.new(cfg)
       return
     end
     tick_status(st, entry, dt, x, py, z)
+    local shield_chip = entry.shield_chip or 0
+    if shield_chip > 0 then entry.shield_chip = nil end
     if not promoted then
-      react_to_damage(st, entry.hp, entry.max)
+      react_to_damage(st, entry.hp, entry.max, shield_chip)
       check_enrage(st, entry.hp, entry.max)
       check_phases(st, entry, x, py, z)
     end
@@ -963,7 +982,7 @@ function M.new(cfg)
       viber.set_locomotion(cfg.wander, cfg.chase, cfg.turn_rate)
     end
 
-    if tick_phase(st, dt, px, pz, x, z) then
+    if tick_phase(st, dt, px, hero_y, pz, x, py, z) then
       -- `ok/hp/max` eram restos do antigo `viber.entity_hp()`: `ok` era nil
       -- e a barra de chefe nunca era publicada.
       if st.state == "chase" then boss_bar(st, entry.hp, entry.max) end
@@ -991,6 +1010,10 @@ function M.new(cfg)
     -- De noite as criaturas nocturnas veem mais longe; à chuva todas veem pior.
     local sight = night_mult(NIGHT_AGGRO) * (clock.raining() and RAIN_SIGHT or 1.0)
     st.state = viber.next_state(st.state or "wander", fsm_dist, cfg.aggro * sight, cfg.deaggro * sight)
+
+    if st.state ~= st.pstate or entry.chasing == nil then
+      entry.chasing = st.state == "chase"
+    end
 
     -- Hook na TRANSIÇÃO wander → chase (não repete por tick).
     if st.state == "chase" and st.pstate ~= "chase" then
@@ -1125,11 +1148,19 @@ function M.new(cfg)
           st.t = cooldown(st) * 0.55
         end
       else
-        face_hero(st, px, pz, x, z)
         st.t = (st.t or 0) + dt
+        local contact = math.max(min_gap, cfg.range * 0.7)
         if st.t >= cooldown(st) then
           st.t = 0
+          face_hero(st, px, pz, x, z)
           begin_attack(st, px, pz)
+        elseif dist > contact then
+          -- Fecha o último passo enquanto prepara o ataque. A cadência
+          -- continua mesmo se as cápsulas impedirem chegar mais perto.
+          local gap = dist - contact
+          step(st, x, z, x + (px - x) * gap / dist, z + (pz - z) * gap / dist, chase_speed(st))
+        else
+          face_hero(st, px, pz, x, z)
         end
       end
     else

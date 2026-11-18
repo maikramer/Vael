@@ -59,16 +59,12 @@ fn find_mane_chain(
     // Descer do raiz pelo primeiro filho que casa, até não haver mais.
     let mut end = chain_root;
     for _ in 0..32 {
-        let next = children
-            .get(end)
-            .ok()?
-            .iter()
-            .find(|c| {
-                names
-                    .get(*c)
-                    .map(|n| normalize_clip_name(n.as_str()).starts_with(MANE_PREFIX))
-                    .unwrap_or(false)
-            });
+        let next = children.get(end).ok()?.iter().find(|c| {
+            names
+                .get(*c)
+                .map(|n| normalize_clip_name(n.as_str()).starts_with(MANE_PREFIX))
+                .unwrap_or(false)
+        });
         match next {
             Some(child) => end = child,
             None => break,

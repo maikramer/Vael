@@ -182,7 +182,11 @@ mod tests {
         assert_eq!(inventory.get("gold"), 5);
         assert!(!inventory.items.contains_key("gold"));
         assert_eq!(
-            inventory.entries().into_iter().filter(|(id, _)| *id == "gold").count(),
+            inventory
+                .entries()
+                .into_iter()
+                .filter(|(id, _)| *id == "gold")
+                .count(),
             1,
             "uma só chave no espelho"
         );

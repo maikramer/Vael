@@ -108,6 +108,8 @@ pub enum ScriptCommand {
         /// `None` = 250 ms (gesto). Golpes encadeados e esquivas querem
         /// cortes curtos; 250 ms deixava a chain "mole".
         blend: Option<f32>,
+        /// Duração pedida pelo jogo para o clip deste rig.
+        duration: Option<f32>,
     },
     /// SFX curto (`viber.sound`) tocado na posição da entidade — consumido
     /// pelo `sfx_player_system` do [`crate::ambient`].

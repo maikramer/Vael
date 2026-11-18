@@ -986,7 +986,9 @@ end
 -- `viber.game().enemies[id]` (kind/hp/max/pos/forward/t). O jogador lê daqui;
 -- a engine não tem lista de hostis nem Health.
 -- Hostis a `range` de um PONTO (o centro da explosão, não o herói).
-function M.hostiles_near(cx, cz, range)
+-- Com altura, seleciona alvos atingíveis no mesmo piso (áreas/efeitos).
+-- Sem ela, devolve o registo de proximidade usado pela mira, áudio e quests.
+function M.hostiles_near(cx, cz, range, impact_y)
   local game = g()
   local now = viber.time()
   local out = {}
@@ -1001,7 +1003,8 @@ function M.hostiles_near(cx, cz, range)
       local ex, ez = e.x, e.z
       local dx, dz = (ex or cx) - cx, (ez or cz) - cz
       local dist = math.sqrt(dx * dx + dz * dz)
-      if dist <= reach then
+      if dist <= reach and (impact_y == nil or
+          (not e.invuln and math.abs((e.y or impact_y) - impact_y) <= 2.2)) then
         out[#out + 1] = {
           id = id,
           kind = e.kind or "creature",
@@ -1053,31 +1056,33 @@ function M.hostiles_all()
   return out
 end
 
-function M.damage_enemy(id, amount)
+function M.damage_enemy(id, amount, shielded)
   ensure_hp()
   local e = (g().enemies or {})[id]
   if not e or (e.hp or 0) <= 0 then
-    return false, e
+    return false, e, 0
   end
   -- Invulnerável (chefe enterrado, transição de fase): o golpe não entra.
   if e.invuln then
-    return false, e
+    return false, e, 0
   end
   if not finite(amount) or amount < 0 then
     amount = 0
   end
-  e.hp = math.max(0, e.hp - amount)
-  return e.hp <= 0, e
+  local removed = math.min(e.hp, amount)
+  e.hp = e.hp - removed
+  if shielded then e.shield_chip = (e.shield_chip or 0) + removed end
+  return e.hp <= 0, e, removed
 end
 
 -- Dano em área do JOGO: falloff linear (cheio → metade na borda), knockback
 -- e números. A morte é decidida pelo script da criatura no frame seguinte.
-function M.radial_damage(x, z, radius, damage, knockback)
+function M.radial_damage(x, z, radius, damage, knockback, impact_y, burn_secs)
   local hits = 0
   -- A busca E o falloff medem-se do centro da explosão. Antes usavam
   -- `h.distance` (distância ao herói): a bomba largada à frente atingia
   -- inimigos atrás do jogador e ignorava os que estavam na borda real.
-  for _, h in ipairs(M.hostiles_near(x, z, radius)) do
+  for _, h in ipairs(M.hostiles_near(x, z, radius, impact_y)) do
     -- Intocável (chefe em transição, verme enterrado): o `damage_enemy`
     -- recusa o golpe; sem este salto o número e o knockback apareciam na
     -- mesma, como se a área tivesse entrado.
@@ -1087,6 +1092,7 @@ function M.radial_damage(x, z, radius, damage, knockback)
       local falloff = 1.0 - 0.5 * (dist / math.max(radius, 1e-3))
       local dmg = (damage or 0) * falloff
       M.damage_enemy(h.id, dmg)
+      if burn_secs and burn_secs > 0 then M.enemy_status(h.id, "burn", burn_secs) end
       if viber.hit_flash then
         viber.hit_flash(h.id)
       end
@@ -1428,21 +1434,26 @@ function M.damage_player(amount, sx, sz)
   ensure_hp()
   local r = viber.vael.damage_player(amount or 0, viber.time())
   if r.parried then
-    viber.toast("ESQUIVA")
-    player_fx("ESQUIVA", "#9fd8ff", "block")
-    return false
+    player_fx("APARO", "#9fd8ff", "block")
+    viber.hit_stop(0.055)
+    return false, true
   end
   if not r.entered then
     return false
   end
   if r.blocked then
-    viber.toast("Bloqueaste")
-    sound_at_player("block")
+    player_fx("BLOQUEIO -" .. math.floor(r.amount), "#9fd8ff", "block")
+    viber.shake(0.06)
+  else
+    player_fx("-" .. math.floor(r.amount), "#ff6b6b", "hurt")
+    local id = viber.player_id()
+    if id and not r.died then
+      viber.play_clip("hit", { id = id, blend = 0.08 })
+    end
+    push_from_hit(sx, sz)
+    viber.shake(0.18)
   end
-  player_fx("-" .. math.floor(r.amount), "#ff6b6b", "hurt")
   flash_damage_direction(sx, sz)
-  push_from_hit(sx, sz)
-  viber.shake(0.18)
   if r.died then
     start_death(g())
   end

@@ -55,7 +55,7 @@ caminho normal (`WaveImpulseRequest`).
   encalhe (`ground_*`).
 - [`FloatState`] (componente): velocidade linear, `yaw` (autoral/leme),
   `pitch`, `roll`, velocidades angulares, `submerged`, `grounded`.
-- [`WaterBuoyancyPlugin`]: corre `step_floating_bodies` em `Update`.
+- `WaterBuoyancyPlugin` integra flutuadores simples. Nos barcos, `AvianBuoyancyPlugin` aplica o empuxo e o torque em cada passo fixo. O Avian resolve os contactos e integra o casco convexo.
 
 Modelo: o casco é uma caixa amostrada em **9 colunas** (3×3). Cada coluna
 desloca `área · altura_submersa` no seu próprio XZ; Arquimedes empurra para cima
@@ -93,12 +93,38 @@ com o casco (até `2,6·raio`).
 - `Boat` = aceleração, reverse, velocidade máxima, sprint, taxa de guinada e
   fase dos remos. `row_thrust`/`row_yaw` são puros e testados.
 - **E** (acção `interact`) a menos de `BOARD_RADIUS` entra; a bordo, **E** sai.
-  O `KinematicCharacterController` do herói é guardado em `RidingBoat` e
-  reposto na saída.
+  O corpo dinâmico do herói fica desativado durante a viagem e volta a
+  simular ao desembarcar.
 - A bordo: **W/S** rema à frente/atrás, **A/D** dá leme, **Shift** sprinta. O
-  herói é colocado em `SEAT_LOCAL` todos os frames e o `Player` da engine
-  espelha a velocidade do casco — a câmara de terceiros segue o barco sem código
-  novo, e `player_movement` ignora o corpo enquanto `RidingBoat` existe.
+  herói fica sentado de frente para a popa. O estado `Row` usa a fase das pás
+  para escolher a pose do clipe `row` do herói. Ao largar W/S, as mãos
+  repousam nos cabos. A câmara continua voltada para a proa.
+
+Ao chegar à praia, o HUD oferece **Desembarcar na margem** quando encontra
+piso seco a um passo do casco, inclinação caminhável e espaço para a cápsula
+do herói ao longo do trajeto. A tecla de interação confirma esse ponto.
+Ao pisar a margem, o herói prende o barco a um piquete com uma corda.
+A amarra fica guardada com o barco e solta-se ao voltar a embarcar.
+Em água aberta, a mesma ação permite sair para nadar pelo lado livre.
+
+O volume de colisão acompanha a proa, a popa e a quilha. A detecção contínua
+cobre impactos em velocidade. O empuxo em nove pontos inclina o barco com
+as ondas, inclusive quando os remos estão recolhidos.
+
+As pás giram nos toletes de bombordo e estibordo. Na puxada, cada pá
+submersa contribui com metade da força e abre uma onda no primeiro contacto.
+Soltar W/S levanta os remos e deixa o casco deslizar com o embalo e a corrente.
+
+## Margens e vida aquática
+
+Nos lagos, pequenas frentes de espuma avançam pelas curvas de profundidade
+da margem. Nos rios, a relação entre a velocidade da corrente e a profundidade
+determina onde aparecem cristas curtas sobre os baixios. A absorção de cor
+acompanha a distância percorrida pela luz entre a superfície e o fundo.
+
+No lago do barco, no rio e no lago dos picos há trutas. Sobem para se alimentar,
+deixam anéis ao romper a superfície e voltam a mergulhar quando o jogador se
+aproxima. Os percursos consultam o mesmo leito e a mesma corrente do barco.
 
 Tuning: `ROWBOAT_MASS` vs `HULL_HALF`/`displacement_factor` definem o calado
 (agora ~7 cm). Mudar a massa sem mudar o casco muda o calado, o bordo livre e a
@@ -107,13 +133,13 @@ estabilidade; validar com os testes de `water_buoyancy`.
 ## Gates
 
 ```bash
-# a crate (23 testes; o `--no-default-features` desliga o adapter avian)
+# a crate (o `--no-default-features` desliga o adapter avian)
 cd ../bevy_extensions && cargo test -p bevy_ext_water
 cargo check -p bevy_ext_water --no-default-features
-# carve + shims do terreno no monólito (42 testes de água)
-cd crates/bevy_ext_viber_engine && cargo test --lib -- terrain::water
+# carve e adaptadores do terreno
+cargo test -p bevy_ext_terrain_runtime --lib -- water
 # Vael: solver + domínio + malhas + flutuação + esteira de barco + obstáculos avian
-cd ../../../Vael && cargo test --test water_overhaul
+cd ../Vael && cargo test --test water_overhaul
 vael-tools analyze world.bsn
 ```
 

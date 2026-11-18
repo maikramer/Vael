@@ -800,11 +800,25 @@ mod tests {
         let mut state = VaelRulesShadow::default();
         state.burn = 10.0;
 
-        shadow_tick(&mut state, 1.0, true, false, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            1.0,
+            true,
+            false,
+            false,
+            StatusResists::default(),
+        );
         assert!((state.burn - 8.0).abs() < 1e-4, "burn={}", state.burn);
         assert!((state.hp - 94.0).abs() < 1e-4, "hp={}", state.hp);
 
-        shadow_tick(&mut state, 1.0, true, false, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            1.0,
+            true,
+            false,
+            false,
+            StatusResists::default(),
+        );
         assert!((state.burn - 6.0).abs() < 1e-4, "burn={}", state.burn);
         assert!((state.hp - 88.0).abs() < 1e-4, "hp={}", state.hp);
 
@@ -1064,7 +1078,14 @@ mod tests {
         // Um `dt` não finito não simula nem estraga o estado.
         let mut state = VaelRulesShadow::default();
         state.iframes = 1.0;
-        shadow_tick(&mut state, f32::NAN, false, false, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            f32::NAN,
+            false,
+            false,
+            false,
+            StatusResists::default(),
+        );
         assert_eq!(state.iframes, 1.0);
         assert_eq!(state.ticks, 0);
     }
@@ -1078,7 +1099,14 @@ mod tests {
         state.frost = 10.0;
 
         // O menu congela os estados, mas o `dying` arranca e conta.
-        shadow_tick(&mut state, 0.1, false, true, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            0.1,
+            false,
+            true,
+            false,
+            StatusResists::default(),
+        );
         assert!((state.dying - 2.1).abs() < 1e-4, "dying={}", state.dying);
         assert_eq!(state.venom, 10.0);
         assert_eq!(state.burn, 10.0);
@@ -1087,10 +1115,24 @@ mod tests {
         assert_eq!(state.burn_tick, 0.0);
         assert_eq!(state.hp, 0.0);
 
-        shadow_tick(&mut state, 1.0, false, true, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            1.0,
+            false,
+            true,
+            false,
+            StatusResists::default(),
+        );
         assert!((state.dying - 1.1).abs() < 1e-4, "dying={}", state.dying);
 
-        shadow_tick(&mut state, 1.2, false, true, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            1.2,
+            false,
+            true,
+            false,
+            StatusResists::default(),
+        );
         assert!(state.death_pending);
         assert!(
             (state.death_wait - 5.0).abs() < 1e-4,
@@ -1098,7 +1140,14 @@ mod tests {
             state.death_wait
         );
 
-        shadow_tick(&mut state, 5.0, false, true, false, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            5.0,
+            false,
+            true,
+            false,
+            StatusResists::default(),
+        );
         assert!(!state.death_pending);
         assert_eq!(state.hp, 100.0);
         assert_eq!(state.venom, 0.0);
@@ -1113,7 +1162,14 @@ mod tests {
         state.hp = 0.0;
         state.death_wait = 1.0;
 
-        shadow_tick(&mut state, 0.5, false, false, true, StatusResists::default());
+        shadow_tick(
+            &mut state,
+            0.5,
+            false,
+            false,
+            true,
+            StatusResists::default(),
+        );
         assert!(
             (state.death_wait - 5.0).abs() < 1e-4,
             "wait={}",

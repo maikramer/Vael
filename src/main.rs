@@ -79,6 +79,19 @@ fn main() -> Result<()> {
         // SAFETY: idem — nenhuma outra thread lê o ambiente ainda.
         unsafe { std::env::set_var("VIBER_GPU_CULLING", "1") };
     }
+    // On Linux, CPAL double-buffers the ALSA period. Give the PipeWire ALSA
+    // client at least 2048 stereo f32 frames per period (43 ms at 48 kHz)
+    // so a short scheduling delay during rendering does not empty the ring.
+    #[cfg(target_os = "linux")]
+    if std::env::var_os("PIPEWIRE_ALSA").is_none() {
+        // SAFETY: still single-threaded, before initializing Bevy or audio.
+        unsafe {
+            std::env::set_var(
+                "PIPEWIRE_ALSA",
+                "{ alsa.period-bytes = { min = 16384 max = 2097152 } }",
+            )
+        };
+    }
     let args = Args::parse();
 
     // O `.bsn` é a fonte de verdade; o `.xml` fica como fallback nos

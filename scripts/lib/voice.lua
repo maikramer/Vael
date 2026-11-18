@@ -487,7 +487,7 @@ function M.cast(text, parsed)
 
   if cls.chord == "brasa" then
     local dmg = is_night and 22 or 14
-    local hits = rules.hostiles_near(px, pz, 6.5)
+    local hits = rules.hostiles_near(px, pz, 6.5, py)
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "burn", 5.0)
@@ -517,7 +517,7 @@ function M.cast(text, parsed)
     local amp = has_snow or py > 14.0
     local dmg = amp and 14 or 8
     local kb = amp and 9.5 or 6.5
-    local hits = rules.hostiles_near(px, pz, 6.5)
+    local hits = rules.hostiles_near(px, pz, 6.5, py)
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "frost", 5.5)
@@ -539,7 +539,7 @@ function M.cast(text, parsed)
     viber.toast("Acorde da Geada: escudo glacial firma a tua lâmina (25s).")
   elseif cls.chord == "tempestade" then
     local dmg = 10 + math.floor(wind_speed * 0.5) + (is_rain and 6 or 0)
-    local hits = rules.hostiles_near(px, pz, 7.0)
+    local hits = rules.hostiles_near(px, pz, 7.0, py)
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "shock", 4.0)
@@ -574,7 +574,7 @@ function M.cast(text, parsed)
   elseif cls.chord == "pacto" then
     local tk = cls.target_kind or "wolf"
     local label = M.label_for_creature(tk)
-    local hits = rules.hostiles_near(px, pz, 9.0)
+    local hits = rules.hostiles_near(px, pz, 9.0, py)
     for _, h in ipairs(hits) do
       local hk = h.kind or ""
       if hk == tk or (rules.kind_matches and rules.kind_matches(hk, tk)) then

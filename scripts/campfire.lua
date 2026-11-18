@@ -13,7 +13,7 @@ function on_update(dt)
     local ok, x, y, z = viber.entity_position()
     if ok then
       viber.sound_loop("campfire", "ambient/fire_loop.ogg", {
-        x = x, y = y + 0.6, z = z, bus = "ambience", volume = 0.55,
+        x = x, y = y + 0.6, z = z, bus = "ambience", volume = 0.28,
       })
       viber.log("fogueira: loop de fogo")
     end

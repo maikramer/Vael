@@ -18,6 +18,35 @@ use bevy::animation::graph::{AnimationGraphHandle, AnimationNodeIndex};
 use bevy::animation::transition::AnimationTransitions;
 use bevy::animation::AnimationPlayer;
 use bevy::prelude::*;
+
+/// A scripted actor may own the GLB directly (spawner) or contain its visual
+/// model (authored scenes). Deliver a waiting action to the nearest bound
+/// model without crossing into a separately scripted actor.
+fn forward_model_gestures(
+    mut commands: Commands,
+    requests: Query<(Entity, &PendingGesture, &Children), Without<CharacterAnimator>>,
+    children: Query<&Children>,
+    actors: Query<(), Or<(With<crate::luau::LuaScriptRef>, With<crate::player::Player>)>>,
+    rigs: Query<(), With<CharacterAnimator>>,
+) {
+    for (actor, gesture, roots) in &requests {
+        let mut search: std::collections::VecDeque<_> = roots.iter().collect();
+        while let Some(model) = search.pop_front() {
+            if actors.contains(model) {
+                continue;
+            }
+            if rigs.contains(model) {
+                commands.entity(model).insert(gesture.clone());
+                commands.entity(actor).remove::<PendingGesture>();
+                break;
+            }
+            if let Ok(kids) = children.get(model) {
+                search.extend(kids.iter());
+            }
+        }
+    }
+}
+
 /// Drives every other animated character (NPCs, scripted creatures, the Rust
 /// FSM enemies) from its own displacement.
 ///
@@ -33,9 +62,12 @@ pub fn drive_character_animation(
             &mut CharacterAnimator,
             Option<&crate::luau::ScriptActivation>,
             Option<&LocomotionProfile>,
+            Option<&ChildOf>,
         ),
         (Without<crate::player::Player>, Without<ManualAnimation>),
     >,
+    parents: Query<&ChildOf>,
+    actors: Query<Option<&LocomotionProfile>, With<crate::luau::LuaScriptRef>>,
     hero: Query<&GlobalTransform, With<crate::player::Player>>,
     mut players: PlayerQuery,
     handles: Query<&AnimationGraphHandle>,
@@ -45,7 +77,7 @@ pub fn drive_character_animation(
     let _probe = bevy_engine_core::perf_probe::Probe::new("anim.drive");
     let dt = time.delta_secs().max(1e-4);
     let hero_positions: Vec<Vec3> = hero.iter().map(GlobalTransform::translation).collect();
-    for (transform, mut animator, activation, profile) in &mut characters {
+    for (transform, mut animator, activation, profile, parent) in &mut characters {
         if animator.locked {
             continue; // dead: the terminal clip holds the pose
         }
@@ -63,6 +95,15 @@ pub fn drive_character_animation(
         }
         // A rig with no profile yet falls back to the module-wide creature
         // nominals — the behaviour this driver always had.
+        // Nested GLBs move with the actor. Its script sets the gait speeds
+        // on the actor itself, while the animator lives on the model.
+        let profile = profile.or_else(|| {
+            let parent = parent?.parent();
+            std::iter::once(parent)
+                .chain(parents.iter_ancestors(parent))
+                .find_map(|ancestor| actors.get(ancestor).ok())
+                .flatten()
+        });
         let (speeds, gates) = match profile {
             Some(p) => (profile_speeds(p), profile_gates(p)),
             None => (
@@ -236,6 +277,7 @@ impl bevy::app::Plugin for AnimationPlugin {
             bevy::app::Update,
             (
                 rearm_after_scene_swap,
+                forward_model_gestures,
                 play_pending_gestures,
                 tick_animator_actions,
                 // O flinch corre antes dos drivers: um one-shot que ele toca
@@ -270,6 +312,36 @@ mod tests {
             Entity::PLACEHOLDER,
             None,
         )
+    }
+
+    #[test]
+    fn scripted_parent_delivers_attack_when_its_visual_rig_binds() {
+        let mut app = App::new();
+        app.init_resource::<Time>().add_systems(
+            Update,
+            (forward_model_gestures, play_pending_gestures).chain(),
+        );
+        let actor = app.world_mut().spawn(PendingGesture {
+            name: "attack".into(), speed: 1.0, lock: false, blend: Some(0.08), duration: Some(0.5), age: 0.0,
+        }).id();
+        let other_actor = app.world_mut().spawn((
+            ChildOf(actor), crate::luau::LuaScriptRef { path: "another.lua".into() },
+            animator(&["attack"]),
+        )).id();
+        let visual = app.world_mut().spawn(ChildOf(actor)).id();
+        app.update();
+        assert!(app.world().get::<PendingGesture>(actor).is_some());
+
+        let player = app.world_mut().spawn((AnimationPlayer::default(), AnimationTransitions::new())).id();
+        let mut bound = animator(&["idle", "Animator3D_Attack"]);
+        bound.player = player;
+        app.world_mut().entity_mut(visual).insert(bound);
+        app.update();
+        assert!(app.world().get::<PendingGesture>(actor).is_none());
+        let rig = app.world().get::<CharacterAnimator>(visual).unwrap();
+        assert_eq!(rig.current, Some(rig.nodes[1]));
+        assert_eq!(rig.action_time, 0.5);
+        assert_eq!(app.world().get::<CharacterAnimator>(other_actor).unwrap().current, None);
     }
 
     #[test]

@@ -81,7 +81,9 @@ pub fn run_installers(lua: &Lua) -> mlua::Result<()> {
         })
         .unwrap_or(true);
     if failed {
-        eprintln!("vael: registo de instaladores fechado a erro — contextos nascem sem `viber.vael`");
+        eprintln!(
+            "vael: registo de instaladores fechado a erro — contextos nascem sem `viber.vael`"
+        );
     }
     Ok(())
 }

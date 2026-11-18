@@ -447,11 +447,7 @@ fn fmt_playtime(secs: Option<f64>) -> Option<String> {
     })
 }
 
-fn slot_summary(
-    slot: Option<&SaveSlotInfo>,
-    content: Option<&VaelContent>,
-    lang: &str,
-) -> String {
+fn slot_summary(slot: Option<&SaveSlotInfo>, content: Option<&VaelContent>, lang: &str) -> String {
     let Some(slot) = slot else {
         return label(content, lang, "menu.no_saves", "Sem jogos guardados");
     };
@@ -533,9 +529,7 @@ fn death_should_open(save: &VaelSave, modal_open: bool) -> bool {
 /// `death_pending` do store VIVO (`viber.game()`), mais fresco que o
 /// [`VaelSave`] (snapshot a 10 Hz). `None` quando a chave não existe.
 fn death_pending_live() -> Option<bool> {
-    viber::luau::game::game_to_json_process()
-        .get("death_pending")
-        .and_then(Value::as_bool)
+    viber::luau::game::game_get_bool("death_pending")
 }
 
 /// Abre o ecrã de morte quando a autoridade o pede. Com a autoridade de
@@ -967,10 +961,7 @@ fn forge_click(world: &mut World, id: &str) {
             outcome.count as i64,
         );
         if !changed.is_empty() {
-            patch.extend(
-                qkv.into_iter()
-                    .filter(|(key, _)| key.starts_with("q.")),
-            );
+            patch.extend(qkv.into_iter().filter(|(key, _)| key.starts_with("q.")));
         }
         patch_game(world, patch);
         let label = content
@@ -1689,9 +1680,10 @@ fn forge_rows(
                 .collect::<Vec<_>>()
                 .join(" · ");
             let (status_text, note) = match status {
-                crate::economy::CraftStatus::Ok => {
-                    (label(content, lang, "menu.forge.ok", "forjar"), String::new())
-                }
+                crate::economy::CraftStatus::Ok => (
+                    label(content, lang, "menu.forge.ok", "forjar"),
+                    String::new(),
+                ),
                 crate::economy::CraftStatus::Missing => (
                     label(content, lang, "menu.forge.missing", "falta material"),
                     String::new(),
@@ -1735,7 +1727,11 @@ fn controls_rows(content: Option<&VaelContent>, lang: &str) -> Vec<RowVm> {
             "menu.controls.travel",
             "viagem rápida (junto a uma fogueira)",
         ),
-        ("Q / ESC", "menu.controls.journal", "abrir e fechar este diário"),
+        (
+            "Q / ESC",
+            "menu.controls.journal",
+            "abrir e fechar este diário",
+        ),
         (
             "1 - 8",
             "menu.controls.tabs",
@@ -1820,7 +1816,12 @@ fn a11y_rows(
         ),
         (
             "vol-ambience",
-            label(content, lang, "menu.a11y.vol_ambience", "Volume do ambiente"),
+            label(
+                content,
+                lang,
+                "menu.a11y.vol_ambience",
+                "Volume do ambiente",
+            ),
             format!("{}%", (mixer.ambience * 100.0).round() as i32),
         ),
     ]
@@ -1858,7 +1859,10 @@ fn system_rows(
     let head = |key: &str, pt: &str| label(content, lang, key, pt);
     [
         (head("menu.sys.engine", "Motor"), "Vael".to_string()),
-        (head("menu.sys.render", "Render"), "Bevy · Avian".to_string()),
+        (
+            head("menu.sys.render", "Render"),
+            "Bevy · Avian".to_string(),
+        ),
         (head("menu.sys.scene", "Cena"), scene_id(scene)),
         (
             head("menu.sys.time", "Hora"),
@@ -1883,10 +1887,7 @@ fn system_rows(
 
 fn credits_rows(content: Option<&VaelContent>, lang: &str) -> Vec<RowVm> {
     [
-        (
-            "menu.credits.game",
-            "VAEL — O Silêncio de Vael",
-        ),
+        ("menu.credits.game", "VAEL — O Silêncio de Vael"),
         (
             "menu.credits.about",
             "Um RPG de mundo aberto feito com a engine Viber.",
@@ -2564,12 +2565,7 @@ pub fn sync_screens(
         m.credits = credits_rows(content, &lang);
 
         m.death_open = death_open;
-        m.death_kicker = label(
-            content,
-            &lang,
-            "death.kicker",
-            "O VALE FICA À ESPERA",
-        );
+        m.death_kicker = label(content, &lang, "death.kicker", "O VALE FICA À ESPERA");
         m.death_title = label(content, &lang, "death.title", "CAÍSTE");
         m.death_line = label(
             content,

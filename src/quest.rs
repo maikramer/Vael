@@ -668,12 +668,7 @@ pub(crate) fn install_quest_api(content: Option<Res<VaelContent>>) {
     let quests = content.quests.len();
     // `Fn`: o closure possui as regras e clona o `Arc` por contexto novo.
     crate::script_host::register_installer(move |lua| {
-        install_shared(
-            lua,
-            Arc::clone(&rules),
-            Arc::clone(&vault),
-            Arc::clone(&xp),
-        )
+        install_shared(lua, Arc::clone(&rules), Arc::clone(&vault), Arc::clone(&xp))
     });
     info!(
         quests,

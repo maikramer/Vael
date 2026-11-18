@@ -463,7 +463,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
         ScriptCommand::Despawn(entity) => {
             world.commands().entity(entity).try_despawn();
         }
-        ScriptCommand::Gesture { entity, name, speed, lock, blend } => {
+        ScriptCommand::Gesture { entity, name, speed, lock, blend, duration: target_secs } => {
             // Leitura prévia do rig (o borrow do `Mut` não pode coexistir
             // com o do `AnimationPlayer`).
             let prep = world.get::<crate::animation::CharacterAnimator>(entity).map(
@@ -494,6 +494,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
                         lock,
                         blend,
                         age: 0.0,
+                        duration: target_secs,
                     },
                 );
                 return;
@@ -525,6 +526,7 @@ pub(crate) fn apply_script_command(world: &mut World, command: ScriptCommand) {
             let blend = blend
                 .map(std::time::Duration::from_secs_f32)
                 .unwrap_or(std::time::Duration::from_millis(250));
+            let speed = crate::animation::gesture_speed(speed, duration, target_secs);
             play_action_scaled_world(
                 world,
                 entity,
@@ -1388,14 +1390,14 @@ pub struct ScriptMirrorState {
 /// `ScriptCtx::exports` do host antigo como fonte do `viber.prop`.
 #[derive(Resource, Default)]
 pub struct BmsScriptExports {
-    map: HashMap<String, std::sync::Arc<bevy_ext_luau::exports::ScriptExports>>,
+    map: std::sync::Arc<HashMap<String, std::sync::Arc<bevy_ext_luau::exports::ScriptExports>>>,
     parsed: HashSet<AssetId<ScriptAsset>>,
 }
 
 impl BmsScriptExports {
     /// Snapshot para o `ScriptHostState.exports` (o publisher copia).
     pub fn snapshot(&self) -> HashMap<String, std::sync::Arc<bevy_ext_luau::exports::ScriptExports>> {
-        self.map.clone()
+        (*self.map).clone()
     }
 }
 
@@ -1452,8 +1454,7 @@ fn parse_script_exports(
             continue;
         }
         let source = String::from_utf8_lossy(&asset.content);
-        exports
-            .map
+        std::sync::Arc::make_mut(&mut exports.map)
             .insert(path.clone(), std::sync::Arc::new(bevy_ext_luau::exports::parse_exports(&source)));
     }
 }
@@ -1768,7 +1769,7 @@ fn convert_bms_command(
         Bms::SetLocale(lang) => Some(ScriptCommand::SetLocale(lang)),
 
         // ── adaptadas (diferenças de campos) ────────────────────────────
-        Bms::Gesture { entity, name, speed, lock } => {
+        Bms::Gesture { entity, name, speed, lock, blend, duration } => {
             // O BMS resolve a própria entidade à fila (`Some`); `None`
             // só chega de fora de um script (REPL) — sem alvo, no-op.
             let Some(entity) = entity else {
@@ -1784,8 +1785,8 @@ fn convert_bms_command(
                 name,
                 speed,
                 lock,
-                // O BMS não tem blend (o default do monólito, 250 ms).
-                blend: None,
+                blend,
+                duration,
             })
         }
         Bms::SetInteraction { entity, label, key, range } => {
@@ -2336,8 +2337,10 @@ struct PublishStateParams<'w, 's> {
     >,
     scripts_removed: bevy::ecs::lifecycle::RemovedComponents<'w, 's, ScriptComponent>,
     healths: Query<'w, 's, (Entity, &'static Health, &'static GlobalTransform), Without<Player>>,
-    script_props: Query<'w, 's, (Entity, &'static ScriptProps)>,
-    groups: Query<'w, 's, (Entity, &'static crate::luau::Groups)>,
+    script_props: Query<'w, 's, (Entity, Ref<'static, ScriptProps>)>,
+    props_removed: RemovedComponents<'w, 's, ScriptProps>,
+    groups: Query<'w, 's, (Entity, Ref<'static, crate::luau::Groups>)>,
+    groups_removed: RemovedComponents<'w, 's, crate::luau::Groups>,
     hostiles: Query<
         'w,
         's,
@@ -2387,6 +2390,7 @@ fn publish_host_state(
     let _probe = bevy_engine_core::perf_probe::Probe::new("publish_host_state"); // `VAEL_PERF_DIAG`
     // Sem o plugin BMS no app não há estado a preencher (e o custo de
     // publicar seria lixo puro).
+    let reseed = state.as_ref().is_some_and(|s| s.is_added());
     let Some(state) = state.as_deref_mut() else {
         return;
     };
@@ -2436,14 +2440,10 @@ fn publish_host_state(
 
     // Esquema `--@export` por path — em modo BMS o [`parse_script_exports`]
     // extrai-o dos assets e o publisher copia-o.
-    {
-        // No lugar: `release_snapshot_maps` largou a cópia dos globals, por
-        // isso o `make_mut` não clona o mapa (era um `Arc::new` por frame).
-        let exports = std::sync::Arc::make_mut(&mut state.exports);
-        exports.clear();
-        if let Some(bms) = res.bms_exports.as_deref() {
-            exports.extend(BmsScriptExports::snapshot(bms));
-        }
+    if let Some(bms) = res.bms_exports.as_deref() {
+        state.exports.clone_from(&bms.map);
+    } else if !state.exports.is_empty() {
+        state.exports = Default::default();
     }
 
     // Foco de interação por tecla (o `viber.interacted` do BMS só aceita o
@@ -2572,25 +2572,33 @@ fn publish_host_state(
     // Props autorais (`viber.nearby`/`viber.prop`) — dados, não regra.
     {
         let props = std::sync::Arc::make_mut(&mut state.props);
-        props.clear();
-        props.extend(
-            queries
-                .script_props
-                .iter()
-                .map(|(entity, props)| (entity.to_bits() as i64, props.0.clone())),
-        );
+        if reseed {
+            props.clear();
+        }
+        for entity in queries.props_removed.read() {
+            props.remove(&(entity.to_bits() as i64));
+        }
+        for (entity, prop) in &queries.script_props {
+            if reseed || prop.is_changed() {
+                props.insert(entity.to_bits() as i64, prop.0.clone());
+            }
+        }
     }
 
-    // Grupos por entidade (bits → nomes) para `viber.group`/`in_group`.
+    // Remove antes de aplicar mudanças: um componente pode voltar no mesmo frame.
     {
         let groups = std::sync::Arc::make_mut(&mut state.groups);
-        groups.clear();
-        groups.extend(
-            queries
-                .groups
-                .iter()
-                .map(|(entity, member_of)| (entity.to_bits() as i64, member_of.0.as_ref().clone())),
-        );
+        if reseed {
+            groups.clear();
+        }
+        for entity in queries.groups_removed.read() {
+            groups.remove(&(entity.to_bits() as i64));
+        }
+        for (entity, member_of) in &queries.groups {
+            if reseed || member_of.is_changed() {
+                groups.insert(entity.to_bits() as i64, member_of.0.as_ref().clone());
+            }
+        }
     }
 
     // Biblioteca de prototypes: imutável pós-arranque — só re-semeia
@@ -2708,5 +2716,44 @@ fn publish_host_state(
                 })
                 .collect(),
         );
+    }
+}
+
+#[cfg(test)]
+mod snapshot_tests {
+    use super::*;
+    use crate::luau::Groups;
+    use bevy_ext_luau::ScriptHostState;
+
+    #[test]
+    fn script_metadata_survives_idle_frames_and_tracks_removals() {
+        let mut app = App::new();
+        app.init_resource::<Time>()
+            .init_resource::<ScriptHostState>()
+            .add_systems(Update, publish_host_state);
+        let props = || ScriptProps(vec![("kind".into(), "wood".into())].into());
+        let entity = app.world_mut().spawn((props(), Groups(vec!["item".into()].into()))).id();
+        let id = entity.to_bits() as i64;
+        app.update();
+        app.update();
+        let state = app.world().resource::<ScriptHostState>();
+        assert_eq!(state.props[&id][0].1, "wood");
+        assert_eq!(state.groups[&id], ["item"]);
+
+        app.world_mut().entity_mut(entity).remove::<(Groups, ScriptProps)>()
+            .insert(Groups(vec!["prop".into()].into()));
+        app.update();
+        let state = app.world().resource::<ScriptHostState>();
+        assert!(!state.props.contains_key(&id));
+        assert_eq!(state.groups[&id], ["prop"]);
+
+        app.world_mut().remove_resource::<ScriptHostState>();
+        app.update();
+        app.init_resource::<ScriptHostState>();
+        app.update();
+        assert_eq!(app.world().resource::<ScriptHostState>().groups[&id], ["prop"]);
+        app.world_mut().despawn(entity);
+        app.update();
+        assert!(!app.world().resource::<ScriptHostState>().groups.contains_key(&id));
     }
 }

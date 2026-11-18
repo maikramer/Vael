@@ -216,13 +216,10 @@ function on_update(dt)
       knockback = 1.0
     end
     if burn > 0 then
-      for _, h in ipairs(rules.hostiles_near(px, pz, radius)) do
-        rules.enemy_status(h.id, "burn", burn)
-      end
       viber.burst("fire", px, py + 0.4, pz, 10)
     end
     local hits = rules.radial_damage(px, pz, radius,
-      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK * knockback)
+      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK * knockback, py, burn)
     -- Aggro-chain: o slam também acorda os aliados a 15 m do impacto (o
     -- nativo emitia um `AttackAlert` no centro). A engine já não tem
     -- produtor; o `lib/fsm.lua` lê esta tabela do `viber.game()`.
@@ -242,10 +239,12 @@ function on_update(dt)
     viber.ring(px, pz, radius, burn > 0 and "#ff8c47" or nil)
     viber.shake(0.22)
     viber.kick(0, 0.35, 0)
-    viber.hit_stop(0.07)
     viber.punch(0.12, 0.04)
     viber.sound("whoosh", { x = px, y = py, z = pz })
-    viber.sound("hit", { x = px, y = py, z = pz })
+    if hits > 0 then
+      viber.hit_stop(0.07)
+      viber.sound("hit", { x = px, y = py, z = pz })
+    end
   end
 
   -- [B] bomba: larga o prototype à frente (detona com fuse — bomb-lua.lua).

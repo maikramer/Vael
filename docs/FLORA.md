@@ -60,7 +60,12 @@ abaixo é a origem (`POOLS` em `src/flora.rs`, usado por
 | `tree_birch` | 94 | Birch | 6 |
 | `palm_tree` | 10 | Palm | 3 |
 
-Total: **1634 estações** (1617 no `world/`, 17 em `scenes/menu`).
+Total: **1634 estações** (1617 no `world/`, 17 em `scenes/menu`). A mata adicional
+da entrada norte inclui duas cerejeiras (`tree_cherry`, preset Cherry, duas variantes).
+
+Nos oito carvalhos adultos (sementes do pool, LOD0), o tronco e a folhagem
+somam 294 076 triângulos. O modelo anterior somava 315 556. A copa usa
+folhas individuais mais pequenas, distribuídas até mais perto do topo do tronco.
 Os pools são construídos no `Startup` (`build_pool`, ~100 ms uma vez — o
 segundo look só existe antes de o pool ir para os assets). LOD: 45 m / 110 m
 e **impostor** a 260 m (um quad por árvore, com 8 vistas do bake).
@@ -71,40 +76,63 @@ os meshes; mudam só os materiais.
 
 ## Colheita (felling do crate)
 
-- Golpes: `[J]` (o prompt "Cortar"), com tremor da copa a cada golpe
-  (`TreeShakes` + `FallingLeaves::per_shake`).
-- Último golpe: em vez do `Falling` da engine, insere
-  `bevy_flora::FellTree { direction, cut_height, speed: 1.0, lying: false }` e
-  troca o collider pelo do **toco** (cilindro curto). A árvore tomba com o
-  tronco assente no relevo (`FloraGround`) e o crate larga folhas
-  (`per_landing`) e emite `TreeLanded` → som de queda (`ChopBreak`).
-- Toros: `[J]` na árvore deitada publica "Cortar em toros" e insere
-  `BuckTree { log_length: 2.2, min_radius: 0.08 }`; o crate substitui a árvore
-  por `TreeLog`s no chão e emite `TreeBucked`.
-- Persistência: `flora-fell.<chave>.{dx,dz,cut,bucked}` no `VaelSave.legacy` e
-  no `viber.game()`. No load, o `reap_saved` **não despawna**: repõe
-  `FellTree { lying: true }` (já deitada, com toco) e, se `bucked`, os toros.
-  O reap do `harvest.lua` salta as chaves `flora-fell.*` (o restauro é do
-  Rust) e o reap/embate/toros do Rust correm **sem o gate** `VAEL_HARVEST_RUST`.
-- **Os dois caminhos de colheita** fazem o mesmo: o Rust (`VAEL_HARVEST_RUST=1`)
-  chama o tombo internamente; o **Lua (default)** chama
-  `viber.vael.fell_tree(id)` no ramo `break-style: fall` e o Rust move a
-  árvore para a raiz com o `FellTree`. Sem essa função o Lua caía no
-  `viber.topple` (tomba a estação e despawna, sem toco).
+- Com o prompt **Cortar**, `J` vira o herói para a árvore e inicia a machadada. O clipe
+  dura 0,90 s. Aos 0,26 s a lâmina alcança a casca, o jogo confirma o alcance
+  e solta lascas do lado do jogador. A ferramenta acompanha a mão durante a recuperação.
+- No último golpe, a árvore tomba para longe do herói. O `bevy_flora` calcula a
+  aceleração da queda e o contato com o relevo. O estalo do corte e o som da
+  copa batendo no chão acontecem em momentos distintos. O toco mantém colisão.
+- Quando o tronco assenta, `J` com o prompt **Cortar em toros** divide a madeira
+  em segmentos de 2,2 m. O toco continua a crescer mesmo que o tronco fique inteiro.
+- Um dia de jogo após o corte, surge uma muda da mesma variante. Ela cresce
+  gradualmente até ao terceiro dia, quando a estação recupera a colisão, a
+  resistência e o rendimento originais. A madeira caída desse corte sai da cena.
+- O save guarda a data fracionária do corte, direção, altura e estado dos toros
+  em `flora-fell.<chave>.{day,dx,dz,cut,bucked}`. Um corte antigo sem data
+  começa a contar no primeiro carregamento. O controlador Lua e o opcional
+  `VAEL_HARVEST_RUST=1` partilham a queda, as lascas e o rebrote.
 - Props antigos (pré-flora, sem `PooledTree`) continuam com o `Falling` da
   engine.
 
 ## Vida visual
 
 - **Vento/chuva**: `FloraWind`/`FloraWetness` seguem o `WeatherState`.
-- **Folhas**: `FallingLeaves` (rajadas de shakes e embates) e `DropLeaves` até
-  6 árvores num raio de 60 m quando o vento passa de 0.7 (cooldown 2 s).
+- O calendário civil do HUD conduz as copas. Em março as cerejeiras da entrada
+  norte florescem; carvalhos e bétulas recuperam as folhas ao longo da primavera.
+  Em setembro começa a mudança para cobre e dourado. Em novembro as folhas
+  desprendem-se e no inverno a silhueta dos ramos fica exposta. Os pinheiros
+  mantêm as agulhas. A neve nas copas segue o manto medido junto ao herói.
+- As folhas que o calendário desprende caem até 36 m da câmara. O conjunto de
+  folhas em queda ou pousadas tem um teto de 1024. Entre avanços do relógio,
+  a brisa de outono solta três folhas em até três árvores caducas próximas
+  a cada 3,5 s. As rajadas fortes atingem até seis árvores num raio de 60 m.
 - **See-through**: `SeeThroughTrees` na câmara do jogo (alvo = peito do herói,
   raio **1 m**, `keep 0.35`, `inner 0.6`, `in_front 0.9`); só a câmara da
   janela — as do bake são `RenderTarget::Image`. O cone é estreito de
   propósito: só o que está entre a câmara e o corpo esbate; um raio largo
   apagava árvores ao lado do herói.
 - **Looks**: por altitude (ver acima).
+
+## Onde observar a fauna
+
+O Vael carrega os oito GLBs animados de `assets/public/assets/meshes/fauna/`.
+O manifesto `assets/manifests/fauna.yaml` fixa as referências por seed, escala
+e clips de cada espécie. Para regenerar o pacote a partir da raiz do jogo,
+corre `tools/regen_remote.sh fauna` com o endpoint remoto configurado.
+As instâncias da mesma espécie partilham a cena e o grafo de animação. Cada
+animal controla o seu clip segundo o movimento, a proximidade de ameaças ou
+a aproximação ao poleiro.
+
+Na entrada norte de Discórdia, os gaios alternam entre os galhos das árvores
+plantadas e clareiras onde pousam para bicar o chão. Alguns cruzam a trilha a
+cerca de 1,7 m do solo. A aproximação do herói pode levantá-los. Ao anoitecer
+chegam as corujas. Os chamados vêm de aves pousadas e seguem o volume de ambiente.
+
+Na margem do lago, as andorinhas passam em bando sobre a água. Há lebres nas
+clareiras do portão, do lago e do rio. Elas alternam repouso e saltos e fogem
+quando o herói ou uma raposa se aproxima. As raposas percorrem a orla da mata,
+os ratos rondam as ruelas, as borboletas visitam as clareiras de dia e as
+trutas sobem à superfície no lago e nos rios.
 
 ## Gates
 
@@ -123,13 +151,14 @@ meio do `Update` e o `harvest_input`/scripts que já tinham corrido não viam o
 `just_pressed` (o `[J]` do QA não colhia). Funciona também com
 `vael-tools debug step` (frames determinísticos).
 
+Para observar o ciclo na mesma pose, a bridge aceita
+`viber.vael.env_set_date(2026, 10, 20)`. A hora continua independente
+(`env_set_hour`); o save guarda a data e a hora para retomar a estação ao carregar o slot.
+
 ## Limitações
 
 - **Sem entalhe** (`TreeNotch`): reconstrói o tronco e não se aplica a meshes
   partilhadas de um pool. O corte é a `cut_height` do primeiro golpe.
-- **Sem estações/outono**: o mundo é de uma estação; ficam as folhas a cair e
-  o look frio por altitude. `FloraSeason` de neve exigiria um sinal de neve do
-  ambiente.
 - O tronco deitado não colide (o toco sim).
 - Uma árvore cortada passa a `ProceduralTree` individual (~35k tri): o corte é
   raro, mas essa árvore deixa de ser instanciada.

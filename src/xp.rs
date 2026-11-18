@@ -367,8 +367,8 @@ fn write_xp(game: &Table, kv: &XpMap) -> mlua::Result<()> {
 mod tests {
     use super::*;
     use crate::content::{ItemsFile, ProgressionFile};
-    use serde_json::Value as Json;
     use crate::vault::{VaultRules, install as install_vault};
+    use serde_json::Value as Json;
 
     fn regras() -> XpRules {
         XpRules {

@@ -6,18 +6,18 @@
 --
 -- O volume vai para o bus de AMBIENTE (`<AudioMixer ambience>`), não para o
 -- SFX. Os clips são pedidos por caminho sob o `sfx_dir` do config.yaml.
--- Host: `world/gameplay.xml` (`tag="always-active"`).
+-- Host: `world/gameplay.bsn` (`tag="always-active"`).
 
 local LOOPS = {
-  ["dark-forest"] = { clip = "ambient/forest_loop.ogg", volume = 0.34 },
-  desert = { clip = "ambient/desert_loop.ogg", volume = 0.30 },
-  swamp = { clip = "ambient/swamp_loop.ogg", volume = 0.32 },
-  ["frozen-peaks"] = { clip = "ambient/peaks_loop.ogg", volume = 0.38 },
+  ["dark-forest"] = { clip = "ambient/forest_loop.ogg", volume = 0.19 },
+  desert = { clip = "ambient/desert_loop.ogg", volume = 0.18 },
+  swamp = { clip = "ambient/swamp_loop.ogg", volume = 0.23 },
+  ["frozen-peaks"] = { clip = "ambient/peaks_loop.ogg", volume = 0.23 },
 }
 
 -- A vila não é um `BiomeRegion` (fica no vão dos polígonos): usa o mesmo
 -- raio do `bgm_zone` para a camada de mercado.
-local VILLAGE = { clip = "ambient/village_loop.ogg", volume = 0.26 }
+local VILLAGE = { clip = "ambient/village_loop.ogg", volume = 0.17 }
 local ID = "biome-ambience"
 local current
 local next_t = 0

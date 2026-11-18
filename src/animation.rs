@@ -365,7 +365,9 @@ mod tests {
             .insert(GlobalTransform::from_xyz(5.0, 0.0, 0.0));
         app.update();
         assert_eq!(
-            app.world().get::<AnimationState>(entity).map(|s| s.0.as_str()),
+            app.world()
+                .get::<AnimationState>(entity)
+                .map(|s| s.0.as_str()),
             Some("walk")
         );
     }
@@ -381,7 +383,9 @@ mod tests {
             .id();
         app.update();
         assert_eq!(
-            app.world().get::<AnimationState>(entity).map(|s| s.0.as_str()),
+            app.world()
+                .get::<AnimationState>(entity)
+                .map(|s| s.0.as_str()),
             Some("idle")
         );
         assert!(is_locomotion_set(&set(&["walk"])));

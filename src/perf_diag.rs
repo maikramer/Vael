@@ -45,13 +45,19 @@ fn perf_diag(
     }
     *next = 2.0;
     let label = |name: Option<&Name>, parent: Option<&ChildOf>| {
-        let own = name.map(|n| n.as_str().to_string()).unwrap_or_else(|| "?".into());
+        let own = name
+            .map(|n| n.as_str().to_string())
+            .unwrap_or_else(|| "?".into());
         let par = parent
             .and_then(|p| names.get(p.parent()).ok())
             .map(|n| n.as_str().to_string())
             .unwrap_or_else(|| "-".into());
         // Números (ids/índices) colapsam para agrupar cópias.
-        let squash = |s: String| s.chars().map(|c| if c.is_ascii_digit() { '#' } else { c }).collect::<String>();
+        let squash = |s: String| {
+            s.chars()
+                .map(|c| if c.is_ascii_digit() { '#' } else { c })
+                .collect::<String>()
+        };
         format!("{} <- {}", squash(own), squash(par))
     };
     let mut groups: HashMap<String, usize> = HashMap::new();
@@ -98,7 +104,11 @@ fn perf_diag(
     *dumped += 1;
     if *dumped == 6 {
         // Malhas por avô (nome da instância) — quem enche o mundo.
-        let squash = |s: &str| s.chars().map(|c| if c.is_ascii_digit() { '#' } else { c }).collect::<String>();
+        let squash = |s: &str| {
+            s.chars()
+                .map(|c| if c.is_ascii_digit() { '#' } else { c })
+                .collect::<String>()
+        };
         let mut by: HashMap<String, [usize; 3]> = HashMap::new();
         for (parent, view, inherited) in &mesh_q {
             let mut at = parent.map(|p| p.parent());
@@ -108,19 +118,35 @@ fn perf_diag(
                     chain.push(squash(n.as_str()));
                 }
                 at = parents.get(e).ok().map(|p| p.parent());
-                if chain.len() >= 6 { break; }
+                if chain.len() >= 6 {
+                    break;
+                }
             }
             // O nome mais alto antes das pastas genéricas.
-            let key = chain.iter().rev().skip(1).take(2).cloned().collect::<Vec<_>>().join(" / ");
+            let key = chain
+                .iter()
+                .rev()
+                .skip(1)
+                .take(2)
+                .cloned()
+                .collect::<Vec<_>>()
+                .join(" / ");
             let slot = by.entry(key).or_default();
             slot[0] += 1;
-            if inherited.get() { slot[1] += 1; }
-            if view.get() { slot[2] += 1; }
+            if inherited.get() {
+                slot[1] += 1;
+            }
+            if view.get() {
+                slot[2] += 1;
+            }
         }
         let mut v: Vec<_> = by.into_iter().collect();
         v.sort_by(|a, b| b.1[0].cmp(&a.1[0]));
         for (k, c) in v.iter().take(40) {
-            info!("PERFDIAG  M total={:6} inherited_vis={:6} view_vis={:6} {k}", c[0], c[1], c[2]);
+            info!(
+                "PERFDIAG  M total={:6} inherited_vis={:6} view_vis={:6} {k}",
+                c[0], c[1], c[2]
+            );
         }
     }
 }

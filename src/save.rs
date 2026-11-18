@@ -50,6 +50,15 @@ pub struct StoryFlags {
     pub epilogue: bool,
 }
 
+/// Instante civil da partida, independente da velocidade de simulação.
+#[derive(Debug, Clone, Copy, PartialEq, Serialize, Deserialize, Reflect)]
+pub struct SavedCalendar {
+    pub year: i32,
+    pub month: u8,
+    pub day: u8,
+    pub hour: f64,
+}
+
 /// Estado completo do jogador. Serializa com os desconhecidos achatados em
 /// `legacy`, por isso um save escrito por uma versão futura não perde campos.
 #[derive(Debug, Clone, PartialEq, Resource, Serialize, Deserialize, Reflect)]
@@ -80,6 +89,7 @@ pub struct VaelSave {
     /// Nome do barco em que o herói seguia (`None` = a pé).
     #[serde(default)]
     pub riding_boat: Option<String>,
+    pub calendar: Option<SavedCalendar>,
     /// Chaves que o schema tipado não conhece (progresso `q.<id>.n`,
     /// `dialogue.*`, `riddle.*`, `lang`, …). Nunca é descartado.
     #[serde(flatten, default)]
@@ -102,6 +112,7 @@ impl Default for VaelSave {
             spawn: None,
             boats: Vec::new(),
             riding_boat: None,
+            calendar: None,
             legacy: BTreeMap::new(),
         }
     }
@@ -905,7 +916,10 @@ mod tests {
         assert_eq!(save.legacy.get("gear.weapon"), Some(&json!(7)));
         assert_eq!(save.legacy.get("q.city_intro"), Some(&json!(["junk"])));
         assert_eq!(save.legacy.get("skill.vitality1"), Some(&json!("yes")));
-        assert_eq!(save.legacy.get("harvested.old_tree"), Some(&json!("talvez")));
+        assert_eq!(
+            save.legacy.get("harvested.old_tree"),
+            Some(&json!("talvez"))
+        );
         assert_eq!(save.legacy.get("spawn_x"), Some(&json!("longe")));
         assert_eq!(save.legacy.get("spawn_pos"), Some(&json!({"x": 1.0})));
 
@@ -942,7 +956,10 @@ mod tests {
         save.merge_world_kv(&kv);
 
         assert_eq!(save.legacy.get("item.bog-moss"), Some(&json!("três")));
-        assert_eq!(save.to_world_kv().get("item.bog-moss"), Some(&json!("três")));
+        assert_eq!(
+            save.to_world_kv().get("item.bog-moss"),
+            Some(&json!("três"))
+        );
     }
 
     /// Os barcos viajam no JSON tipado: posição e yaw por barco, mais o barco
@@ -954,11 +971,16 @@ mod tests {
             name: "barco-a".into(),
             position: Vec3::new(1.0, 2.0, 3.0),
             yaw: 1.25,
+            mooring: None,
         });
         save.boats.push(BoatPose {
             name: "barco-b".into(),
             position: Vec3::new(-4.0, 0.5, 9.0),
             yaw: -0.5,
+            mooring: Some(crate::boat::Mooring {
+                stake: Vec3::new(-3.0, 0.4, 10.0),
+                rotation: bevy::prelude::Quat::from_rotation_y(-0.5),
+            }),
         });
         save.riding_boat = Some("barco-a".into());
 

@@ -562,7 +562,10 @@ mod tests {
         for now in [f64::INFINITY, f64::NEG_INFINITY, f64::NAN] {
             guard(&mut kv, &rules, now);
         }
-        assert_eq!(kv.guard_until, 0.0, "inf deixava a guarda aberta para sempre");
+        assert_eq!(
+            kv.guard_until, 0.0,
+            "inf deixava a guarda aberta para sempre"
+        );
         assert_eq!(kv.guard_start, None);
         assert_eq!(kv.guard_lock, 0.0);
 

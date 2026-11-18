@@ -161,20 +161,25 @@ impl Plugin for VaelEnvironmentPlugin {
         }
         // Domínios do crate que dependem do terreno dele (que não usamos).
         // Ficam de fora: terreno, hidrologia, água, cobertura do chão, poeira,
-        // trilhos, caminhos, ondas, materiais desgastados e pedras. O céu,
-        // clima, vento, névoa, nuvens, relâmpagos e precipitação entram.
-        let group = ElementsPlugins
+        // caminhos, ondas e pedras. Rastos e materiais desgastados entram com
+        // o chão do Vael (`VAEL_TRAILS` / `VAEL_SURFACE`; ver `docs/GROUND.md`).
+        // O céu, clima, vento, névoa, nuvens, relâmpagos e precipitação entram.
+        let mut group = ElementsPlugins
             .build()
             .disable::<TerrainPlugin>()
             .disable::<HydrologyPlugin>()
             .disable::<WaterPlugin>()
             .disable::<GroundCoverPlugin>()
             .disable::<DustPlugin>()
-            .disable::<TrailsPlugin>()
             .disable::<PathsPlugin>()
             .disable::<WavesPlugin>()
-            .disable::<WeatheredPlugin>()
             .disable::<RocksPlugin>();
+        if !crate::ground::trails_enabled() {
+            group = group.disable::<TrailsPlugin>();
+        }
+        if !crate::ground::surface_enabled() {
+            group = group.disable::<WeatheredPlugin>();
+        }
         // Data/hora/latitude/clima/qualidade vêm da cena (Jackdaw); os
         // `VAEL_START_*`/`VAEL_ELEMENTS_QUALITY` ganham (QA).
         let scene = scene_settings(app);
@@ -272,7 +277,11 @@ impl Plugin for VaelEnvironmentPlugin {
                     .before(collect_env_info),
             )
             // Cascatas do sol pelo preset do jogo, por cima das do crate.
-            .add_systems(Update, fit_vael_sun_cascades.after(ElementsSystems::Celestial))
+            .add_systems(
+                Update,
+                (fit_vael_sun_cascades, skip_unlit_moon_shadows)
+                    .after(ElementsSystems::Celestial),
+            )
             // A névoa da engine é inserida por `biome_fog_system` (Update,
             // via Commands); este passe corre depois de os comandos assentarem.
             .add_systems(PostUpdate, (apply_weather_visibility, apply_exposure_kick))
@@ -311,7 +320,9 @@ fn persist_on_add<C: Component>(add: On<Add<C>>, mut commands: Commands) {
 fn persist_sky_meshes(mut commands: Commands, named: Query<(Entity, &Name), Without<ChildOf>>) {
     for (entity, name) in &named {
         if matches!(name.as_str(), "Stars" | "Moon disc") {
-            commands.entity(entity).insert(viber::scene_loader::Persistent);
+            commands
+                .entity(entity)
+                .insert(viber::scene_loader::Persistent);
         }
     }
 }
@@ -359,6 +370,7 @@ fn night_exposure_floor(
 #[derive(Debug, Default)]
 pub struct EnvControl {
     set_hour: Option<f64>,
+    set_date: Option<CivilDate>,
     set_weather: Option<String>,
     set_paused: Option<bool>,
     info: EnvInfo,
@@ -687,15 +699,25 @@ fn undo_exposure_kick(
 fn apply_exposure_kick(
     postfx: Option<Res<PostFxState>>,
     mut kick: ResMut<VaelExposureKick>,
-    mut cameras: Query<(Entity, &mut bevy::camera::Exposure), With<ElementsCamera>>,
+    terrain: Option<Res<viber::terrain::TerrainRuntime>>,
+    mut cameras: Query<(Entity, &ElementsCamera, &GlobalTransform, &mut bevy::camera::Exposure)>,
 ) {
     let ev = postfx.as_deref().map_or(0.0, |state| {
         state.kick + (state.ev100 - state.target_ev100).max(0.0)
     });
-    if ev <= 0.0 {
-        return;
-    }
-    for (entity, mut exposure) in &mut cameras {
+    for (entity, camera, tf, mut exposure) in &mut cameras {
+        use viber::terrain::HeightField;
+        let mut ev = ev;
+        if camera.auto_exposure && let Some(terrain) = terrain.as_deref() {
+            let eye = tf.translation();
+            // Sky metering stays active above ground. Below the hillside the
+            // camera adapts over the first four metres of overburden.
+            let cover = (terrain.base().sample(eye.x, eye.z) - eye.y - 0.4) / 4.0;
+            if cover > 0.0 && !terrain.is_solid(eye) {
+                ev += cover.clamp(0.0, 1.0) * (exposure.ev100 - INTERIOR_EV100).max(0.0);
+            }
+        }
+        if ev <= 0.0 { continue; }
         exposure.ev100 -= ev;
         kick.applied.push((entity, ev));
     }
@@ -735,17 +757,11 @@ fn interior_elements_lighting(
             let atmosphere_dark = environment
                 .as_deref()
                 .is_some_and(|environment| environment.intensity != INTERIOR_ATMOSPHERE_INTENSITY);
-            if atmosphere_dark
-                && let Some(environment) = environment.as_deref_mut()
-            {
+            if atmosphere_dark && let Some(environment) = environment.as_deref_mut() {
                 environment.intensity = INTERIOR_ATMOSPHERE_INTENSITY;
             }
-            let probe_on = probe
-                .as_deref()
-                .is_some_and(|probe| probe.intensity != 0.0);
-            if probe_on
-                && let Some(probe) = probe.as_deref_mut()
-            {
+            let probe_on = probe.as_deref().is_some_and(|probe| probe.intensity != 0.0);
+            if probe_on && let Some(probe) = probe.as_deref_mut() {
                 probe.intensity = 0.0;
             }
             if let Some(global) = global.as_deref() {
@@ -779,17 +795,11 @@ fn interior_elements_lighting(
             let atmosphere_lit = environment
                 .as_deref()
                 .is_some_and(|environment| environment.intensity != 1.0);
-            if atmosphere_lit
-                && let Some(environment) = environment.as_deref_mut()
-            {
+            if atmosphere_lit && let Some(environment) = environment.as_deref_mut() {
                 environment.intensity = 1.0;
             }
-            let probe_lit = probe
-                .as_deref()
-                .is_some_and(|probe| probe.intensity != 1.0);
-            if probe_lit
-                && let Some(probe) = probe.as_deref_mut()
-            {
+            let probe_lit = probe.as_deref().is_some_and(|probe| probe.intensity != 1.0);
+            if probe_lit && let Some(probe) = probe.as_deref_mut() {
                 probe.intensity = 1.0;
             }
             if !camera.auto_exposure {
@@ -998,6 +1008,9 @@ fn apply_env_control(
     mut director: ResMut<WeatherDirector>,
 ) {
     let mut control = control.lock();
+    if let Some(date) = control.set_date.take() {
+        clock.date = date;
+    }
     if let Some(hour) = control.set_hour.take() {
         clock.hour = hour.rem_euclid(24.0);
         info!(hour = clock.hour, "vael: hora forçada (QA)");
@@ -1117,6 +1130,17 @@ fn install_env_api_inner(lua: &Lua, control: &VaelEnvControl) -> mlua::Result<()
     vael_fn!(
         lua,
         vael,
+        "env_set_date",
+        [control = control.clone()],
+        move |_, (year, month, day): (i32, u8, u8)| {
+            control.lock().set_date = Some(CivilDate::new(year, month, day));
+            Ok(())
+        }
+    );
+
+    vael_fn!(
+        lua,
+        vael,
         "env_pause",
         [control = control.clone()],
         move |_, paused: bool| {
@@ -1185,6 +1209,32 @@ fn install_env_api_inner(lua: &Lua, control: &VaelEnvControl) -> mlua::Result<()
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn moon_shadow_gate_respects_illuminance_and_light_ownership() {
+        use bevy::ecs::system::RunSystemOnce as _;
+        use bevy_elements::{CelestialSettings, Moon};
+
+        let mut world = World::new();
+        world.init_resource::<CelestialSettings>();
+        let light = |lux| DirectionalLight {
+            illuminance: lux,
+            shadow_maps_enabled: true,
+            ..default()
+        };
+        let dark = world.spawn((Moon, light(1e-12))).id();
+        let lit = world.spawn((Moon, light(0.05))).id();
+        let other = world.spawn(light(0.0)).id();
+        world.run_system_once(skip_unlit_moon_shadows).unwrap();
+        assert!(!world.get::<DirectionalLight>(dark).unwrap().shadow_maps_enabled);
+        assert!(world.get::<DirectionalLight>(lit).unwrap().shadow_maps_enabled);
+        assert!(world.get::<DirectionalLight>(other).unwrap().shadow_maps_enabled);
+
+        world.resource_mut::<CelestialSettings>().lights = false;
+        world.entity_mut(dark).insert(light(0.0));
+        world.run_system_once(skip_unlit_moon_shadows).unwrap();
+        assert!(world.get::<DirectionalLight>(dark).unwrap().shadow_maps_enabled);
+    }
 
     /// A 2 % de contraste à visibilidade pedida.
     #[test]
@@ -1259,6 +1309,23 @@ mod tests {
         world.flush();
         let outside = world.get::<ElementsCamera>(camera).expect("câmara");
         assert!(outside.atmosphere && outside.auto_exposure);
+    }
+}
+
+/// Com o luar tapado pelas nuvens, o mapa de sombras já não afeta a
+/// imagem. O sistema Celestial volta a ativá-lo quando o luar reaparece.
+fn skip_unlit_moon_shadows(
+    settings: Res<bevy_elements::CelestialSettings>,
+    mut moons: Query<&mut DirectionalLight, With<bevy_elements::Moon>>,
+) {
+    // A EV100 >= 8, a contribuição deste feixe fica abaixo de um nível de cor.
+    const MIN_MOON_SHADOW_LUX: f32 = 1e-7;
+    if settings.lights {
+        for mut moon in &mut moons {
+            if moon.illuminance < MIN_MOON_SHADOW_LUX && moon.shadow_maps_enabled {
+                moon.shadow_maps_enabled = false;
+            }
+        }
     }
 }
 

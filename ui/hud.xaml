@@ -277,7 +277,7 @@
 
   <!-- ── relógio e clima ─────────────────────────────────────────────── -->
   <Border Style="{StaticResource Card}" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-          Margin="18,0,0,174" Width="208" Padding="11,8">
+          Margin="18,0,0,174" Width="236" Padding="11,8">
     <StackPanel Spacing="5">
       <TextBlock Text="{Binding zone_name}" FontSize="12" Foreground="#FFECE1C9"/>
       <Grid ColumnDefinitions="Auto,*,Auto">
@@ -286,6 +286,11 @@
         <TextBlock Grid.Column="1" Text="{Binding lbl_clock}" Style="{StaticResource Label}"
                    FontSize="9" Margin="5,0,0,0"/>
         <TextBlock Grid.Column="2" Text="{Binding clock}" FontSize="14"
+                   Foreground="{StaticResource Gold}"/>
+      </Grid>
+      <Grid ColumnDefinitions="*,Auto">
+        <TextBlock Text="{Binding lbl_season}" Style="{StaticResource Label}" FontSize="9"/>
+        <TextBlock Grid.Column="1" Text="{Binding season}" FontSize="13"
                    Foreground="{StaticResource Gold}"/>
       </Grid>
       <ProgressBar Value="{Binding day}" Maximum="1" Height="2"

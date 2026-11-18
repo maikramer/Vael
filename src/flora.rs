@@ -26,6 +26,7 @@ use std::time::Instant;
 
 use bevy::camera::RenderTarget;
 use bevy::prelude::*;
+use bevy_elements::{CivilDate, WorldClock};
 use bevy_flora::prelude::*;
 use viber::luau::ScriptProps;
 use viber::terrain::runtime::TerrainRuntime;
@@ -97,6 +98,15 @@ const POOLS: &[PoolKind] = &[
         wood: Color::srgb(0.72, 0.70, 0.62),
         bare: false,
         height_scale: 8.0 / 7.0,
+    },
+    PoolKind {
+        key: "tree_cherry",
+        preset: TreePreset::Cherry,
+        variants: 2,
+        leaves: Color::srgb(0.30, 0.45, 0.19),
+        wood: Color::srgb(0.31, 0.22, 0.19),
+        bare: false,
+        height_scale: 1.0,
     },
     PoolKind {
         key: "dead_tree",
@@ -194,6 +204,20 @@ const GROVE: &[GroveTree] = &[
         scale: 1.05,
         yaw_deg: -74.0,
     },
+    GroveTree {
+        kind: "tree_cherry",
+        x: -10.8,
+        dz: 8.8,
+        scale: 1.05,
+        yaw_deg: 58.0,
+    },
+    GroveTree {
+        kind: "tree_cherry",
+        x: 15.1,
+        dz: 10.2,
+        scale: 0.96,
+        yaw_deg: -20.0,
+    },
 ];
 
 /// Cota do chão do portão norte (sanidade da cena `main`).
@@ -232,7 +256,11 @@ impl Plugin for VaelFloraPlugin {
         // já pôs: sem isso não há sombreamento de folha nem impostores.
         app.add_plugins(FloraPlugin)
             .init_resource::<FloraPools>()
-            .init_resource::<FallingLeaves>()
+            .insert_resource(FallingLeaves {
+                autumn_distance: 36.0,
+                max_leaves: 1024,
+                ..default()
+            })
             .add_systems(Startup, build_pools)
             .add_systems(Update, rebuild_pools_on_edit)
             .add_systems(
@@ -242,6 +270,7 @@ impl Plugin for VaelFloraPlugin {
                     plant_stations,
                     plant_grove,
                     drive_weather,
+                    drive_flora_season,
                     drop_leaves_on_gust,
                     see_through_trees,
                 )
@@ -344,6 +373,19 @@ fn pool_params(pool: &PoolKind) -> TreeParams {
     params.trunk_color = pool.wood;
     if pool.bare {
         params.foliage.enabled = false;
+    }
+    if pool.key == "tree_oak" {
+        // Mais pontos de folha ao longo de ramos finos, uma lâmina por ponto.
+        // A copa abre espaço entre as folhas e o perfil do inverno afina até à ponta.
+        params.trunk.taper = 0.12;
+        params.trunk.leader_length = 0.18;
+        params.branches.end = 0.97;
+        params.branches.taper = 0.9;
+        params.foliage.style = bevy_flora::params::LeafStyle::SingleQuad;
+        params.foliage.radius_threshold = 0.24;
+        params.foliage.density = 9.0;
+        params.foliage.leaf_size *= 0.76;
+        params.foliage.autumn = Some(Color::srgb(0.76, 0.31, 0.08));
     }
     // Escala uniforme: o comprimento dos ramos deriva da altura do tronco.
     let factor = pool.height_scale;
@@ -718,42 +760,102 @@ fn drive_weather(
     }
 }
 
-/// Numa rajada forte, as árvores perto do herói largam algumas folhas
-/// (`DropLeaves`); o `FallingLeaves` da crate trata da queda e do repouso.
+/// Março abre os botões, setembro inicia a viragem e dezembro já tem ramos nus.
+fn canopy_calendar(date: CivilDate, hour: f64) -> FloraSeason {
+    let month = usize::from(date.month - 1);
+    let next = CivilDate::new(date.year + i32::from(month == 11), (date.month % 12) + 1, 1);
+    let days = next.days_since_2000() - CivilDate::new(date.year, date.month, 1).days_since_2000();
+    // Uma hora de jogo por passo. A queda avança em frações pequenas que a
+    // crate transforma em folhas físicas perto da câmara.
+    let progress = (f32::from(date.day - 1) + hour.floor() as f32 / 24.0) / days as f32;
+    let phases = [
+        0.94, 0.97, 0.0, 0.037, 0.07, 0.18, 0.30, 0.43, 0.55, 0.65, 0.78, 0.90,
+    ];
+    let start = phases[month];
+    let end = if month == 1 {
+        1.0
+    } else {
+        phases[(month + 1) % 12]
+    };
+    FloraSeason::of_year(start + (end - start) * progress)
+}
+
+fn drive_flora_season(
+    clock: Option<Res<WorldClock>>,
+    pack: Option<Res<viber::terrain::SnowState>>,
+    player: Query<&GlobalTransform, With<VaelPlayer>>,
+    mut season: ResMut<FloraSeason>,
+    mut calendar: Local<Option<(CivilDate, u8, FloraSeason)>>,
+) {
+    let mut next = clock.as_deref().map_or(FloraSeason::SUMMER, |clock| {
+        let hour = clock.hour as u8;
+        if let Some((date, h, cached)) = *calendar
+            && date == clock.date
+            && h == hour
+        {
+            return cached;
+        }
+        let value = canopy_calendar(clock.date, clock.hour);
+        *calendar = Some((clock.date, hour, value));
+        value
+    });
+    // O manto local governa a neve mesmo numa estação invulgar.
+    next.snow = pack.filter(|pack| pack.draws()).map_or(0.0, |pack| {
+        let at = player
+            .iter()
+            .next()
+            .map_or(Vec2::ZERO, |t| t.translation().xz());
+        (pack.coverage_at(at) * 32.0).round() / 32.0
+    });
+    season.set_if_neq(next);
+}
+
+/// A brisa de outono solta folhas entre os passos do calendário. A rajada
+/// conserva o efeito no resto do ano; árvores nuas não gastam o orçamento.
+#[allow(clippy::too_many_arguments)]
 fn drop_leaves_on_gust(
     weather: Option<Res<WeatherState>>,
+    season: Res<FloraSeason>,
+    pools: Res<Assets<TreePool>>,
     player: Query<&GlobalTransform, With<VaelPlayer>>,
-    trees: Query<(Entity, &GlobalTransform), With<PooledTree>>,
+    trees: Query<(Entity, &GlobalTransform, &PooledTree)>,
     mut drops: MessageWriter<DropLeaves>,
     time: Res<Time>,
     mut cooldown: Local<f32>,
 ) {
-    *cooldown = (*cooldown - time.delta_secs()).max(0.0);
-    let Some(weather) = weather else {
-        return;
-    };
-    if !weather.is_changed() || weather.wind_strength < 0.7 || *cooldown > 0.0 {
+    *cooldown -= time.delta_secs();
+    if *cooldown > 0.0 {
         return;
     }
-    let Some(chest) = player.iter().next().map(GlobalTransform::translation) else {
+    let gust = weather.is_some_and(|w| w.wind_strength >= 0.7);
+    let autumn = season.autumn > 0.45 && season.leaf_fall < 0.98;
+    if !gust && !autumn {
+        return;
+    }
+    *cooldown = if gust { 2.0 } else { 3.5 };
+    let Some(hero) = player.iter().next().map(GlobalTransform::translation) else {
         return;
     };
-    let mut dropped = 0;
-    for (entity, transform) in &trees {
-        if transform.translation().distance_squared(chest) > 60.0 * 60.0 {
-            continue;
-        }
+    let reach = if gust { 60.0 } else { 28.0 };
+    let mut near: Vec<_> = trees
+        .iter()
+        .filter_map(|(entity, at, tree)| {
+            let distance = at.translation().distance_squared(hero);
+            if distance > reach * reach {
+                return None;
+            }
+            let foliage = &pools.get(&tree.pool)?.params.foliage;
+            let deciduous = foliage.autumn.is_some();
+            (foliage.enabled && (gust || deciduous) && (!deciduous || season.leaf_fall < 0.98))
+                .then_some((distance, entity))
+        })
+        .collect();
+    near.sort_unstable_by(|a, b| a.0.total_cmp(&b.0).then(a.1.cmp(&b.1)));
+    for (_, tree) in near.into_iter().take(if gust { 6 } else { 3 }) {
         drops.write(DropLeaves {
-            tree: entity,
-            count: 6,
+            tree,
+            count: if gust { 6 } else { 3 },
         });
-        dropped += 1;
-        if dropped >= 6 {
-            break;
-        }
-    }
-    if dropped > 0 {
-        *cooldown = 2.0;
     }
 }
 
@@ -768,12 +870,7 @@ fn drop_leaves_on_gust(
 fn see_through_trees(
     mut commands: Commands,
     mut cameras: Query<
-        (
-            Entity,
-            &Camera,
-            &RenderTarget,
-            Option<&mut SeeThroughTrees>,
-        ),
+        (Entity, &Camera, &RenderTarget, Option<&mut SeeThroughTrees>),
         With<Camera3d>,
     >,
     player: Query<&GlobalTransform, With<VaelPlayer>>,
@@ -824,6 +921,17 @@ fn see_through_trees(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn canopy_follows_the_civil_year() {
+        let season = |month, day| canopy_calendar(CivilDate::new(2028, month, day), 12.0);
+        assert!(season(3, 20).blossom > 0.95);
+        assert_eq!(season(6, 21), FloraSeason::SUMMER);
+        assert!(season(10, 15).autumn > 0.7);
+        assert!(season(11, 15).leaf_fall > season(11, 1).leaf_fall);
+        assert_eq!(season(12, 21).leaf_fall, 1.0);
+        assert_eq!(season(2, 29).leaf_fall, season(3, 1).leaf_fall);
+    }
 
     /// Toda a espécie que o mundo usa (`prop-flora`) tem de existir nas
     /// espécies de reserva — senão a árvore fica invisível sem cena.

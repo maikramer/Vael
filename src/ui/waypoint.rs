@@ -84,8 +84,10 @@ pub struct VaelWaypointPlugin;
 
 impl Plugin for VaelWaypointPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<HudMarkers>()
-            .add_systems(Update, publish_markers.after(viber::luau::bms_bridge::apply_bms_commands));
+        app.init_resource::<HudMarkers>().add_systems(
+            Update,
+            publish_markers.after(viber::luau::bms_bridge::apply_bms_commands),
+        );
     }
 }
 
@@ -322,8 +324,7 @@ fn quest_waypoint(
             }
         } else if state == "active" {
             if active.is_none() {
-                active =
-                    objective_point(id).or_else(|| npc_point(def, "hud.mark.quest", "Missão"));
+                active = objective_point(id).or_else(|| npc_point(def, "hud.mark.quest", "Missão"));
             }
         } else if quest_available(&rules.quests, &kv, id) {
             // Sem quest: o dador novo mais próximo. `quest_available` fica

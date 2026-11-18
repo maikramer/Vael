@@ -9,22 +9,18 @@
 //! `VaelSave::harvested` com uma chave estável (`Nome@proveniência`) e
 //! derruba/substitui/despawna a entidade.
 //!
-//! O gate é opt-in: sem `VAEL_HARVEST_RUST=1` (ou `true`/`on`/`yes`) nada
-//! aqui corre e o `scripts/game/harvest.lua` continua a ser a implementação.
-//! Com o gate ligado o plugin escreve `vael_harvest_rust = true` no
-//! `viber.game()` (e o Lua faz `return` no `on_update`).
+//! O gate escolhe o controlador de entrada. Os dois caminhos partilham as
+//! lascas, a queda, o embate e o ciclo de rebrote do calendário.
 //!
-//! Limites desta primeira versão:
-//! - o golpe é imediato (sem o atraso de impacto/cooldown de animação do Lua);
-//!   o cooldown de 0,4 s entre golpes mantém-se;
-//! - o topple usa [`viber::physics_fx::Falling`] para `break-style: fall`;
-//!   os bursts/FX de partículas ficam para uma passagem posterior;
 //! - o substituto (`berry-bush-bare`) leva a escala autoral (`replace-scale`)
 //!   aplicada depois do spawn do protótipo (o pedido da engine não transporta
 //!   escala — ver [`ReplacementScale`]);
 //! - o progresso de quests `collect` é pedido ao [`QuestEventQueue`]; sem
 //!   ele, o `sync_collect` do `rules.tick` (Lua) apanha o cofre no frame
 //!   seguinte.
+
+mod chips;
+mod regrowth;
 
 use bevy::ecs::message::Messages;
 use bevy::prelude::*;
@@ -34,6 +30,8 @@ use bevy_flora::{
     BuckTree, FellTree, Felled, PooledLook, PooledTree, TreeLanded, TreeLog, TreeShake, TreeShakes,
     TreeStump,
 };
+pub(crate) use chips::Fracture as MiningFracture;
+use chips::{HitQueue, ToolHit};
 use serde_json::{Value as Json, json};
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::{Component, Path};
@@ -394,13 +392,12 @@ struct PendingReplacementScales(Vec<ReplacementScale>);
 /// Teto de espera de um pedido de escala (s).
 const REPLACEMENT_SCALE_TIMEOUT: f32 = 2.0;
 
-/// Os dois recursos de spawn da colheita num só `SystemParam`: o pedido do
-/// protótipo e a escala que ele não transporta. `harvest_input` já está no
-/// limite de 16 parâmetros da engine (um `SystemParam` a mais não compila).
+/// Serviços de movimento do herói e de spawn de substitutos usados pelo golpe.
 #[derive(bevy::ecs::system::SystemParam)]
-struct ReplacementSpawns<'w> {
+struct HarvestServices<'w> {
     spawns: Option<ResMut<'w, PendingScriptSpawns>>,
     scales: Option<ResMut<'w, PendingReplacementScales>>,
+    motion: Option<Res<'w, crate::player::HeroMotionBus>>,
 }
 
 /// Pedidos de tombo vindos do Lua (`viber.vael.fell_tree`): a função só
@@ -412,11 +409,44 @@ struct PendingFloraFell(std::sync::Arc<std::sync::Mutex<Vec<u64>>>);
 /// `break-style: fall` no lugar de `viber.topple`. Sem isto o caminho Lua
 /// (default) tombava a ESTAÇÃO com o `Falling` da engine e perdia o toco e o
 /// tronco deitado do `bevy_flora`.
-fn install_fell_api(mut commands: Commands) {
+fn install_fell_api(mut commands: Commands, chips: Res<HitQueue>) {
+    let hits = (*chips).clone();
     let queue = PendingFloraFell::default();
     let shared = std::sync::Arc::clone(&queue.0);
     crate::script_host::register_installer(move |lua| -> mlua::Result<()> {
         let vael = vael_table(lua)?;
+        for (name, stone) in [("wood_hit", false), ("rock_hit", true)] {
+            let hits = hits.clone();
+            vael.set(
+                name,
+                lua.create_function(
+                    move |_,
+                          (bits, x, y, z, nx, nz, height, final_hit): (
+                        i64,
+                        f32,
+                        f32,
+                        f32,
+                        f32,
+                        f32,
+                        f32,
+                        bool,
+                    )| {
+                        let Some(target) = Entity::try_from_bits(bits as u64) else {
+                            return Ok(());
+                        };
+                        hits.push(ToolHit {
+                            stone,
+                            target,
+                            base: Vec3::new(x, y, z),
+                            outward: Vec2::new(nx, nz),
+                            height,
+                            final_hit,
+                        });
+                        Ok(())
+                    },
+                )?,
+            )?;
+        }
         vael_fn!(
             lua,
             vael,
@@ -475,13 +505,16 @@ fn process_pending_fell(
         let Some(entity) = Entity::try_from_bits(bits) else {
             continue;
         };
-        let Ok((global, pooled, look, harvestable, local)) = props.get(entity) else {
+        let Ok((global, pooled, look, Some(harvestable), local)) = props.get(entity) else {
             continue;
         };
         let position = global.translation();
-        let direction = (position - player).normalize_or_zero();
-        let cut_height = harvestable.map(|h| h.cut_height).unwrap_or(0.5);
-        let key = harvestable.and_then(|h| h.stable_key.clone());
+        let direction = (position - player).with_y(0.).normalize_or(Vec3::X);
+        let cut_height = harvestable.cut_height;
+        let key = harvestable.stable_key.clone();
+        if let Some(key) = key.as_deref() {
+            mark_harvested(save.as_deref_mut(), key);
+        }
         if let Some(pooled) = pooled {
             let tree = spawn_felled_tree(
                 &mut commands,
@@ -497,21 +530,7 @@ fn process_pending_fell(
                 commands.entity(tree).insert(FloraFellKey(key.to_string()));
                 store_flora_fell(save.as_deref_mut(), key, direction, cut_height, false);
             }
-            commands
-                .entity(entity)
-                .try_remove::<(
-                    Harvestable,
-                    ScriptInteraction,
-                    viber::luau::components::LuaScriptRef,
-                )>()
-                .remove::<PooledTree>()
-                .insert(FloraFellTree);
-            viber::physics::replace_with_stump_collider(
-                &mut commands,
-                entity,
-                STUMP_RADIUS,
-                STUMP_HALF_HEIGHT,
-            );
+            regrowth::leave_root(&mut commands, entity, tree, key);
         } else {
             let initial = local.map(|local| local.rotation).unwrap_or_default();
             commands
@@ -542,6 +561,8 @@ pub struct HarvestFocus {
     pub cooldown: f32,
     /// Menu/título/morte: o prompt e o golpe estão desligados.
     pub blocked: bool,
+    pending_swing: Option<(Entity, f32)>,
+    grip_remaining: f32,
 }
 
 /// Gate da colheita em Rust.
@@ -603,6 +624,7 @@ impl Plugin for VaelHarvestPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<VaelHarvestConfig>()
             .init_resource::<HarvestFocus>()
+            .init_resource::<HitQueue>()
             .init_resource::<PendingReplacementScales>()
             .register_type::<Harvestable>()
             .register_type::<HarvestFocus>()
@@ -648,7 +670,11 @@ impl Plugin for VaelHarvestPlugin {
                 Update,
                 (
                     process_pending_fell,
-                    reap_periodic,
+                    reap_periodic.after(process_pending_fell),
+                    regrowth::fit_stumps.before(regrowth::grow),
+                    regrowth::grow.after(reap_periodic).after(harvest_input),
+                    chips::emit.after(harvest_input),
+                    chips::fly,
                     tree_landed_feedback,
                     buck_felled_trees,
                 ),
@@ -872,13 +898,7 @@ fn mark_harvested(save: Option<&mut VaelSave>, key: &str) {
 }
 
 /// Guarda a pose/escala do substituto (`stump.<chave>.*`), como o Lua.
-fn store_stump(
-    save: Option<&mut VaelSave>,
-    key: &str,
-    proto: &str,
-    position: Vec3,
-    scale: f32,
-) {
+fn store_stump(save: Option<&mut VaelSave>, key: &str, proto: &str, position: Vec3, scale: f32) {
     if key.is_empty() {
         return;
     }
@@ -1167,10 +1187,7 @@ fn apply_gate(rust: bool) {
 }
 
 fn read_gate() -> Option<bool> {
-    let kv = viber::luau::game::game_to_json_process();
-    kv.get(RUST_GATE_KEY)
-        .and_then(Json::as_bool)
-        .or_else(|| kv.contains_key(RUST_GATE_KEY).then_some(false))
+    viber::luau::game::game_get_json(RUST_GATE_KEY).map(|v| v.as_bool().unwrap_or(false))
 }
 
 /// Copia os props autorais para [`Harvestable`] (PostStartup + SceneLoad).
@@ -1229,7 +1246,7 @@ fn update_harvest_focus(
     mut commands: Commands,
     time: Res<Time>,
     mut focus: ResMut<HarvestFocus>,
-    players: Query<&GlobalTransform, With<Player>>,
+    players: Query<&GlobalTransform, (With<Player>, Without<crate::boat::RidingBoat>)>,
     harvestables: Query<(Entity, &GlobalTransform, &Harvestable, Option<&Health>), Without<Player>>,
     menus: Option<Res<MenusOpen>>,
     modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
@@ -1239,6 +1256,7 @@ fn update_harvest_focus(
     map: Option<Res<viber::input_map::ActionMap>>,
 ) {
     focus.cooldown = (focus.cooldown - time.delta_secs()).max(0.0);
+    focus.grip_remaining = (focus.grip_remaining - time.delta_secs()).max(0.0);
     let blocked = scene.as_deref().and_then(|scene| scene.id.as_deref()) == Some("menu")
         || modals
             .as_deref()
@@ -1246,7 +1264,9 @@ fn update_harvest_focus(
         || menus.as_deref().is_some_and(MenusOpen::any)
         || vitals.as_deref().is_some_and(|vitals| vitals.hp <= 0.0);
     focus.blocked = blocked;
-    if blocked {
+    if blocked || players.is_empty() {
+        focus.pending_swing = None;
+        focus.grip_remaining = 0.;
         clear_focus(&mut commands, &mut focus, ui.as_deref_mut());
         return;
     }
@@ -1306,6 +1326,9 @@ fn clear_focus(commands: &mut Commands, focus: &mut HarvestFocus, ui: Option<&mu
 
 /// `harvest.tool` do `equipment.lua` ("" quando é `pick` ou não há alvo).
 fn set_tool(focus: &mut HarvestFocus, tool: &str, ui: Option<&mut UiScriptBinds>) {
+    if focus.grip_remaining > 0.0 {
+        return;
+    }
     let tool = if tool == "pick" { "" } else { tool };
     if focus.tool == tool {
         return;
@@ -1346,7 +1369,7 @@ fn spawn_felled_tree(
             FellTree {
                 direction: Vec2::new(direction.x, direction.z),
                 cut_height,
-                speed: 1.0,
+                speed: 1.16,
                 lying,
             },
             FellEpoch(epoch),
@@ -1372,7 +1395,7 @@ fn harvest_input(
     interaction: Option<Res<InteractionFocus>>,
     time: Res<Time>,
     epoch: Option<Res<SceneEpoch>>,
-    mut shakes: Option<ResMut<TreeShakes>>,
+    hits: Res<HitQueue>,
     mut harvestables: Query<(
         &mut Harvestable,
         &GlobalTransform,
@@ -1380,18 +1403,44 @@ fn harvest_input(
         Option<&PooledTree>,
         Option<&PooledLook>,
     )>,
-    mut spawner: ReplacementSpawns,
-    players: Query<&GlobalTransform, With<Player>>,
+    mut services: HarvestServices,
+    players: Query<
+        (
+            Entity,
+            &GlobalTransform,
+            Option<&crate::player::VaelController>,
+        ),
+        (With<Player>, Without<crate::boat::RidingBoat>),
+    >,
     queue: Option<Res<QuestEventQueue>>,
 ) {
     // "Atacar" (J por defeito) pelo input do Vael: segue o rebind e o
     // contexto de jogo (parado com menus abertos).
-    if !crate::input::attack_just(actions.as_deref(), map.as_deref(), keys.as_deref())
-        || focus.blocked
-        || focus.cooldown > 0.0
-    {
+    let Some((hero, player_pose, controller)) = players.iter().next() else {
         return;
-    }
+    };
+    let touching = if let Some((target, delay)) = focus.pending_swing.take() {
+        if focus.blocked
+            || focus.entity != Some(target)
+            || controller.is_some_and(|c| c.dodge.is_some())
+        {
+            return;
+        }
+        let left = delay - time.delta_secs();
+        if left > 0.0 {
+            focus.pending_swing = Some((target, left));
+            return;
+        }
+        true
+    } else {
+        if focus.blocked
+            || focus.cooldown > 0.0
+            || !crate::input::attack_just(actions.as_deref(), map.as_deref(), keys.as_deref())
+        {
+            return;
+        }
+        false
+    };
     let attack_key = attack_key(map.as_deref());
     // Com um `UiInput` focado as teclas são texto (o `viber.input` da engine
     // também as bloqueia): o J do chat não pode partir uma árvore.
@@ -1413,35 +1462,64 @@ fn harvest_input(
         return;
     };
     let position = transform.translation();
-    let player = players
-        .iter()
-        .next()
-        .map(GlobalTransform::translation)
-        .unwrap_or(Vec3::ZERO);
+    let player = player_pose.translation();
     let style = harvestable.style;
     let kind = harvestable.kind.clone();
-    let broken = apply_hit(&mut harvestable);
-    focus.cooldown = SWING_COOLDOWN;
-    if !broken {
-        play_sfx(&mut commands, hit_clip(style, &kind), position);
-        // Árvore procedural: a copa abana no golpe e larga folhas
-        // (`FallingLeaves::per_shake`). Prop antigo não tem de onde abanar.
-        if pooled.is_some()
-            && let Some(shakes) = shakes.as_mut()
-        {
-            let wave = (position - player).normalize_or_zero();
-            shakes.shake(
-                TreeShake {
-                    at: Vec2::new(position.x, position.z),
-                    radius: 1.8,
-                    strength: 0.9,
-                    direction: Vec2::new(wave.x, wave.z),
-                    duration: 0.5,
-                    start: 0.0,
-                },
-                &time,
-            );
+    let tool = harvestable.tool();
+    let stone = tool == "mine";
+    let uses_tool = stone || tool == "chop";
+    if !touching && focus.grip_remaining > 0.0 && focus.tool != tool {
+        return;
+    }
+    if uses_tool && !touching {
+        let (duration, contact) = if stone {
+            (0.98, 0.98 * 0.41)
+        } else {
+            (0.90, 0.90 * (0.43 / 1.5))
+        };
+        focus.cooldown = duration * 0.86;
+        focus.grip_remaining = duration;
+        focus.pending_swing = Some((entity, contact));
+        commands
+            .entity(hero)
+            .insert(viber::animation::PendingGesture {
+                name: tool.into(),
+                duration: Some(duration),
+                speed: 1.,
+                blend: Some(0.065),
+                age: 0.,
+                lock: false,
+            });
+        if let Some(bus) = &services.motion {
+            bus.request_attack(crate::player::AttackMotion {
+                secs: contact + 0.08,
+                slow: 0.25,
+                lunge: 0.0,
+                face: (position - player).xz().try_normalize(),
+            });
         }
+        return;
+    }
+    let broken = apply_hit(&mut harvestable);
+    let height = harvestable.cut_height;
+    let emit = |final_hit| {
+        if uses_tool {
+            hits.push(ToolHit {
+                stone,
+                target: entity,
+                base: position,
+                height,
+                outward: (player - position).xz(),
+                final_hit,
+            });
+        }
+    };
+    if !uses_tool {
+        focus.cooldown = SWING_COOLDOWN;
+    }
+    if !broken {
+        emit(false);
+        play_sfx(&mut commands, hit_clip(style, &kind), position);
         return;
     }
 
@@ -1476,6 +1554,7 @@ fn harvest_input(
             }
         }
     }
+    emit(!full);
     if full {
         // O Lua deixa o prop a um golpe de partir e tenta outra vez depois de
         // fazer espaço.
@@ -1504,7 +1583,7 @@ fn harvest_input(
     }
     // Quebra: substituto, topple ou despawn.
     if let Some(proto) = replacement.as_deref() {
-        if let Some(spawns) = spawner.spawns.as_deref_mut() {
+        if let Some(spawns) = services.spawns.as_deref_mut() {
             spawns.0.push(PendingPrototypeSpawn {
                 name: proto.to_string(),
                 pos: position,
@@ -1515,7 +1594,7 @@ fn harvest_input(
             });
             // O pedido da engine não leva escala: aplica-se à raiz quando o
             // `apply_script_spawns` a materializar (ver [`ReplacementScale`]).
-            if let Some(scales) = spawner.scales.as_deref_mut() {
+            if let Some(scales) = services.scales.as_deref_mut() {
                 scales.0.push(ReplacementScale {
                     x: position.x,
                     z: position.z,
@@ -1526,7 +1605,7 @@ fn harvest_input(
         }
         commands.entity(entity).try_despawn();
     } else if style == BreakStyle::Fall {
-        let direction = (position - player).normalize_or_zero();
+        let direction = (position - player).with_y(0.).normalize_or(Vec3::X);
         if let Some(pooled) = pooled {
             // Árvore procedural: o `bevy_flora` corta-a (toco, queda, faces de
             // corte). A árvore passa para uma entidade RAIZ com a pose GLOBAL
@@ -1542,21 +1621,7 @@ fn harvest_input(
                 false,
                 fell_epoch(epoch.as_deref()),
             );
-            commands
-                .entity(entity)
-                .try_remove::<(
-                    Harvestable,
-                    ScriptInteraction,
-                    viber::luau::components::LuaScriptRef,
-                )>()
-                .remove::<PooledTree>()
-                .insert(FloraFellTree);
-            viber::physics::replace_with_stump_collider(
-                &mut commands,
-                entity,
-                STUMP_RADIUS,
-                STUMP_HALF_HEIGHT,
-            );
+            regrowth::leave_root(&mut commands, entity, tree, key.clone());
             if let Some(key) = key.as_deref() {
                 commands.entity(tree).insert(FloraFellKey(key.to_string()));
                 store_flora_fell(save.as_deref_mut(), key, direction, cut_height, false);
@@ -1580,7 +1645,15 @@ fn harvest_input(
     }
     focus.entity = None;
 
-    play_sfx(&mut commands, break_clip(style, &kind), position);
+    play_sfx(
+        &mut commands,
+        if style == BreakStyle::Fall && pooled.is_some() {
+            SfxClip::ChopHit
+        } else {
+            break_clip(style, &kind)
+        },
+        position,
+    );
     if !popup.is_empty() {
         let text = if added > 0 {
             format!("+{added} {popup}")
@@ -1631,17 +1704,15 @@ fn patch_rewards(kind: &str, inventory: &Inventory, xp: &XpState) {
 }
 
 fn read_game_i64(key: &str) -> Option<i64> {
-    viber::luau::game::game_to_json_process()
-        .get(key)
-        .and_then(Json::as_f64)
+    viber::luau::game::game_get_json(key)
+        .and_then(|v| v.as_f64())
         .filter(|value| value.is_finite())
         .map(|value| value as i64)
 }
 
 fn read_game_f64(key: &str) -> Option<f64> {
-    viber::luau::game::game_to_json_process()
-        .get(key)
-        .and_then(Json::as_f64)
+    viber::luau::game::game_get_json(key)
+        .and_then(|v| v.as_f64())
         .filter(|value| value.is_finite())
 }
 
@@ -1736,7 +1807,12 @@ fn reap_saved(
         // Árvore procedural já tombada: o save diz COMO está deitada. Repõe-se
         // a árvore-raiz já deitada (`FellTree { lying }`), com toco e, se
         // `bucked`, os toros — em vez de despawnar. Uma só vez por estação.
-        if let Some(fell) = flora_fell_from_kv(&kv, &matched) {
+        let fell_key = harvestable
+            .stable_key
+            .as_ref()
+            .filter(|key| kv.contains_key(&format!("flora-fell.{key}.dx")))
+            .unwrap_or(&matched);
+        if let Some(fell) = flora_fell_from_kv(&kv, fell_key) {
             let Some(pooled) = pooled else { continue };
             if fell_tree.is_some() {
                 continue;
@@ -1757,24 +1833,14 @@ fn reap_saved(
                 true,
                 epoch,
             );
-            commands.entity(tree).insert(FloraFellKey(matched.clone()));
+            commands.entity(tree).insert(FloraFellKey(fell_key.clone()));
             if fell.bucked {
                 commands.entity(tree).try_insert(BuckTree {
                     log_length: LOG_LENGTH,
                     min_radius: LOG_MIN_RADIUS,
                 });
             }
-            commands
-                .entity(entity)
-                .try_remove::<(Harvestable, ScriptInteraction)>()
-                .remove::<PooledTree>()
-                .insert(FloraFellTree);
-            viber::physics::replace_with_stump_collider(
-                commands,
-                entity,
-                STUMP_RADIUS,
-                STUMP_HALF_HEIGHT,
-            );
+            regrowth::leave_root(commands, entity, tree, Some(fell_key.clone()));
             continue;
         }
         commands.entity(entity).try_despawn();
@@ -1800,6 +1866,23 @@ fn reap_saved(
                 scale: stump.scale,
                 age: 0.0,
             });
+        }
+    }
+}
+
+/// A same-scene load keeps the ECS entities. Reconcile those trees against the new slot.
+pub(crate) fn reload_trees(world: &mut World) {
+    use bevy::ecs::system::RunSystemOnce;
+    if world.contains_resource::<VaelHarvestConfig>() {
+        if let Some(mut focus) = world.get_resource_mut::<HarvestFocus>() {
+            focus.pending_swing = None;
+            focus.grip_remaining = 0.0;
+        }
+        if let Err(err) = world
+            .run_system_once(regrowth::reset_on_load)
+            .and_then(|()| world.run_system_once(reap_on_load))
+        {
+            warn!("harvest: erro ao restaurar as árvores: {err}");
         }
     }
 }
@@ -1905,12 +1988,7 @@ fn despawn_fell_trees(
     epoch: Option<Res<SceneEpoch>>,
     trees: Query<
         (Entity, &FellEpoch),
-        Or<(
-            With<FellTree>,
-            With<Felled>,
-            With<TreeStump>,
-            With<TreeLog>,
-        )>,
+        Or<(With<FellTree>, With<Felled>, With<TreeStump>, With<TreeLog>)>,
     >,
 ) {
     let current = fell_epoch(epoch.as_deref());
@@ -1990,13 +2068,15 @@ fn buck_felled_trees(
     mut focus: ResMut<BuckFocus>,
     interaction: Option<Res<InteractionFocus>>,
     mut save: Option<ResMut<VaelSave>>,
-    players: Query<&GlobalTransform, With<Player>>,
+    players: Query<&GlobalTransform, (With<Player>, Without<crate::boat::RidingBoat>)>,
     felled: Query<
         (
             Entity,
             &GlobalTransform,
             Option<&BuckTree>,
             Option<&FloraFellKey>,
+            Option<&Felled>,
+            Option<&FellTree>,
         ),
         Or<(With<Felled>, With<FellTree>)>,
     >,
@@ -2008,8 +2088,10 @@ fn buck_felled_trees(
     };
     let reach = BUCK_RANGE * range_scale();
     let mut best: Option<(Entity, f32)> = None;
-    for (entity, transform, bucked, _) in &felled {
-        if bucked.is_some() {
+    for (entity, transform, bucked, _, state, request) in &felled {
+        if bucked.is_some()
+            || !(state.is_some_and(|s| s.at_rest) || request.is_some_and(|r| r.lying))
+        {
             continue;
         }
         let distance = transform.translation().distance(player);
@@ -2053,7 +2135,7 @@ fn buck_felled_trees(
         min_radius: LOG_MIN_RADIUS,
     });
     // Persistência ANTES: o crate pode despawnar a entidade no mesmo frame.
-    if let Ok((_, _, _, Some(key))) = felled.get(target) {
+    if let Ok((_, _, _, Some(key), _, _)) = felled.get(target) {
         store_flora_bucked(save.as_deref_mut(), &key.0);
     }
     focus.cooldown = BUCK_COOLDOWN;
@@ -2159,6 +2241,18 @@ mod tests {
             .init_resource::<QuestEventQueue>()
             .add_plugins(VaelHarvestPlugin);
         app
+    }
+
+    fn finish_chop(app: &mut App) {
+        app.insert_resource(bevy::time::TimeUpdateStrategy::ManualDuration(
+            std::time::Duration::from_millis(100),
+        ));
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .clear();
+        for _ in 0..3 {
+            app.update();
+        }
     }
 
     fn spawn_player(app: &mut App) -> Entity {
@@ -2400,10 +2494,16 @@ mod tests {
         assert!((stump.scale - 1.35).abs() < 1e-6);
         // Sem `scale` (save antigo) o substituto fica à escala do protótipo.
         kv.remove("stump.tree@forest.xml#1.scale");
-        assert_eq!(stump_for(&kv, "tree@forest.xml#1").map(|s| s.scale), Some(1.0));
+        assert_eq!(
+            stump_for(&kv, "tree@forest.xml#1").map(|s| s.scale),
+            Some(1.0)
+        );
         // Fora do intervalo autorado (`replace-scale` 0,05..20) cai em 1.
         kv.insert("stump.tree@forest.xml#1.scale".into(), json!(99.0));
-        assert_eq!(stump_for(&kv, "tree@forest.xml#1").map(|s| s.scale), Some(1.0));
+        assert_eq!(
+            stump_for(&kv, "tree@forest.xml#1").map(|s| s.scale),
+            Some(1.0)
+        );
         // Sem protótipo conhecido não há stump.
         kv.insert("stump.tree@forest.xml#1.proto".into(), json!("nao-existe"));
         assert!(stump_for(&kv, "tree@forest.xml#1").is_none());
@@ -2646,6 +2746,9 @@ mod tests {
             .resource_mut::<ButtonInput<KeyCode>>()
             .press(KeyCode::KeyJ);
         app.update();
+        assert!(app.world().get::<Harvestable>(prop).is_some());
+        assert_eq!(app.world().resource::<VaelSave>().inventory.wood, 0);
+        finish_chop(&mut app);
 
         assert!(
             app.world().get::<Harvestable>(prop).is_none(),
@@ -2708,6 +2811,9 @@ mod tests {
         viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
+        app.insert_resource(bevy_elements::WorldClock::new(
+            bevy_elements::CivilDate::new(2028, 11, 30),
+        ));
         let _player = spawn_player(&mut app);
         let mut h = harvestable("tree", Some("tree@world/forest.xml#1"), 1, 3.5, "wood", 5);
         h.style = BreakStyle::Fall;
@@ -2722,6 +2828,9 @@ mod tests {
             .resource_mut::<ButtonInput<KeyCode>>()
             .press(KeyCode::KeyJ);
         app.update();
+        assert!(app.world().get::<Harvestable>(prop).is_some());
+        assert_eq!(app.world().resource::<VaelSave>().inventory.wood, 0);
+        finish_chop(&mut app);
 
         assert!(
             app.world().get_entity(prop).is_ok(),
@@ -2749,6 +2858,34 @@ mod tests {
             save.legacy
                 .contains_key("flora-fell.tree@world/forest.xml#1.dx"),
             "a direcção da queda fica no save"
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(prop),
+            Some(&Visibility::Hidden)
+        );
+        app.world_mut()
+            .resource_mut::<bevy_elements::WorldClock>()
+            .advance_hours(36.);
+        app.update();
+        assert!(app.world().get::<Harvestable>(prop).is_none());
+        assert!(app.world().get::<Children>(prop).is_some_and(|kids| {
+            kids.iter()
+                .any(|kid| app.world().get::<PooledTree>(kid).is_some())
+        }));
+        app.world_mut()
+            .resource_mut::<bevy_elements::WorldClock>()
+            .advance_hours(36.);
+        app.update();
+        assert_eq!(app.world().get::<Harvestable>(prop).unwrap().remaining, 1);
+        assert!(app.world().get::<PooledTree>(prop).is_some());
+        assert!(app.world().get_entity(tree).is_err());
+        assert!(app.world().resource::<VaelSave>().harvested.is_empty());
+        assert!(
+            app.world()
+                .resource::<VaelSave>()
+                .legacy
+                .keys()
+                .all(|k| !k.starts_with("flora-fell."))
         );
     }
 
@@ -2824,6 +2961,10 @@ mod tests {
     /// `reap_saved` não despawna: repõe a árvore já deitada.
     #[test]
     fn reap_restaura_arvore_deitada_do_save() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
         let _player = spawn_player(&mut app);
@@ -2959,6 +3100,10 @@ mod tests {
     /// `[J]` numa árvore deitada retalha-a em toros e marca o save.
     #[test]
     fn j_na_arvore_deitada_insere_buck_tree() {
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock de teste do store");
+        viber::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let mut app = app_rust();
         let _player = spawn_player(&mut app);
         // Uma árvore já deitada não é um `Harvestable` (foi cortada): sem isto
@@ -2998,6 +3143,30 @@ mod tests {
     }
 
     #[test]
+    fn picareta_so_marca_o_contacto_se_o_alvo_continua_ao_alcance() {
+        let mut app = app_rust();
+        let hero = spawn_player(&mut app);
+        let prop = spawn_prop(&mut app, harvestable("outcrop", None, 3, 3.5, "stone", 4));
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::KeyJ);
+        app.update();
+        let gesture = app
+            .world()
+            .get::<viber::animation::PendingGesture>(hero)
+            .unwrap();
+        assert_eq!(gesture.name, "mine");
+        finish_chop(&mut app); // 300 ms, ainda antes do contacto da picareta.
+        assert_eq!(app.world().get::<Harvestable>(prop).unwrap().remaining, 3);
+        assert_eq!(app.world().resource::<HarvestFocus>().tool, "mine");
+        app.world_mut()
+            .entity_mut(hero)
+            .insert(GlobalTransform::from_translation(Vec3::X * 10.));
+        finish_chop(&mut app);
+        assert_eq!(app.world().get::<Harvestable>(prop).unwrap().remaining, 3);
+    }
+
+    #[test]
     fn um_golpe_intermedio_nao_credita_loot() {
         let mut app = app_rust();
         app.insert_resource(content_com(&[("wood", "resource", None)]));
@@ -3011,6 +3180,9 @@ mod tests {
             .resource_mut::<ButtonInput<KeyCode>>()
             .press(KeyCode::KeyJ);
         app.update();
+        assert!(app.world().get::<Harvestable>(prop).is_some());
+        assert_eq!(app.world().resource::<VaelSave>().inventory.wood, 0);
+        finish_chop(&mut app);
 
         assert_eq!(
             app.world().get::<Harvestable>(prop).map(|h| h.remaining),
@@ -3178,6 +3350,9 @@ mod tests {
 
         apply_gate(false);
         let kv = viber::luau::game::game_to_json_process();
-        assert!(!kv.contains_key(RUST_GATE_KEY), "gate desligado sai do store");
+        assert!(
+            !kv.contains_key(RUST_GATE_KEY),
+            "gate desligado sai do store"
+        );
     }
 }

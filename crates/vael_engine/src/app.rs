@@ -26,7 +26,6 @@ use bevy::ecs::schedule::IntoScheduleConfigs;
 use bevy::ecs::system::{Res, ResMut};
 use bevy::log::info;
 use bevy::time::{Time, Virtual};
-use bevy_kira_audio::AudioApp;
 
 use crate::ai_host;
 use crate::audio_host;
@@ -454,6 +453,8 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
             }),
             ..Default::default()
         })
+        // Kira owns playback. Rodio otherwise opens a second, silent output stream.
+        .disable::<bevy::audio::AudioPlugin>()
         .set(bevy::asset::AssetPlugin {
             file_path: asset_root.to_string_lossy().into_owned(),
             ..Default::default()
@@ -528,27 +529,8 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     // Áudio: backend kira (bevy_kira_audio) com buses tipados — o
     // `AudioMixerSettings` (save/menu/XML) empurra volumes para os canais
     // (crate::music::mixer_sync) e tudo o que está a tocar responde ao vivo.
-    // O bevy_audio/rodio do Bevy fica compilado mas sem players — nenhum
-    // som nasce por ele.
     app.add_plugins(bevy_kira_audio::AudioPlugin);
-    app.add_audio_channel::<crate::music::MusicBus>();
-    let mut sfx_track = bevy_kira_audio::AudioTrack::new();
-    let sfx_reverb = sfx_track.add_effect(
-        bevy_kira_audio::prelude::ReverbBuilder::new().mix(bevy_kira_audio::prelude::Mix(0.0)),
-    );
-    app.add_audio_channel_with_track::<crate::music::SfxBus>(sfx_track);
-    let mut voice_track = bevy_kira_audio::AudioTrack::new();
-    let voice_reverb = voice_track.add_effect(
-        bevy_kira_audio::prelude::ReverbBuilder::new().mix(bevy_kira_audio::prelude::Mix(0.0)),
-    );
-    app.add_audio_channel_with_track::<crate::music::VoiceBus>(voice_track);
-    app.add_audio_channel::<crate::music::AmbienceBus>();
-    app.init_resource::<crate::music::AudioDuck>();
-    app.init_resource::<crate::music::AudioReverb>();
-    app.insert_resource(crate::music::ReverbHandles {
-        sfx: Some(sfx_reverb),
-        voice: Some(voice_reverb),
-    });
+    crate::music::install_mixer(&mut app);
     // O host dos sistemas `music::*` (exit4/G1): espelha cena/bioma/chuva no
     // `AudioWorldState`, semeia o `AudioPaths` do config e marca o ouvido.
     app.add_plugins(audio_host::AudioHostPlugin);
