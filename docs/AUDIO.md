@@ -42,11 +42,12 @@ BPM do tema.
 
 ## Zonas
 
-A zona de música segue o jogador: cena (menu/interior) > combate > **bioma**
-(`BiomeRegion.id` com uma `<MusicLayer>` homónima) > `bgm_zone` (vila,
-masmorra, picos, explorar). As layers de bioma são `dark-forest`, `desert`,
-`swamp` e `frozen-peaks`; a vila continua a ganhar por estar no vão dos
-polígonos.
+O menu usa o tema do título. No mundo aberto, a perseguição de uma criatura
+viva acende `battle`, e a de um chefe acende `boss`. O hold de oito segundos
+evita cortes entre golpes. Ao sair do combate, a música regressa à vila, à
+exploração ou à faixa homónima do `BiomeRegion.id`. O crossfade nominal dura
+1,8 s. Os quatro biomas musicais são `dark-forest`, `desert`, `swamp` e
+`frozen-peaks`. Os interiores têm acústica de sala.
 
 ## Ambiências
 
@@ -63,41 +64,75 @@ Loops contínuos, posicionais quando fazem sentido:
 | `ambient/desert_loop` | desert | `game/ambience.lua` |
 | `ambient/village_loop` | vila | `game/ambience.lua` |
 
-Os loops de bioma entram pelo bus `ambience` (`bus="ambience"`), não pelo SFX.
+A fauna usa o bus de ambiente. O gaio chama de dia e a coruja à noite, a
+partir de um poleiro. A raposa dá um latido curto ao começar a fugir. A
+distância e o lado da câmara determinam o ganho e a posição estéreo até 32 m.
+Um intervalo mínimo de 12 s impede que um grupo de raposas sobreponha latidos.
 
 ## Níveis
 
-- BGM: `mastering` do tier `highest` (−14 LUFS), `base-volume` 0.16–0.24 por
-  layer. O volume final fica ≈ −30 LUFS com o mixer a 0.7.
-- SFX one-shot: `--lufs -16 --true-peak -1.0` para não somar picos em combate.
-- Ambiências: tier `highest`, −16 LUFS; o volume é conduzido pela distância no
-  caso da água e por bioma nos loops do script.
-- `AudioMixer`: master 1, music 0.7, sfx 0.8, voice 0.9, ambience 0.7.
+Os quatro subgrupos Kira têm controlo de ganho próprio. O ganho de cada
+instância continua a seguir a distância ou a transição musical quando o
+jogador muda um slider ou quando um diálogo atenua o som. Os valores iniciais
+de master, música, efeitos, voz e ambiente são 1, 0.7, 0.8, 0.9 e 0.7.
 
-## Regerar
+As 11 músicas têm ganhos autorais entre 0.135 e 0.22. A vila e os biomas
+foram equilibrados a partir do loudness dos OGG. O lago, a floresta e a
+fogueira usam o modelo SFX do Text2Sound em loops de 16 s. Os pássaros ficam
+nos emissores da fauna. A moeda tem um passa-baixo de quatro polos a 3,8 kHz
+e compensação de 9 dB. Passos na grama, colheita, impacto metálico, queda de
+objeto, baú e confirmação de carregamento também têm filtros próprios nos manifestos.
 
-O pool canónico é `assets/public/assets/audio`; os manifests em
-`assets/manifests/audio-*.yaml` são a fonte de verdade.
+## Engasgos durante a reprodução
+
+O Vael abre uma saída Kira para o dispositivo. Em Linux com ALSA sobre
+PipeWire, o executável pede um período mínimo de 16 384 bytes, cerca de 43 ms
+em estéreo float a 48 kHz. O pedido aplica-se ao processo do jogo e respeita
+uma configuração explícita em `PIPEWIRE_ALSA`. O período introduz alguma
+latência e dá margem à thread de áudio quando o render ou o sistema a atrasam.
+
+Para verificar um engasgo no menu, comparar a captura da saída do processo
+com `bgm/menu.ogg` por pelo menos uma volta de 48 s. Em `pw-top`, acompanhar
+a **variação** de `ERR` na saída do jogo e no dispositivo durante a captura.
+Um bloco de zeros presente só na captura também denuncia uma interrupção,
+mesmo quando o contador do nó do jogo fica estável.
+
+No teste do menu a 48 kHz, introduzir 32 ms de atraso no produtor de áudio
+a cada dois segundos produziu 12 lacunas de 21,3 ms em 25 s com o período
+original de 512 frames. Com 2048 frames, a captura de 55 s incluiu uma
+volta completa e 27 atrasos induzidos. O sinal manteve-se alinhado com o
+OGG, sem lacunas de silêncio digital acima de 1 ms.
+
+## Regerar e verificar
+
+O pool canónico é `assets/public/assets/audio`. Cada entrada em
+`assets/manifests/audio-*.yaml` tem prompt, perfil e seed. O JSON ao lado do
+OGG regista o modelo e a seed aceite. O pack dos cinco veículos de corrida
+tem `legacy: true` e fica fora da regeneração habitual.
 
 ```bash
 cd assets
-python3 regen_audio.py --only bgm                 # BGM que falta
-python3 regen_audio.py --only bgm --force         # regenera tudo
-python3 regen_audio.py --only sfx --force
-python3 regen_audio.py --only sfx/ambient --force
+python3 audit_audio.py
+python3 regen_audio.py --only fox_bark,jay_call,owl_hoot --force
+python3 regen_audio.py --only water_lake,forest_loop,fire_loop --force
+python3 regen_audio.py --only bgm
 ```
 
-O script usa o `text2sound` do venv em `../AiGameKit/Text2Sound`, tier
-`highest` (24 steps), `--no-enhance` (prompts são autorais), OGG 0.85 e o gate
-de costura (música: cauda ≥70% do corpo; ambiência: ≥30%, porque o outro do
-SA3 é mais curto e a cauda de água/chuva é naturalmente esparsa). Em ambos o
-início tem de ficar entre 50% e 250% do corpo: abaixo soa a intro apagada,
-acima o "blast" repete a cada loop. Re-rola a seed +1000 até 6 tentativas em
-BGM e 5 em ambiência. Para efeitos one-shot usa `-16 LUFS`/`-1 dBTP`; música e
-ambiência ficam no tier. Entradas `legacy: true` (corrida) ficam fora do lote.
+A auditoria corre em CPU com NumPy, SoundFile, PyYAML e FFmpeg. Verifica a
+decodificação, a duração dos loops, a proveniência, os picos reais e sinais quase mudos (pico abaixo de −55 dBTP). A coluna
+`>7,5kHz` mostra a percentagem de energia nos agudos para comparar timbres.
 
-As layers novas exigem `world/environment.bsn` com `<MusicLayer>` homónima do
-`BiomeRegion.id`. Os loops de bioma correm em `scripts/game/ambience.lua`.
+A regeneração usa o venv do Text2Sound no AiGameKit e envia um pedido de cada
+vez com prioridade `batch` ao vramd. Usa 24 passos, os prompts do manifesto e
+Vorbis com qualidade 0.85. O alvo de geração dos novos ambientes é −19 LUFS,
+e o dos one-shots é −16 LUFS. A auditoria mede o resultado depois da codificação.
 
-Verificação: `vael-tools analyze world.bsn` e, com a engine viva,
-`vael-tools debug prof --tab audio` para confirmar quantos loops estão a tocar.
+Antes de substituir um loop, o gerador compara o RMS dos primeiros e últimos
+500 ms com o corpo da faixa. A música aceita início entre 60% e 250% e cauda
+a partir de 70%. O ambiente aceita início entre 50% e 250% e cauda a partir
+de 30%. Uma tentativa rejeitada mantém o OGG anterior em jogo.
+
+Com o Vael aberto, `vael-tools debug --port <porta> lua 'return viber.debug.audio()'`
+mostra os ganhos por faixa e os loops pedidos pelos scripts. As faixas com
+volume zero estão preparadas para o próximo crossfade. Para verificar o mute
+e os timbres, a captura de QA deve vir da saída do processo do Vael.

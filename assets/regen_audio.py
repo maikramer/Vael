@@ -6,13 +6,12 @@ script lê-os e mapeia cada linha para o CLI ``text2sound`` (perfil, categoria,
 duração, seed) — o mesmo contrato que o ``gameassets resume`` usa. Diferenças:
 prompts curados sem injeção de mood, ``--no-enhance`` por omissão, tier
 ``highest`` (24 steps) e, para BGM, um **gate de costura** que re-rola a seed
-(+1000, até 3 tentativas) até a cauda do loop ficar ≥70% do corpo (o outro
+(+1000, até 6 tentativas) até a cauda do loop ficar ≥70% do corpo (o outro
 musical varia por geração — ver
 docs/findings/TEXT2SOUND_SA3_LOOP_FINDINGS.md).
 
-One-shots (perfil ``effects``) saem a -16 LUFS / -1 dBTP: muitos a tocar em
-combate não podem somar picos acima do bus. Música e ambiência ficam no
-mastering do tier (-14 LUFS).
+One-shots pedem -16 LUFS / -1 dBTP. Loops de campo no checkpoint SFX
+pedem -19 LUFS / -3 dBTP, e os loops musicais usam o mastering do tier.
 
 Uso (a partir de Text2Sound/, que tem o venv com a tool):
     .venv/bin/python /path/to/regen_audio.py            # só o que falta em disco
@@ -28,6 +27,7 @@ import subprocess
 import sys
 import time
 from pathlib import Path
+from tempfile import TemporaryDirectory
 
 import yaml
 
@@ -57,10 +57,11 @@ def _tail_head_pct(path: Path) -> tuple[float, float] | None:
         import numpy as np
         import soundfile as sf
 
-        data, sr = sf.read(str(path))
-        m = data.mean(axis=1)
+        data, sr = sf.read(str(path), always_2d=True)
+        # Preserve channel energy for mono recordings and wide stereo beds.
+        energy = np.mean(data**2, axis=1)
         w = int(sr * 0.1)
-        prof = np.sqrt((m[: len(m) // w * w].reshape(-1, w) ** 2).mean(axis=1))
+        prof = np.sqrt(energy[: len(energy) // w * w].reshape(-1, w).mean(axis=1))
         body = float(np.median(prof))
         if body <= 0:
             return None
@@ -89,6 +90,40 @@ _KIND_BY_CATEGORY = {
 }
 
 
+def _check_signal(path: Path) -> None:
+    """Reject empty, non-finite or effectively silent decoded candidates."""
+    import numpy as np
+    import soundfile as sf
+
+    data, _ = sf.read(path, dtype="float32", always_2d=True)
+    if not data.size or not np.isfinite(data).all() or np.max(np.abs(data)) < 10 ** (-55 / 20):
+        raise ValueError("sinal vazio, inválido ou abaixo de -55 dBFS")
+
+
+def _shape_tone(path: Path, lowpass_hz: int, makeup_db: float) -> None:
+    """Apply the authored four-pole treble roll-off before publishing the clip."""
+    filtered = path.with_suffix(".filtered.ogg")
+    subprocess.run(
+        [
+            "ffmpeg",
+            "-v",
+            "error",
+            "-y",
+            "-i",
+            str(path),
+            "-af",
+            f"lowpass=f={lowpass_hz},lowpass=f={lowpass_hz},volume={makeup_db}dB",
+            "-c:a",
+            "libvorbis",
+            "-q:a",
+            "8.5",
+            str(filtered),
+        ],
+        check=True,
+    )
+    filtered.replace(path)
+
+
 def _stamp_sidecar(out: Path, row: dict, quality: str, seed: int | None) -> None:
     """Repõe proveniência no .json ao lado do áudio.
 
@@ -97,10 +132,7 @@ def _stamp_sidecar(out: Path, row: dict, quality: str, seed: int | None) -> None
     sem depender do worker (e sem re-gerar).
     """
     p = Path(str(out) + ".json")
-    try:
-        data = json.loads(p.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        return
+    data = json.loads(p.read_text(encoding="utf-8"))
     data.setdefault("profile", row["profile"])
     data.setdefault("quality", quality)
     if quality == "highest":
@@ -113,6 +145,9 @@ def _stamp_sidecar(out: Path, row: dict, quality: str, seed: int | None) -> None
         if kind:
             data.setdefault("audio_kind", kind)
     data.setdefault("manifest", row["manifest"])
+    if row.get("lowpass_hz"):
+        data["lowpass_hz"] = row["lowpass_hz"]
+        data["makeup_db"] = row["makeup_db"]
     if seed:
         data.setdefault("seed_effective", seed)
     p.write_text(json.dumps(data, indent=2, ensure_ascii=False), encoding="utf-8")
@@ -139,6 +174,9 @@ def load_rows() -> list[dict]:
                     "category": (asset.get("category") or "").strip() or None,
                     "profile": profile,
                     "duration": duration,
+                    "field_loop": bool(audio.get("seamless_loop", False)) and profile == "effects",
+                    "lowpass_hz": audio.get("lowpass_hz"),
+                    "makeup_db": float(audio.get("makeup_db", 0)),
                     "seed": int(asset.get("seed", 0)),
                     # Legado de outros exemplos (racer): fica no pool mas não
                     # entra na regeneração por omissão.
@@ -149,6 +187,12 @@ def load_rows() -> list[dict]:
 
 
 def main() -> int:
+    AUDIO_ROOT.mkdir(parents=True, exist_ok=True)
+    with TemporaryDirectory(dir=AUDIO_ROOT) as work:
+        return generate(Path(work))
+
+
+def generate(work: Path) -> int:
     force = "--force" in sys.argv
     quality = "highest"
     if "--quality" in sys.argv:
@@ -163,7 +207,6 @@ def main() -> int:
         # aceita ids exatos, sufixos (hit) ou prefixos de pasta (sfx, bgm, sfx/ui)
         only = set(sys.argv[sys.argv.index("--only") + 1].split(","))
 
-    AUDIO_ROOT.mkdir(parents=True, exist_ok=True)
     rows = load_rows()
     if only is not None:
 
@@ -190,6 +233,10 @@ def main() -> int:
             continue
 
         out.parent.mkdir(parents=True, exist_ok=True)
+        candidate = work / f"{row['id']}.ogg"
+        candidate.parent.mkdir(parents=True, exist_ok=True)
+        ambient = row["category"] == "environment"
+        loop = row["field_loop"] or row["profile"] == "music"
         cmd = [
             *T2S,
             "generate",
@@ -199,33 +246,49 @@ def main() -> int:
             "--quality",
             quality,
             "--vramd-priority",
-            "interactive",
+            "batch",
             "--duration",
             str(row["duration"]),
             "-f",
             "ogg",
             "-o",
-            str(out),
+            str(candidate),
         ]
         if not enhance:
             # Prompts são autorais (Coro de Vael): o enhancer genérico aterra
             # "driving rhythm" em temas lentos e dilui a direção.
             cmd.append("--no-enhance")
-        if row["profile"] == "effects":
+        if row["field_loop"]:
+            # Select the field-effects checkpoint explicitly: environment otherwise selects Music.
+            cmd.extend(
+                [
+                    "--model",
+                    "sfx",
+                    "--seamless-loop",
+                    "--crossfade-ms",
+                    "800",
+                    "--loop-edge-trim",
+                    "1",
+                    "--lufs",
+                    "-19",
+                    "--true-peak",
+                    "-3",
+                ]
+            )
+        elif row["profile"] == "effects":
             # One-shots: -14 LUFS empilhava picos em combate. Música/ambiência
             # ficam no mastering do tier.
             cmd.extend(["--lufs", "-16", "--true-peak", "-1.0"])
         if row["category"]:
             cmd.extend(["--category", row["category"]])
 
-        ambient = (row["category"] or "") == "environment"
         # Ambiência é mais errática no outro; 5 seeds custam ~2 min e evitam
         # um loop com fade audível. BGM em 6 (17 s cada): o deserto/pântano
         # fecham com cauda curta em várias seeds.
         attempts = 5 if ambient else (6 if row["profile"] == "music" else 1)
         # Ambiência não tem cadência musical: o outro do SA3 é mais curto e a
         # cauda pode ser naturalmente esparsa (água, chuva). 70% é o gate de
-        # MÚSICA; para `environment`/ambient_loop 45% já evita o fade audível.
+        # MÚSICA; para `environment`/ambient_loop 30% já evita o fade audível.
         # O teto do INÍCIO (250%) evita o "blast" de intro a repetir a cada
         # loop (pássaro/gusto no primeiro meio segundo).
         if ambient:
@@ -245,20 +308,16 @@ def main() -> int:
             elapsed = time.time() - t0
             if result.returncode != 0:
                 break
-            th = _tail_head_pct(out) if row["profile"] == "music" else None
-            if row["profile"] != "music" or (
-                th
-                and th[0] >= min_tail
-                and min_head <= th[1] <= max_head
-            ):
+            th = _tail_head_pct(candidate) if loop else None
+            if not loop or (th and th[0] >= min_tail and min_head <= th[1] <= max_head):
                 accepted = True
                 break
-            print(f"  ↻ seed {gen_seed}: cauda={th[0]:.0f}% início={th[1]:.0f}% — re-roll")
+            print(f"  ↻ seed {gen_seed}: cauda/início (% do corpo) = {th} — re-roll")
             gen_seed += 1000
 
-        if accepted or (result is not None and result.returncode == 0 and row["profile"] != "music"):
-            dur = _probe_duration(out)
-            if row["profile"] == "music":
+        if accepted:
+            dur = _probe_duration(candidate)
+            if loop:
                 # BGM seamless: contrato exacto (-d).
                 good = dur is not None and abs(dur - row["duration"]) <= 0.25
             else:
@@ -267,8 +326,18 @@ def main() -> int:
                 # Só rejeitar patologia grosseira (janelas não trimmadas).
                 good = dur is not None and dur <= max(row["duration"] * 2.5, 4.5)
             if good:
+                try:
+                    if row["lowpass_hz"]:
+                        _shape_tone(candidate, row["lowpass_hz"], row["makeup_db"])
+                    _check_signal(candidate)
+                    _stamp_sidecar(candidate, row, quality, gen_seed)
+                except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as error:
+                    print(f"  ✗ acabamento: {error}")
+                    fail += 1
+                    continue
+                candidate.replace(out)
+                Path(str(candidate) + ".json").replace(Path(str(out) + ".json"))
                 ok += 1
-                _stamp_sidecar(out, row, quality, gen_seed)
                 print(f"  ✓ {out.stat().st_size} bytes in {elapsed:.1f}s ({dur:.2f}s)")
             else:
                 fail += 1
@@ -283,7 +352,7 @@ def main() -> int:
             print("    " + "\n    ".join(useful))
         else:
             fail += 1
-            th = _tail_head_pct(out)
+            th = _tail_head_pct(candidate)
             print(f"  ✗ gate de loop abaixo do limiar após {attempts} seeds ({th})")
 
     total_time = time.time() - start_all

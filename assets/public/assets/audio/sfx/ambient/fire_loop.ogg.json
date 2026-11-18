@@ -1,24 +1,24 @@
 {
-  "prompt": "Close campfire crackling, warm wood popping and hissing, gentle flames, cozy night ambience, no music, no melody",
+  "prompt": "Small sheltered wood fire, warm low flame flutter and occasional soft dry wood ticks, open air at a few metres distance, gentle consistent bed, natural field recording.",
   "duration": 16.0,
-  "model_id": "stabilityai/stable-audio-3-small-music",
+  "model_id": "stabilityai/stable-audio-3-small-sfx",
   "seamless_loop": true,
   "crossfade_ms": 800.0,
   "loop_edge_trim_s": 1.0,
   "mastering": {
-    "lufs_target": -14.0,
+    "lufs_target": -19.0,
     "high_pass_hz": 25.0,
-    "compressor_preset": "glue",
+    "compressor_preset": null,
     "compressor_enabled": true,
-    "true_peak_db": -0.1,
+    "true_peak_db": -3.0,
     "headroom_db": 0.3
   },
   "ogg_quality": 0.85,
-  "profile": "music",
+  "profile": "effects",
   "quality": "highest",
   "steps": 24,
   "category": "environment",
   "audio_kind": "ambient_loop",
   "manifest": "audio-ambience",
-  "seed_effective": 614
+  "seed_effective": 811
 }

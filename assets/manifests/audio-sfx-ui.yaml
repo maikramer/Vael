@@ -6,7 +6,7 @@ meshes_subdir: meshes/audio
 images_subdir: images/audio
 assets:
   - id: sfx/ui/coin
-    idea: Bright coin pickup, small metallic chime with a short sparkle, close, no reverb
+    idea: A single small brass coin dropping into a leather purse, one warm metallic clink and a soft leather tap, dry and short
     kind: prop
     category: collectible
     pipeline:
@@ -14,7 +14,9 @@ assets:
     audio:
       duration: 0.5
       profile: effects
-    seed: 509
+      lowpass_hz: 3800
+      makeup_db: 9
+    seed: 816
   - id: sfx/ui/buy
     idea: Merchant purchase confirmation, warm chime with a coin clink, short and satisfying
     kind: prop
@@ -54,6 +56,7 @@ assets:
     audio:
       duration: 0.6
       profile: effects
+      lowpass_hz: 6200
     seed: 513
   - id: sfx/ui/levelup
     idea: Triumphant level-up fanfare, rising wordless choir and harp flourish, bright and rewarding

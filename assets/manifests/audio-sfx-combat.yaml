@@ -15,17 +15,18 @@ assets:
     audio:
       duration: 0.6
       profile: effects
+      lowpass_hz: 7200
     seed: 201
   - id: sfx/combat/swing
-    idea: Quick sword swing through air, fast blade swish with a short low whoosh, no tone
+    idea: Single close foley pass of a broad blade through air, a clear midrange rush that rises then cuts off quickly, dry isolated action sound
     kind: prop
     category: weapon
     pipeline:
       - audio
     audio:
-      duration: 0.5
+      duration: 0.9
       profile: effects
-    seed: 401
+    seed: 1401
   - id: sfx/combat/chop_hit
     idea: Axe blade biting into a tree trunk, heavy woody impact with a short sharp crack, close
     kind: prop
