@@ -247,13 +247,16 @@ no `config.yaml`). Sem o crate, as sombras voltam a ser as da engine (o
 
 ## Limites conhecidos
 
-- As sombras de nuvem do crate não caem no terreno do Vael (os materiais não
-  têm `GroundExtension`/`WeatheredExtension`); o `player_cloud_shadow` de
-  `env_info` já vem do readback do crate.
+- A sombra das nuvens cai no terreno e nos props exteriores
+  ([`GROUND.md`](GROUND.md)). `VAEL_SURFACE=0` desliga essa sombra e a troca
+  de materiais. O `player_cloud_shadow` de `env_info` continua a vir do
+  readback do crate.
 - O crate fica no local de **céu/clima**; terreno, hidrologia e água do crate
   estão desligados (`TerrainPlugin`, `WaterPlugin`, …), porque o mundo é
-  `.ahgt` estático com rios/poços autorais.
-- Props não recebem molhado/neve do crate (`WeatheredMaterial`); as árvores
-  recebem-no via `bevy_flora` (`FloraWind`/`FloraWetness`), não pelo crate.
+  `.ahgt` estático com rios/poços autorais. O manto de neve é do terreno do
+  Vael, não do `GroundCoverPlugin`.
+- Props exteriores usam `WeatheredMaterial` (molhado, listas de chuva, neve
+  nas faces de cima). As árvores recebem vento, molhado e neve via
+  `bevy_flora`. Sem abrigo por instância: o material é partilhado.
 - O crate é novo (0.8.0, `Vibe Coded` no README). O gate `VAEL_ELEMENTS` e o
   A/B acima existem para o poder desligar sem reescrever o mundo.

@@ -53,7 +53,15 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "flatten-window", value: "72" },
                 bevy_world_xml::bsn::WorldProp { key: "flatten-max-grade", value: "0.34" },
                 bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/cobblestone_road/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "4" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "3.5" },
+                // Igual ao chão da praça (roads.bsn): mesma textura, escala,
+                // cor, feather e ruído ⇒ o MESMO grupo de pavimento, logo uma
+                // só malha e nenhuma costura dentro da cidade. Feather curto
+                // (1 m): o de 3,5 m da mancha antiga comia a rua.
+                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#9d9891" },
+                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
+                bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.11" },
+                bevy_world_xml::bsn::WorldProp { key: "paving-feather", value: "1" },
             ],
             text: "",
             origin_file: "world/paths/network.xml",

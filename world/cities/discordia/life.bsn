@@ -37,8 +37,8 @@ bevy_ecs::hierarchy::Children [
     bevy_ecs::hierarchy::Children [
         #"banco-mercado-1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 11.9, y: 0.0, z: -20.9 },
-            rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
+            translation: glam::Vec3 { x: 9.3, y: 0.064, z: -23.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.000000, z: 0.0, w: 1.000000 },
             scale: glam::Vec3 { x: 0.85, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
@@ -50,8 +50,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "banco-mercado-1" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "11.9 0.0 -20.9" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.3 0.064 -23.4" },
             ],
             text: "",
             origin_file: "world/cities/discordia/life.xml",
@@ -81,8 +82,8 @@ bevy_ecs::hierarchy::Children [
         --
         #"banco-mercado-2"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 9.1, y: 0.0, z: -19.6 },
-            rotation: glam::Quat { x: 0.0, y: -0.21644, z: 0.0, w: 0.976296 },
+            translation: glam::Vec3 { x: 11.4, y: 0.064, z: -23.4 },
+            rotation: glam::Quat { x: 0.0, y: 0.000000, z: 0.0, w: 1.000000 },
             scale: glam::Vec3 { x: 0.85, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
@@ -94,8 +95,9 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 0 0" },
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "banco-mercado-2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.1 0.0 -19.6" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "11.4 0.064 -23.4" },
             ],
             text: "",
             origin_file: "world/cities/discordia/life.xml",
@@ -125,7 +127,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"banner-plaza-n"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 37.599998 },
+            translation: glam::Vec3 { x: 6.8, y: 0.0, z: 33.8 },
             rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -139,7 +141,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-n" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.0 0.0 37.599998" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.8 0 33.8" },
             ],
             text: "",
             origin_file: "world/cities/discordia/life.xml",
@@ -169,7 +171,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"banner-plaza-s"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: -37.599998 },
+            translation: glam::Vec3 { x: -6.8, y: 0.0, z: -33.8 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -183,7 +185,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-s" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.0 0.0 -37.599998" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.8 0 -33.8" },
             ],
             text: "",
             origin_file: "world/cities/discordia/life.xml",
@@ -213,7 +215,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"banner-plaza-e"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 37.599998, y: 0.0, z: 0.0 },
+            translation: glam::Vec3 { x: 33.8, y: 0.0, z: -4.0 },
             rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -227,7 +229,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-e" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "37.599998 0.0 0.0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "33.8 0 -4" },
             ],
             text: "",
             origin_file: "world/cities/discordia/life.xml",
@@ -257,7 +259,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"banner-plaza-w"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -37.599998, y: 0.0, z: 0.0 },
+            translation: glam::Vec3 { x: -33.8, y: 0.0, z: 4.0 },
             rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -271,7 +273,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "banner-plaza-w" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-37.599998 0.0 0.0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-33.8 0 4" },
             ],
             text: "",
             origin_file: "world/cities/discordia/life.xml",
@@ -603,6 +605,96 @@ bevy_ecs::hierarchy::Children [
                 pose: true,
             }
             jackdaw_scene_types::node_id::SceneNodeId(1778520277479144676)
+        ]
+        --
+        #"banco-poco-oeste"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -9.0, y: 0.064, z: 3.2 },
+            rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
+            scale: glam::Vec3 { x: 0.85, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0; scale: 0.85 1 1" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banco-poco-oeste" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-9 0.064 3.2" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 20],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3850010844587240870)
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 20, 0],
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(737264226209638483)
+        ]
+        --
+        #"banco-poco-norte"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: -6.9, y: 0.064, z: 7.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.996195, z: 0.0, w: 0.087156 },
+            scale: glam::Vec3 { x: 0.85, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ColliderSpec {
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/village/wooden_bench_collision.glb", base: true },
+        }
+        bevy_ext_scene::BodySpec {
+            kind: bevy_ext_scene::BodyKind::Fixed,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 170 0; scale: 0.85 1 1" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "banco-poco-norte" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-6.9 0.064 7" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/life.xml",
+            origin_path: [0, 21],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(469802572441530214)
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene wooden_bench"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "GltfScene",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/village/wooden_bench_lod0.glb" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/life.xml",
+                origin_path: [0, 21, 0],
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(1561243887971577836)
         ]
     ]
 ]

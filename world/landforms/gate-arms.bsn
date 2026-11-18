@@ -35,58 +35,6 @@ bevy_ecs::hierarchy::Children [
     }
     jackdaw_scene_types::node_id::SceneNodeId(1551948037216085572)
     bevy_ecs::hierarchy::Children [
-        #"braco-oeste"
-        bevy_ext_terrain::voxel::VoxelCliff {
-            name: "braco-oeste",
-            path: [
-                [-36.0, 66.0],
-                [-42.0, 90.0],
-                [-47.0, 112.0],
-            ],
-            width: 7.0,
-            height: core::option::Option::Some(9.0),
-            profile: "concave",
-            side: "right",
-            noise: 0.25,
-            gullies: 0.2,
-            talus: true,
-            seed: 81,
-        }
-        --
-        #"ombro-capela-baixo"
-        bevy_ext_terrain::voxel::VoxelCliff {
-            name: "ombro-capela-baixo",
-            path: [
-                [30.0, 54.0],
-                [36.0, 66.0],
-                [41.0, 82.0],
-            ],
-            height: core::option::Option::Some(5.0),
-            profile: "convex",
-            side: "left",
-            noise: 0.3,
-            talus: true,
-            seed: 82,
-        }
-        --
-        #"ombro-capela-alto"
-        bevy_ext_terrain::voxel::VoxelCliff {
-            name: "ombro-capela-alto",
-            path: [
-                [41.0, 82.0],
-                [45.0, 98.0],
-                [43.0, 116.0],
-            ],
-            width: 8.0,
-            height: core::option::Option::Some(9.0),
-            profile: "concave",
-            side: "left",
-            noise: 0.25,
-            gullies: 0.18,
-            talus: true,
-            seed: 83,
-        }
-        --
         #TerrainPad
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },

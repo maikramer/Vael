@@ -67,24 +67,81 @@ Cada célula lê os 8 vizinhos e molda o contorno:
 | **recto / interior** | vértice simples. |
 | **aresta partilhada com outro material** | vértice simples e **sem** feather: a fronteira entre dois materiais fica na linha da grelha (é um lancil, não uma nuvem). |
 
-Arestas subdivididas a ≤ 1 m antes de triangular, e a leque a partir do centro
-da célula: o interior acompanha o declive, e as arestas interiores de duas
-células partilham posições exactas (sem fendas).
+### Borda orgânica (o que impede a laje)
 
-### Seamless
+Os arcos de canto resolvem o vértice, não a **silhueta**: uma praça de 36 m com
+cantos de 1 m continua a ler-se como um retângulo, e um rim diagonal é uma
+escada de células. Três coisas, por esta ordem, é que fazem a diferença:
 
-UVs são **world-space** (`[x / texture-scale, z / texture-scale]`), como nos
-decals: o padrão de pedra é um campo contínuo sobre a praça, as ruas e os
-apetrechos. Não há frame de UV por nó para alinhar, e como agora é uma malha
-só, a continuidade vê-se.
+**1. O contorno é suavizado em conjunto, não por célula.** Uma célula só vê o
+seu próprio canto, por isso cada uma contribuía com o seu arco e o resultado era
+uma fila de escamas de peixe. O `smooth_rims` junta **todos** os segmentos de
+fronteira (rim e costura) de todas as células numa polilinha indexada pela
+posição no mundo, e relaxa cada nó contra os seus dois vizinhos *ao longo da
+fronteira*. Duas células que partilham um nó lêem o mesmo deslocamento, por isso
+a malha continua estanque. O nó que não tem exactamente dois vizinhos de
+fronteira — fim de linha, pinça, ou o fim de um rim contra uma costura — fica
+preso.
 
-### Uma malha por (material, chunk)
+O orçamento é sobre o deslocamento **total** (`0,45 × módulo`), não por passagem:
+com o limite por passagem o vértice migrava um orçamento a cada passagem e o
+contorno dobrava-se sobre si mesmo.
 
-As células são fundidas por grupo de material e por balde de 64 m
-(`paving-chunk`), e cada balde é separado em **miolo opaco** + **borda
-blended** pelo mesmo `split_ground_surface` dos decals. Numa cidade que eram
-dezenas de draws transparentes sobre a praça, sobram ~6 — e o passe
-transparente fica só na rampa de feather.
+**2. O lancil opaco não ondula.** `paving-wobble` automático é 0: deslocar o
+bordo 0,9 m (o antigo `0,45 × módulo`) transformava uma rua de 4 m numa
+mancha. O `noise` / `edge-noise` só faz a **largura do feather** respirar,
+com as mesmas harmónicas de posição no mundo (~22 m, ~14 m, ~9 m), para a
+faixa não parecer uma risca pintada. Um `paving-wobble` explícito ainda
+desloca o bordo, com tecto `0,35 × módulo`.
+
+**De onde vem a direção é o contrato.** Não pode vir do contorno da célula:
+duas células que partilham um vértice construíram contornos diferentes e
+deslizariam o mesmo ponto em sentidos opostos, rasgando a superfície. Vem da
+**ocupação da grelha** (`PavingGrid::rim_dir`), que é a mesma pergunta para
+todos os donos:
+
+| Situação no ponto da grelha | Direção |
+|---|---|
+| célula nossa de um lado, **nada** do outro | a normal dessa linha — as duas células ao longo dela concordam, por isso o rim ondula **através** das fronteiras, sem serrilha de 2 m |
+| uma célula nossa, três vazias | a diagonal para fora → o canto arredonda |
+| duas células nossas opostas | a normal da recta |
+| **outro material** de qualquer lado | não mexe: é costura, e o outro lado calcularia o contrário |
+| interior da célula (arcos, tangentes) | normal mitrada local, só quando o canto é suave (≤60°) |
+
+**3. Uma estrada é uma fita, não uma escada de células.** A grelha continua
+a decidir quem é dono do chão (praça, rua-rectângulo, outro material), mas a
+malha de um `<Road paving>` / `<RoadNetwork paving>` é a polilinha já
+suavizada (Chaikin, estações a 1 m) extrudida a `half-width`, com mitra.
+Largura autoriada, não o módulo. Onde a fita entra numa área (praça, rua
+larga) ou num corredor mais largo (empate: o que vem depois no ficheiro),
+pára na fronteira — não atravessa por cima, senão as duas superfícies
+coplanares piscam. O ruído (`edge-noise`) só faz a faixa de feather respirar;
+o lancil opaco não ondula. `paving-wobble` automático é 0.
+
+**4. A banda de feather submete-se à curvatura.** Ela é emitida por **nó** (não
+por segmento), com direção mitrada para não abrir uma cunha num canto, e:
+
+- o **ruído do rim desvanece-se ao longo dos anéis** (`wob * (1 − t)`), por isso
+  os anéis exteriores são deslocamentos do rim *suave*, cuja curvatura é muito
+  maior do que a banda;
+- a **largura é limitada pelo raio de curvatura local** (`0,8 × R`, com `R`
+  estimado do ângulo entre segmentos consecutivos), para uma esquina apertada
+  levar uma banda estreita em vez de uma invertida;
+- o raio de curvatura só conta quando os **dois** segmentos adjacentes são de
+  fronteira. Um nó do rim é muitas vezes também o canto da *célula*, onde o
+  segmento seguinte é uma aresta interior: tomar esse 90° como curvatura
+  apertava a banda uma vez por célula, e daí o mosaico de triângulos ao longo do
+  lancil.
+
+Por último, a rampa de alpha é linear por triângulo, por isso com poucos anéis a
+diagonal de cada quad lê-se como uma faceta — `FEATHER_RINGS = 5`.
+
+Na **costura entre materiais** a banda é do material que fica por cima no
+ficheiro (`SEAM_LIFT = 1,5 mm` acima do outro) e, quando o traçado é igual nos
+dois nós, os dois pertencem ao **mesmo grupo**: mesma textura, escala, cor,
+`roughness`, feather, ruído, canto e wobble ⇒ uma malha só e nenhuma costura.
+Foi assim que a cidade deixou de ter costura entre a praça e a rede de
+artérias — o `priority` decide quem fica com a célula, não que material é.
 
 ## Camadas (lifts)
 
@@ -107,8 +164,7 @@ determinística em vez de as duas partilharem um plano.
 
 Um decal cujo **centro** o pavimento cobre sobe sozinho para a faixa
 `on-paving` (`stack_decal_lifts` pergunta `paving.covers(at)`): o pavimento é
-um chão, e um decal autorado nesse chão deve ver-se. É o que mantém a mancha
-de terra do mercado — pintada sobre a praça — visível sem tocar no `.bsn`.
+um chão, e um decal autorado nesse chão deve ver-se.
 `on-paving="1"` fica como força explícita para o decal cujo centro calha fora
 do pavimento mas que deve ficar por cima mesmo assim.
 
@@ -126,8 +182,8 @@ A migração é um atributo; nenhum nó muda de tag.
 <Terrain … paving-cell="2" />
 
 <!-- praça / largo / apetrecho: o retângulo vira células -->
-<GroundDecal name="city.plaza.floor" at="0 0" size="34 34" paving="1"
-             paving-priority="20" feather="3.5"
+<GroundDecal name="city.plaza.floor" at="0 0" size="24 24" paving="1" paving-round="1"
+             paving-priority="20" feather="1"
              texture="/assets/textures/cobblestone_road/albedo.ktx2"
              texture-scale="3.5" base-color="#9d9891" roughness="0.9" />
 
@@ -136,7 +192,7 @@ A migração é um atributo; nenhum nó muda de tag.
 <RoadNetwork … paving="1" />
 
 <!-- inset por cima do pavimento (cova de árvore, remendo) -->
-<GroundDecal name="oak.pit.ne" at="15 13" radius="2.8" on-paving="1" … />
+<GroundDecal name="exemplo.marca" at="15 13" radius="2.8" on-paving="1" … />
 ```
 
 | Atributo | Onde | O que faz |
@@ -163,9 +219,17 @@ não chão.
 
 ## O que está migrado hoje
 
-- `world/cities/discordia/roads.bsn` — a praça (priority 20), as 4 ruas
-  (priority 10) e os 6 apetrechos de portão. As 4 covas de árvore ficam
-  `<GroundDecal on-paving="1">`: são insets deliberados.
+- Em `world/cities/discordia/roads.bsn`, as quatro ruas de calçada ligam a
+  praça circular aos arcos da muralha. Nos quatro encontros com a rua
+  circular, o gerador reúne os ramais com a mesma extremidade e constrói o
+  patamar com o material e a meia-largura do ramal mais largo. A rosa dos
+  ventos ocupa os 8 × 8 m
+  centrais. O UV usa coordenadas do mundo e a imagem repete na origem, pelo
+  que o centro do desenho cai na junção dos quatro cantos da textura.
+- O adro da capela usa seixos, a forja usa cascalho e o mercado tem um piso de
+  terra batida entre os dois arcos (`market.bsn`). O tapete do mercado assenta
+  acima da cota do pavimento. Os terreiros, as caldeiras das árvores e os
+  caminhos até às portas estão pintados em `world.data/terrain.ahgt.paint`.
 - `world/paths/network.bsn` — o `<RoadNetwork>` inteiro. É isto que elimina o
   decal-sobre-decal de hoje: as 21 ribbons de calçada atravessavam a praça e as
   ruas.
@@ -211,17 +275,21 @@ Os testes do módulo cobrem: ocupação única com prioridades, recto sem arcos,
 L com chanfro no convexo e filete no côncavo, **nenhum canto de contorno a
 virar mais de 45°** a meio módulo, arestas interiores coincidentes (sem fenda),
 drape (`|y − (sample + lift)| < 1 mm` numa colina), feather a chegar a alpha 0,
-UVs world-space, winding +Y em todos os triângulos, determinismo por hash e a
-contagem de malhas por (grupo, chunk). No `features.rs`: um decal pavimentado
-não desenha, a faixa de lift de cada tipo de decal, o `RoadPath` de uma estrada
-pavimentada continua registado, e o disco de junção desaparece.
+UVs world-space, winding +Y em todos os triângulos, determinismo por hash, a
+contagem de malhas por (grupo, chunk), a fita diagonal na meia-largura
+autoriada, o cruzamento em que a rua mais estreita pára no bordo da larga, e
+o rectângulo de rua que não é puxado para a artéria. No `features.rs`: um
+decal pavimentado não desenha, a faixa de lift de cada tipo de decal, o
+`RoadPath` de uma estrada pavimentada continua registado, e o disco de junção
+desaparece.
 
 ## O que ficou de fora
 
-- **Wobble da aresta pavimentada.** O `noise` mexe só na borda exterior da
-  feather. Deslocar a própria aresta (inward-only) é possível e seguro, mas
-  mexe na garantia de "sem fenda" entre células, e o lancil direito é o que se
-  quer numa praça.
+- **Cantos de praça maiores do que meio módulo.** O arco de canto de uma área
+  vive dentro de uma célula; um raio de 4 m numa praça de 36 m precisaria de
+  um contorno por região. As estradas não passam por aí: a fita usa a
+  polilinha. Hoje o canto de uma área arredonda pelo chanfro (≤ 1 m a 2 m de
+  módulo).
 - **Feather entre materiais.** Ver acima.
 - **Precificação de navegação por célula.** Não é preciso hoje: as estradas
   pavimentadas mantêm o `RoadPath` (que vira `NavRoad`) e a praça está sobre um

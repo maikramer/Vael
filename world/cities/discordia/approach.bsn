@@ -1987,6 +1987,27 @@ bevy_ecs::hierarchy::Children [
         bevy_transform::components::transform::Transform
         jackdaw_scene_types::node_id::SceneNodeId(9207754130614595481)
         bevy_ecs::hierarchy::Children [
+            #"carreta-descarga-mercado"
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 32.6, y: 0.0, z: -19.8 },
+                rotation: glam::Quat { x: 0.0, y: -0.069756, z: 0.0, w: 0.997564 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "Use",
+                attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "prototype", value: "carreta" },
+                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "32.6 0 -19.8" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -8 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "name", value: "carreta-descarga-mercado" },
+                ],
+                text: "",
+                origin_file: "world/cities/discordia/approach.xml",
+                origin_path: [7, 120],
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(3266257879902104616)
+            --
             #"canteiro-portao-leste-2"
             bevy_transform::components::transform::Transform {
                 translation: glam::Vec3 { x: 30.5, y: 0.0, z: -5.5 },
@@ -2297,16 +2318,16 @@ bevy_ecs::hierarchy::Children [
         bevy_ecs::hierarchy::Children [
             #"carreta-portao"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 7.0, y: 0.0, z: 24.5 },
-                rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
+                translation: glam::Vec3 { x: 6.8, y: 0.0, z: 15.5 },
+                rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Use",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "prototype", value: "carreta" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "7 0 24.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -18 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "6.8 0 15.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -15 0" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "carreta-portao" },
                 ],
                 text: "",
@@ -2318,16 +2339,16 @@ bevy_ecs::hierarchy::Children [
             --
             #"varal-portao"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 9.5, y: 0.0, z: 31.5 },
-                rotation: glam::Quat { x: 0.0, y: 0.034899, z: 0.0, w: 0.999391 },
+                translation: glam::Vec3 { x: 20.0, y: 0.0, z: 7.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.675590, z: 0.0, w: 0.737277 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_world_xml::bsn::WorldNode {
                 tag: "Use",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "prototype", value: "varal-roupa" },
-                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "9.5 0 31.5" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 4 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "pos", value: "20 0 7" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 85 0" },
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "varal-portao" },
                 ],
                 text: "",
@@ -2962,7 +2983,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"barril-portao-a"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 5.6, y: 0.62, z: 14.4 },
+                translation: glam::Vec3 { x: 8.7, y: 0.0, z: 15.4 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -2976,7 +2997,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "barril-portao-a" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "5.6 0.62 14.4" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.7 0 15.4" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/approach.xml",
@@ -3006,7 +3027,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"barril-portao-b"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 4.8, y: 0.62, z: 13.5 },
+                translation: glam::Vec3 { x: 8.9, y: 0.0, z: 16.2 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3020,7 +3041,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "barril-portao-b" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "4.8 0.62 13.5" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "8.9 0 16.2" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/approach.xml",
@@ -3050,7 +3071,7 @@ bevy_ecs::hierarchy::Children [
             --
             #"barril-portao-c"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 6.4, y: 0.62, z: 15.2 },
+                translation: glam::Vec3 { x: 9.5, y: 0.0, z: 15.4 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3064,7 +3085,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "barril-portao-c" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.4 0.62 15.2" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.5 0 15.4" },
                 ],
                 text: "",
                 origin_file: "world/cities/discordia/approach.xml",

@@ -255,6 +255,10 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   rig e o `viber.state` apontam para entidades da subárvore. A/B:
   `VIBER_GLTF_STREAMING=0` volta ao tudo-no-arranque. Detalhe:
   `docs/DEBUG.md`; a prontidão conta só os pendentes do anel (`world_ready.rs`).
+- **Chão e clima** ([`docs/GROUND.md`](docs/GROUND.md)): manto de neve na janela
+  do herói (`VAEL_SNOW=0`), rastos (`VAEL_TRAILS=0`) e sombra de nuvem no
+  terreno e nos props exteriores (`VAEL_SURFACE=0`). O terreno, a hidrologia
+  e a água do `bevy_elements` continuam desligados.
 - **Relva**: o renderer é o crate `bevy_ext_grass` (em
   `../bevy_extensions/crates/bevy_ext_grass`) sobre `bevy_grass`; o Vael só
   tem o adaptador `src/grass.rs` (regras do `TerrainRuntime`, layout dos
@@ -281,7 +285,12 @@ gate `cargo test --release --test qa_scenarios`), `qa.py scene quest <id>`
   tubos `Subtract`. Sem monte, uma boca horizontal só existe em encosta.
 - **Pavimento**: `paving="1"` num `<GroundDecal>` faz dele uma **área** de
   grelha, não um decal — as arestas snapam para fora e crescem ≤1 módulo
-  (7 m de rua → 8 m a 2 m de módulo). Um decal que caia por baixo do pavimento
+  (7 m de rua → 8 m a 2 m de módulo). A aresta **não** fica na grelha: o
+  rim ondula (`paving-wobble`, auto 0,35 do módulo) e os cantos arredondam. A
+  direção desse deslocamento vem da **ocupação da grelha**
+  (`PavingGrid::rim_dir`), nunca do contorno da célula — duas células que
+  partilham um vértice têm contornos diferentes e deslocá-lo-iam em sentidos
+  opostos, rasgando a malha. Um decal que caia por baixo do pavimento
   **desaparece** (o pavimento é uma camada); o que tem o centro coberto sobe
   sozinho para `on-paving`. As estradas pavimentadas mantêm o `RoadPath` (nav,
   relva, `isPointOnRoad`) e só perdem a ribbon. Detalhe:
