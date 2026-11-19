@@ -105,10 +105,12 @@ OGG, sem lacunas de silêncio digital acima de 1 ms.
 
 ## Regerar e verificar
 
-O pool canónico é `assets/public/assets/audio`. Cada entrada em
+O pool canónico é `assets/public/assets/audio`. Cada receita de geração em
 `assets/manifests/audio-*.yaml` tem prompt, perfil e seed. O JSON ao lado do
 OGG regista o modelo e a seed aceite. O pack dos cinco veículos de corrida
-tem `legacy: true` e fica fora da regeneração habitual.
+tem `legacy: true` e fica fora da regeneração habitual. A cantiga de Vessa
+usa o OGG versionado como fonte (`source: lfs`). A auditoria mede o loop e
+`regen_audio.py` preserva a gravação mesmo com `--force`.
 
 ```bash
 cd assets

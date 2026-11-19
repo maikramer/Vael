@@ -169,6 +169,7 @@ def load_rows() -> list[dict]:
             rows.append(
                 {
                     "manifest": mf.stem,
+                    "from_lfs": asset.get("source") == "lfs",
                     "id": asset["id"],
                     "idea": asset["idea"].strip(),
                     "category": (asset.get("category") or "").strip() or None,
@@ -224,6 +225,14 @@ def generate(work: Path) -> int:
 
     for idx, row in enumerate(rows, 1):
         out = AUDIO_ROOT / f"{row['id']}.ogg"
+        if row["from_lfs"]:
+            if out.is_file():
+                skip += 1
+                print(f"  = {row['id']}: OGG fornecido via Git LFS")
+            else:
+                fail += 1
+                print(f"  ! {out}: falta o OGG do Git LFS", file=sys.stderr)
+            continue
         cat_label = row["category"] or "-"
         print(f"\n[{idx}/{total}] {row['id']} ({row['profile']}/{cat_label}, {row['duration']}s, seed {row['seed']})")
 

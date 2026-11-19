@@ -61,9 +61,10 @@ def main() -> int:
         clip = row["id"]
         path = AUDIO_ROOT / f"{clip}.ogg"
         try:
-            side = json.loads(path.with_suffix(".ogg.json").read_text(encoding="utf-8"))
-            if not side.get("model_id") or not side.get("prompt"):
-                raise ValueError("missing model or prompt in sidecar")
+            if not row["from_lfs"]:
+                side = json.loads(path.with_suffix(".ogg.json").read_text(encoding="utf-8"))
+                if not side.get("model_id") or not side.get("prompt"):
+                    raise ValueError("missing model or prompt in sidecar")
             duration, lufs, peak, treble = levels(path)
         except (OSError, ValueError, RuntimeError, subprocess.CalledProcessError) as err:
             problems.append(f"{clip}: {err}")
