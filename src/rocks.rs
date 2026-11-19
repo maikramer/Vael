@@ -1,4 +1,5 @@
 //! Quarry stones share seeded geometry, collision and surface maps across the world.
+mod crystal;
 mod restore;
 pub(crate) use restore::reload;
 pub(crate) mod snow;
@@ -26,19 +27,22 @@ impl Plugin for QuarryPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<Quarry>()
             .register_type::<QuarryStone>()
+            .register_type::<crystal::CrystalGrowth>()
             .add_observer(restore::remember)
             .add_systems(
                 viber::scene_loader::SceneLoad,
                 (|mut q: ResMut<Quarry>| q.removed.clear()).before(viber::recipes::spawn::startup),
             )
-            .add_systems(Update, (place, weather_stone).chain());
+            .add_systems(Update, (place, crystal::grow, weather_stone).chain());
     }
 }
 
 #[derive(Component, Reflect)]
 #[reflect(Component)]
 pub struct QuarryStone {
+    pub(crate) seed: u32,
     variant: u32,
+    segments: u8,
 }
 
 #[derive(Resource, Default)]
@@ -66,7 +70,7 @@ fn hash(mut n: u32) -> u32 {
     n ^ (n >> 16)
 }
 
-fn random(n: u32) -> f32 {
+pub(crate) fn random(n: u32) -> f32 {
     (hash(n) >> 8) as f32 / 16777216.
 }
 
@@ -134,7 +138,7 @@ impl Shape {
         (d * (cut * 0.92 + 0.08) + Vec3::Y * 0.69) * self.axes
     }
 
-    fn geometry(&self) -> (Mesh, Collider) {
+    fn geometry(&self, rotation: Quat) -> (Mesh, Collider) {
         let mut mesh = Sphere::new(1.).mesh().uv(32, 18);
         let Some(VertexAttributeValues::Float32x3(directions)) =
             mesh.attribute(Mesh::ATTRIBUTE_POSITION)
@@ -151,8 +155,8 @@ impl Shape {
                 self.point((d + axis * 0.045).normalize())
                     - self.point((d - axis * 0.045).normalize())
             };
-            positions.push(self.point(d));
-            normals.push(tangent(u).cross(tangent(v)).normalize_or(d).to_array());
+            positions.push(rotation * self.point(d));
+            normals.push((rotation * tangent(u).cross(tangent(v)).normalize_or(d)).to_array());
         }
         let hull = Collider::convex_hull(&positions).expect("solid quarry profile");
         mesh.insert_attribute(
@@ -165,6 +169,39 @@ impl Shape {
         mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
         (mesh, hull)
     }
+}
+
+fn segment_count(id: u32) -> u8 {
+    match id % 5 {
+        0 | 1 => 1,
+        2 | 3 => 2,
+        _ => 3,
+    }
+}
+
+/// Seat successively smaller blocks into the flank. Keep their convex pieces
+/// separate in physics so the indentations between blocks remain hittable.
+fn formation(id: u32) -> (Mesh, Collider) {
+    let (mut mesh, main) = Shape::new(id).geometry(Quat::IDENTITY);
+    let count = segment_count(id);
+    if count == 1 {
+        return (mesh, main);
+    }
+    let mut pieces = vec![(Vec3::ZERO, Quat::IDENTITY, main)];
+    let heading = TAU * random(id + 808);
+    for i in 1..u32::from(count) {
+        let a = heading + (i - 1) as f32 * (1.55 + 0.65 * random(id + 99));
+        let mut shape = Shape::new(id + i * 24);
+        let scale = if i == 1 { 0.73 } else { 0.54 };
+        shape.axes *= Vec3::new(scale, scale * (0.82 + 0.34 * random(id + i)), scale);
+        let offset = Vec3::new(a.cos(), 0., a.sin()) * (0.54 + 0.12 * random(id + i * 175));
+        let rotation = Quat::from_rotation_y(a + 1.3);
+        let (block, hull) = shape.geometry(rotation);
+        mesh.merge(&block.transformed_by(Transform::from_translation(offset)))
+            .expect("quarry segments share a vertex format");
+        pieces.push((offset, Quat::IDENTITY, hull));
+    }
+    (mesh, Collider::compound(pieces))
 }
 
 #[derive(Clone, Copy)]
@@ -187,7 +224,21 @@ impl Texel {
             1 => ([128., 119., 114.], 39. * (grain - 0.48) + 22. * vein),
             _ => ([146., 114., 85.], 15. * (bed * 31.).sin() + 13. * vein),
         };
-        let shade = 40. * (broad - 0.5) + 25. * (detail - 0.5) + 38. * (grain - 0.5) + highlight;
+        // Weathered joints follow bedding and taper into the grain on exposed faces.
+        let joint_plane = dir.x
+            + (random(id + 84) - 0.5) * dir.z
+            + 0.42 * dir.y
+            + (broad - 0.5) * 0.58
+            + (detail - 0.5) * 0.11;
+        let joint = (1. - (joint_plane - 0.22).abs() / 0.025).clamp(0., 1.);
+        let fork = (1. - (joint_plane - 0.22 + 0.68 * (bed - 0.14)).abs() / 0.016).clamp(0., 1.)
+            * (1. - ((bed - 0.30) / 0.16).abs()).max(0.);
+        let fissure = joint.max(fork) * ((broad - 0.28) * 4.).clamp(0., 1.);
+        let shade = -47. * fissure
+            + 40. * (broad - 0.5)
+            + 25. * (detail - 0.5)
+            + 38. * (grain - 0.5)
+            + highlight;
         let green = 49. * (detail - 0.5) + 44. * (grain - 0.5);
         Self {
             stone: base.map(|b| (b + shade) as u8),
@@ -214,7 +265,7 @@ impl Variant {
         images: &mut Assets<Image>,
         materials: &mut Assets<StandardMaterial>,
     ) -> Self {
-        let (mesh, hull) = Shape::new(id).geometry();
+        let (mesh, hull) = formation(id);
         let mut pixels = Vec::with_capacity(WIDTH * HEIGHT);
         let coverage = (INITIAL_MOSS * 100.) as u8;
         let mut data = vec![0; WIDTH * HEIGHT * 4];
@@ -266,6 +317,7 @@ fn place(
     mut meshes: ResMut<Assets<Mesh>>,
     mut images: ResMut<Assets<Image>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    mut crystals: Local<crystal::Palette>,
 ) {
     for (entity, name, props) in &added {
         if !is_deposit(props) {
@@ -280,12 +332,26 @@ fn place(
             .entry(id)
             .or_insert_with(|| Variant::new(id, &mut meshes, &mut images, &mut materials));
         commands.entity(entity).insert((
-            QuarryStone { variant: id },
+            QuarryStone {
+                seed,
+                variant: id,
+                segments: segment_count(id),
+            },
             Mesh3d(rock.mesh.clone()),
             MeshMaterial3d(rock.material.clone()),
             RigidBody::Static,
             rock.hull.clone(),
         ));
+        if crystal::mineralized(seed) {
+            crystals.attach(
+                &mut commands,
+                entity,
+                seed,
+                &rock.hull,
+                &mut meshes,
+                &mut materials,
+            );
+        }
     }
 }
 
@@ -356,7 +422,7 @@ mod tests {
     #[test]
     fn all_profiles_stand_on_their_authored_base_and_have_valid_normals() {
         for id in 0..VARIANTS {
-            let (mesh, _) = Shape::new(id).geometry();
+            let (mesh, _) = Shape::new(id).geometry(Quat::IDENTITY);
             let Some(VertexAttributeValues::Float32x3(p)) =
                 mesh.attribute(Mesh::ATTRIBUTE_POSITION)
             else {
@@ -369,6 +435,42 @@ mod tests {
                 panic!()
             };
             assert!(n.iter().all(|v| Vec3::from_array(*v).is_normalized()));
+        }
+    }
+    #[test]
+    fn collision_and_mesh_keep_the_same_individual_segments() {
+        for id in 0..VARIANTS {
+            let (mesh, hull) = formation(id);
+            let count = usize::from(segment_count(id));
+            let base = Shape::new(id).geometry(Quat::IDENTITY).0.count_vertices();
+            assert_eq!(mesh.count_vertices(), base * count);
+            assert_eq!(
+                hull.shape().as_compound().map_or(1, |c| c.shapes().len()),
+                count
+            );
+            let Some(VertexAttributeValues::Float32x3(points)) =
+                mesh.attribute(Mesh::ATTRIBUTE_POSITION)
+            else {
+                panic!()
+            };
+            for (i, block) in points.chunks_exact(base).enumerate() {
+                let p =
+                    Vec3::from_array(*block.iter().max_by(|a, b| a[1].total_cmp(&b[1])).unwrap());
+                let hit = hull
+                    .cast_ray(
+                        Vec3::ZERO,
+                        Quat::IDENTITY,
+                        p + Vec3::Y * 2.,
+                        Vec3::NEG_Y,
+                        3.,
+                        false,
+                    )
+                    .unwrap();
+                assert!(
+                    hit.0 <= 2.001,
+                    "missing visible segment {i} in variant {id}"
+                );
+            }
         }
     }
     #[test]

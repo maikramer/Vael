@@ -9,11 +9,11 @@ const MATURE_AFTER_DAYS: f64 = 3.0;
 
 #[derive(Component)]
 pub(super) struct Rootstock {
-    tree: Entity,
-    key: Option<String>,
+    pub(super) tree: Entity,
+    pub(super) key: Option<String>,
     cut_day: Option<f64>,
     pub(super) pooled: PooledTree,
-    harvest: Harvestable,
+    pub(super) harvest: Harvestable,
     props: Option<ScriptProps>,
     script: Option<LuaScriptRef>,
     collider: Option<Collider>,
@@ -144,7 +144,7 @@ pub(super) fn grow(
         restore(&mut commands, entity, &mut root, &remains);
         if let Some(key) = &root.key {
             let mut patch = BTreeMap::new();
-            for field in ["dx", "dz", "cut", "bucked", "day"] {
+            for field in ["dx", "dz", "cut", "bucked", "day", "detached"] {
                 patch.insert(format!("flora-fell.{key}.{field}"), Json::Null);
             }
             patch.insert(format!("harvested.{key}"), Json::Null);

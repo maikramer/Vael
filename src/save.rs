@@ -89,6 +89,8 @@ pub struct VaelSave {
     /// Nome do barco em que o herói seguia (`None` = a pé).
     #[serde(default)]
     pub riding_boat: Option<String>,
+    #[reflect(ignore)]
+    pub timber: BTreeMap<String, crate::harvest::timber::SavedLog>,
     pub calendar: Option<SavedCalendar>,
     /// Chaves que o schema tipado não conhece (progresso `q.<id>.n`,
     /// `dialogue.*`, `riddle.*`, `lang`, …). Nunca é descartado.
@@ -113,6 +115,7 @@ impl Default for VaelSave {
             boats: Vec::new(),
             riding_boat: None,
             calendar: None,
+            timber: BTreeMap::new(),
             legacy: BTreeMap::new(),
         }
     }

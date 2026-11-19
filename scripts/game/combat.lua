@@ -234,6 +234,9 @@ local function resolve_swing(st, sw)
   -- Alcance e dano base vêm da arma equipada; o remate alcança +0,5 m.
   local range = sw.range or (finisher and FINISHER_RANGE or MELEE_RANGE)
   local arc = finisher and FINISHER_ARC or ATTACK_ARC
+  if viber.vael.strike_props then
+    viber.vael.strike_props(px, py, pz, fx, fz, range, arc, finisher)
+  end
   local bonus = stats()
   local base_damage = sw.damage or BASE_DAMAGE
   local crit_mult = CRIT_MULT + rules.stat("crit_mult")
@@ -593,7 +596,7 @@ function on_update(dt)
   end
 
   -- ── melee ──
-  if viber.ui.get("boat.grip") == "oars" then
+  if viber.ui.get("boat.grip") == "oars" or (viber.vael and viber.vael.harvest_tool_focus and viber.vael.harvest_tool_focus()) then
     -- Boarding consumes a pending or buffered swing as well as new input.
     st.swing = nil
     st.attack_t, st.chain_timer, st.chain_step = 0, 0, 0

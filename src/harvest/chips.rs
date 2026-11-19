@@ -5,6 +5,7 @@ use std::sync::{Arc, Mutex};
 #[derive(Clone, Copy)]
 pub(super) struct ToolHit {
     pub stone: bool,
+    pub surface: Option<mining::Surface>,
     pub base: Vec3,
     pub outward: Vec2,
     pub height: f32,
@@ -75,14 +76,8 @@ pub(super) fn emit(
     hits: Res<HitQueue>,
     bark: Bark,
     mut last_stone: Local<Option<(Entity, Vec3)>>,
-    rocks: Query<
-        (
-            &avian3d::prelude::Collider,
-            &GlobalTransform,
-            Option<&Fracture>,
-        ),
-        With<crate::rocks::QuarryStone>,
-    >,
+    rocks: Query<(&crate::rocks::QuarryStone, Option<&Fracture>)>,
+    colliders: Query<(&avian3d::prelude::Collider, &GlobalTransform)>,
     meshes: Option<ResMut<Assets<Mesh>>>,
     materials: Option<ResMut<Assets<StandardMaterial>>>,
     mut shared: Local<Option<(Handle<Mesh>, [Handle<StandardMaterial>; 5])>>,
@@ -123,45 +118,92 @@ pub(super) fn emit(
             rocks
                 .get(hit.target)
                 .ok()
-                .map(|(hull, pose, old)| {
+                .and_then(|(rock, old)| {
+                    let struck = hit.surface.map_or(hit.target, |s| s.collider);
+                    let (hull, pose) = colliders.get(struck).ok()?;
                     let extent = pose.scale().abs().max_element();
                     let probe = hit.base + direction * extent * 0.9 + Vec3::Y * extent * 0.89;
-                    let project = |p| {
+                    let closest = |p| {
                         hull.project_point(pose.translation(), pose.rotation(), p, false)
                             .0
                     };
-                    let at = project(probe);
-                    let n = (probe - at).normalize_or(Vec3::Y);
+                    let at = hit.surface.map_or_else(|| closest(probe), |s| s.point);
+                    let n = hit
+                        .surface
+                        .map_or_else(|| (probe - at).normalize_or(Vec3::Y), |s| s.normal);
                     if !hit.final_hit {
-                        let count = old.map_or(1, |f| f.count.saturating_add(1).min(5));
-                        if let Some(f) = old {
-                            commands.entity(f.mark).try_despawn();
-                        }
-                        let scar = scar_mesh(at, n, extent, count, pose, project);
-                        let mark = commands
+                        let mut fracture = old.cloned().unwrap_or_default();
+                        let local = pose.affine().inverse().transform_point3(at);
+                        let local_normal =
+                            (pose.affine().matrix3.transpose() * n).normalize_or(Vec3::Y);
+                        let index = fracture.seams.iter().position(|s| {
+                            s.struck == struck
+                                && s.origin.distance(local) < 0.19
+                                && s.normal.dot(local_normal) > 0.65
+                        });
+                        let mut seam = if let Some(i) = index {
+                            let mut seam = fracture.seams[i];
+                            commands.entity(seam.mark).try_despawn();
+                            seam.depth = (seam.depth + 1).min(5);
+                            seam
+                        } else {
+                            let cell = (local * 24.).round().as_ivec3().as_uvec3();
+                            Seam {
+                                struck,
+                                origin: local,
+                                normal: local_normal,
+                                depth: 1,
+                                mark: Entity::PLACEHOLDER,
+                                seed: rock.seed
+                                    ^ cell.x.rotate_left(9)
+                                    ^ cell.y.rotate_left(18)
+                                    ^ cell.z,
+                            }
+                        };
+                        let normal = (pose.affine().matrix3.inverse().transpose() * seam.normal)
+                            .normalize_or(n);
+                        // Cast back onto the exposed face so folds between segments stay visible.
+                        let project = |p| {
+                            let start = p + normal * extent * 0.28;
+                            hull.cast_ray(
+                                pose.translation(),
+                                pose.rotation(),
+                                start,
+                                -normal,
+                                extent * 0.62,
+                                false,
+                            )
+                            .map_or_else(|| closest(p), |(t, _)| start - normal * t)
+                        };
+                        let scar = scar_mesh(&seam, normal, extent, pose, project);
+                        seam.mark = commands
                             .spawn((
                                 Name::new("mining fracture"),
-                                ChildOf(hit.target),
+                                ChildOf(struck),
                                 Mesh3d(meshes.add(scar)),
                                 MeshMaterial3d(palette[4].clone()),
                                 crate::snow_caps::IgnoreSnowMesh,
                             ))
                             .id();
-                        commands
-                            .entity(hit.target)
-                            .try_insert(Fracture { count, mark });
+                        if let Some(i) = index {
+                            fracture.seams[i] = seam;
+                        } else {
+                            fracture.seams.push(seam);
+                        }
+                        commands.entity(hit.target).try_insert(fracture);
                     }
                     let contact = at + n * 0.018;
                     *last_stone = Some((hit.target, contact));
-                    contact
+                    Some(contact)
                 })
+                .or_else(|| hit.surface.map(|s| s.point + s.normal * 0.018))
                 .or_else(|| {
                     last_stone
                         .filter(|(e, _)| *e == hit.target)
                         .map(|(_, at)| at)
                 })
         } else {
-            bark.contact(&hit, normal)
+            hit.surface.map(|s| s.point).or_else(|| bark.contact(&hit, normal))
         };
         let surface = contact.unwrap_or(
             hit.base + Vec3::new(normal.x * STUMP_RADIUS, hit.height, normal.y * STUMP_RADIUS),
@@ -231,47 +273,80 @@ pub(super) fn fly(
     }
 }
 
-#[derive(Component)]
+#[derive(Component, Clone, Default)]
 pub(crate) struct Fracture {
-    count: u8,
-    mark: Entity,
+    seams: Vec<Seam>,
 }
 
-// Tapered, crooked seams wrap the actual struck face. Keep just the latest mark per rock.
+#[derive(Clone, Copy)]
+struct Seam {
+    struck: Entity,
+    mark: Entity,
+    origin: Vec3,
+    normal: Vec3,
+    seed: u32,
+    depth: u8,
+}
+
 fn scar_mesh(
-    at: Vec3,
+    seam: &Seam,
     normal: Vec3,
     extent: f32,
-    count: u8,
     pose: &GlobalTransform,
     project: impl Fn(Vec3) -> Vec3,
 ) -> Mesh {
     use bevy::{asset::RenderAssetUsages, mesh::PrimitiveTopology};
+    use std::f32::consts::TAU;
     let u = normal.any_orthonormal_vector();
     let v = normal.cross(u);
     let inv = pose.affine().inverse();
-    let size = extent * (0.085 + 0.046 * f32::from(count));
+    let at = pose.transform_point(seam.origin);
+    let point = |p: Vec2| {
+        inv.transform_point3(
+            project(at + (u * p.x + v * p.y) * extent) + normal * (0.0035 * extent),
+        )
+        .to_array()
+    };
     let mut vertices = Vec::new();
-    for branch in 0..3 {
-        let angle = 2.15 * branch as f32 + 0.42;
-        let radial = u * angle.cos() + v * angle.sin();
-        let sideways = normal.cross(radial);
-        let edge = |step: usize, sign: f32| {
-            let t = step as f32 / 4.;
-            let zig = [0., 0.13, -0.06, 0.14, 0.04][step];
-            let offset = radial * t + sideways * (zig + sign * (0.085 * (1. - t) + 0.006));
-            inv.transform_point3(project(at + offset * size + normal * 0.012) + normal * 0.009)
-                .to_array()
-        };
-        for i in 0..4 {
-            vertices.extend([
-                edge(i, -1.),
-                edge(i + 1, -1.),
-                edge(i, 1.),
-                edge(i, 1.),
-                edge(i + 1, -1.),
-                edge(i + 1, 1.),
-            ]);
+    let mut ribbon = |a: Vec2, b: Vec2, w: f32, tip: f32| {
+        let side = (b - a).normalize_or(Vec2::X).perp();
+        let [l, r, end_l, end_r] =
+            [a - side * w, a + side * w, b - side * tip, b + side * tip].map(point);
+        vertices.extend([l, end_l, r, r, end_l, end_r]);
+    };
+    let rand = |n| crate::rocks::random(seam.seed ^ n);
+    let branches = 3 + u32::from(rand(9) > 0.58);
+    let steps = 3 + u32::from(seam.depth);
+    for arm in 0..branches {
+        let angle = TAU * (rand(5) + (arm as f32 + 0.38 * rand(400 + arm)) / branches as f32);
+        let mut heading = Vec2::from_angle(angle);
+        let mut p = Vec2::ZERO;
+        for i in 0..steps {
+            let salt = 10 + arm * 100 + i * 6;
+            heading = Vec2::from_angle((rand(salt) - 0.5) * 0.82).rotate(heading);
+            let next = p + heading * (0.025 + 0.027 * rand(salt + 1));
+            let width =
+                (0.005 + 0.0014 * f32::from(seam.depth)) * (1. - 0.72 * i as f32 / steps as f32);
+            ribbon(
+                p,
+                next,
+                width,
+                if i + 1 == steps { 0.0005 } else { width * 0.85 },
+            );
+            if i > 0 && i + 1 < steps && rand(salt + 2) < 0.48 {
+                let side = if rand(salt + 3) < 0.5 { -1. } else { 1. };
+                let branch =
+                    Vec2::from_angle(side * (0.52 + rand(salt + 4) * 0.54)).rotate(heading);
+                let elbow = next + branch * 0.026;
+                ribbon(next, elbow, width * 0.64, width * 0.32);
+                ribbon(
+                    elbow,
+                    elbow + (branch + heading * 0.4) * 0.022,
+                    width * 0.32,
+                    0.0004,
+                );
+            }
+            p = next;
         }
     }
     let mut mesh = Mesh::new(
@@ -281,4 +356,42 @@ fn scar_mesh(
     .with_inserted_attribute(Mesh::ATTRIBUTE_POSITION, vertices);
     mesh.compute_flat_normals();
     mesh
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    #[test]
+    fn impact_network_repeats_for_a_seed_and_extends_on_further_hits() {
+        let mut seam = Seam {
+            struck: Entity::PLACEHOLDER,
+            mark: Entity::PLACEHOLDER,
+            origin: Vec3::ZERO,
+            normal: Vec3::Y,
+            seed: 29,
+            depth: 1,
+        };
+        let points = |s: &Seam| {
+            let mesh = scar_mesh(s, Vec3::Y, 1., &GlobalTransform::IDENTITY, |p| p.with_y(0.));
+            let Some(bevy::mesh::VertexAttributeValues::Float32x3(p)) =
+                mesh.attribute(Mesh::ATTRIBUTE_POSITION)
+            else {
+                panic!()
+            };
+            p.clone()
+        };
+        let first = points(&seam);
+        assert_eq!(first, points(&seam));
+        seam.depth = 3;
+        let grown = points(&seam);
+        assert!(grown.len() > first.len());
+        let reach = |p: &Vec<[f32; 3]>| {
+            p.iter()
+                .map(|v| Vec3::from_array(*v).length())
+                .fold(0., f32::max)
+        };
+        assert!(reach(&grown) > reach(&first));
+        seam.seed += 1;
+        assert_ne!(grown, points(&seam));
+    }
 }

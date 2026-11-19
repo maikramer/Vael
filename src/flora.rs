@@ -716,6 +716,28 @@ fn plant_grove(
                     .with_rotation(Quat::from_rotation_y(tree.yaw_deg.to_radians()))
                     .with_scale(Vec3::splat(tree.scale)),
                 Visibility::Inherited,
+                ScriptProps(
+                    vec![
+                        (
+                            "destructible".into(),
+                            "hits: 3; break-style: fall; cut-height: 0.7; popup-text: Madeira"
+                                .into(),
+                        ),
+                        (
+                            "resource-kind".into(),
+                            if tree.kind == "pine_dark" {
+                                "dark-wood"
+                            } else {
+                                "wood"
+                            }
+                            .into(),
+                        ),
+                        ("resource-yield".into(), "3".into()),
+                    ]
+                    .into(),
+                ),
+                avian3d::prelude::RigidBody::Static,
+                avian3d::prelude::Collider::cylinder(params.base_radius(), 2.4),
                 Name::new(format!("flora:mata:{index}")),
                 ChildOf(root),
             ))

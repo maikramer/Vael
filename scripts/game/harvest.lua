@@ -19,6 +19,7 @@ local PICK_SPEED = 1.0
 -- No clip chop de 1,50 s a lâmina cruza a frente do herói aos 0,43 s.
 local CHOP_DURATION = 0.90
 local MINE_DURATION = 0.98
+-- Referência de movimento e fallback para nós antigos sem colisor.
 local MINE_CONTACT = MINE_DURATION * 0.41
 local CHOP_CONTACT = CHOP_DURATION * (0.43 / 1.50)
 local IMPACT_FRACTION = 0.35
@@ -205,7 +206,8 @@ local function nearest(st)
   local best
   for _, entity in ipairs(list) do
     local prop = prop_data(entity)
-    if prop and not st.broken[prop.id] and prop.id ~= st.just_felled then
+    local native_tool = prop and viber.vael.harvest_tool_focus and tool_of(prop.style, prop.kind) ~= "pick"
+    if prop and not native_tool and not st.broken[prop.id] and prop.id ~= st.just_felled then
       if prop.distance <= effective_range(prop.range) then
         if not best or prop.distance < best.distance then
           best = prop
@@ -275,6 +277,10 @@ local function swing(st, prop)
     replacement = prop.replacement or "",
     replace_scale = prop.replace_scale or 1,
   }
+  if tool == "mine" and viber.vael and viber.vael.begin_mine then
+    viber.vael.begin_mine(prop.id)
+    st.swing.probe = true
+  end
   local pid = viber.player_id()
   if pid then
     if duration then
@@ -548,9 +554,17 @@ function on_update(dt)
   end
   if st.swing then
     st.swing.t = st.swing.t - dt
-    if st.swing.t <= 0 then
+    local contact = st.swing.probe and viber.vael.mine_contact(st.swing.id) or "unshaped"
+    if contact == "hit" or (contact == "unshaped" and st.swing.t <= 0) then
       impact(st)
+    elseif contact == "miss" or st.swing.t < -0.65 then
+      st.swing = nil
     end
+  end
+  -- O machado e a picareta usam o foco físico publicado antes de ler o ataque.
+  if viber.vael.harvest_tool_focus and viber.vael.harvest_tool_focus() then
+    st.near, st.tool, st.prompting, st.scan_t = nil, nil, false, 0
+    return
   end
   -- `player_nearby` varre o snapshot de ~79k entidades nomeadas. A 60 Hz
   -- era o maior custo de CPU deste controller; 10 Hz chegam para o prompt

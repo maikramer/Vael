@@ -116,13 +116,18 @@ sem sulco e sem mancha de nuvem.
 Os cinco prefabs `rock-mossy-breakable-solid-stone*` marcam as estações com
 `prop-outcrop="stone"`. O nome estável da instância escolhe uma de 24 formas
 de ardósia, granito ou arenito. A pose, a resistência e o rendimento vêm do
-mapa. A malha, a textura e o casco convexo são partilhados por variante.
+mapa. As formações têm um, dois ou três blocos encaixados. Cada bloco tem o seu próprio casco convexo. A malha e a textura com veios e fissuras naturais são partilhadas por variante.
 
 O limo avança em manchas com a humidade, recua devagar em tempo seco e fica
 dormente a 1 °C ou menos. O save guarda a cobertura em `quarry.moss`.
 A neve acompanha a profundidade do manto e a inclinação das faces em espaço
 de mundo. A borda é recortada na própria malha, inclusive em rochas inclinadas.
 
-A picareta usa o clip `mine`.
-Golpes intermédios abrem fissuras e soltam fragmentos. O último golpe
+Cerca de 14% das estações têm uma drusa com três a seis cristais. A semente da estação define a face onde a drusa nasce, a cor, a inclinação e a altura das pontas. Os cristais crescem a partir dessa face com o calendário do mundo. A data de origem fica no save em `quarry.crystal_epoch`.
+
+Com o aviso **Minerar** ativo, um toque em `J` ou no botão esquerdo dá um golpe. Manter o botão repete a picaretada na mesma jazida a cada 1,04 s. O herói vira-se para a face mais próxima e encurta a distância com um passo. A picareta usa o clip `mine`. O jogo varre a cabeça da ferramenta entre
+duas poses animadas da mão. Ao tocar o colisor, o braço limita o avanço,
+o clip sustenta o impacto por 42 ms e recua. Um golpe no ar não gasta
+a resistência da jazida.
+Golpes intermédios soltam fragmentos e abrem fissuras ramificadas no ponto de contacto. Voltar a atingir a mesma zona aprofunda e estende as fissuras existentes. O último golpe
 entrega a quantidade de pedra definida na estação quando há espaço na bolsa.

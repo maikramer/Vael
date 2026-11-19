@@ -1,0 +1,20 @@
+# Small handheld pickup. The engine supplies the glow and the collection animation.
+output_dir: ../public/assets
+meshes_subdir: meshes/props
+images_subdir: images/props
+assets:
+  - id: life_vial
+    kind: prop
+    gpu: remote
+    refine: false
+    seed: 61844
+    idea: >
+      A single tiny upright healing potion bottle, round ruby-red glass belly full of crimson elixir,
+      short narrow neck, thick golden neck ring and chunky cork stopper. Painterly cartoon fantasy
+      game prop, strong simple silhouette, front view, isolated centered on white, no label or lettering.
+    pipeline: [3d, paint, lod]
+    omni:
+      control_type: bbox
+      size_m: [0.18, 0.26, 0.18]
+    paint3d:
+      texture_size: 512

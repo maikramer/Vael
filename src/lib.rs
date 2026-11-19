@@ -51,6 +51,7 @@ pub mod ground;
 pub mod snow_caps;
 #[cfg(feature = "hanabi")]
 pub mod hanabi_fx;
+mod breakables;
 pub mod harvest;
 pub mod head_look;
 pub mod hud;
@@ -228,6 +229,7 @@ impl Plugin for VaelPlugin {
         // Vive aqui, não na engine. Fora da tupla (15 é o teto do Bevy).
         app.add_plugins(grass::VaelGrassPlugin);
         app.add_plugins(rocks::QuarryPlugin);
+        app.add_plugins(breakables::BreakablesPlugin);
         app.add_plugins(fauna::FaunaPlugin);
         // Neve, rastos e sombra de nuvem no chão do `.ahgt`.
         app.add_plugins(ground::VaelGroundPlugin);

@@ -76,21 +76,11 @@ os meshes; mudam só os materiais.
 
 ## Colheita (felling do crate)
 
-- Com o prompt **Cortar**, `J` vira o herói para a árvore e inicia a machadada. O clipe
-  dura 0,90 s. Aos 0,26 s a lâmina alcança a casca, o jogo confirma o alcance
-  e solta lascas do lado do jogador. A ferramenta acompanha a mão durante a recuperação.
-- No último golpe, a árvore tomba para longe do herói. O `bevy_flora` calcula a
-  aceleração da queda e o contato com o relevo. O estalo do corte e o som da
-  copa batendo no chão acontecem em momentos distintos. O toco mantém colisão.
-- Quando o tronco assenta, `J` com o prompt **Cortar em toros** divide a madeira
-  em segmentos de 2,2 m. O toco continua a crescer mesmo que o tronco fique inteiro.
-- Um dia de jogo após o corte, surge uma muda da mesma variante. Ela cresce
-  gradualmente até ao terceiro dia, quando a estação recupera a colisão, a
-  resistência e o rendimento originais. A madeira caída desse corte sai da cena.
-- O save guarda a data fracionária do corte, direção, altura e estado dos toros
-  em `flora-fell.<chave>.{day,dx,dz,cut,bucked}`. Um corte antigo sem data
-  começa a contar no primeiro carregamento. O controlador Lua e o opcional
-  `VAEL_HARVEST_RUST=1` partilham a queda, as lascas e o rebrote.
+- Com **Cortar**, um toque em `J`, no botão de ataque configurado ou no botão esquerdo do rato dá uma machadada. Manter o botão repete o golpe na mesma árvore, com 0,96 s entre golpes. O herói vira-se para a casca, dá um passo curto se necessário e solta lascas no impacto. A lâmina acompanha a superfície da casca ou do tronco deitado. Ao tocar, sustenta o impacto por 42 ms e recua. Soltar o botão deixa terminar o golpe em curso.
+- No abate, a árvore começa a tombar pelo corte. Ao inclinar-se, o tronco solta-se do toco com velocidade linear e angular e passa a corpo rígido do Avian. A copa acompanha a queda até ao impacto. O corpo afunilado pode rolar e colidir com o terreno.
+- Aproxime-se de qualquer parte do tronco e use **Extrair madeira**. Três machadadas dão uma segunda porção da madeira da espécie. O tronco desaparece quando a madeira entra na bolsa. Uma bolsa cheia deixa o último golpe disponível.
+- Ao fim de um dia de jogo, a muda aparece no toco. A árvore volta a estar adulta no terceiro dia. A madeira solta permanece recolhível depois do rebrote.
+- O save guarda o corte em `flora-fell.<chave>` e a posição, rotação, velocidades e golpes restantes de cada tronco em `VaelSave.timber`. Os dois controladores de colheita usam o mesmo corte de madeira.
 - Props antigos (pré-flora, sem `PooledTree`) continuam com o `Falling` da
   engine.
 
@@ -159,7 +149,6 @@ Para observar o ciclo na mesma pose, a bridge aceita
 
 - **Sem entalhe** (`TreeNotch`): reconstrói o tronco e não se aplica a meshes
   partilhadas de um pool. O corte é a `cut_height` do primeiro golpe.
-- O tronco deitado não colide (o toco sim).
 - Uma árvore cortada passa a `ProceduralTree` individual (~35k tri): o corte é
   raro, mas essa árvore deixa de ser instanciada.
 - QA em ambiente com `bevy_elements`: o `CloudView` do crate pode rebentar com
@@ -175,7 +164,8 @@ vael-tools analyze world.bsn
 ```
 
 Em jogo (`--scene main --entry dev --bridge 15706`): colher um pinheiro com
-`[J]`×3 → tomba com toco e som de queda; `[J]` na árvore deitada → toros;
-gravar e recarregar → a árvore volta deitada (sem tombar outra vez). O log não
+manter `J` até ao abate e seguir o tronco. Dar uma machadada no tronco, gravar
+e recarregar. O tronco continua no local com dois golpes por dar. Manter `J`
+para terminar a extração e confirmar que a madeira entrou na bolsa. O log não
 pode ter `water_ssr` (impostores ligados). Medir com
 `vael-tools debug prof --tab frames` na mesma pose, sem builds concorrentes.

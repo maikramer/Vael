@@ -1,4 +1,4 @@
-//! Colheita/interação em Rust (`VAEL_HARVEST_RUST=1`).
+//! Colheita e interação com recursos do mundo.
 //!
 //! Porta o comportamento de `scripts/game/harvest.lua`: lê os props autorais
 //! (`destructible`, `resource-kind`, `resource-yield`) de qualquer entidade
@@ -9,8 +9,8 @@
 //! `VaelSave::harvested` com uma chave estável (`Nome@proveniência`) e
 //! derruba/substitui/despawna a entidade.
 //!
-//! O gate escolhe o controlador de entrada. Os dois caminhos partilham as
-//! lascas, a queda, o embate e o ciclo de rebrote do calendário.
+//! Machado e picareta partilham foco, entrada e contacto nos dois modos.
+//! O gate escolhe o controlador dos recursos colhidos à mão.
 //!
 //! - o substituto (`berry-bush-bare`) leva a escala autoral (`replace-scale`)
 //!   aplicada depois do spawn do protótipo (o pedido da engine não transporta
@@ -20,7 +20,9 @@
 //!   seguinte.
 
 mod chips;
+mod mining;
 mod regrowth;
+pub(crate) mod timber;
 
 use bevy::ecs::message::Messages;
 use bevy::prelude::*;
@@ -394,7 +396,11 @@ const REPLACEMENT_SCALE_TIMEOUT: f32 = 2.0;
 
 /// Serviços de movimento do herói e de spawn de substitutos usados pelo golpe.
 #[derive(bevy::ecs::system::SystemParam)]
-struct HarvestServices<'w> {
+struct HarvestServices<'w, 's> {
+    logs: Query<'w, 's, &'static timber::GroundLog>,
+    mining: Res<'w, mining::Mining>,
+    mouse: Option<Res<'w, ButtonInput<MouseButton>>>,
+
     spawns: Option<ResMut<'w, PendingScriptSpawns>>,
     scales: Option<ResMut<'w, PendingReplacementScales>>,
     motion: Option<Res<'w, crate::player::HeroMotionBus>>,
@@ -409,13 +415,36 @@ struct PendingFloraFell(std::sync::Arc<std::sync::Mutex<Vec<u64>>>);
 /// `break-style: fall` no lugar de `viber.topple`. Sem isto o caminho Lua
 /// (default) tombava a ESTAÇÃO com o `Falling` da engine e perdia o toco e o
 /// tronco deitado do `bevy_flora`.
-fn install_fell_api(mut commands: Commands, chips: Res<HitQueue>) {
+fn install_fell_api(
+    mut commands: Commands,
+    chips: Res<HitQueue>,
+    mining: Res<mining::Mining>,
+    buttons: Res<HarvestToolInput>,
+) {
+    let reserved = buttons.reserved.clone();
+    let mining = (*mining).clone();
     let hits = (*chips).clone();
     let queue = PendingFloraFell::default();
     let shared = std::sync::Arc::clone(&queue.0);
     crate::script_host::register_installer(move |lua| -> mlua::Result<()> {
         let vael = vael_table(lua)?;
+        mining.install(lua, &vael)?;
+        vael_fn!(
+            lua,
+            vael,
+            "harvest_tool_focus",
+            [reserved = reserved.clone()],
+            move |_, ()| { Ok(reserved.load(std::sync::atomic::Ordering::Relaxed) != 0) }
+        );
+        vael_fn!(
+            lua,
+            vael,
+            "wood_focus",
+            [reserved = reserved.clone()],
+            move |_, ()| { Ok(reserved.load(std::sync::atomic::Ordering::Relaxed) == 1) }
+        );
         for (name, stone) in [("wood_hit", false), ("rock_hit", true)] {
+            let mining = mining.clone();
             let hits = hits.clone();
             vael.set(
                 name,
@@ -435,6 +464,7 @@ fn install_fell_api(mut commands: Commands, chips: Res<HitQueue>) {
                             return Ok(());
                         };
                         hits.push(ToolHit {
+                            surface: if stone { mining.surface(target) } else { None },
                             stone,
                             target,
                             base: Vec3::new(x, y, z),
@@ -563,6 +593,44 @@ pub struct HarvestFocus {
     pub blocked: bool,
     pending_swing: Option<(Entity, f32)>,
     grip_remaining: f32,
+    held_target: Option<Entity>,
+    contact: Vec3,
+}
+
+#[derive(Default, Resource)]
+struct HarvestToolInput {
+    reserved: std::sync::Arc<std::sync::atomic::AtomicU8>,
+    held: bool,
+}
+
+impl HarvestToolInput {
+    fn reserve(&self, tool: &str) {
+        self.reserved.store(
+            match tool {
+                "chop" => 1,
+                "mine" => 2,
+                _ => 0,
+            },
+            std::sync::atomic::Ordering::Relaxed,
+        );
+    }
+}
+
+fn read_harvest_buttons(
+    mut input: ResMut<HarvestToolInput>,
+    keys: Option<Res<ButtonInput<KeyCode>>>,
+    mouse: Option<Res<ButtonInput<MouseButton>>>,
+    map: Option<Res<viber::input_map::ActionMap>>,
+    pads: Query<&Gamepad>,
+) {
+    let button = map
+        .as_ref()
+        .and_then(|map| map.bindings.get(&viber::input_map::Action::Attack))
+        .and_then(|b| b.pad.as_deref())
+        .and_then(crate::input::pad_of);
+    input.held = keys.is_some_and(|k| k.pressed(attack_key(map.as_deref())))
+        || mouse.is_some_and(|m| m.pressed(MouseButton::Left))
+        || button.is_some_and(|b| pads.iter().any(|pad| pad.pressed(b)));
 }
 
 /// Gate da colheita em Rust.
@@ -624,7 +692,22 @@ impl Plugin for VaelHarvestPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<VaelHarvestConfig>()
             .init_resource::<HarvestFocus>()
+            .init_resource::<HarvestToolInput>()
+            .add_plugins(timber::TimberPlugin)
             .init_resource::<HitQueue>()
+            .init_resource::<mining::Mining>()
+            .init_resource::<mining::ArmOverride>()
+            .add_systems(
+                PostUpdate,
+                mining::clear_override.before(bevy::app::AnimationSystems),
+            )
+            .add_systems(
+                PostUpdate,
+                mining::constrain
+                    .after(bevy::app::AnimationSystems)
+                    .after(viber::ik::bone_offsets_system)
+                    .before(bevy::transform::TransformSystems::Propagate),
+            )
             .init_resource::<PendingReplacementScales>()
             .register_type::<Harvestable>()
             .register_type::<HarvestFocus>()
@@ -643,7 +726,7 @@ impl Plugin for VaelHarvestPlugin {
             .add_systems(Update, sync_harvest_gate)
             // `Harvestable` e o reap correm SEMPRE: o caminho Lua (default)
             // também precisa deles para o restauro das árvores tombadas
-            // (`flora-fell.*`). O foco/golpe Rust continuam atrás do gate.
+            // (`flora-fell.*`). O gate só controla os recursos colhidos à mão.
             .add_systems(PostStartup, (attach_harvestables, reap_on_load).chain())
             .add_systems(
                 viber::scene_loader::SceneLoad,
@@ -654,16 +737,15 @@ impl Plugin for VaelHarvestPlugin {
             // Props que nascem DEPOIS do load (spawn de script, `live_edit` do
             // Jackdaw): o `PostStartup`/`SceneLoad` não os vê e o caminho Lua
             // (`viber.player_nearby`) vê-os — a colheita Rust ficava cega.
+            .add_systems(Update, attach_late_harvestables)
             .add_systems(
-                Update,
-                attach_late_harvestables.before(update_harvest_focus),
-            )
-            .add_systems(
-                Update,
-                (update_harvest_focus, harvest_input)
+                PreUpdate,
+                (read_harvest_buttons, update_harvest_focus)
                     .chain()
-                    .run_if(harvest_rust_enabled),
+                    .after(crate::input::VaelInputSystems)
+                    .after(bevy::input::InputSystems),
             )
+            .add_systems(Update, harvest_input)
             // O processamento do tombo do Lua, o reap periódico, o embate e
             // os toros valem para os DOIS caminhos de colheita.
             .add_systems(
@@ -1247,7 +1329,19 @@ fn update_harvest_focus(
     time: Res<Time>,
     mut focus: ResMut<HarvestFocus>,
     players: Query<&GlobalTransform, (With<Player>, Without<crate::boat::RidingBoat>)>,
-    harvestables: Query<(Entity, &GlobalTransform, &Harvestable, Option<&Health>), Without<Player>>,
+    harvestables: Query<
+        (
+            Entity,
+            &GlobalTransform,
+            &Harvestable,
+            Option<&Health>,
+            Option<&avian3d::prelude::Collider>,
+            Has<timber::GroundLog>,
+        ),
+        (Without<Player>, Without<timber::Crown>),
+    >,
+    config: Res<VaelHarvestConfig>,
+    buttons: Res<HarvestToolInput>,
     menus: Option<Res<MenusOpen>>,
     modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
     scene: Option<Res<CurrentScene>>,
@@ -1264,6 +1358,10 @@ fn update_harvest_focus(
         || menus.as_deref().is_some_and(MenusOpen::any)
         || vitals.as_deref().is_some_and(|vitals| vitals.hp <= 0.0);
     focus.blocked = blocked;
+    if !buttons.held || blocked {
+        focus.held_target = None;
+    }
+    buttons.reserve("");
     if blocked || players.is_empty() {
         focus.pending_swing = None;
         focus.grip_remaining = 0.;
@@ -1277,36 +1375,71 @@ fn update_harvest_focus(
     let origin = player.translation();
     // Uma leitura do env por frame, não uma por harvestable.
     let scale = range_scale();
-    let nearest = nearest_within(
-        origin,
-        harvestables
-            .iter()
-            .filter(|(_, _, harvestable, health)| {
-                harvestable.remaining > 0 && health.is_none_or(|health| health.current > 0.0)
-            })
-            .map(|(entity, transform, harvestable, _)| {
-                (entity, transform.translation(), harvestable.range * scale)
-            }),
-    );
-    let Some((entity, _)) = nearest else {
+    let hand = origin + Vec3::Y * 0.8;
+    let nearest = harvestables
+        .iter()
+        .filter_map(|(e, tf, h, hp, collider, log)| {
+            if h.remaining <= 0 || hp.is_some_and(|hp| hp.current <= 0.) {
+                return None;
+            }
+            let pos = tf.translation();
+            let reach = h.range * scale;
+            let uses_tool = matches!(h.tool(), "chop" | "mine");
+            // A rolling trunk can be reached anywhere along its length. Project at hand
+            // height, so the hero need not stand next to the origin buried under the tree.
+            let (contact, distance) = if uses_tool {
+                if !log && pos.xz().distance_squared(origin.xz()) > (reach + 4.).powi(2) {
+                    return None;
+                }
+                let contact =
+                    collider.map_or(pos, |c| c.project_point(pos, tf.rotation(), hand, true).0);
+                (contact, hand.distance(contact))
+            } else {
+                (pos, origin.distance(pos))
+            };
+            (distance <= reach).then_some((e, contact, distance, h, log, origin.distance(pos)))
+        })
+        .min_by(|a, b| {
+            let locked = |e| {
+                focus.held_target == Some(e)
+                    || focus.pending_swing.is_some_and(|(target, _)| target == e)
+            };
+            locked(b.0)
+                .cmp(&locked(a.0))
+                .then_with(|| a.2.total_cmp(&b.2))
+                .then_with(|| a.0.cmp(&b.0))
+        });
+    let Some((entity, contact, _, harvestable, log, center_distance)) =
+        nearest.filter(|(_, _, _, h, _, _)| config.rust || matches!(h.tool(), "chop" | "mine"))
+    else {
         clear_focus(&mut commands, &mut focus, ui.as_deref_mut());
+        buttons.reserve(&focus.tool);
         return;
     };
-    let Ok((_, _, harvestable, _)) = harvestables.get(entity) else {
-        clear_focus(&mut commands, &mut focus, ui.as_deref_mut());
-        return;
-    };
+    focus.contact = contact;
+    let uses_tool = matches!(harvestable.tool(), "chop" | "mine");
+
     if focus.entity != Some(entity) {
         if let Some(previous) = focus.entity.replace(entity) {
             commands.entity(previous).try_remove::<ScriptInteraction>();
         }
         commands.entity(entity).try_insert(ScriptInteraction {
-            label: harvestable.label().to_string(),
+            label: if log {
+                "Extrair madeira"
+            } else {
+                harvestable.label()
+            }
+            .to_string(),
             key: attack_key(map.as_deref()),
-            range: harvestable.range * scale,
+            range: if uses_tool {
+                (harvestable.range * scale).max(center_distance + 1.)
+            } else {
+                harvestable.range * scale
+            },
         });
     }
     set_tool(&mut focus, harvestable.tool(), ui.as_deref_mut());
+    buttons.reserve(&focus.tool);
 }
 
 /// A tecla de "atacar" do `ActionMap` (J por defeito): a do prompt `[J]` e
@@ -1372,6 +1505,7 @@ fn spawn_felled_tree(
                 speed: 1.16,
                 lying,
             },
+            timber::FallingTrunk { restored: lying },
             FellEpoch(epoch),
         ))
         .id();
@@ -1419,6 +1553,7 @@ fn harvest_input(
     let Some((hero, player_pose, controller)) = players.iter().next() else {
         return;
     };
+    let uses_tool = matches!(focus.tool.as_str(), "chop" | "mine");
     let touching = if let Some((target, delay)) = focus.pending_swing.take() {
         if focus.blocked
             || focus.entity != Some(target)
@@ -1427,7 +1562,17 @@ fn harvest_input(
             return;
         }
         let left = delay - time.delta_secs();
-        if left > 0.0 {
+        let waiting = if uses_tool {
+            match services.mining.result(target) {
+                mining::Contact::Touch(_) => false,
+                mining::Contact::Unshaped => left > 0.0,
+                mining::Contact::Pending if left > -0.65 => true,
+                _ => return,
+            }
+        } else {
+            left > 0.0
+        };
+        if waiting {
             focus.pending_swing = Some((target, left));
             return;
         }
@@ -1435,7 +1580,13 @@ fn harvest_input(
     } else {
         if focus.blocked
             || focus.cooldown > 0.0
-            || !crate::input::attack_just(actions.as_deref(), map.as_deref(), keys.as_deref())
+            || !(crate::input::attack_just(actions.as_deref(), map.as_deref(), keys.as_deref())
+                || uses_tool
+                    && (services
+                        .mouse
+                        .as_ref()
+                        .is_some_and(|m| m.just_pressed(MouseButton::Left))
+                        || focus.entity.is_some() && focus.held_target == focus.entity))
         {
             return;
         }
@@ -1472,14 +1623,19 @@ fn harvest_input(
         return;
     }
     if uses_tool && !touching {
+        if controller.is_some_and(|c| c.dodge.is_some()) {
+            return;
+        }
+        focus.held_target = Some(entity);
         let (duration, contact) = if stone {
             (0.98, 0.98 * 0.41)
         } else {
             (0.90, 0.90 * (0.43 / 1.5))
         };
-        focus.cooldown = duration * 0.86;
+        focus.cooldown = duration + 0.06;
         focus.grip_remaining = duration;
         focus.pending_swing = Some((entity, contact));
+        services.mining.begin(entity);
         commands
             .entity(hero)
             .insert(viber::animation::PendingGesture {
@@ -1494,17 +1650,27 @@ fn harvest_input(
             bus.request_attack(crate::player::AttackMotion {
                 secs: contact + 0.08,
                 slow: 0.25,
-                lunge: 0.0,
-                face: (position - player).xz().try_normalize(),
+                // Close the last half-step on approach. Once planted, subsequent chops pivot in place.
+                lunge: (player.xz().distance(focus.contact.xz()) - 0.88).clamp(0., 0.68),
+                face: (focus.contact - player).xz().try_normalize(),
             });
         }
         return;
     }
+    let timber_hit = services.logs.get(entity).ok();
     let broken = apply_hit(&mut harvestable);
     let height = harvestable.cut_height;
+    let contact = focus.contact;
     let emit = |final_hit| {
         if uses_tool {
             hits.push(ToolHit {
+                surface: services.mining.surface(entity).or_else(|| {
+                    timber_hit.map(|_| mining::Surface {
+                        collider: entity,
+                        point: contact,
+                        normal: (player + Vec3::Y * 0.8 - contact).normalize_or(Vec3::Y),
+                    })
+                }),
                 stone,
                 target: entity,
                 base: position,
@@ -1555,6 +1721,9 @@ fn harvest_input(
         }
     }
     emit(!full);
+    if !full && let (Some(log), Some(save)) = (timber_hit, save.as_deref_mut()) {
+        save.timber.remove(&log.id);
+    }
     if full {
         // O Lua deixa o prop a um golpe de partir e tenta outra vez depois de
         // fazer espaço.
@@ -1834,12 +2003,8 @@ fn reap_saved(
                 epoch,
             );
             commands.entity(tree).insert(FloraFellKey(fell_key.clone()));
-            if fell.bucked {
-                commands.entity(tree).try_insert(BuckTree {
-                    log_length: LOG_LENGTH,
-                    min_radius: LOG_MIN_RADIUS,
-                });
-            }
+            // Older slots only recorded whether the trunk had been sectioned.
+            // That operation never paid out timber; restore its collectable wood once.
             regrowth::leave_root(commands, entity, tree, Some(fell_key.clone()));
             continue;
         }
@@ -1876,10 +2041,12 @@ pub(crate) fn reload_trees(world: &mut World) {
     if world.contains_resource::<VaelHarvestConfig>() {
         if let Some(mut focus) = world.get_resource_mut::<HarvestFocus>() {
             focus.pending_swing = None;
+            focus.held_target = None;
             focus.grip_remaining = 0.0;
         }
         if let Err(err) = world
-            .run_system_once(regrowth::reset_on_load)
+            .run_system_once(timber::restore)
+            .and_then(|()| world.run_system_once(regrowth::reset_on_load))
             .and_then(|()| world.run_system_once(reap_on_load))
         {
             warn!("harvest: erro ao restaurar as árvores: {err}");
@@ -2078,7 +2245,10 @@ fn buck_felled_trees(
             Option<&Felled>,
             Option<&FellTree>,
         ),
-        Or<(With<Felled>, With<FellTree>)>,
+        (
+            Or<(With<Felled>, With<FellTree>)>,
+            Without<timber::FallingTrunk>,
+        ),
     >,
 ) {
     focus.cooldown = (focus.cooldown - time.delta_secs()).max(0.0);
@@ -2561,6 +2731,106 @@ mod tests {
         app.update();
         assert_eq!(app.world().resource::<HarvestFocus>().entity, None);
         assert!(app.world().get::<ScriptInteraction>(prop).is_none());
+    }
+
+    #[test]
+    fn segurar_o_clique_na_casca_repete_o_corte_e_soltar_encerra_o_ciclo() {
+        let mut app = app_rust();
+        app.insert_resource(VaelHarvestConfig { rust: false })
+            .init_resource::<ButtonInput<MouseButton>>()
+            .insert_resource(bevy::time::TimeUpdateStrategy::ManualDuration(
+                std::time::Duration::from_millis(100),
+            ));
+        spawn_player(&mut app);
+        let tree = spawn_prop(&mut app, harvestable("oak", None, 7, 3.5, "wood", 3));
+        app.world_mut().entity_mut(tree).insert((
+            avian3d::prelude::Collider::cylinder(0.9, 3.0),
+            GlobalTransform::from_translation(Vec3::new(2.2, 0., 0.)),
+        ));
+        app.update();
+        assert_eq!(app.world().resource::<HarvestFocus>().entity, Some(tree));
+        app.world_mut()
+            .resource_mut::<ButtonInput<MouseButton>>()
+            .press(MouseButton::Left);
+        app.update();
+        app.world_mut()
+            .resource_mut::<ButtonInput<MouseButton>>()
+            .clear();
+        let mut times = Vec::new();
+        let mut previous = 7;
+        for tick in 1..=24 {
+            app.update();
+            let left = app.world().get::<Harvestable>(tree).unwrap().remaining;
+            if left != previous {
+                assert_eq!(left, previous - 1);
+                times.push(tick);
+                previous = left;
+            }
+        }
+        assert_eq!(times.len(), 3);
+        assert!(times.windows(2).all(|t| (9..=11).contains(&(t[1] - t[0]))));
+        app.world_mut()
+            .resource_mut::<ButtonInput<MouseButton>>()
+            .release(MouseButton::Left);
+        for _ in 0..15 {
+            app.update();
+        }
+        assert_eq!(app.world().get::<Harvestable>(tree).unwrap().remaining, 4);
+    }
+
+    #[test]
+    fn mining_prompt_owns_the_attack_and_held_j_repeats_on_the_same_rock() {
+        let mut app = app_rust();
+        app.insert_resource(VaelHarvestConfig { rust: false })
+            .insert_resource(bevy::time::TimeUpdateStrategy::ManualDuration(
+                std::time::Duration::from_millis(100),
+            ));
+        let hero = spawn_player(&mut app);
+        let mut stone = harvestable("granite", None, 6, 3.5, "stone", 3);
+        stone.style = BreakStyle::Shatter;
+        let rock = spawn_prop(&mut app, stone);
+        app.world_mut().entity_mut(rock).insert((
+            avian3d::prelude::Collider::sphere(1.0),
+            GlobalTransform::from_translation(Vec3::new(2.1, 0.5, 0.)),
+        ));
+        app.update();
+        assert_eq!(app.world().resource::<HarvestFocus>().entity, Some(rock));
+        assert_eq!(
+            app.world().get::<ScriptInteraction>(rock).unwrap().label,
+            "Minerar"
+        );
+        assert_eq!(
+            app.world()
+                .resource::<HarvestToolInput>()
+                .reserved
+                .load(std::sync::atomic::Ordering::Relaxed),
+            2
+        );
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::KeyJ);
+        app.update();
+        assert_eq!(
+            app.world()
+                .get::<viber::animation::PendingGesture>(hero)
+                .unwrap()
+                .name,
+            "mine"
+        );
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .clear();
+        for _ in 0..21 {
+            app.update();
+        }
+        assert_eq!(app.world().get::<Harvestable>(rock).unwrap().remaining, 4);
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .release(KeyCode::KeyJ);
+        for _ in 0..15 {
+            app.update();
+        }
+        assert_eq!(app.world().get::<Harvestable>(rock).unwrap().remaining, 4);
     }
 
     #[test]
