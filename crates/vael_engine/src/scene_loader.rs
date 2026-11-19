@@ -27,6 +27,7 @@ use serde::Serialize;
 
 use crate::player::Player;
 use crate::project::{MAIN_SCENE, Project};
+use crate::scene::doc::SceneDoc;
 
 /// Entidade (raiz) que pertence à cena carregada: morre no próximo descarregamento.
 #[derive(Component, Debug, Default, Clone, Copy, Reflect)]
@@ -714,16 +715,12 @@ pub fn swap_scene(world: &mut World, request: &ChangeScene) -> Result<()> {
         world: parsed,
         base_dir: Some(project.root.clone()),
     });
-    match crate::scene::doc::SceneDoc::load(&path) {
-        Ok(doc) => world.insert_resource(doc),
-        Err(error) => {
-            // Sem documento novo, o ANTIGO (da cena anterior) ficava inserto:
-            // uma edição viva (`viber.scene.*`, editor) ia gravar no ficheiro
-            // e despawnar pelas origens da cena ERRADA. Fica sem documento —
-            // as edições avisam "sem documento carregado" — em vez de editar
-            // a cena errada em silêncio.
-            warn!("documento de edição de {}: {error:#}", path.display());
-            world.remove_resource::<crate::scene::doc::SceneDoc>();
+    // Live XML edits must never target the file from the previous scene.
+    world.remove_resource::<SceneDoc>();
+    if !SceneDoc::is_bsn(&path) {
+        match SceneDoc::load(&path) {
+            Ok(doc) => world.insert_resource(doc),
+            Err(error) => warn!("documento de edição de {}: {error:#}", path.display()),
         }
     }
     world.insert_resource(crate::scene::ops::History::default());
@@ -1304,6 +1301,24 @@ mod tests {
             LoaderPhase::Idle
         );
         assert!(app.world().resource::<SceneLoader>().last_error.is_none());
+    }
+
+    #[test]
+    fn bsn_transition_releases_the_xml_document_and_return_reloads_it() {
+        let tmp = project();
+        std::fs::write(
+            tmp.path().join("scenes/camp.bsn"),
+            r#"bevy_world_xml::bsn::WorldNode {
+                tag: "world",
+                attrs: [bevy_world_xml::bsn::WorldProp { key: "static", value: "true" }],
+            }"#,
+        )
+        .unwrap();
+        let mut app = boot(tmp.path());
+        change(&mut app, ChangeScene::new("camp", Arrival::Keep));
+        assert!(!app.world().contains_resource::<SceneDoc>());
+        change(&mut app, ChangeScene::new("main", Arrival::Keep));
+        assert!(app.world().resource::<SceneDoc>().world_path().ends_with("world.xml"));
     }
 
     #[test]

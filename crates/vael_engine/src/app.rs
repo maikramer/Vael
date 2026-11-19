@@ -581,11 +581,7 @@ pub fn build_app_with_world(path: &Path, world: ParsedWorld, opts: AppOptions) -
     // O documento vivo (`viber.scene.*`, undo/live sync) continua XML. Num
     // mundo `.bsn` ele não é carregado: a autoria é no Jackdaw e o bridge
     // devolve "sem documento" nas operações de cena.
-    if path
-        .extension()
-        .and_then(|ext| ext.to_str())
-        .is_some_and(|ext| ext.eq_ignore_ascii_case("bsn"))
-    {
+    if crate::scene::doc::SceneDoc::is_bsn(path) {
         info!(
             "scene doc: {} é .bsn — edição de cena via Jackdaw; `viber.scene.*` desligado",
             path.display()

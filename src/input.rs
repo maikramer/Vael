@@ -191,7 +191,7 @@ fn key_of(name: &str) -> Option<KeyCode> {
 /// A lista acompanha a do `ActionMap::default` e os nomes históricos que um
 /// save/manifesto antigo possa trazer: um nome em falta aqui é um bind ÓRFÃO
 /// (o `pad_of` devolvia `None` e o botão nunca disparava, em silêncio).
-fn pad_of(name: &str) -> Option<GamepadButton> {
+pub(crate) fn pad_of(name: &str) -> Option<GamepadButton> {
     Some(match name.trim().to_ascii_lowercase().as_str() {
         "south" | "a" => GamepadButton::South,
         "east" | "b" => GamepadButton::East,

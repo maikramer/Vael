@@ -2,7 +2,7 @@
 //!
 //! Porte do `camera::third_person_camera` da engine: follow desacoplado com
 //! low-pass, auto-câmara atrás do heading, colisão contra o terreno, câmara
-//! fixa de sala nos interiores e shake/kick. Com `player_camera:false` os
+//! de seguimento nos interiores e shake/kick. Com `player_camera:false` os
 //! sistemas da engine não correm; este módulo é o dono da vista.
 
 use bevy::prelude::*;
@@ -14,8 +14,8 @@ use viber::camera::{CameraSnapshot, ScriptCameraFree};
 use bevy_ext_core::InteriorSceneConfig;
 use bevy_ext_engine::camera_glue::{
     AutoCameraInput, COLLISION_EYE_HEIGHT, CameraKick, CameraShake, INTERIOR_ROOM_LAG, SHAKE_DECAY,
-    auto_camera_yaw, behind_yaw_deg, camera_offset, interior_camera_pose, kick_spring_step,
-    low_pass_factor, noise_pm1, shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
+    auto_camera_yaw, behind_yaw_deg, camera_offset, kick_spring_step, low_pass_factor, noise_pm1,
+    shake_offset_roll, shortest_angle_delta_deg, terrain_safe_distance,
 };
 use viber::recipes::spawn::{AutoOrbit, OrbitCamera};
 
@@ -36,6 +36,9 @@ fn no_editor_camera(
 fn no_cinematic(playback: Option<Res<viber::cinematic::CinematicPlayback>>) -> bool {
     playback.is_none_or(|playback| playback.playing().is_none())
 }
+
+#[derive(SystemSet, Debug, Clone, Copy, PartialEq, Eq, Hash)]
+pub(crate) struct GameplayCameraSet;
 
 pub struct VaelCameraPlugin;
 
@@ -62,6 +65,7 @@ impl Plugin for VaelCameraPlugin {
             PostUpdate,
             (third_person_camera, script_camera)
                 .chain()
+                .in_set(GameplayCameraSet)
                 .before(bevy::transform::TransformSystems::Propagate)
                 .run_if(no_editor_camera)
                 .run_if(no_cinematic),
@@ -149,6 +153,26 @@ fn auto_orbit(time: Res<Time>, mut cameras: Query<(&mut Transform, &mut AutoOrbi
     }
 }
 
+/// Junto à parede entre o foco e o olho, elevar a vista em arco mantendo
+/// o zoom. A distância é medida na direção autorada, inclusive numa diagonal.
+fn interior_eye_offset(scene: &InteriorSceneConfig, focus: Vec3) -> Vec3 {
+    let (dx, dz) = scene.camera_yaw_deg.to_radians().sin_cos();
+    let clearance = |p: f32, dir: f32, axis: usize| {
+        if scene.room_size[axis] > 0.0 || dir.abs() < 1e-4 {
+            f32::INFINITY
+        } else if dir > 0.0 {
+            (scene.max[axis] - p) / dir
+        } else {
+            (scene.min[axis] - p) / dir
+        }
+    };
+    let remaining = clearance(focus.x, dx, 0).min(clearance(focus.z, dz, 1));
+    let t = ((1.05 - remaining / scene.camera_distance.max(0.1)) / 0.78).clamp(0.0, 1.0);
+    let rise = t * t * (3.0 - 2.0 * t);
+    let pitch = scene.camera_pitch_deg + (84.0 - scene.camera_pitch_deg).max(0.0) * rise;
+    camera_offset(scene.camera_yaw_deg, pitch, scene.camera_distance, 0.0)
+}
+
 #[allow(clippy::type_complexity, clippy::too_many_arguments)]
 fn third_person_camera(
     time: Res<Time>,
@@ -172,6 +196,7 @@ fn third_person_camera(
     a11y: Option<Res<bevy_ext_core::a11y::A11y>>,
     modals: Option<Res<viber::ui::modal::UiModalsOpen>>,
     mut title_framing: Local<f32>,
+    mut conversation: crate::speech::ConversationShot,
 ) {
     // Clamp como no `player_movement`: o primeiro frame depois do véu (o
     // `Time<Virtual>` despausa) traz um delta enorme, e a mola do pitch/do
@@ -214,7 +239,6 @@ fn third_person_camera(
         None => GlobalTransform::from(*local),
     };
     let target_pos = target.translation();
-    // Bolsa de interior: JRPG de 16 bits — enquadra a SALA, não o herói.
     let interior_room = interior
         .as_deref()
         .filter(|scene| scene.contains(target_pos.x, target_pos.z));
@@ -247,17 +271,41 @@ fn third_person_camera(
             cam.initialized = false;
         }
         if let Some(scene) = interior_room {
-            let (eye, look_at) = interior_camera_pose(scene, target_pos);
-            // Primeira vista: salta; depois um ease curto entre salas (um
-            // corte seco pisca com sombras/TAA).
-            let a = if cam.initialized {
-                low_pass_factor(dt, INTERIOR_ROOM_LAG)
-            } else {
-                1.0
+            let [cx, cz] = scene.room_center(target_pos.x, target_pos.z);
+            // As grelhas autoradas continuam a mudar de sala por eixo.
+            // Nas divisões abertas, travar a panorâmica antes da parede para
+            // manter o espaço livre à frente da personagem no enquadramento.
+            let (dx, dz) = scene.camera_yaw_deg.to_radians().sin_cos();
+            let constrain = |value: f32, axis: usize, center: f32, eye_dir: f32| {
+                if scene.room_size[axis] > 0.0 {
+                    return center;
+                }
+                // A vista inclinada alcança mais longe no lado oposto ao olho.
+                // Reservar essa área traz a porta e o piso para o mesmo plano.
+                let inset = |side: f32| scene.camera_distance * (0.72 - 0.29 * side * eye_dir);
+                let min = (scene.min[axis] + inset(-1.0)).min(center);
+                let max = (scene.max[axis] - inset(1.0)).max(center);
+                value.clamp(min, max)
             };
-            let (pos, point) = (cam.current_pos, cam.follow_point);
-            cam.current_pos = pos + (eye - pos) * a;
-            cam.follow_point = point + (look_at - point) * a;
+            let focus = Vec3::new(
+                constrain(target_pos.x, 0, cx, dx),
+                target_pos.y + 0.85,
+                constrain(target_pos.z, 1, cz, dz),
+            );
+            if !cam.initialized
+                || teleporting && cam.follow_point.distance(focus) > scene.camera_distance
+            {
+                cam.follow_point = focus;
+            } else {
+                // Só o excesso fora da zona morta move a câmara. Assim a
+                // respiração do corpo e os pequenos ajustes de direção não
+                // se transformam numa panorâmica.
+                let delta = focus - cam.follow_point;
+                let slack = Vec3::new(0.35, 0.10, 0.28);
+                cam.follow_point +=
+                    (delta - delta.clamp(-slack, slack)) * low_pass_factor(dt, INTERIOR_ROOM_LAG);
+            }
+            cam.current_pos = cam.follow_point + interior_eye_offset(scene, cam.follow_point);
             cam.smooth_yaw_deg = scene.camera_yaw_deg;
             cam.yaw_deg = scene.camera_yaw_deg;
             cam.initialized = true;
@@ -310,20 +358,31 @@ fn third_person_camera(
             cam.initialized = true;
         }
 
+        // O ponto de mira divide a conversa entre os dois corpos. Afastar e
+        // deslocar o olho para o ombro separa as silhuetas num encontro frontal.
+        let crown = conversation
+            .subject(&parents)
+            .filter(|_| !teleporting && !rowing && !modals.as_deref().is_some_and(|m| m.any()));
+        let blend = conversation.blend(crown.is_some(), dt);
+        let follow = crown.map_or(target_pos, |head| {
+            target_pos + (head - target_pos - Vec3::Y * LOOK_PIVOT_HEIGHT) * 0.55 + Vec3::Y * 0.20
+        });
         let axz = low_pass_factor(dt, cam.follow_lag);
         let ay = low_pass_factor(dt, cam.follow_lag * 1.8);
-        cam.follow_point.x += (target_pos.x - cam.follow_point.x) * axz;
-        cam.follow_point.z += (target_pos.z - cam.follow_point.z) * axz;
-        cam.follow_point.y += (target_pos.y - cam.follow_point.y) * ay;
+        cam.follow_point.x += (follow.x - cam.follow_point.x) * axz;
+        cam.follow_point.z += (follow.z - cam.follow_point.z) * axz;
+        cam.follow_point.y += (follow.y - cam.follow_point.y) * ay;
 
         let ayaw = low_pass_factor(dt, cam.turn_lag);
         cam.smooth_yaw_deg += shortest_angle_delta_deg(cam.smooth_yaw_deg, cam.yaw_deg) * ayaw;
 
+        let shoulder = Quat::from_rotation_y(cam.smooth_yaw_deg.to_radians()) * Vec3::X;
         let desired = cam.follow_point
+            + shoulder * (0.95 * blend)
             + camera_offset(
                 cam.smooth_yaw_deg,
                 cam.pitch_state_deg,
-                cam.distance,
+                cam.distance + 0.85 * blend,
                 cam.height,
             );
 
@@ -518,24 +577,153 @@ mod tests {
     }
 
     #[test]
-    fn interior_camera_frames_the_room_not_the_hero() {
-        let (mut app, _player, _cam) = camera_app(Vec3::new(3.0, 0.6, 4.0), test_camera(0.0));
+    fn conversation_frames_the_focused_pair_and_releases_the_orbit() {
+        use viber::interact::InteractionFocus;
+        use viber::luau::{ScriptSay, ScriptToast};
+
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            bevy::asset::AssetPlugin::default(),
+            bevy::transform::TransformPlugin,
+        ))
+        .init_asset::<Mesh>()
+        .init_asset::<Image>()
+        .init_asset::<StandardMaterial>()
+        .init_resource::<ButtonInput<KeyCode>>()
+        .init_resource::<ButtonInput<MouseButton>>()
+        .init_resource::<CameraShake>()
+        .init_resource::<CameraKick>()
+        .init_resource::<InteractionFocus>()
+        .insert_resource(TimeUpdateStrategy::ManualDuration(Duration::from_secs_f32(
+            1. / 60.,
+        )))
+        .add_message::<ScriptSay>()
+        .add_message::<ScriptToast>()
+        .add_plugins((
+            VaelCameraPlugin,
+            crate::speech::VaelSpeechPlugin::<OrbitCamera>::default(),
+        ));
+        app.world_mut()
+            .spawn((Transform::IDENTITY, Player::default()));
+        let speaker = app
+            .world_mut()
+            .spawn((Transform::from_xyz(0., 0., -1.3), Visibility::Inherited))
+            .id();
+        let camera = app
+            .world_mut()
+            .spawn((Transform::IDENTITY, test_camera(0.)))
+            .id();
+        app.update();
+        let rest = app.world().get::<OrbitCamera>(camera).unwrap().current_pos;
+        app.world_mut().write_message(ScriptSay {
+            speaker: Some(speaker),
+            text: "Olá, viajante.".into(),
+            seconds: 8.,
+        });
+        for _ in 0..30 {
+            app.update();
+        }
+        assert!(
+            app.world()
+                .get::<OrbitCamera>(camera)
+                .unwrap()
+                .current_pos
+                .distance(rest)
+                < 0.01
+        );
+        app.world_mut()
+            .resource_mut::<InteractionFocus>()
+            .consider(KeyCode::KeyE, speaker, 1.3);
+        app.update();
+        assert!(
+            app.world()
+                .get::<OrbitCamera>(camera)
+                .unwrap()
+                .current_pos
+                .distance(rest)
+                < 0.2
+        );
+        for _ in 0..90 {
+            app.update();
+        }
+        let orbit = app.world().get::<OrbitCamera>(camera).unwrap();
+        assert!(orbit.current_pos.x > 0.8 && orbit.follow_point.z < -0.6);
+        assert_eq!(orbit.distance, 5.);
+        app.world_mut().resource_mut::<InteractionFocus>().clear();
+        for _ in 0..150 {
+            app.update();
+        }
+        assert!(
+            app.world()
+                .get::<OrbitCamera>(camera)
+                .unwrap()
+                .current_pos
+                .distance(rest)
+                < 0.01
+        );
+    }
+
+    #[test]
+    fn interior_follow_is_quiet_at_rest_and_keeps_the_hero_near_the_wall_in_view() {
+        let (mut app, player, cam) = camera_app(Vec3::ZERO, test_camera(0.0));
         app.insert_resource(InteriorSceneConfig {
-            min: [-10.0, -10.0],
-            max: [10.0, 10.0],
-            room_size: [0.0, 0.0],
-            camera_distance: 12.0,
-            camera_pitch_deg: 60.0,
-            camera_yaw_deg: 45.0,
-            room_origin: [0.0, 0.0],
+            min: [-10.0, -8.0],
+            max: [10.0, 8.0],
+            camera_distance: 6.0,
+            camera_pitch_deg: 50.0,
+            ..default()
         });
         app.update();
-        let mut query = app.world_mut().query::<(&Transform, &OrbitCamera)>();
-        let (transform, camera) = query.iter(app.world()).next().unwrap();
-        assert!((camera.yaw_deg - 45.0).abs() < 1e-4);
-        assert!((camera.follow_point - Vec3::new(0.0, 1.6, 0.0)).length() < 1e-4);
-        // A câmara fica no anel da sala, longe do herói em (3, 0.6, 4).
-        assert!(transform.translation.distance(Vec3::new(3.0, 0.6, 4.0)) > 8.0);
+        let first = app.world().get::<OrbitCamera>(cam).unwrap().follow_point;
+        app.world_mut()
+            .get_mut::<Transform>(player)
+            .unwrap()
+            .translation = Vec3::new(0.12, 0.04, -0.1);
+        app.update();
+        assert_eq!(
+            app.world().get::<OrbitCamera>(cam).unwrap().follow_point,
+            first
+        );
+        app.world_mut()
+            .get_mut::<Transform>(player)
+            .unwrap()
+            .translation
+            .x = 9.0;
+        app.update();
+        let first_step = app.world().get::<OrbitCamera>(cam).unwrap().follow_point.x;
+        assert!((0.0..1.0).contains(&first_step) && first_step > 0.0);
+        for _ in 0..100 {
+            app.update();
+        }
+        let orbit = app.world().get::<OrbitCamera>(cam).unwrap();
+        assert!((5.0..5.7).contains(&orbit.follow_point.x));
+        assert!((orbit.current_pos.distance(orbit.follow_point) - 6.0).abs() < 1e-4);
+    }
+
+    #[test]
+    fn interior_eye_clears_the_foreground_wall_without_changing_zoom() {
+        let mut scene = InteriorSceneConfig {
+            min: [-9.8; 2],
+            max: [9.8; 2],
+            camera_distance: 6.2,
+            camera_pitch_deg: 52.0,
+            ..default()
+        };
+        for yaw in [0.0_f32, 90.0, 180.0, 270.0] {
+            scene.camera_yaw_deg = yaw;
+            let direction = Vec3::new(yaw.to_radians().sin(), 0., yaw.to_radians().cos());
+            let focus = direction * 7.0 + Vec3::Y;
+            let offset = interior_eye_offset(&scene, focus);
+            // Mesmo quando o olho passa a parede, o segmento pés→olho tem
+            // de passar por cima do reboco (face interna a 7.86, topo a 2.4).
+            let feet = direction * 7.6 + Vec3::Y * 0.16;
+            let to_eye = focus + offset - feet;
+            let wall_fraction = (7.86 - 7.6) / to_eye.dot(direction);
+            assert!(wall_fraction >= 1.0 || feet.y + wall_fraction * to_eye.y > 2.4);
+            assert!((offset.length() - scene.camera_distance).abs() < 1e-4);
+            assert!(offset.y > interior_eye_offset(&scene, Vec3::ZERO).y);
+        }
     }
 
     /// Uma pose/kick degenerado não pode apagar a câmara para sempre: o

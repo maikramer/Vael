@@ -1134,7 +1134,6 @@ fn player_movement(
     ),
     collision: Option<Res<viber::physics::TerrainCollisionStatus>>,
     interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
-    interior_state: Option<Res<bevy_ext_core::InteriorLighting>>,
     mut cameras: Query<&mut OrbitCamera>,
     bus: Option<Res<HeroMotionBus>>,
     mut walls: WallProbe,
@@ -1470,14 +1469,14 @@ fn player_movement(
             None => false,
         };
 
-        // Numa bolsa de interior a câmara é FIXA: A/D andam nas 8 direções do
+        // Numa bolsa de interior o yaw é fixo: A/D andam nas 8 direções do
         // ecrã. Fora, A/D conduzem a câmara e o herói segue-a.
         let interior_mode = interior
             .as_deref()
             .is_some_and(|scene| scene.contains(transform.translation.x, transform.translation.z));
-        let interior_floor = (interior_mode
-            && interior_state.as_deref().is_some_and(|state| state.active))
-        .then_some(bevy_ext_core::INTERIOR_FLOOR_Y);
+        // O piso mais baixo das salas está em y=0. O sensor sustenta os pés
+        // na superfície real. A rede da soleira só apanha quedas abaixo dela.
+        let safety_ground = interior_mode.then_some(0.0_f32);
         // Uma única query de domínio por frame: superfície, profundidade
         // (máscara de praia das ondas) e corrente saem daqui.
         let water_domain = (!interior_mode)
@@ -1977,7 +1976,7 @@ fn player_movement(
             rt.surface_below(px, pz, py + GROUND_PROBE)
                 .unwrap_or_else(|| rt.sample(px, pz))
         } else {
-            f32::NEG_INFINITY
+            safety_ground.unwrap_or(f32::NEG_INFINITY)
         };
         if transform.translation.y < top - VOID_RESCUE_DEPTH {
             warn!(
@@ -2076,30 +2075,17 @@ fn player_movement(
                         controller.vel_y = 0.0;
                     }
                 }
-                // Redes analíticas: soalho da bolsa de interior e coluna voxel
-                // ainda por assar (a `Position` é a pose autoritativa).
-                if let Some(floor) = interior_floor.filter(|floor| py < *floor) {
-                    // A folga do `float_height` é OBRIGATÓRIA: com os pés
-                    // exactamente na superfície o disco do sensor fica
-                    // coplanar com o trimesh e o tnua deixa de ver o chão.
-                    if let Some(position) = position.as_deref_mut() {
-                        position.0.y = floor + viber::player::HERO_FLOAT_HEIGHT;
-                    }
-                    if let Some(velocity) = velocity.as_deref_mut() {
-                        velocity.0.y = 0.0;
-                    }
-                    controller.vel_y = 0.0;
-                    controller.grounded = true;
-                } else if (!terrain_ready || settling)
-                    && py <= ground + viber::player::HERO_FLOAT_HEIGHT
+                // No vão da porta ou numa coluna voxel por assar, segurar
+                // toda a banda de repouso: esperar pela travessia da superfície
+                // deixava a gravidade e o snap alternar de frame para frame.
+                let rest_y = ground + viber::player::HERO_FLOAT_HEIGHT;
+                if (interior_mode || !terrain_ready || settling)
+                    && py <= rest_y
                     && controller.vel_y <= 0.0
                 {
-                    // Ver o comentário acima: o snap deixa a folga do sensor.
-                    // A banda inclui o float (e só apanha a DESCER): com a
-                    // coluna ainda sem collider o herói fica preso no float
-                    // em vez de oscilar entre o snap e a gravidade.
+                    transform.translation.y = rest_y;
                     if let Some(position) = position.as_deref_mut() {
-                        position.0.y = ground + viber::player::HERO_FLOAT_HEIGHT;
+                        position.0.y = rest_y;
                     }
                     if let Some(velocity) = velocity.as_deref_mut() {
                         velocity.0.y = velocity.0.y.max(0.0);

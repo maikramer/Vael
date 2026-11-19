@@ -79,8 +79,10 @@ low-pass, colisão com o terreno, auto-câmara, shake/kick) continua no
 `src/camera.rs`; os campos não mudam a física, só os valores autorados.
 
 `InteriorSceneSpec` cobre `at/size` (sala) e `camera-distance/camera-pitch/
-camera-yaw` (pose fixa por ecrã). Uma câmara de interior não é um nó: é a
-configuração que o `third_person_camera` lê quando o herói entra no `at/size`.
+camera-yaw`. No Vael, a distância define o zoom, o yaw orienta o movimento e a
+câmara acompanha o herói com uma zona morta. A panorâmica abranda nos limites
+de `at/size` e a vista sobe junto à parede da frente. Eixos com `room-size`
+explícito mantêm o enquadramento por divisão.
 
 Durante uma cinemática os sistemas de câmara do Vael **não correm**
 (`no_cinematic`): o `drive_camera` da engine é o único dono do `OrbitCamera`.

@@ -16,6 +16,9 @@
 //! no fim da vida (a crate não tem GC de assets) e substitui o balão anterior
 //! do mesmo dono, para uma fala nova não empilhar texto velho.
 
+mod framing;
+pub(crate) use framing::ConversationShot;
+
 use std::collections::HashMap;
 use std::marker::PhantomData;
 
@@ -31,9 +34,8 @@ use viber::interact::InteractionFocus;
 use viber::luau::{ScriptSay, ScriptToast};
 use viber::recipes::spawn::OrbitCamera;
 
-/// A fonte de display da casa (Cinzel Bold, a mesma do HUD e do texto de
-/// dano) — os balões falam com a voz tipográfica do jogo.
-const FONT: &[u8] = bevy_ext_engine::hud_assets::DISPLAY_FONT;
+/// Serifada de leitura usada nos painéis do jogo, com maiúsculas e minúsculas.
+const FONT: &[u8] = include_bytes!("../ui/fonts/NotoSerifDisplay-Bold.ttf");
 
 /// Mínimo/máximo de vida de um balão (s). O mínimo evita um flash ilegível;
 /// o máximo impede que uma fala longa fique presa depois de a conversa mudar.
@@ -42,7 +44,7 @@ const MAX_SECONDS: f32 = 12.0;
 
 /// Tinta quente do HUD: pedra escura, ouro da casa e texto-papel.
 pub const VAEL_BALLOON_SKIN: bevy_speech_bubbles::BalloonSkin = bevy_speech_bubbles::BalloonSkin {
-    fill: [26, 22, 18, 242],
+    fill: [26, 22, 18, 255],
     border: [214, 185, 121, 255],
     text: [245, 238, 224, 255],
     pixel: false,
@@ -65,6 +67,8 @@ struct SpeechFace {
     material: Handle<StandardMaterial>,
     image: Option<Handle<Image>>,
     expires_at: f32,
+    crown: Vec3,
+    pointer: Entity,
     /// Texto que o balão mostra (linhas do mesmo frame já juntadas). Só o
     /// teste de agrupamento o lê; o runtime não precisa de o manter.
     #[cfg(test)]
@@ -103,7 +107,7 @@ impl<C: Component> Plugin for VaelSpeechPlugin<C> {
                 // a esta distância de câmara).
                 world_per_px: 1.0 / 260.0,
                 // A ponta da cauda fica acima da cabeça de um humanoide.
-                anchor_y: 2.15,
+                anchor_y: 1.60,
             })
             .insert_resource(DefaultBalloonSkin(VAEL_BALLOON_SKIN))
             .add_systems(Startup, setup_bubble_assets)
@@ -115,15 +119,45 @@ impl<C: Component> Plugin for VaelSpeechPlugin<C> {
                         .before(track_bubbles::<C>),
                     // Antes do `track_bubbles`: um balão velho nunca é
                     // despawnado pela crate com os assets ainda vivos.
-                    expire_speech_faces.before(track_bubbles::<C>),
+                    expire_speech_faces.before(present_spoken_lines),
                 ),
+            )
+            .add_systems(
+                PostUpdate,
+                framing::place_faces::<C>
+                    .after(crate::camera::GameplayCameraSet)
+                    .before(bevy::transform::TransformSystems::Propagate)
+                    .before(bevy::camera::visibility::VisibilitySystems::VisibilityPropagate),
             );
     }
 }
 
-/// A crate não lê ficheiros de fonte: o Vael empresta-lhe a Cinzel do HUD e
-/// um quad unitário.
-fn setup_bubble_assets(mut commands: Commands, mut meshes: ResMut<Assets<Mesh>>) {
+/// Uma ponta de ouro partilhada por todas as falas.
+#[derive(Resource)]
+struct PointerAssets {
+    mesh: Handle<Mesh>,
+    material: Handle<StandardMaterial>,
+}
+
+fn setup_bubble_assets(
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<StandardMaterial>>,
+) {
+    commands.insert_resource(PointerAssets {
+        mesh: meshes.add(Triangle2d::new(
+            Vec2::new(-0.5, 0.0),
+            Vec2::NEG_Y,
+            Vec2::new(0.5, 0.0),
+        )),
+        material: materials.add(StandardMaterial {
+            base_color: Color::srgb_u8(214, 185, 121),
+            unlit: true,
+            fog_enabled: false,
+            cull_mode: None,
+            ..default()
+        }),
+    });
     let quad = meshes.add(Rectangle::new(1.0, 1.0));
     match BubbleAssets::from_font_bytes(quad, FONT.to_vec()) {
         Ok(assets) => {
@@ -162,6 +196,9 @@ fn present_spoken_lines(
     mut images: ResMut<Assets<Image>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
     speakers: Query<(&Transform, &Visibility)>,
+    geometry: framing::SpeakerGeometry,
+    scale: Res<BalloonScale>,
+    pointer_assets: Res<PointerAssets>,
     existing: Query<(Entity, &Bubble, &SpeechFace)>,
     focus: Option<Res<InteractionFocus>>,
     mut toasts: MessageWriter<ScriptToast>,
@@ -216,36 +253,54 @@ fn present_spoken_lines(
             &BubbleStyle {
                 kind: BubbleKind::Speech,
                 emotion: Emotion::Neutral,
-                tail: true,
+                tail: false,
                 skin: skin.0,
             },
             &text,
         );
         let image = materials
-            .get(&rendered.material)
-            .and_then(|material| material.base_color_texture.clone());
-        commands.spawn((
-            Bubble {
-                owner,
-                offset: Vec2::ZERO,
-            },
-            BubblePx(rendered.px),
-            SpeechFace {
-                material: rendered.material.clone(),
-                image,
-                expires_at: time.elapsed_secs() + bubble_seconds(&text, seconds),
-                #[cfg(test)]
-                text: text.clone(),
-            },
-            Mesh3d(assets.quad.clone()),
-            MeshMaterial3d(rendered.material),
-            NotShadowCaster,
-            // Nasce escondido. Com o `apply_deferred` que o `.before(track)`
-            // força, o track posiciona-o já neste frame; se um dia a ordem
-            // mudar, o balão continua escondido em vez de aparecer na origem.
-            Visibility::Hidden,
-            Transform::from_scale(Vec3::new(rendered.size.x, rendered.size.y, 1.0)),
-        ));
+            .get_mut(&rendered.material)
+            .and_then(|mut material| {
+                // A face recortada escreve profundidade e movimento. Com Blend, o
+                // TAA arrastava as letras com o movimento do fundo durante o plano.
+                material.alpha_mode = AlphaMode::Mask(0.5);
+                material.fog_enabled = false;
+                material.base_color_texture.clone()
+            });
+        let pointer = commands
+            .spawn((
+                Mesh3d(pointer_assets.mesh.clone()),
+                MeshMaterial3d(pointer_assets.material.clone()),
+                NotShadowCaster,
+                Visibility::Hidden,
+            ))
+            .id();
+        commands
+            .spawn((
+                Bubble {
+                    owner,
+                    offset: Vec2::ZERO,
+                },
+                BubblePx(rendered.px),
+                SpeechFace {
+                    material: rendered.material.clone(),
+                    image,
+                    pointer,
+                    crown: geometry.crown(owner).unwrap_or(Vec3::Y * scale.anchor_y),
+                    expires_at: time.elapsed_secs() + bubble_seconds(&text, seconds),
+                    #[cfg(test)]
+                    text: text.clone(),
+                },
+                Mesh3d(assets.quad.clone()),
+                MeshMaterial3d(rendered.material),
+                NotShadowCaster,
+                // Nasce escondido. Com o `apply_deferred` que o `.before(track)`
+                // força, o track posiciona-o já neste frame; se um dia a ordem
+                // mudar, o balão continua escondido em vez de aparecer na origem.
+                Visibility::Hidden,
+                Transform::from_scale(Vec3::new(rendered.size.x, rendered.size.y, 1.0)),
+            ))
+            .add_child(pointer);
     }
 }
 
@@ -322,11 +377,7 @@ mod tests {
     #[test]
     fn the_hud_font_is_a_usable_balloon_font() {
         let assets = BubbleAssets::from_font_bytes(Handle::<Mesh>::default(), FONT.to_vec());
-        assert!(
-            assets.is_ok(),
-            "Cinzel (a fonte do HUD): {:?}",
-            assets.err()
-        );
+        assert!(assets.is_ok(), "Noto Serif Display: {:?}", assets.err());
     }
 
     /// Os scripts que falam passaram a usar `talk.say`/`say.say` e o
@@ -382,6 +433,91 @@ mod tests {
             *app.world().get::<Visibility>(bubble).unwrap(),
             Visibility::Inherited,
             "o track revela o balão do dono visível"
+        );
+    }
+
+    #[test]
+    fn nested_mesh_sets_the_tip_and_only_the_crossing_waypoint_yields() {
+        use bevy::camera::{ComputedCameraValues, RenderTargetInfo, primitives::Aabb};
+        use viber::hud::waypoint::WaypointArrowRoot;
+
+        let mut app = headless_app();
+        let eye = Transform::from_xyz(0., 1.6, 4.);
+        let cam = app
+            .world_mut()
+            .query_filtered::<Entity, With<TestCamera>>()
+            .single(app.world())
+            .unwrap();
+        app.world_mut().entity_mut(cam).insert((
+            eye,
+            GlobalTransform::from(eye),
+            Camera {
+                computed: ComputedCameraValues {
+                    clip_from_view: Mat4::perspective_infinite_reverse_rh(1., 16. / 9., 0.1),
+                    target_info: Some(RenderTargetInfo {
+                        physical_size: UVec2::new(2560, 1440),
+                        scale_factor: 2.,
+                    }),
+                    ..default()
+                },
+                ..default()
+            },
+        ));
+        let owner = app
+            .world_mut()
+            .spawn((Transform::IDENTITY, Visibility::Inherited))
+            .id();
+        let part = Transform::from_xyz(0.2, 0., 0.).with_scale(Vec3::splat(0.8));
+        app.world_mut().spawn((
+            ChildOf(owner),
+            part,
+            GlobalTransform::from(part),
+            Mesh3d::default(),
+            InheritedVisibility::VISIBLE,
+            Aabb::from_min_max(Vec3::splat(-0.1), Vec3::new(0.1, 2., 0.1)),
+        ));
+        let arrow = app
+            .world_mut()
+            .spawn((
+                WaypointArrowRoot { margin: 64. },
+                Node {
+                    left: Val::Percent(52.),
+                    top: Val::Percent(41.),
+                    ..default()
+                },
+                ComputedNode {
+                    size: Vec2::new(380., 80.),
+                    inverse_scale_factor: 0.5,
+                    ..default()
+                },
+                Visibility::Inherited,
+            ))
+            .id();
+        app.world_mut().write_message(ScriptSay {
+            speaker: Some(owner),
+            text: "Preciso de madeira-escura das árvores mortas.".into(),
+            seconds: 4.,
+        });
+        app.update();
+        let bubble = only_bubble(&mut app);
+        let face = app.world().get::<SpeechFace>(bubble).unwrap();
+        assert!(face.crown.abs_diff_eq(Vec3::new(0.2, 1.6, 0.), 1e-4));
+        assert_eq!(
+            app.world().get::<Visibility>(face.pointer),
+            Some(&Visibility::Inherited)
+        );
+        assert_eq!(
+            app.world().get::<Visibility>(arrow),
+            Some(&Visibility::Hidden)
+        );
+
+        // O sistema do HUD publica de novo a seta, agora longe da fala.
+        app.world_mut().get_mut::<Node>(arrow).unwrap().left = Val::Percent(90.);
+        *app.world_mut().get_mut::<Visibility>(arrow).unwrap() = Visibility::Inherited;
+        app.update();
+        assert_eq!(
+            app.world().get::<Visibility>(arrow),
+            Some(&Visibility::Inherited)
         );
     }
 

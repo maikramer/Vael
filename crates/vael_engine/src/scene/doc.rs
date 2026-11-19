@@ -143,14 +143,17 @@ pub fn write_atomic(path: &std::path::Path, bytes: &[u8]) -> anyhow::Result<()> 
 }
 
 impl SceneDoc {
-    /// Carrega `world` e, recursivamente, os ficheiros incluídos. Um include partido fica como
-    /// nó simples (com aviso) para o resto do mundo continuar editável.
-    pub fn load(world: &Path) -> Result<Self> {
-        if world
+    pub(crate) fn is_bsn(world: &Path) -> bool {
+        world
             .extension()
             .and_then(|ext| ext.to_str())
             .is_some_and(|ext| ext.eq_ignore_ascii_case("bsn"))
-        {
+    }
+
+    /// Carrega `world` e, recursivamente, os ficheiros incluídos. Um include partido fica como
+    /// nó simples (com aviso) para o resto do mundo continuar editável.
+    pub fn load(world: &Path) -> Result<Self> {
+        if Self::is_bsn(world) {
             bail!(
                 "{}: a CLI `viber scene`/`viber tool` continua XML; edita o `.bsn` no \
                  vael-editor (Jackdaw)",

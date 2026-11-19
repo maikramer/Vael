@@ -668,6 +668,7 @@ fn insert_fire_visuals(
     kind: FireKind,
     phase: f32,
     pos: Vec3,
+    interior: Option<&bevy_ext_core::InteriorSceneConfig>,
 ) {
     entity_commands.try_insert((
         FlameSite {
@@ -689,7 +690,11 @@ fn insert_fire_visuals(
     if let Some(embers) = kind.embers() {
         entity_commands.try_insert(embers);
     }
-    if let Some(smoke) = kind.smoke() {
+    if let Some(mut smoke) = kind.smoke() {
+        // Com a vista próxima, o penacho deve deixar ler o fogão e o herói.
+        if interior.is_some_and(|scene| scene.contains(pos.x, pos.z)) {
+            smoke.density *= 0.18;
+        }
         entity_commands.try_insert(smoke);
     }
 }
@@ -697,6 +702,7 @@ fn insert_fire_visuals(
 fn migrate_fire_emitters(
     mut commands: Commands,
     config: Res<PracticalConfig>,
+    interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     focus: Query<&GlobalTransform, With<VaelLightFocus>>,
     fires: Query<(Entity, &GlobalTransform, &AmbientFx), Added<AmbientFx>>,
     already: Query<(), With<VaelFire>>,
@@ -718,7 +724,7 @@ fn migrate_fire_emitters(
             if far {
                 bundle.try_insert(VaelFireCulled);
             } else {
-                insert_fire_visuals(&mut bundle, kind, phase, pos);
+                insert_fire_visuals(&mut bundle, kind, phase, pos, interior.as_deref());
             }
         }
         if config.migrate_particles {
@@ -740,6 +746,7 @@ fn migrate_fire_emitters(
 fn cull_distant_fires(
     mut commands: Commands,
     config: Res<PracticalConfig>,
+    interior: Option<Res<bevy_ext_core::InteriorSceneConfig>>,
     focus: Query<&GlobalTransform, With<VaelLightFocus>>,
     fires: Query<(
         Entity,
@@ -790,7 +797,7 @@ fn cull_distant_fires(
                     Transform::default(),
                     Visibility::Inherited,
                 ));
-                insert_fire_visuals(&mut child, fire.kind, fire.phase, pos);
+                insert_fire_visuals(&mut child, fire.kind, fire.phase, pos, interior.as_deref());
                 child_id = child.id();
             });
             commands

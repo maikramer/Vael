@@ -604,7 +604,6 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
         mixer_settings,
         pending_worldsys,
         _sky_request,
-        gradmesh_dropped,
     ) = {
         let gradmesh_enabled = gradmesh_materials.is_some() && primitives_use_gradmesh();
         let mut ctx = SpawnCtx {
@@ -621,7 +620,6 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
             gradmesh_detail,
             gradmesh_meshes: std::collections::HashMap::new(),
             gradmesh_materials: std::collections::HashMap::new(),
-            gradmesh_dropped_maps: std::collections::BTreeSet::new(),
             mixer: std::cell::RefCell::new(None),
             hud: std::cell::RefCell::new(Vec::new()),
             ui_styles: std::cell::RefCell::new(Vec::new()),
@@ -658,7 +656,6 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
         let mixer = ctx.mixer.into_inner();
         let pending_worldsys = ctx.worldsys.consume();
         let sky_request = ctx.sky_request.into_inner();
-        let gradmesh_dropped = std::mem::take(&mut ctx.gradmesh_dropped_maps);
         (
             hud_elements,
             ui_styles,
@@ -667,7 +664,6 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
             mixer,
             pending_worldsys,
             sky_request,
-            gradmesh_dropped,
         )
     };
     if stats.gradmesh_primitives > 0 || stats.standard_primitives > 0 {
@@ -675,24 +671,7 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
             gradmesh = stats.gradmesh_primitives,
             standard = stats.standard_primitives,
             detalhe = ?gradmesh_detail,
-            mapas_ignorados = gradmesh_dropped.len(),
             "primitivas do mundo"
-        );
-    }
-    if !gradmesh_dropped.is_empty() {
-        let sample: Vec<&str> = gradmesh_dropped
-            .iter()
-            .take(6)
-            .map(String::as_str)
-            .collect();
-        warn!(
-            "gradmesh: material sem amostragem de textura — albedo/normal ignorados: {}{}",
-            sample.join(", "),
-            if gradmesh_dropped.len() > sample.len() {
-                ", …"
-            } else {
-                ""
-            }
         );
     }
     if let Some(light) = ambient {
@@ -877,7 +856,6 @@ pub fn spawn_specs(
             gradmesh_detail,
             gradmesh_meshes: std::collections::HashMap::new(),
             gradmesh_materials: std::collections::HashMap::new(),
-            gradmesh_dropped_maps: std::collections::BTreeSet::new(),
             mixer: std::cell::RefCell::new(None),
             hud: std::cell::RefCell::new(Vec::new()),
             ui_styles: std::cell::RefCell::new(Vec::new()),
@@ -1003,10 +981,7 @@ fn material_key(spec: &MaterialSpec, world_tiled: bool) -> MaterialKey {
     }
 }
 
-/// Chave do cache de `GradMeshMaterial`. Ao contrário do [`MaterialKey`], NÃO
-/// inclui o URL das texturas (o material gradiente não as amostra) e inclui o
-/// ruído derivado do `texture-tile-size` — duas primitivas que só diferem no
-/// mapa que o gradiente ignora partilham o mesmo material.
+/// Chave do material gradiente das primitivas sem mapas.
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 struct GradMaterialKey {
     base_color: Option<[u32; 3]>,
@@ -1014,8 +989,6 @@ struct GradMaterialKey {
     roughness: Option<u32>,
     opacity: Option<u32>,
     emissive: Option<[u32; 3]>,
-    /// Frequência do ruído (`1 / tile`); `None` quando não há textura.
-    noise_scale: Option<u32>,
 }
 
 fn grad_material_key(spec: &MaterialSpec) -> GradMaterialKey {
@@ -1028,7 +1001,6 @@ fn grad_material_key(spec: &MaterialSpec) -> GradMaterialKey {
         // passe de render); a chave normaliza para não duplicar material.
         opacity: spec.opacity.filter(|alpha| *alpha < 1.0).map(bits),
         emissive: spec.emissive.map(|c| c.map(bits)),
-        noise_scale: gradmesh_noise_scale(spec).map(bits),
     }
 }
 
@@ -1075,9 +1047,6 @@ struct SpawnCtx<'a> {
     /// `MaterialKey` do StandardMaterial.
     gradmesh_materials:
         std::collections::HashMap<GradMaterialKey, Handle<bevy_gradmesh::GradMeshMaterial>>,
-    /// Mapas albedo/normal que o caminho gradiente ignorou (avisados uma vez
-    /// no fecho do spawn, não por primitiva).
-    gradmesh_dropped_maps: std::collections::BTreeSet<String>,
     mixer: std::cell::RefCell<Option<crate::music::AudioMixerSettings>>,
     /// Deferred HUD screen elements (tag + raw attrs).
     hud: std::cell::RefCell<HudList>,
@@ -1120,7 +1089,7 @@ impl SpawnCtx<'_> {
         if let Some(handle) = self.gradmesh_materials.get(&key) {
             return handle.clone();
         }
-        let style = gradmesh_style(spec, &mut self.gradmesh_dropped_maps);
+        let style = gradmesh_style(spec);
         let handle = self
             .gradmesh
             .as_deref_mut()
@@ -1849,13 +1818,15 @@ fn spawn_entity(
             }
         }
         EntityKind::Primitive { shape, material } => {
-            // Caminho novo (default): a primitiva vira um mesh procedural do
-            // `bevy_gradmesh` com material de gradiente. `Plane` fica no
-            // StandardMaterial (decals/soalhos texturados) e as apps mínimas
-            // sem `Assets<GradMeshMaterial>` também — o fallback é silencioso.
-            if ctx.gradmesh_enabled
-                && let Some(grad_shape) = gradmesh_shape(shape, ctx.gradmesh_detail)
-            {
+            // O gradiente só serve materiais sem mapas. Com albedo/normal,
+            // o StandardMaterial amostra as UVs da própria forma.
+            let textured = material.texture.is_some() || material.normal_map.is_some();
+            let grad_shape = if ctx.gradmesh_enabled {
+                gradmesh_shape(shape, ctx.gradmesh_detail)
+            } else {
+                None
+            };
+            if !textured && let Some(grad_shape) = grad_shape {
                 let mesh = ctx.gradmesh_mesh(grad_shape);
                 let mat = ctx.gradmesh_material(material);
                 entity.insert((Mesh3d(mesh), MeshMaterial3d(mat), Visibility::Inherited));
@@ -1870,10 +1841,10 @@ fn spawn_entity(
                 // UV world-space (`texture-tile-size` > 0 em Plane/Cuboid, a
                 // mesma fórmula das ribbons) ⇒ a textura precisa de REPEAT:
                 // registada no `load` para o escritor único de samplers.
-                let world_tiled_uv = material.texture.is_some()
+                let world_tiled_uv = textured
                     && material.texture_tile.is_some_and(|tile| tile > 0.0)
                     && matches!(shape, Shape::Plane { .. } | Shape::Cuboid { .. });
-                if let Some(tile) = material.texture_tile.filter(|_| world_tiled_uv) {
+                let mesh = if let Some(tile) = material.texture_tile.filter(|_| world_tiled_uv) {
                     // UV world-space: mesh DEDICADO — `scale_primitive_uvs` assa
                     // a translation do mundo nas UVs, por isso decals em sítios
                     // diferentes não podem partilhar o asset (decals no MESMO
@@ -1895,16 +1866,24 @@ fn spawn_entity(
                             spec.transform.translation[2] + ancestor.y,
                         ],
                     );
-                    let mesh = ctx.meshes.add(primitive);
-                    let mat = material_handle(ctx, material, world_tiled_uv);
-                    entity.insert((Mesh3d(mesh), MeshMaterial3d(mat), Visibility::Inherited));
+                    ctx.meshes.add(primitive)
                 } else {
                     // Cache por forma+dimensões/spec: paredes iguais de uma
                     // composition, instâncias de um protótipo — um asset só.
-                    let mesh = primitive_mesh_handle(ctx, shape);
-                    let mat = material_handle(ctx, material, false);
-                    entity.insert((Mesh3d(mesh), MeshMaterial3d(mat), Visibility::Inherited));
+                    match grad_shape {
+                        Some(shape) => ctx.gradmesh_mesh(shape),
+                        None => primitive_mesh_handle(ctx, shape),
+                    }
+                };
+                if material.normal_map.is_some()
+                    && let Some(mut geometry) = ctx.meshes.get_mut(&mesh)
+                    && !geometry.contains_attribute(Mesh::ATTRIBUTE_TANGENT)
+                    && let Err(error) = geometry.generate_tangents()
+                {
+                    warn!("normal-map da primitiva: {error}");
                 }
+                let mat = material_handle(ctx, material, world_tiled_uv);
+                entity.insert((Mesh3d(mesh), MeshMaterial3d(mat), Visibility::Inherited));
             }
         }
         EntityKind::PointLight {
@@ -2530,26 +2509,8 @@ fn gradmesh_shape(
     })
 }
 
-/// Frequência do ruído que substitui o grão do albedo perdido: uma célula por
-/// tile de textura. `None` sem textura (superfície lisa de propósito).
-fn gradmesh_noise_scale(spec: &MaterialSpec) -> Option<f32> {
-    let has_map = spec.texture.is_some() || spec.normal_map.is_some();
-    has_map.then(|| {
-        let tile = spec.texture_tile.filter(|tile| *tile > 0.0).unwrap_or(1.0);
-        1.0 / tile
-    })
-}
-
-/// Traduz o [`MaterialSpec`] autoral num [`bevy_gradmesh::Style`].
-///
-/// O material gradiente não amostra texturas: `texture`/`normal-map` entram
-/// no aviso de mapas ignorados (uma vez por URL no fecho do spawn) e o
-/// `texture-tile-size` vira um ruído ligeiro para a superfície não ficar
-/// morta. Cor, roughness, metallic, emissive e opacidade são preservados.
-fn gradmesh_style(
-    spec: &MaterialSpec,
-    dropped_maps: &mut std::collections::BTreeSet<String>,
-) -> bevy_gradmesh::Style {
+/// Traduz os campos de um material sem mapas para o shader de gradiente.
+fn gradmesh_style(spec: &MaterialSpec) -> bevy_gradmesh::Style {
     let [red, green, blue] = spec.base_color.unwrap_or([1.0, 1.0, 1.0]);
     let color = Color::srgb(red, green, blue);
     let mut style = match spec.opacity {
@@ -2567,15 +2528,6 @@ fn gradmesh_style(
     }
     if let Some([red, green, blue]) = spec.emissive {
         style = style.with_emissive(LinearRgba::rgb(red, green, blue));
-    }
-    if let Some(scale) = gradmesh_noise_scale(spec) {
-        style = style.with_noise(scale, 0.10);
-    }
-    for url in [spec.texture.as_ref(), spec.normal_map.as_ref()]
-        .into_iter()
-        .flatten()
-    {
-        dropped_maps.insert(url.clone());
     }
     style
 }
@@ -2646,12 +2598,12 @@ fn build_material(
         material.base_color_texture = Some(handle);
     }
     if let Some(url) = spec.normal_map.as_deref() {
-        // O normal do pool é LINEAR: carregar pelo mesmo caminho da base
-        // color dava sRGB e o mapa saía esbranquiçado (normais empurradas
-        // para cima e o relevo a desaparecer). `load_tiled_image` regista o
-        // sampler e devolve o handle cru do AssetServer, que já é linear
-        // quando o ficheiro é KTX2 de dados.
-        let handle = asset_server.load(url.trim_start_matches('/').to_owned());
+        // A normal usa as mesmas UVs e o mesmo modo de repetição do albedo.
+        let handle = if world_tiled_uv {
+            crate::textures::load_tiled_image(asset_server, tiled, url)
+        } else {
+            asset_server.load(url.trim_start_matches('/').to_owned())
+        };
         material.normal_map_texture = Some(handle);
     }
     materials.add(material)
@@ -3007,7 +2959,6 @@ pub fn apply_script_spawns(world: &mut World) {
         gradmesh_detail,
         gradmesh_meshes: std::collections::HashMap::new(),
         gradmesh_materials: std::collections::HashMap::new(),
-        gradmesh_dropped_maps: std::collections::BTreeSet::new(),
         mixer: std::cell::RefCell::new(None),
         hud: std::cell::RefCell::new(Vec::new()),
         ui_styles: std::cell::RefCell::new(Vec::new()),
@@ -3131,9 +3082,8 @@ mod gradmesh_tests {
     }
 
     #[test]
-    fn style_keeps_the_material_fields_and_drops_the_maps() {
-        let mut dropped = std::collections::BTreeSet::new();
-        let style = gradmesh_style(&spec_with_maps(), &mut dropped);
+    fn style_keeps_the_material_fields() {
+        let style = gradmesh_style(&spec_with_maps());
 
         let color = style.color.to_srgba();
         assert!((color.red - 0.5).abs() < 1e-6);
@@ -3148,42 +3098,48 @@ mod gradmesh_tests {
             Some(LinearRgba::rgb(1.0, 0.5, 0.0)),
             "emissive preservado"
         );
-        assert_eq!(
-            style.noise.map(|noise| noise.scale),
-            Some(0.5),
-            "1 / texture-tile-size"
-        );
-        assert_eq!(dropped.len(), 2, "albedo + normal entram no aviso");
     }
 
     #[test]
-    fn material_key_ignores_the_maps_the_gradient_cannot_sample() {
-        let a = MaterialSpec {
-            texture: Some("/assets/a.ktx2".into()),
-            texture_tile: Some(2.0),
-            ..Default::default()
-        };
-        let b = MaterialSpec {
-            texture: Some("/assets/b.ktx2".into()),
-            texture_tile: Some(2.0),
-            ..Default::default()
-        };
-        assert_eq!(grad_material_key(&a), grad_material_key(&b));
-        let c = MaterialSpec {
-            texture_tile: Some(4.0),
-            ..Default::default()
-        };
-        assert_ne!(
-            grad_material_key(&a),
-            grad_material_key(&c),
-            "tile diferente → ruído diferente"
+    fn textured_cuboid_keeps_both_tiled_maps_with_gradmesh_available() {
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, bevy::asset::AssetPlugin::default()))
+            .init_asset::<Image>()
+            .init_asset::<Mesh>()
+            .init_asset::<StandardMaterial>()
+            .init_asset::<crate::sky::SkyMaterial>()
+            .init_asset::<bevy_gradmesh::GradMeshMaterial>()
+            .init_resource::<crate::textures::WorldTiledTextures>();
+        let nodes = crate::xml::parse_fragment(
+            r#"<Cuboid texture="stone.ktx2" normal-map="normal.ktx2" texture-tile-size="2"/>"#,
+        )
+        .unwrap();
+        let parsed = crate::recipes::parse_world(&[], &nodes).unwrap();
+        let roots = spawn_specs(app.world_mut(), &parsed.entities, None).unwrap();
+        let world = app.world();
+        let geometry = world.get::<Mesh3d>(roots[0]).unwrap();
+        assert!(
+            world
+                .resource::<Assets<Mesh>>()
+                .get(&geometry.0)
+                .unwrap()
+                .contains_attribute(Mesh::ATTRIBUTE_TANGENT)
         );
+        let handle = world
+            .get::<MeshMaterial3d<StandardMaterial>>(roots[0])
+            .unwrap();
+        let material = world
+            .resource::<Assets<StandardMaterial>>()
+            .get(&handle.0)
+            .unwrap();
+        let tiled = world.resource::<crate::textures::WorldTiledTextures>();
+        assert!(tiled.contains(material.base_color_texture.as_ref().unwrap().id()));
+        assert!(tiled.contains(material.normal_map_texture.as_ref().unwrap().id()));
     }
 
     #[test]
     fn opaque_material_needs_no_not_shadow_caster() {
-        let mut dropped = std::collections::BTreeSet::new();
-        let style = gradmesh_style(&MaterialSpec::default(), &mut dropped);
+        let style = gradmesh_style(&MaterialSpec::default());
         assert_eq!(style.blend_mode, bevy_gradmesh::BlendMode::Opaque);
         assert!(!style.is_translucent());
         assert!(style.casts_shadows());

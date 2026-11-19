@@ -25,9 +25,9 @@ bevy_ecs::hierarchy::Children [
         scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
     }
     bevy_ext_scene::InteriorSceneSpec {
-        size: glam::Vec2 { x: 60.0, y: 55.0 },
-        camera_distance: core::option::Option::Some(16.0),
-        camera_pitch: core::option::Option::Some(58.0),
+        size: glam::Vec2 { x: 25.6, y: 19.6 },
+        camera_distance: core::option::Option::Some(6.6),
+        camera_pitch: core::option::Option::Some(52.0),
         camera_yaw: core::option::Option::Some(0.0),
     }
     bevy_world_xml::bsn::WorldNode {
@@ -1457,18 +1457,19 @@ bevy_ecs::hierarchy::Children [
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_light::point_light::PointLight {
-            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.847059, blue: 0.690196, alpha: 1.0 }),
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 0.901961, green: 0.929412, blue: 0.960784, alpha: 1.0 }),
             intensity: 65000.0,
-            radius: 30.0,
-            shadow_maps_enabled: false,
+            radius: 0.85,
+            shadow_maps_enabled: true,
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "PointLight",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 4.5 0" },
-                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffd8b0" },
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xe6edf5" },
                 bevy_world_xml::bsn::WorldProp { key: "intensity", value: "65000" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "30" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.85" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "true" },
             ],
             text: "",
             origin_file: "scenes/interiors/forge.xml",
@@ -1560,7 +1561,7 @@ bevy_ecs::hierarchy::Children [
         bevy_light::point_light::PointLight {
             color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.752941, blue: 0.501961, alpha: 1.0 }),
             intensity: 9000.0,
-            radius: 4.5,
+            radius: 0.25,
             shadow_maps_enabled: false,
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1569,7 +1570,7 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.7 0" },
                 bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc080" },
                 bevy_world_xml::bsn::WorldProp { key: "intensity", value: "9000" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "4.5" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.25" },
                 bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
             ],
             text: "",
@@ -1631,7 +1632,7 @@ bevy_ecs::hierarchy::Children [
         bevy_light::point_light::PointLight {
             color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 0.752941, blue: 0.501961, alpha: 1.0 }),
             intensity: 9000.0,
-            radius: 4.5,
+            radius: 0.25,
             shadow_maps_enabled: false,
         }
         bevy_world_xml::bsn::WorldNode {
@@ -1640,7 +1641,7 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 1.7 0" },
                 bevy_world_xml::bsn::WorldProp { key: "color", value: "0xffc080" },
                 bevy_world_xml::bsn::WorldProp { key: "intensity", value: "9000" },
-                bevy_world_xml::bsn::WorldProp { key: "radius", value: "4.5" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "0.25" },
                 bevy_world_xml::bsn::WorldProp { key: "shadows", value: "false" },
             ],
             text: "",
