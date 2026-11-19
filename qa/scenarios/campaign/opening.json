@@ -1,0 +1,8 @@
+{
+  "description": "Validação manual M01, M01a e M02. Começa junto de Edmar com um save de QA.",
+  "extends": ["_base"],
+  "scene": "main",
+  "flags": {"campaign.opening": true},
+  "player": {"near": "npc_elder", "distance": 1.1, "god": true},
+  "expect": {"quests": {"story_notas": "not_taken", "story_first_fold": "not_taken"}}
+}

@@ -107,6 +107,7 @@ fn player_position(
 
 fn script_kind(path: &str) -> &str {
     path.strip_prefix("enemies/")
+        .or_else(|| path.strip_prefix("bosses/"))
         .and_then(|path| path.strip_suffix(".lua"))
         .unwrap_or(path)
 }
@@ -184,6 +185,13 @@ fn quest_waypoint(
                     }
                 }
                 best.map(|(point, _)| point)
+            }
+            "interact" if view.target == "fold_sign" => {
+                let name = crate::quest::VALLEY_TOWER;
+                positions.get(name).map(|position| HudPoint {
+                    position: Vec3::from_array(*position),
+                    label: view.title.clone(),
+                })
             }
             "visit" => {
                 let mut best: Option<(HudPoint, f32)> = None;
@@ -295,6 +303,17 @@ fn quest_waypoint(
         }
     };
 
+    if save
+        .quests
+        .tracked
+        .as_deref()
+        .is_none_or(|id| id == crate::quest::CONTRACT)
+        && let Some(id) = crate::quest::opening_destination(&kv)
+        && let Some(def) = content.quests.get(id)
+        && let Some(point) = npc_point(def, "hud.mark.quest", "Missão")
+    {
+        return Some(point);
+    }
     let tracked = save.quests.tracked.as_deref();
     if let Some(id) = tracked {
         let state = quest_state(&rules.quests, &kv, id);
@@ -326,7 +345,7 @@ fn quest_waypoint(
             if active.is_none() {
                 active = objective_point(id).or_else(|| npc_point(def, "hud.mark.quest", "Missão"));
             }
-        } else if quest_available(&rules.quests, &kv, id) {
+        } else if state == "not_taken" && quest_available(&rules.quests, &kv, id) {
             // Sem quest: o dador novo mais próximo. `quest_available` fica
             // para a onda das quests; aqui o fallback é o cartão do HUD.
             if let Some(point) = npc_point(def, "hud.mark.quest", "Missão") {
@@ -479,6 +498,7 @@ mod tests {
     #[test]
     fn kind_do_script_tira_o_prefixo_e_extensao() {
         assert_eq!(script_kind("enemies/wolf.lua"), "wolf");
+        assert_eq!(script_kind("bosses/witch.lua"), "witch");
         assert_eq!(script_kind("enemies/bandit-archer.lua"), "bandit-archer");
         assert_eq!(script_kind("outra/coisa.lua"), "outra/coisa.lua");
     }

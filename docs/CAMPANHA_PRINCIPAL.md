@@ -3,7 +3,35 @@
 
 **Documento de autoria · contém o final.** A campanha acompanha o Cartógrafo desde o contrato em Discórdia até à entrega do primeiro mapa que qualquer habitante do Vale tem o direito de corrigir. A bíblia fixa os nomes e o tom. O GDD descreve como se joga. [Bíblia narrativa](../STORY.md) · [GDD](../GDD.md)
 
-O Capítulo I já tem prólogo, quatro guardiões, quatro Notas e epílogo jogáveis. As cenas domésticas, as provas materiais e os diálogos aqui acrescentados a esse capítulo são propostas. Os capítulos II e III são a continuação proposta. Os números M01–M14 servem para a equipa falar das missões. Os identificadores em código apontam para conteúdo que já existe.
+O Capítulo I já tem prólogo, quatro guardiões, quatro Notas e epílogo jogáveis. A abertura já permite assinar o contrato de Edmar, orientar a criança no portão e seguir a cantiga de Vessa até à primeira Nota. O [roteiro de validação](IMPLEMENTACAO_MISSOES.md#jogar-a-abertura-implementada) descreve o percurso jogável. As demais cenas domésticas e provas materiais deste capítulo continuam propostas. Os capítulos II e III são a continuação proposta. Os números M01–M14 servem para a equipa falar das missões. Os identificadores em código apontam para conteúdo que já existe.
+
+Os IDs de runtime, as dependências e os testes de retoma de cada missão estão no [plano técnico de implementação](IMPLEMENTACAO_MISSOES.md).
+
+## Sequência principal do diário
+
+A primeira missão visível é **O contrato dobrado**. Até ao último gesto de M14, o diário acompanha a campanha. O quadro, os pedidos dos habitantes e os ícones de missão secundária abrem quando o jogador regressa ao mundo depois dos créditos. É possível explorar, usar a forja, visitar um lugar ou conversar durante toda a história.
+
+São **17 missões principais**. As três novas têm sufixo para conservar a numeração das cenas já referidas no GDD. A tabela dá uma primeira viagem completa. Dentro do Capítulo I, Edmar recomenda Bosque → Ermo → Lodo → Picos. O jogador pode fixar outra das quatro terras no diário. O destino seguinte é sempre uma missão principal por concluir.
+
+| Missão | Objectivo que o jogador recebe | O que leva para a missão seguinte |
+|---|---|---|
+| M01 · O contrato dobrado | Abre o contrato na mesa de Edmar e escolhe a primeira terra. | Uma folha sem escala e o nome da pessoa que conhece o caminho. |
+| M01a · A primeira dobra | À saída da vila, traça um caminho que a criança do poço consiga usar de volta. | O primeiro marco assinado e uma legenda que a criança guardará até M14. |
+| M02 · A cantiga de Vessa | Localiza a clareira pelo eco ou pelas fitas. Liberta a voz que a Bruxa repete. | Nota do Bosque e o desenho de dois sulcos que reaparecem no Campo. |
+| M03 · O peso de uma carroça | Examina a carga declarada como sal e tira a rota do alcance do Verme. | Nota do Ermo e uma razão para desconfiar de listas de passageiros. |
+| M04 · O lugar de quem falta | Descobre a rua submersa com Onno e abre caminho até ao Guardião. | Nota do Lodo e a altura de uma soleira que voltará a servir de medida. |
+| M05 · Quando a serra se cala | Segue os sinais de Sig, faz descer o Ogro e lê o verso do mojão. | Nota dos Picos e uma seta antiga que aponta para o Vale. |
+| M06 · Quatro lugares à mesa | Reúne quatro Notas distintas e entrega-as a Edmar. | O Coro volta a cantar. Entre as notas ouve-se uma chamada. |
+| M06a · A colher e o sino | Distingue, entre os ruídos da festa, o toque que a aldeia recebe e o que devolve. | A direcção do Campo e o Veterano disposto a seguir contigo. |
+| M07 · A coluna anda de lado | Caminha no espaço entre duas sombras até ambas pousarem o peso. | Uma fivela dá forma à pega de uma maca. |
+| M08 · A outra margem | Troca de ponta com o Veterano e transporta a maca até ao abrigo. | O pano de Ada tem a assinatura de Edmar. |
+| M09 · A folha raspada | Sobrepõe as duas plantas e recupera a linha apagada. | Um traçado para confrontar Edmar e o bilhete de Rui à irmã. |
+| M10 · O direito à margem | Apresenta a prova e decide como se vão guardar os nomes. | A coluna fica ilibada. A decisão aparece na acta ou na leitura pública. |
+| M10a · Duas pancadas para Ada | Com o Veterano, tenta responder a Rui na pedra do portão. | A resposta chega à margem errada. Duas testemunhas terão de corrigir o rumo. |
+| M11 · Duas pontas do mesmo fio | Recolhe uma impressão de cada margem, pela ordem que preferires. | As duas metades do fecho formam a palavra «CHEGOU». |
+| M12 · O caminho que sobe de volta | Conduz o fio pelas pedras da romaria até veres a travessia de cima. | A cunha da muralha pode voltar a orientar a estação. |
+| M13 · A última chamada | Devolve o toque de chegada e escolhe como os viajantes encontrarão o vau. | O acesso escolhido fica gravado no mapa. |
+| M14 · O mapa à altura de uma criança | Mostra o caminho a um viajante e segura o papel durante a primeira correcção. | O mapa passa às mãos da aldeia. Depois dos créditos surge o primeiro pedido local. |
 
 ## A história que o jogador vai descobrir
 
@@ -34,29 +62,23 @@ O jogador resolve duas perguntas diferentes. O Coro calou-se porque a cantora mo
 | Mestre da Romaria | Conduzir-te pelas pedras antigas do Alto. | Na última subida entrega-te a ponta do fio que sempre levou à frente. Pela primeira vez, segue outra pessoa. |
 | O Cartógrafo | Cumprir um contrato cujo formulário só tem espaço para distâncias. | Escreve o primeiro nome na margem; ao terminar deixa espaço assinado para a próxima correção. O jogador decide quem recebe essa autoridade. |
 
-## Percurso principal
-
-| Capítulo | Sequência e condição de avanço | Pergunta que leva ao capítulo seguinte |
-|---|---|---|
-| I · A Nota | M01 apresenta o contrato. M02–M05 podem ser feitas em qualquer ordem. Quatro guardiões distintos permitem entregar M06 a Edmar. | Porque toca uma chamada militar sob o canto restaurado? |
-| II · Os que atravessaram | M07 → M08 → M09 → M10, depois da entrega. Uma visita anterior ao Campo conta como descoberta. | Quem tem autoridade para dar por finda uma ordem antiga? |
-| III · A volta do caminho | M11 reúne dois testemunhos em ordem livre. M12 leva-os ao Alto. M13 encerra a chamada. M14 devolve o mapa ao Vale. | A última caminhada mostra a resposta dada pelo jogador. |
-
-A sequência Bosque → Ermo → Lodo → Picos alterna combate, percurso e regresso à água. É a sugestão de Edmar para uma primeira viagem. Cada região ensina o seu perigo à chegada, inclusive se for a primeira escolhida. O diário mantém **As Quatro Notas** como missão-mãe. As conversas regionais dão contexto, pistas e pagamento próprios. Encontrar um guardião por conta própria também faz avançar o contrato.
-
 ## Capítulo I · A Nota
 
 ### M01 · O contrato dobrado
 
 **Discórdia · Ancião Edmar · abertura de `story_notas`.** Depois do prólogo, o jogador chega ao poço, vê o gesto das duas mãos e segue o som seco da pena até ao salão. Edmar pede que abras a caixa. Há um caderno chamado **a Nota**, quatro espaços para as Notas do Coro e um mapa demasiado bem conservado para quem anda por lama. A primeira decisão é tua: aponta no mapa a terra que queres medir. O diário fixa a pessoa que te pode ajudar ali. Podes mudar de ideias à saída da vila.
 
-No caminho, assinar um marco ensina a regressar de uma fogueira. Se passares por ele sem o ver, a lição volta no próximo. O primeiro texto do diário cabe numa linha: «Procura alguém que ainda faça esta estrada.» O marcador seguinte já tem um nome.
+### M01a · A primeira dobra
+
+**Portão de Discórdia · a criança do poço · depois de M01.** «Se eu levar o teu mapa até à torre, como é que o leio quando voltar?» À saída da vila estão desenhadas duas setas iguais em faces opostas do mesmo poste. Uma leva à atalaia. A outra, vista por alguém que regressa, aponta para o curral. A criança explica como se orienta: de costas para a torre consegue ver o telhado branco do salão.
+
+Assina o primeiro marco e vira o caderno para desenhar o caminho de volta. Podes usar o telhado ou a curva do muro como legenda. Mostra o esboço à criança. Ela percorre os primeiros passos, pára na bifurcação e encontra o portão pela tua marca. Se a orientaste ao contrário, ela volta com palha agarrada aos sapatos. Podes virar a folha e experimentar de novo, sem repetir a assinatura. Guarda uma cópia dobrada no bolso. O diário volta ao dador da terra que escolheste em M01.
 
 ### M02 · A cantiga de Vessa
 
 **Floresta Sombria · Irmã Vessa · `forest_witch`.** Na orla, Vessa só consegue cantar o princípio de uma cantiga de embalar. A resposta vem da clareira, com a voz dela quando era pequena. Segue os intervalos entre as respostas ou as fitas de pano que ela prendeu nos ramos. Junto aos menires há dois sulcos paralelos no chão. Vessa diz que a mãe os chamava «rodas». São estreitos demais.
 
-A Bruxa marca o ponto onde te encontra. Na aproximação, uma marca apanha o pano solto de uma fita e deixa o chão queimado. Na arena, afasta-te do sinal antes da queda da maldição e aproxima-te enquanto o braço dela baixa. Ao vencer, recuperas a **Nota do Bosque**. Vessa acaba a cantiga sozinha. Se voltares depois, ouve-se um verso que ela inventou para o filho. A sua vigília posterior continua disponível como história local.
+A Bruxa marca o ponto onde te encontra. Na aproximação, uma marca apanha o pano solto de uma fita e deixa o chão queimado. Na arena, afasta-te do sinal antes da queda da maldição e aproxima-te enquanto o braço dela baixa. Ao vencer, recuperas a **Nota do Bosque**. Vessa acaba a cantiga sozinha. Se voltares depois, ouve-se um verso que ela inventou para o filho. No regresso após os créditos, Vessa pode confiar-te a vigília dos pinhais.
 
 ### M03 · O peso de uma carroça
 
@@ -68,7 +90,7 @@ Do Arco do Deserto vê-se uma roda saltar antes de a areia abrir. O Verme denunc
 
 **Pântano da Bruma · Onno · `swamp_bogwarden`.** Onno põe duas tigelas ao lume desde a morte do irmão. A segunda serve agora para medir a subida da água. Leva-te até onde uma tigela boia sobre uma soleira. Do barco naufragado ou pelo trilho firme da margem, alinha essa soleira com as Covas Submersas. Vês a linha de uma antiga rua. Há gente viva no alto da encosta que ainda chama «casa» à rua de baixo.
 
-O Guardião do Lodo ergue-se onde a água parece mais quieta. Muda de posição quando a lama levanta e guarda um trecho de piso firme para o regresso. Da vitória vem a **Nota do Lodo**. Onno paga com a vara abençoada e usa-a primeiro para pescar a tigela. A família do irmão terá lugar na futura travessia mesmo que não aceites o enigma da sineira afogada.
+O Guardião do Lodo ergue-se onde a água parece mais quieta. Muda de posição quando a lama levanta e guarda um trecho de piso firme para o regresso. Da vitória vem a **Nota do Lodo**. Onno paga com a vara abençoada e usa-a primeiro para pescar a tigela. A cunhada de Onno leva a tigela de volta à soleira. É ali que a vais reencontrar para medir a cheia.
 
 ### M05 · Quando a serra se cala
 
@@ -76,19 +98,31 @@ O Guardião do Lodo ergue-se onde a água parece mais quieta. Muda de posição 
 
 Quando os punhos do Ogro sobem, sai do alcance do impacto e volta durante a recuperação. Ganhas a **Nota dos Picos**. Sig vira o banco da sentinela para o outro lado da porta. Pela primeira vez vai ver quem chega do sul. Se deixaste os Picos para mais tarde, há três vozes no caderno quando o ferro do posto volta a tocar. Se começaste aqui, há uma só.
 
+#### Como uma expedição leva à outra
+
+Cada dador ajuda-te a escolher o próximo destino que ainda esteja por medir. Se pedires pelo Ermo, Vessa ata a fita ao carro de Kadi para que reconheças a caravana. Se preferires o Lodo, ensina-te a procurar a canoa virada que Onno usa de telhado. Se faltarem os Picos, aponta os clarões do posto de Sig na serra. Os outros dadores conhecem as mesmas pessoas pelas suas rotas de trabalho. O diário conserva a pista escolhida e deixa trocar de destino. Um guardião vencido antes da conversa conta para a entrega.
+
+O caderno também reage à quantidade de Notas, qualquer que seja a ordem. **Com a primeira**, o risco de carvão no papel treme. **Com a segunda**, desdobra as duas folhas e aproxima as margens: os dois riscos apontam ao Alto, mas um terceiro traço quase apagado atravessa a estrada do Campo. **Com a terceira**, uma criança à porta de uma casa põe a mão sobre um copo que vibra e chama a mãe. O gesto do poço já se espalhou para fora de Discórdia. **Com a quarta**, os quatro riscos ficam quietos entre grupos de três pancadas. O objectivo passa a «Leva as quatro Notas à mesa de Edmar». É a cadência que o jogador poderá reconhecer na tigela durante M06a.
+
 ### M06 · Quatro lugares à mesa
 
 **Discórdia · Edmar · entrega de `story_notas`, cinemática `epilogo`.** Com as quatro Notas, volta ao salão e pousa-as na mesa. Edmar consegue ouvir o Alto a partir da vila. Deixa acabar a cena e devolve o controlo ao jogador durante a festa. A criança do poço vai buscar outra criança antes de voltar a experimentar a pedra. Este é o fim do primeiro capítulo e um bom lugar para guardar e sair.
 
-Na continuação proposta, ao atravessares a praça depois da festa, uma colher começa a bater na borda de uma tigela. Três pancadas, uma espera longa, três pancadas. O Veterano cruza a praça de camisa de dormir, já com as botas calçadas. «É a chamada. Quem é que ainda está lá?» Fica um destino no diário para a próxima sessão. **Os Ecos do Coro** (`story_echoes`) continua a ser uma caçada opcional a cinco elites, disponível desde a entrega.
+Na continuação proposta, ao atravessares a praça depois da festa, uma colher começa a bater na borda de uma tigela. Três pancadas, uma espera longa, três pancadas. O Veterano cruza a praça de camisa de dormir, já com as botas calçadas. «É a chamada. Quem é que ainda está lá?» O diário pede-te que fiques na praça para localizar o som.
 
 ## Capítulo II · Os que atravessaram
 
+### M06a · A colher e o sino
+
+**Praça de Discórdia · Bram e o Veterano · depois da festa de M06.** A colher bate três vezes, o sino da forja outras três. Bram diz que consegue fazer calar qualquer um dos dois. Escolhe qual ele deve segurar. Se imobilizar a colher, a haste do sino continua a tremer. Se segurar o sino, a colher ainda bate a partir do lado da tigela que dá para o Campo. Podes experimentar ambos. Quem joga sem som vê farinha saltar da mesa a cada pancada e as linhas de vibração gravadas no caderno.
+
+Roda a tigela até a farinha se juntar contra uma das bordas. Traça essa direcção na Nota. O Veterano alinha a velha estrada com o risco. Pela primeira vez consente em ir ao Campo acompanhado. «Às vezes ouvia isto em casa. A minha mulher dizia que era a cama a ranger. Eu deixava-a dizer.» Ao sair pelo portão, guarda a colher no bolso. Na marcha de M07, serve para contar os passos de duas sombras que se deslocam juntas.
+
 ### M07 · A coluna anda de lado
 
-**Campo de Batalha · Veterano · a partir de M06.** Chega ao Campo e ouve o relato de quem subiu de noite. Se já viste a cinemática `campo-de-batalha`, o Veterano começa por «Desta vez olha para as mãos». Escolhe uma sombra e anda ao lado dela. Vês a mão direita fechar sobre uma pega invisível. Do outro lado da estrada outra sombra abranda ao mesmo tempo. Põe-te entre ambas e as duas pousam a maca. Uma fivela cai e fica no mundo quando as sombras recuam.
+**Campo de Batalha · Veterano · depois de localizar a chamada em M06a.** Chega ao Campo e ouve o relato de quem subiu de noite. Se já viste a cinemática `campo-de-batalha`, o Veterano começa por «Desta vez olha para as mãos». Escolhe uma sombra e anda ao lado dela. Vês a mão direita fechar sobre uma pega invisível. Do outro lado da estrada outra sombra abranda ao mesmo tempo. Põe-te entre ambas e as duas pousam a maca. Uma fivela cai e fica no mundo quando as sombras recuam.
 
-**Viragem.** O que parecia uma tropa a fugir formava pares para levar peso. Se examinaste os sulcos no Bosque, o Cartógrafo volta àquela folha e desenha as duas pegas por cima. Caso contrário, faz o primeiro desenho ali mesmo. O Veterano identifica o punção da fivela e pede-te que o ajudes a seguir a marcha. A missão local de dissipar oito sombras (`citadel_shades`) pode estar concluída. A reconstituição usa ecos próprios e continua disponível em plena luz do dia.
+**Viragem.** O que parecia uma tropa a fugir formava pares para levar peso. Se examinaste os sulcos no Bosque, o Cartógrafo volta àquela folha e desenha as duas pegas por cima. Caso contrário, faz o primeiro desenho ali mesmo. O Veterano identifica o punção da fivela e pede-te que o ajudes a seguir a marcha. Num save anterior à expansão, o Veterano pode já ter recebido o serviço de dissipar oito sombras (`citadel_shades`). A reconstituição usa ecos próprios e continua disponível em plena luz do dia.
 
 ### M08 · A outra margem
 
@@ -114,11 +148,17 @@ Encaixa o desenho do pano no caminho recuperado. Tens na mão o mapa de uma evac
 
 **Primeira escolha, sobre o registo histórico.** Podes **lavrar a acta com as assinaturas consentidas** ou **ler os nomes no salão e selar a lista com as famílias**. A primeira põe no memorial público os signatários que consentiram e dá a Kadi um documento com que contestar listas de carga. A segunda faz do Veterano o primeiro leitor de um memorial oral e deixa a lista sob guarda local. Em ambas, Edmar assina a confissão pública e a coluna é ilibada. O diário mostra a formulação exacta antes de confirmares. A audiência resolve o passado. Ainda falta alguém atravessar e responder por quem vive ali hoje.
 
+### M10a · Duas pancadas para Ada
+
+**Portão da Cidadela · Veterano · depois de M10.** Ao arrumarem a mesa da audiência, o Veterano fica com o bilhete de Rui na mão. «Eu sabia tocar a chamada. O que um irmão bate à porta de casa nunca me ensinaram.» À porta do salão, podes acompanhá-lo a pé ou reunir-te com ele na guarita já descoberta em M09. Lê o pedido de Rui, encosta a fivela ao encaixe da muralha e escolhe quantas pancadas dar. Podes usar duas pressões ou escolher a figura com dois entalhes. Uma sequência diferente desfaz-se sem custo. O Veterano pode reler o bilhete.
+
+Ao segundo toque, surge uma lanterna na estrada militar. Na margem das casas nenhuma luz responde. Sobrepõe o traço do bilhete ao do vau no caderno: a pedra ainda chama pelo caminho anterior ao desvio de Ada. Para mudar a direcção vão precisar de alguém de cada lado. O Veterano fica no posto a segurar a lanterna. Na partida para M11 podes escolher se procuras primeiro Onno ou Sig. No Alto, ele traz a mesma fivela e é o jogador que decide quem dará a resposta inteira.
+
 ## Capítulo III · A volta do caminho
 
 ### M11 · Duas pontas do mesmo fio
 
-**As duas margens do vau · Onno e Sig · depois da audiência.** Para encerrar a chamada, a pedra de recepção tem de reconhecer partida e chegada da mesma travessia. Cada margem conserva meia ferragem, com a marca de quem ali guardava o caminho. Reúne duas impressões no mesmo fio encerado do caderno, pela ordem que preferires.
+**As duas margens do vau · Onno e Sig · depois do ensaio no portão em M10a.** Para encerrar a chamada, a pedra de recepção tem de reconhecer partida e chegada da mesma travessia. Cada margem conserva meia ferragem, com a marca de quem ali guardava o caminho. Reúne duas impressões no mesmo fio encerado do caderno, pela ordem que preferires.
 
 - **Na margem das casas**, ajuda Onno a acertar a altura de uma régua de cheia pela soleira que viste no pântano. Ele prende a primeira metade do fecho onde uma criança lhe possa chegar. Se os nomes ficaram selados, é a cunhada quem traz a chave do armário. Com a acta aberta, vem uma família que encontrou no memorial a assinatura da avó.
 - **Na margem da estrada**, Sig aponta-te três direcções possíveis. De onde estás só uma permite ver o pano que Onno usa para pedir passagem. Ajusta o sinal até ambas as margens se verem. Se começares com Sig, o pano já lá está e só ganha um nome quando encontrares Onno.
@@ -148,17 +188,33 @@ A escolha da audiência governa a memória da coluna. Esta governa o acesso ao v
 
 **Discórdia · regresso livre ao poço · fecho e créditos.** Entras pela mesma rua que na primeira manhã. O Veterano leva a fivela à placa com as assinaturas ou à primeira leitura dos nomes, consoante a audiência. Do outro lado da praça, um viajante pergunta pelo vau. Se a estrada é pública, uma miúda mostra-lho no mapa. Se é guiada, leva-o até à mulher de turno. O jogador pode acompanhá-los e experimentar o acesso escolhido.
 
-A mãe baixa o balde sem tocar primeiro na pedra. O filho alcança o mapa novo em bicos de pés. Desta vez, penduraram-no mais baixo. Descobre um erro logo no primeiro dia: desenhaste uma ponte onde as pessoas atravessam por pedras. Entregas-lhe a raspadeira. A última interacção é segurar no papel enquanto ele corrige a linha. **Créditos.** Ao continuar, o mundo guarda o mapa, a forma de travessia e o memorial escolhidos. A caçada aos Ecos e as histórias locais por concluir continuam acessíveis.
+A mãe baixa o balde sem tocar primeiro na pedra. O filho alcança o mapa novo em bicos de pés. Desta vez, penduraram-no mais baixo. Tira do bolso a primeira folha dobrada. Ainda lá está o telhado ou a curva do muro que escolheste para lhe ensinar o regresso. Ao comparar as folhas, descobre um erro logo no primeiro dia: desenhaste uma ponte onde as pessoas atravessam por pedras. Entregas-lhe a raspadeira. A última interacção é segurar no papel enquanto ele corrige a linha. **Créditos.** Ao continuar, o mundo guarda o mapa, a forma de travessia e o memorial escolhidos. À saída dos créditos, Bram prende um pedido ao quadro com uma dobradiça velha. Passas a poder abrir a página «Pedidos do Vale». A primeira visita ao quadro mostra o trabalho de Bram. Os restantes pedidos descobrem-se ao falar com os habitantes ou ao consultar os avisos da região.
+
+## Depois da campanha · Pedidos do Vale
+
+O gesto da criança em M14 conclui a campanha. Só no regresso ao mundo aparecem os pedidos, as ofertas de diálogo dos dadores e os seus marcadores. O caderno guarda as principais concluídas à frente do separador «Pedidos do Vale». Descobrir um pedido acrescenta-o à lista. O jogador decide quando aceitá-lo e se quer segui-lo. Um aviso descoberto nunca troca sozinho a seta que se está a seguir.
+
+| Onde procurar depois de M14 | Pedidos que podem aparecer | Continuação local |
+|---|---|---|
+| Discórdia | Bram precisa de pedra para as dobradiças. O quadro reúne recompensas por lenha, lobos, bandidos e goblins. No salão há uma denúncia para investigar em **O Enviado de Vidro**. | Entregar a pedra abre a primeira têmpera. Edmar pode confiar **Os Ecos do Coro**, uma caçada a cinco elites. |
+| Floresta e arvoredo | Gado de Hald, sombras de Miren, madeira de Ódd, levantamento de Casla, esconderijo dos contrabandistas e **A Testemunha de Vidro**. | Vessa oferece a vigília quando a tarefa regional da Bruxa estiver entregue. |
+| Ermo Rubro | Escorpiões de Nayr, bandidos de Ilba, ruínas de Terec e levantamento de Vela. | Resolver o primeiro pedido de Ilba abre o dos bandidos de escudo. |
+| Pântano da Bruma | Boglings de Ferre, musgo de Aldiz, levantamento dos barcos e **O Dízimo dos Afogados**. | Depois dos boglings, Ferre pede ajuda com os feiticeiros do lodo. |
+| Picos Gelados | Goblins de Bruun, experiência de Kelm e levantamento dos mojões. | Os brutos da serra sucedem ao pedido dos goblins. |
+| Alto e Campo | Romaria dos cinco marcos, veios do posto e descanso das sombras do Campo. | Os marcos assinados contam para o levantamento. O Veterano pede descanso para os companheiros que ficaram na corda e lembra a travessia que fizeram juntos. |
+
+Na versão jogável actual, `story_echoes` vem logo depois de `story_notas`. No desenho dos três capítulos, a entrega das Notas abre M06a. O convite de Edmar para a caçada fica para depois de M14. A visita do fio em M12 e o trabalho do Cartógrafo nas quatro terras são principais. As missões de levantamento e a romaria local têm objectivos e entregas próprios.
 
 ## Continuidade para quem escreve e implementa
 
 | Situação | Resposta da campanha proposta |
 |---|---|
-| Guardião vencido antes do contrato ou da conversa regional | A marca individual já vale a Nota. O dador reconhece a vitória, conta a sua parte e pode pagar uma única vez. Edmar reconhece o total ao aceitar o contrato. |
+| Guardião vencido antes do contrato ou da conversa regional | A marca individual já vale a Nota. O dador reconhece a vitória, conta a sua parte e pode pagar uma única vez. Edmar reconhece o total ao aceitar o contrato. Se as quatro já estiverem no caderno quando a criança regressar ao portão em M01a, o diário aponta directamente à mesa de M06. |
 | Campo ou Alto visitado antes de a história lá chegar | Preservar marcos e cenas já vistos. Oferecer a acção nova no lugar conhecido. O jogador pode pedir um resumo ao acompanhante. |
 | O jogador não viu o sapato, a seta ou os sulcos | São prenúncios. O pano de Ada, a cópia a carvão e a confissão dão todas as provas necessárias no percurso obrigatório. |
 | Caderno fechado, áudio desligado ou diálogo interrompido | Mostrar o sinal no mundo e a observação equivalente no diário. Conservar cada prova já recolhida. Reabrir uma escolha ainda por confirmar. |
-| Um save já concluiu o Capítulo I | Começar na colher a bater na tigela ao voltar à praça. Preservar a entrega, as Notas, as caçadas e as recompensas anteriores. |
+| Um save já concluiu o Capítulo I | Começar na colher a bater na tigela ao voltar à praça. Preservar a entrega, as Notas, as caçadas e as recompensas anteriores. Se faltar o desenho de M01a, a criança mostra em M14 o telhado que a mãe lhe ensinou a reconhecer. |
+| Save antigo com uma secundária aceite | Conservar o progresso e permitir concluir o compromisso já assumido. Novas ofertas locais aguardam o regresso após M14. |
 | Campanha terminada | Manter separadas as duas decisões. Testar as quatro combinações no memorial, no mapa, na travessia e nas falas de quem trabalha ali. |
 
 A linha final deve poder ser lida sem música. «Segura aqui. Se o papel fugir, ainda faço outra ponte.»

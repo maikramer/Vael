@@ -126,6 +126,77 @@ bevy_ecs::hierarchy::Children [
             jackdaw::prefab::components::PrefabEntityId(0)
         ]
         --
+        #"fold-signpost"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 3.0, y: 0.0, z: 33.5 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "fold-signpost" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/fold_signpost_lod0.glb" },
+            ],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037223083550)
+        --
+        #npc_fold_child
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 1.5, y: 0.0, z: 32.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_ext_scene::ScriptRef {
+            path: "npc/fold-child.lua",
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Entity",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_fold_child" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.5 0 32" },
+                bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 99],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1551948037223083547)
+        bevy_ecs::hierarchy::Children [
+            #"GltfScene scout-child"
+            jackdaw::prefab::components::IsA {
+                source: "world/prefabs/characters/npc-scout.bsn",
+                deleted: [],
+            }
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 0.72, y: 0.72, z: 0.72 },
+            }
+            bevy_world_xml::bsn::WorldOrigin {
+                file: "world/cities/discordia/longhouse.xml",
+                path: [0, 99, 0],
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037223083548)
+            jackdaw::prefab::components::PrefabEntityId(0)
+            --
+            #NpcBody
+            bevy_transform::components::transform::Transform {
+                translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+                rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+                scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+            }
+            bevy_world_xml::bsn::WorldNode {
+                tag: "NpcBody",
+                attrs: [],
+                text: "",
+                origin_file: "world/cities/discordia/longhouse.xml",
+                origin_path: [0, 99, 1],
+                pose: true,
+            }
+            jackdaw_scene_types::node_id::SceneNodeId(1551948037223083549)
+        ]
+        --
         #npc_elder
         bevy_transform::components::transform::Transform {
             translation: glam::Vec3 { x: 22.0, y: 0.0, z: -24.0 },

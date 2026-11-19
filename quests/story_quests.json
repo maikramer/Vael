@@ -7,9 +7,8 @@
     "portrait": "",
     "voice": "",
     "lines_intro": [
-      "Chegaste. Senta-te — os joelhos de um velho agradecem companhia.",
-      "O Coro de Vael partiu-se em quatro Notas. Quatro bichos engoliram-nas: a Bruxa a norte, o Verme a este, o Que Conta os Afogados a oeste, o Ogro a sul.",
-      "Mede a terra, cartógrafo, e traz-me as quatro. Enquanto não as tiver, o Vale continua calado."
+      "Abre a Nota no mapa do Vale. Cada margem tem uma terra.",
+      "Escolhe a margem com os pés e confirma o destino. A primeira dobra é tua."
     ],
     "lines_progress": [
       "Notas em falta: {remaining}. O Alto continua mudo — mas eu ouço-te a chegar perto."
@@ -45,5 +44,47 @@
       "partial": false
     },
     "next": "story_echoes"
+  },
+  {
+    "id": "story_first_fold",
+    "npc": "npc_fold_child",
+    "biome": "city",
+    "title": "A primeira dobra",
+    "lines_intro": [
+      "Assina a Atalaia do Vale e traz a folha ao portão norte."
+    ],
+    "lines_progress": [
+      "Vira a folha para quem regressa."
+    ],
+    "lines_complete": [
+      "Assim já sei voltar. Posso ficar com o desenho?"
+    ],
+    "objective": {
+      "type": "interact",
+      "target": "fold_arrive",
+      "count": 1,
+      "title": "Acompanha a criança e confirma o caminho no portão"
+    },
+    "stages": [
+      {
+        "type": "interact",
+        "target": "fold_sign",
+        "count": 1,
+        "title": "Assina a Atalaia do Vale [F]"
+      },
+      {
+        "type": "interact",
+        "target": "fold_draw",
+        "count": 1,
+        "title": "Desenha a legenda com a criança no portão norte"
+      },
+      {
+        "type": "interact",
+        "target": "fold_arrive",
+        "count": 1,
+        "title": "Acompanha a criança e confirma o caminho no portão"
+      }
+    ],
+    "rewards": {}
   }
 ]

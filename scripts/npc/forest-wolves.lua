@@ -58,7 +58,9 @@ function on_update(dt)
   local state = rules.quest_state(QUEST)
   local have, need = rules.quest_progress(QUEST)
   local remaining = math.max(0, (need or 1) - (have or 0))
-  if state == "not_taken" then
+  if state == "not_taken" and not rules.quest_available(QUEST) then
+    talk.say("O gado anda sossegado hoje.")
+  elseif state == "not_taken" then
     say_lines(def and def.lines_intro, "“Lobos ao norte. Paga-se bem por presas.”", remaining)
     rules.quest_accept(QUEST)
   elseif state == "active" then

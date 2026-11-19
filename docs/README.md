@@ -9,7 +9,8 @@ deve ser corrigido no mesmo commit.
 ## Mundo e campanha
 
 - [GDD de O Silêncio de Vael](../GDD.md) — experiência, sistemas, progressão, acessibilidade e critérios de produção.
-- [Enredo e missões principais](CAMPANHA_PRINCIPAL.md) — história completa, percurso M01–M14 e consequências das escolhas. Contém o final.
+- [Enredo e missões principais](CAMPANHA_PRINCIPAL.md) — 17 missões principais, consequências das escolhas e pedidos do Vale depois dos créditos. Contém o final.
+- [Plano técnico das 17 missões](IMPLEMENTACAO_MISSOES.md) — integração com o jogo, entradas e saídas por quest, persistência, fatias de entrega e testes.
 - [Bíblia narrativa](../STORY.md) — geografia, elenco, voz e acontecimentos do primeiro capítulo.
 
 ## Estado atual

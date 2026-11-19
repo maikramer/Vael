@@ -46,13 +46,13 @@ end
 
 -- O abate chega do FSM (regra do jogo) via `rules.award_kill`; não há
 -- evento global de kill na engine.
-rules.on_kill = function(kind)
+local function award_guardian_note(kind)
   local g = viber.game()
   if not GUARDIANS[kind] or g["nota_" .. kind] then
     return
   end
+  if rules.item_add("nota", 1) < 1 then return end
   g["nota_" .. kind] = true
-  rules.item_add("nota", 1)
   local n = notes_found(g)
   -- O abate pode chegar durante a troca de cena: sem player não há burst.
   local has, x, y, z = viber.player_position()
@@ -67,6 +67,8 @@ rules.on_kill = function(kind)
   note_cine_scene = viber.scene_name and viber.scene_name() or nil
   note_cine_kind = kind
 end
+
+rules.on_kill = award_guardian_note
 
 function on_update(dt)
   local g = viber.game()
@@ -108,6 +110,23 @@ function on_update(dt)
   end
   if g.title_done == false then
     return
+  end
+
+  -- Uma assinatura anterior ou feita neste frame vale em qualquer ordem.
+  if g["q.story_first_fold"] == "active" and (g["q.story_first_fold.stage"] or 1) == 1
+      and g["mark.atalaia-do-vale"] then
+    if viber.vael.opening_action("sign") then
+      viber.toast("Marco assinado. Leva a folha à criança no portão norte.")
+      viber.save_slot(0)
+    end
+  end
+
+  -- O FSM grava a derrota antes do despawn. O controlador também a lê
+  -- quando o chefe corre noutra VM ou um save trouxe só a marca da morte.
+  for kind in pairs(GUARDIANS) do
+    if g["boss_dead." .. kind] and not g["nota_" .. kind] then
+      award_guardian_note(kind)
+    end
   end
 
   -- Nota pendente: um abate no mesmo frame de uma troca de cena ou com o

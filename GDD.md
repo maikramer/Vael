@@ -14,7 +14,7 @@
 | Plataforma de referência | PC, com teclado e rato e percurso principal também operável por comando. Validar leitura do terreno, texto, foco de interface e combate com ambos. |
 | Forma e ritmo | Campanha de autor com ordem regional livre e mundo aberto depois dos créditos. Uma sessão de 20–40 min deve permitir concluir uma expedição curta ou guardar num avanço que o diário explique. |
 | Tom e apresentação | Fantasia rural. O extraordinário manifesta-se numa tarefa conhecida: encher um balde, acertar um marco, levantar uma maca. Cabe humor na vila e entre viajantes. Dar tempo e silêncio aos lutos. |
-| Escala inicial de produção | Concluir os três capítulos no Vale existente. Concentrar a expansão no vau, no arquivo da Cidadela e na estação do Alto. O volume de conteúdo secundário adapta-se ao percurso principal. |
+| Escala inicial de produção | Concluir os três capítulos no Vale existente. Concentrar a expansão no vau, no arquivo da Cidadela e na estação do Alto. Os habitantes passam a oferecer os seus pedidos locais no regresso ao mundo depois de M14. |
 
 ### Pilares que orientam decisões
 
@@ -32,7 +32,7 @@
 | Uma expedição | Na vila recebes uma pergunta e um destino. Reconheces um marco, fazes um desvio se quiseres, resolves o problema e decides entre continuar no terreno ou regressar pela fogueira. |
 | Uma campanha | No primeiro capítulo recuperas capacidade para circular. No segundo reconstituis uma viagem que nunca entrou no mapa. No terceiro abres essa viagem a outras pessoas sob condições que escolheste. |
 
-**Primeiros quinze minutos, alvo de ensaio.** Ao primeiro controlo, a criança e a mãe situam-te na praça. O prólogo já deu um nome e um destino. A porta do salão e a mesa de Edmar levam ao contrato. Ao escolheres uma região, o diário prende uma única pergunta. Entre o portão e o primeiro marco há linha de vista interrompida por uma curva curta. Ao reencontrar a torre por cima da vegetação, o jogador confirma a direção por si. A primeira fogueira permite experimentar o regresso. Quem passa directo continua a encontrar o dador regional.
+**Primeiros quinze minutos, alvo de ensaio.** Ao primeiro controlo, a criança e a mãe situam-te na praça. O prólogo já deu um nome e um destino. A porta do salão e a mesa de Edmar levam ao contrato. Ao escolheres uma região, o diário guarda o nome do dador. Antes de partir ensinas à criança da praça como encontrar o portão no regresso (M01a). Entre o portão e o primeiro marco há linha de vista interrompida por uma curva curta. Ao reencontrar a torre por cima da vegetação, o jogador confirma a direção por si. A primeira fogueira permite experimentar o regresso. Um marco já assinado vale para o exercício de M01a. A legenda desenhada com a criança reaparece no mapa final.
 
 **Exemplo de sessão.** O jogador chega ao Ermo com pouco ouro, aceita a ajuda de Kadi e lê o manifesto. Na ruína da carroça vê o primeiro sinal da areia. Tenta atacar cedo e usa uma carga do cantil para recuperar. Na segunda emersão espera fora do círculo e ganha tempo para uma sequência de golpes. Com a Nota guardada, pode investigar o obelisco próximo. Se sair do jogo na fogueira, deve regressar com a contagem, a prova observada e o nome da pessoa a quem pode voltar.
 
@@ -56,19 +56,23 @@ Discórdia é o ponto de repouso. Do Vale partem a Floresta Sombria a norte, o E
 
 | Trecho | Tempo-alvo na primeira passagem | Variação de intensidade e saída de sessão |
 |---|---|---|
-| I · A Nota, M01–M06 | 2h30–4h | Uma abertura curta e quatro expedições em ordem livre. Cada pico de combate termina com alguns instantes no quotidiano do dador. Guardar após um guardião ou na entrega. |
-| II · Os que atravessaram, M07–M10 | 1h30–2h | Seguir sombras, testar a travessia, interpretar vestígios e confrontar uma testemunha. Os troços entre locais admitem encontros. A audiência inclui tempo para consultar cada prova. |
+| I · A Nota, M01–M06 | 2h30–4h | O contrato e a primeira folha dobrada ensinam orientação. Seguem-se quatro expedições em ordem livre. Cada pico de combate termina com alguns instantes no quotidiano do dador. Guardar após um guardião ou na entrega. |
+| II · Os que atravessaram, M06a–M10a | 1h30–2h | Localizar o toque na festa, seguir sombras, transportar a maca, recuperar o mapa e levar a confissão de Edmar até ao portão de Rui. Os troços entre locais admitem encontros. A audiência inclui tempo para consultar cada prova. |
 | III · A volta do caminho, M11–M14 | 1h–1h30 | Duas acções de campo em ordem livre, subida com pausas, gesto final e uma caminhada curta. A precisão exigida é espacial. O jogador controla o tempo emocional da despedida. |
 | Percurso principal | **5h–7h30** | Contabilizar desde Novo Jogo até aos créditos, incluindo derrotas e deslocações normais. Medir à parte desvios voluntários, menus de pausa e pós-jogo. |
 
 **Tipos de missão e remuneração.** A missão-mãe conta uma Nota por guardião. O contrato local paga o serviço à população. Na continuação, a prova narrativa, o acesso a um lugar ou uma alteração de rotina é a recompensa principal. Observar uma pista antes da hora poupa trabalho mais tarde. Uma etapa só anuncia «concluída» quando o novo objectivo já pode ser consultado.
 
-| Conteúdo disponível na base | Função na experiência |
-|---|---|
-| Cartógrafos regionais e romaria | Ensinar a assinar marcos e oferecer mais pontos de regresso. Uma romaria já cumprida dá familiaridade com o Alto na M12. |
-| Recompensas do quadro e trabalhos de Bram | Financiar uma melhoria, ensinar colheita e forja. Servem a quem quer preparar-se antes de escolher o próximo guardião. |
-| O Enviado de Vidro, O Dízimo dos Afogados, A Testemunha de Vidro | Oferecer investigações locais a quem gosta de interrogar e interpretar. Cada uma tem a sua própria resolução. |
-| Vigília, inimigos especializados e Os Ecos do Coro | Dar um uso mais exigente às técnicas e aos talentos. A caçada aos elites permanece opcional entre capítulos e depois dos créditos. |
+### Quando uma missão aparece
+
+| Momento | Diário, mapa e conversas | Transição |
+|---|---|---|
+| Novo Jogo | O contrato de Edmar é a única oferta. A vila mantém conversas ambientais, comércio, cura e forja. | Aceitar fixa M01a. A primeira dobra devolve o foco à terra escolhida. |
+| Campanha em curso | Mostrar o objectivo principal actual. Na viagem pelas quatro terras, o caderno permite seguir outra região. Um morador pode dar uma pista da campanha na conversa normal. | A conclusão fixa a próxima principal. M06 leva à colher na praça. M10 leva ao bilhete de Rui. |
+| M14 e créditos | O jogador vê a consequência das suas duas decisões, reconhece a legenda que desenhou em M01a e segura o mapa para a correcção. | Gravar o fecho uma vez, incluindo se os créditos forem saltados. |
+| Regresso ao Vale | O quadro de Bram anuncia os pedidos locais. Cada região apresenta as ofertas dos habitantes quando o jogador lá volta. No diário, «Campanha» precede «Pedidos do Vale». | Aceitar um pedido ou fixá-lo é opcional. As cadeias locais conservam os seus pré-requisitos. |
+
+Os ícones sobre NPCs, a bússola, o mapa, a seta, o quadro e as opções de conversa devem ler a mesma condição de oferta. Assim, um jogador em M06a pode comprar uma poção a Bram e pedir-lhe que segure o sino sem receber o trabalho das dobradiças. Quem retoma um save antigo pode entregar pedidos já aceites. A apresentação de novos pedidos segue o marco de M14. O [catálogo pós-campanha](docs/CAMPANHA_PRINCIPAL.md#depois-da-campanha--pedidos-do-vale) identifica os dadores e as cadeias locais.
 
 **Diário proposto.** No topo, uma frase com verbo, pessoa e lugar. Por baixo, «O que sei» guarda uma observação na voz do Cartógrafo. «Se quiser voltar» guarda o último marco útil. Em M08, por exemplo: «Atravessa o vau com o Veterano» / «As marcas das pegas são mais fundas de um lado» / «Último pouso: pedra chata». Os vestígios opcionais enriquecem a leitura de uma página já útil para quem foi directo ao objectivo.
 
@@ -94,13 +98,13 @@ Discórdia é o ponto de repouso. Do Vale partem a Floresta Sombria a norte, o E
 | Escolha económica concreta | Pergunta ao jogador | Consequência para o desenho |
 |---|---|---|
 | Uma poção custa 25 de ouro; madeira vende por 3 e pedra por 5 | Parto com reserva de cura ou guardo o ouro para a forja? | Uma única compra inicial é possível. A fogueira sustenta novas tentativas quando o ouro acaba. |
-| Manto do caçador requer 3 peles de lobo e 4 madeiras | Quero fazer o trabalho de Bram antes de entrar mais fundo no Bosque? | Um desvio curto produz uma peça que se usa. Mostrar o ingrediente em falta directamente na receita. |
+| Manto do caçador requer 3 peles de lobo e 4 madeiras | Quero fabricar o manto com o que trouxe do Bosque? | A receita pode ser usada durante a campanha. O pedido de Bram surge no pós-jogo. Mostrar o ingrediente em falta directamente na receita. |
 | Espada de aço requer 20 pedras, 4 madeiras escuras e 150 de ouro | Transformo o que trouxe de duas terras numa arma? | A forja dá valor ao regresso a Discórdia sem exigir esta peça no arco principal. |
 | Baluarte e Sede de sangue são escolhas exclusivas | Prefiro suportar o golpe ou recuperar vida ao atacar? | Descrever o efeito e a exclusão antes de gastar o ponto. Validar uma primeira vitória com estilos defensivo e ofensivo. |
 
 **Recompensa e poder.** A Nota entra uma vez por guardião. O pagamento do dador é independente: Vessa inclui um amuleto, Kadi dá seda e Onno entrega a vara abençoada. A entrega das quatro paga actualmente 500 de ouro, 600 XP, cinco poções e três bombas. Esta reserva admite desvios ou equipamento na segunda metade. As duas decisões da campanha dão acesso equivalente à conclusão e diferem na experiência de travessia. Não atribuir uma arma exclusiva à opção mais popular do memorial. [Missão de Edmar](quests/story_quests.json)
 
-**Ensaio de equilíbrio.** Comparar três percursos: jogador que segue a indicação de Edmar, jogador que vai primeiro aos Picos e jogador que gasta o ouro inicial e perde a bolsa. Anotar tentativas até reconhecer o especial, cargas gastas, minutos até poder tentar outra vez e se alguém sente que precisa de repetir contratos. Se a dificuldade vier de procurar o último alvo ou de andar de volta à arena, corrigir orientação ou retoma antes de reduzir a vida do guardião.
+**Ensaio de equilíbrio.** Comparar três percursos: jogador que segue a indicação de Edmar, jogador que vai primeiro aos Picos e jogador que gasta o ouro inicial e perde a bolsa. Anotar tentativas até reconhecer o especial, cargas gastas, minutos até poder tentar outra vez e se alguém fica sem recursos para prosseguir só com o percurso principal. Se a dificuldade vier de procurar o último alvo ou de andar de volta à arena, corrigir orientação ou retoma antes de reduzir a vida do guardião.
 
 ## 7. A Nota, as provas e as escolhas
 
@@ -156,20 +160,23 @@ A base tem gravação automática e slots manuais. Posição, cena, progresso e 
 |---|---|
 | Conjunto de guardiões vencidos e entrega a Edmar | Quatro identidades distintas. Voltar a uma arena nunca concede uma quinta Nota ou uma segunda entrega. |
 | Fivela, pano, cópia, confissão | Cada prova pode ser relida. Um jogador que explorou cedo vê a variante de regresso e a próxima acção válida. |
+| Legenda do primeiro mapa, direcção do toque e resposta ao bilhete | Guardar a escolha da criança e o resultado de cada experiência. Ao retomar, pedir só a próxima acção. Num save anterior a M01a, a criança mostra em M14 a legenda que aprendeu com a mãe. |
 | Pouso da maca e duas impressões | Abandonar para ir à vila conserva o progresso. Cada margem aceita ser a primeira. |
 | Memória, acesso, encerramento da chamada | O memorial lê a primeira decisão e a rota lê a segunda. Uma escolha confirmada sobrevive a morte, viagem e troca de cena. |
-| Epílogo e regresso ao mundo | Guardar depois do último gesto. Continuar abre o mundo no estado escolhido, com as secundárias ainda acessíveis. |
+| Epílogo e regresso ao mundo | Guardar depois do último gesto. Continuar abre o mundo no estado escolhido e habilita as ofertas locais. |
 
 **Reconhecimento de escolhas em QA.** Carregar entre a confirmação e a mudança de cena. Confirmar que o habitante já reagiu, que a fala pode ser revista e que a recompensa foi atribuída uma única vez. Criar também ensaios a partir de um save anterior à expansão, de outro com um guardião vencido antes do contrato e de outro com a romaria e o Campo já visitados.
 
 ## 11. Produção e critérios de aceitação
 
+M01, M01a e M02 já podem ser jogadas em sequência. O [roteiro de validação](docs/IMPLEMENTACAO_MISSOES.md#jogar-a-abertura-implementada) começa junto de Edmar e termina no regresso a Vessa. A ordem de desenvolvimento e os critérios das restantes missões estão no [plano técnico](docs/IMPLEMENTACAO_MISSOES.md).
+
 | Entrega proposta | Material a produzir | Como decidir que está pronta |
 |---|---|---|
-| Fatia jogável de M06 a M08 | Festa curta, chamada na praça, par de sombras, maca, dois apoios e uma chegada. Usar save junto à entrega de Edmar. | Um jogador identifica as mãos, refaz a travessia e explica com as suas palavras o que a coluna transportava. Guardar e voltar a meio conserva o último pouso. |
-| Arco da Cidadela, M09–M10 | Mesa de cópias, raspadeira, pano de Ada, duas composições do memorial e audiência com revisão das provas. | A pessoa distingue a ordem inicial do desvio e sabe o que ficará público antes de confirmar. Ambas as respostas prosseguem. |
+| Fatia jogável de M06 a M08 | Festa curta, experiência da colher e do sino, par de sombras, maca, dois apoios e uma chegada. Usar save junto à entrega de Edmar. | Um jogador identifica as mãos, refaz a travessia e explica com as suas palavras o que a coluna transportava. Guardar e voltar a meio conserva o último pouso. |
+| Arco da Cidadela, M09–M10a | Mesa de cópias, raspadeira, pano de Ada, duas composições do memorial, audiência e resposta falhada no portão de Rui. | A pessoa distingue a ordem inicial do desvio e sabe o que ficará público antes de confirmar. Ambas as respostas prosseguem. |
 | Percurso do Alto, M11–M14 | Fechos das duas margens, sinal orientável, estação de resposta, dois acessos ao vau, variantes de rotina e créditos. | Cada ordem de testemunhos chega ao mesmo fio completo. As quatro combinações finais são visíveis depois de guardar e carregar. |
-| Passe integral de experiência | Introduções regionais, encontros e regressos, revisão de texto PT/EN, áudio e indicadores acessíveis. | Concluir com qualquer primeiro guardião, com comando e com o som desligado. Verificar que o conteúdo local permanece acessível depois dos créditos. |
+| Passe integral de experiência | Introduções regionais, encontros e regressos, revisão de texto PT/EN, áudio e indicadores acessíveis. | Concluir com qualquer primeiro guardião, com comando e com o som desligado. Verificar ausência de ofertas secundárias em M01, M06 e M13 e a descoberta do primeiro pedido no regresso após M14. |
 
 ### Protótipo de referência para M08
 

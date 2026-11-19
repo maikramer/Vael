@@ -220,7 +220,6 @@ impl Plugin for VaelUiPlugin {
                     screens::refresh_slots,
                     screens::apply_preferences,
                     screens::drive_title,
-                    screens::close_map_on_menu,
                     screens::close_journal_under_top_modals,
                     screens::journal_tab_keys,
                     map::map_input,

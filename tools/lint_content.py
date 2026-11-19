@@ -284,7 +284,7 @@ def check_objective(qid, obj, where):
         for token in target.split():
             if token not in entity_names:
                 err(f"quest {qid}: {where}: marco '{token}' sem entidade no mundo")
-    elif kind != 'decision':
+    elif kind not in ('decision', 'interact'):
         err(f"quest {qid}: {where}: tipo desconhecido '{kind}'")
     count = obj.get('count', 1)
     if not isinstance(count, (int, float)) or count < 1:

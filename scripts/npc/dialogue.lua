@@ -3,6 +3,7 @@
 --@export dialogue_id: string = ""
 
 local rules = viber.load("lib/rules.lua")
+local opening = viber.load("lib/opening.lua")
 local marks = viber.load("lib/landmarks.lua")
 local talk = viber.load("ui/say.lua")
 local decide = viber.load("lib/decide.lua")
@@ -52,10 +53,22 @@ function on_update(_dt)
   local title = def and def.title or id
   local state = rules.quest_state(id)
   local label = state == "ready" and (title .. " · pronta") or title
-  if st.label ~= label then
-    st.label = label
-    viber.set_interaction(label, "e", 3.5)
+  local region
+  local show_note = id == "forest_witch" and state == "ready" and viber.game()["campaign.opening"]
+  if show_note then label = "Mostrar a Nota do Bosque a Vessa" end
+  local hidden = state == "not_taken" and not rules.quest_available(id)
+  if hidden then
+    label = "Cumprimentar"
+  elseif id == "story_notas" and state == "not_taken" then
+    local dx, dz = opening.offset()
+    if not dx or dx * dx + dz * dz > 25 then st.contract_open = false end
+    if st.contract_open then
+      region, label = opening.region(dx, dz)
+    else
+      label = "Abrir o contrato dobrado"
+    end
   end
+  opening.prompt(st, label)
   if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
     return
   end
@@ -80,19 +93,34 @@ function on_update(_dt)
     have = rules.vault_get(obj.target or "")
   end
   local remaining = math.max(0, (need or 1) - (have or 0))
-  if state == "not_taken" and not rules.quest_available(id) then
-    -- `requires` por cumprir: o dador ainda não confia a missão.
-    say(def and def.lines_locked, "Ainda não é altura. Volta quando o Vale te conhecer melhor.", remaining)
+  if hidden then
+    if id == "forest_nightwatch" then
+      talk.say("Dorme, meu filho, que o pinhal acorda.")
+    else
+      talk.say("Que a estrada te seja leve.")
+    end
+  elseif id == "story_notas" and state == "not_taken" then
+    if not st.contract_open then
+      st.contract_open = true
+      say(def.lines_intro, "Escolhe uma terra.", 0)
+    elseif region and viber.vael.opening_action("contract", region) then
+      st.contract_open = false
+      rules.sync_collect()
+      talk.say("Contrato assinado. Assina a Atalaia do Vale [F] e volta à criança ao portão norte.", 7)
+      viber.save_slot(0)
+    end
+  elseif id == "story_notas" and state == "ready" and viber.game()["campaign.opening"]
+      and rules.quest_state("story_first_fold") ~= "done" then
+    talk.say("Primeiro mostra à criança o caminho de volta.")
   elseif state == "not_taken" then
-    rules.quest_accept(id)
+    if not rules.quest_accept(id) then return end
+    if BOSS_QUEST[id] then viber.game().tracked_quest = id end
     -- Aceitar pode mudar a meta (etapas): relê o que falta para a fala.
     have, need = rules.quest_progress(id)
     remaining = math.max(0, (need or 1) - (have or 0))
     local kind = BOSS_QUEST[id]
     if kind and viber.game()["nota_" .. kind] then
-      for _ = 1, math.max(1, need or 1) do
-        rules.report_kill(kind)
-      end
+      rules.quest_set_progress(id, need or 1)
     end
     -- Marcos já MEDIDOS ([F]) antes de aceitar: `report_visit` só conta
     -- quests ativas, por isso a visita perdia-se e o jogador tinha de
@@ -105,6 +133,11 @@ function on_update(_dt)
       end
     end
     say(def and def.lines_intro, "Aceite.", remaining)
+  elseif show_note then
+    if rules.quest_turn_in(id) then
+      say(def.lines_complete, "O último verso é meu.")
+      viber.save_slot(0)
+    end
   elseif state == "ready" then
     local p = rules.quest_parley(id)
     local d1_ready = decide.ready()

@@ -206,9 +206,11 @@ function on_update(_dt)
     puzzle = data
     st.puzzle = puzzle
   end
-  if not st.ready then
-    st.ready = true
-    viber.set_interaction("Falar com " .. (puzzle.giver or (def and def.title) or id), "e", 3.5)
+  local hidden = rules.quest_state(id) == "not_taken" and not rules.quest_available(id)
+  local label = hidden and "Cumprimentar" or ("Falar com " .. (puzzle.giver or (def and def.title) or id))
+  if st.label ~= label then
+    st.label = label
+    viber.set_interaction(label, "e", 3.5)
   end
   if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
     return
@@ -224,8 +226,10 @@ function on_update(_dt)
   viber.gesture("talk")
 
   local state = rules.quest_state(id)
-  if state == "not_taken" then
-    rules.quest_accept(id)
+  if hidden then
+    talk.say("Que a estrada te seja leve.")
+  elseif state == "not_taken" then
+    if not rules.quest_accept(id) then return end
     say_lines(puzzle.intro, def and table.concat(def.lines_intro or {}, "\n"))
     ask_clues(id, puzzle)
   elseif state == "active" then

@@ -34,6 +34,17 @@ function on_update(dt)
     return
   end
 
+  if viber.game()["campaign.opening"] and rules.quest_state("story_notas") ~= "done" then
+    local pending = false
+    for _, id in ipairs(BOUNTIES) do
+      local state = rules.quest_state(id)
+      if state == "active" or state == "ready" then pending = true end
+    end
+    if not pending then
+      talk.say("O quadro está vazio. Edmar espera junto ao salão.")
+      return
+    end
+  end
   local function speak(id, which)
     local def = rules.quest_def(id)
     local lines = def and def[which]
@@ -57,7 +68,7 @@ function on_update(dt)
     for step = 1, total do
       local i = ((st.index or 0) + step - 1) % total + 1
       local id = BOUNTIES[i]
-      if rules.quest_state(id) == status then
+      if rules.quest_state(id) == status and (status ~= "not_taken" or rules.quest_available(id)) then
         return i, id
       end
     end
@@ -95,7 +106,7 @@ function on_update(dt)
   local function pick_alias(text)
     for _, want in ipairs({ "ready", "not_taken", "active" }) do
       for _, id in ipairs(BOUNTIES) do
-        if rules.quest_state(id) == want and rules.parley_matches(id, text, nil) then
+        if rules.quest_state(id) == want and (want ~= "not_taken" or rules.quest_available(id)) and rules.parley_matches(id, text, nil) then
           return id
         end
       end
@@ -110,14 +121,16 @@ function on_update(dt)
 
   local options = {}
   for _, id in ipairs(BOUNTIES) do
-    local def = rules.quest_def(id)
-    local obj = def and def.objective or {}
-    local kind = obj.type == "collect" and "item" or "criatura"
-    local label = obj.target and decide.label(kind, obj.target) or ""
-    options[#options + 1] = {
-      key = id,
-      description = (def and def.title or id) .. (label ~= "" and (" — " .. label) or ""),
-    }
+    if rules.quest_state(id) ~= "not_taken" or rules.quest_available(id) then
+      local def = rules.quest_def(id)
+      local obj = def and def.objective or {}
+      local kind = obj.type == "collect" and "item" or "criatura"
+      local label = obj.target and decide.label(kind, obj.target) or ""
+      options[#options + 1] = {
+        key = id,
+        description = (def and def.title or id) .. (label ~= "" and (" — " .. label) or ""),
+      }
+    end
   end
   options[#options + 1] = { key = "none", description = "nenhum aviso; outra coisa" }
 
@@ -156,7 +169,7 @@ function on_update(dt)
         else
           speak(id, "lines_progress")
         end
-      elseif state == "not_taken" then
+      elseif state == "not_taken" and rules.quest_available(id) then
         speak(id, "lines_intro")
         rules.quest_accept(id)
       elseif state == "active" then

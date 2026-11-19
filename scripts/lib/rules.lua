@@ -1672,8 +1672,6 @@ function M.tick(dt)
         game.death_wait = 5.0
         -- A morte fecha os menus abertos; o ecrã de morte é o topo.
         viber.ui.open("menu", false)
-        viber.ui.open("region-map", false)
-        viber.ui.open("travel", false)
         viber.ui.open("profiler-win", false)
         viber.ui.open("death", true)
       end

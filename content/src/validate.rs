@@ -29,7 +29,7 @@ pub const LANDMARK_BIOMES: &[&str] = &[
 ];
 /// Tipos de objetivo que o runtime interpreta. `craft` existe no Lua e nos
 /// dados; o plugin antigo não o aceitava.
-pub const OBJECTIVE_TYPES: &[&str] = &["kill", "collect", "visit", "decision", "craft"];
+pub const OBJECTIVE_TYPES: &[&str] = &["kill", "collect", "visit", "decision", "craft", "interact"];
 /// Tipos de alvo do NLU (parley).
 pub const EXPECT_KINDS: &[&str] = &["criatura", "item", "local"];
 
@@ -803,7 +803,7 @@ fn validate_parley(
     out: &mut Vec<Finding>,
 ) {
     let Some(parley) = &quest.parley else {
-        if quest.objective.objective_type != "decision" {
+        if !matches!(quest.objective.objective_type.as_str(), "decision" | "interact") {
             out.push(Finding::warning(
                 "quest-ref",
                 at("sem parley (a entrega não pede relatório ao NLU)"),

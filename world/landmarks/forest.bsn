@@ -2330,6 +2330,7 @@ bevy_ecs::hierarchy::Children [
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
+            bevy_ext_scene::ScriptRef { path: "poi/forest-furrows.lua" }
             bevy_ext_scene::ColliderSpec {
                 shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/druid_stone_altar_collision.glb", base: true },
             }
@@ -4307,4 +4308,89 @@ bevy_ecs::hierarchy::Children [
             }
         ]
     ]
+    --
+    #"vessa-ribbon-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -21.0, y: 47.0008, z: 108.0 },
+        scale: glam::Vec3 { x: 0.65, y: 0.85, z: 0.65 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/witch-trail.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "vessa-ribbon-1" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
+        ],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037224085901)
+    --
+    #"vessa-ribbon-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -17.0, y: 47.6306, z: 147.0 },
+        scale: glam::Vec3 { x: 0.65, y: 0.85, z: 0.65 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/witch-trail.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "vessa-ribbon-2" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
+        ],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037224085902)
+    --
+    #"vessa-ribbon-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -14.0, y: 42.4330, z: 190.0 },
+        scale: glam::Vec3 { x: 0.65, y: 0.85, z: 0.65 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/witch-trail.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "vessa-ribbon-3" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
+        ],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037224085903)
+    --
+    #"vessa-ribbon-4"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -10.0, y: 39.6623, z: 229.0 },
+        scale: glam::Vec3 { x: 0.65, y: 0.85, z: 0.65 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/witch-trail.lua" }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "vessa-ribbon-4" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
+        ],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037224085904)
+    --
+    #"vessa-ribbon-5"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -6.0, y: 47.2541, z: 263.0 },
+        scale: glam::Vec3 { x: 0.65, y: 0.85, z: 0.65 },
+    }
+    bevy_ext_scene::ScriptRef { path: "poi/witch-trail.lua" }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("clearance", jackdaw_scene_types::types::PropertyValue::String("witch"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "GltfScene",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "vessa-ribbon-5" },
+            bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/banner_stand_lod0.glb" },
+        ],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1551948037224085905)
 ]

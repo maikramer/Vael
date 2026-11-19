@@ -349,10 +349,69 @@ pub(crate) fn save_lang(save: &VaelSave) -> &str {
         .unwrap_or("pt")
 }
 
+/// O próximo encontro da abertura também aparece antes de aceitar a missão.
+pub(crate) fn opening_offer<'a>(save: &VaelSave, content: &'a VaelContent) -> Option<&'a QuestDef> {
+    use crate::quest::{CONTRACT, FIRST_FOLD};
+    if save.legacy.get("campaign.opening")?.as_bool() != Some(true) {
+        return None;
+    }
+    let state = |id: &str| {
+        save.quests
+            .states
+            .get(id)
+            .map(String::as_str)
+            .unwrap_or("not_taken")
+    };
+    let id = match state(CONTRACT) {
+        "not_taken" => CONTRACT,
+        "active" if state(FIRST_FOLD) == "done" => save.legacy.get("campaign.region")?.as_str()?,
+        _ => return None,
+    };
+    (state(id) == "not_taken")
+        .then(|| content.quests.get(id))
+        .flatten()
+}
+
+pub(crate) fn opening_offer_text(
+    def: &QuestDef,
+    content: &VaelContent,
+    lang: &str,
+) -> (String, String) {
+    let (title, who) = match def.id.as_str() {
+        crate::quest::CONTRACT => ("O contrato dobrado", "Fala com Edmar junto ao salão"),
+        "forest_witch" => (def.title.as_str(), "Encontra Vessa na orla do bosque"),
+        "desert_worm" => (def.title.as_str(), "Procura Kadi no Ermo"),
+        "swamp_bogwarden" => (def.title.as_str(), "Procura Onno no Lodo"),
+        _ => (def.title.as_str(), "Procura Sig nos Picos"),
+    };
+    (
+        content.label(
+            lang,
+            &format!(
+                "quest.{}.{}",
+                def.id,
+                if def.id == crate::quest::CONTRACT {
+                    "opening"
+                } else {
+                    "title"
+                }
+            ),
+            title,
+        ),
+        content.label(lang, &format!("quest.{}.meet", def.id), who),
+    )
+}
+
 /// O cartão do HUD: a missão seguida (`tracked_quest`) ganha; sem ela, a de
 /// maior progresso (pronta > em curso > mais avançada), como `rules.publish`.
 pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64, String) {
     let tracked = save.quests.tracked.as_deref();
+    if tracked.is_none_or(|id| id == crate::quest::CONTRACT)
+        && let Some(quest) = opening_offer(save, content)
+    {
+        let (title, hint) = opening_offer_text(quest, content, save_lang(save));
+        return (title, 0.0, hint);
+    }
     let mut best_title = String::new();
     let mut best_progress = 0.0;
     let mut best_text = String::new();
@@ -384,12 +443,29 @@ pub(crate) fn best_quest(save: &VaelSave, content: &VaelContent) -> (String, f64
             continue;
         }
         best_score = score;
-        best_title = if def.title.is_empty() {
-            id_string
-        } else {
-            def.title.clone()
-        };
-        if state == "ready" {
+        best_title = content.label(
+            save_lang(save),
+            &format!("quest.{}.title", def.id),
+            if def.title.is_empty() {
+                &id_string
+            } else {
+                &def.title
+            },
+        );
+        if def.id == crate::quest::FIRST_FOLD && state == "active" {
+            let step = objective(save, def);
+            best_text = content.label(
+                save_lang(save),
+                &format!("quest.{}", step.target),
+                &step.title,
+            );
+            let at = def
+                .stages
+                .iter()
+                .position(|s| s.target == step.target)
+                .unwrap_or(0);
+            best_progress = at as f64 / def.stages.len().max(1) as f64;
+        } else if state == "ready" {
             best_progress = 1.0;
             best_text = label(Some(content), save_lang(save), "hud.quest.ready", "pronta");
         } else {
@@ -446,11 +522,20 @@ pub fn other_quest_rows(save: &VaelSave, content: &VaelContent, shown: &str) -> 
             if state != "active" && state != "ready" {
                 return None;
             }
-            let title = if def.title.is_empty() {
-                id.clone()
-            } else {
-                def.title.clone()
-            };
+            if id.as_str() == crate::quest::CONTRACT
+                && save
+                    .quests
+                    .states
+                    .get(crate::quest::FIRST_FOLD)
+                    .is_some_and(|s| s == "active")
+            {
+                return None;
+            }
+            let title = content.label(
+                save_lang(save),
+                &format!("quest.{}.title", def.id),
+                if def.title.is_empty() { id } else { &def.title },
+            );
             if title == shown {
                 return None;
             }

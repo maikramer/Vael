@@ -101,12 +101,10 @@ impl RowVm {
     }
 }
 
-/// Fecha os overlays de jogo (diário, mapa, viagem, profiler). Os modais
+/// Fecha o diário e o profiler. Os modais
 /// de topo (morte/título) e o HUD ficam para quem chama.
 fn close_overlays(writer: &UiWriter) {
     writer.open("menu", false);
-    writer.open("region-map", false);
-    writer.open("travel", false);
     writer.open("profiler-win", false);
 }
 
@@ -1163,6 +1161,7 @@ fn title_new(world: &mut World) {
         }
     }
     patch.insert("session_id".to_string(), json!(session + 1));
+    patch.insert("campaign.opening".to_string(), json!(true));
     patch.insert("title_done".to_string(), json!(true));
     patch_game(world, patch);
     // O `merge_world_kv` do espelho PRESERVA as chaves que desaparecem do KV
@@ -1271,8 +1270,6 @@ fn death_to_title(world: &mut World) {
     patch_game(world, patch);
     if let Some(writer) = world.get_resource::<UiWriter>() {
         writer.open("death", false);
-        writer.open("region-map", false);
-        writer.open("travel", false);
         writer.set_visible("hud", false);
         writer.open("title", true);
     }
@@ -1407,7 +1404,7 @@ fn objective_line(
         String::new()
     };
     if !view.title.is_empty() {
-        return format!("{prefix}{}", view.title);
+        return format!("{prefix}{}", label(content, lang, &format!("quest.{}", view.target), &view.title));
     }
     let count = view.count;
     match view.objective_type.as_str() {
@@ -1440,6 +1437,14 @@ fn objective_line(
     }
 }
 
+fn quest_status_label(content: &VaelContent, lang: &str, done: bool) -> String {
+    if done {
+        content.label(lang, "menu.quest.done", "concluída")
+    } else {
+        content.label(lang, "menu.quest.untaken", "por aceitar")
+    }
+}
+
 fn quest_rows(
     save: &VaelSave,
     content: Option<&VaelContent>,
@@ -1450,10 +1455,32 @@ fn quest_rows(
     let mut rows = Vec::new();
     let empty = std::collections::BTreeMap::new();
     let quests = content.map(|content| &content.quests).unwrap_or(&empty);
+    let opening = kv.get("campaign.opening").and_then(Value::as_bool) == Some(true);
+    if opening && let Some(content) = content {
+        if let Some(def) = quests.get(crate::quest::CONTRACT) {
+            let (title, hint) = crate::hud::opening_offer_text(def, content, lang);
+            let signed = kv.contains_key("campaign.region");
+            let mut row = RowVm::menu("opening-contract", title, hint, quest_status_label(content, lang, signed));
+            row.clickable = false;
+            rows.push(row);
+        }
+        if let Some(def) = crate::hud::opening_offer(save, content)
+            && def.id != crate::quest::CONTRACT
+        {
+            let (title, hint) = crate::hud::opening_offer_text(def, content, lang);
+            let mut row = RowVm::menu("opening-region", title, hint, quest_status_label(content, lang, false));
+            row.clickable = false;
+            rows.push(row);
+        }
+    }
     for (id, def) in quests {
         let id_string = id.to_string();
         let state = quest_state(&rules.quests, &kv, &id_string);
         if state == "not_taken" || state == "unknown" {
+            continue;
+        }
+        if opening && id_string == crate::quest::CONTRACT
+            && quest_state(&rules.quests, &kv, crate::quest::FIRST_FOLD) == "active" {
             continue;
         }
         let (have, need) = quest_progress(&rules.quests, &kv, &id_string);
@@ -1478,17 +1505,29 @@ fn quest_rows(
         };
         let tracked = save.quests.tracked.as_deref() == Some(id_string.as_str())
             && (state == "active" || state == "ready");
+        let subtitle = if opening && id_string == "forest_witch" && state == "ready" {
+            label(content, lang, "quest.forest_witch.return", "Mostra a Nota do Bosque a Vessa")
+        } else if id_string == crate::quest::FIRST_FOLD && state == "done" {
+            if kv.get("campaign.fold").and_then(Value::as_str) == Some("roof") {
+                label(content, lang, "quest.fold.roof", "A criança guardou o desenho do telhado.")
+            } else {
+                label(content, lang, "quest.fold.wall", "A criança guardou o desenho do muro.")
+            }
+        } else {
+            objective_line(content, def, &state, &view, lang)
+        };
+        let title = label(content, lang, &format!("quest.{}.title", def.id), &def.title);
         rows.push(
             RowVm::menu(
                 format!("track-{id_string}"),
                 if tracked {
-                    format!("▶ {}", def.title)
+                    format!("▶ {title}")
                 } else {
-                    def.title.clone()
+                    title
                 },
                 format!(
                     "{} · {}",
-                    objective_line(content, def, &state, &view, lang),
+                    subtitle,
                     biome_label(content, lang, &def.biome)
                 ),
                 status_text,
@@ -1496,6 +1535,16 @@ fn quest_rows(
             .with_progress(progress),
         );
         let _ = progress_text;
+    }
+    if opening {
+        rows.sort_by_key(|row| match row.action.as_str() {
+            "opening-contract" => 0,
+            "track-story_first_fold" => 1,
+            "opening-region" | "track-forest_witch" | "track-desert_worm"
+                | "track-swamp_bogwarden" | "track-peaks_ogre" => 2,
+            "track-story_notas" => 3,
+            _ => 4,
+        });
     }
     rows
 }
@@ -2201,19 +2250,6 @@ pub fn drive_title(world: &mut World) {
             world.resource_mut::<VaelScreensState>().menu_settings = false;
         }
     }
-}
-
-/// O diário fecha mapa/viagem ao abrir (o `menu.lua` fazia-o; sem ele os
-/// dois overlays podiam ficar empilhados).
-pub fn close_map_on_menu(modals: Option<Res<UiModalsOpen>>, writer: Option<Res<UiWriter>>) {
-    let (Some(modals), Some(writer)) = (modals.as_deref(), writer.as_deref()) else {
-        return;
-    };
-    if !modals.is_open("menu") {
-        return;
-    }
-    writer.open("region-map", false);
-    writer.open("travel", false);
 }
 
 /// O título e a morte são modais por cima de tudo: o [Q] do `<UiModal>`

@@ -27,6 +27,10 @@
 //! - a entrega limpa `q.<id>.n`, `.stage`, `.need`, `.said` e todos os
 //!   `q.<id>.v.*`, e paga ouro/XP/itens pelas regras puras do cofre e do XP.
 
+mod opening;
+pub(crate) use opening::{CONTRACT, FIRST_FOLD, VALLEY_TOWER, opening_destination};
+use opening::{opening_allows, opening_in_progress};
+
 use std::collections::BTreeMap;
 use std::sync::Arc;
 
@@ -314,9 +318,11 @@ pub fn quest_available(rules: &QuestRules, kv: &QuestKv, id: &str) -> bool {
     let Some(def) = rules.quests.get(id) else {
         return false;
     };
-    def.requires
-        .iter()
-        .all(|other| raw_state(kv, other) == Some(STATE_DONE))
+    opening_allows(kv, id)
+        && def
+            .requires
+            .iter()
+            .all(|other| raw_state(kv, other) == Some(STATE_DONE))
 }
 
 /// Cadeia de um dador: enquanto a quest estiver entregue e tiver `next`.
@@ -588,7 +594,11 @@ pub fn quest_turn_in(
             ..TurnInResult::default()
         };
     };
-    if quest_state(rules, kv, id) != STATE_READY {
+    if quest_state(rules, kv, id) != STATE_READY
+        || (id == CONTRACT
+            && opening_in_progress(kv)
+            && raw_state(kv, FIRST_FOLD) != Some(STATE_DONE))
+    {
         return TurnInResult {
             title: def.title.clone(),
             reason: Some(TurnInReason::NotReady),
@@ -702,6 +712,32 @@ pub(crate) fn install_shared(
     vael_fn!(
         lua,
         vael,
+        "opening_action",
+        [
+            rules = Arc::clone(&rules),
+            vault = Arc::clone(&vault),
+            xp = Arc::clone(&xp)
+        ],
+        move |lua, (action, value): (String, Option<String>)| {
+            let before = viber::luau::game::game_snapshot_vm(lua);
+            let mut kv = before.clone();
+            let ok = opening::apply(
+                &rules,
+                &vault,
+                &xp,
+                &mut kv,
+                &action,
+                value.as_deref().unwrap_or(""),
+            );
+            if ok {
+                write_kv(lua, &before, &kv);
+            }
+            Ok(ok)
+        }
+    );
+    vael_fn!(
+        lua,
+        vael,
         "quest_state",
         [rules = Arc::clone(&rules)],
         move |lua, id: Option<String>| {
@@ -770,7 +806,12 @@ pub(crate) fn install_shared(
                 return Ok(false);
             };
             let game = viber::luau::game::game_proxy(lua)?;
-            let keys: Vec<String> = def.requires.iter().map(|other| quest_key(other)).collect();
+            let mut keys: Vec<String> = def.requires.iter().map(|other| quest_key(other)).collect();
+            keys.extend([
+                "campaign.opening".into(),
+                quest_key(CONTRACT),
+                quest_key(FIRST_FOLD),
+            ]);
             let kv = read_keys(&game, &keys)?;
             Ok(quest_available(&rules, &kv, &id))
         }
