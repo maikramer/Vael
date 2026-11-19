@@ -3772,7 +3772,10 @@ impl PavingAttrs {
     /// Handles the plumbing keys; `false` means the key is not ours.
     fn parse(&mut self, key: &str, value: &str, kctx: &str) -> Result<bool> {
         match key {
-            "paving" => self.on = parse_paving_flag(value, kctx)?,
+            "paving" => {
+                self.style.setts = value.trim().eq_ignore_ascii_case("setts");
+                self.on = self.style.setts || parse_paving_flag(value, kctx)?;
+            }
             "on-paving" => self.on_paving = parse_paving_flag(value, kctx)?,
             "paving-cell" => self.style.cell = values::parse_f32(value, kctx)?,
             "paving-corner" => self.style.corner = values::parse_f32(value, kctx)?,
@@ -3780,6 +3783,7 @@ impl PavingAttrs {
             "paving-priority" => self.style.priority = values::parse_f32(value, kctx)? as i32,
             "paving-chunk" => self.style.chunk = values::parse_f32(value, kctx)?,
             "paving-wobble" => self.style.wobble = values::parse_f32(value, kctx)?,
+            "paving-kerb-texture" => self.style.kerb_texture = Some(value.trim().to_owned()),
             "paving-feather" => self.style.feather = values::parse_f32(value, kctx)?,
             "paving-round" => self.style.round = values::parse_bool(value, kctx)?,
             _ => return Ok(false),

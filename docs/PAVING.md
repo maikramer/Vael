@@ -118,6 +118,12 @@ pára na fronteira — não atravessa por cima, senão as duas superfícies
 coplanares piscam. O ruído (`edge-noise`) só faz a faixa de feather respirar;
 o lancil opaco não ondula. `paving-wobble` automático é 0.
 
+Em `paving="setts"`, a malha acompanha a distância à borda de todos os ramais
+do mesmo material. O centro sobe cerca de 4 cm em relação à margem. As
+esquinas têm uma curva contínua e as pedras do lancil seguem esse contorno,
+com juntas estreitas e chanfros. `paving-kerb-texture` escolhe a pedra do
+lancil. Na rede de Discórdia usa-se a rocha cinzenta do conjunto do terreno.
+
 **4. A banda de feather submete-se à curvatura.** Ela é emitida por **nó** (não
 por segmento), com direção mitrada para não abrir uma cunha num canto, e:
 
@@ -140,8 +146,7 @@ Na **costura entre materiais** a banda é do material que fica por cima no
 ficheiro (`SEAM_LIFT = 1,5 mm` acima do outro) e, quando o traçado é igual nos
 dois nós, os dois pertencem ao **mesmo grupo**: mesma textura, escala, cor,
 `roughness`, feather, ruído, canto e wobble ⇒ uma malha só e nenhuma costura.
-Foi assim que a cidade deixou de ter costura entre a praça e a rede de
-artérias — o `priority` decide quem fica com a célula, não que material é.
+O `paving-priority` decide a ocupação de cada célula.
 
 ## Camadas (lifts)
 
@@ -182,14 +187,14 @@ A migração é um atributo; nenhum nó muda de tag.
 <Terrain … paving-cell="2" />
 
 <!-- praça / largo / apetrecho: o retângulo vira células -->
-<GroundDecal name="city.plaza.floor" at="0 0" size="24 24" paving="1" paving-round="1"
+<GroundDecal name="exemplo.largo" at="0 0" size="24 24" paving="1" paving-round="1"
              paving-priority="20" feather="1"
              texture="/assets/textures/cobblestone_road/albedo.ktx2"
              texture-scale="3.5" base-color="#9d9891" roughness="0.9" />
 
 <!-- rua: a ribbon desaparece, o corredor passa a raster -->
 <Road path="…" width="4" flatten="0" paving="1" edge-noise="0.4" … />
-<RoadNetwork … paving="1" />
+<RoadNetwork … paving="setts" paving-cell="0.75" paving-feather="0.58" />
 
 <!-- inset por cima do pavimento (cova de árvore, remendo) -->
 <GroundDecal name="exemplo.marca" at="15 13" radius="2.8" on-paving="1" … />
@@ -197,7 +202,7 @@ A migração é um atributo; nenhum nó muda de tag.
 
 | Atributo | Onde | O que faz |
 |---|---|---|
-| `paving` | os três | `1`/`grid` liga o modo. `0` desliga (útil para experimentar). |
+| `paving` | os três | `1` ou `grid` liga a grelha. Em estradas, `setts` acrescenta abaulamento e guias de pedra chanfradas. Os ramais do mesmo material partilham o piso e as guias contornam a esquina. `0` desliga. |
 | `on-paving` | decal | O decal fica **por cima** do pavimento. |
 | `paving-cell` | `<Terrain>` e os três | Módulo da treliça em metros (default 2). |
 | `paving-corner` | idem | Raio do chanfro nos cantos convexos. Negativo = auto (meio módulo). |
@@ -219,20 +224,16 @@ não chão.
 
 ## O que está migrado hoje
 
-- Em `world/cities/discordia/roads.bsn`, as quatro ruas de calçada ligam a
-  praça circular aos arcos da muralha. Nos quatro encontros com a rua
-  circular, o gerador reúne os ramais com a mesma extremidade e constrói o
-  patamar com o material e a meia-largura do ramal mais largo. A rosa dos
-  ventos ocupa os 8 × 8 m
-  centrais. O UV usa coordenadas do mundo e a imagem repete na origem, pelo
-  que o centro do desenho cai na junção dos quatro cantos da textura.
-- O adro da capela usa seixos, a forja usa cascalho e o mercado tem um piso de
-  terra batida entre os dois arcos (`market.bsn`). O tapete do mercado assenta
-  acima da cota do pavimento. Os terreiros, as caldeiras das árvores e os
-  caminhos até às portas estão pintados em `world.data/terrain.ahgt.paint`.
-- `world/paths/network.bsn` — o `<RoadNetwork>` inteiro. É isto que elimina o
-  decal-sobre-decal de hoje: as 21 ribbons de calçada atravessavam a praça e as
-  ruas.
+- O largo oval e a rosa dos ventos ficam em `world/cities/discordia/roads.bsn`.
+  São dois decals sobre a rede. O largo mede 24 × 22 m, com 2 m de transição
+  na margem e a mesma calçada das ruas. O mosaico ocupa os 8 × 8 m centrais.
+- As quatro ruas entre a praça e o anel são segmentos de
+  `world/paths/network.bsn`, com 5,8 a 6 m de largura. Os pontos intermédios
+  dão a curva a cada rua. A mesma rede continua pelo centro dos portões.
+- A terra batida do mercado, do adro e da forja está pintada em
+  `world.data/terrain.ahgt.paint` com a camada `dirt_road`. O peso diminui
+  sob as árvores e junto às muralhas. Os objetos do mercado assentam à cota
+  do terreno e o tapete fica 5 mm acima.
 
 Continuam ribbons (não pavimentados): as 28 trilhas de `trails.bsn`,
 `desert.bsn`, `gate-arms.bsn` e as pontes — são caminhos de terra orgânicos e o

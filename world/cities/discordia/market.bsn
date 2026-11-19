@@ -35,37 +35,9 @@ bevy_ecs::hierarchy::Children [
     }
     jackdaw_scene_types::node_id::SceneNodeId(1551948037216083582)
     bevy_ecs::hierarchy::Children [
-        #"city.market.apron"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GroundDecal",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "paving-priority", value: "15" },
-                bevy_world_xml::bsn::WorldProp { key: "name", value: "city.market.apron" },
-                bevy_world_xml::bsn::WorldProp { key: "paving", value: "1" },
-                bevy_world_xml::bsn::WorldProp { key: "at", value: "14 -16" },
-                bevy_world_xml::bsn::WorldProp { key: "size", value: "20 20" },
-                bevy_world_xml::bsn::WorldProp { key: "feather", value: "0.55" },
-                bevy_world_xml::bsn::WorldProp { key: "noise", value: "0.11" },
-                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt_road/albedo.ktx2" },
-                bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "3.2" },
-                bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#b5a590" },
-                bevy_world_xml::bsn::WorldProp { key: "roughness", value: "0.9" },
-            ],
-            text: "",
-            origin_file: "world/cities/discordia/market.xml",
-            origin_path: [0, 0],
-            pose: false,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1551948037216083583)
-        --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 9.0, y: 0.064, z: -20.5 },
+            translation: glam::Vec3 { x: 9.0, y: 0.0, z: -20.5 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -78,7 +50,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9 0.064 -20.5" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9 0 -20.5" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -107,7 +79,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 9.5, y: 0.064, z: -13.2 },
+            translation: glam::Vec3 { x: 9.5, y: 0.0, z: -13.2 },
             rotation: glam::Quat { x: 0.0, y: 0.707107, z: 0.0, w: 0.707107 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -121,7 +93,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 90 0" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.5 0.064 -13.2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.5 0 -13.2" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -150,7 +122,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 19.0, y: 0.064, z: -19.0 },
+            translation: glam::Vec3 { x: 19.0, y: 0.0, z: -19.0 },
             rotation: glam::Quat { x: 0.0, y: -0.707107, z: 0.0, w: 0.707107 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -164,7 +136,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -90 0" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "19 0.064 -19" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "19 0 -19" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -193,7 +165,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 7.2, y: 0.064, z: -21.2 },
+            translation: glam::Vec3 { x: 7.2, y: 0.0, z: -21.2 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -206,7 +178,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.2 0.064 -21.2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.2 0 -21.2" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -235,7 +207,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 7.4, y: 0.064, z: -22.1 },
+            translation: glam::Vec3 { x: 7.4, y: 0.0, z: -22.1 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -248,7 +220,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.4 0.064 -22.1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.4 0 -22.1" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -362,7 +334,7 @@ bevy_ecs::hierarchy::Children [
         --
         #merchant
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 17.25, y: 0.064, z: -15.2 },
+            translation: glam::Vec3 { x: 17.25, y: 0.0, z: -15.2 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -373,7 +345,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "merchant" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.25 0.064 -15.2" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "17.25 0 -15.2" },
                 bevy_world_xml::bsn::WorldProp { key: "tag", value: "always-active" },
             ],
             text: "",
@@ -419,7 +391,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"portao-mercado-1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 15.0, y: 0.064, z: -10.0 },
+            translation: glam::Vec3 { x: 15.0, y: 0.0, z: -10.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -433,7 +405,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-mercado-1" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0.064 -10" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0 -10" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -463,7 +435,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.market-gate-lantern"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 15.0, y: 2.444, z: -10.0 },
+            translation: glam::Vec3 { x: 15.0, y: 2.38, z: -10.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -480,7 +452,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-gate-lantern" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 2.444 -10" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 2.38 -10" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -538,7 +510,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"portao-mercado-2"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 15.0, y: 0.064, z: -24.0 },
+            translation: glam::Vec3 { x: 15.0, y: 0.0, z: -24.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -552,7 +524,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "portao-mercado-2" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0.064 -24" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 0 -24" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -582,7 +554,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.market-south-lantern"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 15.0, y: 2.244, z: -24.0 },
+            translation: glam::Vec3 { x: 15.0, y: 2.18, z: -24.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -599,7 +571,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-south-lantern" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 2.244 -24" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "15 2.18 -24" },
             ],
             text: "",
             origin_file: "world/cities/discordia/market.xml",
@@ -657,7 +629,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.market-center-rug"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 18.6, y: 0.069, z: -13.1 },
+            translation: glam::Vec3 { x: 18.6, y: 0.005, z: -13.1 },
             rotation: glam::Quat { x: 0.0, y: -0.156434, z: 0.0, w: 0.987688 },
             scale: glam::Vec3 { x: 1.35, y: 1.0, z: 1.35 },
         }
@@ -674,7 +646,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-center-rug" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.6 0.069 -13.1" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "18.6 0.005 -13.1" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -18 0; scale: 1.35 1 1.35" },
             ],
             text: "",
@@ -1023,7 +995,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.market-west-crate-1"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 6.4, y: 0.064, z: -17.7 },
+            translation: glam::Vec3 { x: 7.15, y: 0.0, z: -15.9 },
             rotation: glam::Quat { x: 0.0, y: 0.156434, z: 0.0, w: 0.987688 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1043,7 +1015,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-west-crate-1" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.4 0.064 -17.7" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.15 0 -15.9" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0" },
             ],
             text: "",
@@ -1073,7 +1045,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.market-west-crate-top"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 6.4, y: 0.864, z: -17.7 },
+            translation: glam::Vec3 { x: 7.15, y: 0.8, z: -15.9 },
             rotation: glam::Quat { x: 0.0, y: 0.156434, z: 0.0, w: 0.987688 },
             scale: glam::Vec3 { x: 0.82, y: 0.82, z: 0.82 },
         }
@@ -1093,7 +1065,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-west-crate-top" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.4 0.864 -17.7" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7.15 0.8 -15.9" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 18 0; scale: 0.82 0.82 0.82" },
             ],
             text: "",
@@ -1123,7 +1095,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v2.market-west-barrel"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 6.45, y: 0.064, z: -18.7 },
+            translation: glam::Vec3 { x: 7.0, y: 0.0, z: -17.05 },
             rotation: glam::Quat { x: 0.0, y: 0.241922, z: 0.0, w: 0.970296 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1143,7 +1115,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v2.market-west-barrel" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "6.45 0.064 -18.7" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "7 0 -17.05" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 28 0" },
             ],
             text: "",

@@ -52,3 +52,5 @@ data) de cada pasta.
 (albedo q92, normal GL/roughness/ao q95) + KTX2 UASTC via
 `Viber/scripts/ktx2_compress_pool.py --loose`. Consumido pelo 13.º slot do
 splatter de terreno (`pebbles` em `Viber/src/terrain/splat.rs`).
+
+As camadas `dirt_road` e `dirt_trail` usam também os mapas NormalGL, AmbientOcclusion, Displacement e Roughness dos mesmos pacotes Ground107 e Ground086 em 1K. Os KTX2 de dados são lineares e incluem a cadeia de mipmaps.
