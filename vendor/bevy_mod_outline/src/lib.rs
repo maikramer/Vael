@@ -1,0 +1,663 @@
+//! This crate provides a Bevy plugin, [`OutlinePlugin`], and associated
+//! components for rendering outlines around meshes using the vertex extrusion
+//! and jump flood methods.
+//!
+//! Outlines are rendered in a seperate pass following the main 3D pass and
+//! using a separate depth buffer. This ensures that outlines are not clipped
+//! by non-outline geometry.
+//!
+//! An outline consists of two parts, a volume and a stencil. The volume
+//! will, by itself, cover the original object entirely with the outline
+//! colour. The stencil prevents the body of an object from being filled in.
+//! Stencils also allows other entities to occlude outlines, otherwise the
+//! outline will be drawn on top of them. These parts are controlled by the
+//! [`OutlineVolume`] and [`OutlineStencil`] components respectively.
+//!
+//! The [`OutlineMode`] component specifies the rendering method. Outlines may
+//! be flattened into a plane in order to further avoid clipping, or left in
+//! real space. The depth of flat outlines can be controlled using the
+//! [`OutlinePlaneDepth`] component.
+//!
+//! Outlines can be inherited from the parent via the [`InheritOutline`]
+//! component. To inherit an outline across an entire subtree without marking
+//! each entity individually, add [`PropagateOutline`] to the root of the
+//! subtree. [`StopPropagateOutline`] halts propagation below a given entity.
+//!
+//! There are two methods available for rendering outlines: vertex extrusion
+//! and jump flood. The default method is selected by adding either
+//! [`OutlinePlugin::EXTRUDE_VERTEX`] or [`OutlinePlugin::JUMP_FLOOD`], and
+//! can be overridden for individual entities via the [`OutlineMode`]
+//! component.
+//!
+//! Vertex extrusion is generally more performant, but is sensitive to the
+//! fidelity of meshes and requires smooth outline normals to avoid visual
+//! artefacts. See the [`OutlineMeshExt::generate_outline_normals`] function
+//! and the [`AutoGenerateOutlineNormalsPlugin`] for help generating these.
+//!
+//! Jump flood, as a screen-space technique, is more robust especially with
+//! thicker outlines. However, it requires `log2(n)` shader passes over the
+//! outline's bounding box where `n` is the thickness in screen pixels.
+
+use std::any::TypeId;
+
+use bevy::anti_alias::contrast_adaptive_sharpening::cas;
+use bevy::anti_alias::fxaa::fxaa;
+use bevy::anti_alias::smaa::smaa;
+use bevy::asset::{embedded_asset, AssetEventSystems};
+use bevy::camera::visibility::{RenderLayers, VisibilitySystems};
+use bevy::core_pipeline::tonemapping::tonemapping;
+use bevy::core_pipeline::{Core3d, Core3dSystems};
+use bevy::curve::{Curve, Ease, FunctionCurve, Interval};
+use bevy::mesh::MeshVertexAttribute;
+use bevy::pbr::{MeshInputUniform, MeshUniform};
+use bevy::prelude::*;
+use bevy::render::batching::gpu_preprocessing::{self, GpuPreprocessingSupport};
+use bevy::render::batching::no_gpu_preprocessing::{
+    clear_batched_cpu_instance_buffers, write_batched_instance_buffer, BatchedInstanceBuffer,
+};
+use bevy::render::camera::DirtySpecializationSystems;
+use bevy::render::extract_component::{ExtractComponentPlugin, UniformComponentPlugin};
+use bevy::render::render_phase::{
+    sort_phase_system, AddRenderCommand, BinnedRenderPhasePlugin, DrawFunctions, PhaseItem,
+    SortedRenderPhasePlugin,
+};
+use bevy::render::render_resource::{SpecializedMeshPipelines, VertexFormat};
+use bevy::render::renderer::RenderDevice;
+use bevy::render::texture::FallbackImage;
+use bevy::render::view::Msaa;
+use bevy::render::{
+    init_gpu_resource, Render, RenderApp, RenderDebugFlags, RenderStartup, RenderSystems,
+};
+use bevy::shader::load_shader_library;
+
+use crate::culling::{
+    check_outline_view_visibility, collect_outline_cpu_culled_entities,
+    extract_outline_visible_entities, OutlineVisibleEntities, RenderExtractedOutlineEntities,
+    RenderOutlineEntities,
+};
+use crate::msaa::{
+    msaa_extra_writeback_pass, prepare_msaa_extra_writeback_pipelines,
+    prepare_outline_view_textures, ResolvedOutlineMsaa,
+};
+use crate::node::{outline_render_pass, OpaqueOutline, StencilOutline, TransparentOutline};
+use crate::pipeline::{init_outline_pipeline, OutlinePipeline};
+use crate::pipeline_key::compute_outline_key;
+use crate::queue::{
+    check_outline_entities_needing_specialisation, clear_dirty_outline_specialisations,
+    expire_outline_specialisations_for_views, extract_outline_entities_needing_specialisation,
+    extract_outline_entities_needing_specialisation_removed, queue_outline_mesh,
+    specialise_outlines, DirtyOutlineSpecialisations, OutlineCache,
+    OutlineEntitiesNeedingSpecialisation, PendingOutlineQueues,
+};
+use crate::render::DrawOutline;
+use crate::uniforms::extract_outlines;
+use crate::uniforms::RenderOutlineInstances;
+use crate::uniforms::{
+    init_alpha_mask_bind_groups, prepare_alpha_mask_bind_groups,
+    prepare_outline_instance_bind_group, OutlineInstanceUniform,
+};
+use crate::view_uniforms::{
+    extract_outline_view_uniforms, prepare_outline_view_bind_group, OutlineViewUniform,
+};
+
+mod computed;
+mod culling;
+mod generate;
+mod msaa;
+mod node;
+mod pipeline;
+mod pipeline_key;
+mod propagate;
+mod queue;
+mod render;
+mod uniforms;
+mod util;
+mod view_uniforms;
+
+pub use computed::*;
+pub use generate::*;
+
+#[cfg(feature = "flood")]
+mod flood;
+
+#[cfg(feature = "world_serialisation")]
+mod world_serialisation;
+#[cfg(feature = "world_serialisation")]
+pub use world_serialisation::*;
+
+// See https://alexanderameye.github.io/notes/rendering-outlines/
+
+/// The direction to extrude the vertex when rendering the outline.
+pub const ATTRIBUTE_OUTLINE_NORMAL: MeshVertexAttribute =
+    MeshVertexAttribute::new("Outline_Normal", 1585570526, VertexFormat::Float32x3);
+
+/// Specifies when a stencil should be rendered.
+#[derive(Copy, Clone, Default, Debug, PartialEq, Eq)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Default))]
+pub enum OutlineStencilEnabled {
+    /// Always render a stencil
+    #[default]
+    Always,
+    /// Only render a stencil if the volume is visible
+    IfVolume,
+    /// Never render a stencil
+    Never,
+}
+
+impl OutlineStencilEnabled {
+    pub(crate) fn is_enabled(&self, volume_enabled: bool) -> bool {
+        match self {
+            OutlineStencilEnabled::Always => true,
+            OutlineStencilEnabled::IfVolume => volume_enabled,
+            OutlineStencilEnabled::Never => false,
+        }
+    }
+}
+
+/// A component for stenciling meshes during outline rendering.
+///
+/// Stencils are used both to prevent entities with outlines from being
+/// covered by their own outline volumes and to allow entities to occlude
+/// any outlines behind them.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct OutlineStencil {
+    /// Controls when the stencil should be rendered
+    pub enabled: OutlineStencilEnabled,
+    /// Offset of the stencil in logical pixels
+    pub offset: f32,
+}
+
+impl OutlineStencil {
+    pub(crate) const INHERIT_DEFAULT: OutlineStencil = OutlineStencil {
+        enabled: OutlineStencilEnabled::IfVolume,
+        offset: 0.0,
+    };
+}
+
+fn lerp_stencil_enabled(
+    this: OutlineStencilEnabled,
+    other: OutlineStencilEnabled,
+    scalar: f32,
+) -> OutlineStencilEnabled {
+    if scalar <= 0.0 {
+        this
+    } else if scalar >= 1.0 {
+        other
+    } else {
+        match (this, other) {
+            (OutlineStencilEnabled::Always, _) => OutlineStencilEnabled::Always,
+            (_, OutlineStencilEnabled::Always) => OutlineStencilEnabled::Always,
+            (OutlineStencilEnabled::IfVolume, _) => OutlineStencilEnabled::IfVolume,
+            (_, OutlineStencilEnabled::IfVolume) => OutlineStencilEnabled::IfVolume,
+            _ => OutlineStencilEnabled::Never,
+        }
+    }
+}
+
+macro_rules! impl_lerp {
+    ($t:ty, $e:expr) => {
+        impl Ease for $t {
+            fn interpolating_curve_unbounded(start: Self, end: Self) -> impl Curve<Self> {
+                FunctionCurve::new(Interval::UNIT, move |t| $e(&start, &end, t))
+            }
+        }
+
+        #[cfg(feature = "interpolation")]
+        impl interpolation::Lerp for $t {
+            type Scalar = f32;
+
+            fn lerp(&self, other: &Self, scalar: &Self::Scalar) -> Self {
+                $e(self, other, *scalar)
+            }
+        }
+    };
+}
+
+fn lerp_stencil(start: &OutlineStencil, end: &OutlineStencil, t: f32) -> OutlineStencil {
+    OutlineStencil {
+        enabled: lerp_stencil_enabled(start.enabled, end.enabled, t),
+        offset: start.offset.lerp(end.offset, t),
+    }
+}
+
+impl_lerp!(OutlineStencil, lerp_stencil);
+
+/// A component for rendering outlines around meshes.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct OutlineVolume {
+    /// Enable rendering of the outline
+    pub visible: bool,
+    /// Width of the outline in logical pixels
+    pub width: f32,
+    /// Colour of the outline
+    pub colour: Color,
+}
+
+fn lerp_bool(this: bool, other: bool, t: f32) -> bool {
+    if t <= 0.0 {
+        this
+    } else if t >= 1.0 {
+        other
+    } else {
+        this || other
+    }
+}
+
+fn lerp_volume(start: &OutlineVolume, end: &OutlineVolume, t: f32) -> OutlineVolume {
+    OutlineVolume {
+        visible: lerp_bool(start.visible, end.visible, t),
+        width: start.width.lerp(end.width, t),
+        colour: start.colour.mix(&end.colour, t),
+    }
+}
+
+impl_lerp!(OutlineVolume, lerp_volume);
+
+/// A component for specifying what layer(s) the outline should be rendered for.
+#[derive(Component, Clone, PartialEq, Eq, PartialOrd, Ord, Deref, DerefMut, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct OutlineRenderLayers(pub RenderLayers);
+
+impl From<RenderLayers> for OutlineRenderLayers {
+    fn from(value: RenderLayers) -> Self {
+        OutlineRenderLayers(value)
+    }
+}
+
+/// A component which specifies how the outline should be rendered.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+#[non_exhaustive]
+pub enum OutlineMode {
+    /// Vertex extrusion flattened into a billboard. (default)
+    #[default]
+    ExtrudeFlat,
+    /// Vertex extrusion in real model-space.
+    ExtrudeReal,
+    /// Jump-flood into a billboard.
+    #[cfg(feature = "flood")]
+    FloodFlat,
+}
+
+/// A resource which controls the default [`OutlineMode`] used when an entity
+/// does not have an [`OutlineMode`] component and does not inherit one from
+/// a parent.
+#[derive(Clone, Default, Resource, Deref)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Resource, Default))]
+pub struct GlobalOutlineMode(pub OutlineMode);
+
+/// A component which controls which faces of an outline are rendered.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+#[non_exhaustive]
+pub enum OutlineFace {
+    /// Render only the front face of the outline. (default)
+    #[default]
+    Front,
+    /// Render both the front and back faces of the outline.
+    DoubleSided,
+}
+
+/// A component which controls the depth sorting of flat outlines and stencils.
+///
+/// By flattening an outline into a plane, we avoid it being partially clipped
+/// by other outlines. However, naive positioning of the outline planes can
+/// cause an outline to be drawn behind the outline of an object it is actually
+/// in front of. This component allows you to control the point in an object's
+/// model-space through which the outline plane passes.
+///
+/// The plane point in model-space is calculated by adding the `model_plane_origin`
+/// coordinate to the `model_plane_offset` vector multiplied by the model-space
+/// eye vector. The latter component allows you to move the plane towards or away
+/// from the camera in a view independent manner.
+///
+/// This component only affects outlines which have a flat [`OutlineMode`].
+/// The plane point will be calculated using the transform of the entity to
+/// which this component is attached. When inherited, the already calculated
+/// value in world-space will be used by the children so that the parent and
+/// child will share the same outline plane.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct OutlinePlaneDepth {
+    /// The point in model-space through which the outline plane passes, before
+    /// the view dependent offset is applied.
+    pub model_plane_origin: Vec3,
+    /// An offset to the plane point multiplied by the model-space eye vector.
+    pub model_plane_offset: Vec3,
+}
+
+/// A component for inheriting outlines from the parent entity.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct InheritOutline;
+
+/// A component for propagating [`InheritOutline`] to all descendants of this entity.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct PropagateOutline;
+
+/// A component for halting propagation below this entity.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct StopPropagateOutline;
+
+/// The channel of a texture.
+#[derive(Copy, Clone, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Default))]
+pub enum TextureChannel {
+    R,
+    G,
+    B,
+    #[default]
+    A,
+}
+
+/// A component for specifying an alpha mask texture.
+///
+/// The alpha mask is a UV-mapped texture that can be used to determine
+/// whether a pixel is part of the shape of the object for outlining
+/// purposes. If the value read from the texture is less than the threshold
+/// value, the pixel is considered outside the shape and not part of the
+/// stencil used to generate the outline.
+///
+/// The visual effect of this depends on the outline mode being used:
+///
+/// - For extrusion modes, any masked-off part of the stencil will be filled
+///   entirely with the outline colour.
+///
+/// - For jump-flood modes, any masked-off part of the stencil will be
+///   outlined identically to a boundary created with geometry.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct OutlineAlphaMask {
+    /// The texture to use as a mask.
+    pub texture: Option<Handle<Image>>,
+    /// The channel of the texture to use as a mask.
+    pub channel: TextureChannel,
+    /// The threshold value above which pixels will be included.
+    pub threshold: f32,
+}
+
+/// A component for warming up different specialisations of the outline pipeline.
+///
+/// When animating a property which causes the required pipeline specialisation
+/// to change, failure to warm up the required specialisaton in advance may
+/// cause the outline to briefly disappear.
+#[derive(Clone, Component, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub struct OutlineWarmUp {
+    transparency: bool,
+    vertex_offsets: bool,
+}
+
+impl OutlineWarmUp {
+    /// Warms up both the opaque and transparent versions of the volume shader.
+    pub fn with_transparency(self, transparency: bool) -> Self {
+        let mut s = self.clone();
+        s.transparency = transparency;
+        s
+    }
+
+    /// Warms up both the zero and non-zero vertex offset versions of the volume and stencil
+    /// shaders.
+    pub fn with_vertex_offsets(self, vertex_offset_zero: bool) -> Self {
+        let mut s = self.clone();
+        s.vertex_offsets = vertex_offset_zero;
+        s
+    }
+}
+
+/// A view-level component which controls the MSAA setting used when rendering
+/// outlines, independently of the MSAA setting used for the rest of the scene.
+///
+/// Add this component to a camera to override the multi-sample anti-aliasing
+/// level for outline rendering. When set to [`OutlineMsaa::Auto`] (the default,
+/// also implied when the component is absent) the outline MSAA level matches
+/// the camera's [`Msaa`] setting.
+#[derive(Component, Clone, Default)]
+#[cfg_attr(feature = "reflect", derive(Reflect))]
+#[cfg_attr(feature = "reflect", reflect(Component, Default))]
+pub enum OutlineMsaa {
+    /// Match the camera's [`Msaa`] setting.
+    #[default]
+    Auto,
+    /// Use a fixed MSAA setting for outline rendering.
+    Msaa(Msaa),
+}
+
+// This makes `SetMeshBindGroup` work with CPU drawn outlines when GPU pre-processing is enabled
+pub(crate) fn add_dummy_phase_buffer<P: PhaseItem + 'static>(
+    bibs: &mut gpu_preprocessing::BatchedInstanceBuffers<MeshUniform, MeshInputUniform>,
+) {
+    let phase_buffer = bibs
+        .phase_instance_buffers
+        .entry(TypeId::of::<P>())
+        .or_default();
+    if phase_buffer.data_buffer.is_empty() {
+        // An empty buffer will not be bound
+        phase_buffer.data_buffer.add();
+    }
+}
+
+fn add_dummy_phase_buffers(
+    mut bibs: ResMut<gpu_preprocessing::BatchedInstanceBuffers<MeshUniform, MeshInputUniform>>,
+) {
+    add_dummy_phase_buffer::<StencilOutline>(&mut bibs);
+    add_dummy_phase_buffer::<OpaqueOutline>(&mut bibs);
+    add_dummy_phase_buffer::<TransparentOutline>(&mut bibs);
+}
+
+/// Adds support for rendering outlines.
+pub struct OutlinePlugin {
+    mode: OutlineMode,
+}
+
+impl OutlinePlugin {
+    /// An [`OutlinePlugin`] configured to use vertex extrusion outlines by
+    /// default. See [`OutlineMode::ExtrudeFlat`].
+    pub const EXTRUDE_VERTEX: Self = Self {
+        mode: OutlineMode::ExtrudeFlat,
+    };
+
+    /// An [`OutlinePlugin`] configured to use jump-flood outlines by default.
+    /// See [`OutlineMode::FloodFlat`].
+    #[cfg(feature = "flood")]
+    pub const JUMP_FLOOD: Self = Self {
+        mode: OutlineMode::FloodFlat,
+    };
+}
+
+impl Plugin for OutlinePlugin {
+    fn build(&self, app: &mut App) {
+        load_shader_library!(app, "common.wesl");
+        embedded_asset!(app, "outline.wesl");
+        embedded_asset!(app, "fragment.wesl");
+
+        app.add_plugins((
+            ExtractComponentPlugin::<ResolvedOutlineMsaa>::default(),
+            UniformComponentPlugin::<OutlineViewUniform>::default(),
+            BinnedRenderPhasePlugin::<StencilOutline, OutlinePipeline>::new(
+                RenderDebugFlags::empty(),
+            ),
+            BinnedRenderPhasePlugin::<OpaqueOutline, OutlinePipeline>::new(
+                RenderDebugFlags::empty(),
+            ),
+            SortedRenderPhasePlugin::<TransparentOutline, OutlinePipeline>::new(
+                RenderDebugFlags::empty(),
+            ),
+        ))
+        .register_required_components::<OutlineStencil, ComputedOutline>()
+        .register_required_components::<OutlineVolume, ComputedOutline>()
+        .register_required_components::<InheritOutline, ComputedOutline>()
+        .register_required_components::<PropagateOutline, ComputedOutline>()
+        .insert_resource(GlobalOutlineMode(self.mode.clone()))
+        .init_resource::<OutlineEntitiesNeedingSpecialisation>()
+        .init_resource::<OutlineVisibleEntities>()
+        .add_systems(
+            PostUpdate,
+            (
+                clean_up_computed_outline,
+                compute_outline
+                    .after(TransformSystems::Propagate)
+                    .after(VisibilitySystems::VisibilityPropagate),
+                compute_outline_key
+                    .after(compute_outline)
+                    .after(clean_up_computed_outline)
+                    .after(AssetEventSystems),
+                check_outline_entities_needing_specialisation.after(compute_outline_key),
+                check_outline_view_visibility
+                    .after(VisibilitySystems::CheckVisibility)
+                    .after(compute_outline),
+            ),
+        )
+        .sub_app_mut(RenderApp)
+        .init_resource::<DrawFunctions<StencilOutline>>()
+        .init_resource::<DrawFunctions<OpaqueOutline>>()
+        .init_resource::<DrawFunctions<TransparentOutline>>()
+        .init_resource::<SpecializedMeshPipelines<OutlinePipeline>>()
+        .add_render_command::<StencilOutline, DrawOutline>()
+        .add_render_command::<OpaqueOutline, DrawOutline>()
+        .add_render_command::<TransparentOutline, DrawOutline>()
+        .add_systems(
+            ExtractSchedule,
+            (
+                clear_dirty_outline_specialisations.in_set(DirtySpecializationSystems::Clear),
+                extract_outline_view_uniforms,
+                extract_outlines,
+                extract_outline_visible_entities,
+                extract_outline_entities_needing_specialisation
+                    .in_set(DirtySpecializationSystems::CheckForChanges),
+                extract_outline_entities_needing_specialisation_removed
+                    .in_set(DirtySpecializationSystems::CheckForRemovals),
+                expire_outline_specialisations_for_views.in_set(RenderSystems::Cleanup),
+            ),
+        )
+        .add_systems(
+            Render,
+            (
+                prepare_outline_view_textures,
+                prepare_msaa_extra_writeback_pipelines,
+            )
+                .in_set(RenderSystems::Prepare),
+        )
+        .add_systems(
+            Render,
+            (
+                prepare_outline_view_bind_group,
+                prepare_outline_instance_bind_group,
+                prepare_alpha_mask_bind_groups,
+            )
+                .in_set(RenderSystems::PrepareBindGroups),
+        )
+        .add_systems(
+            Render,
+            collect_outline_cpu_culled_entities.in_set(RenderSystems::PrepareAssets),
+        )
+        .add_systems(
+            Render,
+            specialise_outlines.in_set(RenderSystems::PrepareMeshes),
+        )
+        .add_systems(
+            Render,
+            queue_outline_mesh.in_set(RenderSystems::QueueMeshes),
+        )
+        .add_systems(
+            Render,
+            sort_phase_system::<TransparentOutline>.in_set(RenderSystems::PhaseSort),
+        )
+        .add_systems(
+            Render,
+            clear_batched_cpu_instance_buffers::<OutlinePipeline>
+                .in_set(RenderSystems::Cleanup)
+                .after(RenderSystems::Render),
+        )
+        // Outlining occurs after tone-mapping.
+        .add_systems(
+            Core3d,
+            (msaa_extra_writeback_pass, outline_render_pass)
+                .chain()
+                .in_set(Core3dSystems::PostProcess)
+                .after(tonemapping)
+                .before(fxaa)
+                .before(smaa)
+                .before(cas),
+        );
+
+        propagate::add_propagate_observers(app);
+
+        #[cfg(feature = "reflect")]
+        app.register_type::<OutlineStencil>()
+            .register_type::<OutlineVolume>()
+            .register_type::<OutlineRenderLayers>()
+            .register_type::<OutlineMode>()
+            .register_type::<GlobalOutlineMode>()
+            .register_type::<OutlineFace>()
+            .register_type::<OutlineAlphaMask>()
+            .register_type::<OutlineMsaa>()
+            .register_type::<InheritOutline>()
+            .register_type::<PropagateOutline>()
+            .register_type::<StopPropagateOutline>();
+
+        #[cfg(feature = "world_serialisation")]
+        app.init_resource::<AsyncWorldInheritOutlineSystems>();
+
+        #[cfg(feature = "flood")]
+        app.add_plugins(flood::FloodPlugin);
+    }
+
+    fn finish(&self, app: &mut App) {
+        let render_app = app.sub_app_mut(RenderApp);
+        render_app
+            .init_resource::<RenderOutlineInstances>()
+            .init_resource::<RenderExtractedOutlineEntities>()
+            .init_resource::<RenderOutlineEntities>()
+            .init_resource::<PendingOutlineQueues>()
+            .init_resource::<DirtyOutlineSpecialisations>()
+            .init_resource::<OutlineCache>()
+            .add_systems(
+                RenderStartup,
+                (
+                    (init_outline_pipeline, init_outline_instance_buffer)
+                        .after(bevy::pbr::MeshPipelineSystems),
+                    init_alpha_mask_bind_groups
+                        .after(init_outline_pipeline)
+                        .after(init_gpu_resource::<FallbackImage>),
+                ),
+            )
+            .add_systems(
+                Render,
+                write_batched_instance_buffer::<OutlinePipeline>
+                    .in_set(RenderSystems::PrepareResourcesFlush),
+            );
+
+        let gpu_preprocessing_support = render_app.world().resource::<GpuPreprocessingSupport>();
+        if gpu_preprocessing_support.is_available() {
+            render_app.add_systems(
+                Render,
+                add_dummy_phase_buffers.in_set(RenderSystems::PrepareResourcesCollectPhaseBuffers),
+            );
+        }
+    }
+}
+
+fn init_outline_instance_buffer(mut commands: Commands, render_device: Res<RenderDevice>) {
+    commands.insert_resource(BatchedInstanceBuffer::<OutlineInstanceUniform>::new(
+        &render_device.limits(),
+    ));
+}

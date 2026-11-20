@@ -67,6 +67,16 @@ engine (`biome_fog_system`); a névoa do crate fica desligada na câmara
 
 ## Clima jogável
 
+No Jackdaw, selecione **Definições › Ambiente** e edite o componente
+`ElementsSettings` no inspector. O campo `climate` escolhe o perfil do mundo
+(`Temperate`, `Alpine`, `Desert`, `Tropical` ou `Tundra`). Por exemplo,
+`Desert` traz dias mais secos e a possibilidade de tempestades de poeira.
+`weather_seed` determina a sequência de escolhas horárias para o mesmo
+perfil e percurso do relógio. As cenas anteriores usam `Temperate` e semente
+`0`. Pode alterar ambos em Play. O diretor mantém o tempo já em curso e
+usa as novas definições nas próximas escolhas. Para observar a sequência
+automática, deixe `start_weather` em `Auto`.
+
 O `Weather` do crate alimenta o `WeatherState` da engine (`bridge_weather`,
 `cycle:false`), com a chuva já multiplicada pelo `rain-scale` do bioma. Isso
 reativa o chão molhado do terreno (`terrain_rain_wetness`), o loop de áudio
@@ -145,6 +155,24 @@ exato):
 - **Sombras**: `max_shadowed` do pool (`VAEL_POOL_SHADOWS`, default 2) só de
   noite. O gotcha das cube shadows continua válido: cada luz custa 6 vistas e
   pisca no chão — o default é conservador e mede-se antes de subir.
+
+### Lanterna de cintura (`src/lantern.rs`)
+
+A luz noturna automática da engine (`lantern_driver`) fica desligada via
+`viber::ambient::ExternalLantern`. Em vez dela, o herói carrega uma **lanterna
+pendurada na cintura** (`spine_01`, anca esquerda, com balanço de pêndulo e
+emissivo próprio clonado por instância) que acende e apaga com **`X`** (ou
+`DPadUp` no comando; persistida em `viber.game().lantern_on`).
+
+- **Apagada**: `TravellerLantern` vai a 0 lm, `Visibility::Hidden` e sem cube
+  shadow map; à noite o alcance de deteção dos inimigos cai e as sombras da
+  noite não emboscam o herói.
+- **Acesa**: ilumina o raio em torno do herói (`LANTERN_MAX_INTENSITY` com
+  flicker suave e sombra noturna), mas atrai inimigos de mais longe (e faz
+  patrulhas próximas investigarem o clarão).
+- **Tocha de mão (`V`)**: ao equipar a tocha, a lanterna sai da cintura para a
+  mão (`TorchLightOverride`) mantendo a luz e a deteção coerentes.
+- **Lua**: `viber.vael.lantern_{on,lit,intensity,set}`.
 
 ### Um só dono da intensidade
 

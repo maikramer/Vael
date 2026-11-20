@@ -276,9 +276,13 @@ function on_update(dt)
   end
   -- UM pedido por mudança (item, grip, dono, cena). Nos primeiros frames o
   -- GLB do herói ainda não tem hierarquia: a engine guarda o pedido até o
-  -- osso existir (`PendingAttachments`, ~15 s). Repetir aqui despachava e
-  -- recarregava a espada a cada 0,5 s (10 vezes por troca) e avisava em
-  -- spam "osso 'hand_r' não encontrado".
+  -- osso existir. Repetir aqui despachava e recarregava a espada a cada
+  -- frame. O `boot` cobre uma sessão em que o primeiro pedido expirou
+  -- antes do rig (a espada só voltava ao trocar para o machado na árvore).
+  if st.boot ~= 1 then
+    st.boot = 1
+    st.tries = 0
+  end
   if (st.tries or 0) >= 1 then
     return
   end

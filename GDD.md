@@ -95,6 +95,49 @@ Os ícones sobre NPCs, a bússola, o mapa, a seta, o quadro e as opções de con
 
 **Base jogável.** Ouro inicial de 30 e uma poção. O limiar de XP parte de 100, com crescimento configurado de 1,5 e um ponto de talento por nível. Vitalidade, Força, Agilidade e Precisão abrem caminhos de especialização. Espírito liga sobrevivência, execução e cantil. Equipar arma, armadura e amuleto altera as possibilidades de combate. A mochila, a loja e a bigorna são pontos distintos de decisão. [Progressão](data/progression.json) · [Itens e preços](data/items.json) · [Receitas](data/recipes.json)
 
+### Árvore de habilidades do diário
+
+Cada nó custa **1 ponto**. O primeiro nível ganho dá a primeira escolha aos **100 XP**. Quem investir sempre no mesmo ramo alcança uma especialização com o terceiro ponto, aos **475 XP acumulados** (100 + 150 + 225). Cada quinta Semente de Canção também dá um ponto e permite antecipar essa escolha pela exploração. Os quatro destinos continuam acessíveis com qualquer distribuição.
+
+As setas indicam pré-requisitos. A ligação pontilhada une as duas alternativas de cada especialização.
+
+```mermaid
+flowchart LR
+    V1[Vitalidade I] --> V2[Vitalidade II] --> B[Baluarte]
+    V2 --> S[Sede de sangue]
+    B -.- S
+    V1 --> C[Cantil fundo]
+    V1 --> E1[Espírito I] --> E2[Espírito II]
+    F1[Força I] --> F2[Força II] --> BR[Brasas]
+    F2 --> AB[Abalo]
+    BR -.- AB
+    A1[Agilidade I] --> A2[Agilidade II] --> PV[Passo de vento]
+    A2 --> ES[Espectro]
+    PV -.- ES
+    P1[Precisão I] --> P2[Precisão II] --> CA[Carrasco]
+    P2 --> DU[Duelista]
+    CA -.- DU
+```
+
+| Ramo | Primeiro e segundo investimento | Escolha após o segundo grau |
+|---|---|---|
+| Vitalidade | +2 e +3 Vitalidade, para um total de +50 de vida máxima | **Baluarte** reduz o dano recebido em mais 15 pontos percentuais. **Sede de sangue** devolve 6% da vida retirada em corpo a corpo. |
+| Força | +2 e +3 Força, para um total de +15 de dano | **Brasas** aplica 4 s de queimadura com Impacto. **Abalo** acrescenta 1 m ao raio e 12 de dano imediato. A primeira escolha favorece alvos que sobrevivem ao golpe, a segunda favorece grupos dispersos. |
+| Agilidade | +4 e +6 Agilidade, para um total de +25% à velocidade de movimento | **Passo de vento** tira mais 25% da recarga base da esquiva. **Espectro** prolonga a invulnerabilidade em 0,2 s. Com os dois graus e sem equipamento, a escolha é entre esquivar a cada 0,84 s ou ter uma janela de 0,55 s a cada 1,14 s. |
+| Precisão | +4 e +5 Precisão, para um total de +18 pontos percentuais de crítico | **Carrasco** soma 10 pontos percentuais ao limiar de execução. **Duelista** acrescenta 0,5 ao multiplicador de crítico. |
+
+**Desvio de sustentação.** Logo após Vitalidade I, Cantil fundo acrescenta uma carga. Espírito I (+3) e Espírito II (+4) formam um caminho paralelo que melhora cura, roubo de vida e execução. Um jogador que escolhe o cantil no nível 3 já pode levar mais uma cura para os Picos. Chegar a Baluarte passa então a exigir um quarto ponto. Cada especialização fecha apenas a sua alternativa do mesmo ramo. Dos 19 nós, até 15 podem coexistir.
+
+**Contratempo — a pegada que responde.** Força I e Agilidade I juntas ensinam uma técnica de dois tempos. Quando o Impacto está pronto, uma esquiva aceite deixa uma centelha no ponto de partida. Ao terminar o movimento, um anel turquesa abre na pegada. Há 0,75 s para usar Impacto: o golpe cai junto do herói e a pegada responde com um eco de 2,8 m. O eco causa 30 de dano no centro, caindo até 15 na borda. O golpe principal tem prioridade na zona comum. Brasas e Abalo continuam a modificar o golpe do herói. A primeira vez que a pegada atinge alguém, o jogo anuncia a descoberta.
+
+Na arena, colocar um perseguidor um passo atrás e outro à frente. Rolar em direcção ao segundo, esperar pelo anel e usar Impacto. O primeiro pode ser apanhado pelo eco enquanto o segundo recebe o golpe principal. Repetir cedo demais ou depois de o tempo passar produz o Impacto habitual, pelo mesmo custo de vigor e com a mesma recarga. [Arena de treino do Contratempo](qa/scenarios/combat/contratempo.json)
+
+**Decisão no diário.** Seleccionar um nó permite consultar o ganho, o pré-requisito e o nome da alternativa que se perde. O botão de aprender indica o custo. Um nó acessível sem saldo indica como obter outro ponto. Só a compra consome o ponto e fecha a alternativa. Ao carregar, o diário reconstrói as escolhas a partir dos talentos guardados.
+
+**Critério de afinação.** Comparar Brasas e Abalo contra um alvo resistente que permanece no raio e contra um grupo com um inimigo a 5,5 m do herói. Para Agilidade, repetir a mesma sequência de dois ataques com cada especialização e registar esquivas aceites, danos sofridos e vigor gasto. Estes valores são o ponto de partida do playtest. [Catálogo jogável](data/progression.json)
+
+### Economia de campanha
+
 | Escolha económica concreta | Pergunta ao jogador | Consequência para o desenho |
 |---|---|---|
 | Uma poção custa 25 de ouro; madeira vende por 3 e pedra por 5 | Parto com reserva de cura ou guardo o ouro para a forja? | Uma única compra inicial é possível. A fogueira sustenta novas tentativas quando o ouro acaba. |
@@ -146,9 +189,24 @@ Localização PT/EN desde a autoria. Rever a distinção entre caderno, fragment
 
 ## 9. Direcção artística e sonora
 
-**Arte.** Dar ao Vale objectos que mostrem as mãos de quem os usa. A pega gasta só de um lado resolve um mistério. Uma raspadeira bem afiada mostra que Edmar conviveu todos os dias com a possibilidade de corrigir o mapa. Na praça final, o jogador precisa de reconhecer o enquadramento da primeira manhã antes de reparar que o mapa mudou de altura. Reutilizar o cenário e alterar a acção em primeiro plano.
+**Identidade visual — Ofício Talhado & Iluminura Rural.** O mundo é visto pelos olhos de um Cartógrafo: cada estrutura, roupa ou ferramenta mostra como foi feita e por onde foi gasta. Para afastar qualquer aspecto genérico ou artificial de geração automática, a imagem apoia-se em três regras plásticas:
+1. **Volumes talhados com planos chanfrados** (madeira desbastada a enxó, cantaria aparelhada com cal, ferro batido em faces francas), recusando geometrias moles ou «derretidas».
+2. **Pintura a guache e têmpera mate em blocos largos de cor** (pigmentos minerais de cal, ocre, ardósia, pinho e ferrugem com `roughness` elevado), sem verniz plástico e sem micro-padrões ou filigranas que se partam nas costuras de textura.
+3. **Gravura, carvão e pergaminho na interface e na cartografia**, ligando o HUD, os medalhões de talento e o mapa topográfico ao caderno físico d'a Nota. [Direcção de arte e identidade visual](docs/ART.md)
 
-**Linguagem visual por material.** Madeira, pano cerzido e pedra com cal situam a vila. Raízes e fitas marcam profundidade no Bosque. Areia clara contra roda escura dá escala ao Verme. No Lodo, a linha da água deve cortar algo reconhecível, como a ombreira de uma porta. Nos Picos, recortar o gesto dos punhos contra o céu. O cristal azul do Alto tem veios com intervalos diferentes; a cópia a carvão reproduz esses intervalos mesmo em monocromia.
+**Personagens e criaturas — Estilização de Ofício.** Todo o elenco humano segue proporções de **6 a 6,5 cabeças**, com planos faciais esculpidos e mãos, antebraços, botas e ferramentas ligeiramente enfatizados (+10–15% de volume) para leitura limpa na câmara de terceira pessoa e peso físico credível nas quedas e esbarrões. O vestuário organiza-se em três camadas funcionais (base de linho/lã, protecção de couro/avental e ferramenta de ofício), sem armaduras barrocas nem proporções *chibi*. Nos quatro guardiões, a Nota engolida manifesta-se como uma **ferida mineral**: veios e lascas do cristal azul do Coro incrustados na casca, na quitina, no lodo ou no granito, que se acendem antes do ataque especial.
+
+**Objectos que contam a história pelas mãos de quem os usa.** A pega da maca gasta só de um lado resolve o mistério da travessia em M08. Uma raspadeira de gume limpo e cabo polido mostra que Edmar conviveu todos os dias com a possibilidade de corrigir o mapa. Na praça final, o jogador reconhece o enquadramento da primeira manhã antes de reparar que o mapa desceu na parede para ficar à altura das crianças. Reutilizar o cenário e alterar a acção e a marca de uso em primeiro plano.
+
+| Espaço | Matéria e paleta dominante | Contraste e leitura de jogo |
+|---|---|---|
+| Discórdia e Vale | Pedra com cal gasta na base, carvalho fumado, ardósia e pano cerzido | O âmbar das forjas e lanternas marca abrigo; o entalhe turquesa identifica os marcos assinados |
+| Bosque | Pinho negro, musgo profundo e terra húmida sob névoa curta | Raízes e fitas carmim/ocre marcam profundidade e rota; a maldição da Bruxa recorta-se no solo escuro |
+| Ermo | Arenito ferruginoso, ocre seco e madeira branqueada pelo sol | Areia clara contra a madeira escura das carroças dá escala ao Verme; sombras frias de ardósia nas fendas |
+| Pântano (Lodo) | Lodo escuro, tábuas alcatroadas, junco seco e bruma verde-oliva | A linha da água corta sempre algo humano reconhecível, como a ombreira de uma porta ou a régua de cal |
+| Picos | Granito azulado em arestas vivas, manto de neve e trave grossa | Recortar os três mojões e o gesto dos punhos do Ogro contra o céu; veios ciano nas bocas da mina |
+| Campo e Cidadela | Cantaria calcinada, barro revirado, ferro oxidado e estandartes baços | Pares de sombras cor de basalto húmido com mãos nítidas; traço preto de carvão sobre o papel das mesas |
+| Vau e Alto | Basalto de altitude, líquen dourado e colunas de cristal azul | O cristal do Alto tem veios com intervalos rítmicos diferentes; a cópia a carvão reproduz esses intervalos mesmo em monocromia |
 
 **Som.** A direcção existente usa coro sem palavras, harmónica de vidro, madeiras e um motivo de quatro notas. A banda musical pode citar o Coro desde o menu. Dentro da história, ouvir o cristal do próprio mundo voltar a vibrar é a recompensa da M06. Distinguir as fontes na mistura: a colher bate perto da câmara, enquanto o chamamento responde ao longe. Na M13, baixar a música antes da palavra «Chegámos» e deixar ouvir a respiração de quem acabou de subir. A resolução musical plena acompanha os créditos. [Paleta, camadas e mistura](docs/AUDIO.md)
 

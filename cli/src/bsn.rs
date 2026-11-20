@@ -35,10 +35,14 @@ pub fn convert(
 /// malformado falha o gate em vez de ser comparado consigo mesmo (exit 0
 /// sempre).
 pub fn check(paths: &[PathBuf], root: Option<&Path>, out: Option<&Path>) -> Result<usize> {
-    let paths = default_paths(paths);
+    let paths = if paths.is_empty() && Path::new("world.bsn").is_file() {
+        vec![PathBuf::from("world.bsn")]
+    } else {
+        default_paths(paths)
+    };
     let root = resolve_root(&paths, root)?;
     let mut checked = 0;
-    for path in discover_xml(&paths)? {
+    for path in discover(&paths, true)? {
         if is_bsn(&path) {
             load_world_in(&path, &root)
                 .with_context(|| format!("validar BSN {}", path.display()))?;
@@ -74,14 +78,14 @@ fn resolve_root(paths: &[PathBuf], root: Option<&Path>) -> Result<PathBuf> {
         .with_context(|| format!("caminho inválido: {}", first.display()))?;
     // `root_of` trata o caminho como um ficheiro. Passar-lhe uma pasta dava o
     // avô do projeto (ex.: `Vael/` → `GitClones/`), e os includes `/world/…`
-    // deixavam de resolver. Ancora num ficheiro: o primeiro XML da pasta.
+    // deixavam de resolver. Ancora num ficheiro: o primeiro documento da pasta.
     let anchor = if first.is_dir() {
         if first.join(bevy_ext_world::project::CONFIG_FILE).is_file() {
             return Ok(first);
         }
-        let mut xmls = Vec::new();
-        walk_xml(&first, &mut xmls)?;
-        xmls.into_iter().next().unwrap_or(first)
+        let mut documents = Vec::new();
+        walk_documents(&first, &mut documents, true)?;
+        documents.into_iter().next().unwrap_or(first)
     } else {
         first
     };
@@ -99,9 +103,13 @@ fn convert_files(
     check: bool,
     options: EmitOptions,
 ) -> Result<usize> {
-    let mut work: BTreeSet<PathBuf> = discover_xml(paths)?.into_iter().collect();
+    let mut work: BTreeSet<PathBuf> = discover(paths, false)?.into_iter().collect();
+    let mut seen = BTreeSet::new();
     let mut converted = 0;
     while let Some(xml) = work.pop_first() {
+        if !seen.insert(xml.clone()) {
+            continue;
+        }
         let text = emit_file_checked(&xml, root, options)?;
         let target = output_path(&xml, root, out);
         if target.exists() {
@@ -130,12 +138,17 @@ fn convert_files(
     Ok(converted)
 }
 
-fn discover_xml(paths: &[PathBuf]) -> Result<Vec<PathBuf>> {
+fn discover(paths: &[PathBuf], include_bsn: bool) -> Result<Vec<PathBuf>> {
     let mut out = Vec::new();
     for path in paths {
         if path.is_dir() {
-            walk_xml(path, &mut out)?;
+            walk_documents(path, &mut out, include_bsn)?;
         } else if path.is_file() {
+            anyhow::ensure!(
+                has_extension(path, "xml") || (include_bsn && is_bsn(path)),
+                "formato inesperado: {}",
+                path.display()
+            );
             out.push(path.canonicalize()?);
         } else {
             bail!("caminho inexistente: {}", path.display());
@@ -147,7 +160,8 @@ fn discover_xml(paths: &[PathBuf]) -> Result<Vec<PathBuf>> {
     // "0 ficheiro(s) …": um gate que não verificou nada passava.
     if out.is_empty() {
         bail!(
-            "nenhum ficheiro .xml encontrado em {}",
+            "nenhum ficheiro {} encontrado em {}",
+            if include_bsn { ".bsn ou .xml" } else { ".xml" },
             paths
                 .iter()
                 .map(|path| path.display().to_string())
@@ -159,17 +173,20 @@ fn discover_xml(paths: &[PathBuf]) -> Result<Vec<PathBuf>> {
 }
 
 fn is_bsn(path: &Path) -> bool {
-    path.extension()
-        .and_then(|ext| ext.to_str())
-        .is_some_and(|ext| ext.eq_ignore_ascii_case("bsn"))
+    has_extension(path, "bsn")
 }
 
-fn walk_xml(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
+fn has_extension(path: &Path, extension: &str) -> bool {
+    path.extension()
+        .and_then(|ext| ext.to_str())
+        .is_some_and(|ext| ext.eq_ignore_ascii_case(extension))
+}
+
+fn walk_documents(dir: &Path, out: &mut Vec<PathBuf>, include_bsn: bool) -> Result<()> {
     let mut entries: Vec<PathBuf> = std::fs::read_dir(dir)
         .with_context(|| format!("ler {}", dir.display()))?
-        .flatten()
-        .map(|entry| entry.path())
-        .collect();
+        .map(|entry| entry.map(|e| e.path()))
+        .collect::<std::io::Result<_>>()?;
     entries.sort();
     for path in entries {
         if path.is_dir() {
@@ -177,16 +194,17 @@ fn walk_xml(dir: &Path, out: &mut Vec<PathBuf>) -> Result<()> {
                 .file_name()
                 .and_then(|name| name.to_str())
                 .unwrap_or("");
-            if matches!(name, "assets" | "target" | ".git" | ".jackdaw") || name.ends_with(".data")
+            if path.is_symlink()
+                || matches!(
+                    name,
+                    "assets" | "target" | ".git" | ".jackdaw" | ".worktrees"
+                )
+                || name.ends_with(".data")
             {
                 continue;
             }
-            walk_xml(&path, out)?;
-        } else if path
-            .extension()
-            .and_then(|ext| ext.to_str())
-            .is_some_and(|ext| ext.eq_ignore_ascii_case("xml"))
-        {
+            walk_documents(&path, out, include_bsn)?;
+        } else if has_extension(&path, "xml") || (include_bsn && is_bsn(&path)) {
             out.push(path.canonicalize()?);
         }
     }
@@ -294,7 +312,7 @@ mod tests {
         let dir = std::env::temp_dir().join(format!("vael-tools-bsn-empty-{}", std::process::id()));
         let _ = std::fs::remove_dir_all(&dir);
         std::fs::create_dir_all(&dir).expect("criar pasta");
-        let error = discover_xml(std::slice::from_ref(&dir)).unwrap_err();
+        let error = discover(std::slice::from_ref(&dir), false).unwrap_err();
         assert!(
             format!("{error:#}").contains("nenhum ficheiro"),
             "{error:#}"
@@ -315,6 +333,21 @@ mod tests {
         let error = check(std::slice::from_ref(&bsn), None, None).unwrap_err();
         assert!(format!("{error:#}").contains("BSN"), "{error:#}");
         std::fs::remove_dir_all(&dir).expect("limpar");
+    }
+
+    #[test]
+    fn descoberta_de_pasta_separa_validacao_bsn_da_importacao_xml() {
+        let tmp = tempfile::tempdir().unwrap();
+        let dir = tmp.path().canonicalize().unwrap();
+        std::fs::write(dir.join("a.bsn"), "#root").unwrap();
+        std::fs::write(dir.join("b.xml"), "<world/>").unwrap();
+        let files = std::slice::from_ref(&dir);
+        assert_eq!(
+            discover(files, true).unwrap(),
+            [dir.join("a.bsn"), dir.join("b.xml")]
+        );
+        assert_eq!(discover(files, false).unwrap(), [dir.join("b.xml")]);
+        assert!(discover(&[dir.join("a.bsn")], false).is_err());
     }
 
     #[test]

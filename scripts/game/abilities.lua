@@ -23,11 +23,14 @@ local rules = viber.load("lib/rules.lua")
 local CD_DASH, CD_HEAL, CD_STRIKE = 1.2, 2.0, 8.0
 local DASH_DISTANCE = 5.0 -- só o recurso sem `viber.vael.dodge` (push_player)
 local DASH_IFRAMES = 0.35
+local DODGE_BUFFER = 0.16
 -- Clip de cada esquiva: o rolamento tem clip próprio; os saltos usam o
 -- `jump` acelerado para caber na duração do salto.
 local DODGE_CLIP = { roll = "roll", side = "jump", back = "jump" }
 local HEAL_AMOUNT = 50
 local STRIKE_RADIUS, STRIKE_DAMAGE, STRIKE_KNOCKBACK = 4.8, 60, 7
+local ECHO_WINDOW, ECHO_RADIUS, ECHO_DAMAGE = 0.75, 2.8, 30
+local ECHO_COLOR = "#74e0d0"
 local BOMB_LAUNCH_DISTANCE = 2.6
 
 local PERIOD = { dash = CD_DASH, heal = CD_HEAL, strike = CD_STRIKE }
@@ -80,7 +83,16 @@ function on_update(dt)
   local sid = tonumber(game.session_id) or 0
   local playtime = tonumber(game.playtime_secs) or 0
   local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
+  local scene = viber.scene_name and viber.scene_name()
+  -- A pegada vive na tabela de sessão, que o load descarta até na mesma cena.
+  local echo = game.counterbeat
+  if echo and (st.scene ~= scene or st.session ~= sid or loaded) then
+    game.counterbeat, echo = nil, nil
+  end
+  local buffered = (st.scene == scene) and math.max(0, (st.dodge_buffer or 0) - dt) or 0
+  st.scene, st.dodge_buffer = scene, 0
   if st.session ~= sid or loaded then
+    buffered = 0
     st.session = sid
     st.cd = { dash = 0, heal = 0, strike = 0 }
   end
@@ -94,8 +106,9 @@ function on_update(dt)
   -- equipamento já tinham o portão (o [1] gastava uma poção por cima do
   -- título), mas as habilidades ficaram de fora: o [B] gastava uma bomba do
   -- jogo anterior e o [R] matava criaturas atrás do véu.
-  if (viber.scene_name and viber.scene_name() == "menu")
+  if scene == "menu"
       or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+    if echo then game.counterbeat = nil end
     publish_cooldowns(st.cd)
     return
   end
@@ -111,19 +124,32 @@ function on_update(dt)
   end
   publish_cooldowns(st.cd)
   if paused then
+    if echo then game.counterbeat = nil end
     return
   end
   -- Balão de conversa (grafo/NLU) aberto: as habilidades ficam com a fala.
   if dialogue_open() then
+    if echo then game.counterbeat = nil end
     return
   end
   local alive, hp = rules.player_hp()
   if alive and hp <= 0 then
+    if echo then game.counterbeat = nil end
     return
   end
   local has, px, py, pz = viber.player_position()
   if not has then
     return
+  end
+
+  local now = viber.time()
+  if echo then
+    if now > echo.release + ECHO_WINDOW or viber.ui.get("boat.grip") == "oars" then
+      game.counterbeat, echo = nil, nil
+    elseif now >= echo.release and not echo.rang then
+      echo.rang = true
+      viber.ring(echo.x, echo.z, ECHO_RADIUS, ECHO_COLOR)
+    end
   end
 
   -- [L] guarda/parry: janela curta; o dano que chegar nela é aparado.
@@ -135,7 +161,10 @@ function on_update(dt)
   -- A/D dão o salto lateral (sem rodar o corpo), S/nada o salto para trás.
   -- Recusa no ar ou a meio de outra esquiva (devolve nil) — sem gastar a
   -- recarga.
-  if viber.input.pressed("c") and st.cd.dash <= 0 then
+  if viber.ui.get("boat.grip") ~= "oars" then
+    st.dodge_buffer = viber.input.pressed("c") and DODGE_BUFFER or buffered
+  end
+  if st.dodge_buffer > 0 and st.cd.dash <= 0 then
     local kind, duration
     if viber.vael and viber.vael.dodge then
       kind, duration = viber.vael.dodge()
@@ -146,7 +175,8 @@ function on_update(dt)
       kind, duration = "dash", 0.3
     end
     if kind then
-      -- Talento "Passo de vento": `dash_cd` é a variação da recarga (−0,4).
+      st.dodge_buffer = 0
+      -- Talento "Passo de vento": `dash_cd` é a fração da recarga base somada pelos talentos.
       st.cd.dash = CD_DASH * math.max(0.3, 1 + rules.stat("dash_cd"))
       PERIOD.dash = st.cd.dash
       rules.grant_iframes(DASH_IFRAMES + rules.stat("dash_iframes"))
@@ -158,7 +188,14 @@ function on_update(dt)
       if type(g.hero_dodge) ~= "table" then
         g.hero_dodge = {}
       end
-      g.hero_dodge.until_t = viber.time() + (duration or 0.3)
+      g.hero_dodge.until_t = now + (duration or 0.3)
+      echo = nil
+      if st.cd.strike <= 0 and g["skill.strength1"] == true and g["skill.agility1"] == true then
+        g.counterbeat = { x = px, y = py, z = pz, release = g.hero_dodge.until_t }
+        viber.burst("sparkle", px, py + 0.2, pz, 6)
+      else
+        g.counterbeat = nil
+      end
       local clip = DODGE_CLIP[kind]
       local pid = viber.player_id()
       if clip and pid then
@@ -206,6 +243,10 @@ function on_update(dt)
   -- [R] golpe radial com juice completo (valores do nativo; o dano soma as
   -- passivas de Força como o melee — o nativo lia `stats.bonus_damage`).
   if viber.input.pressed("r") and st.cd.strike <= 0 then
+    if viber.vael.spend_attack_stamina and not viber.vael.spend_attack_stamina() then
+      viber.toast("Sem fôlego para atacar.")
+      return
+    end
     st.cd.strike = CD_STRIKE
     local bonus = rules.player_stats().bonus_damage or 0
     -- Talentos do Impacto: "Abalo" alarga e reforça; "Brasas" queima.
@@ -218,8 +259,24 @@ function on_update(dt)
     if burn > 0 then
       viber.burst("fire", px, py + 0.4, pz, 10)
     end
-    local hits = rules.radial_damage(px, pz, radius,
-      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK * knockback, py, burn)
+    -- O centro principal ganha na sobreposição, mesmo quando a onda do eco
+    -- apanha um alvo na margem do Impacto.
+    local struck = echo and echo.rang and {} or nil
+    local hits, survivor = rules.radial_damage(px, pz, radius,
+      STRIKE_DAMAGE + rules.stat("strike_damage") + bonus, STRIKE_KNOCKBACK * knockback, py, burn, struck)
+    if struck then
+      local count, at_origin = rules.radial_damage(echo.x, echo.z, ECHO_RADIUS, ECHO_DAMAGE, 0, echo.y, 0, struck)
+      hits = hits + count
+      survivor = survivor or at_origin
+      viber.burst("sparkle", echo.x, echo.y + 0.4, echo.z, 18)
+      viber.sound("notification", { x = echo.x, y = echo.y, z = echo.z })
+      if count > 0 and not game["discovery.counterbeat"] then
+        game["discovery.counterbeat"] = true
+        viber.toast("Contratempo descoberto. A tua pegada respondeu ao Impacto.")
+      end
+    end
+    game.counterbeat = nil
+    if survivor then viber.game().strike_focus = { id = survivor, t = viber.time() } end
     -- Aggro-chain: o slam também acorda os aliados a 15 m do impacto (o
     -- nativo emitia um `AttackAlert` no centro). A engine já não tem
     -- produtor; o `lib/fsm.lua` lê esta tabela do `viber.game()`.

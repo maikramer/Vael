@@ -185,6 +185,7 @@ fn third_person_camera(
             &Transform,
             Option<&ChildOf>,
             &Player,
+            Option<&crate::player::VaelController>,
             Has<bevy_ext_core::TeleportSettle>,
             Has<crate::boat::RidingBoat>,
         ),
@@ -229,7 +230,7 @@ fn third_person_camera(
     let (kick_off, kick_vel) = kick_spring_step(kick.offset, kick.vel, dt);
     kick.offset = kick_off;
     kick.vel = kick_vel;
-    let Some((local, parent, player, teleporting, rowing)) = players.iter().next() else {
+    let Some((local, parent, player, controller, teleporting, rowing)) = players.iter().next() else {
         return;
     };
     // Pose DESTE frame: o writeback do Avian acabou de a escrever no `Transform` e a
@@ -329,18 +330,22 @@ fn third_person_camera(
         let facing = target.rotation() * if rowing { Vec3::NEG_Z } else { Vec3::Z };
         let behind_facing = behind_yaw_deg(facing.x, facing.z);
         let settle_allowed = player.last_moving_time.is_finite();
-        cam.yaw_deg = auto_camera_yaw(
-            cam.yaw_deg,
-            AutoCameraInput {
-                heading,
-                speed,
-                heading_alignment: alignment,
-                behind_facing_yaw: behind_facing,
-                settle_allowed,
-                seconds_since_steer: now - player.last_steer_time,
-            },
-            dt,
-        );
+        cam.yaw_deg = if let Some(face) = controller.and_then(|c| c.combat_facing) {
+            behind_yaw_deg(face.x, face.z)
+        } else {
+            auto_camera_yaw(
+                cam.yaw_deg,
+                AutoCameraInput {
+                    heading,
+                    speed,
+                    heading_alignment: alignment,
+                    behind_facing_yaw: behind_facing,
+                    settle_allowed,
+                    seconds_since_steer: now - player.last_steer_time,
+                },
+                dt,
+            )
+        };
         // `TeleportSettle` fresco (portão de spawn, viagem, respawn): o
         // herói SALTou — a câmara salta com ele. Com o low-pass, a chegada
         // ao chão depois do portão mostrava a câmara a descer por cima do
@@ -574,6 +579,22 @@ mod tests {
             look.dot(Vec3::Z) > 0.9,
             "a câmara devia apontar para o pivô (+Z), look={look:?}"
         );
+    }
+
+    #[test]
+    fn lock_frames_the_enemy_while_the_hero_strafes() {
+        let (mut app, hero, cam) = camera_app(Vec3::ZERO, test_camera(0.0));
+        app.update();
+        app.world_mut().entity_mut(hero).insert(crate::player::VaelController {
+            combat_facing: Some(Vec3::X),
+            ..default()
+        });
+        app.world_mut().get_mut::<Player>(hero).unwrap().vel_z = 4.0;
+        for _ in 0..120 {
+            app.update();
+        }
+        let look = app.world().get::<Transform>(cam).unwrap().rotation * Vec3::NEG_Z;
+        assert!(look.dot(Vec3::X) > 0.9);
     }
 
     #[test]

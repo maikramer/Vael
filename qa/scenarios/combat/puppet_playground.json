@@ -1,0 +1,17 @@
+{
+  "description": "Playground de multidão (estilo Assassin's Creed) + física de combate: 12 NPCs densos logo à frente para testar abrir caminho/ombro/dash em multidão e 7 inimigos bípedes atrás (z=24..36).",
+  "extends": ["_base"],
+  "scene": "qa/puppet-playground",
+  "level": 8,
+  "hp": 400,
+  "max_hp": 400,
+  "skills": ["strength2", "vitality2"],
+  "gear": { "weapon": "steel_sword", "armor": "hunter_cloak" },
+  "items": { "potion": 5, "bomb": 8 },
+  "flasks": 3,
+  "player": { "pos": [0, 0.5, -5] },
+  "expect": {
+    "level": ">=8",
+    "items": { "steel_sword": 1, "bomb": ">=8" }
+  }
+}

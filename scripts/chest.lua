@@ -94,6 +94,14 @@ function on_update(dt)
     local ok, x, y, z = viber.entity_position()
     if ok then
       viber.sound("chest_open", { x = x, y = y, z = z })
+      if #loot > 0 then
+        if viber.burst then
+          viber.burst("sparkle", x, y + 0.85, z, 18)
+        end
+        if viber.vael and viber.vael.collect_burst then
+          viber.vael.collect_burst("gold", x, y + 0.85, z, 6)
+        end
+      end
     else
       viber.sound("chest_open")
     end

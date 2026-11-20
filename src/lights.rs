@@ -616,19 +616,23 @@ fn exempt_pool_lights(
     }
 }
 
-/// Sombra da lanterna do viajante, só de noite. À noite o sol apaga-se e,
-/// sem ela, nada no raio do herói projectava sombra (herói e props a
-/// "flutuar", 2026-11-16). O orçamento de sombras da engine decide "noite"
-/// pelo relógio antigo da engine, que já não é o do céu (`bevy_elements`) —
-/// por isso o dono desta é o Vael, pela mesma noite do pool.
+/// Sombra da lanterna do viajante, só de noite e quando está acesa. À noite o
+/// sol apaga-se e, sem ela, nada no raio do herói projectava sombra (herói e
+/// props a "flutuar", 2026-11-16). O orçamento de sombras da engine decide
+/// "noite" pelo relógio antigo da engine, que já não é o do céu
+/// (`bevy_elements`) — por isso o dono desta é o Vael, pela mesma noite do
+/// pool. Com a lanterna apagada não gasta 6 faces de cube shadow map.
 fn lantern_shadow_by_night(
     config: Res<PracticalConfig>,
     atmosphere: Option<Res<AtmosphereState>>,
-    mut lanterns: Query<&mut PointLight, With<TravellerLantern>>,
+    mut lanterns: Query<(&mut PointLight, &Visibility), With<TravellerLantern>>,
 ) {
     let night = atmosphere.map(|a| a.night).unwrap_or(0.0);
-    let want = config.max_shadowed > 0 && night >= config.shadow_night_min;
-    for mut light in &mut lanterns {
+    let night_ok = config.max_shadowed > 0 && night >= config.shadow_night_min;
+    let lit_floor = viber::ambient::LANTERN_MAX_INTENSITY * 0.02;
+    for (mut light, vis) in &mut lanterns {
+        let lit = *vis != Visibility::Hidden && light.intensity >= lit_floor;
+        let want = night_ok && lit;
         if light.shadow_maps_enabled != want {
             light.shadow_maps_enabled = want;
         }
@@ -1247,5 +1251,42 @@ mod tests {
         app.update();
         assert!(app.world().get_entity(visual).is_err());
         assert!(app.world().get::<VaelFireCulled>(far).is_some());
+    }
+
+    #[test]
+    fn lanterna_apagada_nao_ativa_cube_shadow_map_a_noite() {
+        use bevy::ecs::system::RunSystemOnce as _;
+
+        let mut world = World::default();
+        world.insert_resource(PracticalConfig::default());
+        world.insert_resource(AtmosphereState {
+            night: 1.0,
+            ..Default::default()
+        });
+        let off = world
+            .spawn((
+                TravellerLantern,
+                PointLight {
+                    intensity: 0.0,
+                    shadow_maps_enabled: true,
+                    ..default()
+                },
+                Visibility::Hidden,
+            ))
+            .id();
+        let on = world
+            .spawn((
+                TravellerLantern,
+                PointLight {
+                    intensity: viber::ambient::LANTERN_MAX_INTENSITY,
+                    shadow_maps_enabled: false,
+                    ..default()
+                },
+                Visibility::Inherited,
+            ))
+            .id();
+        world.run_system_once(lantern_shadow_by_night).unwrap();
+        assert!(!world.get::<PointLight>(off).unwrap().shadow_maps_enabled);
+        assert!(world.get::<PointLight>(on).unwrap().shadow_maps_enabled);
     }
 }

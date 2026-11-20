@@ -13,7 +13,7 @@ local fsm = viber.load("lib/fsm.lua").new{
   windup = 0.65, recover = 0.6,
   radius = 7,
   charge = { min = 5, max = 12, cooldown = 6, windup = 0.9, speed = 10,
-             mult = 1.7, recover = 1.4 },
+             trample_push = 7, mult = 1.7, recover = 1.4 },
   on_first = function() viber.set_scale(1.25) end,
   on_chase = function() viber.sound("roar") end,
 }

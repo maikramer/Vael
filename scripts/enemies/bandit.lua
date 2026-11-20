@@ -7,6 +7,7 @@ local fsm = viber.load("lib/fsm.lua").new{
   aggro = 10, deaggro = 15,
   range = 2.0, damage = 12, cooldown = 1.6,
   windup = 0.5, recover = 0.45, -- golpe de lâmina: carrega e fica exposto
+  double_cut = { every = 3, windup = 0.75, gap = 0.72, mult = 0.65, recover = 1.1 },
   radius = 6,
 }
 

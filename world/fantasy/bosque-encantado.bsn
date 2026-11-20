@@ -44,6 +44,10 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Lake",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "167" },
+                bevy_world_xml::bsn::WorldProp { key: "axis", value: "48" },
+                bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.17" },
+                bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.42" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "200 1400" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
                 bevy_world_xml::bsn::WorldProp { key: "depth", value: "2.6" },
@@ -125,7 +129,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 200.0, y: 72.574898, z: 1426.0 },
+            translation: glam::Vec3 { x: 200.0, y: 72.4267, z: 1427.0 },
             rotation: glam::Quat { x: 0.0, y: 0.104528, z: 0.0, w: 0.994522 },
             scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
         }
@@ -138,7 +142,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 72.5749 1426" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 72.4267 1427" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 12 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
             ],
@@ -213,7 +217,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 225.5, y: 72.204803, z: 1400.0 },
+            translation: glam::Vec3 { x: 225.5, y: 72.4788, z: 1400.0 },
             rotation: glam::Quat { x: 0.0, y: -0.777146, z: 0.0, w: -0.62932 },
             scale: glam::Vec3 { x: 1.55, y: 1.55, z: 1.55 },
         }
@@ -226,7 +230,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "225.5 72.2048 1400" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "225.5 72.4788 1400" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 78 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.55" },
             ],
@@ -301,7 +305,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 200.0, y: 72.7062, z: 1374.0 },
+            translation: glam::Vec3 { x: 200.0, y: 72.8967, z: 1374.0 },
             rotation: glam::Quat { x: 0.0, y: -0.994522, z: 0.0, w: 0.104528 },
             scale: glam::Vec3 { x: 1.6, y: 1.6, z: 1.6 },
         }
@@ -314,7 +318,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 72.7062 1374" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 72.8967 1374" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -12 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.6" },
             ],
@@ -345,7 +349,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 181.600006, y: 72.429298, z: 1381.599976 },
+            translation: glam::Vec3 { x: 178.6, y: 72.4818, z: 1377.6 },
             rotation: glam::Quat { x: 0.0, y: -0.878817, z: 0.0, w: 0.477159 },
             scale: glam::Vec3 { x: 1.45, y: 1.45, z: 1.45 },
         }
@@ -358,7 +362,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "181.6 72.4293 1381.6" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "178.6 72.4818 1377.6" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -57 180" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.45" },
             ],
@@ -433,7 +437,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 186.0, y: 72.7062, z: 1420.0 },
+            translation: glam::Vec3 { x: 186.0, y: 73.6538, z: 1420.0 },
             rotation: glam::Quat { x: 0.205833, y: 0.273149, z: 0.565521, w: 0.750472 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -446,7 +450,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "186 72.7062 1420" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "186 73.6538 1420" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 74" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -3795,14 +3799,14 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 186.0, y: 71.643501, z: 1386.0 },
+            translation: glam::Vec3 { x: 176.0, y: 72.2176, z: 1384.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "186 71.6435 1386" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "176 72.2176 1384" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",
@@ -4523,7 +4527,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.bosque-crystal-s"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 200.0, y: 72.7062, z: 1369.0 },
+            translation: glam::Vec3 { x: 200.0, y: 73.0792, z: 1369.0 },
             rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
             scale: glam::Vec3 { x: 1.2, y: 1.35, z: 1.2 },
         }
@@ -4543,7 +4547,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.bosque-crystal-s" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "200.00 72.71 1369.00" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "200 73.0792 1369" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 180 0; scale: 1.2 1.35 1.2" },
             ],
             text: "",
@@ -4822,7 +4826,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.bosque-shroom-s"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 198.2, y: 72.7062, z: 1369.5 },
+            translation: glam::Vec3 { x: 198.2, y: 73.0765, z: 1369.5 },
             rotation: glam::Quat { x: 0.0, y: 0.939693, z: 0.0, w: 0.34202 },
             scale: glam::Vec3 { x: 1.05, y: 1.05, z: 1.05 },
         }
@@ -4839,7 +4843,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.bosque-shroom-s" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "198.20 72.71 1369.50" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "198.2 73.0765 1369.5" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 140 0; scale: 1.05 1.05 1.05" },
             ],
             text: "",
@@ -4869,7 +4873,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.bosque-shroom-e"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 228.5, y: 72.5389, z: 1397.8 },
+            translation: glam::Vec3 { x: 228.5, y: 72.7223, z: 1397.8 },
             rotation: glam::Quat { x: 0.0, y: -0.5, z: 0.0, w: 0.866025 },
             scale: glam::Vec3 { x: 1.2, y: 1.2, z: 1.2 },
         }
@@ -4886,7 +4890,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.bosque-shroom-e" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "228.50 72.54 1397.80" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "228.5 72.7223 1397.8" },
                 bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -60 0; scale: 1.2 1.2 1.2" },
             ],
             text: "",
@@ -4963,7 +4967,7 @@ bevy_ecs::hierarchy::Children [
         --
         #"sceneref.v3.bosque-bench-s"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 201.8, y: 72.7062, z: 1369.2 },
+            translation: glam::Vec3 { x: 201.8, y: 73.1101, z: 1369.2 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -4983,7 +4987,7 @@ bevy_ecs::hierarchy::Children [
             tag: "Entity",
             attrs: [
                 bevy_world_xml::bsn::WorldProp { key: "name", value: "sceneref.v3.bosque-bench-s" },
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "201.80 72.71 1369.20" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "201.8 73.1101 1369.2" },
             ],
             text: "",
             origin_file: "world/fantasy/bosque-encantado.xml",

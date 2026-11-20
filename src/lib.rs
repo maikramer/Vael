@@ -28,6 +28,7 @@ use std::path::PathBuf;
 
 use bevy::prelude::*;
 
+mod actor_contact;
 pub mod animation;
 pub mod app;
 pub mod boat;
@@ -35,6 +36,7 @@ pub mod bridge_ready;
 pub mod camera;
 pub mod cinematic_trigger;
 pub mod clock;
+pub mod collect_fx;
 pub mod combat;
 mod compat;
 pub mod components;
@@ -58,13 +60,17 @@ pub mod hud;
 pub mod hud_ui;
 pub mod input;
 pub mod jump_trace;
+pub mod lantern;
 pub mod lights;
 pub mod live_edit;
+pub mod outline;
 pub mod perf_diag;
 pub mod player;
+pub mod stamina;
 #[cfg(feature = "playtest")]
 pub mod playtest_support;
 pub mod primitives;
+pub mod puppet;
 pub mod qa;
 pub mod quest;
 pub mod quest_events;
@@ -99,6 +105,7 @@ pub use harvest::VaelHarvestPlugin;
 pub use hud::{VaelHudConfig, VaelHudPlugin};
 pub use hud_ui::VaelHudUiPlugin;
 pub use input::VaelInputPlugin;
+pub use lantern::{LanternSnapshot, VaelLanternPlugin, VaelLanternState};
 pub use lights::VaelPracticalLightsPlugin;
 pub use primitives::VaelPrimitivesPlugin;
 pub use quest::{QuestRules, VaelQuestPlugin};
@@ -230,6 +237,8 @@ impl Plugin for VaelPlugin {
         app.add_plugins(grass::VaelGrassPlugin);
         app.add_plugins(rocks::QuarryPlugin);
         app.add_plugins(breakables::BreakablesPlugin);
+        app.add_plugins(collect_fx::VaelCollectFxPlugin);
+        app.add_plugins(outline::VaelOutlinePlugin);
         app.add_plugins(fauna::FaunaPlugin);
         // Neve, rastos e sombra de nuvem no chão do `.ahgt`.
         app.add_plugins(ground::VaelGroundPlugin);
@@ -243,6 +252,9 @@ impl Plugin for VaelPlugin {
         // uniforme do ganho nocturno global. `VAEL_PRACTICAL_LIGHTS=0`
         // devolve o comportamento anterior.
         app.add_plugins(lights::VaelPracticalLightsPlugin);
+        // Lanterna de cintura (X / DPadUp): substitui a luz noturna automática
+        // da engine e publica o estado para a furtividade da IA.
+        app.add_plugins(lantern::VaelLanternPlugin);
         // Play do Jackdaw: `SceneNodeId` nas entidades para as edições ao vivo.
         app.add_plugins(editor_link::VaelEditorLinkPlugin);
         // QA: cenários (`qa/scenarios/*.json`) aplicados no arranque e a

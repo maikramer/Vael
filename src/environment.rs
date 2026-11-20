@@ -17,6 +17,8 @@
 //! Para o modo antigo também é preciso repor os elementos no
 //! `world/environment.xml`.
 
+mod snowfall;
+
 use std::sync::{Arc, Mutex};
 use std::time::Duration;
 
@@ -44,7 +46,7 @@ use viber::worldsys::{
 use crate::clock::elements_rain;
 use crate::settings::SceneSetting;
 use crate::vault::{vael_fn, vael_table};
-use bevy_ext_elements::{ElementsQualityLevel, ElementsSettings};
+use bevy_ext_elements::{ClimateProfile, ElementsQualityLevel, ElementsSettings};
 
 /// Latitude do mundo (graus, norte positivo).
 ///
@@ -102,6 +104,17 @@ fn scene_settings(app: &App) -> ElementsSettings {
         .get_resource::<SceneSetting<ElementsSettings>>()
         .map(|setting| setting.0.clone())
         .unwrap_or_default()
+}
+
+fn scene_climate(scene: &ElementsSettings) -> Climate {
+    match scene.climate {
+        ClimateProfile::Temperate => Climate::temperate(),
+        ClimateProfile::Alpine => Climate::alpine(),
+        ClimateProfile::Desert => Climate::desert(),
+        ClimateProfile::Tropical => Climate::tropical(),
+        ClimateProfile::Tundra => Climate::tundra(),
+    }
+    .with_seed(u64::from(scene.weather_seed))
 }
 
 fn quality_of(level: ElementsQualityLevel) -> ElementsQuality {
@@ -194,7 +207,7 @@ impl Plugin for VaelEnvironmentPlugin {
                 latitude_deg: scene.latitude_deg,
                 ..default()
             })
-            .insert_resource(Climate::temperate())
+            .insert_resource(scene_climate(&scene))
             // High é o default do crate (grelha de vento 64³ + passos de névoa
             // altos); o frame do Vael é CPU-bound, por isso começamos em Medium.
             .insert_resource(elements_quality_or(quality_of(scene.quality)))
@@ -222,6 +235,7 @@ impl Plugin for VaelEnvironmentPlugin {
             // cima do EV do crate: ver `VaelExposureKick`.
             .init_resource::<VaelExposureKick>()
             .add_plugins(group)
+            .add_plugins(snowfall::SnowfallPlugin)
             // Pedidos de QA entram ANTES do relógio para a hora valer neste frame.
             .add_systems(Update, apply_env_control.before(ElementsSystems::Clock))
             // Desfaz o kick do frame anterior antes do `auto_exposure` do crate
@@ -972,6 +986,8 @@ fn apply_scene_settings(
     mut geo: ResMut<GeoLocation>,
     mut director: ResMut<WeatherDirector>,
     mut last: Local<Option<ElementsSettings>>,
+    mut commands: Commands,
+    mut climate: ResMut<Climate>,
 ) {
     let Some(setting) = setting else {
         return;
@@ -983,15 +999,28 @@ fn apply_scene_settings(
         return;
     }
     let scene = &setting.0;
+    if previous.climate != scene.climate || previous.weather_seed != scene.weather_seed {
+        *climate = scene_climate(scene);
+    }
     geo.latitude_deg = scene.latitude_deg;
     clock.time_scale = scene.time_scale;
     if previous.start_hour != scene.start_hour {
         clock.hour = scene.start_hour.rem_euclid(24.0);
     }
-    if previous.start_weather != scene.start_weather
-        && let Some(preset) = scene.start_weather.preset_name().and_then(weather_preset)
-    {
-        director.force(preset, Duration::from_secs(5));
+    let date = |s: &ElementsSettings| CivilDate::new(s.start_year, s.start_month, s.start_day);
+    if date(&previous) != date(scene) {
+        clock.date = date(scene);
+    }
+    if previous.quality != scene.quality {
+        commands.insert_resource(elements_quality_or(quality_of(scene.quality)));
+    }
+    if previous.start_weather != scene.start_weather {
+        let transition = Duration::from_secs(5);
+        if let Some(preset) = scene.start_weather.preset_name().and_then(weather_preset) {
+            director.force(preset, transition);
+        } else {
+            director.release(transition);
+        }
     }
     info!(
         hour = scene.start_hour,
@@ -1209,6 +1238,55 @@ fn install_env_api_inner(lua: &Lua, control: &VaelEnvControl) -> mlua::Result<()
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn authored_climate_reaches_the_weather_simulation_during_play() {
+        use bevy_ext_world::bsn::settings::{native_value, read_natives};
+
+        let dir = tempfile::tempdir().unwrap();
+        let path = dir.path().join("environment.bsn");
+        let read_scene = |fields: &str| {
+            let bsn = format!("#Ambiente\nbevy_ext_elements::ElementsSettings {{ {fields} }}\n");
+            std::fs::write(&path, bsn).unwrap();
+            native_value::<ElementsSettings>(&read_natives(&path).unwrap().0).unwrap()
+        };
+        let legacy = read_scene("start_hour: 9.0");
+        assert_eq!(legacy.start_hour, 9.0);
+        assert_eq!(legacy.climate, ClimateProfile::Temperate);
+        assert_eq!(legacy.weather_seed, 0);
+
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, bevy_elements::ClimatePlugin))
+            .insert_resource(scene_climate(&legacy))
+            .insert_resource(SceneSetting(legacy))
+            .add_systems(Update, apply_scene_settings.before(ElementsSystems::Clock));
+        app.world_mut().resource_mut::<WorldClock>().paused = true;
+        app.world_mut()
+            .resource_mut::<WeatherDirector>()
+            .force(WeatherPreset::Clear, Duration::ZERO);
+        app.update();
+        let before = app.world().resource::<Weather>().temperature_c;
+        let hour = app.world().resource::<WorldClock>().hour;
+        let tropical = read_scene(
+            "start_hour: 9.0, climate: bevy_ext_elements::ClimateProfile::Tropical, weather_seed: 42",
+        );
+        app.insert_resource(SceneSetting(tropical));
+        app.update();
+
+        assert!(app.world().resource::<Weather>().temperature_c > before);
+        assert_eq!(app.world().resource::<Climate>().seed, 42);
+        assert_eq!(app.world().resource::<WorldClock>().hour, hour);
+        assert_eq!(
+            app.world().resource::<WeatherDirector>().forced(),
+            Some(WeatherPreset::Clear)
+        );
+        app.world_mut()
+            .resource_mut::<SceneSetting<ElementsSettings>>()
+            .0
+            .weather_seed = 7;
+        app.update();
+        assert_eq!(app.world().resource::<Climate>().seed, 7);
+    }
 
     #[test]
     fn moon_shadow_gate_respects_illuminance_and_light_ownership() {

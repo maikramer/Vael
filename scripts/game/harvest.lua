@@ -329,6 +329,11 @@ local function break_prop(st, sw, emit)
   if tool ~= "chop" then
     viber.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
   end
+  if viber.vael and viber.vael.collect_burst then
+    local vkind = sw.kind ~= "" and sw.kind or (tool == "pick" and "berry" or tool == "chop" and "wood" or "stone")
+    local count = math.clamp(got > 0 and got or (sw.amount or 3), 2, 6)
+    viber.vael.collect_burst(vkind, sw.x, (sw.y or 0) + 0.75, sw.z, count)
+  end
   local fell = replacement == "" and style == "fall" and viber.vael and viber.vael.fell_tree
   viber.sound(fell and "chop_hit" or BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
   if sw.popup ~= "" then
@@ -437,6 +442,9 @@ local function impact(st)
     return
   end
   if emit then emit(false) end
+  if viber.vael and viber.vael.hit_flash then
+    viber.vael.hit_flash(sw.id)
+  end
   st.hits[sw.id] = hits
   viber.sound(HIT_SFX[tool] or "whoosh", {
     x = sw.x, y = sw.y, z = sw.z,

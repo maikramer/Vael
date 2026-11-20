@@ -49,6 +49,11 @@ use crate::player::Player;
 
 // ── SFX ─────────────────────────────────────────────────────────────────
 
+/// Marcador: o jogo substituiu a lanterna automática noturna (`lantern_driver`)
+/// por um driver próprio (ex.: lanterna de cintura com botão no Vael).
+#[derive(Resource, Debug, Default, Clone, Copy)]
+pub struct ExternalLantern;
+
 fn engine_rain_visuals(flag: Res<EngineRainVisuals>) -> bool {
     flag.0
 }
@@ -99,8 +104,11 @@ impl Plugin for AmbientPlugin {
                     setup_rain_ambience,
                     rain_ambience_driver,
                     // A lanterna REESCREVE a Visibility por frame — tem de
-                    // ganhar ao orçamento de luzes (que corre 1×/s).
-                    lantern_driver.after(light_budget_system),
+                    // ganhar ao orçamento de luzes (que corre 1×/s). Desliga-se
+                    // quando o jogo instala [`ExternalLantern`].
+                    lantern_driver
+                        .after(light_budget_system)
+                        .run_if(not(resource_exists::<ExternalLantern>)),
                 ),
             )
             .add_systems(

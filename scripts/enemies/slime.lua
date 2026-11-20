@@ -8,6 +8,8 @@ local fsm = viber.load("lib/fsm.lua").new{
   aggro = 6, deaggro = 11,
   range = 1.4, damage = 6, cooldown = 2.0,
   windup = 0.7, recover = 0.6, -- tutorial: aviso longo, punição generosa
+  special = { every = 3, at = "player", windup = 1.15, radius = 1.55, mult = 0.85,
+              recover = 1.15, clip = "attack", sound = "whoosh", cue = "leave_mark" },
   radius = 3,
   anti_stuck = false,
   on_first = function() viber.log("slime ativo: FSM wander/chase rodando") end,

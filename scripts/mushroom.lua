@@ -40,6 +40,17 @@ function on_update(dt)
     rules.add_xp(xp)
     -- A colheita de árvores/pedras confirma com som; o cogumelo desaparecia
     -- em silêncio (só o toast).
+    local ok, x, y, z = viber.entity_position()
+    if ok and viber.vael and viber.vael.collect_burst then
+      viber.vael.collect_burst("mushroom", x, y + 0.35, z, 4)
+    end
+    if ok and viber.burst then
+      viber.burst("sparkle", x, y + 0.35, z, 12)
+    end
+    if viber.play_clip and viber.player_id then
+      local pid = viber.player_id()
+      if pid then viber.play_clip("gather", { speed = 1.15, id = pid }) end
+    end
     viber.sound("harvest")
     viber.toast(viber.prop("label") .. " colhido (+" .. xp .. " XP)")
     viber.despawn_self() -- colhido: sai do mundo (o prompt desaparece com ele)

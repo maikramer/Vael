@@ -65,6 +65,13 @@ bevy_pf = "0.5.2"
 # material próprio para o fade e billboard para a câmera. O crate fixa
 # `bevy ^0.20`, a mesma versão da engine, por isso as features unificam.
 bevy_rich_text3d = "0.8.1"
+# Contorno (outline) de malhas em screen-space (jump-flood): destaca coletáveis,
+# árvores, rochas, props destrutíveis ao alcance e loot no chão (`src/outline.rs`).
+# Vendorizado em `vendor/bevy_mod_outline` (0.14.0 + fix de ordem do
+# `flood_render_pass` no `Core3d` antes de `fxaa`/`smaa`/`cas`, que corria em
+# paralelo com o ping-pong do `ViewTarget` e fazia os contornos piscarem; ver
+# `vendor/bevy_mod_outline/README.md`).
+bevy_mod_outline = { path = "vendor/bevy_mod_outline" }
 # Atributos/stats: grafo de dependências com expressões, modificadores e
 # requisitos. O crate fixa `bevy ^0.20.1`, a mesma versão do Vael.
 bevy_gauge = "0.6"
@@ -145,6 +152,8 @@ bevy_ext_luau = { path = "../bevy_extensions/crates/bevy_ext_luau", features = [
 bevy_ext_engine = { path = "../bevy_extensions/crates/bevy_ext_engine" }
 # Física extraída (plugin/colisores): type-idêntico a `viber::physics`.
 bevy_ext_physics = { path = "../bevy_extensions/crates/bevy_ext_physics" }
+# Corpos físicos dos personagens (Euphoria-style): `src/puppet.rs`.
+bevy_ext_puppet = { path = "../bevy_extensions/crates/bevy_ext_puppet" }
 # Render procedural dos objetos de primitivas (lathe/sweep/extruded/…): o
 # contrato Shape/MaterialSpec vem do `bevy_ext_scene`; este crate troca o
 # fallback do spawner pelo mesh/material/colisor exatos. `physics` liga os
@@ -156,6 +165,7 @@ bevy_kira_audio = { version = "0.27.1", features = ["ogg"] }
 bevy_gradmesh = "0.3.9"
 
 [dev-dependencies]
+rustversion = "1"
 # Self dev-dependency: ativa a feature `playtest` só nos builds de teste
 # (incluindo `cargo test`), mantendo o binário/release sem o harness.
 vael = { path = ".", features = ["playtest"] }

@@ -32,5 +32,15 @@ function on_update(dt)
     for _ in ipairs(viber.events()) do end
     return
   end
+  local game = viber.game()
+  if (tonumber(game.hp) or 0) > 0
+      and (tonumber(game.dying) or 0) <= 0
+      and not game.death_pending then
+    local pid = viber.player_id and viber.player_id()
+    if pid and viber.vael and viber.vael.puppet_state and viber.vael.puppet_release
+        and viber.vael.puppet_state(pid) == "dead" then
+      viber.vael.puppet_release(pid)
+    end
+  end
   rules.tick(dt)
 end

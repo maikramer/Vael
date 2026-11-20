@@ -136,16 +136,20 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Road",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "path", value: "304 113.4 300 106 294 98 288 92" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c6b499" },
+                    bevy_world_xml::bsn::WorldProp { key: "paving-feather", value: ".48" },
+                    bevy_world_xml::bsn::WorldProp { key: "paving", value: "trail" },
+                    bevy_world_xml::bsn::WorldProp { key: "widths", value: "4.25 4.25 4.15 3.6 3.6 3.6 3.6 3.6 3.6 3.6 3.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "path", value: "305.6 105.54 306.07 102.38 306.8 97.43 296 86 277.7 89.4 268 82 258 82 246 79 237 76 234 71 234 64" },
                     bevy_world_xml::bsn::WorldProp { key: "width", value: "3.4" },
                     bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
                     bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
-                    bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: ".34" },
                     bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
                     bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
                     bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "4" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_road/normal.ktx2" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -163,16 +167,20 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Road",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "path", value: "301.5 133.5 299 141 296 149" },
+                    bevy_world_xml::bsn::WorldProp { key: "base-color", value: "#c6b499" },
+                    bevy_world_xml::bsn::WorldProp { key: "paving-feather", value: ".48" },
+                    bevy_world_xml::bsn::WorldProp { key: "paving", value: "trail" },
+                    bevy_world_xml::bsn::WorldProp { key: "widths", value: "4.25 4.25 4.15 3.6 3.6 3.6 3.6 3.6 3.6 3.6 3.6 3.6 3.6 3.6 3.6" },
+                    bevy_world_xml::bsn::WorldProp { key: "path", value: "300.38 140.76 299.91 143.92 299.18 148.87 283 157 282.7 160.1 279.1 161.8 256.3 160.9 235 175 192 203 176.7 205.3 163 215.9 138 226 119 228 106 228.4 96 229" },
                     bevy_world_xml::bsn::WorldProp { key: "width", value: "3.4" },
                     bevy_world_xml::bsn::WorldProp { key: "flatten", value: "0" },
                     bevy_world_xml::bsn::WorldProp { key: "texture-scale", value: "6" },
-                    bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: "1.0" },
+                    bevy_world_xml::bsn::WorldProp { key: "edge-feather", value: ".34" },
                     bevy_world_xml::bsn::WorldProp { key: "edge-noise", value: "0.7" },
                     bevy_world_xml::bsn::WorldProp { key: "end-feather-start", value: "1.5" },
                     bevy_world_xml::bsn::WorldProp { key: "end-feather-end", value: "4" },
-                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/desert_sand/albedo.ktx2" },
-                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/desert_sand/normal.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "texture-url", value: "/assets/textures/dirt_road/albedo.ktx2" },
+                    bevy_world_xml::bsn::WorldProp { key: "normal-map-url", value: "/assets/textures/dirt_road/normal.ktx2" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -212,6 +220,10 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Lake",
                 attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "seed", value: "83" },
+                    bevy_world_xml::bsn::WorldProp { key: "axis", value: "112" },
+                    bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.22" },
+                    bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.48" },
                     bevy_world_xml::bsn::WorldProp { key: "at", value: "140 92" },
                     bevy_world_xml::bsn::WorldProp { key: "radius", value: "14" },
                     bevy_world_xml::bsn::WorldProp { key: "depth", value: "2.4" },
@@ -610,7 +622,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 128.248703, y: 48.821899, z: 90.718697 },
+                    translation: glam::Vec3 { x: 132.28, y: 10.09152, z: 91.15825 },
                     rotation: glam::Quat { x: 0.0, y: -0.647126, z: 0.0, w: 0.762383 },
                     scale: glam::Vec3 { x: 0.3773, y: 0.3773, z: 0.3773 },
                 }
@@ -627,7 +639,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 131.368805, y: 48.821899, z: 89.853302 },
+                    translation: glam::Vec3 { x: 131.36881, y: 10.09152, z: 89.8533 },
                     rotation: glam::Quat { x: 0.0, y: -0.856401, z: 0.0, w: 0.516311 },
                     scale: glam::Vec3 { x: 0.5902, y: 0.5902, z: 0.5902 },
                 }
@@ -644,7 +656,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 136.686707, y: 48.821899, z: 101.237503 },
+                    translation: glam::Vec3 { x: 136.68671, y: 10.09152, z: 101.2375 },
                     rotation: glam::Quat { x: 0.0, y: -0.016419, z: 0.0, w: 0.999865 },
                     scale: glam::Vec3 { x: 0.5906, y: 0.5906, z: 0.5906 },
                 }
@@ -661,7 +673,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 131.982101, y: 48.821899, z: 87.625298 },
+                    translation: glam::Vec3 { x: 131.9821, y: 10.09152, z: 87.6253 },
                     rotation: glam::Quat { x: 0.0, y: -0.356686, z: 0.0, w: 0.934224 },
                     scale: glam::Vec3 { x: 0.4753, y: 0.4753, z: 0.4753 },
                 }
@@ -678,7 +690,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 128.737305, y: 48.821899, z: 100.785301 },
+                    translation: glam::Vec3 { x: 128.7373, y: 10.09152, z: 100.7853 },
                     rotation: glam::Quat { x: 0.0, y: 0.068283, z: 0.0, w: 0.997666 },
                     scale: glam::Vec3 { x: 0.5228, y: 0.5228, z: 0.5228 },
                 }
@@ -695,7 +707,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 133.721298, y: 48.821899, z: 81.084396 },
+                    translation: glam::Vec3 { x: 133.81495, y: 10.09152, z: 81.24721 },
                     rotation: glam::Quat { x: 0.0, y: 0.666609, z: 0.0, w: 0.745407 },
                     scale: glam::Vec3 { x: 0.6071, y: 0.6071, z: 0.6071 },
                 }
@@ -712,7 +724,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 131.831894, y: 48.821899, z: 85.202003 },
+                    translation: glam::Vec3 { x: 131.83189, y: 10.09152, z: 85.202 },
                     rotation: glam::Quat { x: 0.0, y: 0.061342, z: 0.0, w: 0.998117 },
                     scale: glam::Vec3 { x: 0.6071, y: 0.6071, z: 0.6071 },
                 }
@@ -729,7 +741,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 143.344406, y: 48.821899, z: 101.602798 },
+                    translation: glam::Vec3 { x: 143.34441, y: 10.09152, z: 101.6028 },
                     rotation: glam::Quat { x: 0.0, y: -0.998318, z: 0.0, w: 0.057981 },
                     scale: glam::Vec3 { x: 0.6048, y: 0.6048, z: 0.6048 },
                 }
@@ -746,7 +758,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 147.605606, y: 49.0854, z: 102.2397 },
+                    translation: glam::Vec3 { x: 146.13089, y: 10.09152, z: 100.25424 },
                     rotation: glam::Quat { x: 0.0, y: -0.763165, z: 0.0, w: -0.646203 },
                     scale: glam::Vec3 { x: 0.4629, y: 0.4629, z: 0.4629 },
                 }
@@ -763,7 +775,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 148.790497, y: 48.821899, z: 90.5121 },
+                    translation: glam::Vec3 { x: 148.7905, y: 10.09152, z: 90.5121 },
                     rotation: glam::Quat { x: 0.0, y: -0.370548, z: 0.0, w: 0.928813 },
                     scale: glam::Vec3 { x: 0.4008, y: 0.4008, z: 0.4008 },
                 }
@@ -780,7 +792,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 151.377106, y: 48.821899, z: 92.7742 },
+                    translation: glam::Vec3 { x: 151.37711, y: 10.09152, z: 92.7742 },
                     rotation: glam::Quat { x: 0.0, y: -0.422632, z: 0.0, w: 0.906301 },
                     scale: glam::Vec3 { x: 0.4172, y: 0.4172, z: 0.4172 },
                 }
@@ -797,7 +809,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 137.200394, y: 48.821899, z: 90.260399 },
+                    translation: glam::Vec3 { x: 137.20039, y: 10.09152, z: 90.2604 },
                     rotation: glam::Quat { x: 0.0, y: -0.57059, z: 0.0, w: 0.821235 },
                     scale: glam::Vec3 { x: 0.5552, y: 0.5552, z: 0.5552 },
                 }
@@ -814,7 +826,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 149.0961, y: 48.821899, z: 80.072701 },
+                    translation: glam::Vec3 { x: 148.14641, y: 10.09152, z: 81.31799 },
                     rotation: glam::Quat { x: 0.0, y: -0.939771, z: 0.0, w: -0.341804 },
                     scale: glam::Vec3 { x: 0.3866, y: 0.3866, z: 0.3866 },
                 }
@@ -831,7 +843,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 140.640198, y: 48.821899, z: 86.740997 },
+                    translation: glam::Vec3 { x: 140.6402, y: 10.09152, z: 86.741 },
                     rotation: glam::Quat { x: 0.0, y: -0.961097, z: 0.0, w: 0.276209 },
                     scale: glam::Vec3 { x: 0.417, y: 0.417, z: 0.417 },
                 }
@@ -848,7 +860,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 148.967407, y: 48.821899, z: 94.205101 },
+                    translation: glam::Vec3 { x: 148.96741, y: 10.09152, z: 94.2051 },
                     rotation: glam::Quat { x: 0.0, y: -0.798564, z: 0.0, w: -0.60191 },
                     scale: glam::Vec3 { x: 0.403, y: 0.403, z: 0.403 },
                 }
@@ -865,7 +877,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 129.971497, y: 48.821899, z: 95.798599 },
+                    translation: glam::Vec3 { x: 130.42023, y: 10.09152, z: 95.62863 },
                     rotation: glam::Quat { x: 0.0, y: -0.955044, z: 0.0, w: 0.296463 },
                     scale: glam::Vec3 { x: 0.3692, y: 0.3692, z: 0.3692 },
                 }
@@ -882,7 +894,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 136.430099, y: 48.821899, z: 97.444199 },
+                    translation: glam::Vec3 { x: 136.4301, y: 10.09152, z: 97.4442 },
                     rotation: glam::Quat { x: 0.0, y: -0.315344, z: 0.0, w: 0.948977 },
                     scale: glam::Vec3 { x: 0.6293, y: 0.6293, z: 0.6293 },
                 }
@@ -899,7 +911,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: 148.821106, y: 49.517399, z: 103.895103 },
+                    translation: glam::Vec3 { x: 146.18973, y: 10.09152, z: 100.34673 },
                     rotation: glam::Quat { x: 0.0, y: 0.425654, z: 0.0, w: 0.904886 },
                     scale: glam::Vec3 { x: 0.3712, y: 0.3712, z: 0.3712 },
                 }
@@ -2843,7 +2855,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 154.0, y: 49.099998, z: 100.0 },
+                translation: glam::Vec3 { x: 154.0, y: 51.0528, z: 100.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.573576, z: 0.0, w: 0.819152 },
                 scale: glam::Vec3 { x: 1.35, y: 1.35, z: 1.35 },
             }
@@ -2877,7 +2889,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 150.0, y: 48.93, z: 80.0 },
+                translation: glam::Vec3 { x: 150.0, y: 48.7264, z: 80.0 },
                 rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
                 scale: glam::Vec3 { x: 1.4, y: 1.4, z: 1.4 },
             }
@@ -2894,7 +2906,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 136.0, y: 49.299999, z: 106.0 },
+                translation: glam::Vec3 { x: 133.0, y: 48.9733, z: 110.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
                 scale: glam::Vec3 { x: 1.25, y: 1.25, z: 1.25 },
             }
@@ -3503,7 +3515,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 154.0, y: 49.369999, z: 102.0 },
+                translation: glam::Vec3 { x: 154.0, y: 50.8879, z: 102.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.777146, z: 0.0, w: 0.62932 },
                 scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
             }
@@ -3516,7 +3528,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "154 49.37 102" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "154 50.8879 102" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 102 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
                 ],
@@ -3547,7 +3559,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 132.0, y: 49.150002, z: 106.0 },
+                translation: glam::Vec3 { x: 130.0, y: 48.8189, z: 108.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.309017, z: 0.0, w: 0.951057 },
                 scale: glam::Vec3 { x: 1.5, y: 1.5, z: 1.5 },
             }
@@ -3560,7 +3572,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "132 49.15 106" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "130 48.8189 108" },
                     bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 36 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.5" },
                 ],
@@ -3635,7 +3647,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 140.0, y: 49.07, z: 76.0 },
+                translation: glam::Vec3 { x: 140.0, y: 48.8503, z: 76.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -3648,7 +3660,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 49.07 76" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "140 48.8503 76" },
                 ],
                 text: "",
                 origin_file: "world/landmarks/desert.xml",
@@ -4555,7 +4567,7 @@ bevy_ecs::hierarchy::Children [
             --
             #Entity
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 312.0, y: 46.055099, z: 124.0 },
+                translation: glam::Vec3 { x: 312.0, y: 50.0161, z: 124.0 },
                 rotation: glam::Quat { x: 0.0, y: 0.34202, z: 0.0, w: 0.939693 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
@@ -4568,7 +4580,7 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Entity",
                 attrs: [
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "312 46.0551 124" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "312 50.0161 124" },
                     bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 40 0" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -4599,12 +4611,12 @@ bevy_ecs::hierarchy::Children [
             --
             #"desert-ruin-bridge"
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 302.98999, y: 50.189999, z: 123.150002 },
-                rotation: glam::Quat { x: 0.0, y: 0.653222, z: 0.0, w: 0.757166 },
+                translation: glam::Vec3 { x: 302.98999, y: 50.75, z: 123.150002 },
+                rotation: glam::Quat { x: 0.0, y: -0.07349929, z: 0.0, w: 0.99729527 },
                 scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
             }
             bevy_ext_scene::ColliderSpec {
-                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/river_bridge_stone_collision.glb", base: true },
+                shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/ponte_do_ermo_collision.glb", base: true },
             }
             bevy_ext_scene::BodySpec {
                 kind: bevy_ext_scene::BodyKind::Fixed,
@@ -4613,8 +4625,8 @@ bevy_ecs::hierarchy::Children [
                 tag: "Entity",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "name", value: "desert-ruin-bridge" },
-                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "302.99 50.19 123.15" },
-                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 81.57 0" },
+                    bevy_world_xml::bsn::WorldProp { key: "translation", value: "302.99 50.75 123.15" },
+                    bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -8.43 0" },
                     bevy_world_xml::bsn::WorldProp { key: "settle", value: "keep" },
                     bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
                 ],
@@ -4625,22 +4637,22 @@ bevy_ecs::hierarchy::Children [
             }
             jackdaw_scene_types::node_id::SceneNodeId(1551948037216085688)
             bevy_ecs::hierarchy::Children [
-                #"GltfScene river_bridge_stone"
+                #"GltfScene ponte_do_ermo"
                 bevy_transform::components::transform::Transform {
                     translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
                     rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
                     scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
                 }
                 bevy_ext_scene::ModelLod {
-                    lod1: core::option::Option::Some("/assets/meshes/infra/river_bridge_stone_lod1.glb"),
-                    lod2: core::option::Option::Some("/assets/meshes/infra/river_bridge_stone_lod2.glb"),
+                    lod1: core::option::Option::Some("/assets/meshes/infra/ponte_do_ermo_lod1.glb"),
+                    lod2: core::option::Option::Some("/assets/meshes/infra/ponte_do_ermo_lod2.glb"),
                     near: core::option::Option::Some(55.0),
                     mid: core::option::Option::Some(130.0),
                 }
                 bevy_world_xml::bsn::WorldNode {
                     tag: "GltfScene",
                     attrs: [
-                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_stone_lod0.glb" },
+                        bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/ponte_do_ermo_lod0.glb" },
                     ],
                     text: "",
                     origin_file: "world/landmarks/desert.xml",

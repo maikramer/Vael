@@ -1,0 +1,283 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+    rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+    scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+    ],
+    text: "",
+    pose: true,
+}
+bevy_ecs::hierarchy::Children [
+    #"Lago das Vig\u00edlias"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Lake",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "at", value: "640 -640" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "106" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "12" },
+            bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "1.3" },
+            bevy_world_xml::bsn::WorldProp { key: "water-level", value: "179.69337" },
+            bevy_world_xml::bsn::WorldProp { key: "seed", value: "59" },
+            bevy_world_xml::bsn::WorldProp { key: "axis", value: "50" },
+            bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.13" },
+            bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.6" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#295668" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.91" },
+        ],
+        text: "",
+        pose: false,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Ilha das Vig\u00edlias"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Island",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "at", value: "640 -640" },
+                bevy_world_xml::bsn::WorldProp { key: "radius", value: "22" },
+                bevy_world_xml::bsn::WorldProp { key: "height", value: "3.8" },
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "935" },
+                bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.25" },
+                bevy_world_xml::bsn::WorldProp { key: "axis", value: "13" },
+                bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.5" },
+            ],
+            text: "",
+            pose: false,
+        }
+    ]
+    --
+    #"Lago do Espelho"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+        scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Lake",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "at", value: "830 -480" },
+            bevy_world_xml::bsn::WorldProp { key: "radius", value: "56" },
+            bevy_world_xml::bsn::WorldProp { key: "depth", value: "7" },
+            bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "1.3" },
+            bevy_world_xml::bsn::WorldProp { key: "water-level", value: "191.74232" },
+            bevy_world_xml::bsn::WorldProp { key: "seed", value: "374" },
+            bevy_world_xml::bsn::WorldProp { key: "axis", value: "118" },
+            bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.3" },
+            bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.25" },
+            bevy_world_xml::bsn::WorldProp { key: "color", value: "#295668" },
+            bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.91" },
+        ],
+        text: "",
+        pose: false,
+    }
+    --
+    #"npc_barqueiro_vigilias"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 636.000, y: 180.297, z: -519.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.9063078, z: 0.0, w: 0.4226183 },
+        scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+    }
+    bevy_ext_scene::ScriptRef { path: "npc/dialogue.lua" }
+    jackdaw_scene_types::types::CustomProperties { properties: map[("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("ilha_das_vigilias"))] }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_barqueiro_vigilias" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "636 180.297 -519" },
+        ],
+        text: "",
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Barqueiro"
+        jackdaw::prefab::components::IsA { source: "world/prefabs/characters/npc-elder.bsn", deleted: [] }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #"NpcBody"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [
+        
+            ],
+            text: "",
+            pose: true,
+        }
+    ]
+    --
+    #"torre-das-vigilias"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 640.000, y: 183.066, z: -644.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.2164396, z: 0.0, w: 0.9762960 },
+        scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+    }
+    bevy_ext_scene::ColliderSpec { shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/ruined_tower_collision.glb", base: true } }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_ext_scene::ModelLod { lod1: core::option::Option::Some("/assets/meshes/props/ruined_tower_lod1.glb"), lod2: core::option::Option::Some("/assets/meshes/props/ruined_tower_lod2.glb"), near: core::option::Option::Some(45.0), mid: core::option::Option::Some(110.0) }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "torre-das-vigilias" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "640 183.066 -644" },
+        ],
+        text: "",
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"Modelo"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/ruined_tower_lod0.glb" },
+            ],
+            text: "",
+            pose: true,
+        }
+    ]
+    --
+    #"altar-das-vigilias"
+    bevy_ext_scene::ScriptRef { path: "poi/ruin-relic.lua" }
+    jackdaw_scene_types::types::CustomProperties { properties: map[("inscription", jackdaw_scene_types::types::PropertyValue::String("À margem que se há de perder, deixo o meu nome. Iria, guardiã do sino."))] }
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 640.000, y: 181.881, z: -630.000 },
+        rotation: glam::Quat { x: 0.0, y: 1.0000000, z: 0.0, w: 0.0000000 },
+        scale: glam::Vec3 { x: 1.25, y: 1.25, z: 1.25 },
+    }
+    bevy_ext_scene::ColliderSpec { shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/terrain/druid_stone_altar_collision.glb", base: true } }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_ext_scene::ModelLod { lod1: core::option::Option::Some("/assets/meshes/terrain/druid_stone_altar_lod1.glb"), lod2: core::option::Option::Some("/assets/meshes/terrain/druid_stone_altar_lod2.glb"), near: core::option::Option::Some(45.0), mid: core::option::Option::Some(110.0) }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "altar-das-vigilias" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "640 181.881 -630" },
+        ],
+        text: "",
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"druid_stone_altar"
+        jackdaw::prefab::components::IsA { source: "world/prefabs/terrain/druid-stone-altar.bsn", deleted: [] }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        jackdaw::prefab::components::PrefabEntityId(0)
+    ]
+    --
+    #"coluna-das-vigilias-1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 631.000, y: 182.212, z: -635.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.2079117, z: 0.0, w: 0.9781476 },
+        scale: glam::Vec3 { x: 1.20, y: 1.20, z: 1.20 },
+    }
+    bevy_ext_scene::ColliderSpec { shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true } }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_ext_scene::ModelLod { lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"), lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"), near: core::option::Option::Some(45.0), mid: core::option::Option::Some(110.0) }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "coluna-das-vigilias-1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "631 182.212 -635" },
+        ],
+        text: "",
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene coluna 1"
+        jackdaw::prefab::components::IsA { source: "world/prefabs/desert/ruin-pillar.bsn", deleted: [] }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        jackdaw::prefab::components::PrefabEntityId(0)
+    ]
+    --
+    #"coluna-das-vigilias-2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 648.000, y: 182.511, z: -634.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.9455186, z: 0.0, w: 0.3255682 },
+        scale: glam::Vec3 { x: 0.84, y: 0.84, z: 0.84 },
+    }
+    bevy_ext_scene::ColliderSpec { shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true } }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_ext_scene::ModelLod { lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"), lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"), near: core::option::Option::Some(45.0), mid: core::option::Option::Some(110.0) }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "coluna-das-vigilias-2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "648 182.511 -634" },
+        ],
+        text: "",
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene coluna 2"
+        jackdaw::prefab::components::IsA { source: "world/prefabs/desert/ruin-pillar.bsn", deleted: [] }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        jackdaw::prefab::components::PrefabEntityId(0)
+    ]
+    --
+    #"coluna-das-vigilias-3"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 647.000, y: 181.836, z: -648.000 },
+        rotation: glam::Quat { x: 0.0, y: 0.6755902, z: 0.0, w: 0.7372773 },
+        scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+    }
+    bevy_ext_scene::ColliderSpec { shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/desert/ruin_pillar_collision.glb", base: true } }
+    bevy_ext_scene::BodySpec { kind: bevy_ext_scene::BodyKind::Fixed }
+    bevy_ext_scene::ModelLod { lod1: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod1.glb"), lod2: core::option::Option::Some("/assets/meshes/desert/ruin_pillar_lod2.glb"), near: core::option::Option::Some(45.0), mid: core::option::Option::Some(110.0) }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "coluna-das-vigilias-3" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "647 181.836 -648" },
+        ],
+        text: "",
+        pose: true,
+    }
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene coluna 3"
+        jackdaw::prefab::components::IsA { source: "world/prefabs/desert/ruin-pillar.bsn", deleted: [] }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.000, y: 0.000, z: 0.000 },
+            rotation: glam::Quat { x: 0.0, y: 0.0000000, z: 0.0, w: 1.0000000 },
+            scale: glam::Vec3 { x: 1.00, y: 1.00, z: 1.00 },
+        }
+        jackdaw::prefab::components::PrefabEntityId(0)
+    ]
+]

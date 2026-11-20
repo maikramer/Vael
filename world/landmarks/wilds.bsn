@@ -853,6 +853,10 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Lake",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "418" },
+                bevy_world_xml::bsn::WorldProp { key: "axis", value: "128" },
+                bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.17" },
+                bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.55" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-540 30" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "26" },
                 bevy_world_xml::bsn::WorldProp { key: "depth", value: "2.4" },
@@ -977,7 +981,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -521.0, y: 60.807499, z: 44.0 },
+            translation: glam::Vec3 { x: -521.0, y: 61.9005, z: 44.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -993,7 +997,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-521 60.8075 44" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-521 61.9005 44" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -1022,7 +1026,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -556.0, y: 60.583801, z: 48.0 },
+            translation: glam::Vec3 { x: -558.0, y: 61.2042, z: 49.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -1035,7 +1039,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-556 60.5838 48" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-558 61.2042 49" },
             ],
             text: "",
             origin_file: "world/landmarks/wilds.xml",
@@ -1064,7 +1068,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -560.0, y: 61.1978, z: 16.0 },
+            translation: glam::Vec3 { x: -563.0, y: 61.3435, z: 15.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 0.7, y: 0.7, z: 0.7 },
         }
@@ -1077,7 +1081,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-560 61.1978 16" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-563 61.3435 15" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "0.7" },
             ],
             text: "",

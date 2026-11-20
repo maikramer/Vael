@@ -308,7 +308,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Way",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "id", value: "n_bank" },
-                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "4 175" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "4 169.65" },
                 ],
                 text: "",
                 origin_file: "world/paths/network.xml",
@@ -327,7 +327,7 @@ bevy_ecs::hierarchy::Children [
                 tag: "Way",
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "id", value: "n_resume" },
-                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "4 240" },
+                    bevy_world_xml::bsn::WorldProp { key: "xz", value: "4 237.35" },
                 ],
                 text: "",
                 origin_file: "world/paths/network.xml",
@@ -548,9 +548,10 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Segment",
                 attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "width", value: "5" },
                     bevy_world_xml::bsn::WorldProp { key: "a", value: "n_gate" },
                     bevy_world_xml::bsn::WorldProp { key: "b", value: "n_bank" },
-                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 152 2 168" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "-2 137 1 145 4 151 4 155 4 162 4 167" },
                 ],
                 text: "",
                 origin_file: "world/paths/network.xml",
@@ -568,9 +569,10 @@ bevy_ecs::hierarchy::Children [
             bevy_world_xml::bsn::WorldNode {
                 tag: "Segment",
                 attrs: [
+                    bevy_world_xml::bsn::WorldProp { key: "width", value: "5" },
                     bevy_world_xml::bsn::WorldProp { key: "a", value: "n_resume" },
                     bevy_world_xml::bsn::WorldProp { key: "b", value: "n_end" },
-                    bevy_world_xml::bsn::WorldProp { key: "via", value: "2 252 -4 270" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "4 241 4 249 4 253 1 259 -3 267 -6 277" },
                 ],
                 text: "",
                 origin_file: "world/paths/network.xml",
@@ -590,7 +592,7 @@ bevy_ecs::hierarchy::Children [
                 attrs: [
                     bevy_world_xml::bsn::WorldProp { key: "a", value: "mid_s" },
                     bevy_world_xml::bsn::WorldProp { key: "b", value: "s_end" },
-                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 -58 2 -84 0 -184 18 -220" },
+                    bevy_world_xml::bsn::WorldProp { key: "via", value: "0 -58 2 -84 1.8 -92 0 -140 0 -184 8 -198 10 -201 8 -206 1.1 -210.3 -26.8 -212.4 -42 -226 -12 -255" },
                 ],
                 text: "",
                 origin_file: "world/paths/network.xml",

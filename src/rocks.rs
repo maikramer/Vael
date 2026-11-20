@@ -1,5 +1,6 @@
 //! Quarry stones share seeded geometry, collision and surface maps across the world.
 mod crystal;
+pub(crate) use crystal::CrystalGrowth;
 mod restore;
 pub(crate) use restore::reload;
 pub(crate) mod snow;
@@ -41,8 +42,8 @@ impl Plugin for QuarryPlugin {
 #[reflect(Component)]
 pub struct QuarryStone {
     pub(crate) seed: u32,
-    variant: u32,
-    segments: u8,
+    pub(crate) variant: u32,
+    pub(crate) segments: u8,
 }
 
 #[derive(Resource, Default)]
@@ -56,6 +57,7 @@ struct Quarry {
 struct Variant {
     mesh: Handle<Mesh>,
     hull: Collider,
+    surface: Collider,
     material: Handle<StandardMaterial>,
     texture: Handle<Image>,
     pixels: Vec<Texel>,
@@ -138,7 +140,7 @@ impl Shape {
         (d * (cut * 0.92 + 0.08) + Vec3::Y * 0.69) * self.axes
     }
 
-    fn geometry(&self, rotation: Quat) -> (Mesh, Collider) {
+    fn geometry(&self, rotation: Quat) -> (Mesh, Collider, Collider) {
         let mut mesh = Sphere::new(1.).mesh().uv(32, 18);
         let Some(VertexAttributeValues::Float32x3(directions)) =
             mesh.attribute(Mesh::ATTRIBUTE_POSITION)
@@ -158,7 +160,21 @@ impl Shape {
             positions.push(rotation * self.point(d));
             normals.push((rotation * tangent(u).cross(tangent(v)).normalize_or(d)).to_array());
         }
-        let hull = Collider::convex_hull(&positions).expect("solid quarry profile");
+        let surface = Collider::convex_hull(&positions).expect("solid quarry profile");
+        // As facetas superiores da pedra são chanfradas (~20°–45°) e a base
+        // recolhe para dentro, o que deixava o hemisfério inferior da cápsula
+        // do herói (centro a y = 0.39 m) e o probe_steps (y <= 0.40 m)
+        // subirem pela lateral e atravessarem a malha. Extrudimos o contorno
+        // horizontal visual como coluna vertical de y = 0 até acima do limiar
+        // de degrau/cápsula (mesmo em instâncias escaladas a ~0.7).
+        let top_y = positions.iter().map(|p| p.y).fold(0.0_f32, f32::max);
+        let wall_top = top_y.max(0.62);
+        let mut hull_points = Vec::with_capacity(positions.len() * 2);
+        for &p in &positions {
+            hull_points.push(Vec3::new(p.x, 0.0, p.z));
+            hull_points.push(Vec3::new(p.x, wall_top, p.z));
+        }
+        let hull = Collider::convex_hull(&hull_points).expect("solid quarry column");
         mesh.insert_attribute(
             Mesh::ATTRIBUTE_POSITION,
             positions
@@ -167,7 +183,7 @@ impl Shape {
                 .collect::<Vec<_>>(),
         );
         mesh.insert_attribute(Mesh::ATTRIBUTE_NORMAL, normals);
-        (mesh, hull)
+        (mesh, hull, surface)
     }
 }
 
@@ -181,13 +197,14 @@ fn segment_count(id: u32) -> u8 {
 
 /// Seat successively smaller blocks into the flank. Keep their convex pieces
 /// separate in physics so the indentations between blocks remain hittable.
-fn formation(id: u32) -> (Mesh, Collider) {
-    let (mut mesh, main) = Shape::new(id).geometry(Quat::IDENTITY);
+fn formation(id: u32) -> (Mesh, Collider, Collider) {
+    let (mut mesh, main, main_surface) = Shape::new(id).geometry(Quat::IDENTITY);
     let count = segment_count(id);
     if count == 1 {
-        return (mesh, main);
+        return (mesh, main, main_surface);
     }
     let mut pieces = vec![(Vec3::ZERO, Quat::IDENTITY, main)];
+    let mut surfaces = vec![(Vec3::ZERO, Quat::IDENTITY, main_surface)];
     let heading = TAU * random(id + 808);
     for i in 1..u32::from(count) {
         let a = heading + (i - 1) as f32 * (1.55 + 0.65 * random(id + 99));
@@ -196,12 +213,13 @@ fn formation(id: u32) -> (Mesh, Collider) {
         shape.axes *= Vec3::new(scale, scale * (0.82 + 0.34 * random(id + i)), scale);
         let offset = Vec3::new(a.cos(), 0., a.sin()) * (0.54 + 0.12 * random(id + i * 175));
         let rotation = Quat::from_rotation_y(a + 1.3);
-        let (block, hull) = shape.geometry(rotation);
+        let (block, hull, surface) = shape.geometry(rotation);
         mesh.merge(&block.transformed_by(Transform::from_translation(offset)))
             .expect("quarry segments share a vertex format");
         pieces.push((offset, Quat::IDENTITY, hull));
+        surfaces.push((offset, Quat::IDENTITY, surface));
     }
-    (mesh, Collider::compound(pieces))
+    (mesh, Collider::compound(pieces), Collider::compound(surfaces))
 }
 
 #[derive(Clone, Copy)]
@@ -265,7 +283,7 @@ impl Variant {
         images: &mut Assets<Image>,
         materials: &mut Assets<StandardMaterial>,
     ) -> Self {
-        let (mesh, hull) = formation(id);
+        let (mesh, hull, surface) = formation(id);
         let mut pixels = Vec::with_capacity(WIDTH * HEIGHT);
         let coverage = (INITIAL_MOSS * 100.) as u8;
         let mut data = vec![0; WIDTH * HEIGHT * 4];
@@ -298,6 +316,7 @@ impl Variant {
         Self {
             mesh: meshes.add(mesh),
             hull,
+            surface,
             material,
             texture,
             pixels,
@@ -347,7 +366,7 @@ fn place(
                 &mut commands,
                 entity,
                 seed,
-                &rock.hull,
+                &rock.surface,
                 &mut meshes,
                 &mut materials,
             );
@@ -422,7 +441,7 @@ mod tests {
     #[test]
     fn all_profiles_stand_on_their_authored_base_and_have_valid_normals() {
         for id in 0..VARIANTS {
-            let (mesh, _) = Shape::new(id).geometry(Quat::IDENTITY);
+            let (mesh, _, _) = Shape::new(id).geometry(Quat::IDENTITY);
             let Some(VertexAttributeValues::Float32x3(p)) =
                 mesh.attribute(Mesh::ATTRIBUTE_POSITION)
             else {
@@ -440,7 +459,7 @@ mod tests {
     #[test]
     fn collision_and_mesh_keep_the_same_individual_segments() {
         for id in 0..VARIANTS {
-            let (mesh, hull) = formation(id);
+            let (mesh, hull, _) = formation(id);
             let count = usize::from(segment_count(id));
             let base = Shape::new(id).geometry(Quat::IDENTITY).0.count_vertices();
             assert_eq!(mesh.count_vertices(), base * count);
@@ -470,6 +489,75 @@ mod tests {
                     hit.0 <= 2.001,
                     "missing visible segment {i} in variant {id}"
                 );
+            }
+        }
+    }
+    #[test]
+    fn lateral_walls_block_hero_capsule_and_step_probe_across_all_variants() {
+        let step_probe_y = viber::player::HERO_STEP_HEIGHT + 0.05;
+        let max_walkable_normal_y = viber::player::HERO_MAX_SLOPE_DEG.to_radians().cos();
+        for id in 0..VARIANTS {
+            let (mesh, mut hull, _) = formation(id);
+            let Some(VertexAttributeValues::Float32x3(points)) =
+                mesh.attribute(Mesh::ATTRIBUTE_POSITION)
+            else {
+                panic!()
+            };
+            // Even when an authored rock instance is scaled down to 0.70, lateral
+            // rays at capsule-hemisphere height must hit vertical non-walkable walls
+            // covering the full horizontal visual contour, and step probes must not
+            // find a walkable ledge <= HERO_STEP_HEIGHT.
+            for scale in [1.0_f32, 0.70_f32] {
+                hull.set_scale(Vec3::splat(scale), 4);
+                for k in 0..16 {
+                    let angle = TAU * (k as f32 / 16.0);
+                    let dir_xz = Vec2::new(angle.cos(), angle.sin());
+                    let v_max = points
+                        .iter()
+                        .map(|v| Vec2::new(v[0], v[2]) * scale)
+                        .max_by(|a, b| a.dot(dir_xz).total_cmp(&b.dot(dir_xz)))
+                        .unwrap();
+                    let ray_dir = Vec3::new(-dir_xz.x, 0.0, -dir_xz.y);
+                    let ray_origin = Vec3::new(
+                        v_max.x + dir_xz.x * 2.0,
+                        viber::player::HERO_FLOAT_HEIGHT + viber::player::HERO_RADIUS,
+                        v_max.y + dir_xz.y * 2.0,
+                    );
+                    let (toi, normal) = hull
+                        .cast_ray(Vec3::ZERO, Quat::IDENTITY, ray_origin, ray_dir, 3.0, false)
+                        .expect("lateral ray must hit quarry hull");
+                    assert!(
+                        toi <= 2.001,
+                        "variant {id} scale {scale} angle {k}: hull missed outer vertex (toi={toi:.3})"
+                    );
+                    assert!(
+                        normal.y < max_walkable_normal_y,
+                        "variant {id} scale {scale} angle {k}: lateral normal.y {:.3} is walkable",
+                        normal.y
+                    );
+                    let probe = Vec3::new(
+                        v_max.x - dir_xz.x * 0.02,
+                        step_probe_y,
+                        v_max.y - dir_xz.y * 0.02,
+                    );
+                    if let Some((down_dist, down_normal)) = hull.cast_ray(
+                        Vec3::ZERO,
+                        Quat::IDENTITY,
+                        probe,
+                        Vec3::NEG_Y,
+                        viber::player::HERO_STEP_HEIGHT + 0.15,
+                        true,
+                    ) {
+                        let surface = probe.y - down_dist;
+                        let steppable =
+                            (0.03..=viber::player::HERO_STEP_HEIGHT).contains(&surface)
+                                && down_normal.y >= 0.95;
+                        assert!(
+                            !steppable,
+                            "variant {id} scale {scale} angle {k}: step probe found ledge at y={surface:.3}"
+                        );
+                    }
+                }
             }
         }
     }

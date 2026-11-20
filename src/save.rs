@@ -67,6 +67,7 @@ pub struct SavedCalendar {
 pub struct VaelSave {
     pub version: u32,
     pub vitals: PlayerVitals,
+    pub stamina: crate::stamina::Stamina,
     pub progression: XpState,
     pub inventory: Inventory,
     pub quests: QuestLog,
@@ -104,6 +105,7 @@ impl Default for VaelSave {
         Self {
             version: VAEL_SAVE_VERSION,
             vitals: PlayerVitals::default(),
+            stamina: Default::default(),
             progression: XpState::default(),
             inventory: Inventory::default(),
             quests: QuestLog::default(),

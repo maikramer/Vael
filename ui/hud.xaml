@@ -126,6 +126,11 @@
             </Grid>
             <ProgressBar Value="{Binding health}" Maximum="1" Height="9"
                          Background="{StaticResource TrackBrush}" Foreground="#FFDF6964"/>
+            <Grid ColumnDefinitions="Auto,*">
+              <TextBlock Text="{Binding lbl_stamina}" Style="{StaticResource Label}" Margin="0,0,6,0"/>
+              <ProgressBar Grid.Column="1" Value="{Binding stamina}" Maximum="1" Height="5"
+                           Background="{StaticResource TrackBrush}" Foreground="{StaticResource Leaf}" VerticalAlignment="Center"/>
+            </Grid>
             <Grid ColumnDefinitions="*,Auto" Margin="0,2,0,0">
               <ProgressBar Value="{Binding xp}" Maximum="1" Height="3"
                            Background="{StaticResource TrackBrush}" Foreground="#FFD6B979"
@@ -265,7 +270,12 @@
     <Border Style="{StaticResource Card}" Width="240" MaxWidth="300"
             Padding="12,8" Visibility="{Binding target_alive}">
       <StackPanel Spacing="6">
-        <TextBlock Text="{Binding target_name}" FontSize="13" HorizontalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Spacing="5" HorizontalAlignment="Center">
+          <TextBlock Text="◆" FontSize="12" Foreground="#FFF5D68E" Visibility="{Binding target_locked}"/>
+          <TextBlock Text="{Binding target_name}" FontSize="13"/>
+        </StackPanel>
+        <TextBlock Text="{Binding target_cue}" FontSize="12" HorizontalAlignment="Center"
+                   Foreground="#FFF5D68E" Visibility="{Binding target_cue_visible}"/>
         <ProgressBar Value="{Binding target}" Maximum="1" Height="5"
                      Background="{StaticResource TrackBrush}" Foreground="#FFDF6964"/>
       </StackPanel>
@@ -307,6 +317,19 @@
         <ProgressBar Grid.Column="2" Value="{Binding rain}" Maximum="1" Height="3"
                      Background="{StaticResource TrackBrush}" Foreground="#FF7FB3D5"
                      Margin="8,0,0,0" VerticalAlignment="Center"/>
+      </Grid>
+      <Grid ColumnDefinitions="Auto,*,Auto" Margin="0,2,0,0">
+        <Border Background="#FFDDC798" CornerRadius="3" Padding="4,1" VerticalAlignment="Center">
+          <TextBlock Text="X" FontSize="9" Foreground="#FF171D20"/>
+        </Border>
+        <TextBlock Grid.Column="1" Text="{Binding lbl_lantern}" Style="{StaticResource Label}"
+                   FontSize="9" Margin="6,0,0,0" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="2" Text="{Binding lbl_lantern_on}" FontSize="11"
+                   Foreground="#FFFFD27D" VerticalAlignment="Center"
+                   Visibility="{Binding lantern_on}"/>
+        <TextBlock Grid.Column="2" Text="{Binding lbl_lantern_off}" FontSize="11"
+                   Foreground="#FF8C877A" VerticalAlignment="Center"
+                   Visibility="{Binding lantern_off}"/>
       </Grid>
     </StackPanel>
   </Border>

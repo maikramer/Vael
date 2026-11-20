@@ -992,6 +992,18 @@ bevy_ecs::hierarchy::Children [
         jackdaw_scene_types::node_id::SceneNodeId(6852620019402782985)
         jackdaw::prefab::components::PrefabEntityId(0)
         --
+        #"lagos-das-vigilias"
+        jackdaw::prefab::components::IsA { source: "world/landmarks/lagos-das-vigilias.bsn", deleted: [] }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Include",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "src", value: "/world/landmarks/lagos-das-vigilias.bsn" },
+            ],
+            text: "",
+            pose: false,
+        }
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
         #wilds
         jackdaw::prefab::components::IsA {
             source: "world/landmarks/wilds.bsn",

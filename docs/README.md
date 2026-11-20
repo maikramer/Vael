@@ -34,6 +34,7 @@ deve ser corrigido no mesmo commit.
 | [`FLORA.md`](FLORA.md) | árvores procedurais, estações, pools, colheita e gates | **vivo** |
 | [`GROUND.md`](GROUND.md) | manto de neve, rastos e sombra de nuvem no chão do `.ahgt` | **vivo** |
 | [`PRIMITIVES.md`](PRIMITIVES.md) | tags de primitivas (lathe/sweep/extruded/…), presets de material, colisores e preview no Jackdaw | **vivo** |
+| [`ART.md`](ART.md) | direção de arte e identidade visual (*Ofício Talhado & Iluminura Rural*), proporções (6–6,5 cabeças), paletas por bioma, regras anti-IA e prompts `AiGameKit` | **vivo** |
 | [`AUDIO.md`](AUDIO.md) | direção sonora, layers por bioma, manifests e regen | **vivo** |
 | [`REMOTE_GPU.md`](REMOTE_GPU.md) | `vramd` na rede, bundles e GPU remota | **vivo** |
 | [`DECISION_QUESTS.md`](DECISION_QUESTS.md) | quests de decisão com o d1 e os seus dados | **vivo** |

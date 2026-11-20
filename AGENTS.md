@@ -52,7 +52,11 @@ aposentados a 2026-11-12 (estão na história do git; não regenerar com
 props nem corre `<StaticSpawner>` / `place` (erro de parse). Única geração em
 runtime: `<DynamicSpawner>` (criaturas).
 
-Editar no **Jackdaw oficial** (`jd open .`). Estrutura do `world.bsn`:
+A autoria visual usa o **Jackdaw oficial** (`jd open .`). Para editar arquivos
+offline, use `vael-tools bsn`. A [skill de edição BSN](.cursor/skills/vael-bsn/SKILL.md)
+cobre entidades, prefabs, campos tipados e validação do mundo.
+
+Estrutura do `world.bsn`:
 - **pastas** do Outliner (Definições, Mundo base, Cidades, Vegetação, …) são
   entidades sem `WorldNode`: o loader trata-as como transparentes (os filhos
   sobem). `tools/bsn_tidy.py` reorganiza um mundo achatado; verificar com
@@ -136,12 +140,14 @@ estações; a vegetação `.vinst` não entra no undo — git ou re-scatter.
 | `ui/*.xaml` | HUD, menu, título, morte e mapa (`bevy_pf`); os `*.css` que restam são legado de HUD/profiler/showcase |
 | `assets/` | pool. `game.yaml` + `manifests/`. Binários em `assets/public/` |
 | `docs/README.md` | índice da documentação: o que é vivo, o que é histórico e as convenções de manutenção |
+| `docs/ART.md` | direção de arte (*Ofício Talhado & Iluminura Rural*): volumes chanfrados, guache/têmpera mate, proporções 6–6,5 cabeças, paletas por bioma, regras anti-IA e prompts `AiGameKit` |
 | `docs/AUDIO.md` | direção sonora (Coro de Vael), layers por bioma, manifests e gate de costura; regen com `assets/regen_audio.py` |
 | `docs/FLORA.md` | árvores procedurais (`bevy_flora`): estações `prop-flora` no `.bsn`, pools por espécie, colheita provisória e `tools/flora_migrate.py` |
 | `config.yaml` | `assets.roots: assets/public` |
 | `src/environment.rs` | **dono do céu/tempo** (`bevy_elements`): relógio astronómico, sol/lua/estrelas, clima, nuvens, chuva/neve e relâmpagos. Ponte `Weather` → `WeatherState` (chão molhado, áudio de chuva, vento das árvores), trovão → SFX, visibilidade → névoa e queries em `viber.vael.env_info()`. Gate `VAEL_ELEMENTS=0`. QA: `VAEL_START_HOUR`/`VAEL_START_WEATHER` |
 | `docs/LIGHTING.md` | como o céu/exposição/névoa se ligam hoje e o que ficou na engine |
 | `docs/JACKDAW.md` | matriz sistema→onde se autora no Jackdaw, componentes tipados, painel de cinemáticas e gatilhos |
+| `src/puppet.rs` | **corpos físicos dos personagens** (`bevy_ext_puppet`, estilo Euphoria: IPM + VMC implícito + momento angular centroidal + IK sem twist + `CatchFall` balístico): montados a pedido no herói e nas criaturas com rig bípede (arquétipos Light/Standard/Shielded/Brute/Boss escalados pelo transform; lobo/verme ficam `PuppetIncompatible`) e desmontados 3 s depois de a animação voltar. Golpe (`hit_flash`+`entity_knockback`) → seleção anatómica direcional (`UpperArmL/R` lateral com torção axial, `SpineUpper` frontal); empurrões fortes (`force >= 4.5`) entram como `puppet_push` (passos de captura / queda); **esbarrões** (`ActorBump` de `src/actor_contact.rs`, velocidade ≥ 2 m/s, cooldown 0,45 s, ponderado pela massa) → jogo de ombro localizado em corrida normal e `puppet_push` em sprint/dash/investida (herói sempre parcial); `viber.corpse` → morre mole; `push_player` → reação parcial direcional no herói; `PuppetEvent` gera poeira/micro-shake em quedas e gesto `getup_back`/`getup_front`; `calm_kinematic_motion` zera `AiLocomotion` enquanto `busy`. `combat.lua` quebra escudo em desequilíbrio real e dá bônus 1.25× em alvos caídos; `fsm.lua` interrompe windup/charge em queda; `voice.lua` (`tempestade`) aplica solavanco físico. API: `viber.vael.puppet_{push,hit,stagger,kill,revive,getup,release,activate,fall,start,state,info,busy}`. Camada 29 (`HERO_LAYER_BIT`) não colide com ragdolls (30). Gates `VAEL_PUPPET=0`, `VAEL_PUPPET_DEBUG=1` |
 | `src/lights.rs` | **luzes práticas** (`bevy_lights` 0.5, pin `=0.5.0`): as luzes de fogo viram `PoolCandidate` (pool orçamentado + flicker + chama billboard); as de preenchimento/cristais ficam autorais. Gate `VAEL_PRACTICAL_LIGHTS=0`. Ver `docs/LIGHTING.md` |
 | `docs/WATER.md` | camadas da água (solver iWave, domínio, espelho CPU do swell), flutuação `FloatingBody` (crate `bevy_ext_water`, adapter avian) e barcos a remos (`src/boat.rs`, `data/boats.json`; **E** entra/sai, W/S rema, A/D leme) |
 | `docs/PAVING.md` | **pavimento em grelha** (`bevy_ext_terrain_runtime::paving`): `paving="1"` num `<GroundDecal>`/`<Road>`/`<RoadNetwork>` troca a elipse/ribbon por células com ocupação exclusiva, chanfro nos cantos convexos e filete nos côncavos, uma malha por material. Camadas fixas: `DECAL_LIFT 0.040 < PAVING_LIFT 0.064 < ON_PAVING 0.072`; um decal coberto pelo pavimento sobe sozinho. Gate `VIBER_PAVING=0` |

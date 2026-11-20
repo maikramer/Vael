@@ -11,13 +11,13 @@ use serde::{Deserialize, Serialize};
 use std::f32::consts::TAU;
 
 #[derive(Component)]
-pub(super) struct FallingTrunk {
+pub(crate) struct FallingTrunk {
     pub restored: bool,
 }
 
 #[derive(Component, Reflect)]
 #[reflect(Component)]
-pub(super) struct GroundLog {
+pub(crate) struct GroundLog {
     pub id: String,
 }
 
@@ -63,6 +63,7 @@ impl SavedLog {
         material: Handle<StandardMaterial>,
     ) -> (Entity, Entity) {
         let collider = self.collider();
+        let hits = super::log_hits_for_size(self.length, self.radius).max(self.remaining);
         let body = commands
             .spawn((
                 Name::new(format!("Tronco • {id}")),
@@ -80,7 +81,7 @@ impl SavedLog {
                 AngularDamping(0.7),
             ))
             .insert(Harvestable {
-                hits: 3,
+                hits,
                 remaining: self.remaining,
                 style: BreakStyle::Shatter,
                 kind: self.kind.clone(),
@@ -212,7 +213,7 @@ impl TimberArt<'_, '_> {
 // Until contact the original branches and leaves ride the body. Only then is
 // the clean trunk exposed. The stump is already a separate world entity.
 #[derive(Component)]
-pub(super) struct Crown {
+pub(crate) struct Crown {
     tree: Entity,
     stump: Entity,
     visual: Entity,
@@ -278,17 +279,19 @@ fn release(
         } else {
             Vec3::ZERO
         };
+        let length = a.distance(b).max(0.25);
+        let radius = (butt.radius * scale).max(0.05);
         let log = SavedLog {
             position: (a + b) * 0.5,
             rotation: Quat::from_rotation_arc(Vec3::Y, axis),
-            length: a.distance(b).max(0.25),
-            radius: (butt.radius * scale).max(0.05),
-            tip_radius: (top.radius * scale * 0.7).clamp(0.035, (butt.radius * scale).max(0.05)),
+            length,
+            radius,
+            tip_radius: (top.radius * scale * 0.7).clamp(0.035, radius),
             velocity: spin.cross((b - a) * 0.5),
             spin,
             kind: root.harvest.kind.clone(),
             amount: root.harvest.amount.max(1),
-            remaining: 3,
+            remaining: super::log_hits_for_size(length, radius),
         };
         let mut generation = 0;
         let id = loop {

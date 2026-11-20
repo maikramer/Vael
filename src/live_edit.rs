@@ -25,7 +25,7 @@
 //! Um nó com filhos no mesmo ficheiro re-spawna com a subárvore registada
 //! no load. Não muda a quente: filhos vindos de outro ficheiro (prefab) e
 //! tags que a engine só monta no load (terreno, céu, UI…) — fica um aviso.
-//! Um componente *removido* no editor não chega (o jogo nunca o teve).
+//! Os specs espelhados também notificam remoção.
 
 use std::sync::Arc;
 
@@ -108,43 +108,50 @@ impl Plugin for VaelLiveEditPlugin {
         }
         app.register_type::<WorldNode>()
             .register_type::<bevy_ext_world::bsn::WorldProp>()
-            .init_resource::<PendingLiveEdits>()
-            .add_observer(mark::<WorldNode, false>)
-            .add_observer(mark::<ColliderSpec, false>)
-            .add_observer(mark::<BodySpec, false>)
-            .add_observer(mark::<Destructible, false>)
-            .add_observer(mark::<Harvestable, false>)
-            .add_observer(mark::<ModelLod, false>)
-            .add_observer(mark::<FloraStation, false>)
-            .add_observer(mark::<ScriptRef, false>)
-            .add_observer(mark::<ParticleSpec, false>)
-            .add_observer(mark::<SpawnExclusionSpec, false>)
-            .add_observer(mark::<PortalSpec, false>)
-            .add_observer(mark::<bevy_ext_scene::CameraSpec, false>)
-            .add_observer(mark::<bevy_ext_scene::InteriorSceneSpec, false>)
-            .add_observer(mark::<bevy_ext_scene::AudioMixerSpec, false>)
-            .add_observer(mark::<bevy_ext_scene::MusicLayerSpec, false>)
-            .add_observer(mark::<bevy_ext_scene::BiomeRegionSpec, false>)
-            .add_observer(mark::<CustomProperties, true>)
-            // Componente removido no editor (o `node_sync` tira-o da entidade).
-            .add_observer(mark_removed::<ColliderSpec, false>)
-            .add_observer(mark_removed::<BodySpec, false>)
-            .add_observer(mark_removed::<Destructible, false>)
-            .add_observer(mark_removed::<Harvestable, false>)
-            .add_observer(mark_removed::<ModelLod, false>)
-            .add_observer(mark_removed::<FloraStation, false>)
-            .add_observer(mark_removed::<ScriptRef, false>)
-            .add_observer(mark_removed::<ParticleSpec, false>)
-            .add_observer(mark_removed::<SpawnExclusionSpec, false>)
-            .add_observer(mark_removed::<PortalSpec, false>)
-            .add_observer(mark_removed::<bevy_ext_scene::CameraSpec, false>)
-            .add_observer(mark_removed::<bevy_ext_scene::InteriorSceneSpec, false>)
-            .add_observer(mark_removed::<bevy_ext_scene::AudioMixerSpec, false>)
-            .add_observer(mark_removed::<bevy_ext_scene::MusicLayerSpec, false>)
-            .add_observer(mark_removed::<bevy_ext_scene::BiomeRegionSpec, false>)
-            .add_observer(mark_removed::<CustomProperties, true>)
-            // Depois do `node_sync` (PreUpdate) e antes da física do frame.
-            .add_systems(Update, (adopt_new_nodes, apply_live_edits).chain());
+            .init_resource::<PendingLiveEdits>();
+        watch_edits::<WorldNode, false>(app);
+        watch_edits::<ColliderSpec, false>(app);
+        watch_edits::<BodySpec, false>(app);
+        watch_edits::<Destructible, false>(app);
+        watch_edits::<Harvestable, false>(app);
+        watch_edits::<ModelLod, false>(app);
+        watch_edits::<FloraStation, false>(app);
+        watch_edits::<ScriptRef, false>(app);
+        watch_edits::<ParticleSpec, false>(app);
+        watch_edits::<SpawnExclusionSpec, false>(app);
+        watch_edits::<PortalSpec, false>(app);
+        watch_edits::<bevy_ext_scene::CameraSpec, false>(app);
+        watch_edits::<bevy_ext_scene::InteriorSceneSpec, false>(app);
+        watch_edits::<bevy_ext_scene::AudioMixerSpec, false>(app);
+        watch_edits::<bevy_ext_scene::MusicLayerSpec, false>(app);
+        watch_edits::<bevy_ext_scene::BiomeRegionSpec, false>(app);
+        watch_edits::<CustomProperties, true>(app);
+        // Depois do `node_sync` (PreUpdate) e antes da física do frame.
+        app.add_systems(Update, (adopt_new_nodes, apply_live_edits).chain());
+    }
+}
+
+// Jackdaw updates mutable reflected components in place. Insert observers alone
+// only catch the first edit on an entity that did not already carry the spec.
+fn watch_edits<T: Component, const PROPS_ONLY: bool>(app: &mut App) {
+    app.add_observer(mark::<T, PROPS_ONLY>)
+        .add_observer(mark_removed::<T, PROPS_ONLY>)
+        .add_systems(
+            Update,
+            mark_changed::<T, PROPS_ONLY>.before(apply_live_edits),
+        );
+}
+
+fn mark_changed<T: Component, const PROPS_ONLY: bool>(
+    changed: Query<(Entity, Ref<T>), (Changed<T>, With<SceneNodeId>, With<SceneSource>)>,
+    mut pending: ResMut<PendingLiveEdits>,
+) {
+    for (entity, value) in &changed {
+        // Initial mirroring happens before the node is tagged. Rebuilding that
+        // initial value would re-spawn it and mirror it again on the next frame.
+        if value.last_changed() != value.added() {
+            *pending.0.entry(entity).or_insert(PROPS_ONLY) &= PROPS_ONLY;
+        }
     }
 }
 
@@ -493,6 +500,47 @@ mod tests {
                 ("resource-kind".to_string(), "wood".to_string()),
             ]
         );
+    }
+
+    #[test]
+    fn jackdaw_pie_detects_repeated_in_place_edits_to_mirrored_specs() {
+        use jackdaw_runtime::node_sync::{apply_node_components, install_node_index};
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .add_plugins(bevy_ext_scene::SceneSpecPlugin)
+            .init_resource::<PendingLiveEdits>();
+        install_node_index(&mut app);
+        watch_edits::<ScriptRef, false>(&mut app);
+        let entity = app
+            .world_mut()
+            .spawn((SceneSource(default()), ScriptRef::default()))
+            .id();
+        app.world_mut().entity_mut(entity).insert(SceneNodeId(44));
+        app.update();
+        assert!(app.world().resource::<PendingLiveEdits>().0.is_empty());
+
+        for path in ["first.lua", "next.lua"] {
+            apply_node_components(
+                app.world_mut(),
+                44,
+                &[(
+                    ScriptRef::type_path().into(),
+                    serde_json::json!({ "path": path }),
+                )],
+                &[],
+            );
+            app.update();
+            assert_eq!(app.world().get::<ScriptRef>(entity).unwrap().path, path);
+            assert_eq!(
+                app.world_mut()
+                    .resource_mut::<PendingLiveEdits>()
+                    .0
+                    .remove(&entity),
+                Some(false)
+            );
+            app.update();
+            assert!(app.world().resource::<PendingLiveEdits>().0.is_empty());
+        }
     }
 
     #[test]

@@ -496,6 +496,9 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     app.add_plugins(viber::player::HeroPhysicsPlugin::<
         crate::player::VaelHeroScheme,
     >::new(crate::player::vael_hero_config));
+    // Corpos físicos dos personagens (`bevy_ext_puppet`): depois da física —
+    // os músculos entram no solver do Avian. `VAEL_PUPPET=0` desliga.
+    app.add_plugins(crate::puppet::VaelPuppetPlugin);
     app.add_plugins(viber::postfx::PostFxPlugin);
     app.add_plugins(viber::postfx_toggle::PostFxDebugTogglePlugin);
     app.add_plugins(viber::adaptive_quality::AdaptiveQualityPlugin);
@@ -582,6 +585,7 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // IA em modo serviço: sentidos + vitais das criaturas + o consumidor
     // ÚNICO do `AiLocomotion` (sem ele as criaturas atacam paradas).
     app.add_plugins(viber::ai::AiServicePlugin);
+    app.add_plugins(crate::actor_contact::ActorContactPlugin);
     // Navmesh Recast + A*/RVO (bevy_landmass), preferência por estradas.
     app.add_plugins(viber::nav::NavPlugin);
     // LOD de render: `VIBER_RENDER_LOD=0` desliga (A/B honesto).
@@ -635,7 +639,10 @@ pub fn build_app(path: &Path, opts: VaelAppOptions) -> Result<App> {
     // terreno (`nav::publish_nav_ground`) sai a seguir ao spawn.
     app.add_systems(
         bevy::app::Startup,
-        (spawn::startup, viber::nav::publish_nav_ground)
+        (
+            spawn::startup.in_set(viber::terrain::host::HostSpawn),
+            viber::nav::publish_nav_ground.after(viber::terrain::runtime::bootstrap),
+        )
             .chain()
             .in_set(viber::nav::WorldSpawned),
     );
@@ -766,8 +773,11 @@ fn jackdaw_plugins(plugins: PluginGroupBuilder) -> PluginGroupBuilder {
 
 /// Porta do runtime de ferramentas quando o jogo não pede `--bridge`.
 fn default_tools_port() -> u16 {
-    // A mesma porta histórica da bridge; o namespace separa os métodos.
-    15702
+    // O Play e os painéis herdam a mesma porta do processo do editor.
+    std::env::var("VAEL_TOOLS_PORT")
+        .ok()
+        .and_then(|value| value.trim().parse().ok())
+        .unwrap_or_else(|| bevy_ext_bridge_runtime::BridgeToolsPlugin::default().port)
 }
 
 /// `VAEL_TOOLS=1` ou PIE ligam o runtime sem `--bridge`.

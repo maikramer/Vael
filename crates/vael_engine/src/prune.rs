@@ -121,36 +121,74 @@ pub fn housekeeping(checkout_root: &Path, active_debug: bool) -> PruneReport {
 /// executáveis de teste em `deps/` (`hud_contract-<hash>`) e `examples/`.
 /// Reconhecidos por serem regulares, executáveis e SEM extensão — rlibs
 /// (`.rlib`), metadata (`.rmeta`), dependências (`.d`) e partilhadas (`.so`)
-/// ficam de fora. `.fingerprint`/`build` não são tocados. Subdiretórios
-/// ausentes (perfil sem `examples/`) contam como zero vítimas.
+/// ficam de fora. No Cargo 1.100, cada unidade tem out/ e fingerprint/
+/// próprios; só interessam unidades de binário, exemplo, bench ou teste.
 fn collect_binaries(profile_dir: &Path, out: &mut Vec<PathBuf>) {
     for dir in [
         profile_dir.to_path_buf(),
         profile_dir.join("deps"),
         profile_dir.join("examples"),
     ] {
-        let Ok(entries) = fs::read_dir(&dir) else {
+        collect_executables_in(&dir, out);
+    }
+    for package in directories(&profile_dir.join("build")) {
+        for unit in directories(&package) {
+            let Some(hash) = unit.file_name().and_then(|s| s.to_str()) else {
+                continue;
+            };
+            if hash.len() != 16 || !hash.bytes().all(|b| b.is_ascii_hexdigit()) {
+                continue;
+            }
+            let binary_unit = entries(&unit.join("fingerprint")).any(|entry| {
+                let name = entry.file_name();
+                name.to_str().is_some_and(|name| {
+                    name.ends_with(".json")
+                        && ["bin-", "example-", "bench-", "test-"]
+                            .iter()
+                            .any(|prefix| name.starts_with(prefix))
+                })
+            });
+            if binary_unit {
+                collect_executables_in(&unit.join("out"), out);
+            }
+        }
+    }
+}
+
+/// Lê só diretórios reais: um link dentro do perfil não alarga a limpeza.
+fn entries(path: &Path) -> impl Iterator<Item = fs::DirEntry> {
+    let reader = fs::symlink_metadata(path)
+        .ok()
+        .filter(|meta| meta.is_dir())
+        .and_then(|_| fs::read_dir(path).ok());
+    reader.into_iter().flatten().filter_map(Result::ok)
+}
+
+fn directories(parent: &Path) -> impl Iterator<Item = PathBuf> {
+    entries(parent)
+        .filter(|entry| entry.file_type().is_ok_and(|ty| ty.is_dir()))
+        .map(|entry| entry.path())
+}
+
+fn collect_executables_in(dir: &Path, out: &mut Vec<PathBuf>) {
+    for entry in entries(dir) {
+        let Ok(metadata) = entry.metadata() else {
             continue;
         };
-        for entry in entries.flatten() {
-            let Ok(metadata) = entry.metadata() else {
-                continue;
-            };
-            if !metadata.is_file() {
-                continue;
-            }
-            let file_name = entry.file_name();
-            let Some(name) = file_name.to_str() else {
-                continue;
-            };
-            if name.contains('.') {
-                continue;
-            }
-            if metadata.permissions().mode() & 0o111 == 0 {
-                continue;
-            }
-            out.push(entry.path());
+        if !metadata.is_file() {
+            continue;
         }
+        let file_name = entry.file_name();
+        let Some(name) = file_name.to_str() else {
+            continue;
+        };
+        if name.contains('.') {
+            continue;
+        }
+        if metadata.permissions().mode() & 0o111 == 0 {
+            continue;
+        }
+        out.push(entry.path());
     }
 }
 
@@ -350,6 +388,69 @@ mod tests {
             ]
         );
         let _ = fs::remove_dir_all(&root);
+    }
+
+    #[test]
+    fn cargo_1100_units_coexist_with_legacy_artifacts() {
+        use std::os::unix::fs::symlink;
+
+        let root = fixture_root("units");
+        let debug = root.join("target/debug");
+        let package = debug.join("build/vael");
+        let legacy = debug.join("deps/old-test");
+        write(&legacy, b"old", true);
+        let mut expected = vec![legacy];
+        for (id, fingerprint, binary, select) in [
+            (1, "bin-vael", "vael", true),
+            (2, "test-lib-vael", "vael-0000000000000002", true),
+            (
+                3,
+                "test-integration-test-world",
+                "world-0000000000000003",
+                true,
+            ),
+            (4, "example-demo", "demo", true),
+            (
+                5,
+                "build-script-build-script-build",
+                "build_script_build",
+                false,
+            ),
+            (
+                6,
+                "run-build-script-build-script-build",
+                "generated-tool",
+                false,
+            ),
+            (7, "lib-vael", "helper", false),
+        ] {
+            let unit = package.join(format!("{id:016x}"));
+            write(
+                &unit.join(format!("fingerprint/{fingerprint}.json")),
+                b"{}",
+                false,
+            );
+            let path = unit.join("out").join(binary);
+            write(&path, b"exe", true);
+            write(&unit.join("out/libkeep.so"), b"lib", true);
+            if select {
+                expected.push(path);
+            }
+        }
+
+        // Um out/ simbólico nunca torna o diretório externo elegível.
+        let linked = package.join("0000000000000008");
+        write(&linked.join("fingerprint/bin-linked.json"), b"{}", false);
+        let external = root.join("outside");
+        write(&external.join("keep"), b"exe", true);
+        symlink(&external, linked.join("out")).unwrap();
+
+        let mut found = Vec::new();
+        collect_binaries(&debug, &mut found);
+        found.sort();
+        expected.sort();
+        assert_eq!(found, expected);
+        let _ = fs::remove_dir_all(root);
     }
 
     #[test]

@@ -16,16 +16,18 @@ use std::path::Path;
 
 use bevy::prelude::*;
 
-use crate::content::{ProgressionFile, SkillDef};
+use crate::components::XpState;
+use crate::content::{ProgressionFile, SkillDef, VaelContent};
+use crate::stats::AttributeRules;
 
 /// Tamanho do botão/ícone de um nó, em unidades de UI.
-pub const NODE_SIZE: f32 = 64.0;
+pub const NODE_SIZE: f32 = 76.0;
 /// Distância horizontal entre lanes.
-pub const LANE_WIDTH: f32 = 78.0;
+pub const LANE_WIDTH: f32 = 92.0;
 /// Distância vertical entre tiers.
-pub const TIER_HEIGHT: f32 = 132.0;
+pub const TIER_HEIGHT: f32 = 104.0;
 /// Margem à volta do canvas.
-pub const MARGIN: f32 = 24.0;
+pub const MARGIN: f32 = 10.0;
 
 /// Um nó já posicionado no canvas lógico.
 #[derive(Debug, Clone, Default, PartialEq)]
@@ -137,10 +139,7 @@ impl VaelTalentLayout {
                 lane: lane as u32,
                 x: f64::from(MARGIN + lane as f32 * LANE_WIDTH),
                 y: f64::from(MARGIN + tier as f32 * TIER_HEIGHT),
-                requires: def
-                    .requires
-                    .clone()
-                    .filter(|parent| !parent.is_empty() && by_id.contains_key(parent.as_str())),
+                requires: def.requires.clone().filter(|parent| !parent.is_empty()),
                 excludes: def.excludes.clone().filter(|other| !other.is_empty()),
             });
         }
@@ -286,28 +285,23 @@ pub fn short_label(label: &str) -> String {
 pub enum TalentState {
     Learned,
     Ready,
+    NoPoints,
     Locked,
     Excluded,
 }
 
 impl TalentState {
-    pub fn of(node: &TalentLayoutNode, learned: &BTreeSet<String>) -> Self {
-        if learned.contains(&node.id) {
+    pub fn of(id: &str, requires: Option<&str>, excludes: Option<&str>, xp: &XpState) -> Self {
+        if xp.skills.contains(id) {
             Self::Learned
-        } else if node
-            .excludes
-            .as_deref()
-            .is_some_and(|other| learned.contains(other))
-        {
+        } else if excludes.is_some_and(|other| xp.skills.contains(other)) {
             Self::Excluded
-        } else if node
-            .requires
-            .as_deref()
-            .is_none_or(|parent| learned.contains(parent))
-        {
-            Self::Ready
-        } else {
+        } else if requires.is_some_and(|parent| !parent.is_empty() && !xp.skills.contains(parent)) {
             Self::Locked
+        } else if xp.skill_points < 1 {
+            Self::NoPoints
+        } else {
+            Self::Ready
         }
     }
 
@@ -317,12 +311,34 @@ impl TalentState {
             (Self::Learned, true) => "learned",
             (Self::Ready, false) => "disponível",
             (Self::Ready, true) => "available",
+            (Self::NoPoints, false) => "falta 1 ponto",
+            (Self::NoPoints, true) => "needs 1 point",
             (Self::Locked, false) => "bloqueada",
             (Self::Locked, true) => "locked",
             (Self::Excluded, false) => "ramo fechado",
             (Self::Excluded, true) => "branch closed",
         }
     }
+}
+
+/// Valida a compra no mesmo estado usado para debitar o ponto.
+pub(crate) fn purchase(def: &SkillDef, xp: &mut XpState) -> Result<(), TalentState> {
+    let state = TalentState::of(
+        &def.id,
+        def.requires.as_deref(),
+        def.excludes.as_deref(),
+        xp,
+    );
+    if state != TalentState::Ready {
+        return Err(state);
+    }
+    xp.skills.insert(def.id.clone());
+    xp.skill_points -= 1;
+    Ok(())
+}
+
+fn name(content: &VaelContent, lang: &str, id: &str, fallback: &str) -> String {
+    content.label(lang, &format!("talent.{id}"), fallback)
 }
 
 /// Nó do view-model. Os booleanos existem para os `DataTrigger` do bevy_pf
@@ -371,20 +387,27 @@ impl From<&TalentLayoutEdge> for TalentEdgeVm {
 /// Constrói os nós do VM com o estado actual.
 pub fn talent_nodes(
     layout: &VaelTalentLayout,
-    learned: &BTreeSet<String>,
+    xp: &XpState,
     selected: Option<&str>,
+    content: &VaelContent,
+    lang: &str,
 ) -> Vec<TalentNodeVm> {
     layout
         .nodes
         .iter()
         .map(|node| {
-            let state = TalentState::of(node, learned);
+            let state = TalentState::of(
+                &node.id,
+                node.requires.as_deref(),
+                node.excludes.as_deref(),
+                xp,
+            );
             let has_icon = layout.icons.contains(&node.id);
             TalentNodeVm {
                 id: node.id.clone(),
                 action: format!("talent-{}", node.id),
                 label: node.label.clone(),
-                short_label: node.short_label.clone(),
+                short_label: name(content, lang, &node.id, &node.short_label),
                 icon: if has_icon {
                     talent_icon(&node.id)
                 } else {
@@ -427,16 +450,48 @@ pub fn discover_icons(root: &Path) -> BTreeSet<String> {
 }
 
 /// Resumo legível dos `effects` para o painel de detalhe.
-pub fn effects_summary(def: &SkillDef, lang: &str) -> String {
+pub fn effects_summary(def: &SkillDef, lang: &str, rules: &AttributeRules) -> String {
     let en = lang == "en";
     let mut parts = Vec::new();
     for (key, value) in &def.effects {
         let text = match key.as_str() {
-            "strength" => format!("{} {}", if en { "STR" } else { "FOR" }, signed(*value)),
-            "agility" => format!("{} {}", if en { "AGI" } else { "DES" }, signed(*value)),
-            "vitality" => format!("VIT {}", signed(*value)),
-            "precision" => format!("PRE {}", signed(*value)),
-            "spirit" => format!("{} {}", if en { "SPI" } else { "ESP" }, signed(*value)),
+            "strength" => format!(
+                "{} {} · {} {}",
+                if en { "STR" } else { "FOR" },
+                signed(*value),
+                if en { "damage" } else { "dano" },
+                signed(value * f64::from(rules.damage_per_strength))
+            ),
+            "vitality" => format!(
+                "VIT {} · {} {}",
+                signed(*value),
+                if en { "max health" } else { "vida máxima" },
+                signed(value * f64::from(rules.hp_per_vitality))
+            ),
+            "agility" => format!(
+                "{} {} · {} {}%",
+                if en { "AGI" } else { "DES" },
+                signed(*value),
+                if en { "move speed" } else { "velocidade" },
+                signed(value * 100.0 * f64::from(rules.speed_per_agility))
+            ),
+            "precision" => format!(
+                "PRE {} · {} {}%",
+                signed(*value),
+                if en {
+                    "crit chance"
+                } else {
+                    "chance de crítico"
+                },
+                signed(value * 100.0 * f64::from(rules.crit_per_precision))
+            ),
+            "spirit" => format!(
+                "{} {} · {} {}%",
+                if en { "SPI" } else { "ESP" },
+                signed(*value),
+                if en { "life steal" } else { "roubo de vida" },
+                signed(value * 100.0 * f64::from(rules.lifesteal_per_spirit))
+            ),
             "damage" => format!("{} {}", if en { "damage" } else { "dano" }, signed(*value)),
             "max_hp" => format!("{} {}", if en { "health" } else { "vida" }, signed(*value)),
             "speed" => format!(
@@ -530,9 +585,9 @@ pub fn effects_summary(def: &SkillDef, lang: &str) -> String {
             "dash_iframes" => format!(
                 "{} {} s",
                 if en {
-                    "dash i-frames"
+                    "dodge invulnerability"
                 } else {
-                    "i-frames da esquiva"
+                    "invulnerabilidade na esquiva"
                 },
                 signed(*value)
             ),
@@ -544,14 +599,15 @@ pub fn effects_summary(def: &SkillDef, lang: &str) -> String {
 }
 
 /// "Requer: X" / "Sem requisitos", com a exclusão quando existe.
-pub fn requirement_text(def: &SkillDef, progression: &ProgressionFile, lang: &str) -> String {
+pub fn requirement_text(def: &SkillDef, content: &VaelContent, lang: &str) -> String {
     let en = lang == "en";
     let label_of = |id: &str| {
-        progression
+        content
+            .progression
             .skills
             .iter()
             .find(|skill| skill.id == id)
-            .map(|skill| skill.label.clone())
+            .map(|skill| name(content, lang, id, &short_label(&skill.label)))
             .unwrap_or_else(|| id.to_string())
     };
     let requires = def.requires.as_deref().unwrap_or("");
@@ -595,9 +651,9 @@ pub struct TalentDetail {
 /// Preenche o painel de detalhe; `def = None` dá o placeholder.
 pub fn talent_detail(
     def: Option<&SkillDef>,
-    progression: &ProgressionFile,
-    learned: &BTreeSet<String>,
-    points: i64,
+    content: &VaelContent,
+    xp: &XpState,
+    rules: &AttributeRules,
     lang: &str,
 ) -> TalentDetail {
     let en = lang == "en";
@@ -617,16 +673,13 @@ pub fn talent_detail(
             ..Default::default()
         };
     };
-    let node = TalentLayoutNode {
-        id: def.id.clone(),
-        label: def.label.clone(),
-        short_label: short_label(&def.label),
-        requires: def.requires.clone().filter(|parent| !parent.is_empty()),
-        excludes: def.excludes.clone().filter(|other| !other.is_empty()),
-        ..Default::default()
-    };
-    let state = TalentState::of(&node, learned);
-    let learn_enabled = state == TalentState::Ready && points > 0;
+    let state = TalentState::of(
+        &def.id,
+        def.requires.as_deref(),
+        def.excludes.as_deref(),
+        xp,
+    );
+    let learn_enabled = state == TalentState::Ready;
     let learn_label = match state {
         TalentState::Learned => {
             if en {
@@ -649,7 +702,7 @@ pub fn talent_detail(
                 "Bloqueada".to_string()
             }
         }
-        TalentState::Ready if points < 1 => {
+        TalentState::NoPoints => {
             if en {
                 "No points".to_string()
             } else {
@@ -664,21 +717,54 @@ pub fn talent_detail(
             }
         }
     };
+    let mut requirement = requirement_text(def, content, lang);
+    if matches!(def.id.as_str(), "strength1" | "agility1") {
+        let active = xp.skills.contains("strength1") && xp.skills.contains("agility1");
+        let (key, fallback) = if active {
+            (
+                "talent.counterbeat.active",
+                "Contratempo · Usa Impacto quando o anel abrir na tua pegada.",
+            )
+        } else {
+            (
+                "talent.counterbeat.hint",
+                "Força I + Agilidade I · A esquiva deixa um eco que responde ao Impacto.",
+            )
+        };
+        requirement.push('\n');
+        requirement.push_str(&content.label(lang, key, fallback));
+    }
     TalentDetail {
         visible: true,
         icon: talent_icon(&def.id),
         has_icon: true,
-        title: def.label.clone(),
-        effects: effects_summary(def, lang),
-        requirement: requirement_text(def, progression, lang),
-        status: state.text(lang).to_string(),
+        title: name(content, lang, &def.id, &short_label(&def.label)),
+        effects: effects_summary(def, lang, rules),
+        requirement,
+        status: if state == TalentState::NoPoints {
+            let every = content.progression.song_seed_talent_every;
+            match (en, every > 0) {
+                (true, true) => format!("Gain a level or collect {every} Song Seeds per point."),
+                (false, true) => {
+                    format!("Ganha um nível ou reúne {every} Sementes de Canção por ponto.")
+                }
+                _ => if en {
+                    "Gain a level to earn a point."
+                } else {
+                    "Ganha um nível para obter um ponto."
+                }
+                .into(),
+            }
+        } else {
+            state.text(lang).to_string()
+        },
         learn_label,
         learn_enabled,
     }
 }
 
 fn signed(value: f64) -> String {
-    if value.fract() == 0.0 {
+    if (value - value.round()).abs() < 0.00001 {
         format!("{value:+.0}")
     } else {
         format!("{value:+.1}")
@@ -689,39 +775,14 @@ fn signed(value: f64) -> String {
 mod tests {
     use super::*;
 
-    fn skill(id: &str, requires: Option<&str>, excludes: Option<&str>) -> SkillDef {
-        SkillDef {
-            id: id.to_string(),
-            label: format!("{id} (teste)"),
-            requires: requires.map(str::to_string),
-            excludes: excludes.map(str::to_string),
-            ..Default::default()
-        }
+    fn progression() -> ProgressionFile {
+        serde_json::from_str(include_str!("../../data/progression.json")).unwrap()
     }
 
-    fn progression() -> ProgressionFile {
-        ProgressionFile {
-            skills: vec![
-                skill("vitality1", None, None),
-                skill("strength1", None, None),
-                skill("agility1", None, None),
-                skill("precision1", None, None),
-                skill("vitality2", Some("vitality1"), None),
-                skill("strength2", Some("strength1"), None),
-                skill("agility2", Some("agility1"), None),
-                skill("precision2", Some("precision1"), None),
-                skill("spirit1", Some("vitality1"), None),
-                skill("spirit2", Some("spirit1"), None),
-                skill("flask3", Some("vitality1"), None),
-                skill("bulwark", Some("vitality2"), Some("bloodthirst")),
-                skill("bloodthirst", Some("vitality2"), Some("bulwark")),
-                skill("embers", Some("strength2"), Some("tremor")),
-                skill("tremor", Some("strength2"), Some("embers")),
-                skill("windstep", Some("agility2"), Some("ghost")),
-                skill("ghost", Some("agility2"), Some("windstep")),
-                skill("executioner", Some("precision2"), Some("duelist")),
-                skill("duelist", Some("precision2"), Some("executioner")),
-            ],
+    fn xp(skills: &[&str], points: i64) -> XpState {
+        XpState {
+            skills: skills.iter().map(|id| id.to_string()).collect(),
+            skill_points: points,
             ..Default::default()
         }
     }
@@ -791,12 +852,11 @@ mod tests {
     #[test]
     fn estados_seguem_a_prioridade_da_lista() {
         let layout = VaelTalentLayout::build(&progression());
-        let learned = BTreeSet::from([
-            "vitality1".to_string(),
-            "vitality2".to_string(),
-            "bulwark".to_string(),
-        ]);
-        let state = |id: &str| TalentState::of(layout.node(id).expect("nó"), &learned);
+        let xp = xp(&["vitality1", "vitality2", "bulwark"], 1);
+        let state = |id: &str| {
+            let node = layout.node(id).unwrap();
+            TalentState::of(id, node.requires.as_deref(), node.excludes.as_deref(), &xp)
+        };
         assert_eq!(state("vitality1"), TalentState::Learned);
         assert_eq!(state("vitality2"), TalentState::Learned);
         assert_eq!(state("spirit1"), TalentState::Ready);
@@ -809,8 +869,14 @@ mod tests {
     fn vm_marca_estado_e_icone() {
         let mut layout = VaelTalentLayout::build(&progression());
         layout.icons.insert("strength2".to_string());
-        let learned = BTreeSet::from(["strength1".to_string()]);
-        let nodes = talent_nodes(&layout, &learned, Some("strength2"));
+        let xp = xp(&["strength1"], 1);
+        let nodes = talent_nodes(
+            &layout,
+            &xp,
+            Some("strength2"),
+            &VaelContent::default(),
+            "pt",
+        );
         let strength1 = nodes.iter().find(|node| node.id == "strength1").unwrap();
         let strength2 = nodes.iter().find(|node| node.id == "strength2").unwrap();
         assert!(strength1.learned);
@@ -822,38 +888,79 @@ mod tests {
 
     #[test]
     fn detalhe_mostra_efeito_e_requisito() {
-        let mut def = skill("strength1", None, None);
-        def.effects.insert("strength".to_string(), 2.0);
-        def.label = "Força I (+2 Força)".to_string();
-        let progression = progression();
-        let detail = talent_detail(Some(&def), &progression, &BTreeSet::new(), 1, "pt");
+        let content = VaelContent {
+            progression: progression(),
+            ..Default::default()
+        };
+        let def = content
+            .progression
+            .skills
+            .iter()
+            .find(|s| s.id == "strength1");
+        let detail = talent_detail(def, &content, &xp(&[], 1), &AttributeRules::default(), "pt");
         assert!(detail.visible);
         assert!(detail.learn_enabled);
-        assert_eq!(detail.title, "Força I (+2 Força)");
-        assert_eq!(detail.effects, "FOR +2");
-        assert_eq!(detail.requirement, "Sem requisitos");
+        assert_eq!(detail.title, "Força I");
+        assert_eq!(detail.effects, "FOR +2 · dano +6");
+        assert!(
+            detail
+                .requirement
+                .starts_with("Sem requisitos\nForça I + Agilidade I")
+        );
         assert_eq!(detail.status, "disponível");
         assert_eq!(detail.learn_label, "Aprender (1 ponto)");
     }
 
     #[test]
     fn detalhe_bloqueia_sem_pontos_e_ramo_fechado() {
-        let progression = progression();
-        let bulwark = progression
-            .skills
-            .iter()
-            .find(|skill| skill.id == "bulwark")
-            .unwrap();
-        let learned = BTreeSet::from([
-            "vitality1".to_string(),
-            "vitality2".to_string(),
-            "bloodthirst".to_string(),
-        ]);
-        let detail = talent_detail(Some(bulwark), &progression, &learned, 1, "pt");
+        let content = VaelContent::load(Path::new(env!("CARGO_MANIFEST_DIR")));
+        let talent = |id: &str| content.progression.skills.iter().find(|s| s.id == id);
+        let rules = AttributeRules::default();
+        let detail = talent_detail(
+            talent("bulwark"),
+            &content,
+            &xp(&["vitality1", "vitality2", "bloodthirst"], 1),
+            &rules,
+            "en",
+        );
         assert!(!detail.learn_enabled);
-        assert_eq!(detail.status, "ramo fechado");
-        assert!(detail.requirement.contains("Requer: vitality2"));
-        assert!(detail.requirement.contains("exclui bloodthirst"));
+        assert_eq!(detail.title, "Bulwark");
+        assert_eq!(detail.status, "branch closed");
+        assert!(detail.requirement.contains("Requires: Vitality II"));
+        assert!(detail.requirement.contains("excludes Bloodthirst"));
+        let empty = talent_detail(talent("strength1"), &content, &xp(&[], 0), &rules, "en");
+        assert!(!empty.learn_enabled);
+        assert!(empty.status.contains("5 Song Seeds"));
+    }
+
+    #[test]
+    fn purchases_charge_once_and_choices_survive_a_save() {
+        use crate::save::VaelSave;
+        let progression = progression();
+        let skill = |id: &str| progression.skills.iter().find(|s| s.id == id).unwrap();
+        let mut save = VaelSave {
+            progression: xp(&[], 3),
+            ..Default::default()
+        };
+        let state = &mut save.progression;
+        assert_eq!(purchase(skill("ghost"), state), Err(TalentState::Locked));
+        for id in ["agility1", "agility2", "windstep"] {
+            assert_eq!(purchase(skill(id), state), Ok(()));
+            assert_eq!(purchase(skill(id), state), Err(TalentState::Learned));
+        }
+        let mut restored = VaelSave::from_world_kv(&save.to_world_kv()).progression;
+        assert_eq!(restored.skill_points, 0);
+        assert_eq!(
+            purchase(skill("strength1"), &mut restored),
+            Err(TalentState::NoPoints)
+        );
+        restored.skill_points = 1;
+        assert_eq!(
+            purchase(skill("ghost"), &mut restored),
+            Err(TalentState::Excluded)
+        );
+        assert_eq!(purchase(skill("strength1"), &mut restored), Ok(()));
+        assert_eq!(restored.skill_points, 0);
     }
 
     #[test]

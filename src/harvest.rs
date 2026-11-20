@@ -345,8 +345,8 @@ struct FloraFellTree;
 
 /// Foco da interação "Cortar em toros" numa árvore já deitada.
 #[derive(Debug, Clone, Default, Resource)]
-struct BuckFocus {
-    entity: Option<Entity>,
+pub(crate) struct BuckFocus {
+    pub(crate) entity: Option<Entity>,
     cooldown: f32,
 }
 
@@ -404,6 +404,11 @@ struct HarvestServices<'w, 's> {
     spawns: Option<ResMut<'w, PendingScriptSpawns>>,
     scales: Option<ResMut<'w, PendingReplacementScales>>,
     motion: Option<Res<'w, crate::player::HeroMotionBus>>,
+    collect_fx: Option<Res<'w, crate::collect_fx::CollectBurstQueue>>,
+    hit_flashes: Option<Res<'w, crate::collect_fx::HitFlashQueue>>,
+    shake: Option<ResMut<'w, bevy_ext_engine::camera_glue::CameraShake>>,
+    children: Query<'w, 's, &'static Children>,
+    crystals: Query<'w, 's, (), With<crate::rocks::CrystalGrowth>>,
 }
 
 /// Pedidos de tombo vindos do Lua (`viber.vael.fell_tree`): a função só
@@ -740,7 +745,11 @@ impl Plugin for VaelHarvestPlugin {
             .add_systems(Update, attach_late_harvestables)
             .add_systems(
                 PreUpdate,
-                (read_harvest_buttons, update_harvest_focus)
+                (
+                    sync_size_scaled_hits,
+                    read_harvest_buttons,
+                    update_harvest_focus,
+                )
                     .chain()
                     .after(crate::input::VaelInputSystems)
                     .after(bevy::input::InputSystems),
@@ -1272,11 +1281,128 @@ fn read_gate() -> Option<bool> {
     viber::luau::game::game_get_json(RUST_GATE_KEY).map(|v| v.as_bool().unwrap_or(false))
 }
 
+/// Marca pedras e árvores cujo número de golpes escala proporcionalmente ao
+/// tamanho físico da instância (escala do `Transform`, segmentos/dimensões de
+/// `QuarryStone`, tronco do `TreePool` ou AABB do `Collider`).
+#[derive(Component, Debug, Clone, Copy)]
+pub struct SizeScaledHits {
+    pub base_hits: i64,
+}
+
+fn effective_scale(transform: Option<&Transform>, global: Option<&GlobalTransform>) -> Vec3 {
+    let local = transform.map_or(Vec3::ONE, |t| t.scale.abs());
+    let world = global.map_or(Vec3::ONE, |g| g.scale().abs());
+    if (world - Vec3::ONE).length_squared() > 1e-6 {
+        world
+    } else {
+        local
+    }
+}
+
+/// Golpes necessários para minerar uma pedra em função do tamanho (escala,
+/// número de blocos da formação procedural e volume do collider).
+pub fn rock_hits_for_size(
+    base_hits: i64,
+    scale: Vec3,
+    segments: Option<u8>,
+    collider: Option<&avian3d::prelude::Collider>,
+) -> i64 {
+    let base = base_hits.max(1) as f32;
+    let scale = scale.abs();
+    let mean_scale = (scale.x * scale.y * scale.z).cbrt();
+    if !mean_scale.is_finite() || mean_scale <= 0.0 {
+        return base_hits.max(1);
+    }
+    let extent_ratio = if let Some(collider) = collider {
+        let aabb = collider
+            .shape()
+            .compute_aabb(&avian3d::parry::math::Pose::identity());
+        let local_ext = Vec3::new(
+            aabb.maxs.x - aabb.mins.x,
+            aabb.maxs.y - aabb.mins.y,
+            aabb.maxs.z - aabb.mins.z,
+        )
+        .abs();
+        let world_ext = local_ext * scale;
+        let geom_extent = (world_ext.x * world_ext.y * world_ext.z).cbrt();
+        if geom_extent.is_finite() && geom_extent > 1e-3 {
+            // Referência: pedra média de 1 segmento à escala 1 (~1.06 m de média geométrica).
+            (geom_extent / 1.06).max(0.25)
+        } else {
+            mean_scale
+        }
+    } else {
+        mean_scale
+    };
+    let segment_bonus = 1.0 + 0.12 * f32::from(segments.unwrap_or(1).saturating_sub(1));
+    ((base * extent_ratio * segment_bonus).round() as i64).clamp(1, 10)
+}
+
+/// Golpes necessários para derrubar uma árvore em função do raio do tronco,
+/// altura e escala da instância.
+pub fn tree_hits_for_size(
+    base_hits: i64,
+    scale: Vec3,
+    trunk_radius: Option<f32>,
+    trunk_height: Option<f32>,
+    collider: Option<&avian3d::prelude::Collider>,
+) -> i64 {
+    let base = base_hits.max(1) as f32;
+    let scale = scale.abs();
+    let mean_scale = (scale.x * scale.y * scale.z).cbrt();
+    if !mean_scale.is_finite() || mean_scale <= 0.0 {
+        return base_hits.max(1);
+    }
+    let scale_xz = (scale.x * scale.z).sqrt();
+    let size_ratio = if let (Some(r), Some(h)) = (trunk_radius, trunk_height) {
+        let world_r = (r * scale_xz).max(0.05);
+        let world_h = (h * scale.y).max(0.5);
+        // Referência (3 golpes): raio de tronco ~0.40 m e altura ~7.5 m.
+        (world_r / 0.40) * 0.65 + (world_h / 7.5) * 0.35
+    } else if let Some(collider) = collider {
+        let aabb = collider
+            .shape()
+            .compute_aabb(&avian3d::parry::math::Pose::identity());
+        let local_ext = Vec3::new(
+            aabb.maxs.x - aabb.mins.x,
+            aabb.maxs.y - aabb.mins.y,
+            aabb.maxs.z - aabb.mins.z,
+        )
+        .abs();
+        let world_r = ((local_ext.x + local_ext.z) * 0.25 * scale_xz).max(0.05);
+        let world_h = (local_ext.y * scale.y).max(0.5);
+        // Cilindro de estação padrão: raio ~0.45 m, altura 4.4 m.
+        (world_r / 0.45) * 0.65 + (world_h / 4.4) * 0.35
+    } else {
+        mean_scale
+    };
+    ((base * size_ratio).round() as i64).clamp(1, 10)
+}
+
+/// Golpes necessários para processar um tronco caído (`GroundLog`) em função
+/// do comprimento e do raio da base.
+pub fn log_hits_for_size(length: f32, radius: f32) -> i64 {
+    let length = length.max(0.25);
+    let radius = radius.max(0.05);
+    let ratio = (radius / 0.38) * 0.65 + (length / 5.5) * 0.35;
+    ((3.0 * ratio).round() as i64).clamp(1, 8)
+}
+
 /// Copia os props autorais para [`Harvestable`] (PostStartup + SceneLoad).
 fn attach_harvestables(
     mut commands: Commands,
     root: Option<Res<VaelProjectRoot>>,
-    props: Query<(Entity, &ScriptProps, Option<&Name>, Option<&SceneSource>), Without<Harvestable>>,
+    props: Query<
+        (
+            Entity,
+            &ScriptProps,
+            Option<&Name>,
+            Option<&SceneSource>,
+            Option<&Transform>,
+            Option<&GlobalTransform>,
+        ),
+        Without<Harvestable>,
+    >,
 ) {
     let root = root.as_deref().map(|root| root.0.as_path());
     attach_props(&mut commands, root, &props);
@@ -1289,7 +1415,14 @@ fn attach_late_harvestables(
     mut commands: Commands,
     root: Option<Res<VaelProjectRoot>>,
     props: Query<
-        (Entity, &ScriptProps, Option<&Name>, Option<&SceneSource>),
+        (
+            Entity,
+            &ScriptProps,
+            Option<&Name>,
+            Option<&SceneSource>,
+            Option<&Transform>,
+            Option<&GlobalTransform>,
+        ),
         (Added<ScriptProps>, Without<Harvestable>),
     >,
 ) {
@@ -1300,9 +1433,19 @@ fn attach_late_harvestables(
 fn attach_props<F: bevy::ecs::query::QueryFilter>(
     commands: &mut Commands,
     root: Option<&Path>,
-    props: &Query<(Entity, &ScriptProps, Option<&Name>, Option<&SceneSource>), F>,
+    props: &Query<
+        (
+            Entity,
+            &ScriptProps,
+            Option<&Name>,
+            Option<&SceneSource>,
+            Option<&Transform>,
+            Option<&GlobalTransform>,
+        ),
+        F,
+    >,
 ) {
-    for (entity, props, name, source) in props.iter() {
+    for (entity, props, name, source, transform, global) in props.iter() {
         let name = name.map(Name::as_str).unwrap_or("");
         let key = stable_key(Some(name), source, root);
         // O `.bsn` tipado é a fonte; as props (strings do DSL) só para mundos
@@ -1316,8 +1459,81 @@ fn attach_props<F: bevy::ecs::query::QueryFilter>(
                 key.clone(),
             )
         });
-        if let Some(harvestable) = typed.or_else(|| Harvestable::from_props(&props.0, name, key)) {
-            commands.entity(entity).insert(harvestable);
+        if let Some(mut harvestable) =
+            typed.or_else(|| Harvestable::from_props(&props.0, name, key))
+        {
+            let tool = harvestable.tool();
+            if matches!(tool, "chop" | "mine") {
+                let base_hits = harvestable.hits;
+                let scale = effective_scale(transform, global);
+                let scaled = if tool == "mine" {
+                    rock_hits_for_size(base_hits, scale, None, None)
+                } else {
+                    tree_hits_for_size(base_hits, scale, None, None, None)
+                };
+                harvestable.hits = scaled;
+                harvestable.remaining = scaled;
+                commands
+                    .entity(entity)
+                    .insert((harvestable, SizeScaledHits { base_hits }));
+            } else {
+                commands.entity(entity).insert(harvestable);
+            }
+        }
+    }
+}
+
+/// Atualiza `hits`/`remaining` de pedras e árvores intactas assim que a sua
+/// geometria final (`QuarryStone`, `PooledTree` ou `Collider`) fica disponível.
+#[allow(clippy::type_complexity)]
+fn sync_size_scaled_hits(
+    pools: Option<Res<Assets<bevy_flora::TreePool>>>,
+    mut targets: Query<
+        (
+            &mut Harvestable,
+            &SizeScaledHits,
+            Option<&Transform>,
+            Option<&GlobalTransform>,
+            Option<&crate::rocks::QuarryStone>,
+            Option<&PooledTree>,
+            Option<&avian3d::prelude::Collider>,
+        ),
+        Or<(
+            Added<SizeScaledHits>,
+            Added<crate::rocks::QuarryStone>,
+            Added<PooledTree>,
+            Added<avian3d::prelude::Collider>,
+            Changed<Transform>,
+        )>,
+    >,
+) {
+    for (mut harvestable, size_scaled, transform, global, quarry, pooled, collider) in
+        &mut targets
+    {
+        // Não altera a contagem de uma pedra ou árvore que já levou golpes.
+        if harvestable.remaining != harvestable.hits {
+            continue;
+        }
+        let scale = effective_scale(transform, global);
+        let scaled = match harvestable.tool() {
+            "mine" => rock_hits_for_size(
+                size_scaled.base_hits,
+                scale,
+                quarry.map(|q| q.segments),
+                collider,
+            ),
+            "chop" => {
+                let (trunk_r, trunk_h) = pooled
+                    .and_then(|p| pools.as_ref()?.get(&p.pool))
+                    .map(|pool| (Some(pool.params.trunk.radius), Some(pool.params.trunk.height)))
+                    .unwrap_or((None, None));
+                tree_hits_for_size(size_scaled.base_hits, scale, trunk_r, trunk_h, collider)
+            }
+            _ => continue,
+        };
+        if harvestable.hits != scaled {
+            harvestable.hits = scaled;
+            harvestable.remaining = scaled;
         }
     }
 }
@@ -1682,9 +1898,24 @@ fn harvest_input(
     };
     if !uses_tool {
         focus.cooldown = SWING_COOLDOWN;
+        commands
+            .entity(hero)
+            .insert(viber::animation::PendingGesture {
+                name: "gather".into(),
+                duration: Some(0.55),
+                speed: 1.0,
+                blend: Some(0.06),
+                age: 0.,
+                lock: false,
+            });
     }
     if !broken {
         emit(false);
+        if let Some(flashes) = services.hit_flashes.as_deref() {
+            // Árvores procedurais já têm `TreeShakes`; rochas/arbustos/troncos
+            // recebem também um micro squash-and-stretch elástico.
+            flashes.push(entity, pooled.is_none(), 1.0);
+        }
         play_sfx(&mut commands, hit_clip(style, &kind), position);
         return;
     }
@@ -1723,6 +1954,31 @@ fn harvest_input(
     emit(!full);
     if !full && let (Some(log), Some(save)) = (timber_hit, save.as_deref_mut()) {
         save.timber.remove(&log.id);
+    }
+    if !full {
+        crate::collect_fx::subtle_camera_shake(
+            services.shake.as_deref_mut(),
+            if style == BreakStyle::Fall { 0.14 } else { 0.09 },
+        );
+        if let Some(bursts) = services.collect_fx.as_deref() {
+            let has_crystal = services
+                .children
+                .get(entity)
+                .is_ok_and(|kids| kids.iter().any(|k| services.crystals.contains(k)));
+            let visual = if has_crystal {
+                crate::collect_fx::CollectVisualKind::Crystal
+            } else if !kind.is_empty() {
+                crate::collect_fx::CollectVisualKind::from_resource_kind(&kind)
+            } else if tool == "chop" {
+                crate::collect_fx::CollectVisualKind::Wood
+            } else if tool == "mine" {
+                crate::collect_fx::CollectVisualKind::Stone
+            } else {
+                crate::collect_fx::CollectVisualKind::Berry
+            };
+            let count = (added.max(harvestable.amount).clamp(2, 6)) as u8;
+            bursts.push(visual, position + Vec3::Y * 0.75, count);
+        }
     }
     if full {
         // O Lua deixa o prop a um golpe de partir e tenta outra vez depois de
@@ -2235,6 +2491,8 @@ fn buck_felled_trees(
     mut focus: ResMut<BuckFocus>,
     interaction: Option<Res<InteractionFocus>>,
     mut save: Option<ResMut<VaelSave>>,
+    collect_fx: Option<Res<crate::collect_fx::CollectBurstQueue>>,
+    mut shake: Option<ResMut<bevy_ext_engine::camera_glue::CameraShake>>,
     players: Query<&GlobalTransform, (With<Player>, Without<crate::boat::RidingBoat>)>,
     felled: Query<
         (
@@ -2305,8 +2563,18 @@ fn buck_felled_trees(
         min_radius: LOG_MIN_RADIUS,
     });
     // Persistência ANTES: o crate pode despawnar a entidade no mesmo frame.
-    if let Ok((_, _, _, Some(key), _, _)) = felled.get(target) {
-        store_flora_bucked(save.as_deref_mut(), &key.0);
+    if let Ok((_, tf, _, key, _, _)) = felled.get(target) {
+        if let Some(key) = key {
+            store_flora_bucked(save.as_deref_mut(), &key.0);
+        }
+        crate::collect_fx::subtle_camera_shake(shake.as_deref_mut(), 0.09);
+        if let Some(bursts) = collect_fx.as_deref() {
+            bursts.push(
+                crate::collect_fx::CollectVisualKind::Wood,
+                tf.translation() + Vec3::Y * 0.55,
+                4,
+            );
+        }
     }
     focus.cooldown = BUCK_COOLDOWN;
     focus.entity = None;
@@ -3623,6 +3891,65 @@ mod tests {
         assert!(
             !kv.contains_key(RUST_GATE_KEY),
             "gate desligado sai do store"
+        );
+    }
+
+    #[test]
+    fn numero_de_golpes_escala_proporcionalmente_ao_tamanho_de_pedras_e_arvores() {
+        // Pedras: pequena < média < grande (mais segmentos e maior volume/escala).
+        let small_rock_collider = avian3d::prelude::Collider::cuboid(0.8, 0.45, 0.7);
+        let medium_rock_collider = avian3d::prelude::Collider::cuboid(1.4, 0.7, 1.25);
+        let large_rock_collider = avian3d::prelude::Collider::cuboid(2.2, 1.3, 2.0);
+        let small_rock_hits = rock_hits_for_size(
+            3,
+            Vec3::splat(0.75),
+            Some(1),
+            Some(&small_rock_collider),
+        );
+        let medium_rock_hits = rock_hits_for_size(
+            3,
+            Vec3::ONE,
+            Some(1),
+            Some(&medium_rock_collider),
+        );
+        let multi_seg_rock_hits = rock_hits_for_size(
+            3,
+            Vec3::splat(1.1),
+            Some(3),
+            Some(&medium_rock_collider),
+        );
+        let large_rock_hits = rock_hits_for_size(
+            3,
+            Vec3::splat(1.25),
+            Some(3),
+            Some(&large_rock_collider),
+        );
+        assert!(
+            small_rock_hits < medium_rock_hits
+                && medium_rock_hits < multi_seg_rock_hits
+                && multi_seg_rock_hits < large_rock_hits,
+            "golpes de pedra devem crescer com o tamanho: small={small_rock_hits}, med={medium_rock_hits}, multi={multi_seg_rock_hits}, large={large_rock_hits}"
+        );
+
+        // Árvores em pé: cerejeira pequena < bétula média < pinheiro grande < carvalho gigante.
+        let small_tree_hits = tree_hits_for_size(3, Vec3::splat(0.75), Some(0.22), Some(2.0), None);
+        let medium_tree_hits = tree_hits_for_size(3, Vec3::ONE, Some(0.35), Some(7.5), None);
+        let large_tree_hits = tree_hits_for_size(3, Vec3::splat(1.1), Some(0.60), Some(8.0), None);
+        let giant_oak_hits = tree_hits_for_size(3, Vec3::splat(1.35), Some(0.80), Some(8.0), None);
+        assert!(
+            small_tree_hits < medium_tree_hits
+                && medium_tree_hits < large_tree_hits
+                && large_tree_hits < giant_oak_hits,
+            "golpes de árvore devem crescer com o tamanho: small={small_tree_hits}, med={medium_tree_hits}, large={large_tree_hits}, giant={giant_oak_hits}"
+        );
+
+        // Troncos caídos: tronco fino/curto < médio < grosso/comprido.
+        let small_log_hits = log_hits_for_size(2.2, 0.16);
+        let medium_log_hits = log_hits_for_size(5.5, 0.38);
+        let large_log_hits = log_hits_for_size(7.0, 0.72);
+        assert!(
+            small_log_hits < medium_log_hits && medium_log_hits < large_log_hits,
+            "golpes de tronco caído devem crescer com o tamanho: small={small_log_hits}, med={medium_log_hits}, large={large_log_hits}"
         );
     }
 }

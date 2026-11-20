@@ -196,9 +196,11 @@ fn yaml_scalar(raw: &str) -> &str {
             _ => {}
         }
     }
-    raw[..end]
-        .trim()
-        .trim_matches(|c| c == '"' || c == '\'')
+    let value = raw[..end].trim();
+    value
+        .strip_circumfix('"', '"')
+        .or_else(|| value.strip_circumfix('\'', '\''))
+        .unwrap_or(value)
         .trim()
 }
 
@@ -536,6 +538,8 @@ mod tests {
         assert_eq!(yaml_scalar("'world.bsn'  # nota"), "world.bsn");
         assert_eq!(yaml_scalar("a#b.bsn"), "a#b.bsn");
         assert_eq!(yaml_scalar("\"a#b.bsn\"  # x"), "a#b.bsn");
+        assert_eq!(yaml_scalar(r#""'intro'.bsn" # cena"#), "'intro'.bsn");
+        assert_eq!(yaml_scalar(r#"'a.bsn"'"#), "a.bsn\"");
         assert_eq!(yaml_scalar(""), "");
     }
 

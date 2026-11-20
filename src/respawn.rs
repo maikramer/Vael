@@ -136,12 +136,20 @@ pub const DEATH_GOLD_FRAC: f64 = 0.25;
 pub fn start_death_side_effects(world: &mut World) {
     // `Transform` (e não a global, que só propaga no PostUpdate): a bolsa
     // fica onde o herói caiu neste frame.
-    let position = world
-        .query_filtered::<&Transform, With<Player>>()
+    let player_pose = world
+        .query_filtered::<(Entity, &Transform), With<Player>>()
         .iter(world)
         .next()
-        .map(|transform| transform.translation)
+        .map(|(entity, transform)| (entity, transform.translation));
+    let position = player_pose
+        .map(|(_, translation)| translation)
         .filter(|position| position.is_finite());
+    if let (Some((entity, _)), Some(control)) = (
+        player_pose,
+        world.get_resource::<crate::puppet::VaelPuppetControl>(),
+    ) {
+        control.request_kill(entity);
+    }
     // `drop_purse`: só no mundo grande — as coordenadas de um interior não
     // valem em `main` (e sem cena, como no Lua, vale).
     let in_main = world
@@ -274,6 +282,7 @@ impl Plugin for VaelRespawnPlugin {
 /// Teleporta o herói para `requested` com o chão da física (a mesma via do
 /// `viber.teleport_player`: `teleport_landing` + `TeleportSettle`).
 pub fn teleport_player(world: &mut World, requested: Vec3) {
+    crate::puppet::release_player_puppets(world);
     let Some(entity) = world
         .query_filtered::<Entity, With<Player>>()
         .iter(world)
@@ -299,8 +308,12 @@ pub fn teleport_player(world: &mut World, requested: Vec3) {
 /// deixa `pending_respawn` para a ponte Lua; se a troca falhar, teleporta na
 /// mesma (o jogador nunca fica preso no interior).
 pub fn respawn_now(world: &mut World, spawn: Vec3, flasks: u32) {
+    crate::puppet::release_player_puppets(world);
     let save = world.resource::<VaelSave>().clone();
     let mut patch = respawn_patch(&save, flasks);
+    if let Some(bus) = world.get_resource::<crate::player::HeroMotionBus>() {
+        bus.lock().stamina = Default::default();
+    }
     let scene = world.get_resource::<CurrentScene>().cloned();
     let interior = scene
         .as_ref()
@@ -502,5 +515,110 @@ mod tests {
         let kv = viber::luau::game::game_to_json_process();
         assert_eq!(kv.get("item.gold").and_then(Value::as_i64), Some(3));
         assert!(!kv.contains_key("lost_gold"), "floor(3 * 0.25) = 0");
+    }
+
+    /// Regressão: morrer longe da praça (`puppet_kill` monta `Puppet` em
+    /// `PuppetMode::Dead`) e clicar em "Tentar de novo" (`respawn_now`) tem de
+    /// desmontar o corpo físico do herói antes do teleporte — caso contrário,
+    /// `write_back_pose` mantinha os ossos (`Pelvis`..`HandR`) e a arma filha
+    /// de `HandR` presos aos corpos ragdoll deixados no local da morte,
+    /// deixando o personagem e a arma invisíveis na praça.
+    #[test]
+    fn respawn_now_dismantles_dead_hero_puppet_so_hero_and_weapon_stay_visible_at_spawn() {
+        use std::time::Duration;
+        use avian3d::prelude::*;
+        use bevy::time::TimeUpdateStrategy;
+        use bevy_ext_puppet::prelude::*;
+        use bevy_ext_puppet::skeleton::spawn_test_skeleton_world;
+
+        let _store_lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK
+            .lock()
+            .expect("lock do store");
+        viber::luau::game::restore_game_json(&BTreeMap::new());
+
+        let mut app = App::new();
+        app.add_plugins((
+            MinimalPlugins,
+            bevy::transform::TransformPlugin,
+            bevy::asset::AssetPlugin::default(),
+            PhysicsPlugins::default(),
+            crate::puppet::VaelPuppetPlugin,
+        ));
+        app.init_asset::<Mesh>();
+        app.add_message::<bevy_ext_luau::commands::ScriptCommandMessage>();
+        app.insert_resource(TimeUpdateStrategy::ManualDuration(Duration::from_secs_f64(
+            1.0 / 60.0,
+        )));
+        app.insert_resource(Time::<Fixed>::from_hz(60.0));
+        app.insert_resource(save());
+        app.insert_resource(cena_interior("main"));
+        app.finish();
+        app.cleanup();
+
+        let death_pos = Vec3::new(50.0, 0.0, 50.0);
+        let spawn_pos = Vec3::new(0.0, 0.0, 0.0);
+
+        let hero = app
+            .world_mut()
+            .spawn((
+                Player::default(),
+                crate::components::VaelPlayer,
+                Transform::from_translation(death_pos),
+            ))
+            .id();
+        let bones = spawn_test_skeleton_world(app.world_mut(), hero);
+        let hand_r = bones[PuppetPart::HandR.index()];
+        let weapon = app
+            .world_mut()
+            .spawn((Name::new("weapon"), Transform::from_xyz(0.12, 0.04, 0.04)))
+            .id();
+        app.world_mut().entity_mut(hand_r).add_child(weapon);
+
+        // Herói morre longe da praça (`puppet_kill`).
+        app.world_mut()
+            .resource::<crate::puppet::VaelPuppetControl>()
+            .request_kill(hero);
+        for _ in 0..10 {
+            app.update();
+        }
+        assert!(
+            app.world().get::<PuppetRig>(hero).is_some(),
+            "o rig físico da morte tem de estar montado"
+        );
+        assert_eq!(
+            app.world().get::<PuppetState>(hero).map(|s| s.mode),
+            Some(PuppetMode::Dead)
+        );
+
+        // Jogador aperta "Tentar de novo" -> volta para a praça (`spawn_pos`).
+        respawn_now(app.world_mut(), spawn_pos, 2);
+        app.update();
+
+        assert!(
+            app.world().get::<Puppet>(hero).is_none()
+                && app.world().get::<PuppetRig>(hero).is_none(),
+            "respawn_now tem de desmontar o Puppet do herói"
+        );
+
+        let hero_gt = app.world().get::<GlobalTransform>(hero).unwrap().translation();
+        let pelvis_gt = app
+            .world()
+            .get::<GlobalTransform>(bones[PuppetPart::Pelvis.index()])
+            .unwrap()
+            .translation();
+        let weapon_gt = app.world().get::<GlobalTransform>(weapon).unwrap().translation();
+
+        assert!(
+            hero_gt.distance(spawn_pos) < 0.5,
+            "raiz do herói na praça: {hero_gt:?}"
+        );
+        assert!(
+            pelvis_gt.distance(spawn_pos) < 2.5,
+            "esqueleto do herói tem de acompanhar a raiz na praça (e não ficar em {death_pos:?}): {pelvis_gt:?}"
+        );
+        assert!(
+            weapon_gt.distance(spawn_pos) < 2.5,
+            "arma em hand_r tem de estar na praça com o herói: {weapon_gt:?}"
+        );
     }
 }

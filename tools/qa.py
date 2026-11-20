@@ -783,7 +783,7 @@ def scene_xml(title: str, size: float, enemies: list[tuple[str, int]], interior:
         '    <DirectionalLight euler="-55 35 0" illuminance="18000" shadows="true" />',
         "  </Entity>",
         '  <Composition name="qa.ground" translation="0 0 0" body="fixed" collider="auto">',
-        f'    <Box texture="/assets/textures/dirt_road/albedo.ktx2" texture-tile-size="4.0" translation="0 -0.1 0" half-size="{half:g} 0.1 {half:g}" />',
+        f'    <Box texture="/assets/textures/dirt_road/albedo.ktx2" texture-tile-size="4.0" translation="0 -2 0" half-size="{half:g} 2 {half:g}" />',
         "  </Composition>",
     ]
     # Criaturas como entidades fixas (o formato dos chefes): o

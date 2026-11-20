@@ -36,6 +36,12 @@ pub use bevy_engine_core::{
 /// Gravity magnitude (m/s²) — `DEFAULT_GRAVITY = -60` in the original
 /// physics utils; the jump velocity derives from it.
 pub const GRAVITY: f32 = 60.0;
+
+/// Camada de colisão do corpo do herói (só esta: o resto do mundo filtra
+/// tudo, por isso continua a colidir). Os corpos físicos dos personagens
+/// (`bevy_ext_puppet`, camada 30) excluem-na: um ragdoll não empurra nem
+/// prende o herói, e o boneco do próprio herói não luta com a cápsula.
+pub const HERO_LAYER_BIT: u32 = 1 << 29;
 /// A/D move at this fraction of the walk speed while steering the camera
 /// (`SIDE_MOVE_FACTOR`), so turning carves an arc instead of
 /// pivoting in place.
@@ -913,6 +919,7 @@ pub fn hero_body_bundle() -> impl Bundle {
         avian3d::prelude::RigidBody::Dynamic,
         avian3d::prelude::LockedAxes::ROTATION_LOCKED,
         avian3d::prelude::CollisionEventsEnabled,
+        avian3d::prelude::CollisionLayers::from_bits(HERO_LAYER_BIT, u32::MAX),
         GroundRecovery::default(),
         // Gravidade do jogo (60) pelo tnua; o `GravityScale(0)` vem por
         // required component e desliga a do Avian neste corpo.

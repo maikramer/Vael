@@ -1,0 +1,411 @@
+use std::ops::Range;
+
+use bevy::ecs::entity::EntityHash;
+use bevy::math::{FloatOrd, Mat3A};
+use bevy::prelude::*;
+use bevy::render::camera::ExtractedCamera;
+use bevy::render::mesh::allocator::MeshSlabId;
+use bevy::render::render_phase::{
+    BinnedPhaseItem, CachedRenderPipelinePhaseItem, DrawFunctionId, PhaseItem,
+    PhaseItemBatchSetKey, PhaseItemExtraIndex, SortedPhaseItem, ViewBinnedRenderPhases,
+    ViewRangefinder3d, ViewSortedRenderPhases,
+};
+use bevy::render::render_resource::{
+    CachedRenderPipelineId, LoadOp, Operations, RenderPassColorAttachment,
+    RenderPassDepthStencilAttachment, RenderPassDescriptor, StoreOp,
+};
+use bevy::render::renderer::{RenderContext, ViewQuery};
+use bevy::render::sync_world::MainEntity;
+use bevy::render::view::{ExtractedView, ViewDepthStencilTexture, ViewTarget};
+use indexmap::IndexMap;
+
+use crate::msaa::OutlineViewTextures;
+use crate::view_uniforms::OutlineQueueStatus;
+
+#[derive(Clone, Copy, Debug)]
+pub(crate) struct OutlineSortingInfo {
+    pub world_plane_origin: Vec3,
+    pub world_plane_offset: Vec3,
+}
+
+pub(crate) struct OutlineRangefinder {
+    rangefinder: ViewRangefinder3d,
+    world_from_view: Mat3A,
+}
+
+impl OutlineRangefinder {
+    pub(crate) fn new(view: &ExtractedView) -> Self {
+        Self {
+            rangefinder: view.rangefinder3d(),
+            world_from_view: view.world_from_view.affine().matrix3,
+        }
+    }
+
+    pub(crate) fn distance_of(&self, sorting_info: &OutlineSortingInfo) -> f32 {
+        let world_plane = sorting_info.world_plane_origin
+            + self.world_from_view.mul_vec3(-Vec3::Z) * sorting_info.world_plane_offset;
+        self.rangefinder.distance(&world_plane)
+    }
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub(crate) struct OutlineBatchSetKey {
+    pub pipeline: CachedRenderPipelineId,
+    pub draw_function: DrawFunctionId,
+    pub vertex_slab: MeshSlabId,
+    pub index_slab: Option<MeshSlabId>,
+}
+
+impl PhaseItemBatchSetKey for OutlineBatchSetKey {
+    fn indexed(&self) -> bool {
+        self.index_slab.is_some()
+    }
+}
+
+#[derive(Clone, PartialEq, Eq, PartialOrd, Ord, Hash)]
+pub(crate) struct OutlineBinKey {
+    pub asset_id: AssetId<Mesh>,
+    pub texture_id: Option<AssetId<Image>>,
+}
+
+pub(crate) struct StencilOutline {
+    pub batch_set_key: OutlineBatchSetKey,
+    pub entity: Entity,
+    pub main_entity: MainEntity,
+    pub batch_range: Range<u32>,
+    pub extra_index: PhaseItemExtraIndex,
+}
+
+impl PhaseItem for StencilOutline {
+    #[inline]
+    fn entity(&self) -> Entity {
+        self.entity
+    }
+
+    fn main_entity(&self) -> bevy::render::sync_world::MainEntity {
+        self.main_entity
+    }
+
+    fn draw_function(&self) -> bevy::render::render_phase::DrawFunctionId {
+        self.batch_set_key.draw_function
+    }
+
+    fn batch_range(&self) -> &std::ops::Range<u32> {
+        &self.batch_range
+    }
+
+    fn batch_range_mut(&mut self) -> &mut std::ops::Range<u32> {
+        &mut self.batch_range
+    }
+
+    fn extra_index(&self) -> bevy::render::render_phase::PhaseItemExtraIndex {
+        self.extra_index.clone()
+    }
+
+    fn batch_range_and_extra_index_mut(
+        &mut self,
+    ) -> (
+        &mut Range<u32>,
+        &mut bevy::render::render_phase::PhaseItemExtraIndex,
+    ) {
+        (&mut self.batch_range, &mut self.extra_index)
+    }
+}
+
+impl BinnedPhaseItem for StencilOutline {
+    type BatchSetKey = OutlineBatchSetKey;
+    type BinKey = OutlineBinKey;
+
+    fn new(
+        batch_set_key: Self::BatchSetKey,
+        _bin_key: Self::BinKey,
+        representative_entity: (Entity, MainEntity),
+        batch_range: Range<u32>,
+        extra_index: PhaseItemExtraIndex,
+    ) -> Self {
+        Self {
+            batch_set_key,
+            entity: representative_entity.0,
+            main_entity: representative_entity.1,
+            batch_range,
+            extra_index,
+        }
+    }
+}
+
+impl CachedRenderPipelinePhaseItem for StencilOutline {
+    #[inline]
+    fn cached_pipeline(&self) -> CachedRenderPipelineId {
+        self.batch_set_key.pipeline
+    }
+}
+
+pub(crate) struct OpaqueOutline {
+    pub batch_set_key: OutlineBatchSetKey,
+    pub entity: Entity,
+    pub main_entity: MainEntity,
+    pub batch_range: Range<u32>,
+    pub extra_index: PhaseItemExtraIndex,
+}
+
+impl PhaseItem for OpaqueOutline {
+    #[inline]
+    fn entity(&self) -> Entity {
+        self.entity
+    }
+
+    fn main_entity(&self) -> bevy::render::sync_world::MainEntity {
+        self.main_entity
+    }
+
+    fn draw_function(&self) -> bevy::render::render_phase::DrawFunctionId {
+        self.batch_set_key.draw_function
+    }
+
+    fn batch_range(&self) -> &Range<u32> {
+        &self.batch_range
+    }
+
+    fn batch_range_mut(&mut self) -> &mut Range<u32> {
+        &mut self.batch_range
+    }
+
+    fn extra_index(&self) -> bevy::render::render_phase::PhaseItemExtraIndex {
+        self.extra_index.clone()
+    }
+
+    fn batch_range_and_extra_index_mut(
+        &mut self,
+    ) -> (
+        &mut Range<u32>,
+        &mut bevy::render::render_phase::PhaseItemExtraIndex,
+    ) {
+        (&mut self.batch_range, &mut self.extra_index)
+    }
+}
+
+impl BinnedPhaseItem for OpaqueOutline {
+    type BatchSetKey = OutlineBatchSetKey;
+    type BinKey = OutlineBinKey;
+
+    fn new(
+        batch_set_key: Self::BatchSetKey,
+        _bin_key: Self::BinKey,
+        representative_entity: (Entity, MainEntity),
+        batch_range: Range<u32>,
+        extra_index: PhaseItemExtraIndex,
+    ) -> Self {
+        OpaqueOutline {
+            batch_set_key,
+            entity: representative_entity.0,
+            main_entity: representative_entity.1,
+            batch_range,
+            extra_index,
+        }
+    }
+}
+
+impl CachedRenderPipelinePhaseItem for OpaqueOutline {
+    #[inline]
+    fn cached_pipeline(&self) -> CachedRenderPipelineId {
+        self.batch_set_key.pipeline
+    }
+}
+
+pub(crate) struct TransparentOutline {
+    pub sorting_info: OutlineSortingInfo,
+    pub distance: f32,
+    pub pipeline: CachedRenderPipelineId,
+    pub entity: Entity,
+    pub main_entity: MainEntity,
+    pub draw_function: DrawFunctionId,
+    pub batch_range: Range<u32>,
+    pub extra_index: PhaseItemExtraIndex,
+    pub indexed: bool,
+}
+
+impl PhaseItem for TransparentOutline {
+    #[inline]
+    fn entity(&self) -> Entity {
+        self.entity
+    }
+
+    fn main_entity(&self) -> bevy::render::sync_world::MainEntity {
+        self.main_entity
+    }
+
+    fn draw_function(&self) -> bevy::render::render_phase::DrawFunctionId {
+        self.draw_function
+    }
+
+    fn batch_range(&self) -> &Range<u32> {
+        &self.batch_range
+    }
+
+    fn batch_range_mut(&mut self) -> &mut Range<u32> {
+        &mut self.batch_range
+    }
+
+    fn extra_index(&self) -> PhaseItemExtraIndex {
+        self.extra_index.clone()
+    }
+
+    fn batch_range_and_extra_index_mut(&mut self) -> (&mut Range<u32>, &mut PhaseItemExtraIndex) {
+        (&mut self.batch_range, &mut self.extra_index)
+    }
+}
+
+impl SortedPhaseItem for TransparentOutline {
+    type SortKey = FloatOrd;
+
+    fn sort_key(&self) -> Self::SortKey {
+        FloatOrd(self.distance)
+    }
+
+    fn recalculate_sort_keys(
+        items: &mut IndexMap<(Entity, MainEntity), Self, EntityHash>,
+        view: &ExtractedView,
+    ) {
+        let rangefinder = OutlineRangefinder::new(view);
+        for item in items.values_mut() {
+            item.distance = rangefinder.distance_of(&item.sorting_info);
+        }
+    }
+
+    fn indexed(&self) -> bool {
+        self.indexed
+    }
+}
+
+impl CachedRenderPipelinePhaseItem for TransparentOutline {
+    #[inline]
+    fn cached_pipeline(&self) -> CachedRenderPipelineId {
+        self.pipeline
+    }
+}
+
+pub(crate) fn outline_colour_attachment<'a>(
+    target: &'a ViewTarget,
+    outline_textures: Option<&'a OutlineViewTextures>,
+) -> RenderPassColorAttachment<'a> {
+    match outline_textures {
+        Some(t) => {
+            let (view, resolve_target) = match &t.color {
+                Some(color) => (&color.default_view, Some(target.main_texture_view())),
+                None => (target.main_texture_view(), None),
+            };
+            RenderPassColorAttachment {
+                view,
+                depth_slice: None,
+                resolve_target: resolve_target.map(|v| &**v),
+                ops: Operations {
+                    load: LoadOp::Load,
+                    store: StoreOp::Store,
+                },
+            }
+        }
+        None => target.get_color_attachment(),
+    }
+}
+
+pub(crate) fn outline_depth_attachment<'a>(
+    depth: &'a ViewDepthStencilTexture,
+    outline_textures: Option<&'a OutlineViewTextures>,
+) -> RenderPassDepthStencilAttachment<'a> {
+    match outline_textures {
+        Some(t) => t.depth.get_attachment(StoreOp::Store),
+        None => depth.get_attachment(StoreOp::Store),
+    }
+}
+
+#[allow(clippy::type_complexity)]
+pub(crate) fn outline_render_pass(
+    world: &World,
+    view: ViewQuery<(
+        &ExtractedView,
+        &ExtractedCamera,
+        &Camera3d,
+        &ViewTarget,
+        &ViewDepthStencilTexture,
+        &OutlineQueueStatus,
+        Option<&OutlineViewTextures>,
+    )>,
+    stencil_phases: Res<ViewBinnedRenderPhases<StencilOutline>>,
+    opaque_phases: Res<ViewBinnedRenderPhases<OpaqueOutline>>,
+    transparent_phases: Res<ViewSortedRenderPhases<TransparentOutline>>,
+    mut render_context: RenderContext,
+) {
+    let view_entity = view.entity();
+    let (view_extracted, camera, camera_3d, target, depth, queue_status, outline_textures) =
+        view.into_inner();
+
+    let (Some(stencil_phase), Some(opaque_phase), Some(transparent_phase)) = (
+        stencil_phases.get(&view_extracted.retained_view_entity),
+        opaque_phases.get(&view_extracted.retained_view_entity),
+        transparent_phases.get(&view_extracted.retained_view_entity),
+    ) else {
+        return;
+    };
+
+    // If drawing anything, run stencil pass to clear the depth buffer
+    if queue_status.has_volume {
+        let depth_stencil_attachment = Some(RenderPassDepthStencilAttachment {
+            depth_ops: Some(Operations {
+                load: camera_3d.depth_load_op.clone().into(),
+                store: StoreOp::Store,
+            }),
+            ..outline_depth_attachment(depth, outline_textures)
+        });
+        let pass_descriptor = RenderPassDescriptor {
+            label: Some("outline_stencil_pass"),
+            color_attachments: &[],
+            depth_stencil_attachment,
+            timestamp_writes: None,
+            occlusion_query_set: None,
+            multiview_mask: None,
+        };
+        let mut tracked_pass = render_context.begin_tracked_render_pass(pass_descriptor);
+        if let Some(viewport) = camera.viewport.as_ref() {
+            tracked_pass.set_camera_viewport(viewport);
+        }
+        if let Err(err) = stencil_phase.render(&mut tracked_pass, world, view_entity) {
+            error!("Error encountered while rendering the outline stencil phase {err:?}");
+        }
+    }
+
+    if !opaque_phase.is_empty() {
+        let pass_descriptor = RenderPassDescriptor {
+            label: Some("outline_opaque_pass"),
+            color_attachments: &[Some(outline_colour_attachment(target, outline_textures))],
+            depth_stencil_attachment: Some(outline_depth_attachment(depth, outline_textures)),
+            timestamp_writes: None,
+            occlusion_query_set: None,
+            multiview_mask: None,
+        };
+        let mut tracked_pass = render_context.begin_tracked_render_pass(pass_descriptor);
+        if let Some(viewport) = camera.viewport.as_ref() {
+            tracked_pass.set_camera_viewport(viewport);
+        }
+        if let Err(err) = opaque_phase.render(&mut tracked_pass, world, view_entity) {
+            error!("Error encountered while rendering the outline opaque phase {err:?}");
+        }
+    }
+
+    if !transparent_phase.items.is_empty() {
+        let pass_descriptor = RenderPassDescriptor {
+            label: Some("outline_transparent_pass"),
+            color_attachments: &[Some(outline_colour_attachment(target, outline_textures))],
+            depth_stencil_attachment: Some(outline_depth_attachment(depth, outline_textures)),
+            timestamp_writes: None,
+            occlusion_query_set: None,
+            multiview_mask: None,
+        };
+        let mut tracked_pass = render_context.begin_tracked_render_pass(pass_descriptor);
+        if let Some(viewport) = camera.viewport.as_ref() {
+            tracked_pass.set_camera_viewport(viewport);
+        }
+        if let Err(err) = transparent_phase.render(&mut tracked_pass, world, view_entity) {
+            error!("Error encountered while rendering the outline transparent phase {err:?}");
+        }
+    }
+}

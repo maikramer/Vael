@@ -346,6 +346,9 @@ fn capture(world: &mut World) -> Option<VaelSaveFile> {
     // despawnados ao sair do `main`) e é atualizado a cada frame com a física
     // viva; guardar daqui é o que faz um save a bordo acordar o barco no sítio
     // onde ficou (e não no autorado).
+    if let Some(bus) = world.get_resource::<crate::player::HeroMotionBus>() {
+        save.stamina = bus.lock().stamina.clone();
+    }
     if let Some(states) = world.get_resource::<BoatStates>() {
         save.boats = states.poses.clone();
         save.riding_boat = states.riding.clone();
@@ -446,6 +449,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     // silenciava o áudio para sempre.
     let position = payload.position.filter(|position| position.is_finite());
     let mut boats = BoatStates::default();
+    let mut stamina = crate::stamina::Stamina::default();
     match serde_json::from_str::<VaelSave>(&payload.save_json) {
         Ok(save) => {
             if let Some(at) = save.calendar
@@ -455,6 +459,7 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
                 clock.date = CivilDate::new(at.year, at.month, at.day);
                 clock.hour = at.hour;
             }
+            stamina = save.stamina.clone();
             boats = BoatStates::from_save(save.boats.clone(), save.riding_boat.clone());
             world.insert_resource(save);
         }
@@ -471,6 +476,9 @@ fn apply_payload(world: &mut World, payload: &VaelSaveFile) {
     // As poses dos barcos vêm do save: o `drive_boat_states` aplica-as aos
     // barcos vivos (e o `spawn_boats` usa-as se o load trocar de cena).
     world.insert_resource(boats);
+    if let Some(bus) = world.get_resource::<crate::player::HeroMotionBus>() {
+        bus.lock().stamina = stamina;
+    }
     // O embarque da sessão anterior não sobrevive ao load: sem isto o
     // `seat_riders` prendia o herói ao barco velho depois do teleporte. O
     // `BoatStates` do save volta a pô-lo a bordo se for esse o caso.
@@ -1082,6 +1090,19 @@ mod tests {
     /// (caminho, mtime, tamanho) apanha um ficheiro escrito depois.
     #[test]
     fn o_envelope_json_antigo_aparece_e_a_cache_ve_o_ficheiro_novo() {
+        #[rustversion::since(1.99)]
+        fn set_mtime(path: &Path, time: std::time::SystemTime) -> std::io::Result<()> {
+            std::fs::set_times(path, std::fs::FileTimes::new().set_modified(time))
+        }
+
+        #[rustversion::before(1.99)]
+        fn set_mtime(path: &Path, time: std::time::SystemTime) -> std::io::Result<()> {
+            std::fs::File::options()
+                .write(true)
+                .open(path)?
+                .set_modified(time)
+        }
+
         let dir = unique_dir("legacy-cache");
         let first = list_slots(Some("vael"), Some(&dir));
         assert!(first.iter().all(|row| row.slot != 4), "nada gravado ainda");
@@ -1091,16 +1112,20 @@ mod tests {
         game.world_kv
             .insert("save_level".into(), serde_json::json!(3));
         bevy_ext_save::save_to_disk(&old, &game).expect("json antigo");
+        let first_mtime = std::time::UNIX_EPOCH + std::time::Duration::from_secs(1_700_000_000);
+        set_mtime(&old, first_mtime).unwrap();
+        let size = std::fs::metadata(&old).unwrap().len();
 
         let rows = list_slots(Some("vael"), Some(&dir));
         let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
         assert_eq!(row.level, 3);
 
-        // Regravar muda o mtime/tamanho: a cache não serve a linha velha.
-        std::thread::sleep(std::time::Duration::from_millis(5));
+        // Mesmo caminho e tamanho: só a data distingue a nova gravação.
         game.world_kv
             .insert("save_level".into(), serde_json::json!(9));
         bevy_ext_save::save_to_disk(&old, &game).expect("json antigo");
+        set_mtime(&old, first_mtime + std::time::Duration::from_secs(10)).unwrap();
+        assert_eq!(std::fs::metadata(&old).unwrap().len(), size);
         let rows = list_slots(Some("vael"), Some(&dir));
         let row = rows.iter().find(|row| row.slot == 4).expect("slot 4");
         assert_eq!(row.level, 9);
@@ -1133,6 +1158,29 @@ mod tests {
             world.resource::<WorldClock>().date,
             WorldClock::default().date
         );
+    }
+
+    #[test]
+    fn loading_mid_swim_restores_remaining_stamina_and_the_same_shore() {
+        let _lock = viber::luau::game::test_support::PROCESS_STORE_TEST_LOCK.lock().unwrap();
+        let mut world = World::new();
+        world.init_resource::<VaelSave>();
+        let bus = crate::player::HeroMotionBus::default();
+        world.insert_resource(bus.clone());
+        let shore = Vec3::new(15.0, 8.0, -42.0);
+        bus.lock().stamina.shore = Some(shore);
+        bus.lock().stamina.tick(9.0, true, false, false);
+        let swimming = bus.lock().stamina.clone();
+        let mut payload = capture(&mut world).unwrap();
+        bus.lock().stamina = Default::default();
+        apply_payload(&mut world, &payload);
+        assert_eq!(bus.lock().stamina, swimming);
+
+        let mut old: Value = serde_json::from_str(&payload.save_json).unwrap();
+        old.as_object_mut().unwrap().remove("stamina");
+        payload.save_json = old.to_string();
+        apply_payload(&mut world, &payload);
+        assert_eq!(bus.lock().stamina, Default::default());
     }
 
     /// O `capture` guarda a pose dos barcos e o `apply_payload` volta a pô-la

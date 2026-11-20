@@ -1,0 +1,1177 @@
+#"world"
+bevy_transform::components::transform::Transform {
+    translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+    rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+    scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+}
+bevy_world_xml::bsn::WorldNode {
+    tag: "world",
+    attrs: [
+        bevy_world_xml::bsn::WorldProp { key: "static", value: "true" },
+        bevy_world_xml::bsn::WorldProp { key: "clear-color", value: "#9db7cf" },
+        bevy_world_xml::bsn::WorldProp { key: "title", value: "QA puppet-playground" },
+    ],
+    text: "",
+    origin_file: "scenes/qa/puppet-playground.xml",
+    origin_path: [0],
+    pose: true,
+}
+jackdaw_scene_types::node_id::SceneNodeId(638624003004583540)
+bevy_ecs::hierarchy::Children [
+    #"qa"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.6, z: -6.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "SceneEntry",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0.6 -6" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 0 0" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [0],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583541)
+    --
+    #"Entity"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [1],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583542)
+    bevy_ecs::hierarchy::Children [
+        #"AmbientLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "AmbientLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "color", value: "0xfff2e0" },
+                bevy_world_xml::bsn::WorldProp { key: "brightness", value: "500" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [1, 0],
+            pose: false,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583543)
+        --
+        #"DirectionalLight"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: -0.325058, y: 0.325058, z: 0.0, w: 0.888074 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_light::directional_light::DirectionalLight {
+            color: bevy_color::color::Color::Srgba(bevy_color::srgba::Srgba { red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0 }),
+            illuminance: 18000.0,
+            shadow_maps_enabled: true,
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "DirectionalLight",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "euler", value: "-55 35 0" },
+                bevy_world_xml::bsn::WorldProp { key: "illuminance", value: "18000" },
+                bevy_world_xml::bsn::WorldProp { key: "shadows", value: "true" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [1, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583544)
+    ]
+    --
+    #"qa.ground"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Composition",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.ground" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 0" },
+            bevy_world_xml::bsn::WorldProp { key: "body", value: "fixed" },
+            bevy_world_xml::bsn::WorldProp { key: "collider", value: "auto" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [2],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583545)
+    bevy_ecs::hierarchy::Children [
+        #"Box"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: -2.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "Box",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "texture", value: "/assets/textures/dirt_road/albedo.ktx2" },
+                bevy_world_xml::bsn::WorldProp { key: "texture-tile-size", value: "4.0" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 -2 0" },
+                bevy_world_xml::bsn::WorldProp { key: "half-size", value: "55 2 55" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [2, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583546)
+    ]
+    --
+    #"qa.goblin.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -2.0, y: 0.0, z: 24.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.goblin.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 0 24" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [3],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583547)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene goblin"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [3, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583548)
+    ]
+    --
+    #"qa.goblin.2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 2.0, y: 0.0, z: 24.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.goblin.2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "2 0 24" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [4],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583549)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene goblin"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [4, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583550)
+    ]
+    --
+    #"qa.bandit.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -2.0, y: 0.0, z: 28.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 0 28" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [5],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583551)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [5, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583552)
+    ]
+    --
+    #"qa.bandit.2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 2.0, y: 0.0, z: 28.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit.2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "2 0 28" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [6],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583553)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [6, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583554)
+    ]
+    --
+    #"qa.bandit-shield.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -2.0, y: 0.0, z: 32.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit-shield.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2 0 32" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-shield.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [7],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583555)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [7, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583556)
+    ]
+    --
+    #"qa.bandit-shield.2"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 2.0, y: 0.0, z: 32.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.bandit-shield.2" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "2 0 32" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/bandit-shield.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [8],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583557)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene bandit"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/bandit_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [8, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583558)
+    ]
+    --
+    #"qa.goblin-brute.1"
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.0, y: 0.0, z: 36.0 },
+        rotation: glam::Quat { x: 0.0, y: 1.0, z: 0.0, w: 0.0 },
+        scale: glam::Vec3 { x: 1.25, y: 1.25, z: 1.25 },
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "qa.goblin-brute.1" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 36" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "1.25" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 180 0" },
+            bevy_world_xml::bsn::WorldProp { key: "script", value: "enemies/goblin-brute.lua" },
+            bevy_world_xml::bsn::WorldProp { key: "hostile", value: "true" },
+            bevy_world_xml::bsn::WorldProp { key: "health", value: "100" },
+            bevy_world_xml::bsn::WorldProp { key: "ragdoll", value: "true" },
+        ],
+        text: "",
+        origin_file: "scenes/qa/puppet-playground.xml",
+        origin_path: [9],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(638624003004583559)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene goblin"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/goblin_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "scenes/qa/puppet-playground.xml",
+            origin_path: [9, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(638624003004583560)
+    ]
+    --
+    #npc_blacksmith
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -1.600000, y: 0.0, z: -1.000000 },
+        rotation: glam::Quat { x: 0.0, y: 0.069756, z: 0.0, w: 0.997564 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("city_stone"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_blacksmith" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.6 0 -1" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 8 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/forge.xml",
+        origin_path: [0, 10],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2591101375180184781)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_blacksmith"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-blacksmith.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/forge.xml",
+            path: [0, 10, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(584152674769961917)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/cities/discordia/forge.xml",
+            origin_path: [0, 10, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2588903938178826233)
+    ]
+    --
+    #npc_guard
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000000, y: 0.0, z: -0.800000 },
+        rotation: glam::Quat { x: 0.0, y: 0.984808, z: 0.0, w: -0.173648 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "watch-guard.lua",
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_guard" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 -0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 200 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/watch.xml",
+        origin_path: [0, 1],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(212145276546593523)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_guard"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-guard.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/watch.xml",
+            path: [0, 1, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(388669081359470872)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/cities/discordia/watch.xml",
+            origin_path: [0, 1, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2788656932618379814)
+    ]
+    --
+    #npc_healer
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 1.600000, y: 0.0, z: -1.000000 },
+        rotation: glam::Quat { x: 0.0, y: -0.173648, z: 0.0, w: 0.984808 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "healer.lua",
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_healer" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.6 0 -1" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 -20 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/chapel.xml",
+        origin_path: [0, 1],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(1960334018879832754)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_healer"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-healer.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/chapel.xml",
+            path: [0, 1, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(505655107634452805)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/cities/discordia/chapel.xml",
+            origin_path: [0, 1, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1657278954383206964)
+    ]
+    --
+    #npc_elder
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -2.400000, y: 0.0, z: 0.800000 },
+        rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("story_notas"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_elder" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.4 0 0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/longhouse.xml",
+        origin_path: [0, 2],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(4536477172582838714)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_elder"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-elder.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/longhouse.xml",
+            path: [0, 2, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2600034814117758665)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 2, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3715252988333767054)
+    ]
+    --
+    #npc_ranger_mira
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -0.800000, y: 0.0, z: 0.900000 },
+        rotation: glam::Quat { x: 0.0, y: -0.965926, z: 0.0, w: 0.258819 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("smugglers_cache"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_ranger_mira" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.8 0 0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "euler", value: "180 -30 180" },
+            bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
+        ],
+        text: "",
+        origin_file: "world/scenes/smugglers.xml",
+        origin_path: [0, 19],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2603036079570704958)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_scout"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-scout.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/scenes/smugglers.xml",
+            path: [0, 19, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(508573831832906142)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/scenes/smugglers.xml",
+            origin_path: [0, 19, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(591495308211571608)
+    ]
+    --
+    #npc_fold_child
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.800000, y: 0.0, z: 0.900000 },
+        rotation: glam::Quat { x: 0.0, y: 0.382683, z: 0.0, w: 0.92388 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/fold-child.lua",
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_fold_child" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.8 0 0.9" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 45 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/longhouse.xml",
+        origin_path: [0, 99],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(702255645709357419)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene scout-child"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-scout.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 0.72, y: 0.72, z: 0.72 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/cities/discordia/longhouse.xml",
+            path: [0, 99, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3271518457435508881)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 99, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2780711075993435080)
+    ]
+    --
+    #npc_envoy_glass
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 2.400000, y: 0.0, z: 0.800000 },
+        rotation: glam::Quat { x: 0.0, y: 0.92388, z: 0.0, w: -0.382683 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/decision-quest.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("quest_id", jackdaw_scene_types::types::PropertyValue::String("story_glass_envoy"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_envoy_glass" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.4 0 0.8" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 225 0" },
+        ],
+        text: "",
+        origin_file: "world/cities/discordia/longhouse.xml",
+        origin_path: [0, 3],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(3584755270135194836)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_scholar"
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "GltfScene",
+            attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/characters/npc_scholar_lod0.glb" },
+            ],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 3, 0],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2318967702739067224)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/cities/discordia/longhouse.xml",
+            origin_path: [0, 3, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1843155444398293340)
+    ]
+    --
+    #npc_battle_survivor
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -1.600000, y: 0.0, z: 2.600000 },
+        rotation: glam::Quat { x: 0.0, y: 0.5, z: 0.0, w: 0.866025 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("citadel_shades"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_battle_survivor" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.6 0 2.6" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 60 0" },
+        ],
+        text: "",
+        origin_file: "world/scenes/battlefield.xml",
+        origin_path: [0, 20],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(610898151973412048)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_guard"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-guard.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/scenes/battlefield.xml",
+            path: [0, 20, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(3137212665019256654)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/scenes/battlefield.xml",
+            origin_path: [0, 20, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2891412122718559416)
+    ]
+    --
+    #npc_outpost_foreman
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.000000, y: 0.0, z: 2.500000 },
+        rotation: glam::Quat { x: 0.0, y: 0.130526, z: 0.0, w: 0.991445 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("outpost_veins"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_outpost_foreman" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0 0 2.5" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 15 0" },
+        ],
+        text: "",
+        origin_file: "world/scenes/crystal-outpost.xml",
+        origin_path: [0, 16],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2817649757712232762)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_blacksmith"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-blacksmith.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/scenes/crystal-outpost.xml",
+            path: [0, 16, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2589357712226863409)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/scenes/crystal-outpost.xml",
+            origin_path: [0, 16, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2129687345916030799)
+    ]
+    --
+    #npc_pilgrim_master
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 1.600000, y: 0.0, z: 2.600000 },
+        rotation: glam::Quat { x: 0.0, y: 0.173648, z: 0.0, w: 0.984808 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("pilgrimage_vael"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_pilgrim_master" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "1.6 0 2.6" },
+            bevy_world_xml::bsn::WorldProp { key: "transform", value: "rotation: 0 20 0" },
+        ],
+        text: "",
+        origin_file: "world/scenes/pilgrims-camp.xml",
+        origin_path: [0, 25],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(820481515945462140)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_elder"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-elder.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/scenes/pilgrims-camp.xml",
+            path: [0, 25, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(59548543238722089)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/scenes/pilgrims-camp.xml",
+            origin_path: [0, 25, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2039741564369862157)
+    ]
+    --
+    #npc_forest_survey
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: -0.900000, y: 0.0, z: 4.200000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("forest_survey"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_forest_survey" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "-0.9 0 4.2" },
+        ],
+        text: "",
+        origin_file: "world/ai/npcs.xml",
+        origin_path: [0, 12],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(2130569199504628234)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_scout"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-scout.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/ai/npcs.xml",
+            path: [0, 12, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1553350770997320439)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/ai/npcs.xml",
+            origin_path: [0, 12, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1759117998187589002)
+    ]
+    --
+    #npc_desert_survey
+    bevy_transform::components::transform::Transform {
+        translation: glam::Vec3 { x: 0.900000, y: 0.0, z: 4.200000 },
+        rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+        scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+    }
+    bevy_ext_scene::ScriptRef {
+        path: "npc/dialogue.lua",
+    }
+    jackdaw_scene_types::types::CustomProperties {
+        properties: map[
+            ("dialogue_id", jackdaw_scene_types::types::PropertyValue::String("desert_survey"))
+        ],
+    }
+    bevy_world_xml::bsn::WorldNode {
+        tag: "Entity",
+        attrs: [
+            bevy_world_xml::bsn::WorldProp { key: "name", value: "npc_desert_survey" },
+            bevy_world_xml::bsn::WorldProp { key: "translation", value: "0.9 0 4.2" },
+        ],
+        text: "",
+        origin_file: "world/ai/npcs.xml",
+        origin_path: [0, 13],
+        pose: true,
+    }
+    jackdaw_scene_types::node_id::SceneNodeId(21287605823725993)
+    bevy_ecs::hierarchy::Children [
+        #"GltfScene npc_scout"
+        jackdaw::prefab::components::IsA {
+            source: "world/prefabs/characters/npc-scout.bsn",
+            deleted: [],
+        }
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldOrigin {
+            file: "world/ai/npcs.xml",
+            path: [0, 13, 0],
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(1857398168169548981)
+        jackdaw::prefab::components::PrefabEntityId(0)
+        --
+        #NpcBody
+        bevy_transform::components::transform::Transform {
+            translation: glam::Vec3 { x: 0.0, y: 0.0, z: 0.0 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
+        }
+        bevy_world_xml::bsn::WorldNode {
+            tag: "NpcBody",
+            attrs: [],
+            text: "",
+            origin_file: "world/ai/npcs.xml",
+            origin_path: [0, 13, 1],
+            pose: true,
+        }
+        jackdaw_scene_types::node_id::SceneNodeId(2982318761199042960)
+    ]
+]
+

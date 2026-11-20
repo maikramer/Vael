@@ -9,6 +9,9 @@ local fsm = viber.load("lib/fsm.lua").new{
   aggro = 9, deaggro = 14,
   range = 1.7, damage = 11, cooldown = 1.8,
   windup = 0.5, -- a cauda arma antes do ferrão
+  special = { every = 3, windup = 0.9, circles = 3, stride = 1.0, radius = 0.83, mult = 1.2,
+              recover = 1.15, clip = "attack", sound = "whoosh", color = "#d79956", cue = "sidestep",
+              on_hit = function() rules.apply_status("venom", 4) end },
   radius = 5,
   turn_rate = 9.0, -- sem deslize lateral nas viragens (gait de 4 patas)
   steering = true,

@@ -8,6 +8,8 @@ local fsm = viber.load("lib/fsm.lua").new{
   aggro = 8, deaggro = 13,
   range = 1.5, damage = 8, cooldown = 1.5,
   windup = 0.6,
+  special = { every = 3, windup = 1.1, inner = 1.65, radius = 3.6, mult = 1.15,
+              recover = 1.1, clip = "attack", sound = "whoosh", color = "#d7974d", cue = "safe_center" },
   radius = 4,
   anti_stuck = false,
 }

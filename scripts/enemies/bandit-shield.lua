@@ -11,6 +11,9 @@ local fsm = viber.load("lib/fsm.lua").new{
   aggro = 10, deaggro = 15,
   range = 2.0, damage = 13, cooldown = 1.8,
   windup = 0.55, recover = 0.75, -- a janela para o apanhar aberto
+  special = { every = 4, after_block = 2.2, opens_guard = true, stride = 1.25, radius = 1.35,
+              windup = 0.95, mult = 1.15, recover = 1.25, clip = "punch,attack",
+              sound = "block", cue = "shield_counter" },
   radius = 6,
   shield = { arc = 0.3, reduce = 0.8 },
 }

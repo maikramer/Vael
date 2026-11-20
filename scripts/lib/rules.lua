@@ -1011,6 +1011,8 @@ function M.hostiles_near(cx, cz, range, impact_y)
           x = ex, y = e.y, z = ez,
           hp = hp, max = e.max,
           distance = dist,
+          chasing = e.chasing == true,
+          cue = e.cue,
           forward_x = e.fx, forward_z = e.fz,
           -- Escudo erguido (lib/fsm.lua `shield`): o melee decide o bloqueio.
           shield = e.guard and e.shield or nil,
@@ -1022,7 +1024,10 @@ function M.hostiles_near(cx, cz, range, impact_y)
       end
     end
   end
-  table.sort(out, function(a, b) return a.distance < b.distance end)
+  table.sort(out, function(a, b)
+    if a.distance == b.distance then return a.id < b.id end
+    return a.distance < b.distance
+  end)
   return out
 end
 
@@ -1077,8 +1082,9 @@ end
 
 -- Dano em área do JOGO: falloff linear (cheio → metade na borda), knockback
 -- e números. A morte é decidida pelo script da criatura no frame seguinte.
-function M.radial_damage(x, z, radius, damage, knockback, impact_y, burn_secs)
-  local hits = 0
+-- Dois centros do mesmo golpe podem partilhar os ids já atingidos.
+function M.radial_damage(x, z, radius, damage, knockback, impact_y, burn_secs, struck)
+  local hits, first_survivor = 0, nil
   -- A busca E o falloff medem-se do centro da explosão. Antes usavam
   -- `h.distance` (distância ao herói): a bomba largada à frente atingia
   -- inimigos atrás do jogador e ignorava os que estavam na borda real.
@@ -1086,12 +1092,14 @@ function M.radial_damage(x, z, radius, damage, knockback, impact_y, burn_secs)
     -- Intocável (chefe em transição, verme enterrado): o `damage_enemy`
     -- recusa o golpe; sem este salto o número e o knockback apareciam na
     -- mesma, como se a área tivesse entrado.
-    if not h.invuln then
+    if not h.invuln and not (struck and struck[h.id]) then
+      if struck then struck[h.id] = true end
       local dx, dz = (h.x or x) - x, (h.z or z) - z
       local dist = math.sqrt(dx * dx + dz * dz)
       local falloff = 1.0 - 0.5 * (dist / math.max(radius, 1e-3))
       local dmg = (damage or 0) * falloff
-      M.damage_enemy(h.id, dmg)
+      local killed, _, removed = M.damage_enemy(h.id, dmg)
+      if not first_survivor and not killed and removed > 0 then first_survivor = h.id end
       if burn_secs and burn_secs > 0 then M.enemy_status(h.id, "burn", burn_secs) end
       if viber.hit_flash then
         viber.hit_flash(h.id)
@@ -1108,7 +1116,7 @@ function M.radial_damage(x, z, radius, damage, knockback, impact_y, burn_secs)
       hits = hits + 1
     end
   end
-  return hits
+  return hits, first_survivor
 end
 
 -- Gate de chefe: lê o REGISTO inteiro (sem o filtro de frescura de
@@ -1386,6 +1394,10 @@ local function start_death(game)
   local id = viber.player_id()
   if id then
     viber.play_clip("death", { id = id })
+    -- Corpo físico: o herói cai mole (bevy_ext_puppet).
+    if viber.vael and viber.vael.puppet_kill then
+      viber.vael.puppet_kill(id)
+    end
   end
   sound_at_player("game_over")
 end
@@ -1434,7 +1446,7 @@ function M.damage_player(amount, sx, sz)
   ensure_hp()
   local r = viber.vael.damage_player(amount or 0, viber.time())
   if r.parried then
-    player_fx("APARO", "#9fd8ff", "block")
+    sound_at_player("block")
     viber.hit_stop(0.055)
     return false, true
   end
@@ -1442,13 +1454,22 @@ function M.damage_player(amount, sx, sz)
     return false
   end
   if r.blocked then
-    player_fx("BLOQUEIO -" .. math.floor(r.amount), "#9fd8ff", "block")
+    player_fx("-" .. math.floor(r.amount), "#9fd8ff", "block")
     viber.shake(0.06)
   else
     player_fx("-" .. math.floor(r.amount), "#ff6b6b", "hurt")
     local id = viber.player_id()
-    if id and not r.died then
-      viber.play_clip("hit", { id = id, blend = 0.08 })
+    -- Golpes direcionais (`sx, sz`) usam o HitReaction físico 360° do
+    -- `bevy_ext_puppet` (costas dobra para a frente + chicote cervical; frente
+    -- recua para trás; flanco torce o ombro). O clip fixo `"hit"` é frontal e
+    -- só corre sem origem direcional (veneno/queda) ou com `VAEL_PUPPET=0`.
+    local directional_puppet = sx and sz
+      and viber.vael and viber.vael.puppet_enabled and viber.vael.puppet_enabled()
+    if id and not r.died and not directional_puppet then
+      -- O clip `hit` do herói dura 1,78 s e o recuo forte está no FIM
+      -- (~1,6 s; medido por BRP a 2026-11-19): tocado a 1× a reação chegava
+      -- mais de 1 s depois do golpe. Comprimido a 0,6 s o recuo cai a ~0,55 s.
+      viber.play_clip("hit", { id = id, blend = 0.08, duration = 0.6 })
     end
     push_from_hit(sx, sz)
     viber.shake(0.18)
@@ -1505,6 +1526,11 @@ function M.respawn()
   game.hp = game.max_hp or 100
   game.dying = 0
   game.death_pending = false
+  -- Larga o corpo físico da morte: o herói volta inteiro à animação.
+  local pid = viber.player_id and viber.player_id()
+  if pid and viber.vael and viber.vael.puppet_release then
+    viber.vael.puppet_release(pid)
+  end
   game.death_wait = 0
   M.status_clear()
   M.flask_refill()
@@ -1649,6 +1675,16 @@ function M.tick(dt)
   -- UI de morte observa as mesmas chaves em `src/ui/screens.rs`. O `M.respawn`
   -- manual (botão "Tentar de novo") e o `M.start_death` do dano direto ficam
   -- no Lua.
+  -- Respawn em Rust (`respawn_now` / load): se o herói já está vivo e sem morte
+  -- em curso, garante que o corpo físico da morte (`puppet_kill`) é libertado.
+  if (tonumber(game.hp) or 0) > 0 and num("dying", 0) <= 0 and not game.death_pending then
+    local pid = viber.player_id and viber.player_id()
+    if pid and viber.vael and viber.vael.puppet_state and viber.vael.puppet_release
+        and viber.vael.puppet_state(pid) == "dead" then
+      viber.vael.puppet_release(pid)
+    end
+  end
+
   if not rust_vitals() then
     -- Um save carregado com o herói vivo não pode reabrir o ecrã de morte.
     if game.death_pending and (game.hp or 0) > 0 then
@@ -1731,6 +1767,10 @@ function M.tick(dt)
         -- Respawn pedido dentro de uma cena própria: agora que `main`
         -- carregou, o spawn guardado volta a ser coordenadas válidas.
         game.pending_respawn = false
+        local pid = viber.player_id and viber.player_id()
+        if pid and viber.vael and viber.vael.puppet_release then
+          viber.vael.puppet_release(pid)
+        end
         local s = stored_spawn(game)
         if s then
           viber.teleport_player(s.x, s.y, s.z)

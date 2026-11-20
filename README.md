@@ -111,7 +111,7 @@ engine.
 Os golpes inimigos são **legíveis**: a criatura trava, toca o clip `attack`
 e pulsa um anel âmbar no chão durante o *windup*; o dano só entra se o herói
 ainda estiver ao alcance no impacto — recuar, dash [C] ou aparar [L] no
-tempo certo resolvem (sai "ESQUIVA"). Depois do golpe há uma janela de
+tempo certo resolvem. Depois do golpe há uma janela de
 punição (*recover*). Atingir uma criatura fá-la vacilar (clip `hit`) e
 cancela o windup. Os **chefes** (Bruxa, Verme, Guardião do Lodo, Ogro) têm
 barra própria no HUD, *poise* (só vacilam com dano acumulado), um especial a
@@ -142,7 +142,25 @@ altar, obelisco, mojão) com loot próprio (`prop-*`).
 - **Talentos com escolha**: `excludes` em `data/progression.json` fecha o ramo
   irmão (Baluarte ↔ Sede de sangue, Brasas ↔ Abalo, …).
 - **Cantil** [E]: a cura gasta cargas (2 + talento) que só voltam na fogueira,
-  no curandeiro ou ao renascer. Esquiva [C] recarrega em 3 s.
+  no curandeiro ou ao renascer.
+- **Mira e esquiva.** Passar por um inimigo deixa a câmara livre. Ficar parado 0,8 s
+  de frente para a mesma ameaça a até 8 m fixa a mira até voltares a andar.
+  Atacar fixa o alvo para o combate, inclusive em movimento. O losango indica
+  o alvo fixado. [Z] seleciona ou troca o alvo manualmente. Usa [A/D] para o
+  contornar e [C] para esquivar. Com [W] rolas para a frente, com [A/D] saltas
+  de lado e, parado ou com [S], recuas.
+  A esquiva base recarrega em 1,2 s.
+- **Olé!** Alinha um lobo ou um goblin bruto com outro inimigo. Quando o corredor
+  vermelho aparecer, sai de lado. Se a investida acertar no outro inimigo, ele
+  perde vida e é empurrado. Quem investiu fica exposto ao teu contra-ataque.
+- **Golpes inimigos.** A barra do alvo fixado dá uma pista durante a preparação
+  dos golpes e assinala a recuperação. O lobo investe em linha, o bandido encadeia
+  dois cortes e o goblin golpeia em área. A gosma marca os pés do herói; basta
+  andar para sair. O escorpião fixa o corredor do ferrão. O bogling levanta um anel
+  de lodo com o centro seguro. Bater no escudo do bandido prepara uma resposta
+  que deixa a guarda aberta. Aproximar-se do arqueiro entre as duas flechas
+  impede o segundo disparo. A sombra repete o golpe no mesmo sítio; na variante
+  noturna, o segundo pulso atinge só a faixa exterior.
 - **Morte**: 25 % do ouro fica numa bolsa onde o herói caiu (brilha; passar por
   cima recupera). Morrer outra vez antes perde-a.
 - **Estados**: veneno, queimadura e gelo no herói (`rules.apply_status`);

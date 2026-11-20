@@ -1,6 +1,7 @@
-title: Crystal Vale shared packs
-genre: cartoon fantasy
-tone: bright cheerful adventure, vibrant colors, playful cartoon world, Crystal Vale
+# Direção de arte: Ofício Talhado & Iluminura Rural (ver ../docs/ART.md).
+title: O Silêncio de Vael
+genre: rural craft fantasy, carved chamfered wood and lime-washed stone, matte gouache and tempera finish
+tone: handcrafted artisanal materials, crisp chamfered planes, broad clean color blocks, functional worn craft tools, earthy mineral pigments, quiet rural valley
 style_preset: painterly
 output_dir: public/assets
 path_layout: split
@@ -11,11 +12,9 @@ seed_base: 7777
 generation: medium
 
 # Packs canónicos (audio-bgm/audio-sfx-*/characters/desert/farm/forest/infra/
-# interiors/props-rpg/props/swamp/terrain/village). Veículos da corrida
-# vivem em Viber/examples/racer-assets. O happy path de regen é `cd assets`
-# (esta pasta) — o batch escreve em public/assets
-# **daqui** (fonte canónica dos binários); os exemplos leem o pool por URL.
-# Não há passo de sync nem symlinks.
+# interiors/props-rpg/props/swamp/terrain/village). O happy path de regen é
+# `cd assets` (esta pasta) — o batch escreve em public/assets **daqui**
+# (fonte canónica dos binários). Não há passo de sync nem symlinks.
 master_validate: true
 master_bake_normals: false
 negative_keywords:
@@ -24,6 +23,13 @@ negative_keywords:
   - photorealistic
   - dark gritty
   - scary
+  - plastic glossy sheen
+  - neon oversaturated colors
+  - chibi bobblehead proportions
+  - generic mobile cartoon
+  - busy micro-patterns
+  - ornate filigree noise
+  - melted organic edges
 text2d:
   width: 768
   height: 768

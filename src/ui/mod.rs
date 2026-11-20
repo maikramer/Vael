@@ -50,6 +50,8 @@ pub struct HudVm {
     pub journal_enabled: bool,
 
     pub health: f64,
+    pub stamina: f64,
+    pub lbl_stamina: String,
     pub health_text: String,
     pub health_low: bool,
     pub xp: f64,
@@ -83,6 +85,9 @@ pub struct HudVm {
     pub quest_others_more_visible: bool,
 
     pub target_alive: bool,
+    pub target_locked: bool,
+    pub target_cue: String,
+    pub target_cue_visible: bool,
     pub target_name: String,
     pub target: f64,
 
@@ -101,6 +106,8 @@ pub struct HudVm {
     pub zone_name: String,
     pub wet: bool,
     pub rain: f64,
+    pub lantern_on: bool,
+    pub lantern_off: bool,
     pub net_on: bool,
     pub net_label: String,
 
@@ -150,6 +157,9 @@ pub struct HudVm {
     pub lbl_season: String,
     pub lbl_net: String,
     pub lbl_rain: String,
+    pub lbl_lantern: String,
+    pub lbl_lantern_on: String,
+    pub lbl_lantern_off: String,
     pub lbl_attack: String,
     pub lbl_guard: String,
     pub lbl_dash: String,
@@ -373,6 +383,8 @@ pub fn season_line(date: CivilDate, weather: Option<&Weather>, lang: &str) -> St
 /// Sistema de sincronização: HUD lê o estado e publica no view-model.
 #[allow(clippy::too_many_arguments)]
 fn sync_hud(
+    motion: Option<Res<crate::player::HeroMotionBus>>,
+    lantern: Option<Res<crate::lantern::VaelLanternState>>,
     save: Res<VaelSave>,
     content: Option<Res<VaelContent>>,
     binds: Option<Res<UiScriptBinds>>,
@@ -460,6 +472,8 @@ fn sync_hud(
         m.vitals_visible = true;
         m.journal_enabled = !overlay_up;
 
+        m.stamina = motion.as_deref().map_or(1.0, |bus| (bus.lock().stamina.value / crate::stamina::CAPACITY) as f64);
+        m.lbl_stamina = label(content, lang, "hud.stamina", "FÔLEGO");
         m.health = health;
         m.health_text = format!("{}/{}", round(hp), round(max_hp));
         m.health_low = health <= 0.3;
@@ -496,7 +510,15 @@ fn sync_hud(
         m.quest_others_more = others_more_text(extra, content, lang);
         m.quest_others_more_visible = extra > 0;
 
+        m.target_locked = bind_flag(binds, "target.locked");
         m.target_alive = bind_flag(binds, "target.alive");
+        let cue = bind_text(binds, "target.cue");
+        m.target_cue = if m.target_locked && !cue.is_empty() {
+            label(content, lang, &format!("combat.cue.{cue}"), "")
+        } else {
+            String::new()
+        };
+        m.target_cue_visible = !m.target_cue.is_empty();
         m.target_name = bind_text(binds, "target.name");
         m.target = bind_number(binds, "target").clamp(0.0, 1.0);
 
@@ -531,6 +553,9 @@ fn sync_hud(
         }
         m.net_on = bind_flag(binds, "net.on");
         m.net_label = bind_text(binds, "net.label");
+        let lit = lantern.as_deref().is_some_and(|l| l.get().lit);
+        m.lantern_on = lit;
+        m.lantern_off = !lit;
 
         m.dash_cd = bind_number(binds, "ab.dash").clamp(0.0, 1.0);
         m.heal_cd = bind_number(binds, "ab.heal").clamp(0.0, 1.0);
@@ -571,6 +596,9 @@ fn sync_hud(
         m.lbl_season = label(content, lang, "hud.season", "ESTAÇÃO");
         m.lbl_net = label(content, lang, "hud.net", "REDE");
         m.lbl_rain = label(content, lang, "hud.rain", "CHUVA");
+        m.lbl_lantern = label(content, lang, "hud.lantern", "LANTERNA");
+        m.lbl_lantern_on = format!("● {}", label(content, lang, "hud.lantern.on", "ACESA"));
+        m.lbl_lantern_off = format!("○ {}", label(content, lang, "hud.lantern.off", "APAGADA"));
         if bind_text(binds, "boat.grip") == "oars" {
             m.lbl_attack = label(content, lang, "hud.row_forward", "W  REMAR");
             m.lbl_guard = label(content, lang, "hud.row_back", "S  RÉ");

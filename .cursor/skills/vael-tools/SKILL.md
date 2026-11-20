@@ -25,6 +25,8 @@ vael-tools lint                          # assets/scripts em falta
 vael-tools bsn convert --force f.xml     # só geradores (tools/qa.py)
 ```
 
+Para editar cenas ou consultar o schema, veja a [skill de edição BSN](../vael-bsn/SKILL.md).
+
 ## Arranque
 
 ```bash

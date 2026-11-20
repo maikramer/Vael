@@ -16,6 +16,7 @@ path = "src/lib.rs"
 
 [dependencies]
 anyhow = "1.0"
+rustversion = "1"
 bevy_engine_core = { package = "bevy_ext_core", version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_core" }
 bevy_world_xml = { package = "bevy_ext_world", version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_world", features = ["terrain"] }
 bevy_save_slots = { package = "bevy_ext_save", version = "0.1.0", path = "../../../bevy_extensions/crates/bevy_ext_save" }

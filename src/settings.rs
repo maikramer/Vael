@@ -12,7 +12,11 @@
 use std::path::{Path, PathBuf};
 
 use anyhow::{Context as _, Result};
-use bevy::prelude::{App, First, Local, Plugin, Res, Transform, default};
+use bevy::prelude::{
+    App, Commands, Component, Entity, FromReflect, In, IntoSystem, Local, Plugin, PreUpdate, Query,
+    Reflect, Res, ResMut, Resource, Transform, TypePath, default,
+};
+use bevy::reflect::GetTypeRegistration;
 use bevy::reflect::PartialReflect;
 use bevy::reflect::TypeRegistry;
 use bevy_ext_elements::{ElementsSettings, ElementsSettingsPlugin};
@@ -23,6 +27,7 @@ use bevy_ext_world::bsn::settings::{
     SceneNatives, SceneSettingsApp, SceneSettingsPlugin, emit_native_entity, emit_native_group,
     native_value,
 };
+use jackdaw_scene_types::SceneNodeId;
 
 use crate::VaelProjectRoot;
 
@@ -57,26 +62,102 @@ impl Plugin for VaelSettingsPlugin {
             bevy_ext_scene::SceneSpecPlugin,
             SceneSettingsPlugin::new(settings_world(&root)),
         ))
-        .add_scene_setting::<ElementsSettings>()
         .add_scene_setting::<FloraSettings>()
         .add_scene_setting_list::<FloraSpecies>()
         .add_scene_setting::<GrassSettingsSpec>()
-        .add_scene_setting_list::<GrassStyleSpec>()
-        .add_systems(First, apply_postfx_settings);
+        .add_scene_setting_list::<GrassStyleSpec>();
+        // EnvironmentPlugin reads the initial value while building its systems.
+        let elements =
+            native_value::<ElementsSettings>(&app.world().resource::<SceneNatives>().natives)
+                .unwrap_or_default();
+        app.insert_resource(SettingsInPlay(crate::editor_link::link_enabled()))
+            .insert_resource(SceneSetting(elements))
+            .add_systems(
+                PreUpdate,
+                (
+                    read_singleton::<ElementsSettings>.pipe(apply_elements),
+                    read_singleton::<PostFxSettings>.pipe(apply_postfx_settings),
+                ),
+            );
     }
 }
 
-/// O `PostFxSettings` da cena substitui o `postfx:` do `config.yaml` (e
-/// volta a ele se a entidade desaparecer do documento).
-fn apply_postfx_settings(natives: Option<Res<SceneNatives>>, mut seen: Local<Option<u64>>) {
-    let Some(natives) = natives else {
-        return;
-    };
-    if *seen == Some(natives.generation) {
-        return;
+#[derive(Resource)]
+struct SettingsInPlay(bool);
+
+/// Keep the disk baseline separate from the current PIE value. Saving another
+/// module leaves the preview intact. Saving a new value for this setting wins.
+#[derive(Default)]
+struct Singleton<T> {
+    generation: Option<u64>,
+    disk: Option<(Option<u64>, T)>,
+    entity: Option<Entity>,
+    published: Option<Option<T>>,
+}
+
+fn read_singleton<T>(
+    natives: Res<SceneNatives>,
+    play: Res<SettingsInPlay>,
+    mut state: Local<Singleton<T>>,
+    mut commands: Commands,
+    components: Query<&T>,
+) -> Option<Option<T>>
+where
+    T: Component
+        + Reflect
+        + FromReflect
+        + GetTypeRegistration
+        + TypePath
+        + Default
+        + Clone
+        + PartialEq,
+{
+    if state.generation != Some(natives.generation) {
+        state.generation = Some(natives.generation);
+        let disk = natives.natives.iter().find_map(|node| {
+            node.get(T::type_path())?;
+            native_value::<T>(std::slice::from_ref(node)).map(|value| (node.node_id, value))
+        });
+        if state.disk != disk {
+            if let Some(entity) = state.entity.take() {
+                commands.entity(entity).try_despawn();
+            }
+            if play.0
+                && let Some((Some(id), value)) = &disk
+            {
+                state.entity = Some(commands.spawn((SceneNodeId(*id), value.clone())).id());
+            }
+            state.disk = disk;
+            // The new entity becomes queryable after commands are applied.
+            let next = state.disk.as_ref().map(|(_, value)| value.clone());
+            state.published = Some(next.clone());
+            return Some(next);
+        }
     }
-    *seen = Some(natives.generation);
-    match native_value::<PostFxSettings>(&natives.natives) {
+    let next = match state.entity {
+        Some(entity) => components.get(entity).ok(),
+        None => state.disk.as_ref().map(|(_, value)| value),
+    };
+    if state.published.as_ref().map(Option::as_ref) == Some(next) {
+        return None;
+    }
+    let next = next.cloned();
+    state.published = Some(next.clone());
+    Some(next)
+}
+
+fn apply_elements(
+    In(change): In<Option<Option<ElementsSettings>>>,
+    mut setting: ResMut<SceneSetting<ElementsSettings>>,
+) {
+    if let Some(value) = change {
+        setting.0 = value.unwrap_or_default();
+    }
+}
+
+fn apply_postfx_settings(In(change): In<Option<Option<PostFxSettings>>>) {
+    let Some(value) = change else { return };
+    match value {
         Some(settings) => viber::postfx::set_scene_profile(
             &settings.disabled_keys(),
             settings.ssao.then_some(settings.ssao_quality.name()),
@@ -112,6 +193,7 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     registry.register::<GrassSettingsSpec>();
     registry.register::<GrassStyleSpec>();
     // Sem `Transform` o Jackdaw não pendura a entidade na hierarquia.
+    registry.register::<SceneNodeId>();
     registry.register::<Transform>();
     let transform = Transform::default();
 
@@ -122,6 +204,9 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
     let grass = crate::grass::legacy_grass_settings();
     let grass_styles = crate::grass::legacy_grass_styles();
 
+    // The default modules and their instances in world.bsn address the same PIE nodes.
+    let environment_id = SceneNodeId(6852620019402782939);
+    let postfx_id = SceneNodeId(6852620019402782940);
     let files = [
         (
             "environment.bsn",
@@ -130,6 +215,7 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
                 &[
                     transform.as_partial_reflect(),
                     elements.as_partial_reflect(),
+                    environment_id.as_partial_reflect(),
                 ],
                 &registry,
             ),
@@ -138,7 +224,11 @@ pub fn export_settings(root: &Path, force: bool) -> Result<Vec<PathBuf>> {
             "postfx.bsn",
             emit_native_entity(
                 "Pós-processamento",
-                &[transform.as_partial_reflect(), postfx.as_partial_reflect()],
+                &[
+                    transform.as_partial_reflect(),
+                    postfx.as_partial_reflect(),
+                    postfx_id.as_partial_reflect(),
+                ],
                 &registry,
             ),
         ),
@@ -218,6 +308,60 @@ fn jackdaw_bsn_check(path: &Path, text: &str) -> Result<()> {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use bevy::prelude::{AppTypeRegistry, MinimalPlugins};
+
+    #[test]
+    fn jackdaw_pie_environment_edits_use_the_authored_id_and_survive_unrelated_reloads() {
+        use jackdaw_runtime::node_sync::{apply_node_components, install_node_index};
+        let path = Path::new(env!("CARGO_MANIFEST_DIR")).join("world/settings/environment.bsn");
+        let (native, _) = bevy_ext_world::bsn::settings::read_natives(&path).unwrap();
+        let id = native[0].node_id.expect("id do módulo");
+        let mut app = App::new();
+        app.add_plugins((MinimalPlugins, ElementsSettingsPlugin))
+            .init_resource::<SceneNatives>()
+            .insert_resource(SettingsInPlay(true))
+            .init_resource::<SceneSetting<ElementsSettings>>()
+            .add_systems(
+                PreUpdate,
+                read_singleton::<ElementsSettings>.pipe(apply_elements),
+            );
+        install_node_index(&mut app);
+        app.world_mut().resource_mut::<SceneNatives>().natives = native;
+        app.update();
+
+        let path = ElementsSettings::type_path().to_string();
+        let before = app
+            .world()
+            .resource::<SceneSetting<ElementsSettings>>()
+            .0
+            .clone();
+        let mut value = before.clone();
+        value.start_hour = 22.0;
+        let registry = app.world().resource::<AppTypeRegistry>().read();
+        let edit = serde_json::to_value(bevy::reflect::serde::TypedReflectSerializer::new(
+            &value, &registry,
+        ))
+        .unwrap();
+        drop(registry);
+        apply_node_components(app.world_mut(), id, &[(path.clone(), edit)], &[]);
+        app.update();
+        assert_eq!(
+            app.world().resource::<SceneSetting<ElementsSettings>>().0,
+            value
+        );
+        app.world_mut().resource_mut::<SceneNatives>().generation += 1;
+        app.update();
+        assert_eq!(
+            app.world().resource::<SceneSetting<ElementsSettings>>().0,
+            value
+        );
+        apply_node_components(app.world_mut(), id, &[], &[path]);
+        app.update();
+        assert_eq!(
+            app.world().resource::<SceneSetting<ElementsSettings>>().0,
+            ElementsSettings::default()
+        );
+    }
 
     /// O que se exporta volta a ler-se igual (o round-trip do editor).
     #[test]
@@ -225,6 +369,18 @@ mod tests {
         let dir = tempfile_dir();
         let written = export_settings(&dir, true).expect("export");
         assert_eq!(written.len(), 4);
+        for name in ["environment.bsn", "postfx.bsn"] {
+            let authored_path = Path::new(env!("CARGO_MANIFEST_DIR"))
+                .join(SETTINGS_DIR)
+                .join(name);
+            let (authored, _) =
+                bevy_ext_world::bsn::settings::read_natives(&authored_path).unwrap();
+            let (exported, _) =
+                bevy_ext_world::bsn::settings::read_natives(&dir.join(SETTINGS_DIR).join(name))
+                    .unwrap();
+            assert!(authored[0].node_id.is_some());
+            assert_eq!(exported[0].node_id, authored[0].node_id);
+        }
         let world = dir.join("world.bsn");
         std::fs::write(
             &world,

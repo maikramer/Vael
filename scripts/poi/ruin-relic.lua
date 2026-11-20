@@ -1,3 +1,4 @@
+--@export inscription: string = ""
 local rules = viber.load("lib/rules.lua")
 -- poi/ruin-relic.lua: objeto místico (portado do TS) — prompt quando perto, leitura dá
 -- XP uma única vez (a marca vive no save — state() renasce vazio no load).
@@ -24,6 +25,7 @@ function on_update(dt)
     once.mark()
     viber.set_interaction("Relíquia já examinada", "e", 3.0)
     rules.add_xp(30)
-    viber.toast("Marcas de uma civilização perdida (+30 XP).")
+    local inscription = viber.prop("inscription")
+    viber.toast(inscription and inscription ~= "" and inscription or "Marcas de uma civilização perdida (+30 XP).")
   end
 end

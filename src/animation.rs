@@ -42,6 +42,41 @@ impl Plugin for VaelAnimationPlugin {
                 .chain()
                 .before(jackdaw_animation_runtime::AnimationSetSystems),
         );
+        // Depois dos offsets do script (tocha no braço) e antes da captura do
+        // puppet / propagação para que a pose alvo já inclua a palma aberta
+        // e nunca sobreponha o write-back físico.
+        app.add_systems(
+            PostUpdate,
+            relax_inward_palms
+                .after(viber::ik::bone_offsets_system)
+                .before(bevy_ext_puppet::PuppetSystems::Capture)
+                .before(bevy::transform::TransformSystems::Propagate),
+        );
+    }
+}
+
+/// Rolos locais (radianos) que tiram a palma da coxa.
+///
+/// Os clips cozidos nos GLBs deixam o eixo local −Z da mão a apontar para
+/// o tronco (herói idle: direita 0,73, esquerda 0,95). O retarget novo do
+/// AiGameKit (`full_rest_bones`) já não faz isto, mas estes ficheiros são
+/// anteriores. O mesmo rolo serve herói, bandido, goblin e sombra: a
+/// esquerda nasce mais fechada, por isso o ângulo não é simétrico.
+/// Medido no `idle` de `hero_lod0.glb` a 2026-11-19.
+const PALM_OPEN_R: f32 = 30.0_f32.to_radians();
+const PALM_OPEN_L: f32 = -45.0_f32.to_radians();
+
+/// Roda `hand_r` / `hand_l` à volta do eixo do antebraço, por cima do clipe.
+///
+/// A espada é filha do osso: acompanha a palma, o grip local não muda.
+pub(crate) fn relax_inward_palms(mut hands: Query<(&Name, &mut Transform)>) {
+    for (name, mut transform) in &mut hands {
+        let roll = match name.as_str() {
+            "hand_r" => PALM_OPEN_R,
+            "hand_l" => PALM_OPEN_L,
+            _ => continue,
+        };
+        transform.rotation = (transform.rotation * Quat::from_rotation_y(roll)).normalize();
     }
 }
 
@@ -394,5 +429,34 @@ mod tests {
         assert!(!is_locomotion_set(&seated), "default fora da locomoção");
         seated.default_state = "Idle".into();
         assert!(is_locomotion_set(&seated), "sem distinguir maiúsculas");
+    }
+
+    #[test]
+    fn relax_inward_palms_rolls_only_the_wrists() {
+        let mut app = App::new();
+        app.add_systems(Update, relax_inward_palms);
+        let rest = Quat::from_rotation_x(0.4);
+        let right = app
+            .world_mut()
+            .spawn((Name::new("hand_r"), Transform::from_rotation(rest)))
+            .id();
+        let left = app
+            .world_mut()
+            .spawn((Name::new("hand_l"), Transform::from_rotation(rest)))
+            .id();
+        let finger = app
+            .world_mut()
+            .spawn((
+                Name::new("RightHandFinger1"),
+                Transform::from_rotation(rest),
+            ))
+            .id();
+        app.update();
+        let right_q = app.world().get::<Transform>(right).unwrap().rotation;
+        let left_q = app.world().get::<Transform>(left).unwrap().rotation;
+        let finger_q = app.world().get::<Transform>(finger).unwrap().rotation;
+        assert!(right_q.abs_diff_eq(rest * Quat::from_rotation_y(PALM_OPEN_R), 1e-5));
+        assert!(left_q.abs_diff_eq(rest * Quat::from_rotation_y(PALM_OPEN_L), 1e-5));
+        assert!(finger_q.abs_diff_eq(rest, 1e-5));
     }
 }

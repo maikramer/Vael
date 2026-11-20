@@ -44,6 +44,10 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Lake",
             attrs: [
+                bevy_world_xml::bsn::WorldProp { key: "seed", value: "119" },
+                bevy_world_xml::bsn::WorldProp { key: "axis", value: "21" },
+                bevy_world_xml::bsn::WorldProp { key: "stretch", value: "0.2" },
+                bevy_world_xml::bsn::WorldProp { key: "lobes", value: "1.45" },
                 bevy_world_xml::bsn::WorldProp { key: "at", value: "-80 104" },
                 bevy_world_xml::bsn::WorldProp { key: "radius", value: "16" },
                 bevy_world_xml::bsn::WorldProp { key: "depth", value: "5.0" },
@@ -92,7 +96,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "River",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "path", value: "314 125 287 121 258 121 236 141 209 162 180 188 150 193 121 199 92 189 62 203 33 209 4 215 -25 213 -55 215 -84 232 -113 260 -133 289 -158 318 -186 340" },
+                bevy_world_xml::bsn::WorldProp { key: "path", value: "314.00 125.00 304.22 123.61 294.28 122.04 284.31 118.24 273.50 118.08 263.40 119.63 254.98 123.52 250.56 132.72 244.93 141.59 235.06 147.23 224.71 150.58 213.35 152.02 203.31 156.87 198.16 167.11 193.18 176.63 187.06 184.79 179.15 191.44 168.94 193.04 158.80 195.23 149.47 198.77 138.89 198.94 128.13 197.54 119.89 193.51 112.46 187.44 101.04 186.17 90.23 189.75 82.41 194.61 74.57 201.35 64.43 206.09 53.58 207.66 43.62 210.32 33.46 210.15 22.79 208.95 13.44 213.25 3.64 215.03 -6.28 214.56 -16.58 215.72 -26.95 217.80 -36.78 213.68 -46.89 213.21 -56.58 215.51 -65.89 219.21 -74.64 224.44 -84.77 228.19 -93.76 233.60 -101.54 240.48 -107.85 248.76 -109.82 260.40 -112.22 270.74 -118.52 278.38 -125.87 285.66 -135.34 291.48 -144.01 297.45 -149.59 305.73 -156.79 312.54 -164.68 318.47 -171.42 325.88 -178.31 333.40 -186.00 340.00" },
                 bevy_world_xml::bsn::WorldProp { key: "width", value: "16" },
                 bevy_world_xml::bsn::WorldProp { key: "depth", value: "3.7" },
                 bevy_world_xml::bsn::WorldProp { key: "water-offset", value: "1.2" },
@@ -100,7 +104,7 @@ bevy_ecs::hierarchy::Children [
                 bevy_world_xml::bsn::WorldProp { key: "bank-height", value: "0.85" },
                 bevy_world_xml::bsn::WorldProp { key: "color", value: "#235a75" },
                 bevy_world_xml::bsn::WorldProp { key: "opacity", value: "0.93" },
-                bevy_world_xml::bsn::WorldProp { key: "water-levels", value: "49.760536 49.730904 49.70217 49.643665 49.585205 49.513557 49.46013 49.39943 49.338703 49.271915 49.205124 49.132977 49.060997 48.989132 48.914333 48.84112 48.76394 48.68913 48.628193 48.566826 48.509735 48.450863 48.37824 48.28413 48.164513 48.04493 47.920715 47.80985 47.72103 47.65595 47.586544 47.524715 47.463 47.392345 47.330788 47.271114 47.205246 47.145313 47.083454 47.014637 46.95151 46.88834 46.820557 46.760162 46.700104 46.634617 46.57963 46.5227 46.460712 46.409946 46.360916 46.303867 46.257717 46.21225 46.158314 46.10753 46.057964 46.010624 45.963966 45.91831 45.87311 45.8283 45.783573 45.73216 45.669086 45.600456 45.52581 45.44887 45.37297 45.303112 45.233326 45.16405 45.092415 45.022068 44.96769 44.91402 44.86317 44.813076 44.76231 44.71168 44.658573 44.60254 44.54463 44.48601 44.409233 44.336163 44.256947 44.17797 44.076862 43.978863 43.88863 43.808064 43.72315 43.66383 43.606556 43.547813 43.488102 43.42965 43.355022 43.263615 43.171635 43.081825 43.003548 42.938877 42.88953 42.83895 42.78513 42.73043 42.677 42.623913 42.56976 42.515987 42.46019 42.40317 42.342915 42.278233 42.211823 42.142166 42.072056 42.003563 41.93262 41.861378 41.78829 41.714325 41.65617 41.59733 41.53776 41.47802 41.419003 41.343296 41.26804 41.192535 41.11913 41.04524 40.972797 40.90596 40.836773 40.753624 40.674145 40.596897 40.530388 40.47068 40.418682 40.367 40.31712 40.254623 40.19347 40.13936 40.09857 40.07702 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532" },
+                bevy_world_xml::bsn::WorldProp { key: "water-levels", value: "49.760536 49.686058 49.616207 49.535885 49.437614 49.314976 49.249241 49.171715 49.090282 48.971249 48.899223 48.823788 48.738892 48.649261 48.574417 48.465248 48.383812 48.25045 48.034176 47.887245 47.773956 47.700989 47.659817 47.568661 47.530178 47.489296 47.41909 47.350662 47.291714 47.198715 47.130058 47.040867 46.954342 46.867149 46.7696 46.68121 46.580853 46.458897 46.398762 46.298973 46.251244 46.200794 46.13728 46.104435 46.079826 46.055981 46.030384 46.005512 45.983227 45.949234 45.902985 45.876057 45.847172 45.812901 45.772171 45.726261 45.626514 45.557053 45.47084 45.390236 45.274445 45.206146 45.135674 45.063976 44.983032 44.923855 44.823208 44.770237 44.691677 44.581596 44.52338 44.434757 44.347885 44.26894 44.186321 44.087055 43.924164 43.848392 43.756008 43.68293 43.62566 43.564655 43.502655 43.403996 43.32283 43.231628 43.142075 43.039944 42.959827 42.863853 42.820553 42.770741 42.710979 42.619411 42.573067 42.525066 42.454926 42.393524 42.293129 42.228191 42.14859 42.078491 41.968925 41.900059 41.827599 41.752724 41.658207 41.598362 41.480095 41.421177 41.308346 41.231926 41.156631 41.084686 40.968971 40.898609 40.815514 40.705669 40.615601 40.528606 40.405937 40.341461 40.26865 40.185902 40.120815 40.076805 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532 40.073532" },
                 bevy_world_xml::bsn::WorldProp { key: "rocks", value: "0" },
             ],
             text: "",
@@ -236,7 +240,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 9.8, y: 41.758701, z: 196.800003 },
+            translation: glam::Vec3 { x: 9.8, y: 42.1145, z: 196.8 },
             rotation: glam::Quat { x: 0.0, y: -0.130526, z: 0.0, w: 0.991445 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -249,7 +253,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 41.7587 196.8" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.8 42.1145 196.8" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 -15 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -280,7 +284,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 2.2, y: 40.912998, z: 195.600006 },
+            translation: glam::Vec3 { x: 2.2, y: 42.0049, z: 195.6 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -293,7 +297,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.2 40.913 195.6" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "2.2 42.0049 195.6" },
             ],
             text: "",
             origin_file: "world/spawn/ring.xml",
@@ -322,7 +326,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -1.6, y: 40.868401, z: 198.600006 },
+            translation: glam::Vec3 { x: -1.6, y: 41.3676, z: 198.6 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -335,7 +339,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.6 40.8684 198.6" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-1.6 41.3676 198.6" },
             ],
             text: "",
             origin_file: "world/spawn/ring.xml",
@@ -364,7 +368,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 9.6, y: 42.481098, z: 226.800003 },
+            translation: glam::Vec3 { x: 9.6, y: 40.783, z: 226.8 },
             rotation: glam::Quat { x: 0.0, y: 0.573576, z: 0.0, w: 0.819152 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -377,7 +381,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.6 42.4811 226.8" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "9.6 40.783 226.8" },
                 bevy_world_xml::bsn::WorldProp { key: "euler", value: "0 70 0" },
                 bevy_world_xml::bsn::WorldProp { key: "scale", value: "1" },
             ],
@@ -408,7 +412,7 @@ bevy_ecs::hierarchy::Children [
         --
         #Entity
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: -2.4, y: 40.591499, z: 228.600006 },
+            translation: glam::Vec3 { x: -2.4, y: 40.3994, z: 228.6 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
@@ -421,7 +425,7 @@ bevy_ecs::hierarchy::Children [
         bevy_world_xml::bsn::WorldNode {
             tag: "Entity",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.4 40.5915 228.6" },
+                bevy_world_xml::bsn::WorldProp { key: "translation", value: "-2.4 40.3994 228.6" },
             ],
             text: "",
             origin_file: "world/spawn/ring.xml",
@@ -697,7 +701,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -71.5746, y: 42.573502, z: 91.1436 },
+                translation: glam::Vec3 { x: -72.3286, y: 42.57354, z: 92.29414 },
                 rotation: glam::Quat { x: 0.0, y: -0.715231, z: 0.0, w: 0.698888 },
                 scale: glam::Vec3 { x: 0.5355, y: 0.578, z: 0.5385 },
             }
@@ -799,7 +803,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -92.776703, y: 42.573502, z: 117.300797 },
+                translation: glam::Vec3 { x: -89.53705, y: 42.57354, z: 113.92826 },
                 rotation: glam::Quat { x: 0.0, y: -0.136415, z: 0.0, w: 0.990652 },
                 scale: glam::Vec3 { x: 0.4269, y: 0.3949, z: 0.3878 },
             }
@@ -816,7 +820,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -91.490601, y: 42.573502, z: 114.652397 },
+                translation: glam::Vec3 { x: -90.2909, y: 42.57354, z: 113.54021 },
                 rotation: glam::Quat { x: 0.0, y: -0.174129, z: 0.0, w: 0.984723 },
                 scale: glam::Vec3 { x: 0.5885, y: 0.5918, z: 0.5853 },
             }
@@ -1592,7 +1596,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: -99.831299, y: 42.838299, z: 94.325104 },
+                    translation: glam::Vec3 { x: -101.8313, y: 42.6754, z: 94.3251 },
                     rotation: glam::Quat { x: 0.0, y: -0.45531, z: 0.0, w: 0.890333 },
                     scale: glam::Vec3 { x: 1.1525, y: 1.2422, z: 1.3323 },
                 }
@@ -2744,7 +2748,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: -66.148201, y: 40.326698, z: 103.473396 },
+                    translation: glam::Vec3 { x: -61.1482, y: 42.3375, z: 94.4734 },
                     rotation: glam::Quat { x: 0.050581, y: -0.640045, z: 0.118735, w: 0.75742 },
                     scale: glam::Vec3 { x: 0.7248, y: 0.8039, z: 0.8116 },
                 }
@@ -2880,7 +2884,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: -4.0415, y: 44.9613, z: 87.227898 },
+                    translation: glam::Vec3 { x: -6.8415, y: 44.9637, z: 87.2279 },
                     rotation: glam::Quat { x: 0.0, y: -0.857325, z: 0.0, w: -0.514776 },
                     scale: glam::Vec3 { x: 1.0953, y: 1.0467, z: 1.0727 },
                 }
@@ -2931,7 +2935,7 @@ bevy_ecs::hierarchy::Children [
                     deleted: [],
                 }
                 bevy_transform::components::transform::Transform {
-                    translation: glam::Vec3 { x: -91.908302, y: 39.7813, z: 106.543701 },
+                    translation: glam::Vec3 { x: -94.9083, y: 42.8671, z: 107.5437 },
                     rotation: glam::Quat { x: -0.061385, y: -0.302522, z: -0.08965, w: 0.946929 },
                     scale: glam::Vec3 { x: 1.3976, y: 1.2767, z: 1.184 },
                 }
@@ -4078,7 +4082,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 219.757401, y: 42.9361, z: 169.526703 },
+                translation: glam::Vec3 { x: 219.7574, y: 47.7569, z: 169.5267 },
                 rotation: glam::Quat { x: -0.030843, y: 0.931495, z: -0.010937, w: 0.362279 },
                 scale: glam::Vec3 { x: 0.7054, y: 0.7325, z: 0.773 },
             }
@@ -4112,7 +4116,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 242.117096, y: 47.872101, z: 134.746201 },
+                translation: glam::Vec3 { x: 240.1171, y: 47.8301, z: 133.7462 },
                 rotation: glam::Quat { x: -0.054336, y: 0.413653, z: 0.019768, w: 0.908597 },
                 scale: glam::Vec3 { x: 0.7474, y: 0.8219, z: 0.7927 },
             }
@@ -4129,7 +4133,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 151.948196, y: 45.629398, z: 200.807999 },
+                translation: glam::Vec3 { x: 153.9482, y: 45.7749, z: 205.808 },
                 rotation: glam::Quat { x: -0.205076, y: -0.411529, z: 0.055892, w: 0.886264 },
                 scale: glam::Vec3 { x: 0.758, y: 0.7105, z: 0.7663 },
             }
@@ -4146,7 +4150,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 141.756607, y: 45.732899, z: 199.814407 },
+                translation: glam::Vec3 { x: 141.7566, y: 45.2963, z: 207.8144 },
                 rotation: glam::Quat { x: 0.0, y: -0.714567, z: 0.0, w: 0.699567 },
                 scale: glam::Vec3 { x: 1.1992, y: 1.1054, z: 1.1588 },
             }
@@ -4163,7 +4167,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -45.036201, y: 40.471298, z: 201.503998 },
+                translation: glam::Vec3 { x: -45.0362, y: 40.0662, z: 201.504 },
                 rotation: glam::Quat { x: 0.0, y: -0.957301, z: 0.0, w: 0.289092 },
                 scale: glam::Vec3 { x: 0.7719, y: 0.7257, z: 0.7523 },
             }
@@ -4180,7 +4184,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -106.546402, y: 38.3297, z: 275.582703 },
+                translation: glam::Vec3 { x: -102.5464, y: 39.2398, z: 276.5827 },
                 rotation: glam::Quat { x: 0.0, y: -0.777317, z: 0.0, w: -0.629109 },
                 scale: glam::Vec3 { x: 1.4443, y: 1.3575, z: 1.3825 },
             }
@@ -4197,7 +4201,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 166.1017, y: 46.394299, z: 202.881607 },
+                translation: glam::Vec3 { x: 166.1017, y: 45.9302, z: 202.8816 },
                 rotation: glam::Quat { x: 0.0, y: -0.708323, z: 0.0, w: -0.705889 },
                 scale: glam::Vec3 { x: 0.8496, y: 0.9426, z: 0.9463 },
             }
@@ -4214,7 +4218,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 118.473801, y: 40.1842, z: 189.306503 },
+                translation: glam::Vec3 { x: 122.4738, y: 44.3583, z: 185.3065 },
                 rotation: glam::Quat { x: -0.003661, y: 0.817741, z: -0.001108, w: 0.575573 },
                 scale: glam::Vec3 { x: 0.8294, y: 0.8722, z: 0.8072 },
             }
@@ -4231,7 +4235,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 175.461304, y: 45.575199, z: 197.421494 },
+                translation: glam::Vec3 { x: 175.4613, y: 46.0158, z: 200.4215 },
                 rotation: glam::Quat { x: 0.025084, y: -0.170601, z: -0.003632, w: 0.985014 },
                 scale: glam::Vec3 { x: 1.2636, y: 1.358, z: 1.4572 },
             }
@@ -4248,7 +4252,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 230.110901, y: 48.542099, z: 132.151993 },
+                translation: glam::Vec3 { x: 230.1109, y: 47.4739, z: 132.152 },
                 rotation: glam::Quat { x: 0.0, y: 0.267322, z: 0.0, w: 0.963607 },
                 scale: glam::Vec3 { x: 1.1908, y: 1.0912, z: 1.099 },
             }
@@ -4265,7 +4269,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 63.858002, y: 38.695702, z: 201.162399 },
+                translation: glam::Vec3 { x: 61.858, y: 42.7504, z: 198.1624 },
                 rotation: glam::Quat { x: -0.01613, y: -0.494019, z: 0.017583, w: 0.869124 },
                 scale: glam::Vec3 { x: 1.4375, y: 1.397, z: 1.3214 },
             }
@@ -4282,7 +4286,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 191.354904, y: 46.257198, z: 169.150604 },
+                translation: glam::Vec3 { x: 188.3549, y: 46.4947, z: 168.1506 },
                 rotation: glam::Quat { x: -0.039035, y: -0.434315, z: 0.03888, w: 0.899074 },
                 scale: glam::Vec3 { x: 1.0006, y: 0.9965, z: 1.0148 },
             }
@@ -4316,7 +4320,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 110.752098, y: 40.0368, z: 192.604996 },
+                translation: glam::Vec3 { x: 108.7521, y: 44.1059, z: 195.605 },
                 rotation: glam::Quat { x: -0.023717, y: -0.659041, z: 0.052063, w: 0.749928 },
                 scale: glam::Vec3 { x: 1.1429, y: 1.0854, z: 1.1541 },
             }
@@ -4367,7 +4371,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -123.117996, y: 37.8591, z: 285.931488 },
+                translation: glam::Vec3 { x: -118.118, y: 38.6048, z: 293.9315 },
                 rotation: glam::Quat { x: 0.0, y: -0.634206, z: 0.0, w: 0.773164 },
                 scale: glam::Vec3 { x: 0.9577, y: 1.0358, z: 1.0465 },
             }
@@ -4384,7 +4388,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 130.874603, y: 44.1647, z: 198.608795 },
+                translation: glam::Vec3 { x: 128.8746, y: 44.81, z: 205.6088 },
                 rotation: glam::Quat { x: 0.0, y: -0.962035, z: 0.0, w: -0.272927 },
                 scale: glam::Vec3 { x: 0.9822, y: 1.0117, z: 1.1033 },
             }
@@ -4401,7 +4405,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 218.1931, y: 48.083099, z: 145.959106 },
+                translation: glam::Vec3 { x: 218.1931, y: 47.413, z: 142.9591 },
                 rotation: glam::Quat { x: 0.0, y: -0.868013, z: 0.0, w: 0.496542 },
                 scale: glam::Vec3 { x: 1.1831, y: 1.1077, z: 1.1381 },
             }
@@ -4418,7 +4422,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 193.419296, y: 42.368599, z: 181.965103 },
+                translation: glam::Vec3 { x: 197.4193, y: 46.209, z: 183.9651 },
                 rotation: glam::Quat { x: -0.062837, y: 0.226411, z: 0.008425, w: 0.971966 },
                 scale: glam::Vec3 { x: 0.9339, y: 0.9614, z: 0.9977 },
             }
@@ -4435,7 +4439,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -128.292801, y: 37.573601, z: 298.699707 },
+                translation: glam::Vec3 { x: -127.2928, y: 38.3501, z: 300.6997 },
                 rotation: glam::Quat { x: 0.0, y: 0.706265, z: 0.0, w: 0.707948 },
                 scale: glam::Vec3 { x: 1.0099, y: 1.0891, z: 0.9921 },
             }
@@ -4469,7 +4473,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 91.855499, y: 43.681999, z: 184.865799 },
+                translation: glam::Vec3 { x: 90.8555, y: 43.7272, z: 180.8658 },
                 rotation: glam::Quat { x: -0.055738, y: 0.577842, z: -0.014334, w: 0.814117 },
                 scale: glam::Vec3 { x: 0.7424, y: 0.706, z: 0.6516 },
             }
@@ -4486,7 +4490,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 264.536499, y: 44.5989, z: 130.654007 },
+                translation: glam::Vec3 { x: 264.5365, y: 48.3418, z: 130.654 },
                 rotation: glam::Quat { x: 0.0, y: -0.971814, z: 0.0, w: -0.23575 },
                 scale: glam::Vec3 { x: 1.2385, y: 1.1582, z: 1.2003 },
             }
@@ -4503,7 +4507,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -59.565201, y: 40.063099, z: 215.481995 },
+                translation: glam::Vec3 { x: -60.5652, y: 40.5216, z: 208.482 },
                 rotation: glam::Quat { x: 0.0, y: -0.9801, z: 0.0, w: 0.198505 },
                 scale: glam::Vec3 { x: 1.1197, y: 1.0979, z: 1.1382 },
             }
@@ -4520,7 +4524,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 232.144806, y: 47.686298, z: 143.633804 },
+                translation: glam::Vec3 { x: 232.1448, y: 47.3331, z: 139.6338 },
                 rotation: glam::Quat { x: 0.023832, y: -0.936295, z: 0.052511, w: 0.346449 },
                 scale: glam::Vec3 { x: 0.8383, y: 0.8406, z: 0.8011 },
             }
@@ -4554,7 +4558,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 177.919998, y: 46.232601, z: 173.037094 },
+                translation: glam::Vec3 { x: 177.92, y: 45.8623, z: 173.0371 },
                 rotation: glam::Quat { x: 0.005974, y: -0.970883, z: 0.053106, w: 0.233518 },
                 scale: glam::Vec3 { x: 0.8748, y: 0.9235, z: 0.9735 },
             }
@@ -4571,7 +4575,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 186.461395, y: 46.3498, z: 192.702896 },
+                translation: glam::Vec3 { x: 188.4614, y: 46.5226, z: 194.7029 },
                 rotation: glam::Quat { x: 0.017527, y: -0.909222, z: -0.050234, w: 0.412897 },
                 scale: glam::Vec3 { x: 1.215, y: 1.2126, z: 1.1582 },
             }
@@ -4588,7 +4592,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 256.968201, y: 49.309898, z: 115.092697 },
+                translation: glam::Vec3 { x: 255.9682, y: 48.4919, z: 114.0927 },
                 rotation: glam::Quat { x: -0.014012, y: -0.926171, z: -0.01249, w: -0.376637 },
                 scale: glam::Vec3 { x: 1.466, y: 1.3726, z: 1.4072 },
             }
@@ -4605,7 +4609,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 66.508698, y: 42.580002, z: 187.386307 },
+                translation: glam::Vec3 { x: 66.5087, y: 43.4011, z: 187.3863 },
                 rotation: glam::Quat { x: 0.00804, y: -0.997915, z: 0.029351, w: -0.056923 },
                 scale: glam::Vec3 { x: 0.8628, y: 0.9268, z: 0.9473 },
             }
@@ -4639,7 +4643,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 253.464996, y: 44.0602, z: 141.753296 },
+                translation: glam::Vec3 { x: 253.465, y: 47.9464, z: 142.7533 },
                 rotation: glam::Quat { x: -0.027527, y: -0.109336, z: 0.040112, w: 0.992814 },
                 scale: glam::Vec3 { x: 0.7067, y: 0.7195, z: 0.6939 },
             }
@@ -4656,7 +4660,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 193.173798, y: 47.4412, z: 160.0811 },
+                translation: glam::Vec3 { x: 193.1738, y: 46.3001, z: 160.0811 },
                 rotation: glam::Quat { x: 0.0, y: -0.064613, z: 0.0, w: 0.99791 },
                 scale: glam::Vec3 { x: 1.2379, y: 1.2135, z: 1.1065 },
             }
@@ -4673,7 +4677,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 134.920807, y: 40.835201, z: 181.692307 },
+                translation: glam::Vec3 { x: 134.9208, y: 45.5105, z: 181.6923 },
                 rotation: glam::Quat { x: 0.03546, y: -0.418976, z: -0.016363, w: 0.907157 },
                 scale: glam::Vec3 { x: 1.1752, y: 1.1262, z: 1.0243 },
             }
@@ -4690,7 +4694,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -136.837799, y: 37.574799, z: 291.2724 },
+                translation: glam::Vec3 { x: -143.8378, y: 38.4563, z: 283.2724 },
                 rotation: glam::Quat { x: 0.0, y: -0.796149, z: 0.0, w: 0.6051 },
                 scale: glam::Vec3 { x: 0.8253, y: 0.8094, z: 0.793 },
             }
@@ -4707,7 +4711,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -115.654404, y: 38.237301, z: 271.721802 },
+                translation: glam::Vec3 { x: -123.6544, y: 38.8289, z: 265.7218 },
                 rotation: glam::Quat { x: 0.0, y: 0.034883, z: 0.0, w: 0.999391 },
                 scale: glam::Vec3 { x: 1.4508, y: 1.3526, z: 1.3523 },
             }
@@ -4724,7 +4728,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -53.3638, y: 40.226101, z: 209.466003 },
+                translation: glam::Vec3 { x: -54.3638, y: 40.9623, z: 206.466 },
                 rotation: glam::Quat { x: 0.0, y: 0.112662, z: 0.0, w: 0.993633 },
                 scale: glam::Vec3 { x: 1.0195, y: 0.9612, z: 0.9272 },
             }
@@ -4741,7 +4745,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 175.719406, y: 41.8801, z: 184.526901 },
+                translation: glam::Vec3 { x: 174.7194, y: 45.9609, z: 183.5269 },
                 rotation: glam::Quat { x: 0.0, y: -0.229997, z: 0.0, w: 0.973191 },
                 scale: glam::Vec3 { x: 0.8873, y: 0.8358, z: 0.8972 },
             }
@@ -4758,7 +4762,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 201.869507, y: 47.140598, z: 161.583893 },
+                translation: glam::Vec3 { x: 208.8695, y: 46.7858, z: 164.5839 },
                 rotation: glam::Quat { x: 0.099639, y: -0.618848, z: -0.245306, w: 0.739543 },
                 scale: glam::Vec3 { x: 0.7316, y: 0.7602, z: 0.7684 },
             }
@@ -4775,7 +4779,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 203.529495, y: 47.708, z: 152.262894 },
+                translation: glam::Vec3 { x: 201.5295, y: 46.7532, z: 149.2629 },
                 rotation: glam::Quat { x: 0.0, y: -0.680439, z: 0.0, w: 0.732805 },
                 scale: glam::Vec3 { x: 0.8924, y: 0.8177, z: 0.7838 },
             }
@@ -4809,7 +4813,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 241.526199, y: 48.953602, z: 123.005203 },
+                translation: glam::Vec3 { x: 241.5262, y: 47.7117, z: 123.0052 },
                 rotation: glam::Quat { x: 0.0, y: -0.758658, z: 0.0, w: 0.651489 },
                 scale: glam::Vec3 { x: 0.8643, y: 0.8372, z: 0.8013 },
             }
@@ -4826,7 +4830,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 82.9366, y: 43.323502, z: 186.471603 },
+                translation: glam::Vec3 { x: 81.9366, y: 43.3702, z: 185.4716 },
                 rotation: glam::Quat { x: -0.054585, y: -0.046712, z: 0.019081, w: 0.997233 },
                 scale: glam::Vec3 { x: 1.0647, y: 1.0996, z: 1.1812 },
             }
@@ -4843,7 +4847,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 216.041306, y: 47.0672, z: 156.169296 },
+                translation: glam::Vec3 { x: 216.0413, y: 46.6865, z: 160.1693 },
                 rotation: glam::Quat { x: -0.006655, y: -0.602232, z: 0.057486, w: 0.796221 },
                 scale: glam::Vec3 { x: 0.6812, y: 0.7118, z: 0.6408 },
             }
@@ -4877,7 +4881,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 184.884598, y: 42.121201, z: 182.758194 },
+                translation: glam::Vec3 { x: 180.8846, y: 46.2397, z: 178.7582 },
                 rotation: glam::Quat { x: 0.0, y: -0.611892, z: 0.0, w: 0.790941 },
                 scale: glam::Vec3 { x: 0.9208, y: 1.0149, z: 0.9602 },
             }
@@ -4894,7 +4898,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 57.5075, y: 43.306198, z: 217.698807 },
+                translation: glam::Vec3 { x: 57.5075, y: 42.6924, z: 217.6988 },
                 rotation: glam::Quat { x: 0.0, y: -0.766074, z: 0.0, w: -0.642753 },
                 scale: glam::Vec3 { x: 1.044, y: 0.977, z: 0.9051 },
             }
@@ -4928,7 +4932,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 252.057404, y: 48.061699, z: 123.4981 },
+                translation: glam::Vec3 { x: 248.0574, y: 48.1611, z: 120.4981 },
                 rotation: glam::Quat { x: 0.0, y: -0.9206, z: 0.0, w: -0.390507 },
                 scale: glam::Vec3 { x: 0.9719, y: 0.9407, z: 0.9662 },
             }
@@ -4945,7 +4949,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: -112.935699, y: 38.069801, z: 284.104187 },
+                translation: glam::Vec3 { x: -110.9357, y: 39.0272, z: 287.1042 },
                 rotation: glam::Quat { x: 0.0, y: -0.808385, z: 0.0, w: 0.588654 },
                 scale: glam::Vec3 { x: 1.237, y: 1.2801, z: 1.3322 },
             }
@@ -4962,7 +4966,7 @@ bevy_ecs::hierarchy::Children [
                 deleted: [],
             }
             bevy_transform::components::transform::Transform {
-                translation: glam::Vec3 { x: 235.162506, y: 43.491501, z: 153.7789 },
+                translation: glam::Vec3 { x: 235.1625, y: 47.8331, z: 155.7789 },
                 rotation: glam::Quat { x: -0.028646, y: -0.993105, z: -0.035628, w: -0.107951 },
                 scale: glam::Vec3 { x: 0.9958, y: 0.9912, z: 1.0815 },
             }
@@ -6286,7 +6290,7 @@ bevy_ecs::hierarchy::Children [
             deleted: [],
         }
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 38.013901, z: 214.0 },
+            translation: glam::Vec3 { x: 4.0, y: 40.9901, z: 207.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }

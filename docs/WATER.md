@@ -85,8 +85,8 @@ com o casco (até `2,6·raio`).
 
 `src/boat.rs`:
 
-- `data/boats.json` lista `{ name, x, z, yaw }`; nascem só onde
-  `water_surface_at` responde. São entidades de runtime (como as criaturas), não
+- `data/boats.json` lista `{ name, x, z, yaw }`; nascem onde há
+  profundidade para toda a quilha. São entidades de runtime (como as criaturas), não
   nós do `.bsn`; um `SceneLoad` despawna-os e a cena seguinte volta a semeá-los.
 - Casco, bancos e remos são **malha procedural** (`rowboat_hull_mesh`,
   `rowboat_oar_mesh`); materiais mate com `cull_mode: None`.
@@ -99,6 +99,10 @@ com o casco (até `2,6·raio`).
   herói fica sentado de frente para a popa. O estado `Row` usa a fase das pás
   para escolher a pose do clipe `row` do herói. Ao largar W/S, as mãos
   repousam nos cabos. A câmara continua voltada para a proa.
+
+O barco exige 60 cm de profundidade sob a proa, a popa e as laterais.
+Ao chegar a um baixio, o casco perde o avanço mesmo com os remos recolhidos.
+Remar de ré permite afastar a proa da margem.
 
 Ao chegar à praia, o HUD oferece **Desembarcar na margem** quando encontra
 piso seco a um passo do casco, inclinação caminhável e espaço para a cápsula
@@ -114,6 +118,50 @@ as ondas, inclusive quando os remos estão recolhidos.
 As pás giram nos toletes de bombordo e estibordo. Na puxada, cada pá
 submersa contribui com metade da força e abre uma onda no primeiro contacto.
 Soltar W/S levanta os remos e deixa o casco deslizar com o embalo e a corrente.
+
+## Margens e pontes do mundo principal
+
+Os dez lagos têm perfis próprios de margem no BSN. O rio em
+`world/spawn/ring.bsn` combina meandros largos com curvas menores. Os 201 níveis
+de água seguem as estações do leito de montante a jusante. O relevo estático está
+em `world.data/terrain.ahgt` e os contornos em `world.data/bake.json`.
+
+O arquivo Blender [Travessias.blend](../art/bridges/Travessias.blend) reúne os
+três modelos, cada um em uma cena com coleções de modelo e colisão. Os
+tabuleiros ligam as cotas das duas margens.
+
+| Travessia | Comprimento | Construção |
+|---|---:|---|
+| Ponte Norte | 68 m | Treliças de madeira sobre pilares de pedra com talhamares |
+| Passadeira da Bruxa | 32 m | Pranchas sobre estacas, corrimãos de corda e amuletos de cobre |
+| Ponte do Ermo | 36 m | Abóbada de arenito com aduelas, contrafortes e parapeitos |
+
+Para reexportar os modelos após editar o Blender, rode na raiz do Vael:
+
+```sh
+blender -b art/bridges/Travessias.blend -P art/bridges/export.py
+python3 tools/make_lods.py --only 'infra/ponte_*' --only 'infra/passadeira_da_bruxa_*'
+```
+
+O exportador reúne as peças de cada ponte em uma malha com vários materiais,
+para que o tabuleiro, os apoios e os corrimãos cheguem juntos aos LODs.
+
+## Travessia das Vigílias
+
+No módulo `world/landmarks/lagos-das-vigilias.bsn`, cada lago e a ilha têm
+uma semente de contorno própria. `axis` orienta o alongamento em graus,
+`stretch` ajusta a sua amplitude e `lobes` doseia as enseadas. O relevo
+gravado no `terrain.ahgt` e a malha da água usam o mesmo contorno.
+
+O barqueiro espera em (636, −519), no Ermo Rubro, junto ao maior dos dois lagos.
+Em **O nome sob a água**, empresta o barco para visitar a ilha, ler a inscrição
+no altar e regressar à mesma margem. A torre partida vê-se da praia.
+
+A barra **Fôlego** é partilhada pela corrida, pelos golpes e pela natação.
+Parar em água funda continua a gastar fôlego. Em terra, caminhar ou descansar
+permite recuperá-lo, tal como seguir a bordo. Um nadador exausto regressa à
+última margem segura ou ao barco de onde saltou. O save conserva o fôlego e o
+ponto de socorro. O teste `island_crossing` mede o percurso no terreno do jogo.
 
 ## Margens e vida aquática
 

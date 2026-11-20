@@ -54,22 +54,28 @@ bevy_ecs::hierarchy::Children [
     }
     jackdaw_scene_types::node_id::SceneNodeId(2021117410032730646)
     bevy_ecs::hierarchy::Children [
-        #"GltfScene river_bridge_wood"
+        #"GltfScene ponte_norte"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 41.47, z: 230.5 },
-            rotation: glam::Quat { x: 0.026219338762230152, y: -0.7066205107940693, z: -0.026219338762230156, w: 0.7066205107940694 },
+            translation: glam::Vec3 { x: 4.0, y: 46.19, z: 203.5 },
+            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
             scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/river_bridge_wood_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/ponte_norte_collision.glb", base: true },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
+        bevy_ext_scene::ModelLod {
+            lod1: core::option::Option::Some("/assets/meshes/infra/ponte_norte_lod1.glb"),
+            lod2: core::option::Option::Some("/assets/meshes/infra/ponte_norte_lod2.glb"),
+            near: core::option::Option::Some(80.0),
+            mid: core::option::Option::Some(185.0),
+        }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_wood_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/ponte_norte_lod0.glb" },
             ],
             text: "",
             origin_file: "world/bridges/ponte-norte.xml",
@@ -78,125 +84,33 @@ bevy_ecs::hierarchy::Children [
         }
         jackdaw_scene_types::node_id::SceneNodeId(1165648292277419430)
         --
-        #"GltfScene river_bridge_wood"
+        #"sino-da-mare"
         bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 42.800000000000004, z: 212.5 },
-            rotation: glam::Quat { x: 0.026219338762230152, y: -0.7066205107940693, z: -0.026219338762230156, w: 0.7066205107940694 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/river_bridge_wood_collision.glb", base: true },
-        }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_wood_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [1, 1],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1165648292277419431)
-        --
-        #"GltfScene river_bridge_wood"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 44.14, z: 194.5 },
-            rotation: glam::Quat { x: 0.026219338762230152, y: -0.7066205107940693, z: -0.026219338762230156, w: 0.7066205107940694 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/river_bridge_wood_collision.glb", base: true },
-        }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_wood_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [1, 2],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1165648292277419432)
-        --
-        #"GltfScene river_bridge_wood"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 44.7, z: 176.5 },
-            rotation: glam::Quat { x: -0.0, y: -0.7071067811865475, z: 0.0, w: 0.7071067811865476 },
-            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
-        }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/infra/river_bridge_wood_collision.glb", base: true },
-        }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
-        }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/river_bridge_wood_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [1, 3],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1165648292277419433)
-        --
-        #"GltfScene stone_pillar"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 38.0, z: 226.5 },
+            translation: glam::Vec3 { x: 0.75, y: 46.17, z: 162.0 },
             rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 2.4, y: 1.56, z: 2.4 },
+            scale: glam::Vec3 { x: 1.0, y: 1.0, z: 1.0 },
         }
         bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
+            shape: bevy_ext_scene::ColliderShape::Box { size: glam::Vec3 { x: 1.84, y: 2.54, z: 0.34 }, offset_y: 1.27 },
         }
         bevy_ext_scene::BodySpec {
             kind: bevy_ext_scene::BodyKind::Fixed,
         }
-        bevy_world_xml::bsn::WorldNode {
-            tag: "GltfScene",
-            attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
-            ],
-            text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [1, 4],
-            pose: true,
-        }
-        jackdaw_scene_types::node_id::SceneNodeId(1165648292277419434)
-        --
-        #"GltfScene stone_pillar"
-        bevy_transform::components::transform::Transform {
-            translation: glam::Vec3 { x: 4.0, y: 38.0, z: 206.5 },
-            rotation: glam::Quat { x: 0.0, y: 0.0, z: 0.0, w: 1.0 },
-            scale: glam::Vec3 { x: 2.4, y: 1.99, z: 2.4 },
-        }
-        bevy_ext_scene::ColliderSpec {
-            shape: bevy_ext_scene::ColliderShape::Mesh { url: "/assets/meshes/props/stone_pillar_collision.glb", base: true },
-        }
-        bevy_ext_scene::BodySpec {
-            kind: bevy_ext_scene::BodyKind::Fixed,
+        bevy_ext_scene::ScriptRef {
+            path: "poi/sino-da-mare.lua",
         }
         bevy_world_xml::bsn::WorldNode {
             tag: "GltfScene",
             attrs: [
-                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/props/stone_pillar_lod0.glb" },
+                bevy_world_xml::bsn::WorldProp { key: "name", value: "sino-da-mare" },
+                bevy_world_xml::bsn::WorldProp { key: "url", value: "/assets/meshes/infra/sino_da_mare_lod0.glb" },
             ],
             text: "",
-            origin_file: "world/bridges/ponte-norte.xml",
-            origin_path: [1, 5],
+            origin_file: "",
+            origin_path: [],
             pose: true,
         }
-        jackdaw_scene_types::node_id::SceneNodeId(1165648292277419435)
+        jackdaw_scene_types::node_id::SceneNodeId(813731020411735360)
     ]
     --
     #Entity

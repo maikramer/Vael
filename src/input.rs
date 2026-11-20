@@ -56,6 +56,8 @@ pub enum VaelAction {
     Move(MoveDir),
     /// Teclas fixas dos painéis.
     Ui(UiAction),
+    /// X / DPadUp: acende ou apaga a lanterna na cintura.
+    Lantern,
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -86,6 +88,13 @@ pub struct VaelUiActions {
     pub travel: bool,
     pub sign: bool,
     pub close: bool,
+}
+
+/// Acções de jogo próprias do Vael (fora do `ActionMap` genérico da engine).
+#[derive(Resource, Debug, Default, Clone, Copy, PartialEq, Eq)]
+pub struct VaelGameplayActions {
+    /// X / DPadUp: alterna a lanterna na cintura.
+    pub lantern_just: bool,
 }
 
 /// Tecla do teclado ligada a uma acção do [`ActionMap`] (a do prompt
@@ -157,6 +166,7 @@ impl Plugin for VaelInputPlugin {
             .init_resource::<ActionMap>()
             .init_resource::<ActionState>()
             .init_resource::<VaelUiActions>()
+            .init_resource::<VaelGameplayActions>()
             .add_systems(Startup, spawn_contexts)
             .add_systems(
                 PreUpdate,
@@ -266,6 +276,19 @@ fn spawn_contexts(mut commands: Commands) {
             commands.spawn((Binding::from(key), Condition::Down, BindingOf(action)));
         }
     }
+    let lantern_action = commands
+        .spawn((
+            Name::new("Input: lanterna"),
+            InputAction,
+            ActionOf(context),
+            VaelAction::Lantern,
+        ))
+        .id();
+    commands.spawn((
+        Binding::from(KeyCode::KeyX),
+        Condition::Press,
+        BindingOf(lantern_action),
+    ));
     for (mapped, _) in MAPPED {
         // Os bindings destas acções nascem no `sync_mapped_bindings` (o
         // `ActionMap` acabado de criar conta como mudado).
@@ -356,6 +379,7 @@ fn write_action_state(
     actions: Query<(&VaelAction, &TriggerState)>,
     mut state: ResMut<ActionState>,
     mut ui: ResMut<VaelUiActions>,
+    mut extra: ResMut<VaelGameplayActions>,
 ) {
     let fired = |want: VaelAction| {
         actions
@@ -412,6 +436,13 @@ fn write_action_state(
         travel: fired(VaelAction::Ui(UiAction::Travel)),
         sign: fired(VaelAction::Ui(UiAction::Sign)),
         close: fired(VaelAction::Ui(UiAction::Close)),
+    };
+    *extra = VaelGameplayActions {
+        lantern_just: fired(VaelAction::Lantern)
+            || (playing
+                && pads
+                    .iter()
+                    .any(|pad| pad.just_pressed(GamepadButton::DPadUp))),
     };
     *state = ActionState {
         move_x,
@@ -587,5 +618,29 @@ mod tests {
         assert_eq!(pad_of("left_trigger"), Some(GamepadButton::LeftTrigger));
         assert_eq!(pad_of("left_trigger2"), Some(GamepadButton::LeftTrigger2));
         assert_eq!(pad_of(" RIGHT_TRIGGER "), Some(GamepadButton::RightTrigger));
+    }
+
+    #[test]
+    fn tecla_x_dispara_lanterna_uma_vez_e_para_com_menu() {
+        let mut app = app();
+        press(&mut app, KeyCode::KeyX);
+        app.update();
+        assert!(app.world().resource::<VaelGameplayActions>().lantern_just);
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .clear();
+        app.update();
+        assert!(!app.world().resource::<VaelGameplayActions>().lantern_just);
+
+        // Com menu aberto o contexto de jogo desliga.
+        release_all(&mut app);
+        app.insert_resource(MenusOpen {
+            map: true,
+            ..Default::default()
+        });
+        app.update();
+        press(&mut app, KeyCode::KeyX);
+        app.update();
+        assert!(!app.world().resource::<VaelGameplayActions>().lantern_just);
     }
 }

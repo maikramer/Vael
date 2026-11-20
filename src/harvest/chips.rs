@@ -183,6 +183,7 @@ pub(super) fn emit(
                                 Mesh3d(meshes.add(scar)),
                                 MeshMaterial3d(palette[4].clone()),
                                 crate::snow_caps::IgnoreSnowMesh,
+                                crate::collect_fx::IgnoreOutline,
                             ))
                             .id();
                         if let Some(i) = index {

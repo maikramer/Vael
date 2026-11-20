@@ -201,5 +201,37 @@
       },
       "partial": false
     }
+  },
+  {
+    "id": "ilha_das_vigilias",
+    "npc": "npc_barqueiro_vigilias",
+    "biome": "desert",
+    "title": "O nome sob a água",
+    "portrait": "assets/icons/barqueiro_vigilias.webp",
+    "lines_intro": [
+      "Quando o vale encheu, os sinos ficaram no fundo. Só a torre das Vigílias ficou de fora.",
+      "Leva o meu barco até à ilha. Na pedra do altar há um nome que a água nunca cobriu. Lê-o e volta para me contar."
+    ],
+    "lines_progress": [
+      "O altar fica atrás das colunas partidas. Guarda o barco junto à praia para a volta."
+    ],
+    "lines_complete": [
+      "Iria. A minha avó assinava assim as cartas. Então foi ela quem ficou na torre a tocar o último aviso.",
+      "Fica com este selo. Já sei de quem era."
+    ],
+    "objective": {
+      "type": "visit",
+      "target": "altar-das-vigilias",
+      "count": 1,
+      "radius": 3.8,
+      "title": "Lê a pedra no altar da ilha"
+    },
+    "rewards": {
+      "gold": 120,
+      "xp": 180,
+      "items": [
+        "ancient_relic:1"
+      ]
+    }
   }
 ]

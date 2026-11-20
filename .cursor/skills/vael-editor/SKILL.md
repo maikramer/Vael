@@ -40,9 +40,8 @@ editor.
 - Cada nó continua `bevy_world_xml::bsn::WorldNode { tag, attrs, text, origin,
   pose }`: `Transform`/`Name` são a pose/nome; `GltfSource` e luzes nativas
   são preview.
-- **Sem CLI de cena**: a autoria é no Jackdaw; `vael-tools analyze`/`lint`
-  leem `.bsn` e o painel **Vael: Cena** valida refs/portais no "Validar e
-  gravar".
+- Para autoria offline, use `vael-tools bsn` e a [skill de edição BSN](../vael-bsn/SKILL.md).
+  O painel **Vael: Cena** valida referências e portais em “Validar e gravar”.
 - O pool do Vael é meshopt/KTX2. O editor oficial não regista o asset source
   do `bevy_ext_gltf` (teria de ser antes do `AssetPlugin`); por isso os GLB do
   pool podem falhar no viewport. O preview voxel não depende deles.

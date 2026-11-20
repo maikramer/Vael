@@ -540,9 +540,16 @@ function M.cast(text, parsed)
   elseif cls.chord == "tempestade" then
     local dmg = 10 + math.floor(wind_speed * 0.5) + (is_rain and 6 or 0)
     local hits = rules.hostiles_near(px, pz, 7.0, py)
+    local jolt = is_rain and 32.0 or 24.0
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "shock", 4.0)
+      if viber.vael and viber.vael.puppet_push then
+        local dx, dz = (h.x or px) - px, (h.z or pz) - pz
+        local d = math.sqrt(dx * dx + dz * dz)
+        local ux, uz = (d > 1e-3) and (dx / d) or 0, (d > 1e-3) and (dz / d) or 1
+        viber.vael.puppet_push(h.id, ux * jolt, 0.0, uz * jolt)
+      end
     end
     g.voice_dash_reset = true
     g.voice_buff_kind = "tempestade"

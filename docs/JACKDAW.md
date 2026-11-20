@@ -27,6 +27,36 @@ arranque (`scenes/menu.bsn`, atrás do título), não em `main`. Para argumentos
 concorrem pela mesma pasta de build (`.jackdaw/target/game`) — não correr os
 dois ao mesmo tempo com código a mudar.
 
+## Editar BSN pela CLI
+
+Na raiz do Vael, `vael-tools bsn inspect world/paths/network.bsn --tag RoadNetwork --json` localiza o nó físico da rede de estradas. Use `show` para ler seu trecho original, `set` para editar uma propriedade, `patch` para aplicar um lote e `insert` para acrescentar uma subárvore. Os três comandos de escrita aceitam `--dry-run`. Depois de gravar, `vael-tools bsn check world.bsn` abre a árvore pelo loader do jogo. A [skill de edição BSN](../.cursor/skills/vael-bsn/SKILL.md) explica seleção por ID, consulta ao schema e edição de prefabs.
+
+## Navegar e ajustar durante o Play
+
+Abra `world.bsn` no Jackdaw e deixe **Scene** e **Game** visíveis em duas
+docas. Clique em **Play** para entrar no mundo pela entrada de desenvolvimento.
+O painel **Vael: Debugger** encontra o jogador automaticamente enquanto está
+aberto e marca a posição dele com um anel na vista **Scene**. A posição vem do jogo pela porta local 15702. Para usar outra porta,
+inicie o editor com `VAEL_TOOLS_PORT=<porta> jd open .`.
+
+| Na vista Scene | Ação |
+|---|---|
+| Arrastar com o botão do meio | Deslocar a vista mantendo o ponto do mundo debaixo do cursor |
+| Alt + arrastar com o botão do meio | Orbitar esse ponto em perspectiva |
+| Botão direito + WASD | Voar. Shift acelera e a roda com o botão direito ajusta a velocidade |
+| **Enquadrar seleção** no Debugger | Ir até o objeto selecionado no Outliner |
+| **Localizar jogador** | Enquadrar a posição atual do jogador na cena |
+| **Seguir / soltar jogador** | Acompanhar o deslocamento do jogador enquanto se navega. Clique novamente para soltar a vista |
+
+Para experimentar a ligação, abra **Vael: Ambiente**, escolha **23:00** e
+depois **12:00**. Observe o céu em **Game** com o Play ainda em execução.
+Hora, clima e pós-processamento aceitam edições sucessivas pelo painel ou
+pelo Inspector. Nos objetos do mundo, experimente mover um modelo ou mudar
+uma propriedade de script. Para objetos internos de um prefab, abra o
+arquivo do módulo no seu próprio separador. Os ajustes chegam sem gravar o
+`.bsn`. Nas preferências de Play, **Revert** descarta as edições de documento
+ao parar e **Keep** permite mantê-las e gravar depois.
+
 ## Matriz
 
 | Sistema | Onde se autora | Como se vê no editor |

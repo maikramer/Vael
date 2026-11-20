@@ -337,20 +337,25 @@ pub struct AttackMotion {
 /// precisa para decidir (input, chão, esquiva em curso).
 #[derive(Debug, Default)]
 pub struct HeroMotionShared {
+    pub stamina: crate::stamina::Stamina,
     pub move_x: f32,
     pub move_forward: f32,
     pub grounded: bool,
     pub dodging: bool,
     pub interior: bool,
-    pub dodge: Option<DodgeKind>,
+    /// Kind and movement axes at acceptance, before the next input frame.
+    pub dodge: Option<(DodgeKind, Vec2)>,
     pub attack: Option<AttackMotion>,
+    pub combat_target: Option<Vec2>,
+    pub at_rest: bool,
+    pub crouching: bool,
 }
 
 #[derive(Resource, Clone, Default)]
 pub struct HeroMotionBus(pub Arc<Mutex<HeroMotionShared>>);
 
 impl HeroMotionBus {
-    fn lock(&self) -> std::sync::MutexGuard<'_, HeroMotionShared> {
+    pub(crate) fn lock(&self) -> std::sync::MutexGuard<'_, HeroMotionShared> {
         self.0
             .lock()
             .unwrap_or_else(|poisoned| poisoned.into_inner())
@@ -363,7 +368,7 @@ impl HeroMotionBus {
             return None;
         }
         let kind = dodge_kind(shared.move_x, shared.move_forward, shared.interior);
-        shared.dodge = Some(kind);
+        shared.dodge = Some((kind, Vec2::new(shared.move_x, shared.move_forward)));
         Some(kind)
     }
 
@@ -396,6 +401,7 @@ pub struct VaelController {
     pub last_moving_time: f32,
     /// Giro de câmara corrente (−1..1), suavizado por [`STEER_TAU`].
     pub steer: f32,
+    pub combat_facing: Option<Vec3>,
     /// Esquiva em curso.
     #[reflect(ignore)]
     pub dodge: Option<(DodgeKind, Burst)>,
@@ -446,6 +452,7 @@ impl Default for VaelController {
             last_steer_time: f32::NEG_INFINITY,
             last_moving_time: f32::INFINITY,
             steer: 0.0,
+            combat_facing: None,
             dodge: None,
             lunge: None,
             attack_until: f32::NEG_INFINITY,
@@ -770,6 +777,20 @@ fn table_f32(table: &Table, key: &str, default: f32) -> f32 {
 pub(crate) fn install_motion(lua: &Lua, bus: HeroMotionBus) -> mlua::Result<()> {
     use crate::vault::{vael_fn, vael_table};
     let vael = vael_table(lua)?;
+    vael_fn!(lua, vael, "spend_attack_stamina", [bus = bus.clone()], move |_, ()| {
+        Ok(bus.lock().stamina.attack())
+    });
+    vael_fn!(lua, vael, "hero_at_rest", [bus = bus.clone()], move |_, ()| {
+        Ok(bus.lock().at_rest)
+    });
+    vael_fn!(lua, vael, "hero_crouching", [bus = bus.clone()], move |_, ()| {
+        Ok(bus.lock().crouching)
+    });
+    vael_fn!(lua, vael, "combat_target", [bus = bus.clone()], move |_, (x, z): (f32, f32)| {
+        let target = Vec2::new(x, z);
+        bus.lock().combat_target = target.is_finite().then_some(target);
+        Ok(())
+    });
     // viber.vael.dodge() -> kind, duração | nil. `kind` ∈ roll/side/back
     // (o script escolhe o clip); nil = no ar ou já a esquivar.
     vael_fn!(lua, vael, "dodge", [bus = bus.clone()], move |_, ()| {
@@ -977,7 +998,7 @@ fn hero_jump_sfx(
 
 /// Marcador: a cápsula AGACHADA está aplicada.
 #[derive(Component)]
-struct CrouchedCollider;
+pub(super) struct CrouchedCollider;
 
 /// Cápsula agachada ([`HERO_CROUCH_HEIGHT`]), origem na pegada como a de pé.
 fn hero_crouch_collider_shape() -> avian3d::prelude::Collider {
@@ -1171,7 +1192,11 @@ fn player_movement(
         .as_ref()
         .is_some_and(|owners| owners.owns(viber::luau::ownership::SYSTEM_LOCOMOTION))
     {
-        for (_, _, _, _, tnua, velocity, _, _, _, _, _, _, _, _) in &mut players {
+        if let Some(bus) = bus.as_deref() {
+            bus.lock().at_rest = false;
+        }
+        for (_, _, mut controller, _, tnua, velocity, _, _, _, _, _, _, _, _) in &mut players {
+            controller.combat_facing = None;
             if let Some(mut tnua) = tnua {
                 // O reset da fila tem de correr também aqui: sem ele a ação em
                 // curso (um salto) ficava "alimentada" para sempre — o tnua só
@@ -1254,6 +1279,7 @@ fn player_movement(
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
+            controller.combat_facing = None;
             controller.dodge = None;
             controller.lunge = None;
             if let Some(mut tnua) = tnua {
@@ -1276,6 +1302,8 @@ fn player_movement(
         // era um salto/golpe "fantasma" ao voltar ao jogo.
         if let Some(bus) = bus.as_deref() {
             let mut shared = bus.lock();
+            shared.at_rest = false;
+            shared.combat_target = None;
             shared.dodge = None;
             shared.attack = None;
             shared.dodging = false;
@@ -1316,14 +1344,19 @@ fn player_movement(
         keys.pressed(KeyCode::ControlLeft) || keys.pressed(KeyCode::ControlRight)
     };
 
-    let (dodge_request, attack_request) = bus
+    let (dodge_request, attack_request, combat_target) = bus
         .as_deref()
         .map(|bus| {
             let mut shared = bus.lock();
-            (shared.dodge.take(), shared.attack.take())
+            (
+                shared.dodge.take(),
+                shared.attack.take(),
+                shared.combat_target.take(),
+            )
         })
         .unwrap_or_default();
 
+    let mut at_rest = false;
     for (
         entity,
         mut transform,
@@ -1341,6 +1374,7 @@ fn player_movement(
         riding,
     ) in &mut players
     {
+        controller.combat_facing = None;
         // O tnua exige o reset da fila de ações em cada frame, ANTES de
         // alimentar (salto) e de escrever a basis.
         if let Some(tnua) = tnua.as_deref_mut() {
@@ -1379,6 +1413,9 @@ fn player_movement(
         // para o chão nem o solver empurrá-lo — o corpo é desligado no
         // embarque (`RigidBodyDisabled`) e volta ao sair.
         if riding.is_some() {
+            if let Some(bus) = bus.as_deref() {
+                bus.lock().stamina.tick(time.delta_secs(), false, false, true);
+            }
             controller.vel_x = 0.0;
             controller.vel_z = 0.0;
             controller.vel_y = 0.0;
@@ -1519,7 +1556,20 @@ fn player_movement(
         } else {
             Vec2::ZERO
         };
-        let (dir, input_mag, view_yaw_deg) = if interior_mode {
+        let lock_face = combat_target
+            .filter(|_| !typing && !settling)
+            .and_then(|target| (target - transform.translation.xz()).try_normalize())
+            .map(|dir| Vec3::new(dir.x, 0.0, dir.y));
+        controller.combat_facing = lock_face;
+        let (dir, input_mag, view_yaw_deg) = if let Some(face) = lock_face {
+            controller.steer = 0.0;
+            let yaw = bevy_ext_engine::camera_glue::behind_yaw_deg(face.x, face.z);
+            (
+                process_input(move_forward, move_x, yaw),
+                input_magnitude(move_forward, move_x),
+                yaw,
+            )
+        } else if interior_mode {
             let yaw = interior
                 .as_deref()
                 .map(|scene| scene.camera_yaw_deg)
@@ -1575,16 +1625,16 @@ fn player_movement(
         // do tnua (Dash/Knockback); sem corpo (testes headless) é o caminho
         // manual de sempre.
         let with_body = tnua.is_some() && submersion < SWIM_DEPTH;
-        if let Some(kind) = dodge_request
+        if let Some((kind, axes)) = dodge_request
             && controller.dodge.is_none()
         {
             let burst_dir = dodge_direction(
                 kind,
-                move_x,
-                move_forward,
+                axes.x,
+                axes.y,
                 view_yaw_deg,
-                facing,
-                interior_mode,
+                lock_face.unwrap_or(facing),
+                interior_mode && lock_face.is_none(),
             );
             let (duration, distance, hop) = kind.profile();
             // O Burst fica como REGISTO: a curva ease-out alimenta o espelho
@@ -1644,7 +1694,35 @@ fn player_movement(
             }
         }
         let attacking = now < controller.attack_until;
-        let sprint_mult = if sprint {
+        // Uma onda pode deixar os pés no ar durante um instante. Enquanto
+        // boia sobre uma coluna funda, manter-se à tona continua a custar.
+        let afloat = submersion >= SWIM_DEPTH || water_domain.is_some_and(|d| {
+            d.depth > SWIM_IDLE_DEPTH
+                && (!controller.grounded || submersion > WADE_DRAG_START_DEPTH)
+                && transform.translation.y >= d.surface_y - d.depth - WATER_BED_SLACK
+                && transform.translation.y < d.surface_y + 0.5
+        });
+        let run = sprint && input_mag > 0.0 && !attacking && !crouch_held && controller.dodge.is_none();
+        let mut running = run && !afloat;
+        if let Some(bus) = bus.as_deref() {
+            let mut shared = bus.lock();
+            let reserve = &mut shared.stamina;
+            let resting = controller.grounded && !settling;
+            if resting && !interior_mode && runtime.is_some() && water_domain.is_none() {
+                reserve.shore = Some(transform.translation);
+                reserve.boat = None;
+            }
+            running = reserve.tick(time.delta_secs(), afloat, run, resting);
+            if afloat && reserve.value == 0.0 {
+                let shore = reserve.shore;
+                let boat = reserve.boat.clone();
+                commands.queue(move |world: &mut World| {
+                    crate::stamina::rescue_swimmer(world, entity, shore, boat.as_deref())
+                });
+                continue;
+            }
+        }
+        let sprint_mult = if running {
             controller.sprint_multiplier
         } else {
             1.0
@@ -1660,8 +1738,13 @@ fn player_movement(
         } else {
             1.0
         };
+        let pace = if afloat {
+            controller.speed.min(crate::stamina::SWIM_SPEED_LIMIT / water_drag)
+        } else {
+            controller.speed
+        };
         let desired = dir
-            * controller.speed
+            * pace
             * sprint_mult
             * input_mag
             * attack_slow
@@ -1778,6 +1861,7 @@ fn player_movement(
             .is_some_and(|(kind, _)| kind.keeps_facing());
         let face_target = match controller.attack_face {
             Some(face) if attacking => Some((face, controller.rotation_speed * ATTACK_TURN_BOOST)),
+            _ if let Some(face) = lock_face => Some((face, controller.rotation_speed)),
             _ if dir.length_squared() > 0.0 => Some((dir, controller.rotation_speed)),
             _ => None,
         };
@@ -2145,14 +2229,28 @@ fn player_movement(
             kin.body_radius = PLAYER_WATER_RADIUS;
         }
         sync_engine_player(&mut engine_player, &mut controller);
+        let body_motion = velocity.as_deref().map_or(desired_motion, |body| body.0);
+        at_rest = grounded
+            && !typing
+            && !settling
+            && !attacking
+            && controller.dodge.is_none()
+            && !dash_ongoing
+            && input_magnitude(move_forward, move_x) < 0.12
+            && planar < 0.18
+            && body_motion.xz().length_squared() < 0.18 * 0.18;
         if let Some(bus) = bus.as_deref() {
             let mut shared = bus.lock();
             shared.move_x = move_x;
             shared.move_forward = move_forward;
             shared.grounded = controller.grounded;
             shared.dodging = dash_ongoing || controller.dodge.is_some();
-            shared.interior = interior_mode;
+            shared.interior = interior_mode && lock_face.is_none();
+            shared.crouching = crouch_held && with_body && !interior_mode;
         }
+    }
+    if let Some(bus) = bus.as_deref() {
+        bus.lock().at_rest = at_rest;
     }
 }
 
@@ -2339,6 +2437,8 @@ mod tests {
         }
         assert_eq!(bus.request_dodge(), Some(DodgeKind::Side));
         assert_eq!(bus.request_dodge(), None, "pedido pendente");
+        bus.lock().move_x = 1.0;
+        assert_eq!(bus.lock().dodge, Some((DodgeKind::Side, Vec2::NEG_X)));
     }
 
     /// Os scripts que chamam `viber.vael.dodge`/`attack_motion` compilam no
@@ -2357,6 +2457,59 @@ mod tests {
                 panic!("{name}: {err}");
             }
         }
+    }
+
+    #[test]
+    fn idle_focus_reads_grounded_rest_and_movement_intent_from_the_controller() {
+        let bus = HeroMotionBus::default();
+        let lua = Lua::new();
+        lua.globals()
+            .set("viber", lua.create_table().unwrap())
+            .unwrap();
+        install_motion(&lua, bus.clone()).unwrap();
+        let resting = || {
+            lua.load("return viber.vael.hero_at_rest()")
+                .eval::<bool>()
+                .unwrap()
+        };
+
+        let mut app = App::new();
+        app.add_plugins(MinimalPlugins)
+            .insert_resource(bus)
+            .insert_resource(bevy_ext_core::InteriorSceneConfig {
+                min: [-10.; 2],
+                max: [10.; 2],
+                ..default()
+            })
+            .init_resource::<ButtonInput<KeyCode>>()
+            .init_resource::<viber::input_map::ActionState>()
+            .add_message::<bevy_ext_core::SfxEvent>()
+            .add_systems(Update, player_movement);
+        let hero = app
+            .world_mut()
+            .spawn((
+                Player::default(),
+                VaelController::default(),
+                Transform::IDENTITY,
+            ))
+            .id();
+        app.update();
+        assert!(resting());
+        app.world_mut()
+            .resource_mut::<viber::input_map::ActionState>()
+            .move_x = 0.7;
+        app.update();
+        assert!(!resting());
+        app.world_mut()
+            .resource_mut::<viber::input_map::ActionState>()
+            .move_x = 0.;
+        app.world_mut()
+            .get_mut::<Transform>(hero)
+            .unwrap()
+            .translation
+            .y = 3.;
+        app.update();
+        assert!(!resting());
     }
 
     #[test]

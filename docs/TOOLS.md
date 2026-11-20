@@ -31,12 +31,14 @@ VAEL_BIN=.jackdaw/target/game/debug/vael vael-tools run --scene main --entry dev
 |---|---|
 | `vael-tools analyze [world.bsn] [--json] [--strict]` | Relatório headless (contagens, tags, assets/scripts em falta, `names`, `prototype_ids`) |
 | `vael-tools lint [world.bsn] [--json] [--strict]` | Lint estrutural (assets e scripts em falta) |
-| `vael-tools bsn convert/check` | XML ↔ `.bsn` (só geradores: `tools/qa.py` ainda emite XML) |
+| `vael-tools bsn inspect/show/schema` | Localizar entidades físicas, ler componentes e consultar campos do editor |
+| `vael-tools bsn set/patch/insert` | Editar campos, atributos e filhos com prévia ou gravação atômica. [Receitas de autoria](../.cursor/skills/vael-bsn/SKILL.md) |
+| `vael-tools bsn transcode` | Criar uma cópia entre `.bsn` textual e `.bsb` binário |
+| `vael-tools bsn check/convert` | Validar mundos ou comparar XML legado com BSN. `convert` importa XML de geradores |
 | `vael-tools run [world] --scene S --entry E --bridge [PORT] --resolution WxH` | Lança `target/release/vael` (ou `VAEL_BIN`); sem binário, delega em `cargo run --release` |
 | `vael-tools debug …` | Cliente do bridge do jogo (ver abaixo) |
 
-`analyze`/`lint`/`bsn` são a lib `vael_tools` (`cli/src/lib.rs`), partilhada
-com a extensão `vael_analyze_jackdaw`. O JSON de `analyze` é contrato com o
+A lib `vael_tools` (`cli/src/lib.rs`) expõe análise, lint, importação de XML e verificação do mundo para a extensão `vael_analyze_jackdaw`. A edição offline fica em `cli/src/bsn_edit/`. O JSON de `analyze` é contrato com o
 CI e o `tools/lint_content.py`.
 
 ## Bridge de debug

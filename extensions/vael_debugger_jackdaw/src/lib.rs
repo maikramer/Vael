@@ -4,15 +4,17 @@
 //! falam com o `bevy_ext_bridge_runtime` por BRP lateral. São finos de propósito:
 //! a lógica de pausa/step vive no runtime, aqui só há botões/operadores.
 
+mod navigation;
+
 use bevy::prelude::*;
-use jackdaw_api::prelude::DefaultArea;
-use jackdaw_extension::op::{report_to_caller, warn_caller};
-use jackdaw_extension::prelude::*;
-use serde_json::{Value, json};
 use bevy_ext_bridge_protocol::{
     BridgeClient, DEFAULT_TOOLS_PORT, METHOD_KEY, METHOD_PAUSE, METHOD_PLAY, METHOD_STEP,
     is_listening,
 };
+use jackdaw_api::prelude::DefaultArea;
+use jackdaw_extension::op::{report_to_caller, warn_caller};
+use jackdaw_extension::prelude::*;
+use serde_json::{Value, json};
 
 pub const EXTENSION_ID: &str = "vael_debugger_jackdaw";
 pub const WINDOW_ID: &str = "vael.debug";
@@ -96,8 +98,8 @@ fn build(world: &mut World, parent: Entity) {
             ));
             root.spawn((
                 Text::new(
-                    "Fala com o runtime do jogo na porta 15702 (VAEL_TOOLS_PORT). \
-                     Sem jogo, o operador avisa em warnings.",
+                    "Na cena, arraste com o botão do meio para deslocar a vista. \
+                     Alt + botão do meio orbita o ponto sob o cursor. Botão direito + WASD voa.",
                 ),
                 TextFont {
                     font_size: bevy::text::FontSize::Px(11.0),
@@ -105,7 +107,11 @@ fn build(world: &mut World, parent: Entity) {
                 },
                 TextColor(Color::srgb(0.7, 0.7, 0.7)),
             ));
+            root.spawn((Text::new("À procura do jogador…"), navigation::LiveStatus));
             for (caption, op) in [
+                ("Enquadrar seleção", "view.frame_selected"),
+                ("Localizar jogador", "vael.debug.focus_player"),
+                ("Seguir / soltar jogador", "vael.debug.follow_player"),
                 ("Play", "vael.debug.play"),
                 ("Pause", "vael.debug.pause"),
                 ("Step 1 frame", "vael.debug.step"),
@@ -132,7 +138,14 @@ impl JackdawExtension for DebuggerExtension {
         "Play/pause/step e atalhos de QA do Vael via runtime".to_string()
     }
 
+    fn app_plugin(&self) -> Option<Box<dyn Plugin>> {
+        Some(Box::new(navigation::install))
+    }
+
     fn register(&self, ctx: &mut ExtensionRegistrar<'_>) {
+        ctx.register_operator::<navigation::FocusPlayerOp>();
+        ctx.register_operator::<navigation::FollowPlayerOp>();
+        ctx.register_menu_entry::<navigation::FocusPlayerOp>(TopLevelMenu::Tools);
         ctx.register_operator::<PlayOp>();
         ctx.register_operator::<PauseOp>();
         ctx.register_operator::<StepOp>();

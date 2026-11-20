@@ -7,6 +7,8 @@ local fsm = viber.load("lib/fsm.lua").new{
   aggro = 11, deaggro = 16,
   range = 1.6, damage = 9, cooldown = 1.2,
   windup = 0.35, recover = 0.3, -- mordida rápida: pouco aviso
+  charge = { min = 4.5, max = 8, opening_delay = 0.3, cooldown = 6.5, windup = 0.85, speed = 8,
+             width = 1.1, trample_push = 4, mult = 1.15, recover = 1.0 },
   radius = 7,
   turn_rate = 9.0, -- sem deslize lateral nas viragens (gait de 4 patas)
   steering = true,

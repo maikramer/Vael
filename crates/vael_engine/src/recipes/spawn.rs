@@ -56,6 +56,10 @@ pub struct PendingWorld {
     pub base_dir: Option<PathBuf>,
 }
 
+/// Raiz da personagem que contém o colisor autorado em um filho `NpcBody`.
+#[derive(Component)]
+pub struct NpcCharacter;
+
 /// Cápsula dos NPC de diálogo (m): raio, meia-altura entre tampas e centro.
 const NPC_CAPSULE_RADIUS: f32 = 0.32;
 const NPC_CAPSULE_HALF_HEIGHT: f32 = 0.55;
@@ -738,11 +742,7 @@ fn spawn_parsed(world: &mut World, pending: PendingWorld, persistent: bool) {
     }
     // A `<NavMesh>` vai ao contrato do crate extraído (`bevy_ext_nav`); uma
     // cena SEM a tag remove o recurso — a anterior não pode vaziar para esta.
-    match pending_worldsys
-        .configs
-        .iter()
-        .find(|c| c.tag == "navmesh")
-    {
+    match pending_worldsys.configs.iter().find(|c| c.tag == "navmesh") {
         Some(navmesh) => world.insert_resource(crate::nav::NavMeshTag(navmesh.attrs.clone())),
         None => {
             world.remove_resource::<crate::nav::NavMeshTag>();
@@ -1654,6 +1654,13 @@ fn spawn_entity(
     {
         entity.insert(crate::streaming::Streamable);
     }
+    if spec
+        .children
+        .iter()
+        .any(|child| matches!(child.kind, EntityKind::NpcBody))
+    {
+        entity.insert(NpcCharacter);
+    }
     // Hostilidade e HP são DADOS do mundo; a engine não olha ao path do
     // script. `hostile="true"` + `health="400"` no XML.
     if spec.props.iter().any(|(key, _)| key == "__hostile") {
@@ -1766,8 +1773,7 @@ fn spawn_entity(
             // Props com física ou script ficam entidades normais.
             // Destrutíveis/colhíveis têm `props` e o scripts de colheita
             // precisa de os despawnar/tombar; um mesh fundido não saberia.
-            let foliage =
-                spec.script.is_none() && spec.physics.is_empty() && spec.props.is_empty();
+            let foliage = spec.script.is_none() && spec.physics.is_empty() && spec.props.is_empty();
             if crate::gltf_residency::enabled() {
                 // Residência posicional (`gltf_residency`): a âncora nasce já
                 // e o GLB só é pedido quando o herói se aproxima. O `AutoCull`
@@ -2100,11 +2106,20 @@ fn spawn_entity(
             stats.has_camera = true;
         }
         EntityKind::NpcBody => {
+            // Exclui o herói (`HERO_LAYER_BIT`, 29) e os corpos físicos do
+            // `bevy_ext_puppet` (`PUPPET_LAYER_BIT`, 30): o contacto suave /
+            // multidão entre personagens é resolvido por `actor_contact` +
+            // `puppet`, e um NPC em ragdoll/equilíbrio não colide com a sua
+            // própria cápsula estática. Raycasts e projéteis na camada 0
+            // continuam a vê-lo.
+            const PUPPET_LAYER_BIT: u32 = 1 << 30;
             entity.insert((
                 Visibility::Inherited,
-                // Corpo do NPC: o herói deixa de o atravessar (cápsula de
-                // ~1,8 m nos pés do NPC, como a do herói).
                 avian3d::prelude::RigidBody::Static,
+                avian3d::prelude::CollisionLayers::from_bits(
+                    1,
+                    u32::MAX & !crate::player::HERO_LAYER_BIT & !PUPPET_LAYER_BIT,
+                ),
                 avian3d::prelude::Collider::compound(vec![(
                     Vec3::Y * NPC_CAPSULE_CENTER,
                     Quat::IDENTITY,
@@ -2474,7 +2489,10 @@ fn gradmesh_shape(
         ),
         Shape::Plane { .. } => return None,
         // `Box round="…"` — o mesmo cuboid com roundness do autor.
-        Shape::RoundedCuboid { half_size, roundness } => GradShape::cuboid(
+        Shape::RoundedCuboid {
+            half_size,
+            roundness,
+        } => GradShape::cuboid(
             Vec3::new(half_size[0], half_size[1], half_size[2]) * 2.0,
             roundness,
             detail,
@@ -2728,79 +2746,130 @@ pub fn sibling_lods(url: &str) -> (Option<String>, Option<String>) {
     (tier(1), tier(2))
 }
 
+/// Lod1/lod2 ainda por fechar. O lod0 já está na cena: esperar o tier
+/// distante (o log mede minutos de decode) deixava o muro e a cidade
+/// invisíveis ao pé da câmara.
+#[derive(Component, Clone, Debug)]
+pub struct PendingLodLadder {
+    pub lod0: Handle<Gltf>,
+    pub lod1: Option<Handle<Gltf>>,
+    pub lod2: Option<Handle<Gltf>>,
+    pub near: f32,
+    pub mid: f32,
+}
+
+fn lod_tier_in_flight(server: &AssetServer, handle: &Handle<Gltf>) -> bool {
+    !matches!(
+        server.get_load_state(handle),
+        Some(LoadState::Loaded | LoadState::Failed(_))
+    )
+}
+
+fn lods_in_flight(
+    server: &AssetServer,
+    lod1: &Option<Handle<Gltf>>,
+    lod2: &Option<Handle<Gltf>>,
+) -> bool {
+    [lod1, lod2]
+        .into_iter()
+        .flatten()
+        .any(|handle| lod_tier_in_flight(server, handle))
+}
+
+/// Ladder com os tiers que já resolveram. `None` = só o lod0 (sem troca).
+fn resolved_mesh_lod(
+    gltfs: &Assets<Gltf>,
+    server: &AssetServer,
+    lod0: &Handle<Gltf>,
+    lod0_scene: Handle<bevy::world_serialization::WorldAsset>,
+    lod1: &Option<Handle<Gltf>>,
+    lod2: &Option<Handle<Gltf>>,
+    near: f32,
+    mid: f32,
+) -> Option<crate::render_lod::MeshLod> {
+    let mut tiers = vec![lod0_scene];
+    let mut gltf_tiers = vec![lod0.clone()];
+    for handle in [lod1, lod2].into_iter().flatten() {
+        if !matches!(server.get_load_state(handle), Some(LoadState::Loaded)) {
+            continue;
+        }
+        let Some(scene) = gltfs
+            .get(handle)
+            .and_then(|gltf| gltf.default_scene.clone())
+        else {
+            continue;
+        };
+        tiers.push(scene);
+        gltf_tiers.push(handle.clone());
+    }
+    (tiers.len() > 1).then(|| crate::render_lod::MeshLod {
+        tiers,
+        gltf_tiers,
+        near,
+        mid,
+        current: 0,
+        no_shadows: false,
+    })
+}
+
 /// Swap loaded `<GltfScene>` pendings for their default scene (parented under
 /// the entity, so its transform applies). Load failures log once and leave an
 /// empty node — a broken asset must not take the world down.
+///
+/// O lod0 aparece assim que o ficheiro dele resolve. Lod1/lod2 que ainda
+/// descodificam ficam em [`PendingLodLadder`] e entram na ladder no frame
+/// em que aterram — sem isto a instância nascia sem LOD para sempre, e
+/// esperá-los antes do lod0 escondia a cidade inteira.
 pub fn gltf_scene_spawner(
     mut commands: Commands,
     gltfs: Res<Assets<Gltf>>,
     server: Res<AssetServer>,
     pending: Query<(Entity, &GltfScenePending)>,
+    ladders: Query<(Entity, &PendingLodLadder)>,
 ) {
     for (entity, scene) in &pending {
-        // A ladder só fecha quando TODOS os tiers resolveram: um lod1 ainda
-        // em voo no frame em que o lod0 aterra deixava a instância sem LOD
-        // para sempre (o pool de props carrega os três tiers em paralelo).
-        let lod_in_flight = [&scene.lod1, &scene.lod2].into_iter().flatten().any(|h| {
-            !matches!(
-                server.get_load_state(h),
-                Some(LoadState::Loaded | LoadState::Failed(_))
-            )
-        });
-        if lod_in_flight {
-            continue;
-        }
         match server.get_load_state(&scene.handle) {
             Some(LoadState::Loaded) => {
-                if let Some(gltf) = gltfs.get(&scene.handle) {
-                    match gltf.default_scene.clone() {
-                        Some(root) => {
-                            commands.entity(entity).insert(WorldAssetRoot(root.clone()));
-                            // Characters ship a catalogue of clips; ask the
-                            // animation module to bind them once the scene has
-                            // spawned its `AnimationPlayer`.
-                            if !gltf.animations.is_empty() {
-                                commands
-                                    .entity(entity)
-                                    .insert(crate::animation::AnimatedScene {
-                                        gltf: scene.handle.clone(),
-                                    });
-                            }
-                            // Ladder de LOD (instâncias estáticas do bake): os
-                            // tiers entram quando já resolveram — um lod1
-                            // ainda a carregar degrada para a ladder curta,
-                            // como nos templates de spawner.
-                            let mut tiers = vec![root];
-                            let mut gltf_tiers = vec![scene.handle.clone()];
-                            for lod in [&scene.lod1, &scene.lod2] {
-                                let Some(handle) = lod else {
-                                    continue;
-                                };
-                                if !matches!(server.get_load_state(handle), Some(LoadState::Loaded))
-                                {
-                                    continue;
-                                }
-                                if let Some(scene) =
-                                    gltfs.get(handle).and_then(|g| g.default_scene.clone())
-                                {
-                                    tiers.push(scene);
-                                    gltf_tiers.push(handle.clone());
-                                }
-                            }
-                            if tiers.len() > 1 {
-                                commands.entity(entity).insert(crate::render_lod::MeshLod {
-                                    tiers,
-                                    gltf_tiers,
-                                    near: scene.lod_near,
-                                    mid: scene.lod_mid,
-                                    current: 0,
-                                    no_shadows: false,
+                let Some(gltf) = gltfs.get(&scene.handle) else {
+                    // `Loaded` um frame antes do asset entrar na coleção.
+                    continue;
+                };
+                match gltf.default_scene.clone() {
+                    Some(root) => {
+                        commands.entity(entity).insert(WorldAssetRoot(root.clone()));
+                        // Characters ship a catalogue of clips; ask the
+                        // animation module to bind them once the scene has
+                        // spawned its `AnimationPlayer`.
+                        if !gltf.animations.is_empty() {
+                            commands
+                                .entity(entity)
+                                .insert(crate::animation::AnimatedScene {
+                                    gltf: scene.handle.clone(),
                                 });
-                            }
                         }
-                        None => {
-                            bevy::log::warn!("gltf scene has no default scene; leaving empty");
+                        if lods_in_flight(&server, &scene.lod1, &scene.lod2) {
+                            commands.entity(entity).insert(PendingLodLadder {
+                                lod0: scene.handle.clone(),
+                                lod1: scene.lod1.clone(),
+                                lod2: scene.lod2.clone(),
+                                near: scene.lod_near,
+                                mid: scene.lod_mid,
+                            });
+                        } else if let Some(lod) = resolved_mesh_lod(
+                            &gltfs,
+                            &server,
+                            &scene.handle,
+                            root,
+                            &scene.lod1,
+                            &scene.lod2,
+                            scene.lod_near,
+                            scene.lod_mid,
+                        ) {
+                            commands.entity(entity).insert(lod);
                         }
+                    }
+                    None => {
+                        bevy::log::warn!("gltf scene has no default scene; leaving empty");
                     }
                 }
                 commands.entity(entity).remove::<GltfScenePending>();
@@ -2814,6 +2883,31 @@ pub fn gltf_scene_spawner(
                 );
             }
             _ => {}
+        }
+    }
+    for (entity, ladder) in &ladders {
+        if lods_in_flight(&server, &ladder.lod1, &ladder.lod2) {
+            continue;
+        }
+        let Some(lod0_scene) = gltfs
+            .get(&ladder.lod0)
+            .and_then(|gltf| gltf.default_scene.clone())
+        else {
+            continue;
+        };
+        let mut anchor = commands.entity(entity);
+        anchor.remove::<PendingLodLadder>();
+        if let Some(lod) = resolved_mesh_lod(
+            &gltfs,
+            &server,
+            &ladder.lod0,
+            lod0_scene,
+            &ladder.lod1,
+            &ladder.lod2,
+            ladder.near,
+            ladder.mid,
+        ) {
+            anchor.insert(lod);
         }
     }
 }

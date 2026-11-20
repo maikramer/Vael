@@ -74,8 +74,9 @@
               Command="{Binding DataContext.row_command, RelativeSource={RelativeSource AncestorType=ItemsControl}}"
               CommandParameter="{Binding action}"
               IsEnabled="{Binding clickable}">
-        <Grid ColumnDefinitions="*,Auto" Width="940">
-          <StackPanel>
+        <Grid ColumnDefinitions="Auto,*,Auto" Width="940">
+          <Image Source="{Binding icon}" Visibility="{Binding has_icon}" Width="46" Height="46" Margin="0,0,8,0"/>
+          <StackPanel Grid.Column="1">
             <TextBlock Text="{Binding title}" FontSize="14" Foreground="{StaticResource Ink}"/>
             <TextBlock Text="{Binding subtitle}" FontSize="11" Foreground="{StaticResource Muted}"
                        TextWrapping="Wrap"/>
@@ -83,7 +84,7 @@
                          Background="#FF090F13" Foreground="#FF8ABD9B"
                          Visibility="{Binding has_progress}"/>
           </StackPanel>
-          <TextBlock Grid.Column="1" Text="{Binding tag}" FontSize="12"
+          <TextBlock Grid.Column="2" Text="{Binding tag}" FontSize="12"
                      Foreground="{StaticResource Gold}" Margin="10,0,0,0"
                      VerticalAlignment="Center"/>
         </Grid>
@@ -161,33 +162,40 @@
                 <Setter Property="BorderThickness" Value="2"/>
                 <Setter Property="Background" Value="#33203A2A"/>
               </DataTrigger>
+              <DataTrigger Binding="{Binding ready}" Value="True">
+                <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
+                <Setter Property="Background" Value="#FF322B1C"/>
+              </DataTrigger>
               <DataTrigger Binding="{Binding locked}" Value="True">
-                <Setter Property="Opacity" Value="0.45"/>
+                <Setter Property="Opacity" Value="0.78"/>
               </DataTrigger>
               <DataTrigger Binding="{Binding excluded}" Value="True">
-                <Setter Property="Opacity" Value="0.38"/>
+                <Setter Property="Opacity" Value="0.68"/>
                 <Setter Property="BorderBrush" Value="{StaticResource TalentExclusion}"/>
               </DataTrigger>
               <DataTrigger Binding="{Binding selected}" Value="True">
-                <Setter Property="BorderBrush" Value="{StaticResource Gold}"/>
-                <Setter Property="BorderThickness" Value="2"/>
+                <Setter Property="Opacity" Value="1"/>
+                <Setter Property="BorderBrush" Value="{StaticResource Ink}"/>
+                <Setter Property="BorderThickness" Value="3"/>
               </DataTrigger>
             </Style.Triggers>
           </Style>
         </Button.Style>
-        <Grid>
-          <Image Source="{Binding icon}" Width="38" Height="38" Stretch="Uniform"
-                 HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0,5,0,0"
+        <Grid Width="68" Height="66" RowDefinitions="38,28">
+          <Image Source="{Binding icon}" Width="34" Height="34" Stretch="Uniform"
+                 HorizontalAlignment="Center" VerticalAlignment="Center"
                  Visibility="{Binding has_icon}"/>
-          <TextBlock Text="{Binding short_label}" FontSize="8.5" Foreground="{StaticResource Ink}"
-                     TextAlignment="Center" TextWrapping="Wrap" MaxHeight="22"
-                     HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="2,0,2,3"/>
-          <TextBlock Text="✓" FontSize="13" Foreground="{StaticResource Leaf}"
-                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,4,0"
-                     Visibility="{Binding learned}"/>
-          <TextBlock Text="×" FontSize="13" Foreground="{StaticResource Ember}"
-                     HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,1,4,0"
-                     Visibility="{Binding excluded}"/>
+          <TextBlock Grid.Row="1" Text="{Binding short_label}" FontSize="11" Foreground="{StaticResource Ink}"
+                     TextAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center"/>
+          <Path Width="10" Height="10" Stretch="Uniform" Stroke="{StaticResource Gold}" StrokeThickness="2"
+                Data="M5 0 L5 10 M0 5 L10 5" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,1,2,0" Visibility="{Binding ready}"/>
+          <Path Width="12" Height="10" Stretch="Uniform" Stroke="{StaticResource Leaf}" StrokeThickness="2"
+                Data="M1 5 L4 8 L11 1" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,1,2,0" Visibility="{Binding learned}"/>
+          <Path Width="10" Height="10" Stretch="Uniform" Stroke="{StaticResource Ember}" StrokeThickness="2"
+                Data="M1 1 L9 9 M1 9 L9 1" HorizontalAlignment="Right" VerticalAlignment="Top"
+                Margin="0,1,2,0" Visibility="{Binding excluded}"/>
         </Grid>
       </Button>
     </DataTemplate>
@@ -385,24 +393,18 @@
           </StackPanel>
         </ScrollViewer>
         <Grid x:Name="page-skills" RowDefinitions="Auto,*">
-          <StackPanel Grid.Row="0">
-            <Grid ColumnDefinitions="*,Auto" Margin="0,6,0,8">
+          <Grid ColumnDefinitions="*,Auto" Margin="0,4,0,8">
+            <StackPanel>
+              <TextBlock Text="{Binding menu_attributes}" Foreground="{StaticResource Ink}"/>
+              <TextBlock Text="{Binding menu_derived}" Foreground="{StaticResource Muted}"/>
+            </StackPanel>
+            <StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
               <TextBlock Text="{Binding menu_points_label}" Foreground="{StaticResource Muted}"/>
-              <TextBlock Grid.Column="1" Text="{Binding menu_points}" FontSize="18"
-                         Foreground="{StaticResource Gold}"/>
-            </Grid>
-            <!-- Atributos e derivadas: o VM lê o snapshot do `StatEngine`
-                 (`src/stats.rs`), a mesma fonte do combate e do Lua. -->
-            <TextBlock Text="{Binding menu_attributes}" Foreground="{StaticResource Muted}"
-                       Margin="0,0,0,2"/>
-            <TextBlock Text="{Binding menu_derived}" Foreground="{StaticResource Gold}"
-                       Margin="0,0,0,8"/>
-          </StackPanel>
-
-          <Grid Grid.Row="1" ColumnDefinitions="*,248">
-            <ScrollViewer Grid.Column="0"
-                          HorizontalScrollBarVisibility="Auto"
-                          VerticalScrollBarVisibility="Auto">
+              <TextBlock Text="{Binding menu_points}" FontSize="18" Foreground="{StaticResource Gold}"/>
+            </StackPanel>
+          </Grid>
+          <Grid Grid.Row="1" RowDefinitions="*,Auto">
+            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto">
               <Grid Width="{Binding talent_canvas_width}" Height="{Binding talent_canvas_height}">
                 <ItemsControl ItemsSource="{Binding talent_requires_edges}"
                               ItemTemplate="{StaticResource TalentEdgeTemplate}"
@@ -445,24 +447,27 @@
               </Grid>
             </ScrollViewer>
 
-            <Border Grid.Column="1" Background="#66171D20" BorderBrush="#44B7A477"
-                    BorderThickness="1" CornerRadius="6" Padding="12" Margin="12,0,0,0">
-              <StackPanel Spacing="6">
-                <Image Source="{Binding talent_selected_icon}" Width="72" Height="72"
-                       Stretch="Uniform" HorizontalAlignment="Center"
-                       Visibility="{Binding talent_has_selected_icon}"/>
-                <TextBlock Text="{Binding talent_selected_title}" FontSize="15"
-                           Foreground="{StaticResource Ink}" TextWrapping="Wrap"/>
-                <TextBlock Text="{Binding talent_selected_status}" FontSize="11"
-                           Foreground="{StaticResource Gold}"/>
-                <TextBlock Text="{Binding talent_selected_effects}" FontSize="11"
-                           Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
-                <TextBlock Text="{Binding talent_selected_requirement}" FontSize="10"
-                           Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
-                <Button Style="{StaticResource Action}" Content="{Binding talent_learn_label}"
-                        Command="{Binding action_command}" CommandParameter="talent-learn"
-                        IsEnabled="{Binding talent_learn_enabled}" Margin="0,6,0,0"/>
-              </StackPanel>
+            <Border Grid.Row="1" Background="#FF171F1B" BorderBrush="#66B7A477"
+                    BorderThickness="1" CornerRadius="6" Padding="12,8" Margin="0,6,0,0">
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <Image Source="{Binding talent_selected_icon}" Width="54" Height="54" Margin="0,0,12,0"
+                       Stretch="Uniform" Visibility="{Binding talent_has_selected_icon}"/>
+                <StackPanel Grid.Column="1" Spacing="3">
+                  <TextBlock Text="{Binding talent_selected_title}" FontSize="17"
+                             FontWeight="Bold" Foreground="{StaticResource Ink}"/>
+                  <TextBlock Text="{Binding talent_selected_effects}" FontSize="13"
+                             Foreground="{StaticResource Gold}" TextWrapping="Wrap"/>
+                  <TextBlock Text="{Binding talent_selected_requirement}" FontSize="12"
+                             Foreground="{StaticResource Muted}" TextWrapping="Wrap"/>
+                </StackPanel>
+                <StackPanel Grid.Column="2" Width="190" Margin="12,0,0,0" Spacing="4">
+                  <TextBlock Text="{Binding talent_selected_status}" FontSize="12" TextWrapping="Wrap"
+                             Foreground="{StaticResource Ink}"/>
+                  <Button Style="{StaticResource Action}" Content="{Binding talent_learn_label}"
+                          Command="{Binding action_command}" CommandParameter="talent-learn"
+                          IsEnabled="{Binding talent_learn_enabled}"/>
+                </StackPanel>
+              </Grid>
             </Border>
           </Grid>
         </Grid>

@@ -10,7 +10,8 @@ local fsm = viber.load("lib/fsm.lua").new{
   range = 1.6, damage = 7, cooldown = 1.5, -- adaga: fraca
   windup = 0.45, recover = 0.4,
   radius = 6,
-  ranged = { range = 15, min = 5, cooldown = 2.6, windup = 0.7, projectile = "enemy-arrow" },
+  ranged = { range = 15, min = 5, cooldown = 2.6, windup = 0.7, projectile = "enemy-arrow",
+             pair = { every = 3, gap = 0.95, recover = 1.15 } },
 }
 
 function on_player_attack(px, pz)

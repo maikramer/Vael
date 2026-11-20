@@ -3774,7 +3774,8 @@ impl PavingAttrs {
         match key {
             "paving" => {
                 self.style.setts = value.trim().eq_ignore_ascii_case("setts");
-                self.on = self.style.setts || parse_paving_flag(value, kctx)?;
+                self.style.trail = value.trim().eq_ignore_ascii_case("trail");
+                self.on = self.style.setts || self.style.trail || parse_paving_flag(value, kctx)?;
             }
             "on-paving" => self.on_paving = parse_paving_flag(value, kctx)?,
             "paving-cell" => self.style.cell = values::parse_f32(value, kctx)?,
@@ -3976,6 +3977,22 @@ fn finish_terrain_pad(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> 
     })
 }
 
+fn lake_shape_attr(
+    shape: &mut crate::terrain::water::LakeAuthoring,
+    key: &str,
+    value: &str,
+    ctx: &str,
+) -> Result<bool> {
+    match key {
+        "seed" => shape.seed = Some(values::parse_f32(value, ctx)?.max(0.0) as u64),
+        "stretch" => shape.stretch = Some(values::parse_f32(value, ctx)?),
+        "axis" => shape.axis_deg = Some(values::parse_f32(value, ctx)?),
+        "lobes" => shape.lobes = Some(values::parse_f32(value, ctx)?),
+        _ => return Ok(false),
+    }
+    Ok(true)
+}
+
 fn finish_lake(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
     let (common, rest) = parse_common(node, ctx)?;
     let ctx_tag = format!("<{}>", node.tag);
@@ -3988,11 +4005,13 @@ fn finish_lake(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
         if child.tag.eq_ignore_ascii_case("island") {
             let kctx = format!("{ctx_tag} <Island>");
             let mut island = crate::terrain::water::IslandSpec::default();
+            let mut shape = crate::terrain::water::LakeAuthoring::default();
             for (key, value) in &child.attrs {
                 match key.as_str() {
                     "at" => island.at = offset_point(values::parse_vec2(value, &kctx)?, off),
                     "radius" => island.radius = values::parse_f32(value, &kctx)?,
                     "height" => island.height = values::parse_f32(value, &kctx)?,
+                    _ if lake_shape_attr(&mut shape, key, value, &kctx)? => (),
                     other => ctx
                         .warnings
                         .push(format!("{kctx}: ignored attribute `{other}`")),
@@ -4000,6 +4019,11 @@ fn finish_lake(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
             }
             if island.radius <= 0.0 {
                 bail!("{kctx}: radius must be > 0 (got {})", island.radius);
+            }
+            if shape != Default::default() {
+                island.shape = Some(crate::terrain::water::LakeShape::from_authoring(
+                    island.at, &shape,
+                ));
             }
             islands.push(island);
         } else {
@@ -4038,13 +4062,7 @@ fn finish_lake(node: &XmlNode, ctx: &mut ParseCtx) -> Result<EntitySpec> {
             "rocks-scale-max" => {
                 spec.rocks_spec.scale_max = values::parse_f32(&value, &kctx)?.clamp(0.5, 4.0)
             }
-            // Autoria da forma — ver `water::LakeAuthoring`. `seed` troca a
-            // fonte dos uniformes (SplitMix64); os outros três sobrepoem-se
-            // ao que o hash sorteou.
-            "seed" => spec.shape.seed = Some(values::parse_f32(&value, &kctx)?.max(0.0) as u64),
-            "stretch" => spec.shape.stretch = Some(values::parse_f32(&value, &kctx)?),
-            "axis" => spec.shape.axis_deg = Some(values::parse_f32(&value, &kctx)?),
-            "lobes" => spec.shape.lobes = Some(values::parse_f32(&value, &kctx)?),
+            _ if lake_shape_attr(&mut spec.shape, &key, &value, &kctx)? => (),
             other => ctx
                 .warnings
                 .push(format!("{ctx_tag}: ignored attribute `{other}`")),

@@ -49,6 +49,11 @@ pub const ATTACH_BONE_WAIT_SECS: f32 = 15.0;
 #[derive(Debug, Default, Resource)]
 pub struct PendingAttachments(pub Vec<(Entity, AttachmentRequest, f32)>);
 
+/// Grip já pendurado. Se a entidade morre (o rig do herói troca de cena e
+/// leva o osso), o pedido volta à fila — o script só pede uma vez.
+#[derive(Debug, Default, Resource)]
+pub struct MountedAttachments(HashMap<(Entity, String), (Entity, AttachmentRequest)>);
+
 pub struct AttachmentPlugin;
 
 impl Plugin for AttachmentPlugin {
@@ -56,6 +61,7 @@ impl Plugin for AttachmentPlugin {
         app.init_resource::<AttachmentRequests>()
             .init_resource::<AttachmentSlots>()
             .init_resource::<PendingAttachments>()
+            .init_resource::<MountedAttachments>()
             .add_systems(Update, apply_attachments);
     }
 }
@@ -69,13 +75,37 @@ pub fn apply_attachments(
     mut requests: ResMut<AttachmentRequests>,
     mut pending: ResMut<PendingAttachments>,
     mut slots: ResMut<AttachmentSlots>,
+    mut mounted: ResMut<MountedAttachments>,
     players: Query<Entity, With<crate::player::Player>>,
     names: Query<&Name>,
     children: Query<&Children>,
     entities: Query<Entity>,
+    // O `WorldInstance` entra quando a cena é *pedida*, frames (ou segundos)
+    // antes dos ossos. O relógio dos 15 s só corre depois de haver um nome
+    // na subárvore — senão a espada desiste com o herói ainda na fila.
+    scene: Query<
+        (),
+        Or<(
+            With<GltfScenePending>,
+            With<bevy::world_serialization::WorldAssetRoot>,
+            With<bevy::world_serialization::WorldInstance>,
+        )>,
+    >,
+    failed: Query<(), With<crate::gltf_residency::GltfSceneFailed>>,
 ) {
     let queued = std::mem::take(&mut requests.0);
-    if queued.is_empty() && pending.0.is_empty() {
+    let mut revive = Vec::new();
+    mounted.0.retain(|(owner, _), (child, request)| {
+        if !entities.contains(*owner) {
+            return false;
+        }
+        if entities.contains(*child) {
+            return true;
+        }
+        revive.push((*owner, request.clone()));
+        false
+    });
+    if queued.is_empty() && pending.0.is_empty() && revive.is_empty() {
         return;
     }
     // Donos (ou props) despawnados deixavam a entrada `(dono, slot) → entidade`
@@ -92,7 +122,9 @@ pub fn apply_attachments(
     let mut work: Vec<(Entity, AttachmentRequest, f32)> = Vec::new();
     for (owner, request, age) in std::mem::take(&mut pending.0) {
         if entities.contains(owner) {
-            work.push((owner, request, age + dt));
+            // O `dt` só entra quando o osso falta E o rig já instanciou.
+            // Somá-lo aqui fazia a espera correr durante o load do GLB.
+            work.push((owner, request, age));
         }
     }
     for request in queued {
@@ -104,6 +136,11 @@ pub fn apply_attachments(
             continue;
         };
         work.retain(|(o, r, _)| !(*o == owner && r.slot == request.slot));
+        revive.retain(|(o, r)| !(*o == owner && r.slot == request.slot));
+        work.push((owner, request, 0.0));
+    }
+    for (owner, request) in revive {
+        work.retain(|(o, r, _)| !(*o == owner && r.slot == request.slot));
         work.push((owner, request, 0.0));
     }
     for (owner, request, age) in work {
@@ -114,14 +151,19 @@ pub fn apply_attachments(
         // tocha viva e não pôr nada em vez dela. Um detach (`url = None`)
         // continua a remover só o slot.
         let Some(url) = request.url.clone() else {
+            mounted.0.remove(&key);
             if let Some(old) = slots.0.remove(&key) {
                 commands.entity(old).try_despawn();
             }
             continue;
         };
         let Some(bone) = find_bone(owner, &request.bone, &children, &names) else {
-            if age < ATTACH_BONE_WAIT_SECS {
-                pending.0.push((owner, request, age));
+            let awaiting_rig = !failed.contains(owner)
+                && scene.contains(owner)
+                && !descendant_has_name(owner, &children, &names);
+            if awaiting_rig || age < ATTACH_BONE_WAIT_SECS {
+                let next_age = if awaiting_rig { age } else { age + dt };
+                pending.0.push((owner, request, next_age));
             } else {
                 warn!(
                     target: "viber::attachment",
@@ -150,8 +192,31 @@ pub fn apply_attachments(
             ))
             .id();
         commands.entity(bone).add_child(spawned);
-        slots.0.insert(key, spawned);
+        slots.0.insert(key.clone(), spawned);
+        mounted.0.insert(key, (spawned, request));
     }
+}
+
+/// A subárvore já tem algum `Name`? O collider do herói não é filho; até o
+/// GLB instanciar não há nomes, e o osso da mão ainda não pode falhar.
+fn descendant_has_name(root: Entity, children: &Query<&Children>, names: &Query<&Name>) -> bool {
+    fn walk(entity: Entity, children: &Query<&Children>, names: &Query<&Name>, depth: u8) -> bool {
+        if depth > 24 {
+            return false;
+        }
+        if names.get(entity).is_ok() {
+            return true;
+        }
+        let Ok(kids) = children.get(entity) else {
+            return false;
+        };
+        kids.iter()
+            .any(|child| walk(child, children, names, depth + 1))
+    }
+    let Ok(kids) = children.get(root) else {
+        return false;
+    };
+    kids.iter().any(|child| walk(child, children, names, 0))
 }
 
 /// Procura um osso por nome normalizado (exato ou substring), com os alias
@@ -284,5 +349,96 @@ mod tests {
         let pending = &app.world().resource::<PendingAttachments>().0;
         assert_eq!(pending.len(), 1);
         assert_eq!(pending[0].1.url.as_deref(), Some("torch.glb"));
+    }
+
+    /// O véu deste mundo passa dos 15 s. Enquanto o GLB do dono não
+    /// instancia, a espera não expira — senão a espada desiste em silêncio
+    /// e o script não volta a pedir.
+    #[test]
+    fn the_bone_wait_pauses_while_the_owner_gltf_is_loading() {
+        let (mut app, owner) = app_with_owner();
+        app.world_mut()
+            .entity_mut(owner)
+            .insert(crate::recipes::spawn::GltfScenePending::single(Handle::<
+                bevy::gltf::Gltf,
+            >::default(
+            )));
+        app.world_mut()
+            .resource_mut::<PendingAttachments>()
+            .0
+            .push((owner, request(owner, "sword.glb"), 100.0));
+        app.update();
+        let pending = &app.world().resource::<PendingAttachments>().0;
+        assert_eq!(pending.len(), 1, "o load do rig não pode fazer desistir");
+        assert_eq!(
+            pending[0].2, 100.0,
+            "a espera não avança enquanto o GLB carrega"
+        );
+    }
+
+    /// Trocar a cena do rig despawna o osso e a espada que era filha dele.
+    /// O script já pediu uma vez: a engine volta a pendurar sozinha.
+    #[test]
+    fn a_despawned_grip_is_attached_again() {
+        let (mut app, owner) = app_with_owner();
+        let bone = app.world_mut().spawn(Name::new("hand_r")).id();
+        app.world_mut().entity_mut(owner).add_child(bone);
+        app.world_mut()
+            .resource_mut::<AttachmentRequests>()
+            .0
+            .push(request(owner, "sword.glb"));
+        app.update();
+        let first = app.world().resource::<AttachmentSlots>().0[&(owner, "weapon".into())];
+        app.world_mut().entity_mut(first).despawn();
+        app.update();
+        let second = app.world().resource::<AttachmentSlots>().0[&(owner, "weapon".into())];
+        assert_ne!(first, second);
+        assert_eq!(
+            app.world()
+                .get::<ChildOf>(second)
+                .map(|child| child.parent()),
+            Some(bone)
+        );
+    }
+
+    /// A cena já foi pedida (`WorldAssetRoot`) mas os ossos ainda não
+    /// existem. Os 15 s não correm — o arranque deste mundo passa disso.
+    #[test]
+    fn the_bone_wait_pauses_until_the_scene_has_names() {
+        let (mut app, owner) = app_with_owner();
+        app.world_mut()
+            .entity_mut(owner)
+            .insert(bevy::world_serialization::WorldAssetRoot(Handle::<
+                bevy::world_serialization::WorldAsset,
+            >::default(
+            )));
+        app.world_mut()
+            .resource_mut::<PendingAttachments>()
+            .0
+            .push((owner, request(owner, "sword.glb"), 100.0));
+        app.update();
+        let pending = &app.world().resource::<PendingAttachments>().0;
+        assert_eq!(pending.len(), 1);
+        assert_eq!(pending[0].2, 100.0);
+    }
+
+    /// Rig já na hierarquia, sem `hand_r`: aí sim os 15 s contam e expiram.
+    #[test]
+    fn a_spawned_rig_without_the_bone_expires() {
+        let (mut app, owner) = app_with_owner();
+        app.world_mut()
+            .entity_mut(owner)
+            .insert(bevy::world_serialization::WorldAssetRoot(Handle::<
+                bevy::world_serialization::WorldAsset,
+            >::default(
+            )));
+        let head = app.world_mut().spawn(Name::new("head")).id();
+        app.world_mut().entity_mut(owner).add_child(head);
+        app.world_mut()
+            .resource_mut::<PendingAttachments>()
+            .0
+            .push((owner, request(owner, "sword.glb"), 100.0));
+        app.update();
+        assert!(app.world().resource::<PendingAttachments>().0.is_empty());
     }
 }

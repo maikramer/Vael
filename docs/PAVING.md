@@ -119,10 +119,19 @@ coplanares piscam. O ruído (`edge-noise`) só faz a faixa de feather respirar;
 o lancil opaco não ondula. `paving-wobble` automático é 0.
 
 Em `paving="setts"`, a malha acompanha a distância à borda de todos os ramais
-do mesmo material. O centro sobe cerca de 4 cm em relação à margem. As
+com superfície contínua. O centro sobe cerca de 4 cm em relação à margem. As
 esquinas têm uma curva contínua e as pedras do lancil seguem esse contorno,
 com juntas estreitas e chanfros. `paving-kerb-texture` escolhe a pedra do
 lancil. Na rede de Discórdia usa-se a rocha cinzenta do conjunto do terreno.
+
+Para ligar uma trilha de terra à calçada, marque o nó `Road` com
+`paving="trail"` e mantenha sua textura de solo. Coloque a ponta perto do
+eixo da rua. O gerador ajusta o extremo à meia pista do lado de chegada
+antes de calcular o leito e o caminho de navegação. As duas superfícies
+usam a mesma altura e normal no encontro. A terra se mistura à pedra na
+entrada, e o lancil acompanha a borda externa. `paving-feather` controla
+em metros o desvanecimento da margem externa. As duas entradas na floresta
+junto à ponte norte em `world/paths/trails.bsn` são exemplos.
 
 **4. A banda de feather submete-se à curvatura.** Ela é emitida por **nó** (não
 por segmento), com direção mitrada para não abrir uma cunha num canto, e:
@@ -202,7 +211,7 @@ A migração é um atributo; nenhum nó muda de tag.
 
 | Atributo | Onde | O que faz |
 |---|---|---|
-| `paving` | os três | `1` ou `grid` liga a grelha. Em estradas, `setts` acrescenta abaulamento e guias de pedra chanfradas. Os ramais do mesmo material partilham o piso e as guias contornam a esquina. `0` desliga. |
+| `paving` | os três | `1` ou `grid` liga a grelha. Em estradas, `setts` acrescenta abaulamento e guias de pedra chanfradas. `trail` cria um ramal de terra que se une à calçada e abre a guia na entrada. `0` desliga. |
 | `on-paving` | decal | O decal fica **por cima** do pavimento. |
 | `paving-cell` | `<Terrain>` e os três | Módulo da treliça em metros (default 2). |
 | `paving-corner` | idem | Raio do chanfro nos cantos convexos. Negativo = auto (meio módulo). |
@@ -235,10 +244,15 @@ não chão.
   sob as árvores e junto às muralhas. Os objetos do mercado assentam à cota
   do terreno e o tapete fica 5 mm acima.
 
-Continuam ribbons (não pavimentados): as 28 trilhas de `trails.bsn`,
-`desert.bsn`, `gate-arms.bsn` e as pontes — são caminhos de terra orgânicos e o
-`<Road>` sem `paving` faz bem esse trabalho. Para os migrar, é acrescentar
-`paving="1"` (ver os custos abaixo).
+Os acessos da Passadeira da Bruxa e da ponte do Ermo usam `paving="trail"`.
+A largura acompanha o tabuleiro junto à cabeceira e muda suavemente até a
+largura da trilha. Na Ponte Norte, a calçada entra reta pelas duas cabeceiras,
+com as bifurcações da floresta recuadas em terra firme. Os demais caminhos
+sem `paving` continuam a usar a faixa de terra sobre o relevo.
+
+O teste `cargo test --test road_crossings` verifica no mundo resolvido o
+alinhamento das seis cabeceiras, a continuidade até a praça e a passagem das
+estradas por terra seca.
 
 ## Custos e armadilhas
 

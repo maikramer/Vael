@@ -131,35 +131,35 @@
     },
     {
       "id": "tremor",
-      "label": "Abalo (Impacto +1,5 m e +20 dano)",
+      "label": "Abalo (Impacto +1 m e +12 dano)",
       "requires": "strength2",
       "effects": {
-        "strike_radius": 1.5,
-        "strike_damage": 20
+        "strike_radius": 1,
+        "strike_damage": 12
       },
       "excludes": "embers"
     },
     {
       "id": "windstep",
-      "label": "Passo de vento (Esquiva recarrega 40% mais depressa)",
+      "label": "Passo de vento (−25% da recarga base da esquiva)",
       "requires": "agility2",
       "effects": {
-        "dash_cd": -0.4
+        "dash_cd": -0.25
       },
       "excludes": "ghost"
     },
     {
       "id": "ghost",
-      "label": "Espectro (Esquiva: +0,3 s invulnerável)",
+      "label": "Espectro (+0,2 s de invulnerabilidade na esquiva)",
       "requires": "agility2",
       "effects": {
-        "dash_iframes": 0.3
+        "dash_iframes": 0.2
       },
       "excludes": "windstep"
     },
     {
       "id": "executioner",
-      "label": "Carrasco (executa abaixo de 25% de vida)",
+      "label": "Carrasco (+10 pontos percentuais ao limiar de execução)",
       "requires": "precision2",
       "effects": {
         "execute": 0.1
@@ -168,7 +168,7 @@
     },
     {
       "id": "duelist",
-      "label": "Duelista (críticos ×2,5)",
+      "label": "Duelista (+0,5 ao multiplicador de crítico)",
       "requires": "precision2",
       "effects": {
         "crit_mult": 0.5

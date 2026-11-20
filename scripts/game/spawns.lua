@@ -108,6 +108,10 @@ local function tick_night(st, px, py, pz)
   if px * px + pz * pz < VILLAGE_RADIUS * VILLAGE_RADIUS then
     return
   end
+  -- Com a lanterna apagada o herói não atrai emboscadas das sombras da noite.
+  if viber.vael and viber.vael.lantern_lit and not viber.vael.lantern_lit() then
+    return
+  end
   -- 1.º par da noite sai cedo; depois, a intervalos largos.
   st.night_t = (st.night_t or 12) - TICK
   if st.night_t > 0 then

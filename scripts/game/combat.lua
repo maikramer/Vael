@@ -17,7 +17,12 @@ local rules = viber.load("lib/rules.lua")
 -- lista de alvos abaixo: com 2,5 m o melee acertava através de um piso/pontes
 -- de 2,4 m e o herói batia em quem não o podia atingir de volta.
 local VERTICAL = 2.2
-local CYCLE_RANGE = 14
+local AUTO_LOCK_RANGE = 16 -- inclui arqueiros a disparar a 15 m
+local RELEASE_RANGE = 19
+local IDLE_FOCUS_RANGE = 8
+local IDLE_FOCUS_DELAY = 0.8
+local FRONT_FOCUS_DOT = 0.5 -- cone de 60 graus para cada lado
+local ATTACK_AGGRO_GRACE = 1.0 -- a vítima pode ainda estar a reagir ao primeiro golpe
 local MELEE_RANGE = 3.0
 local FINISHER_RANGE = 3.5
 local ATTACK_ARC = 0.0
@@ -100,7 +105,9 @@ local function publish_combo(st)
   viber.ui.set("combo.text", text)
 end
 
-local function show_target(kind, hp, max_hp)
+local function show_target(kind, hp, max_hp, locked, cue)
+  viber.ui.set("target.cue", locked and cue or "")
+  viber.ui.set("target.locked", locked == true)
   viber.ui.set("target.name", kind or "")
   if max_hp and max_hp > 0 then
     viber.ui.set("target", math.max(0, hp or 0) / max_hp)
@@ -132,7 +139,7 @@ local function aim_target(st, px, py, pz, fx, fz, reach)
       local dist = math.sqrt(dx * dx + dz * dz)
       local dot = dist > 1e-3 and (fx * dx + fz * dz) / dist or 1
       local locked = h.id == st.locked_target
-      if dist <= limit and (dot >= SOFT_LOCK_ARC or (locked and dot >= -0.5)) then
+      if dist <= limit and (locked or dot >= SOFT_LOCK_ARC) then
         if locked then return h, dist end
         local score = dist - dot * 2.0
         if not best_score or score < best_score then
@@ -149,7 +156,35 @@ local function aim_target(st, px, py, pz, fx, fz, reach)
   return close, close_dist
 end
 
-local function start_swing(st)
+-- Registo dos alvos ao alcance da mira, atualizado a 10 Hz.
+local target_ids, target_scan_t = nil, 0
+
+local function front_threat(px, pz, fx, fz)
+  local best, best_score
+  for _, h in ipairs(target_ids or {}) do
+    local dx, dz = (h.x or px) - px, (h.z or pz) - pz
+    local dist = math.sqrt(dx * dx + dz * dz)
+    local dot = dist > 1e-3 and (fx * dx + fz * dz) / dist or 1
+    if h.chasing and dist <= IDLE_FOCUS_RANGE and dot >= FRONT_FOCUS_DOT then
+      local score = dist - 3 * dot
+      if not best_score or score < best_score then best, best_score = h, score end
+    end
+  end
+  return best
+end
+
+local function focus_attack(st, h)
+  st.locked_target, st.focus_reason = h.id, "attack"
+  st.focus_candidate, st.focus_time = nil, 0
+  st.aggro_grace = ATTACK_AGGRO_GRACE
+  return h
+end
+
+local function start_swing(st, locked)
+  if viber.vael.spend_attack_stamina and not viber.vael.spend_attack_stamina() then
+    viber.toast("Sem fôlego para atacar.")
+    return
+  end
   -- Dentro da janela avança 0→1→2→0; fora, recomeça no primeiro corte.
   local step = 0
   if (st.chain_timer or 0) > 0 then
@@ -192,12 +227,15 @@ local function start_swing(st)
   if has then
     local target, dist = aim_target(st, px, py, pz, fx, fz, reach)
     if target then
-      if not st.locked_target then st.target = target.id end
       if dist > 1e-3 then
         fx, fz = ((target.x or px) - px) / dist, ((target.z or pz) - pz) / dist
       end
       -- Já em contacto, mantém os pés plantados.
       lunge = math.clamp(dist - reach * 0.55, 0, LUNGE_MAX)
+    end
+    if st.focus_reason ~= "manual" then
+      local intended = target or locked or front_threat(px, pz, fx, fz)
+      if intended then locked = focus_attack(st, intended) end
     end
   end
   st.swing = { t = delay, step = step, fx = fx, fz = fz, range = reach, damage = weapon.damage or BASE_DAMAGE }
@@ -216,6 +254,7 @@ local function start_swing(st)
   else
     viber.sound("whoosh")
   end
+  return locked
 end
 
 local function resolve_swing(st, sw)
@@ -289,18 +328,24 @@ local function resolve_swing(st, sw)
           if execute then
             dmg = math.max(dmg, hp + 1)
           end
+          -- Propriocepção do corpo físico (bevy_ext_puppet): um inimigo em
+          -- desequilíbrio real ou caído perde a guarda do escudo e fica
+          -- vulnerável a dano de oportunidade.
+          local pinfo = viber.vael and viber.vael.puppet_info and viber.vael.puppet_info(h.id) or nil
+          local off_balance = pinfo and (pinfo.busy or (pinfo.capture_margin or 0) > 0.08) or false
+          local downed = pinfo and (pinfo.mode == "falling" or pinfo.mode == "down") or false
+          if downed and not execute then
+            dmg = dmg * 1.25
+          end
           -- ESCUDO: de frente, o golpe normal ressalta (20 % do dano). O
           -- remate da chain PARTE a guarda (dano inteiro + atordoa); pelas
-          -- costas o escudo não conta. A execução ignora-o.
+          -- costas ou desequilibrado fisicamente o escudo não conta.
           local blocked = false
-          if h.shield and not backstab and not execute then
+          if h.shield and not backstab and not execute and not off_balance then
             local facing = (h.forward_x or 0) * -ux + (h.forward_z or 0) * -uz
             if facing > (h.shield.arc or 0.3) then
               if finisher then
                 rules.enemy_status(h.id, "shock", 1.2)
-                viber.damage_number("GUARDA PARTIDA", {
-                  color = "#ffd35a", x = h.x, y = (h.y or py) + 2.4, z = h.z,
-                })
               else
                 blocked = true
                 dmg = dmg * (1 - (h.shield.reduce or 0.8))
@@ -345,7 +390,16 @@ local function resolve_swing(st, sw)
             local meters = (crit and 0.65 or (finisher and 0.55 or 0.45)) * knockback
             viber.entity_knockback(h.id, ux, uz, meters * 6.0)
           end
-          viber.damage_number((blocked and "BLOQUEIO -" or "-") .. math.floor(removed), {
+          -- Remate ou crítico em alvo já desequilibrado: empurrão físico
+          -- extra para acionar passos de captura IPM ou queda com CatchFall.
+          if not blocked and not killed and not BOSSES[h.kind or ""]
+            and (finisher or (crit and off_balance))
+            and viber.vael and viber.vael.puppet_push
+          then
+            local imp = (finisher and 32.0 or 26.0) * math.max(0.8, knockback)
+            viber.vael.puppet_push(h.id, ux * imp, 0.0, uz * imp)
+          end
+          viber.damage_number("-" .. math.floor(removed), {
             color = blocked and "#9aa3ad" or ((crit or execute) and "#ff8c47" or "#f5efe0"),
             x = h.x, y = (h.y or py) + 1.8, z = h.z,
           })
@@ -429,9 +483,76 @@ local function resolve_swing(st, sw)
   end
 end
 
--- Cache da varredura da barra de alvo (ver `on_update`).
-local target_ids = nil
-local target_scan_t = 0
+local function clear_focus(st, preserve_combat)
+  if not preserve_combat or st.focus_reason == "idle" then
+    st.locked_target, st.focus_reason, st.aggro_grace = nil, nil, 0
+  end
+  st.focus_candidate, st.focus_time = nil, 0
+  target_ids, target_scan_t = nil, 0
+  show_target(nil)
+end
+
+local function select_focus(st, dt, strike_id)
+  local has, px, py, pz = viber.player_position()
+  if not has then
+    clear_focus(st)
+    return
+  end
+  local cycle = viber.action and viber.action("lock")
+  target_scan_t -= dt
+  if cycle or strike_id or target_scan_t <= 0 or not target_ids then
+    target_scan_t = 0.1
+    target_ids = {}
+    for _, h in ipairs(rules.hostiles(RELEASE_RANGE) or {}) do
+      if (h.distance <= AUTO_LOCK_RANGE or h.id == st.locked_target)
+          and not h.invuln and math.abs((h.y or py) - py) <= VERTICAL then
+        target_ids[#target_ids + 1] = h
+      end
+    end
+  end
+
+  local resting = viber.vael.hero_at_rest and viber.vael.hero_at_rest()
+  st.aggro_grace = math.max(0, (st.aggro_grace or 0) - dt)
+  local current, current_index, struck
+  for i, h in ipairs(target_ids) do
+    if h.id == st.locked_target then current, current_index = h, i end
+    if h.id == strike_id then struck = h end
+  end
+  if cycle and #target_ids > 0 then
+    local next_target = target_ids[(current_index or 0) % #target_ids + 1]
+    st.locked_target, st.focus_reason = next_target.id, "manual"
+    st.focus_candidate, st.focus_time = nil, 0
+    return next_target
+  end
+  if current and st.focus_reason == "manual" then return current end
+  if struck then return focus_attack(st, struck) end
+  if current and st.focus_reason == "attack" and (current.chasing or st.aggro_grace > 0) then return current end
+  if current and st.focus_reason == "idle" and resting and current.chasing
+      and current.distance <= IDLE_FOCUS_RANGE then return current end
+  st.locked_target, st.focus_reason = nil, nil
+
+  local candidate
+  if resting then
+    local fx, fz = viber.player_forward()
+    local camera = viber.camera_state and viber.camera_state()
+    if camera and camera.yaw then
+      local yaw = math.rad(camera.yaw)
+      fx, fz = math.sin(yaw), math.cos(yaw)
+    end
+    candidate = front_threat(px, pz, fx, fz)
+  end
+  if candidate and candidate.id == st.focus_candidate then
+    -- Um frame suspenso não conta como uma pausa deliberada.
+    st.focus_time += math.min(dt, 0.2)
+    if st.focus_time >= IDLE_FOCUS_DELAY then
+      st.locked_target, st.focus_reason = candidate.id, "idle"
+      st.focus_candidate, st.focus_time = nil, 0
+      return candidate
+    end
+  else
+    st.focus_candidate, st.focus_time = candidate and candidate.id, 0
+  end
+end
 
 function on_update(dt)
   local st = viber.state()
@@ -442,6 +563,13 @@ function on_update(dt)
   -- tempo de jogo a recuar. Sem isto, um golpe pendurado no jogo abandonado
   -- aterrava no sítio onde o herói carregou, com o combo/alvo antigos.
   local game = viber.game()
+  local strike_id
+  local strike = game.strike_focus
+  if type(strike) == "table" then
+    local age = viber.time() - (tonumber(strike.t) or -math.huge)
+    if age >= 0 and age < 0.3 then strike_id = strike.id end
+    game.strike_focus = nil
+  end
   local sid = tonumber(game.session_id) or 0
   local playtime = tonumber(game.playtime_secs) or 0
   local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
@@ -449,8 +577,8 @@ function on_update(dt)
   local scene = viber.scene_name and viber.scene_name() or nil
   if st.session ~= sid or loaded or st.scene ~= scene then
     st.session, st.scene = sid, scene
-    target_ids, target_scan_t = nil, 0
-    st.locked_target = nil
+    clear_focus(st)
+    strike_id = nil
     st.swing = nil
     st.attack_t = 0
     st.chain_timer = 0
@@ -459,12 +587,8 @@ function on_update(dt)
     st.buffer_t = 0
     st.combo_hits = 0
     st.combo_window = 0
-    st.target = nil
     st.last_hp = nil
     publish_combo(st)
-    viber.ui.set("target", 0)
-    viber.ui.set("target.alive", false)
-    viber.ui.set("target.name", "")
   end
 
   -- Timers do melee (correm mesmo com o menu aberto, como o combo nativo).
@@ -491,14 +615,17 @@ function on_update(dt)
   -- habilidades e a colheita têm o mesmo portão.
   if (viber.scene_name and viber.scene_name() == "menu")
       or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+    clear_focus(st)
     st.swing = nil
     st.buffer_queued = false
     st.buffer_t = 0
     return
   end
-  if viber.menu_open() then
+  local talk_left = (tonumber(viber.ui.get("dialogue.until")) or 0) - viber.time()
+  if viber.menu_open() or (talk_left > 0 and talk_left <= 2.0) then
     -- Um golpe pendente não pode aterrar depois de fechar o menu, muito
     -- depois da animação/posição que o originou.
+    clear_focus(st, true)
     st.swing = nil
     st.buffer_queued = false
     st.buffer_t = 0
@@ -517,9 +644,7 @@ function on_update(dt)
     st.combo_hits = 0
     st.combo_window = 0
     publish_combo(st)
-    st.target, st.locked_target = nil, nil
-    viber.ui.set("target.alive", false)
-    viber.ui.set("target.name", "")
+    clear_focus(st)
     return
   end
   -- Dano no herói zera o combo (o nativo fazia-o em `notifyPlayerDamaged`).
@@ -530,79 +655,17 @@ function on_update(dt)
   end
   st.last_hp = hp
 
-  -- ── barra de alvo (ação nativa `lock`; o V é do equipamento) ──
-  local has, _, py, _ = viber.player_position()
-  if has then
-    -- O registo de hostis é lido pelo proxy partilhado (~1 ms por varredura
-    -- com centenas de criaturas, medido 2026-11-16): a barra lê-o a 10 Hz;
-    -- o `lock` força uma varredura nova no frame em que é premido.
-    local lock_pressed = viber.action ~= nil and viber.action("lock")
-    target_scan_t = target_scan_t - dt
-    if lock_pressed or target_scan_t <= 0 or not target_ids then
-      target_scan_t = 0.1
-      local list = rules.hostiles(CYCLE_RANGE) or {}
-      target_ids = {}
-      for _, h in ipairs(list) do
-        if not h.invuln and math.abs((h.y or py) - py) <= VERTICAL then
-          target_ids[#target_ids + 1] = h
-        end
-      end
-    end
-    local ids = target_ids
-    if lock_pressed then
-      if #ids == 0 then
-        -- Sem alvos, o cartão tem de sair JÁ: `st.target` nil impede o ramo
-        -- de limpeza abaixo (que só corre com um alvo pendente) e o nome/vida
-        -- do alvo que acabou de sair ficava preso no HUD.
-        st.target, st.locked_target = nil, nil
-        viber.ui.set("target", 0)
-        viber.ui.set("target.alive", false)
-        viber.ui.set("target.name", "")
-      else
-        local at = 1
-        for i, h in ipairs(ids) do
-          if h.id == st.target then
-            at = i % #ids + 1
-            break
-          end
-        end
-        st.target = ids[at].id
-        st.locked_target = st.target
-      end
-    end
-    local shown
-    for _, h in ipairs(ids) do
-      if h.id == st.target then
-        shown = h
-        break
-      end
-    end
-    if not shown then
-      st.locked_target = nil
-      shown = ids[1]
-      st.target = shown and shown.id or nil
-    end
-    if shown then
-      show_target(TARGET_NAME[shown.kind or ""] or shown.kind, shown.hp, shown.max)
-    else
-      -- O alvo morreu/saiu do raio sem um lock novo: o cartão tem de sair.
-      -- O antigo `elseif st.target ~= nil` era código morto — `st.target` já
-      -- tinha sido posto a nil no `if not shown` acima e a limpeza nunca
-      -- corria (o cartão ficava preso no HUD com o nome/vida do morto).
-      viber.ui.set("target", 0)
-      viber.ui.set("target.alive", false)
-      viber.ui.set("target.name", "")
-    end
-  end
-
-  -- ── melee ──
   if viber.ui.get("boat.grip") == "oars" or (viber.vael and viber.vael.harvest_tool_focus and viber.vael.harvest_tool_focus()) then
     -- Boarding consumes a pending or buffered swing as well as new input.
+    clear_focus(st)
     st.swing = nil
     st.attack_t, st.chain_timer, st.chain_step = 0, 0, 0
     st.buffer_queued, st.buffer_t = false, 0
     return
   end
+  local locked = select_focus(st, dt, strike_id)
+
+  -- ── melee ──
   -- Com a TOCHA na mão não há arma para atacar: o `equip.kind` é publicado
   -- por game/equipment.lua (o V troca Espada↔Tocha). Sem este portão o
   -- herói "atacava com o lampião" (swing + dano com o GLB da lanterna).
@@ -659,10 +722,16 @@ function on_update(dt)
       st.buffer_t = BUFFER_SECS
     else
       st.buffer_queued = false
-      start_swing(st)
+      locked = start_swing(st, locked) or locked
     end
   elseif st.buffer_queued and not busy and not torch then
     st.buffer_queued = false
-    start_swing(st)
+    locked = start_swing(st, locked) or locked
+  end
+  if locked then
+    if viber.vael.combat_target then viber.vael.combat_target(locked.x, locked.z) end
+    show_target(TARGET_NAME[locked.kind or ""] or locked.kind, locked.hp, locked.max, true, locked.cue)
+  else
+    show_target(nil)
   end
 end

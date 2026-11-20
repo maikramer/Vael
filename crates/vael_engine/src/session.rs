@@ -196,33 +196,49 @@ fn unique_tmp(path: &Path) -> PathBuf {
     path.with_file_name(name)
 }
 
-fn write_tmp(tmp: &Path, contents: &str) -> Result<()> {
-    let mut file =
-        std::fs::File::create(tmp).with_context(|| format!("a criar {}", tmp.display()))?;
+fn remove_tmp(path: &Path) {
+    let _ = std::fs::remove_file(path);
+}
+
+#[rustversion::since(1.100)]
+fn cleanup_tmp(path: &Path) -> impl Drop + '_ {
+    std::mem::DropGuard::new(path, remove_tmp)
+}
+
+#[rustversion::before(1.100)]
+fn cleanup_tmp(path: &Path) -> impl Drop + '_ {
+    bevy::utils::OnDrop::new(move || remove_tmp(path))
+}
+
+fn with_written_tmp<T>(
+    path: &Path,
+    contents: &str,
+    publish: impl FnOnce(&Path) -> Result<T>,
+) -> Result<T> {
+    let (tmp, file) = loop {
+        let tmp = unique_tmp(path);
+        match std::fs::File::create_new(&tmp) {
+            Ok(file) => break (tmp, file),
+            Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => continue,
+            Err(error) => return Err(error).with_context(|| format!("a criar {}", tmp.display())),
+        }
+    };
+    let _cleanup = cleanup_tmp(&tmp);
+    // Fechar antes de remover, mesmo quando write_all ou sync_all falha.
+    let mut file = file;
     file.write_all(contents.as_bytes())?;
     file.sync_all()?;
     drop(file);
-    Ok(())
+    publish(&tmp)
 }
 
 /// Escrita atómica (SOBRESCREVE o destino): tmp único + `sync_all` + rename
 /// no mesmo diretório. Um crash a meio não deixa JSON parcial no disco —
 /// que seria lido como "corrupto = livre/sem sessão" pelos outros processos.
 fn write_atomic(path: &Path, contents: &str) -> Result<()> {
-    let tmp = unique_tmp(path);
-    if let Err(error) = write_tmp(&tmp, contents) {
-        // Sem isto um ENOSPC/disco cheio deixava o `.tmp` órfão na pasta da
-        // sessão para sempre (o nome é único por processo+chamada).
-        let _ = std::fs::remove_file(&tmp);
-        return Err(error);
-    }
-    std::fs::rename(&tmp, path).map_err(|error| {
-        let _ = std::fs::remove_file(&tmp);
-        anyhow::Error::new(error).context(format!(
-            "a promover {} → {}",
-            tmp.display(),
-            path.display()
-        ))
+    with_written_tmp(path, contents, |tmp| {
+        std::fs::rename(tmp, path)
+            .with_context(|| format!("a promover {} → {}", tmp.display(), path.display()))
     })
 }
 
@@ -233,16 +249,13 @@ fn write_atomic(path: &Path, contents: &str) -> Result<()> {
 /// tratava-o como corrupto, apagava o lease acabado de criar e ganhava
 /// TAMBÉM: dois donos para a mesma sessão.
 fn publish_new(path: &Path, contents: &str) -> Result<bool> {
-    let tmp = unique_tmp(path);
-    let outcome = write_tmp(&tmp, contents).and_then(|_| match std::fs::hard_link(&tmp, path) {
+    with_written_tmp(path, contents, |tmp| match std::fs::hard_link(tmp, path) {
         Ok(()) => Ok(true),
         Err(error) if error.kind() == std::io::ErrorKind::AlreadyExists => Ok(false),
         Err(error) => {
             Err(error).with_context(|| format!("a ligar {} → {}", tmp.display(), path.display()))
         }
-    });
-    let _ = std::fs::remove_file(&tmp);
-    outcome
+    })
 }
 
 /// O nome do dono tem de bater para `release`/`touch` — protege contra
@@ -643,6 +656,16 @@ mod tests {
             .claim("agente-b", Duration::from_secs(60), None)
             .expect("claim rouba lease parseável expirado");
         assert!(matches!(stolen, ClaimOutcome::Acquired { .. }));
+    }
+
+    #[test]
+    fn failed_rename_removes_only_the_temporary_file() {
+        let dir = tempfile::tempdir().unwrap();
+        let dest = dir.path().join("occupied");
+        std::fs::create_dir(&dest).unwrap();
+        assert!(write_atomic(&dest, "new contents").is_err());
+        assert!(dest.is_dir());
+        assert_eq!(std::fs::read_dir(dir.path()).unwrap().count(), 1);
     }
 
     #[test]

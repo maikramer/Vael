@@ -46,6 +46,17 @@ function on_update(dt)
     st.done = true
     once.mark()
     rules.add_xp(8)
+    local ok, x, y, z = viber.entity_position()
+    if ok and viber.vael and viber.vael.collect_burst then
+      viber.vael.collect_burst("bog-moss", x, y + 0.35, z, 4)
+    end
+    if ok and viber.burst then
+      viber.burst("leaves", x, y + 0.35, z, 14)
+    end
+    if viber.play_clip and viber.player_id then
+      local pid = viber.player_id()
+      if pid then viber.play_clip("gather", { speed = 1.15, id = pid }) end
+    end
     viber.sound("harvest")
     viber.toast("Musgo-do-pântano colhido (+8 XP, +1 bog-moss)")
     viber.topple()

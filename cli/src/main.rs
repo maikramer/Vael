@@ -11,6 +11,7 @@ use std::process::ExitCode;
 use anyhow::Result;
 use clap::{Parser, Subcommand};
 
+mod bsn_edit;
 mod debug;
 mod playbook;
 mod run;
@@ -54,7 +55,7 @@ enum CommandKind {
         #[arg(long)]
         json: bool,
     },
-    /// Converte/valida XML ↔ `.bsn` (os geradores ainda emitem XML).
+    /// Inspeciona, edita e valida cenas BSN e converte XML legado.
     Bsn {
         #[command(subcommand)]
         command: BsnCommand,
@@ -94,6 +95,8 @@ enum CommandKind {
 
 #[derive(Subcommand)]
 enum BsnCommand {
+    #[command(flatten)]
+    Author(bsn_edit::Command),
     /// Converte ficheiros XML (e os seus includes) para `.bsn`.
     Convert {
         /// Raiz do projeto (default: a do primeiro ficheiro).
@@ -124,7 +127,7 @@ enum BsnCommand {
         /// Pasta de saída usada na conversão, se não for ao lado do XML.
         #[arg(long)]
         out: Option<PathBuf>,
-        /// Ficheiros ou pastas (default: `world.xml`).
+        /// Ficheiros ou pastas. Por omissão verifica world.bsn se existir.
         #[arg(value_name = "PATH")]
         paths: Vec<PathBuf>,
     },
@@ -184,6 +187,10 @@ fn run() -> Result<ExitCode> {
             )
         }
         CommandKind::Bsn { command } => match command {
+            BsnCommand::Author(command) => {
+                command.run()?;
+                Ok(ExitCode::SUCCESS)
+            }
             BsnCommand::Convert {
                 root,
                 out,

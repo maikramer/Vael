@@ -37,7 +37,7 @@ use crate::quest::{QuestKv, QuestRules, quest_objective, quest_progress, quest_s
 use crate::save::VaelSave;
 use crate::stats::{AttributeRules, StatEngine};
 use crate::ui::talent_tree::{
-    TalentEdgeVm, TalentNodeVm, VaelTalentLayout, talent_detail, talent_nodes,
+    TalentEdgeVm, TalentNodeVm, VaelTalentLayout, purchase, talent_detail, talent_nodes,
 };
 use crate::vault::{ITEM_KEY_PREFIX, VaultRules, item_key, vault_get};
 use crate::xp::{KEY_LEVEL, KEY_SKILL_POINTS, KEY_XP, KEY_XP_NEXT, XpMap, XpRules, add_xp};
@@ -698,6 +698,7 @@ fn request_load(world: &mut World, slot: u32) {
         request.load = true;
         request.slot = Some(slot);
     }
+    crate::puppet::release_player_puppets(world);
     if let Some(writer) = world.get_resource::<UiWriter>() {
         close_overlays(writer);
         writer.set_visible("hud", true);
@@ -725,54 +726,40 @@ fn learn_selected_talent(world: &mut World) {
 }
 
 fn learn_skill(world: &mut World, id: &str) {
-    let Some(rules) = world.get_resource::<VaelUiRules>().cloned() else {
+    let Some(content) = world.get_resource::<VaelContent>() else {
         return;
     };
-    let Some(content) = world.get_resource::<VaelContent>().cloned() else {
+    let Some(def) = content
+        .progression
+        .skills
+        .iter()
+        .find(|skill| skill.id == id)
+    else {
         return;
     };
-    let save = world.resource::<VaelSave>().clone();
-    let learned = learned_set(&save);
-    if learned.contains(id) {
-        return;
-    }
-    let Some(def) = content.progression.skills.iter().find(|s| s.id == id) else {
-        return;
+    // Os comandos podem chegar no mesmo frame, antes de VaelStateSync.
+    // Ler o store que será debitado também respeita recompensas recém-ganhas.
+    let current = VaelSave::from_world_kv(&game_kv(world));
+    let lang = lang(&current);
+    let mut xp = current.progression;
+    let result = purchase(def, &mut xp);
+    let feedback = match result {
+        Ok(()) => content.label(&lang, &format!("talent.{id}"), &def.label),
+        Err(state) => state.text(&lang).to_string(),
     };
-    let requires = def.requires.as_deref().unwrap_or("");
-    let excludes = def.excludes.as_deref().unwrap_or("");
-    if !requires.is_empty() && !learned.contains(requires) {
-        toast(world, "Falta o talento anterior.");
+    if result.is_ok() {
+        patch_game(
+            world,
+            BTreeMap::from([
+                (format!("skill.{id}"), json!(true)),
+                (KEY_SKILL_POINTS.into(), json!(xp.skill_points)),
+            ]),
+        );
+        sfx(world, SfxClip::LevelUp);
+    } else {
         sfx(world, SfxClip::Error);
-        return;
     }
-    if !excludes.is_empty() && learned.contains(excludes) {
-        let other = content
-            .progression
-            .skills
-            .iter()
-            .find(|s| s.id == excludes)
-            .map(|s| s.label.clone())
-            .unwrap_or_else(|| excludes.to_string());
-        toast(world, format!("Já escolheste {other}."));
-        sfx(world, SfxClip::Error);
-        return;
-    }
-    if save.progression.skill_points < 1 {
-        toast(world, "Sem pontos de talento.");
-        sfx(world, SfxClip::Error);
-        return;
-    }
-    let mut patch = BTreeMap::new();
-    patch.insert(format!("skill.{id}"), json!(true));
-    patch.insert(
-        "skill_points".to_string(),
-        json!(save.progression.skill_points - 1),
-    );
-    patch_game(world, patch);
-    toast(world, def.label.clone());
-    sfx(world, SfxClip::LevelUp);
-    let _ = rules;
+    toast(world, feedback);
 }
 
 fn bag_click(world: &mut World, id: &str) {
@@ -1087,6 +1074,7 @@ fn a11y_click(world: &mut World, id: &str) {
 }
 
 fn menu_to_title(world: &mut World) {
+    crate::puppet::release_player_puppets(world);
     let scene = world.get_resource::<CurrentScene>().cloned();
     let on_title = in_menu_scene(scene.as_ref());
     let alive = player_alive(world.resource::<VaelSave>());
@@ -1124,6 +1112,7 @@ fn title_continue(world: &mut World) {
     else {
         return;
     };
+    crate::puppet::release_player_puppets(world);
     if let Some(mut request) = world.get_resource_mut::<SaveRequest>() {
         request.save = false;
         request.load = true;
@@ -1140,6 +1129,7 @@ fn title_continue(world: &mut World) {
 }
 
 fn title_new(world: &mut World) {
+    crate::puppet::release_player_puppets(world);
     let keep: Vec<String> = game_kv(world)
         .keys()
         .filter(|key| {
@@ -1170,6 +1160,9 @@ fn title_new(world: &mut World) {
     // ficavam no HUD até cada chave ser reescrita — e as quests nunca são
     // re-semeadas em `not_taken`. O estado tipado recomeça com o store.
     world.insert_resource(VaelSave::default());
+    if let Some(bus) = world.get_resource::<crate::player::HeroMotionBus>() {
+        bus.lock().stamina = Default::default();
+    }
     if let Some(writer) = world.get_resource::<UiWriter>() {
         writer.open("title", false);
         writer.open("credits", false);
@@ -1244,6 +1237,7 @@ fn death_load(world: &mut World) {
         sfx(world, SfxClip::Error);
         return;
     };
+    crate::puppet::release_player_puppets(world);
     if let Some(mut request) = world.get_resource_mut::<SaveRequest>() {
         request.save = false;
         request.load = true;
@@ -1263,6 +1257,7 @@ fn death_load(world: &mut World) {
 }
 
 fn death_to_title(world: &mut World) {
+    crate::puppet::release_player_puppets(world);
     let mut patch = BTreeMap::new();
     patch.insert("dying".to_string(), json!(0));
     patch.insert("death_pending".to_string(), json!(false));
@@ -1532,7 +1527,8 @@ fn quest_rows(
                 ),
                 status_text,
             )
-            .with_progress(progress),
+            .with_progress(progress)
+            .with_icon(def.portrait.clone().filter(|path| !path.is_empty())),
         );
         let _ = progress_text;
     }
@@ -1762,12 +1758,17 @@ fn controls_rows(content: Option<&VaelContent>, lang: &str) -> Vec<RowVm> {
         ("SHIFT", "menu.controls.run", "correr"),
         ("ESPAÇO", "menu.controls.jump", "saltar"),
         ("RATO/J", "menu.controls.attack", "atacar"),
-        ("C", "menu.controls.dodge", "esquiva (dash)"),
+        ("C", "menu.controls.dodge", "esquiva na direção do movimento"),
         ("E", "menu.controls.heal", "curar"),
         ("R", "menu.controls.strike", "golpe forte"),
         ("L", "menu.controls.guard", "guarda / aparar"),
         ("B", "menu.controls.bomb", "bomba"),
-        ("V", "menu.controls.target", "trocar de alvo"),
+        (
+            "X",
+            "menu.controls.lantern",
+            "acender / apagar lanterna na cintura",
+        ),
+        ("Z", "menu.controls.target", "trocar o alvo automático"),
         ("1 / 2", "menu.controls.potions", "poção / antídoto"),
         ("E", "menu.controls.interact", "interagir e falar"),
         ("F", "menu.controls.sign", "assinar marco da Nota"),
@@ -2416,9 +2417,8 @@ pub fn sync_screens(
     // Árvore de talentos: o layout é estático; só os estados e o detalhe
     // mudam. A seleção inicial é a primeira raiz para o painel não nascer
     // vazio quando o jogador abre a aba.
-    let learned = learned_set(&save);
     let layout_ref = layout.as_deref();
-    if menu_open
+    if stats_visible
         && let Some(layout) = layout_ref
         && !state
             .talent_selected
@@ -2428,10 +2428,17 @@ pub fn sync_screens(
         state.talent_selected = layout.roots.first().cloned();
     }
     let selected = state.talent_selected.clone();
-    let (talent_nodes_vm, talent_requires, talent_exclusions, talent_w, talent_h) = if menu_open {
-        match layout_ref {
-            Some(layout) => (
-                talent_nodes(layout, &learned, selected.as_deref()),
+    let (talent_nodes_vm, talent_requires, talent_exclusions, talent_w, talent_h) = if stats_visible
+    {
+        match (layout_ref, content) {
+            (Some(layout), Some(content)) => (
+                talent_nodes(
+                    layout,
+                    &save.progression,
+                    selected.as_deref(),
+                    content,
+                    &lang,
+                ),
                 layout
                     .requires_edges
                     .iter()
@@ -2445,12 +2452,12 @@ pub fn sync_screens(
                 layout.canvas_width,
                 layout.canvas_height,
             ),
-            None => (Vec::new(), Vec::new(), Vec::new(), 0.0, 0.0),
+            _ => (Vec::new(), Vec::new(), Vec::new(), 0.0, 0.0),
         }
     } else {
         (Vec::new(), Vec::new(), Vec::new(), 0.0, 0.0)
     };
-    let talent_detail_vm = if menu_open {
+    let talent_detail_vm = if stats_visible {
         content
             .map(|content| {
                 let def = selected.as_deref().and_then(|id| {
@@ -2462,9 +2469,9 @@ pub fn sync_screens(
                 });
                 let mut detail = talent_detail(
                     def,
-                    &content.progression,
-                    &learned,
-                    save.progression.skill_points,
+                    content,
+                    &save.progression,
+                    &rules.map(|rules| rules.attributes).unwrap_or_default(),
                     &lang,
                 );
                 detail.has_icon = selected
@@ -2623,6 +2630,31 @@ pub fn sync_screens(
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    #[test]
+    fn journal_spends_a_live_reward_only_once_before_sync() {
+        use viber::luau::game::{restore_game_json, test_support::PROCESS_STORE_TEST_LOCK};
+        let _guard = PROCESS_STORE_TEST_LOCK.lock().unwrap();
+        let mut world = World::new();
+        world.insert_resource(VaelContent::load(std::path::Path::new(env!(
+            "CARGO_MANIFEST_DIR"
+        ))));
+        world.insert_resource(VaelSave::default());
+        world.init_resource::<VaelScreensState>();
+        restore_game_json(&BTreeMap::from([(KEY_SKILL_POINTS.into(), json!(1))]));
+        handle_action(&mut world, "talent-strength1");
+        assert_eq!(game_kv(&world)[KEY_SKILL_POINTS], json!(1));
+        handle_action(&mut world, "talent-learn");
+        handle_action(&mut world, "talent-learn");
+        handle_action(&mut world, "skill-agility1");
+        let live = VaelSave::from_world_kv(&game_kv(&world));
+        assert_eq!(live.progression.skill_points, 0);
+        assert_eq!(
+            live.progression.skills,
+            BTreeSet::from(["strength1".into()])
+        );
+        restore_game_json(&BTreeMap::new());
+    }
 
     #[test]
     fn death_abre_so_com_death_pending() {

@@ -13,7 +13,7 @@ pub(super) fn mineralized(seed: u32) -> bool {
 
 #[derive(Component, Reflect)]
 #[reflect(Component)]
-pub(super) struct CrystalGrowth {
+pub(crate) struct CrystalGrowth {
     seed: u32,
     maturity: f32,
 }

@@ -2,7 +2,7 @@
 //! [`bevy_rich_text3d`].
 //!
 //! A engine continua a ser a única boca de entrada: os scripts pedem
-//! `viber.damage_number` (dano, cura, esquiva, bloqueio, loot, colheita) e a
+//! `viber.damage_number` (dano, cura, loot, colheita) e a
 //! engine emite [`DamageNumberEvent`]; o `harvest.rs` escreve a mesma
 //! mensagem. O pool 2D projectado da engine fica desligado
 //! (`AppOptions::damage_numbers_2d = false`) e este plugin desenha o texto

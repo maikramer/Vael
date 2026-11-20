@@ -16,6 +16,7 @@
 use std::f32::consts::PI;
 use std::path::{Path, PathBuf};
 
+mod draft;
 mod mooring;
 mod rowing;
 mod shore;
@@ -500,6 +501,12 @@ impl Plugin for VaelBoatPlugin {
             .init_resource::<BoatsSpawned>()
             .init_resource::<BoatStates>()
             .add_systems(Startup, load_boat_assets)
+            .add_systems(
+                FixedPostUpdate,
+                draft::stop_in_shallows
+                    .after(avian3d::prelude::PhysicsSystems::StepSimulation)
+                    .before(avian3d::prelude::PhysicsSystems::Writeback),
+            )
             .add_systems(viber::scene_loader::SceneLoad, despawn_boats_on_scene_load)
             .add_systems(
                 Update,
@@ -617,40 +624,40 @@ fn spawn_boats(
         .unwrap_or_else(|| PathBuf::from("data/boats.json"));
     let config = BoatsConfig::load(&config_path);
     for spawn in &config.boats {
-        // A pose guardada (save ou visita anterior ao `main`) ganha à
-        // autorada. Um barco amarrado pode ter a quilha em areia seca.
+        let body = rowboat_body();
         let saved = states.as_deref().and_then(|states| {
             states
                 .poses
                 .iter()
                 .find(|pose| pose.name == spawn.name)
-                .filter(|pose| {
-                    pose.position.is_finite()
-                        && (pose.mooring.is_some()
-                            || terrain
-                                .water_surface_at(pose.position.x, pose.position.z)
-                                .is_some())
-                })
+                .and_then(|pose| draft::fit_pose(&terrain, pose.clone()))
         });
-        let (x, z) = saved.map_or((spawn.x, spawn.z), |pose| {
-            (pose.position.x, pose.position.z)
-        });
-        let yaw = saved.map_or(spawn.yaw, |pose| pose.yaw);
-        let mooring = saved.and_then(|pose| pose.mooring);
-        let body = rowboat_body();
-        let mut state = FloatState {
-            yaw,
-            ..Default::default()
-        };
-        // Um save guardou a cota de equilíbrio: nasce já lá em vez de
-        // recalcular a partir da superfície (que pode ter mudado).
-        let Some(y) = saved.map(|pose| pose.position.y).or_else(|| {
-            terrain
-                .water_surface_at(x, z)
-                .map(|surface| surface + body.rest_height())
+        let Some(pose) = saved.or_else(|| {
+            let y = terrain
+                .water_surface_at(spawn.x, spawn.z)
+                .unwrap_or_default()
+                + body.rest_height();
+            draft::fit_pose(
+                &terrain,
+                BoatPose {
+                    name: spawn.name.clone(),
+                    position: Vec3::new(spawn.x, y, spawn.z),
+                    yaw: spawn.yaw,
+                    mooring: None,
+                },
+            )
         }) else {
-            warn!("vael: barco `{}` sem água em ({}, {})", spawn.name, x, z);
+            warn!(
+                "vael: sem profundidade para o barco `{}` junto a ({}, {})",
+                spawn.name, spawn.x, spawn.z
+            );
             continue;
+        };
+        let [x, y, z] = pose.position.to_array();
+        let mooring = pose.mooring;
+        let mut state = FloatState {
+            yaw: pose.yaw,
+            ..Default::default()
         };
         let mut position = Vec3::new(x, y, z);
         if mooring.is_none() {
@@ -758,6 +765,7 @@ pub fn leave_boat_now(world: &mut World) {
 #[allow(clippy::too_many_arguments, clippy::type_complexity)]
 fn drive_boat_states(
     mut commands: Commands,
+    terrain: Option<Res<TerrainRuntime>>,
     mut states: ResMut<BoatStates>,
     // `ParamSet`, não três queries soltas: `p0` escreve `Transform`/`FloatState`
     // e os filtros `Changed<>` de `p1`/`p2` LEEM os mesmos componentes, e o
@@ -796,6 +804,11 @@ fn drive_boat_states(
             else {
                 continue;
             };
+            let pose = match terrain.as_deref() {
+                Some(terrain) => draft::fit_pose(terrain, pose.clone()),
+                None => Some(pose.clone()),
+            };
+            let Some(pose) = pose else { continue };
             transform.translation = pose.position;
             let mooring = pose
                 .mooring
@@ -1024,6 +1037,14 @@ fn board_or_leave_boat(
                 &mut boat,
                 Some(Mooring::at(spot.0, boat_tf, rt)),
             );
+        }
+        if landing.is_none() {
+            let vessel = riding.boat;
+            commands.queue(move |world: &mut World| {
+                if let (Some(name), Some(bus)) = (world.get::<Name>(vessel), world.get_resource::<crate::player::HeroMotionBus>()) {
+                    bus.lock().stamina.boat = Some(name.to_string());
+                }
+            });
         }
         let rotation = Quat::from_rotation_y(float.yaw);
         commands.entity(player).insert((

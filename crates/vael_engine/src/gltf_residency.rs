@@ -123,7 +123,9 @@ pub fn ready_radius() -> f32 {
 /// Raio de *bootstrap* (m). `VIBER_GLTF_LOAD_RADIUS` substitui-o.
 pub fn load_radius() -> f32 {
     static R: OnceLock<f32> = OnceLock::new();
-    *R.get_or_init(|| env_radius("VIBER_GLTF_LOAD_RADIUS", RING_LOAD) * crate::graphics::cull_scale())
+    *R.get_or_init(|| {
+        env_radius("VIBER_GLTF_LOAD_RADIUS", RING_LOAD) * crate::graphics::cull_scale()
+    })
 }
 
 fn load_budget() -> usize {
@@ -356,7 +358,12 @@ pub fn drive_gltf_residency(
     ),
     anchors: (
         Query<
-            (Entity, &GlobalTransform, Option<&CullDistance>, &GltfSceneSpec),
+            (
+                Entity,
+                &GlobalTransform,
+                Option<&CullDistance>,
+                &GltfSceneSpec,
+            ),
             (With<GltfSceneSpec>, Without<GltfSceneFailed>),
         >,
         Query<
@@ -631,7 +638,11 @@ pub fn drive_gltf_residency(
     cache.to_load.sort_by(|a, b| a.0.total_cmp(&b.0));
     // Atrás do véu só entra o anel que o segura: o largo competiria com ele e
     // com o bake dos colliders do terreno (frames de ~1 s medidos no arranque).
-    let mut budget = if booting { 0 } else { load_budget() * budget_scale };
+    let mut budget = if booting {
+        0
+    } else {
+        load_budget() * budget_scale
+    };
     let ready_r_sq = ready_r * ready_r;
     let mut activated = 0usize;
     let mut load_overflow = false;
@@ -686,6 +697,7 @@ pub fn drive_gltf_residency(
             CullRangeApplied,
             AutoCull,
             GltfScenePending,
+            crate::recipes::spawn::PendingLodLadder,
         )>();
         residency.unloaded_total += 1;
         unloaded += 1;
@@ -746,9 +758,8 @@ fn activate(
     need_auto_cull: bool,
 ) {
     let (lod1, lod2) = residency.ladder(&spec.url, spec.lod1.clone(), spec.lod2.clone());
-    let load = |url: &str| {
-        crate::meshopt::load_gltf(server, url.trim_start_matches('/').to_owned())
-    };
+    let load =
+        |url: &str| crate::meshopt::load_gltf(server, url.trim_start_matches('/').to_owned());
     let handle = load(&spec.url);
     let lod1 = lod1.as_deref().map(load);
     let lod2 = lod2.as_deref().map(load);

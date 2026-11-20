@@ -3,13 +3,19 @@
 use std::sync::{Arc, Mutex};
 
 use avian3d::prelude::*;
+use bevy::light::NotShadowCaster;
 use bevy::prelude::*;
 use bevy_ext_core::{SfxClip, SfxEvent};
+use bevy_ext_engine::camera_glue::CameraShake;
 use viber::luau::{LuaScriptRef, ScriptProps};
+use viber::particles::spawn_burst;
 use viber::recipes::spawn::{GltfScenePending, PendingWorld, startup};
 use viber::recipes::{EntityKind, EntitySpec};
 use viber::scene_loader::{CurrentScene, SceneEntity, SceneLoad};
 
+use crate::collect_fx::{
+    HitFlashQueue, IgnoreOutline, PickupGroundRing, PickupOrbitGlint, subtle_camera_shake,
+};
 use crate::vault::{vael_fn, vael_table};
 
 const VIAL: &str = "assets/meshes/props/life_vial_lod0.glb";
@@ -20,6 +26,7 @@ impl Plugin for BreakablesPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<Strikes>()
             .register_type::<Breakable>()
+            .register_type::<PropPickup>()
             .add_systems(Startup, (prepare.before(startup), install))
             .add_systems(SceneLoad, prepare.before(startup))
             .add_systems(Update, (attach, activate, strike, expire_debris).chain());
@@ -28,16 +35,42 @@ impl Plugin for BreakablesPlugin {
 
 #[derive(Component, Reflect)]
 #[reflect(Component)]
-struct Breakable {
-    kind: Kind,
-    hits_left: u8,
+pub(crate) struct Breakable {
+    pub(crate) kind: Kind,
+    pub(crate) hits_left: u8,
 }
 
-#[derive(Clone, Copy, PartialEq, Reflect)]
-enum Kind {
+#[derive(Clone, Copy, PartialEq, Eq, Reflect)]
+pub(crate) enum Kind {
     Barrel,
     Crate,
     Stool,
+}
+
+/// Tipo de item largado por um prop destrutível.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Reflect)]
+pub(crate) enum PickupKind {
+    Life,
+    Gold,
+    Wood,
+}
+
+impl PickupKind {
+    fn from_raw(raw: &str) -> Self {
+        match raw {
+            "life" => Self::Life,
+            "gold" => Self::Gold,
+            _ => Self::Wood,
+        }
+    }
+}
+
+/// Marca uma entidade de loot largada por um prop destrutível (usada para
+/// outline vibrante contínuo e efeitos de coleta).
+#[derive(Component, Debug, Clone, Copy, Reflect)]
+#[reflect(Component)]
+pub(crate) struct PropPickup {
+    pub(crate) kind: PickupKind,
 }
 
 impl Kind {
@@ -243,9 +276,15 @@ struct Art {
     plank: Handle<Mesh>,
     coin: Handle<Mesh>,
     glint: Handle<Mesh>,
+    ring: Handle<Mesh>,
     oak: Handle<StandardMaterial>,
     gold: Handle<StandardMaterial>,
-    glow: Handle<StandardMaterial>,
+    glow_life: Handle<StandardMaterial>,
+    glow_gold: Handle<StandardMaterial>,
+    glow_wood: Handle<StandardMaterial>,
+    ring_life: Handle<StandardMaterial>,
+    ring_gold: Handle<StandardMaterial>,
+    ring_wood: Handle<StandardMaterial>,
     vial: Handle<Gltf>,
 }
 
@@ -255,22 +294,79 @@ impl Art {
         mat: &mut Assets<StandardMaterial>,
         server: &AssetServer,
     ) -> Self {
+        let make_ring = |mat: &mut Assets<StandardMaterial>, base: Color, emissive: LinearRgba| {
+            mat.add(StandardMaterial {
+                base_color: base,
+                emissive,
+                alpha_mode: AlphaMode::Add,
+                unlit: true,
+                cull_mode: None,
+                ..default()
+            })
+        };
         Self {
             plank: mesh.add(Cuboid::default()),
             coin: mesh.add(Cylinder::new(0.11, 0.035)),
-            glint: mesh.add(Sphere::new(0.016).mesh().uv(6, 4)),
+            glint: mesh.add(Sphere::new(0.019).mesh().uv(6, 4)),
+            ring: mesh.add(Torus::new(0.86, 1.0)),
             oak: mat.add(Color::srgb(0.54, 0.28, 0.10)),
             gold: mat.add(StandardMaterial {
-                base_color: Color::srgb(1., 0.68, 0.12),
-                metallic: 0.65,
-                perceptual_roughness: 0.3,
+                base_color: Color::srgb(1., 0.72, 0.14),
+                emissive: LinearRgba::rgb(0.45, 0.28, 0.03),
+                metallic: 0.72,
+                perceptual_roughness: 0.25,
                 ..default()
             }),
-            glow: mat.add(StandardMaterial {
-                emissive: LinearRgba::rgb(5., 2.8, 0.7),
+            glow_life: mat.add(StandardMaterial {
+                base_color: Color::srgb(1.0, 0.45, 0.68),
+                emissive: LinearRgba::rgb(5.2, 1.2, 2.2),
+                unlit: true,
                 ..default()
             }),
+            glow_gold: mat.add(StandardMaterial {
+                base_color: Color::srgb(1.0, 0.88, 0.32),
+                emissive: LinearRgba::rgb(5.5, 3.6, 0.65),
+                unlit: true,
+                ..default()
+            }),
+            glow_wood: mat.add(StandardMaterial {
+                base_color: Color::srgb(1.0, 0.72, 0.34),
+                emissive: LinearRgba::rgb(4.4, 2.3, 0.65),
+                unlit: true,
+                ..default()
+            }),
+            ring_life: make_ring(
+                mat,
+                Color::srgba(1.0, 0.34, 0.58, 0.72),
+                LinearRgba::rgb(3.6, 0.75, 1.55),
+            ),
+            ring_gold: make_ring(
+                mat,
+                Color::srgba(1.0, 0.84, 0.24, 0.72),
+                LinearRgba::rgb(4.0, 2.7, 0.45),
+            ),
+            ring_wood: make_ring(
+                mat,
+                Color::srgba(0.98, 0.68, 0.28, 0.68),
+                LinearRgba::rgb(3.0, 1.65, 0.45),
+            ),
             vial: viber::meshopt::load_gltf(server, VIAL.to_owned()),
+        }
+    }
+
+    fn glow_for(&self, kind: PickupKind) -> Handle<StandardMaterial> {
+        match kind {
+            PickupKind::Life => self.glow_life.clone(),
+            PickupKind::Gold => self.glow_gold.clone(),
+            PickupKind::Wood => self.glow_wood.clone(),
+        }
+    }
+
+    fn ring_for(&self, kind: PickupKind) -> Handle<StandardMaterial> {
+        match kind {
+            PickupKind::Life => self.ring_life.clone(),
+            PickupKind::Gold => self.ring_gold.clone(),
+            PickupKind::Wood => self.ring_wood.clone(),
         }
     }
 }
@@ -288,6 +384,8 @@ fn strike(
     mut materials: ResMut<Assets<StandardMaterial>>,
     mut art: Local<Option<Art>>,
     mut sfx: MessageWriter<SfxEvent>,
+    flashes: Option<Res<HitFlashQueue>>,
+    mut shake: Option<ResMut<CameraShake>>,
 ) {
     for swing in std::mem::take(&mut *queue.0.lock().unwrap()) {
         let visible_filter = SpatialQueryFilter::from_excluded_entities(hero.iter());
@@ -329,12 +427,34 @@ fn strike(
             });
             let push = Vec3::new(swing.aim.x, 0.35, swing.aim.y);
             if !broken {
+                if let Some(flashes) = flashes.as_deref() {
+                    flashes.push(e, true, 1.0);
+                }
+                spawn_burst(
+                    &mut commands,
+                    &crate::collect_fx::burst_spec("ground-dust"),
+                    center,
+                    8,
+                );
                 commands.entity(e).remove::<Sleeping>().insert((
                     LinearVelocity(push * 1.25),
                     AngularVelocity(Vec3::Y.cross(push) * 1.8),
                 ));
                 continue;
             }
+            subtle_camera_shake(shake.as_deref_mut(), 0.11);
+            spawn_burst(
+                &mut commands,
+                &crate::collect_fx::burst_spec("ground-dust"),
+                center,
+                16,
+            );
+            spawn_burst(
+                &mut commands,
+                &crate::collect_fx::burst_spec("sparkle"),
+                center + Vec3::Y * 0.15,
+                12,
+            );
             let art = art.get_or_insert_with(|| Art::new(&mut meshes, &mut materials, &server));
             commands.entity(e).despawn();
             let filter =
@@ -391,10 +511,12 @@ fn strike(
 }
 
 fn spawn_pickup(commands: &mut Commands, art: &Art, kind: &str, floor: Vec3, height: f32) {
+    let pickup_kind = PickupKind::from_raw(kind);
     let root = commands
         .spawn((
             Name::new(format!("Loot • {kind}")),
             SceneEntity,
+            PropPickup { kind: pickup_kind },
             Transform::from_translation(floor + Vec3::Y * height),
             Visibility::Inherited,
             LuaScriptRef {
@@ -437,16 +559,44 @@ fn spawn_pickup(commands: &mut Commands, art: &Art, kind: &str, floor: Vec3, hei
             }
         }
     }
-    for offset in [
-        Vec3::new(-0.14, 0.14, 0.),
-        Vec3::new(0.12, 0.23, 0.04),
-        Vec3::new(0.04, 0.05, -0.13),
-    ] {
+    // Halo luminoso no chão (excluído do outline para manter a silhueta do item nítida).
+    commands.spawn((
+        ChildOf(root),
+        IgnoreOutline,
+        NotShadowCaster,
+        Mesh3d(art.ring.clone()),
+        MeshMaterial3d(art.ring_for(pickup_kind)),
+        Transform::from_xyz(0., 0.045 - height, 0.).with_scale(Vec3::new(0.32, 0.03, 0.32)),
+        PickupGroundRing {
+            floor_y: floor.y,
+            phase: (floor.x * 1.3 + floor.z * 0.7).abs(),
+        },
+    ));
+    // Faíscas orbitais em hélice viva ao redor do item.
+    let glow_mat = art.glow_for(pickup_kind);
+    for (i, (radius, base_y, bob_amp, speed)) in [
+        (0.18, 0.14, 0.065, 2.8),
+        (0.21, 0.22, 0.08, -2.3),
+        (0.15, 0.08, 0.055, 3.4),
+    ]
+    .into_iter()
+    .enumerate()
+    {
+        let phase = i as f32 * std::f32::consts::TAU / 3.0;
         commands.spawn((
             ChildOf(root),
+            IgnoreOutline,
+            NotShadowCaster,
             Mesh3d(art.glint.clone()),
-            MeshMaterial3d(art.glow.clone()),
-            Transform::from_translation(offset),
+            MeshMaterial3d(glow_mat.clone()),
+            Transform::from_xyz(phase.cos() * radius, base_y, phase.sin() * radius),
+            PickupOrbitGlint {
+                phase,
+                radius,
+                base_y,
+                bob_amp,
+                speed,
+            },
         ));
     }
 }

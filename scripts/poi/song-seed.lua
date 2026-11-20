@@ -120,6 +120,9 @@ function on_update(dt)
     viber.despawn_self()
     if okp then
       viber.burst("sparkle", x, y + 0.6, z, 16)
+      if viber.vael and viber.vael.collect_burst then
+        viber.vael.collect_burst("crystal", x, y + 0.55, z, 5)
+      end
     end
     viber.sound("loot")
     local count = rules.vault_get("korok-seed")
