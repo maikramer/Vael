@@ -13,8 +13,8 @@ continua a ser o `AGENTS.md` desta pasta e `docs/TOOLS.md`.
 ## Quando usar
 
 Mundo, conteúdo, scripts e cenas ficam neste repo. Bugs de runtime/API em
-falta são da engine: `../bevy_extensions/AGENTS.md` (o monólito
-`bevy_ext_viber_engine` corre standalone).
+falta são da engine: `../bevy_extensions/AGENTS.md` (o runtime de
+gameplay do jogo vive em `crates/vael_engine` aqui).
 
 ## Estático (sem janela)
 

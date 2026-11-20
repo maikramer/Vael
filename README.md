@@ -1,6 +1,6 @@
 # Vael
 
-Porta do exemplo original (motor TS) para a engine nativa Viber.
+Porta do exemplo original (motor TS) para a engine nativa (Bevy).
 O mundo foi convertido uma única vez por um script de migração (já removido).
 O jogo
 corre de ponta a ponta: as Fases 0–3 da engine estão feitas e as tags do
@@ -20,7 +20,7 @@ git; não regenerar com `vael-tools bsn convert`). Não há fonte procedural:
 foi convertida no sítio e apagada (2026-10-14; fica no histórico do git).
 
 Regras de edição e QA: [`AGENTS.md`](AGENTS.md). Contrato da engine:
-`../Viber/AGENTS.md`, secção "Mundos estáticos + edição por agentes".
+`../bevy_extensions/AGENTS.md`.
 
 ## Correr
 
@@ -101,7 +101,7 @@ cinemático, knockback, destrutíveis que tombam, ragdoll nos chefes). Os ~65
 scripts Luau em `scripts/` (inimigos, bosses, colheita, POIs, HUD) correm via
 a API `viber.*` com "LOD de IA" — além do raio de ativação (default 45 m) o
 `on_update` nem corre — e têm hot-reload ao gravar. A referência da API está
-em `Viber/docs/LUA_API.md`.
+no arquivo `../bevy_extensions/docs/viber/LUA_API.md`.
 
 O `analyze` imprime o relatório de cobertura — é o roteiro do que falta à
 engine.
@@ -216,7 +216,7 @@ teleportes e recursos) só existem com `VIBER_DEBUG_KEYS=1`.
 Assets: `/assets/…` resolve contra as asset roots do `config.yaml` deste
 jogo — a pasta do jogo SEMPRE primeiro (overrides), o pool partilhado
 `assets/public` declarado em
-`assets.roots` (`../Viber/docs/ASSETS.md`). A engine
+`assets.roots` (contrato em `../bevy_extensions/AGENTS.md`). A engine
 descomprime meshopt/KTX2 à leitura.
 
 ## Estrutura
@@ -242,9 +242,9 @@ descomprime meshopt/KTX2 à leitura.
   extensões `.jdext`; os painéis de conteúdo vivem em `vael_content_jackdaw`
   (ver [`AGENTS.md`](AGENTS.md))
 - `scripts/**.lua` — comportamento Luau (inimigos/bosses, colheita, POIs,
-  quests, diálogo) via a API `viber.*` (`Viber/docs/LUA_API.md`)
+  quests, diálogo) via a API `viber.*` (arquivo: `../bevy_extensions/docs/viber/LUA_API.md`)
 - `config.yaml` — **contrato de paths com a engine** (obrigatório; roots,
-  dirs de áudio/texturas/scripts/UI, save) — `Viber/docs/ASSETS.md`
+  dirs de áudio/texturas/scripts/UI, save) — contrato em `../bevy_extensions/AGENTS.md`
 - `ui/*.xaml` + `ui/*.css` — HUD, menu, título, morte e mapa em bevy_pf;
   `world/menu.bsn`/`title.bsn`/`death.bsn` ficam só para o estado dos modais
   (os `.css` que restam são legado de HUD/profiler/showcase)

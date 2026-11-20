@@ -2,7 +2,7 @@
 //!
 //! Os ficheiros JSON (`data/items.json`, `data/progression.json`,
 //! `data/landmarks.json`, `quests/*.json`, `dialogues/*.json`) são lidos pelo
-//! jogo via `viber.load_json` e editados pelo `vael-editor`. Este crate não
+//! jogo via `vael.load_json` e editados pelas extensões do Jackdaw. Este crate não
 //! depende de Bevy: os tipos e as regras de validação são partilhados pelos
 //! dois binários.
 //!

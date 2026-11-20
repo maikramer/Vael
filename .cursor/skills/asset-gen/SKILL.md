@@ -22,8 +22,7 @@ vramd status
 ```
 
 `resume` é idempotente. `output_dir` dos manifests é `../public/assets`
-(relativo à pasta do manifest). Veículos da corrida não estão aqui —
-ficam em `../Viber/examples/racer-assets`.
+(relativo à pasta do manifest).
 
 Antes de um job GPU: `vramd status`. Se a fila está ocupada, espera ou
 cancela o job. Não mates processos da GPU. VRAM livre abaixo do pico e

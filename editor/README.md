@@ -6,7 +6,7 @@
 > editor do dia-a-dia. Os painéis deste crate (Itens, Marcos, Progressão,
 > Diálogos, Missões, Conteúdo e Cenas) estão portados para a extensão
 > **`vael_content_jackdaw`**, ativa no `jackdaw.toml` do projeto. O CLI de
-> cena XML (`viber scene`/`tool`/`terrain`) foi aposentado; `vael-tools`
+> cena XML foi aposentada; `vael-tools`
 > cobre analyze/lint/bsn.
 
 Editor do Vael. É uma App Bevy própria que regista uma extensão no
@@ -23,7 +23,7 @@ cargo run -p vael-editor -- --root /caminho/para/Vael
 ```
 
 `--assets` muda o asset root do Jackdaw (default: `<root>/assets/public`).
-O pool é meshopt/KTX2; o editor regista o reader de assets do Viber para o
+O pool é meshopt/KTX2; o editor regista o reader de assets do jogo para o
 viewport carregar os GLB tal como o jogo.
 
 ### Editor Jackdaw standalone
@@ -43,7 +43,7 @@ o plugin responde com o schema refletido antes de abrir a janela. O `cargo
 run` normal continua a ser o jogo: sem `JACKDAW_PIE` o PIE não liga.
 
 O `jackdaw.toml` fixa `bevy = "0.20"`; o requisito do Cargo.toml tem de
-admitir essa linha (`bevy = "0.20.1"`, como no `../Viber`). Um pin exato
+admitir essa linha (`bevy = "0.20.1"`, como nos crates irmãos). Um pin exato
 (`=0.20.1`) é rejeitado pelo gate de import do Jackdaw.
 
 ## Mundo e cenas
@@ -128,7 +128,7 @@ O índice do mundo é lido de `world.bsn` (ou `world.xml` legado) com o mesmo
   e attach ao osso. Os props `grip-*` continuam no XML/`equipment.lua`.
 - **Terreno, composições e UI não têm preview** no viewport: o editor mostra
   a hierarquia e os attrs; o jogo continua a ser a referência visual.
-- **Sem CLI de cena**: a CLI XML (`viber scene`/`tool`/`bake`) foi aposentada;
+- **Sem CLI de cena**: a CLI XML foi aposentada;
   a autoria é no Jackdaw e `vael-tools analyze`/`lint` leem `.bsn`.
 - **Play/PIE**: configurado. O `main.rs` passa
   `jackdaw_runtime::maybe_windowless` ao `build_app` pelo hook
@@ -138,7 +138,7 @@ O índice do mundo é lido de `world.bsn` (ou `world.xml` legado) com o mesmo
 - **Debug do jogo dentro do editor**: o `build_app` continua a carregar o
   mundo/scripts antes de o plugin do PIE arrancar; o schema de componentes
   (`--jackdaw-extract-schema`) sai depois dessa montagem.
-- O primeiro build do editor compila o Jackdaw + a fachada Viber e demora; o
+- O primeiro build do editor compila o Jackdaw + a fachada da engine e demora; o
   `default-members = ["."]` do workspace garante que `cargo run`/`cargo test`
   do jogo não o compilam.
 

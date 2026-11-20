@@ -661,7 +661,7 @@ pub fn swap_scene(world: &mut World, request: &ChangeScene) -> Result<()> {
         .map_err(|error| anyhow!("a parsear {}: {error:#}", path.display()))?;
     if !parsed.static_world {
         bail!(
-            "{}: cena procedural (sem static=\"true\") — converte-a com `viber bake`",
+            "{}: cena procedural (sem static=\"true\") — marca-a como estática no Jackdaw",
             path.display()
         );
     }
