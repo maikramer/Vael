@@ -23,15 +23,15 @@ local current
 local next_t = 0
 
 local function desired()
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   if scene and (scene == "menu" or scene:find("^interiors/") ~= nil) then
     return nil
   end
-  local biome = viber.biome and viber.biome() or nil
+  local biome = vael.biome and vael.biome() or nil
   if biome and LOOPS[biome] then
     return LOOPS[biome]
   end
-  local ok, x, _, z = viber.player_position()
+  local ok, x, _, z = vael.player_position()
   if ok and x * x + z * z < 55 * 55 then
     return VILLAGE
   end
@@ -39,11 +39,11 @@ local function desired()
 end
 
 function on_update(_dt)
-  if not viber.sound_loop or not viber.sound_stop then
+  if not vael.sound_loop or not vael.sound_stop then
     return
   end
   -- 4×/s chega: o bioma muda ao atravessar uma fronteira, não por frame.
-  local now = viber.time()
+  local now = vael.time()
   if now < next_t then
     return
   end
@@ -56,13 +56,13 @@ function on_update(_dt)
     -- (`reset_scene_resources`), mas os locals do módulo sobrevivem. Re-pedir
     -- a cada tique garante que o loop volta; o driver reconcilia sem
     -- reiniciar (mesmo id + mesmo clip).
-    viber.sound_loop(ID, clip, { bus = "ambience", volume = spec.volume })
+    vael.sound_loop(ID, clip, { bus = "ambience", volume = spec.volume })
     if clip ~= current then
-      viber.log("ambiência: " .. clip)
+      vael.log("ambiência: " .. clip)
     end
   elseif current then
-    viber.sound_stop(ID)
-    viber.log("ambiência: parada")
+    vael.sound_stop(ID)
+    vael.log("ambiência: parada")
   end
   current = clip
 end

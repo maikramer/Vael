@@ -1,7 +1,7 @@
 //! XP, nível e pontos de talento em Rust: a aritmética do `rules.lua`.
 //!
 //! As funções puras trabalham sobre um `BTreeMap<String, f64>` — as quatro
-//! chaves de `viber.game()` (`xp`, `xp_next`, `level`, `skill_points`) — para
+//! chaves de `vael.game()` (`xp`, `xp_next`, `level`, `skill_points`) — para
 //! poderem ser testadas sem a VM. Os valores são `f64` como no Lua: o
 //! `ensure_xp` do Lua não trunca `xp` (só o nível e os pontos), por isso um
 //! ganho fracionário continua fracionário. A cópia tipada
@@ -9,7 +9,7 @@
 //! `xp`/`xp_next` truncados e `skills` vazio (o saneamento não toca nos
 //! talentos) — o mapa é que fica fiel à VM.
 //!
-//! A bridge [`install`] instala `viber.vael.ensure_xp` / `add_xp` /
+//! A bridge [`install`] instala `vael.vael.ensure_xp` / `add_xp` /
 //! `add_skill_points` depois de o [`crate::vault`] criar a tabela; lê e
 //! escreve a tabela `viber_game` da VM partilhada. O `rules.lua` fica só com
 //! os embrulhos finos.
@@ -39,7 +39,7 @@ pub const DEFAULT_XP_BASE: i64 = 100;
 pub const DEFAULT_XP_GROWTH: f64 = 1.5;
 pub const DEFAULT_SKILL_POINTS_PER_LEVEL: i64 = 1;
 
-/// Chaves de progressão no `viber.game()`.
+/// Chaves de progressão no `vael.game()`.
 pub const KEY_XP: &str = "xp";
 pub const KEY_XP_NEXT: &str = "xp_next";
 pub const KEY_LEVEL: &str = "level";
@@ -242,13 +242,13 @@ pub fn add_skill_points(kv: &mut XpMap, n: f64) {
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin do XP: instala as funções em `viber.vael` depois do cofre.
+/// Plugin do XP: instala as funções em `vael.vael` depois do cofre.
 pub struct VaelXpPlugin;
 
 impl Plugin for VaelXpPlugin {
     fn build(&self, app: &mut App) {
         // `Startup` corre depois do `PreStartup` que carrega o `VaelContent`;
-        // `.after` garante que a tabela `viber.vael` do cofre já existe.
+        // `.after` garante que a tabela `vael.vael` do cofre já existe.
         app.add_systems(
             Startup,
             install_xp_api.after(crate::vault::install_vault_api),
@@ -256,13 +256,13 @@ impl Plugin for VaelXpPlugin {
     }
 }
 
-/// Arranque: acrescenta as funções de XP à tabela `viber.vael` dos
+/// Arranque: acrescenta as funções de XP à tabela `vael.vael` dos
 /// contextos BMS (via registo — ver `crate::script_host`).
 ///
 /// Público dentro do crate para o plugin do equipamento ordenar depois dele.
 pub(crate) fn install_xp_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
-        warn!("vael: XP sem conteúdo carregado — `viber.vael` não estendido");
+        warn!("vael: XP sem conteúdo carregado — `vael.vael` não estendido");
         return;
     };
     let rules = XpRules::from_progression(&content.progression);
@@ -270,12 +270,12 @@ pub(crate) fn install_xp_api(content: Option<Res<VaelContent>>) {
         base = rules.base,
         crescimento = rules.growth,
         pontos_por_nivel = rules.points_per_level,
-        "vael: XP em Rust registado nos contextos BMS (`viber.vael`)"
+        "vael: XP em Rust registado nos contextos BMS (`vael.vael`)"
     );
     crate::script_host::register_installer(move |lua| install(lua, rules));
 }
 
-/// Acrescenta `ensure_xp`, `add_xp` e `add_skill_points` a `viber.vael`.
+/// Acrescenta `ensure_xp`, `add_xp` e `add_skill_points` a `vael.vael`.
 ///
 /// Usa a tabela já criada pelo cofre; só cria uma nova se esta não existir
 /// (nunca substitui as funções do cofre).
@@ -646,8 +646,8 @@ mod tests {
     fn lua_com_bridge() -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         // Ordem de produção: cofre primeiro, XP depois.
@@ -664,7 +664,7 @@ mod tests {
         game.raw_set(KEY_LEVEL, 1).expect("level");
         game.raw_set(KEY_SKILL_POINTS, 0).expect("skill_points");
 
-        lua.load("viber.vael.add_xp(20)").exec().expect("add_xp");
+        lua.load("vael.vael.add_xp(20)").exec().expect("add_xp");
 
         assert_eq!(game.raw_get::<f64>(KEY_XP).expect("xp"), 10.0);
         assert_eq!(game.raw_get::<f64>(KEY_XP_NEXT).expect("xp_next"), 150.0);
@@ -672,7 +672,7 @@ mod tests {
         assert_eq!(game.raw_get::<f64>(KEY_SKILL_POINTS).expect("pontos"), 1.0);
 
         // `nil`/negativo: o Lua antigo ignorava.
-        lua.load("viber.vael.add_xp(nil) viber.vael.add_xp(-5)")
+        lua.load("vael.vael.add_xp(nil) vael.vael.add_xp(-5)")
             .exec()
             .expect("add_xp inválido");
         assert_eq!(game.raw_get::<f64>(KEY_XP).expect("xp"), 10.0);
@@ -687,7 +687,7 @@ mod tests {
         game.raw_set(KEY_LEVEL, 0).expect("level");
         game.raw_set(KEY_SKILL_POINTS, -2).expect("pontos");
 
-        lua.load("viber.vael.ensure_xp()")
+        lua.load("vael.vael.ensure_xp()")
             .exec()
             .expect("ensure_xp");
 
@@ -702,19 +702,19 @@ mod tests {
         let (lua, game) = lua_com_bridge();
         game.raw_set(KEY_SKILL_POINTS, 2).expect("pontos");
 
-        lua.load("viber.vael.add_skill_points(3)")
+        lua.load("vael.vael.add_skill_points(3)")
             .exec()
             .expect("add_skill_points");
         assert_eq!(game.raw_get::<f64>(KEY_SKILL_POINTS).expect("pontos"), 5.0);
 
-        lua.load("viber.vael.add_skill_points(nil)")
+        lua.load("vael.vael.add_skill_points(nil)")
             .exec()
             .expect("add_skill_points inválido");
         assert_eq!(game.raw_get::<f64>(KEY_SKILL_POINTS).expect("pontos"), 5.0);
 
         // A tabela é a do cofre: as funções antigas continuam lá.
         let added: i64 = lua
-            .load("return viber.vael.vault_add('potion', 2)")
+            .load("return vael.vael.vault_add('potion', 2)")
             .eval()
             .expect("vault_add");
         assert_eq!(added, 2);
@@ -740,32 +740,32 @@ mod tests {
         app.update();
 
         // Modelo BMS: instaladores registados → contexto novo tem tudo na
-        // mesma tabela. O ESTADO vai pelo PROXY da VM (`viber.game()` — o
+        // mesma tabela. O ESTADO vai pelo PROXY da VM (`vael.game()` — o
         // `game_proxy` do crate lê-o); o store do processo é outro canal.
         let lua = mlua::Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         crate::script_host::run_installers(&lua).expect("instaladores");
         let coexistem: bool = lua
             .load(
-                "return type(viber.vael.vault_add) == 'function' \
-                 and type(viber.vael.ensure_xp) == 'function' \
-                 and type(viber.vael.add_xp) == 'function' \
-                 and type(viber.vael.add_skill_points) == 'function'",
+                "return type(vael.vael.vault_add) == 'function' \
+                 and type(vael.vael.ensure_xp) == 'function' \
+                 and type(vael.vael.add_xp) == 'function' \
+                 and type(vael.vael.add_skill_points) == 'function'",
             )
             .eval()
             .expect("funções instaladas");
-        assert!(coexistem, "cofre e XP têm de partilhar `viber.vael`");
+        assert!(coexistem, "cofre e XP têm de partilhar `vael.vael`");
 
-        lua.load("viber.vael.add_xp(150) viber.vael.add_skill_points(1)")
+        lua.load("vael.vael.add_xp(150) vael.vael.add_skill_points(1)")
             .exec()
             .expect("add_xp/add_skill_points");
-        let level: i64 = lua.load("return viber.game().level").eval().expect("nível");
+        let level: i64 = lua.load("return vael.game().level").eval().expect("nível");
         let pontos: i64 = lua
-            .load("return viber.game().skill_points")
+            .load("return vael.game().skill_points")
             .eval()
             .expect("pontos");
         assert_eq!(level, 2);

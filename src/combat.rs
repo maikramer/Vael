@@ -2,9 +2,9 @@
 //! `rules.lua`.
 //!
 //! As funções puras trabalham sobre [`CombatKv`] — o subconjunto de
-//! `viber.game()` que estas regras leem/escrevem — para poderem ser testadas
+//! `vael.game()` que estas regras leem/escrevem — para poderem ser testadas
 //! sem a VM. A bridge [`install`] acrescenta `guard`/`damage_player`/
-//! `heal_player`/`grant_iframes` a `viber.vael` depois das quests e
+//! `heal_player`/`grant_iframes` a `vael.vael` depois das quests e
 //! lê/escreve a tabela `viber_game`, como o cofre/XP/equipamento.
 //!
 //! O Lua continua dono dos portões de menu/título e do `M.god`, do
@@ -49,7 +49,7 @@ pub const PARRY_IFRAMES: f64 = 0.25;
 /// `max_hp` de um save sem valor válido.
 pub const DEFAULT_MAX_HP: f64 = 100.0;
 
-/// Chaves vitais no `viber.game()`.
+/// Chaves vitais no `vael.game()`.
 pub const KEY_HP: &str = "hp";
 pub const KEY_MAX_HP: &str = "max_hp";
 pub const KEY_IFRAMES: &str = "iframes";
@@ -76,7 +76,7 @@ impl Default for CombatRules {
     }
 }
 
-/// Estado de combate lido do `viber.game()` + os timers de sessão da guarda.
+/// Estado de combate lido do `vael.game()` + os timers de sessão da guarda.
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub struct CombatKv {
     pub hp: f64,
@@ -286,7 +286,7 @@ impl GuardState {
     }
 }
 
-/// Plugin do combate: instala as primitivas em `viber.vael` depois das
+/// Plugin do combate: instala as primitivas em `vael.vael` depois das
 /// quests.
 pub struct VaelCombatPlugin;
 
@@ -306,7 +306,7 @@ impl Plugin for VaelCombatPlugin {
     }
 }
 
-/// Arranque: acrescenta as primitivas de combate à tabela `viber.vael`.
+/// Arranque: acrescenta as primitivas de combate à tabela `vael.vael`.
 ///
 /// Público dentro do crate para o plugin do relógio ordenar depois dele.
 pub(crate) fn install_combat_api(session: Res<VaelCombatSession>) {
@@ -314,10 +314,10 @@ pub(crate) fn install_combat_api(session: Res<VaelCombatSession>) {
     crate::script_host::register_installer(move |lua| {
         install_with_session(lua, CombatRules::default(), Arc::clone(&session))
     });
-    info!("vael: combate em Rust registado nos contextos BMS (`viber.vael`)");
+    info!("vael: combate em Rust registado nos contextos BMS (`vael.vael`)");
 }
 
-/// Acrescenta as primitivas a `viber.vael` com uma sessão própria.
+/// Acrescenta as primitivas a `vael.vael` com uma sessão própria.
 ///
 /// É o caminho dos testes e de um host sem plugin: cada `install` nasce com a
 /// sua guarda (isolada). O jogo usa [`install_with_session`] com a sessão
@@ -328,7 +328,7 @@ pub(crate) fn install(lua: &Lua, rules: CombatRules) -> mlua::Result<()> {
 }
 
 /// Acrescenta `guard`, `damage_player`, `heal_player` e `grant_iframes` a
-/// `viber.vael` sem substituir as funções que já lá estão.
+/// `vael.vael` sem substituir as funções que já lá estão.
 pub(crate) fn install_with_session(
     lua: &Lua,
     rules: CombatRules,
@@ -467,12 +467,15 @@ fn read_session_id(game: &Table) -> mlua::Result<f64> {
     read_number(game, KEY_SESSION_ID, 0.0)
 }
 
-/// Defesa do equipamento/talentos (`viber.vael.stat("defense")`).
+/// Defesa do equipamento/talentos (`vael.vael.stat("defense")`).
 ///
 /// O `stat` é instalado pelo [`crate::gear`]; sem ele a defesa é 0 (a bridge
 /// funciona sozinha em testes e num host sem equipamento).
 fn stats_defense(lua: &Lua) -> mlua::Result<f64> {
-    let viber: Table = lua.globals().get("viber")?;
+    let viber: Table = lua
+        .globals()
+        .get("vael")
+        .or_else(|_| lua.globals().get("viber"))?;
     let Some(vael) = viber.get::<Option<Table>>("vael")? else {
         return Ok(0.0);
     };
@@ -803,11 +806,11 @@ mod tests {
     fn lua_com_bridge() -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
-        install(&lua, regras()).expect("instalar viber.vael");
+        install(&lua, regras()).expect("instalar vael.vael");
         (lua, game)
     }
 
@@ -822,8 +825,8 @@ mod tests {
         let lua_guarda = Lua::new();
         lua_guarda
             .globals()
-            .set("viber", lua_guarda.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua_guarda.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game_guarda = lua_guarda.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua_guarda, &game_guarda);
         install_with_session(&lua_guarda, regras(), Arc::clone(&session)).expect("contexto A");
@@ -832,8 +835,8 @@ mod tests {
         let lua_dano = Lua::new();
         lua_dano
             .globals()
-            .set("viber", lua_dano.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua_dano.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua_dano.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua_dano, &game);
         install_with_session(&lua_dano, regras(), Arc::clone(&session)).expect("contexto B");
@@ -842,11 +845,11 @@ mod tests {
         game.raw_set(KEY_MAX_HP, 100).expect("max_hp");
 
         lua_guarda
-            .load("viber.vael.guard(10.0)")
+            .load("vael.vael.guard(10.0)")
             .exec()
             .expect("guarda");
         let parried: bool = lua_dano
-            .load("return viber.vael.damage_player(30, 10.1).parried")
+            .load("return vael.vael.damage_player(30, 10.1).parried")
             .eval()
             .expect("parry no contexto do dano");
         assert!(
@@ -858,11 +861,11 @@ mod tests {
         // E o bloqueio (fora da janela de parry) também.
         game.raw_set(KEY_IFRAMES, 0).expect("iframes");
         lua_guarda
-            .load("viber.vael.guard(20.0)")
+            .load("vael.vael.guard(20.0)")
             .exec()
             .expect("guarda");
         let blocked: bool = lua_dano
-            .load("return viber.vael.damage_player(30, 20.3).blocked")
+            .load("return vael.vael.damage_player(30, 20.3).blocked")
             .eval()
             .expect("bloqueio no contexto do dano");
         assert!(blocked);
@@ -875,11 +878,11 @@ mod tests {
         game.raw_set(KEY_HP, 100).expect("hp");
         game.raw_set(KEY_MAX_HP, 100).expect("max_hp");
 
-        lua.load("viber.vael.guard(10.0)")
+        lua.load("vael.vael.guard(10.0)")
             .exec()
             .expect("abrir guarda");
         let parried: bool = lua
-            .load("return viber.vael.damage_player(30, 10.1).parried")
+            .load("return vael.vael.damage_player(30, 10.1).parried")
             .eval()
             .expect("parry");
         assert!(parried);
@@ -890,7 +893,7 @@ mod tests {
         // ainda trava o [L] até 10,5.
         game.raw_set(KEY_IFRAMES, 0).expect("iframes");
         let guardado: bool = lua
-            .load("viber.vael.guard(10.4); return viber.vael.damage_player(30, 10.45).blocked")
+            .load("vael.vael.guard(10.4); return vael.vael.damage_player(30, 10.45).blocked")
             .eval()
             .expect("guarda fechada");
         assert!(!guardado, "o lock impede reabrir a guarda");
@@ -899,7 +902,7 @@ mod tests {
         // Depois do lock a guarda abre e o bloqueio reduz o dano.
         game.raw_set(KEY_IFRAMES, 0).expect("iframes");
         let blocked: bool = lua
-            .load("viber.vael.guard(20.0); return viber.vael.damage_player(30, 20.3).blocked")
+            .load("vael.vael.guard(20.0); return vael.vael.damage_player(30, 20.3).blocked")
             .eval()
             .expect("bloqueio");
         assert!(blocked);
@@ -917,24 +920,24 @@ mod tests {
         game.raw_set(KEY_MAX_HP, 100).expect("max_hp");
 
         let healed: bool = lua
-            .load("return viber.vael.heal_player(30)")
+            .load("return vael.vael.heal_player(30)")
             .eval()
             .expect("heal");
         assert!(healed);
         assert_eq!(game.raw_get::<f64>(KEY_HP).expect("hp"), 80.0);
 
         let healed: bool = lua
-            .load("return viber.vael.heal_player(999)")
+            .load("return vael.vael.heal_player(999)")
             .eval()
             .expect("heal no tecto");
         assert!(healed);
         assert_eq!(game.raw_get::<f64>(KEY_HP).expect("hp"), 100.0);
 
-        lua.load("viber.vael.grant_iframes(0.9)")
+        lua.load("vael.vael.grant_iframes(0.9)")
             .exec()
             .expect("grant");
         assert_eq!(game.raw_get::<f64>(KEY_IFRAMES).expect("iframes"), 0.9);
-        lua.load("viber.vael.grant_iframes(0.2)")
+        lua.load("vael.vael.grant_iframes(0.2)")
             .exec()
             .expect("grant menor");
         assert_eq!(game.raw_get::<f64>(KEY_IFRAMES).expect("iframes"), 0.9);
@@ -947,7 +950,7 @@ mod tests {
         game.raw_set(KEY_MAX_HP, 100).expect("max_hp");
 
         let died: bool = lua
-            .load("return viber.vael.damage_player(30, 1.0).died")
+            .load("return vael.vael.damage_player(30, 1.0).died")
             .eval()
             .expect("dano fatal");
         assert!(died);
@@ -968,7 +971,7 @@ mod tests {
 
         game.raw_set(KEY_IFRAMES, 0.2).expect("iframes");
         let entered: bool = lua
-            .load("return viber.vael.damage_player(30, 1.0).entered")
+            .load("return vael.vael.damage_player(30, 1.0).entered")
             .eval()
             .expect("portão");
         assert!(!entered);
@@ -976,10 +979,10 @@ mod tests {
 
         // Uma sessão nova esquece a guarda da partida anterior.
         game.raw_set(KEY_IFRAMES, 0).expect("iframes");
-        lua.load("viber.vael.guard(10.0)").exec().expect("guarda");
+        lua.load("vael.vael.guard(10.0)").exec().expect("guarda");
         game.raw_set(KEY_SESSION_ID, 1).expect("sessão");
         let parried: bool = lua
-            .load("return viber.vael.damage_player(30, 10.1).parried")
+            .load("return vael.vael.damage_player(30, 10.1).parried")
             .eval()
             .expect("guarda da sessão antiga");
         assert!(!parried, "a sessão nova não herda a guarda");
@@ -989,8 +992,8 @@ mod tests {
     fn bridge_usa_a_defesa_do_equipamento() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
@@ -1013,9 +1016,9 @@ mod tests {
         game.raw_set(KEY_HP, 100).expect("hp");
         game.raw_set(KEY_MAX_HP, 100).expect("max_hp");
 
-        lua.load("viber.vael.guard(10.0)").exec().expect("guarda");
+        lua.load("vael.vael.guard(10.0)").exec().expect("guarda");
         let amount: f64 = lua
-            .load("return viber.vael.damage_player(30, 10.3).amount")
+            .load("return vael.vael.damage_player(30, 10.3).amount")
             .eval()
             .expect("dano com defesa");
         // 30 * 0,25 (guarda) * 0,85 (defesa de 15 %).
@@ -1027,8 +1030,8 @@ mod tests {
     fn bridge_convive_com_cofre_xp_equipamento_e_quests() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
@@ -1045,18 +1048,18 @@ mod tests {
 
         let coexistem: bool = lua
             .load(
-                "return type(viber.vael.vault_add) == 'function' \
-                 and type(viber.vael.add_xp) == 'function' \
-                 and type(viber.vael.gear_toggle) == 'function' \
-                 and type(viber.vael.quest_state) == 'function' \
-                 and type(viber.vael.guard) == 'function' \
-                 and type(viber.vael.damage_player) == 'function' \
-                 and type(viber.vael.heal_player) == 'function' \
-                 and type(viber.vael.grant_iframes) == 'function'",
+                "return type(vael.vael.vault_add) == 'function' \
+                 and type(vael.vael.add_xp) == 'function' \
+                 and type(vael.vael.gear_toggle) == 'function' \
+                 and type(vael.vael.quest_state) == 'function' \
+                 and type(vael.vael.guard) == 'function' \
+                 and type(vael.vael.damage_player) == 'function' \
+                 and type(vael.vael.heal_player) == 'function' \
+                 and type(vael.vael.grant_iframes) == 'function'",
             )
             .eval()
             .expect("funções instaladas");
-        assert!(coexistem, "combate partilha `viber.vael`");
+        assert!(coexistem, "combate partilha `vael.vael`");
     }
 
     #[test]
@@ -1085,25 +1088,25 @@ mod tests {
 
         // Modelo BMS (contexto por entidade): os plugins registam
         // instaladores; num contexto novo todos correm e as funções
-        // coexistem na MESMA tabela `viber.vael`.
+        // coexistem na MESMA tabela `vael.vael`.
         let lua = mlua::Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         crate::script_host::run_installers(&lua).expect("instaladores");
         let coexistem: bool = lua
             .load(
-                "return type(viber.vael.vault_add) == 'function' \
-                 and type(viber.vael.add_xp) == 'function' \
-                 and type(viber.vael.gear_toggle) == 'function' \
-                 and type(viber.vael.quest_state) == 'function' \
-                 and type(viber.vael.guard) == 'function' \
-                 and type(viber.vael.damage_player) == 'function' \
-                 and type(viber.vael.heal_player) == 'function' \
-                 and type(viber.vael.grant_iframes) == 'function'",
+                "return type(vael.vael.vault_add) == 'function' \
+                 and type(vael.vael.add_xp) == 'function' \
+                 and type(vael.vael.gear_toggle) == 'function' \
+                 and type(vael.vael.quest_state) == 'function' \
+                 and type(vael.vael.guard) == 'function' \
+                 and type(vael.vael.damage_player) == 'function' \
+                 and type(vael.vael.heal_player) == 'function' \
+                 and type(vael.vael.grant_iframes) == 'function'",
             )
             .eval()
             .expect("funções instaladas");
-        assert!(coexistem, "combate tem de partilhar `viber.vael`");
+        assert!(coexistem, "combate tem de partilhar `vael.vael`");
     }
 }

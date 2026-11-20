@@ -1,6 +1,6 @@
 -- game/spawns.lua: o mundo REPÕE-SE e a noite tem dentes.
 --
--- 1. RENASCER — o `lib/fsm.lua` regista cada abate em `viber.game().respawns`
+-- 1. RENASCER — o `lib/fsm.lua` regista cada abate em `vael.game().respawns`
 --    ({proto, x, z, at}); passados uns minutos, e com o herói longe da vista,
 --    a criatura volta ao covil pelo `<Prototype id="mob-…">` de
 --    `world/gameplay.xml`. A fila é uma TABELA: não vai no save e morre num
@@ -14,8 +14,8 @@
 --
 -- Host: `world/gameplay.xml` (`tag="always-active"`).
 
-local rules = viber.load("lib/rules.lua")
-local clock = viber.load("lib/clock.lua")
+local rules = vael.load("lib/rules.lua")
+local clock = vael.load("lib/clock.lua")
 
 local TICK = 1.0
 local SIGHT = 70            -- o herói tem de estar mais longe do que isto
@@ -28,14 +28,14 @@ local NIGHT_PACK = 2
 local acc = 0
 
 local function playing()
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   if scene ~= nil and scene ~= "main" then
     return false
   end
-  if viber.ui and viber.ui.is_open and viber.ui.is_open("title") then
+  if vael.ui and vael.ui.is_open and vael.ui.is_open("title") then
     return false
   end
-  return not viber.menu_open() and not viber.cinematic_playing()
+  return not vael.menu_open() and not vael.cinematic_playing()
 end
 
 -- Banda sul (Picos): a mesma partição de `rules.alive_in_region(2)`.
@@ -51,7 +51,7 @@ local function tick_respawns(game, px, pz)
   if type(queue) ~= "table" or #queue == 0 then
     return
   end
-  local now = viber.time()
+  local now = vael.time()
   local ogre_alive = game["boss_dead.boss"] ~= true
   local done = 0
   local i = 1
@@ -73,12 +73,12 @@ local function tick_respawns(game, px, pz)
       end
     end
     if spawn then
-      pcall(viber.spawn_prototype, r.proto, r.x, r.z)
+      pcall(vael.spawn_prototype, r.proto, r.x, r.z)
       done = done + 1
     end
     if drop then
       -- `table.remove` é cru no Luau e a fila é uma tabela PARTILHADA do
-      -- `viber.game()` (proxy): desloca à mão pelo `__newindex`.
+      -- `vael.game()` (proxy): desloca à mão pelo `__newindex`.
       local n = #queue
       for j = i, n - 1 do
         queue[j] = queue[j + 1]
@@ -109,7 +109,7 @@ local function tick_night(st, px, py, pz)
     return
   end
   -- Com a lanterna apagada o herói não atrai emboscadas das sombras da noite.
-  if viber.vael and viber.vael.lantern_lit and not viber.vael.lantern_lit() then
+  if vael.vael and vael.vael.lantern_lit and not vael.vael.lantern_lit() then
     return
   end
   -- 1.º par da noite sai cedo; depois, a intervalos largos.
@@ -131,27 +131,27 @@ local function tick_night(st, px, py, pz)
     local a = base + k * (math.pi / 4)
     local r = 16 + math.random() * 5
     local x, z = px + math.cos(a) * r, pz + math.sin(a) * r
-    local wet = viber.in_water and viber.in_water(x, z)
-    local gy = viber.ground_below and viber.ground_below(x, py + 30.0, z) or py
+    local wet = vael.in_water and vael.in_water(x, z)
+    local gy = vael.ground_below and vael.ground_below(x, py + 30.0, z) or py
     -- Sem poços nem falésias: o ponto tem de estar perto da cota do herói.
     if not wet and gy and math.abs(gy - py) <= 6 then
-      if pcall(viber.spawn_prototype, "mob-shade-night", x, z) then
-        viber.burst("magic", x, gy + 1.0, z, 10)
+      if pcall(vael.spawn_prototype, "mob-shade-night", x, z) then
+        vael.burst("magic", x, gy + 1.0, z, 10)
         spawned = spawned + 1
       end
     end
   end
   if spawned > 0 and not st.night_said then
     st.night_said = true
-    viber.toast("As sombras saem dos pinhais — a noite não é tua.")
-    viber.sound("growl", { x = px, y = py, z = pz })
+    vael.toast("As sombras saem dos pinhais — a noite não é tua.")
+    vael.sound("growl", { x = px, y = py, z = pz })
   end
 end
 
 function on_update(dt)
-  local st = viber.state()
-  local game = viber.game()
-  for _, ev in ipairs(viber.events()) do
+  local st = vael.state()
+  local game = vael.game()
+  for _, ev in ipairs(vael.events()) do
     if ev.type == "scene_loaded" then
       -- A cena recriou todas as criaturas: renascer por cima duplicava-as.
       game.respawns = {}
@@ -170,7 +170,7 @@ function on_update(dt)
   if alive and hp <= 0 then
     return
   end
-  local has, px, py, pz = viber.player_position()
+  local has, px, py, pz = vael.player_position()
   if not has then
     return
   end

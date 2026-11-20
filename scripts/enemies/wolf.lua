@@ -1,6 +1,6 @@
 -- enemies/wolf.lua: matilha com aggro-chain, steering e pivô rápido.
--- Toda a máquina vive em lib/fsm.lua (viber.load) — aqui ficam só os números.
-local fsm = viber.load("lib/fsm.lua").new{
+-- Toda a máquina vive em lib/fsm.lua (vael.load) — aqui ficam só os números.
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "wolf",
   proto = "mob-wolf",
   wander = 2.2, chase = 4.6,
@@ -12,7 +12,7 @@ local fsm = viber.load("lib/fsm.lua").new{
   radius = 7,
   turn_rate = 9.0, -- sem deslize lateral nas viragens (gait de 4 patas)
   steering = true,
-  on_chase = function() viber.sound("growl") end,
+  on_chase = function() vael.sound("growl") end,
 }
 
 -- aggro-chain (loop 6): um golpe do herói num lobo da matilha acorda os

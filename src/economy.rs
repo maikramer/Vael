@@ -3,7 +3,7 @@
 //! As funções puras trabalham sobre o `BTreeMap<String, i64>` do cofre
 //! (chave `item.<id>`) e reutilizam [`crate::vault`] para somar/descontar, por
 //! isso podem ser testadas sem a VM. A bridge [`install`] instala
-//! `viber.vael.shop_*`/`craft_*` no arranque e lê/escreve a tabela
+//! `vael.vael.shop_*`/`craft_*` no arranque e lê/escreve a tabela
 //! `viber_game`; o `game/shop.lua` e o `lib/craft.lua` ficam com a UI, o som,
 //! os toasts e os efeitos de quest (`report_craft`/`add_xp`).
 //!
@@ -595,7 +595,7 @@ fn refund(rules: &CraftRules, kv: &mut BTreeMap<String, i64>, taken: &[(&str, i6
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin da economia: instala `viber.vael.shop_*`/`craft_*` depois do
+/// Plugin da economia: instala `vael.vael.shop_*`/`craft_*` depois do
 /// relógio.
 pub struct VaelEconomyPlugin;
 
@@ -610,12 +610,12 @@ impl Plugin for VaelEconomyPlugin {
     }
 }
 
-/// Arranque: acrescenta as funções da loja/forja à tabela `viber.vael`.
+/// Arranque: acrescenta as funções da loja/forja à tabela `vael.vael`.
 ///
 /// Público dentro do crate para a viagem/marcos ordenar depois dele.
 pub(crate) fn install_economy_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
-        warn!("vael: economia sem conteúdo carregado — `viber.vael` não estendido");
+        warn!("vael: economia sem conteúdo carregado — `vael.vael` não estendido");
         return;
     };
     // Um `Arc` por conjunto de regras: os contextos BMS (~199 + criaturas)
@@ -629,11 +629,11 @@ pub(crate) fn install_economy_api(content: Option<Res<VaelContent>>) {
     });
     info!(
         itens = content.items.items.len(),
-        receitas, "vael: loja/forja em Rust registadas nos contextos BMS (`viber.vael`)"
+        receitas, "vael: loja/forja em Rust registadas nos contextos BMS (`vael.vael`)"
     );
 }
 
-/// Acrescenta as funções da loja/forja a `viber.vael` sem substituir as que
+/// Acrescenta as funções da loja/forja a `vael.vael` sem substituir as que
 /// já lá estão (cofre, XP, equipamento, quests, combate, relógio).
 ///
 /// O caminho dos testes/host sem plugin: embrulha as regras em `Arc`s novos.
@@ -1284,11 +1284,11 @@ mod tests {
     fn lua_com_bridge() -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
-        install(&lua, shop(), craft()).expect("instalar viber.vael");
+        install(&lua, shop(), craft()).expect("instalar vael.vael");
         (lua, game)
     }
 
@@ -1297,23 +1297,23 @@ mod tests {
         let (lua, game) = lua_com_bridge();
         game.raw_set("item.gold", 1).expect("gold");
         let price: i64 = lua
-            .load("return viber.vael.shop_price('pocao', 'buy')")
+            .load("return vael.vael.shop_price('pocao', 'buy')")
             .eval()
             .expect("shop_price");
         assert_eq!(price, 2);
         assert!(
-            lua.load("return viber.vael.shop_price('pocao', 'sell') == nil")
+            lua.load("return vael.vael.shop_price('pocao', 'sell') == nil")
                 .eval::<bool>()
                 .expect("sell nil")
         );
         assert!(
-            lua.load("return viber.vael.shop_price('nao-existe', 'buy') == nil")
+            lua.load("return vael.vael.shop_price('nao-existe', 'buy') == nil")
                 .eval::<bool>()
                 .expect("desconhecido nil")
         );
 
         let rows: Table = lua
-            .load("return viber.vael.shop_rows()")
+            .load("return vael.vael.shop_rows()")
             .eval()
             .expect("shop_rows");
         assert!(rows.raw_len() > 0, "lista vazia");
@@ -1338,7 +1338,7 @@ mod tests {
         let (lua, game) = lua_com_bridge();
         game.raw_set("item.gold", 2).expect("gold");
         let ok: bool = lua
-            .load("return viber.vael.shop_trade('buy', 'pocao').ok")
+            .load("return vael.vael.shop_trade('buy', 'pocao').ok")
             .eval()
             .expect("compra");
         assert!(ok);
@@ -1346,12 +1346,12 @@ mod tests {
         assert_eq!(game.raw_get::<i64>("item.pocao").expect("pocao"), 1);
 
         let reason: String = lua
-            .load("return viber.vael.shop_trade('sell', 'pocao').reason")
+            .load("return vael.vael.shop_trade('sell', 'pocao').reason")
             .eval()
             .expect("venda sem preço");
         assert_eq!(reason, "no_price");
         assert!(
-            lua.load("return viber.vael.shop_trade('give', 'pocao').reason == 'unknown_action'")
+            lua.load("return vael.vael.shop_trade('give', 'pocao').reason == 'unknown_action'")
                 .eval::<bool>()
                 .expect("acção inválida")
         );
@@ -1361,7 +1361,7 @@ mod tests {
     fn bridge_lista_receitas_status_e_forja() {
         let (lua, game) = lua_com_bridge();
         let recipes: Table = lua
-            .load("return viber.vael.craft_recipes()")
+            .load("return vael.vael.craft_recipes()")
             .eval()
             .expect("craft_recipes");
         assert_eq!(recipes.raw_len(), 5);
@@ -1374,18 +1374,18 @@ mod tests {
         game.raw_set("item.erva", 2).expect("erva");
         game.raw_set("item.gold", 1).expect("gold");
         let status: String = lua
-            .load("return viber.vael.craft_status('pocao')")
+            .load("return vael.vael.craft_status('pocao')")
             .eval()
             .expect("craft_status");
         assert_eq!(status, "ok");
         assert!(
-            lua.load("return viber.vael.craft_status('nao-existe') == nil")
+            lua.load("return vael.vael.craft_status('nao-existe') == nil")
                 .eval::<bool>()
                 .expect("status desconhecido")
         );
 
         let ok: bool = lua
-            .load("return viber.vael.craft_make('pocao').ok")
+            .load("return vael.vael.craft_make('pocao').ok")
             .eval()
             .expect("craft_make");
         assert!(ok);
@@ -1394,7 +1394,7 @@ mod tests {
         assert_eq!(game.raw_get::<i64>("item.pocao").expect("pocao"), 2);
 
         let out: Table = lua
-            .load("return viber.vael.craft_make('nao-existe')")
+            .load("return vael.vael.craft_make('nao-existe')")
             .eval()
             .expect("forja desconhecida");
         assert!(!out.get::<bool>("ok").expect("ok"));
@@ -1405,19 +1405,19 @@ mod tests {
     fn bridge_nao_substitui_funcoes_existentes() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
-        lua.load("viber.vael = { vault_add = function() return 7 end }")
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
+        lua.load("vael.vael = { vault_add = function() return 7 end }")
             .exec()
             .expect("vael antigo");
         install(&lua, shop(), craft()).expect("instalar");
         let valor: i64 = lua
-            .load("return viber.vael.vault_add()")
+            .load("return vael.vael.vault_add()")
             .eval()
             .expect("vault_add intacto");
         assert_eq!(valor, 7);
         assert!(
-            lua.load("return type(viber.vael.shop_rows) == 'function'")
+            lua.load("return type(vael.vael.shop_rows) == 'function'")
                 .eval::<bool>()
                 .expect("shop_rows")
         );
@@ -1430,7 +1430,7 @@ mod tests {
         game.raw_set("item.erva", 1).expect("erva");
         game.raw_set("item.pocao", 4).expect("pocao");
         let result: Table = lua
-            .load("return viber.vael.craft_make('muita')")
+            .load("return vael.vael.craft_make('muita')")
             .eval()
             .expect("craft_make");
         assert!(!result.get::<bool>("ok").expect("ok"));
@@ -1468,36 +1468,36 @@ local rules = {
   add_xp = function(n) reported.xp = (reported.xp or 0) + n end,
 }
 local actions = { record = function() recorded = recorded + 1 end }
-viber.load = function(path)
+vael.load = function(path)
   if path == "lib/rules.lua" then return rules end
   if path == "lib/actions.lua" then return actions end
   error("módulo inesperado: " .. tostring(path))
 end
-viber.sound = function(name) sounds[#sounds + 1] = name end
-viber.player_position = function() return false end
-viber.toast = function(text) toasts[#toasts + 1] = text end
--- `craft.lua` assina a lista com o idioma (`viber.game().lang`); o harness
+vael.sound = function(name) sounds[#sounds + 1] = name end
+vael.player_position = function() return false end
+vael.toast = function(text) toasts[#toasts + 1] = text end
+-- `craft.lua` assina a lista com o idioma (`vael.game().lang`); o harness
 -- tem de expor a mesma API que o runtime.
-viber.game = function() return game end
-viber.ui = { list = function(name, rows) lists[name] = rows end }
-viber.own_action = function() end
-viber.state = function() return state end
-viber.every = function() return 1 end
-viber.timer_cancel = function() end
-viber.events = function() return events end
+vael.game = function() return game end
+vael.ui = { list = function(name, rows) lists[name] = rows end }
+vael.own_action = function() end
+vael.state = function() return state end
+vael.every = function() return 1 end
+vael.timer_cancel = function() end
+vael.events = function() return events end
 "#;
 
     fn lua_com_modulos() -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         lua.globals()
             .set("game", game.clone())
             .expect("global game");
         crate::vault::install_test_game(&lua, &game);
-        install(&lua, shop(), craft()).expect("instalar viber.vael");
+        install(&lua, shop(), craft()).expect("instalar vael.vael");
         lua.load(STUBS).set_name("stubs").exec().expect("stubs");
         (lua, game)
     }

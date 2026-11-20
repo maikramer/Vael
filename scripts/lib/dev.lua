@@ -3,15 +3,15 @@
 --
 -- O sinal vem do CLI, não de um save nem de um ficheiro de configuração:
 --
---   viber run --scene main --entry dev
+--   vael-tools run --scene main --entry dev
 --
 -- `--scene main` começa no mundo em vez da cena de menu; `--entry dev` chega
 -- pela entrada `<SceneEntry name="dev">` de `world.xml`. O nome da entrada é
--- visível em `viber.scene_entry()`, por isso o título (`src/ui/screens.rs`) e o
+-- visível em `vael.scene_entry()`, por isso o título (`src/ui/screens.rs`) e o
 -- prólogo (`game/story.lua`) — que vivem em controladores diferentes — leem
 -- o MESMO sinal sem passar nada entre si.
 --
--- Porque não um save ou `viber.game()`: um save é estado do jogador e um
+-- Porque não um save ou `vael.game()`: um save é estado do jogador e um
 -- modo de arranque não pode ficar gravado por engano; `--entry` é por
 -- execução. A entrada fica em `main` de propósito: numa cena própria
 -- (`interiors/*`) ou num mundo QA o `entry` é outro/nil e nada muda.
@@ -25,14 +25,14 @@ local DEBUG_ENTRY = "dev"
 
 --- Nome da entrada de arranque em `main`.
 function M.entry()
-  if not (viber.scene_name and viber.scene_entry) then
+  if not (vael.scene_name and vael.scene_entry) then
     return nil
   end
-  local scene = viber.scene_name()
+  local scene = vael.scene_name()
   if scene ~= "main" then
     return nil
   end
-  return viber.scene_entry()
+  return vael.scene_entry()
 end
 
 --- `true` quando o run foi pedido com `--scene main --entry dev`.

@@ -1616,7 +1616,7 @@ pub fn reset_patch(current: &QuestKv, plan: &QuestKv) -> QuestKv {
     patch
 }
 
-/// Globals de QA (`vael_qa_god`/`viber_dev`) para os contextos BMS.
+/// Globals de QA (`vael_qa_god`/`vael_dev`) para os contextos BMS.
 ///
 /// A VM antiga era PARTILHADA — um `globals.set` chegava a todos os
 /// scripts; os contextos BMS têm globals próprias (um por entidade),
@@ -1634,7 +1634,7 @@ fn seed_qa_globals(plan: &Plan) {
         };
         let _ = lua.globals().set("vael_qa_god", god);
         if dev {
-            let _ = lua.globals().set("viber_dev", true);
+            let _ = lua.globals().set("vael_dev", true);
         }
         Ok(())
     });
@@ -1646,7 +1646,7 @@ fn apply_kv(lua: &mlua::Lua, plan: &Plan) {
     let globals = lua.globals();
     let _ = globals.set("vael_qa_god", plan.god);
     if plan.dev {
-        let _ = globals.set("viber_dev", true);
+        let _ = globals.set("vael_dev", true);
     }
 }
 

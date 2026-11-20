@@ -6,7 +6,7 @@
 -- id do item; um item que saiu da mochila (vendido, entregue) deixa de contar
 -- no mesmo frame — a mochila é a fonte da verdade.
 --
--- O estado e as somas vivem em `src/gear.rs` (`viber.vael.gear_*`). Este
+-- O estado e as somas vivem em `src/gear.rs` (`vael.vael.gear_*`). Este
 -- módulo guarda os metadados para a UI e os embrulhos finos.
 --
 -- Módulo PURO: não carrega `lib/rules.lua` (é o `rules` que o carrega).
@@ -23,7 +23,7 @@ M.DEFAULT_WEAPON = {
 
 local ITEMS = {}
 do
-  local ok, data = pcall(viber.load_json, "data/items.json")
+  local ok, data = pcall(vael.load_json, "data/items.json")
   if ok and type(data) == "table" then
     for _, item in ipairs(data.items or {}) do
       if type(item) == "table" and type(item.id) == "string" and item.id ~= "" then
@@ -39,41 +39,41 @@ end
 
 -- Slot equipável (`weapon | armor | charm`), ou nil.
 function M.slot_of(id)
-  return viber.vael.gear_slot_of(id)
+  return vael.vael.gear_slot_of(id)
 end
 
 -- Id equipado no slot, ou nil. Um item que já não está na mochila não conta
 -- (a marca órfã é limpa do save).
 function M.equipped(slot)
-  return viber.vael.gear_equipped(slot)
+  return vael.vael.gear_equipped(slot)
 end
 
 function M.is_equipped(id)
-  return viber.vael.gear_is_equipped(id)
+  return vael.vael.gear_is_equipped(id)
 end
 
 -- Requisito de atributos do item (expressão do gauge, ex. "Strength >= 7"),
 -- texto curto para o diário ("Força 7") e se está satisfeito agora.
 function M.requirement(id)
-  return viber.vael.gear_requirement(id)
+  return vael.vael.gear_requirement(id)
 end
 
 function M.requirement_text(id)
-  return viber.vael.gear_requirement_text(id)
+  return vael.vael.gear_requirement_text(id)
 end
 
 function M.requirement_met(id)
-  return viber.vael.gear_requirement_met(id) == true
+  return vael.vael.gear_requirement_met(id) == true
 end
 
 -- Soma dos `effects` de tudo o que está equipado: { chave = total }.
 function M.effects()
-  return viber.vael.gear_effects()
+  return vael.vael.gear_effects()
 end
 
 -- Números do melee da arma equipada (ou da espada base).
 function M.weapon()
-  return viber.vael.gear_weapon()
+  return vael.vael.gear_weapon()
 end
 
 return M

@@ -3,7 +3,7 @@
 -- A engine traduz as chaves `@nome` da UI declarativa (`locale/<lang>.json`).
 -- As frases montadas em Lua (toasts, prompts, balões, números flutuantes)
 -- eram PT fixo em ~180 sítios. Em vez de tocar em todos, este módulo embrulha
--- UMA vez as funções de saída (`viber.toast`, `say`, `set_interaction`,
+-- UMA vez as funções de saída (`vael.toast`, `say`, `set_interaction`,
 -- `prompt`, `damage_number`): a frase PT é a chave — estilo gettext.
 --
 -- `locale/strings_<lang>.json`:
@@ -22,12 +22,12 @@ local memo = {}     -- lang → { frase → tradução }
 local memo_n = 0
 
 local function lang()
-  local chosen = viber.game().lang
+  local chosen = vael.game().lang
   if type(chosen) == "string" and chosen ~= "" then
     return chosen
   end
-  if viber.locale and viber.locale.get then
-    return viber.locale.get() or "pt"
+  if vael.locale and vael.locale.get then
+    return vael.locale.get() or "pt"
   end
   return "pt"
 end
@@ -39,7 +39,7 @@ local function table_for(code)
   end
   t = false
   if code ~= "pt" then
-    local ok, data = pcall(viber.load_json, "locale/strings_" .. code .. ".json")
+    local ok, data = pcall(vael.load_json, "locale/strings_" .. code .. ".json")
     if ok and type(data) == "table" then
       t = {
         exact = type(data.exact) == "table" and data.exact or {},
@@ -119,40 +119,40 @@ function M.tr(text)
   return out
 end
 
--- Embrulha as funções de saída. Os embrulhos chamam `viber.__i18n_tr`, que
+-- Embrulha as funções de saída. Os embrulhos chamam `vael.__i18n_tr`, que
 -- um hot-reload deste módulo substitui — nunca se embrulha duas vezes.
 function M.install()
-  viber.__i18n_tr = M.tr
-  viber.__i18n_lang = lang
-  if viber.__i18n_installed then
+  vael.__i18n_tr = M.tr
+  vael.__i18n_lang = lang
+  if vael.__i18n_installed then
     return
   end
-  viber.__i18n_installed = true
+  vael.__i18n_installed = true
   local function wrap_first(name)
-    local orig = viber[name]
+    local orig = vael[name]
     if type(orig) ~= "function" then
       return
     end
-    viber[name] = function(text, ...)
-      return orig(viber.__i18n_tr(text), ...)
+    vael[name] = function(text, ...)
+      return orig(vael.__i18n_tr(text), ...)
     end
   end
   wrap_first("toast")
   wrap_first("say")
   wrap_first("set_interaction")
   wrap_first("damage_number")
-  -- Listas da UI (`viber.ui.list`): diário, forja, opções, loja. Cada campo
+  -- Listas da UI (`vael.ui.list`): diário, forja, opções, loja. Cada campo
   -- de texto de cada linha passa pela tradução; ids e números ficam.
-  local list = viber.ui and viber.ui.list
+  local list = vael.ui and vael.ui.list
   if type(list) == "function" then
-    viber.ui.list = function(name, rows, ...)
-      if type(rows) == "table" and viber.__i18n_lang() ~= "pt" then
+    vael.ui.list = function(name, rows, ...)
+      if type(rows) == "table" and vael.__i18n_lang() ~= "pt" then
         local out = {}
         for i, row in ipairs(rows) do
           local copy = {}
           for key, value in pairs(row) do
             if type(value) == "string" and key ~= "id" then
-              copy[key] = viber.__i18n_tr(value)
+              copy[key] = vael.__i18n_tr(value)
             else
               copy[key] = value
             end
@@ -164,10 +164,10 @@ function M.install()
       return list(name, rows, ...)
     end
   end
-  local prompt = viber.prompt
+  local prompt = vael.prompt
   if type(prompt) == "function" then
-    viber.prompt = function(key, label, ...)
-      return prompt(key, viber.__i18n_tr(label), ...)
+    vael.prompt = function(key, label, ...)
+      return prompt(key, vael.__i18n_tr(label), ...)
     end
   end
 end

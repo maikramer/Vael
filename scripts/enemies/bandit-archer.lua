@@ -1,8 +1,8 @@
 -- enemies/bandit-archer.lua: bandido de arco — mantém 5–15 m e dispara o
 -- `<ProjectileTemplate id="enemy-arrow">` (o arco tensa ~0,7 s antes: sai da
 -- linha). Colado ao herói recua; encurralado dá com a adaga.
--- Toda a máquina vive em lib/fsm.lua (viber.load).
-local fsm = viber.load("lib/fsm.lua").new{
+-- Toda a máquina vive em lib/fsm.lua (vael.load).
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "bandit-archer",
   proto = "mob-bandit-archer",
   wander = 1.6, chase = 3.4,

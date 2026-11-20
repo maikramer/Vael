@@ -1,13 +1,13 @@
 -- lib/environment.lua: o clima do mundo para as regras e a apresentação.
 --
 -- O Rust lê o `bevy_elements` (`src/environment.rs`) e publica a resposta em
--- `viber.vael.env_info()`; este módulo é só o embrulho fino. Sem o ambiente
+-- `vael.vael.env_info()`; este módulo é só o embrulho fino. Sem o ambiente
 -- (mundos QA antigos / `VAEL_ELEMENTS=0`) tudo devolve 0/nil como antes.
 
 local M = {}
 
 local function info()
-  local f = viber.vael and viber.vael.env_info
+  local f = vael.vael and vael.vael.env_info
   if not f then
     return nil
   end

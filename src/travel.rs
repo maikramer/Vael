@@ -4,11 +4,11 @@
 //! As funções puras — catálogo saneado, etiquetas, revelação/assinatura e
 //! [`LandmarkRules::nearest`] — correm sem a VM. O sistema Bevy junta as
 //! posições reais (`Name` + `GlobalTransform`) e publica-as em
-//! [`TravelState`]; a bridge [`install`] expõe `viber.vael.travel_*` no
+//! [`TravelState`]; a bridge [`install`] expõe `vael.vael.travel_*` no
 //! arranque, depois da economia.
 //!
 //! Ficam no Lua: o teleporte/troca de cena (`travel.go`), os marcadores
-//! (`viber.markers`), o mapa/UI e a validação da viagem rápida. Com
+//! (`vael.markers`), o mapa/UI e a validação da viagem rápida. Com
 //! `VAEL_TRAVEL_RUST=1` o `lib/landmarks.lua` lê o catálogo da bridge; sem o
 //! gate (default) mantém o JSON e a lógica antiga como fallback.
 //!
@@ -31,13 +31,13 @@ use crate::vault::{vael_fn, vael_table};
 
 /// Variável de ambiente que liga a autoridade dos marcos (`1`/`true`/`on`/`yes`).
 pub const RUST_TRAVEL_ENV: &str = "VAEL_TRAVEL_RUST";
-/// Chave do `viber.game()` que avisa o Lua de que a bridge é a fonte dos dados.
+/// Chave do `vael.game()` que avisa o Lua de que a bridge é a fonte dos dados.
 pub const RUST_GATE_KEY: &str = "vael_travel_rust";
 /// `campfire_range` do Lua quando o conteúdo não traz um valor válido.
 pub const DEFAULT_CAMPFIRE_RANGE: f64 = 14.0;
-/// Prefixo do bioma revelado no `viber.game()`.
+/// Prefixo do bioma revelado no `vael.game()`.
 pub const BIOME_KEY_PREFIX: &str = "biome.";
-/// Prefixo do marco assinado no `viber.game()`.
+/// Prefixo do marco assinado no `vael.game()`.
 pub const MARK_KEY_PREFIX: &str = "mark.";
 /// Período da fotografia: o `publish` do `travel.lua` também corre a 2 Hz.
 pub const TRAVEL_PERIOD_SECS: f32 = 0.5;
@@ -440,7 +440,7 @@ fn update_travel_state(
         if rules.get(name).is_none() {
             continue;
         }
-        // Nome repetido no mundo: fica a PRIMEIRA entidade, como o `viber.find`.
+        // Nome repetido no mundo: fica a PRIMEIRA entidade, como o `vael.find`.
         positions
             .entry(name.to_string())
             .or_insert_with(|| transform.translation().to_array());
@@ -458,7 +458,7 @@ fn update_travel_state(
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin de viagem/marcos: instala `viber.vael.travel_*` depois da economia.
+/// Plugin de viagem/marcos: instala `vael.vael.travel_*` depois da economia.
 pub struct VaelTravelPlugin;
 
 impl Plugin for VaelTravelPlugin {
@@ -470,7 +470,7 @@ impl Plugin for VaelTravelPlugin {
                 (
                     insert_travel_rules,
                     apply_travel_gate,
-                    // A tabela `viber.vael` já existe: acrescenta as chaves.
+                    // A tabela `vael.vael` já existe: acrescenta as chaves.
                     install_travel_api
                         .after(crate::economy::install_economy_api)
                         .after(apply_travel_gate),
@@ -499,7 +499,7 @@ fn insert_travel_rules(mut commands: Commands, content: Option<Res<VaelContent>>
     commands.insert_resource(VaelTravelRules(Arc::new(rules)));
 }
 
-/// Arranque: liga a chave do gate no `viber.game()` (default desligado).
+/// Arranque: liga a chave do gate no `vael.game()` (default desligado).
 fn apply_travel_gate(config: Res<VaelTravelConfig>) {
     write_gate(config.rust);
 }
@@ -510,7 +510,7 @@ fn enforce_travel_gate(config: Res<VaelTravelConfig>) {
 }
 
 /// Escreve a chave só quando o valor guardado não corresponde ao modo — no
-/// STORE do processo, o `viber.game()` de todos os contextos BMS.
+/// STORE do processo, o `vael.game()` de todos os contextos BMS.
 fn write_gate(rust: bool) {
     let on = vael_engine::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
     if on != rust {
@@ -527,10 +527,10 @@ fn write_gate(rust: bool) {
     }
 }
 
-/// Arranque: acrescenta as funções de viagem à tabela `viber.vael`.
+/// Arranque: acrescenta as funções de viagem à tabela `vael.vael`.
 fn install_travel_api(content: Option<Res<VaelContent>>, state: Res<TravelState>) {
     let Some(content) = content else {
-        warn!("vael: viagem sem conteúdo carregado — `viber.vael` não estendido");
+        warn!("vael: viagem sem conteúdo carregado — `vael.vael` não estendido");
         return;
     };
     let rules = Arc::new(LandmarkRules::from_file(&content.landmarks));
@@ -539,12 +539,12 @@ fn install_travel_api(content: Option<Res<VaelContent>>, state: Res<TravelState>
     crate::script_host::register_installer(move |lua| install(lua, rules.clone(), &state));
     info!(
         marcos,
-        "vael: marcos/viagem em Rust registados nos contextos BMS (`viber.vael`)"
+        "vael: marcos/viagem em Rust registados nos contextos BMS (`vael.vael`)"
     );
 }
 
 /// Acrescenta `travel_landmarks`, `travel_nearest`, `travel_reveal`,
-/// `travel_is_revealed` e `travel_label` a `viber.vael` sem substituir as
+/// `travel_is_revealed` e `travel_label` a `vael.vael` sem substituir as
 /// funções que já lá estão.
 pub(crate) fn install(
     lua: &Lua,
@@ -965,8 +965,8 @@ mod tests {
     fn lua_com_bridge() -> (Lua, Table, TravelState) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         let state = TravelState::default();
@@ -989,7 +989,7 @@ mod tests {
         });
 
         let rows: Table = lua
-            .load("return viber.vael.travel_landmarks()")
+            .load("return vael.vael.travel_landmarks()")
             .eval()
             .expect("travel_landmarks");
         assert_eq!(rows.raw_len(), 4, "as quatro entradas válidas");
@@ -1029,7 +1029,7 @@ mod tests {
         });
 
         let perto: Table = lua
-            .load("return viber.vael.travel_nearest(9, 0)")
+            .load("return vael.vael.travel_nearest(9, 0)")
             .eval()
             .expect("nearest com argumentos");
         assert_eq!(perto.get::<String>("name").expect("name"), "torre");
@@ -1037,7 +1037,7 @@ mod tests {
 
         // Sem argumentos usa o herói da fotografia (empate → primeira da lista).
         let jogador: Table = lua
-            .load("return viber.vael.travel_nearest()")
+            .load("return vael.vael.travel_nearest()")
             .eval()
             .expect("nearest do jogador");
         assert_eq!(jogador.get::<String>("name").expect("name"), "torre");
@@ -1048,12 +1048,12 @@ mod tests {
         let (lua, _game, state) = lua_com_bridge();
         state.set(TravelSnapshot::default());
         assert!(
-            lua.load("return viber.vael.travel_nearest() == nil")
+            lua.load("return vael.vael.travel_nearest() == nil")
                 .eval::<bool>()
                 .expect("sem jogador")
         );
         assert!(
-            lua.load("return viber.vael.travel_nearest(0, 0) == nil")
+            lua.load("return vael.vael.travel_nearest(0, 0) == nil")
                 .eval::<bool>()
                 .expect("sem posições")
         );
@@ -1063,12 +1063,12 @@ mod tests {
     fn bridge_revela_e_le_a_chave_do_viber_game() {
         let (lua, game, _state) = lua_com_bridge();
         assert!(
-            !lua.load("return viber.vael.travel_is_revealed('desert')")
+            !lua.load("return vael.vael.travel_is_revealed('desert')")
                 .eval::<bool>()
                 .expect("por revelar")
         );
         assert!(
-            lua.load("return viber.vael.travel_reveal('desert')")
+            lua.load("return vael.vael.travel_reveal('desert')")
                 .eval::<bool>()
                 .expect("revelar")
         );
@@ -1077,17 +1077,17 @@ mod tests {
             Value::Boolean(true)
         ));
         assert!(
-            lua.load("return viber.vael.travel_is_revealed('desert')")
+            lua.load("return vael.vael.travel_is_revealed('desert')")
                 .eval::<bool>()
                 .expect("revelado")
         );
         assert!(
-            lua.load("return viber.vael.travel_reveal('') == false")
+            lua.load("return vael.vael.travel_reveal('') == false")
                 .eval::<bool>()
                 .expect("vazio")
         );
         assert!(
-            lua.load("return viber.vael.travel_is_revealed(nil) == false")
+            lua.load("return vael.vael.travel_is_revealed(nil) == false")
                 .eval::<bool>()
                 .expect("nil")
         );
@@ -1097,17 +1097,17 @@ mod tests {
     fn bridge_etiquetas_e_tabela_existente() {
         let (lua, _game, _state) = lua_com_bridge();
         let label: String = lua
-            .load("return viber.vael.travel_label('torre')")
+            .load("return vael.vael.travel_label('torre')")
             .eval()
             .expect("label");
         assert_eq!(label, "Torre");
         assert!(
-            lua.load("return viber.vael.travel_label('desconhecido') == 'desconhecido'")
+            lua.load("return vael.vael.travel_label('desconhecido') == 'desconhecido'")
                 .eval::<bool>()
                 .expect("fallback")
         );
         assert!(
-            lua.load("return viber.vael.travel_label(nil) == nil")
+            lua.load("return vael.vael.travel_label(nil) == nil")
                 .eval::<bool>()
                 .expect("nil")
         );
@@ -1115,21 +1115,21 @@ mod tests {
         // Instalar por cima de uma tabela existente não apaga as chaves.
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("viber"))
+            .set("vael", lua.create_table().expect("vael"))
             .expect("global");
         let game = lua.create_table().expect("jogo");
         crate::vault::install_test_game(&lua, &game);
-        lua.load("viber.vael = { vault_add = function() return 7 end }")
+        lua.load("vael.vael = { vault_add = function() return 7 end }")
             .exec()
             .expect("tabela antiga");
         install(&lua, Arc::new(regras()), &TravelState::default()).expect("instalar");
         let valor: i64 = lua
-            .load("return viber.vael.vault_add()")
+            .load("return vael.vael.vault_add()")
             .eval()
             .expect("vault_add intacto");
         assert_eq!(valor, 7);
         assert!(
-            lua.load("return type(viber.vael.travel_landmarks) == 'function'")
+            lua.load("return type(vael.vael.travel_landmarks) == 'function'")
                 .eval::<bool>()
                 .expect("travel_landmarks")
         );

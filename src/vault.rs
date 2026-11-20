@@ -1,8 +1,8 @@
 //! Cofre/inventário em Rust: a aritmética e os tetos de `data/items.json`.
 //!
 //! As funções puras trabalham sobre um `BTreeMap<String, i64>` (chave
-//! `item.<kind>`, como o `viber.game()`) para poderem ser testadas sem a VM.
-//! A bridge [`install`] instala `viber.vael` no arranque e lê/escreve a
+//! `item.<kind>`, como o `vael.game()`) para poderem ser testadas sem a VM.
+//! A bridge [`install`] instala `vael.vael` no arranque e lê/escreve a
 //! tabela `viber_game` da VM partilhada; o `rules.lua` fica só com os
 //! embrulhos finos (espelho na engine antiga e `sync_collect`).
 //!
@@ -24,7 +24,7 @@ use mlua::{Lua, Table, Value};
 use crate::compat::lua_count;
 use crate::content::{ItemsFile, VaelContent};
 
-/// Prefixo das chaves do cofre no `viber.game()`.
+/// Prefixo das chaves do cofre no `vael.game()`.
 pub const ITEM_KEY_PREFIX: &str = "item.";
 
 /// Valor por omissão de `stack_max` quando o JSON não traz o campo (o
@@ -109,7 +109,7 @@ impl VaultRules {
     }
 }
 
-/// Chave do cofre no `viber.game()`.
+/// Chave do cofre no `vael.game()`.
 pub fn item_key(kind: &str) -> String {
     format!("{ITEM_KEY_PREFIX}{kind}")
 }
@@ -206,25 +206,25 @@ fn amount_units(amount: f64) -> Option<i64> {
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin do cofre: instala `viber.vael` antes de os scripts correrem.
+/// Plugin do cofre: instala `vael.vael` antes de os scripts correrem.
 pub struct VaelVaultPlugin;
 
 impl Plugin for VaelVaultPlugin {
     fn build(&self, app: &mut App) {
         // `Startup` corre depois do sistema que carrega o `VaelContent`. O
         // instalador vai para o REGISTO BMS (`crate::script_host`): cada
-        // contexto novo recebe o closure do cofre — a tabela `viber.vael`
+        // contexto novo recebe o closure do cofre — a tabela `vael.vael`
         // é ler-ou-criar dentro de cada contexto (o `vael_table`).
         app.add_systems(Startup, install_vault_api);
     }
 }
 
-/// Arranque: instala `viber.vael` nos contextos BMS (via registo).
+/// Arranque: instala `vael.vael` nos contextos BMS (via registo).
 ///
 /// Público dentro do crate para o plugin do XP ordenar depois dele.
 pub(crate) fn install_vault_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
-        warn!("vael: cofre sem conteúdo carregado — `viber.vael` não instalado");
+        warn!("vael: cofre sem conteúdo carregado — `vael.vael` não instalado");
         return;
     };
     // UM `Arc` para o jogo todo: cada contexto BMS (~199 + as criaturas) lê o
@@ -234,16 +234,19 @@ pub(crate) fn install_vault_api(content: Option<Res<VaelContent>>) {
     crate::script_host::register_installer(move |lua| install_shared(lua, Arc::clone(&rules)));
     info!(
         itens,
-        "vael: cofre em Rust registado nos contextos BMS (`viber.vael`)"
+        "vael: cofre em Rust registado nos contextos BMS (`vael.vael`)"
     );
 }
 
-/// Obtém a tabela `viber.vael` da VM partilhada, criando-a (dentro de
+/// Obtém a tabela `vael.vael` da VM partilhada, criando-a (dentro de
 /// `viber`) se ainda não existir. O cofre instala-a primeiro no arranque;
 /// os módulos seguintes estendem a mesma tabela — nunca substituem as
 /// funções uns dos outros.
 pub(crate) fn vael_table(lua: &Lua) -> mlua::Result<Table> {
-    let viber: Table = lua.globals().get("viber")?;
+    let viber: Table = lua
+        .globals()
+        .get("vael")
+        .or_else(|_| lua.globals().get("viber"))?;
     match viber.get::<Value>("vael")? {
         Value::Table(table) => Ok(table),
         _ => {
@@ -254,7 +257,7 @@ pub(crate) fn vael_table(lua: &Lua) -> mlua::Result<Table> {
     }
 }
 
-/// (testes) Instala `viber.game()` a devolver a tabela dada.
+/// (testes) Instala `vael.game()` a devolver a tabela dada.
 ///
 /// Os módulos leem o jogo por `vael_engine::luau::game::game_proxy` (o
 /// `viber_game` do registry morreu no exit4/F3), mas os testes montam a VM à
@@ -263,13 +266,18 @@ pub(crate) fn vael_table(lua: &Lua) -> mlua::Result<Table> {
 /// `viber` quando o teste ainda não o tem (os de colheita só querem a VM).
 #[cfg(test)]
 pub(crate) fn install_test_game(lua: &Lua, game: &Table) {
-    let viber: Table = match lua.globals().get::<Value>("viber").expect("global viber") {
+    let viber: Table = match lua
+        .globals()
+        .get::<Value>("vael")
+        .or_else(|_| lua.globals().get::<Value>("viber"))
+        .expect("global vael")
+    {
         Value::Table(table) => table,
         _ => {
-            let table = lua.create_table().expect("tabela viber");
+            let table = lua.create_table().expect("tabela vael");
             lua.globals()
-                .set("viber", table.clone())
-                .expect("global viber");
+                .set("vael", table.clone())
+                .expect("global vael");
             table
         }
     };
@@ -278,12 +286,12 @@ pub(crate) fn install_test_game(lua: &Lua, game: &Table) {
         .set(
             "game",
             lua.create_function(move |_, ()| Ok(game.clone()))
-                .expect("fn viber.game"),
+                .expect("fn vael.game"),
         )
-        .expect("viber.game");
+        .expect("vael.game");
 }
 
-/// Regista uma função na tabela `viber.vael`.
+/// Regista uma função na tabela `vael.vael`.
 ///
 /// As capturas (`[nome = expr, …]`) são avaliadas uma vez por função — a
 /// closure tem de ser `'static` — e ficam visíveis para o corpo com o nome
@@ -305,7 +313,7 @@ macro_rules! vael_fn {
 }
 pub(crate) use vael_fn;
 
-/// Instala as quatro funções do cofre na tabela `viber.vael`.
+/// Instala as quatro funções do cofre na tabela `vael.vael`.
 ///
 /// O caminho dos testes/host sem plugin: embrulha as regras num `Arc` novo.
 #[cfg_attr(not(test), allow(dead_code))]
@@ -605,11 +613,11 @@ mod tests {
     fn lua_com_bridge(rules: VaultRules) -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
-        install(&lua, rules).expect("instalar viber.vael");
+        install(&lua, rules).expect("instalar vael.vael");
         (lua, game)
     }
 
@@ -617,7 +625,7 @@ mod tests {
     fn bridge_le_e_escreve_no_viber_game() {
         let (lua, game) = lua_com_bridge(regras());
         let added: i64 = lua
-            .load("return viber.vael.vault_add('potion', 2)")
+            .load("return vael.vael.vault_add('potion', 2)")
             .eval()
             .expect("vault_add");
         assert_eq!(added, 2);
@@ -625,24 +633,24 @@ mod tests {
 
         // Sem `amount` o Lua antigo usava 1.
         let added: i64 = lua
-            .load("return viber.vael.vault_add('potion')")
+            .load("return vael.vael.vault_add('potion')")
             .eval()
             .expect("vault_add sem amount");
         assert_eq!(added, 1);
 
         let got: i64 = lua
-            .load("return viber.vael.vault_get('potion')")
+            .load("return vael.vael.vault_get('potion')")
             .eval()
             .expect("vault_get");
         assert_eq!(got, 3);
 
         let ok: bool = lua
-            .load("return viber.vael.vault_take('potion', 5)")
+            .load("return vael.vael.vault_take('potion', 5)")
             .eval()
             .expect("vault_take sem saldo");
         assert!(!ok);
         let ok: bool = lua
-            .load("return viber.vael.vault_take('potion', 1)")
+            .load("return vael.vael.vault_take('potion', 1)")
             .eval()
             .expect("vault_take");
         assert!(ok);
@@ -652,13 +660,13 @@ mod tests {
     #[test]
     fn bridge_semeia_o_kit_de_arranque_uma_vez() {
         let (lua, game) = lua_com_bridge(regras());
-        lua.load("viber.vael.seed_starting()").exec().expect("seed");
+        lua.load("vael.vael.seed_starting()").exec().expect("seed");
         assert_eq!(game.raw_get::<i64>("item.gold").expect("gold"), 30);
         assert_eq!(game.raw_get::<i64>("item.potion").expect("potion"), 1);
 
         // Ouro gasto (0 explícito) não volta a encher.
         game.raw_set("item.gold", 0).expect("zerar gold");
-        lua.load("viber.vael.seed_starting()")
+        lua.load("vael.vael.seed_starting()")
             .exec()
             .expect("segundo seed");
         assert_eq!(game.raw_get::<i64>("item.gold").expect("gold"), 0);

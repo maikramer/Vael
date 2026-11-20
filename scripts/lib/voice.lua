@@ -5,14 +5,14 @@
 -- lexical normalizada, parley.resolve (Nomes Verdadeiros de criaturas), clima/hora
 -- e decide.choice (desempate semântico opcional).
 
-local parley = viber.load("lib/parley.lua")
-local decide = viber.load("lib/decide.lua")
-local environment = viber.load("lib/environment.lua")
-local clock = viber.load("lib/clock.lua")
-local rules = viber.load("lib/rules.lua")
-local actions = viber.load("lib/actions.lua")
+local parley = vael.load("lib/parley.lua")
+local decide = vael.load("lib/decide.lua")
+local environment = vael.load("lib/environment.lua")
+local clock = vael.load("lib/clock.lua")
+local rules = vael.load("lib/rules.lua")
+local actions = vael.load("lib/actions.lua")
 
-local ok_marks, marks = pcall(viber.load, "lib/landmarks.lua")
+local ok_marks, marks = pcall(vael.load, "lib/landmarks.lua")
 if not ok_marks or type(marks) ~= "table" then
   marks = nil
 end
@@ -221,7 +221,7 @@ local function cardinal_dir(dx, dz)
 end
 
 local function find_nearest_uncompleted_target(px, pz, g)
-  if not (viber.find and viber.entity_position) then
+  if not (vael.find and vael.entity_position) then
     return nil
   end
   local best_dist, best_dx, best_dz, best_label
@@ -230,7 +230,7 @@ local function find_nearest_uncompleted_target(px, pz, g)
     if not eid then
       return
     end
-    local ok, tx, _, tz = viber.entity_position(eid)
+    local ok, tx, _, tz = vael.entity_position(eid)
     if not ok then
       return
     end
@@ -247,19 +247,19 @@ local function find_nearest_uncompleted_target(px, pz, g)
 
   for _, sh in ipairs(SHRINE_SITES) do
     if g["riddle." .. sh.riddle_id] ~= true then
-      consider_entity(viber.find(sh.name), sh.label)
+      consider_entity(vael.find(sh.name), sh.label)
     end
   end
 
   for _, jd in ipairs(JUDGE_SITES) do
     if g["judge." .. jd.judge_id .. ".done"] ~= true then
-      consider_entity(viber.find(jd.name), jd.label)
+      consider_entity(vael.find(jd.name), jd.label)
     end
   end
 
-  if viber.find_all and viber.entity_name then
-    for _, eid in ipairs(viber.find_all("korok-")) do
-      local ename = viber.entity_name(eid)
+  if vael.find_all and vael.entity_name then
+    for _, eid in ipairs(vael.find_all("korok-")) do
+      local ename = vael.entity_name(eid)
       if ename and ename:sub(1, 6) == "korok-" then
         local val = tonumber(g["korok-" .. ename]) or 0
         if val <= 0 then
@@ -272,7 +272,7 @@ local function find_nearest_uncompleted_target(px, pz, g)
   if marks and type(marks.LIST) == "table" then
     for _, mk in ipairs(marks.LIST) do
       if mk.name and g["mark." .. mk.name] ~= true then
-        consider_entity(viber.find(mk.name), mk.label or mk.name)
+        consider_entity(vael.find(mk.name), mk.label or mk.name)
       end
     end
   end
@@ -410,7 +410,7 @@ function M.classify(text, parsed, near_hostiles, opts)
   }
 end
 
--- Timestamps no `viber.game()` são uptime do PROCESSO (o save guarda o
+-- Timestamps no `vael.game()` são uptime do PROCESSO (o save guarda o
 -- número). Num arranque novo o uptime recomeça do zero, por isso um valor
 -- muito à frente do relógio atual é de outra execução e não vale como
 -- recarga/buff a decorrer. `window` é o máximo real de cada efeito.
@@ -433,15 +433,15 @@ function M.cast(text, parsed)
     return { ok = false, reason = "dead" }
   end
 
-  local g = viber.game()
-  local now = (viber.time and viber.time()) or 0
+  local g = vael.game()
+  local now = (vael.time and vael.time()) or 0
   local cd_until = live_until(g.voice_cd_until, now, 30)
   if cd_until == 0 and g.voice_cd_until ~= nil then
     g.voice_cd_until = nil
   end
   if now < cd_until then
     local rem = math.max(1, math.ceil(cd_until - now))
-    viber.toast("A tua voz ainda ressoa (" .. tostring(rem) .. "s).")
+    vael.toast("A tua voz ainda ressoa (" .. tostring(rem) .. "s).")
     return { ok = false, reason = "cooldown", remaining = cd_until - now }
   end
 
@@ -449,8 +449,8 @@ function M.cast(text, parsed)
   local cls = M.classify(trimmed, parsed, near_hostiles)
 
   local has_pos, px, py, pz = false, 0, 0, 0
-  if viber.player_position then
-    has_pos, px, py, pz = viber.player_position()
+  if vael.player_position then
+    has_pos, px, py, pz = vael.player_position()
   end
   if not has_pos then
     px, py, pz = 0, 0, 0
@@ -458,8 +458,8 @@ function M.cast(text, parsed)
   local pos = { x = px, y = py, z = pz }
 
   if cls.chord == "dissonancia" then
-    if viber.sound then viber.sound("error", pos) end
-    viber.toast("O Coro não reconheceu esse eco.")
+    if vael.sound then vael.sound("error", pos) end
+    vael.toast("O Coro não reconheceu esse eco.")
     return { ok = false, reason = "empty" }
   end
 
@@ -491,27 +491,27 @@ function M.cast(text, parsed)
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "burn", 5.0)
-      if is_rain and viber.entity_knockback then
+      if is_rain and vael.entity_knockback then
         local dx = (h.x or px) - px
         local dz = (h.z or pz) - pz
         local len = math.sqrt(dx * dx + dz * dz)
         local ux = len > 1e-4 and (dx / len) or 1
         local uz = len > 1e-4 and (dz / len) or 0
-        viber.entity_knockback(h.id, ux, uz, 6.5)
-        if viber.burst then viber.burst("smoke", h.x or px, (h.y or py) + 0.8, h.z or pz, 8) end
+        vael.entity_knockback(h.id, ux, uz, 6.5)
+        if vael.burst then vael.burst("smoke", h.x or px, (h.y or py) + 0.8, h.z or pz, 8) end
       end
     end
     g.voice_buff_kind = "brasa"
     g.voice_buff_until = now + 25.0
-    if viber.sound then viber.sound("fire_crackle", pos) end
-    if viber.burst then viber.burst("fire", px, py + 0.9, pz, 18) end
-    if viber.ring then viber.ring(px, pz, 6.5, "#ff7733") end
+    if vael.sound then vael.sound("fire_crackle", pos) end
+    if vael.burst then vael.burst("fire", px, py + 0.9, pz, 18) end
+    if vael.ring then vael.ring(px, pz, 6.5, "#ff7733") end
     if is_rain then
-      viber.toast("Acorde da Brasa: vapor escaldante repele em torno de ti!")
+      vael.toast("Acorde da Brasa: vapor escaldante repele em torno de ti!")
     elseif is_night then
-      viber.toast("Acorde da Brasa: chama noturna acende a tua lâmina!")
+      vael.toast("Acorde da Brasa: chama noturna acende a tua lâmina!")
     else
-      viber.toast("Acorde da Brasa: chamas envolvem a tua arma (25s).")
+      vael.toast("Acorde da Brasa: chamas envolvem a tua arma (25s).")
     end
   elseif cls.chord == "geada" then
     local amp = has_snow or py > 14.0
@@ -521,22 +521,22 @@ function M.cast(text, parsed)
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "frost", 5.5)
-      if viber.entity_knockback then
+      if vael.entity_knockback then
         local dx = (h.x or px) - px
         local dz = (h.z or pz) - pz
         local len = math.sqrt(dx * dx + dz * dz)
         local ux = len > 1e-4 and (dx / len) or 1
         local uz = len > 1e-4 and (dz / len) or 0
-        viber.entity_knockback(h.id, ux, uz, kb)
+        vael.entity_knockback(h.id, ux, uz, kb)
       end
     end
     rules.grant_iframes(1.8)
     g.voice_buff_kind = "geada"
     g.voice_buff_until = now + 25.0
-    if viber.sound then viber.sound("block", pos) end
-    if viber.burst then viber.burst("snow", px, py + 1.0, pz, 20) end
-    if viber.ring then viber.ring(px, pz, 6.5, "#66ccff") end
-    viber.toast("Acorde da Geada: escudo glacial firma a tua lâmina (25s).")
+    if vael.sound then vael.sound("block", pos) end
+    if vael.burst then vael.burst("snow", px, py + 1.0, pz, 20) end
+    if vael.ring then vael.ring(px, pz, 6.5, "#66ccff") end
+    vael.toast("Acorde da Geada: escudo glacial firma a tua lâmina (25s).")
   elseif cls.chord == "tempestade" then
     local dmg = 10 + math.floor(wind_speed * 0.5) + (is_rain and 6 or 0)
     local hits = rules.hostiles_near(px, pz, 7.0, py)
@@ -544,20 +544,20 @@ function M.cast(text, parsed)
     for _, h in ipairs(hits) do
       rules.damage_enemy(h.id, dmg)
       rules.enemy_status(h.id, "shock", 4.0)
-      if viber.vael and viber.vael.puppet_push then
+      if vael.vael and vael.vael.puppet_push then
         local dx, dz = (h.x or px) - px, (h.z or pz) - pz
         local d = math.sqrt(dx * dx + dz * dz)
         local ux, uz = (d > 1e-3) and (dx / d) or 0, (d > 1e-3) and (dz / d) or 1
-        viber.vael.puppet_push(h.id, ux * jolt, 0.0, uz * jolt)
+        vael.vael.puppet_push(h.id, ux * jolt, 0.0, uz * jolt)
       end
     end
     g.voice_dash_reset = true
     g.voice_buff_kind = "tempestade"
     g.voice_buff_until = now + 20.0
-    if viber.sound then viber.sound("thunder", pos) end
-    if viber.burst then viber.burst("sparks", px, py + 1.0, pz, 20) end
-    if viber.ring then viber.ring(px, pz, 7.0, "#ffe066") end
-    viber.toast("Acorde da Tempestade: o relâmpago renova o teu passo!")
+    if vael.sound then vael.sound("thunder", pos) end
+    if vael.burst then vael.burst("sparks", px, py + 1.0, pz, 20) end
+    if vael.ring then vael.ring(px, pz, 7.0, "#ffe066") end
+    vael.toast("Acorde da Tempestade: o relâmpago renova o teu passo!")
   elseif cls.chord == "raiz" then
     if rules.status_clear then
       rules.status_clear("venom")
@@ -569,14 +569,14 @@ function M.cast(text, parsed)
     rules.heal_player(heal)
     g.voice_buff_kind = nil
     g.voice_buff_until = 0
-    if viber.sound then viber.sound("heal", pos) end
-    if viber.burst then viber.burst("leaves", px, py + 1.0, pz, 18) end
-    if viber.ring then viber.ring(px, pz, 4.5, "#66dd88") end
+    if vael.sound then vael.sound("heal", pos) end
+    if vael.burst then vael.burst("leaves", px, py + 1.0, pz, 18) end
+    if vael.ring then vael.ring(px, pz, 4.5, "#66dd88") end
     local guide = find_nearest_uncompleted_target(px, pz, g)
     if guide then
-      viber.toast("Acorde da Raiz: +" .. tostring(heal) .. " vida; eco vivo a " .. guide.dir .. " (~" .. tostring(guide.dist) .. "m).")
+      vael.toast("Acorde da Raiz: +" .. tostring(heal) .. " vida; eco vivo a " .. guide.dir .. " (~" .. tostring(guide.dist) .. "m).")
     else
-      viber.toast("Acorde da Raiz: o veneno cede e +" .. tostring(heal) .. " de vida floresce.")
+      vael.toast("Acorde da Raiz: o veneno cede e +" .. tostring(heal) .. " de vida floresce.")
     end
   elseif cls.chord == "pacto" then
     local tk = cls.target_kind or "wolf"
@@ -587,17 +587,17 @@ function M.cast(text, parsed)
       if hk == tk or (rules.kind_matches and rules.kind_matches(hk, tk)) then
         rules.damage_enemy(h.id, 14)
         rules.enemy_status(h.id, "shock", 3.0)
-        if viber.burst then
-          viber.burst("magic", h.x or px, (h.y or py) + 0.9, h.z or pz, 10)
+        if vael.burst then
+          vael.burst("magic", h.x or px, (h.y or py) + 0.9, h.z or pz, 10)
         end
       end
     end
     g.voice_pact_kind = tk
     g.voice_pact_until = now + 45.0
-    if viber.sound then viber.sound("roar", pos) end
-    if viber.burst then viber.burst("magic", px, py + 1.0, pz, 18) end
-    if viber.ring then viber.ring(px, pz, 9.0, "#cc66ff") end
-    viber.toast("Pacto selado contra " .. label .. " (45s)!")
+    if vael.sound then vael.sound("roar", pos) end
+    if vael.burst then vael.burst("magic", px, py + 1.0, pz, 18) end
+    if vael.ring then vael.ring(px, pz, 9.0, "#cc66ff") end
+    vael.toast("Pacto selado contra " .. label .. " (45s)!")
   end
 
   return {

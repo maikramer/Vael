@@ -1,6 +1,6 @@
 -- enemies/slime.lua: a criatura tutorial — lenta e inofensiva.
--- Toda a máquina vive em lib/fsm.lua (viber.load).
-local fsm = viber.load("lib/fsm.lua").new{
+-- Toda a máquina vive em lib/fsm.lua (vael.load).
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "slime",
   proto = "mob-slime",
   weak = { shock = 1.5 },
@@ -12,7 +12,7 @@ local fsm = viber.load("lib/fsm.lua").new{
               recover = 1.15, clip = "attack", sound = "whoosh", cue = "leave_mark" },
   radius = 3,
   anti_stuck = false,
-  on_first = function() viber.log("slime ativo: FSM wander/chase rodando") end,
+  on_first = function() vael.log("slime ativo: FSM wander/chase rodando") end,
 }
 
 function on_update(dt)

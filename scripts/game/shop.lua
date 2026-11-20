@@ -1,29 +1,29 @@
-local rules = viber.load("lib/rules.lua")
-local actions = viber.load("lib/actions.lua")
+local rules = vael.load("lib/rules.lua")
+local actions = vael.load("lib/actions.lua")
 
 -- A loja corre no mercador (controller no mundo) e no UiRoot (menu): sem
--- posição explícita, `viber.sound` tocava na origem do controller/UI e o
+-- posição explícita, `vael.sound` tocava na origem do controller/UI e o
 -- sino da compra ouvia-se na praça, não na banca.
 local function sfx(name)
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   if has then
-    viber.sound(name, { x = x, y = y, z = z })
+    vael.sound(name, { x = x, y = y, z = z })
   else
-    viber.sound(name)
+    vael.sound(name)
   end
 end
 -- game/shop.lua: a LOJA é do JOGO — a UI, o som e os toasts ficam aqui.
 --
 -- O catálogo, os preços, os tetos e a negociação vivem em `src/economy.rs`
--- (`viber.vael.shop_rows`/`shop_trade`). A engine só publica a ação: os
--- botões da tab Loja fazem `viber.ui.action("buy"/"sell", item)` e chegam
--- aqui via `viber.events()` como {type="ui_action", name=…, arg=…}. Este
--- módulo reclama a fonte da lista `shop` (`viber.ui.list` — a engine deixa de
--- a alimentar) e reclama as ações (`viber.own_action` — o catálogo nativo
+-- (`vael.vael.shop_rows`/`shop_trade`). A engine só publica a ação: os
+-- botões da tab Loja fazem `vael.ui.action("buy"/"sell", item)` e chegam
+-- aqui via `vael.events()` como {type="ui_action", name=…, arg=…}. Este
+-- módulo reclama a fonte da lista `shop` (`vael.ui.list` — a engine deixa de
+-- a alimentar) e reclama as ações (`vael.own_action` — o catálogo nativo
 -- cala). Sem este módulo, a loja nativa da engine continua a funcionar
 -- (compat).
 --
--- Uso (ver merchant.lua): `local shop = viber.load("game/shop.lua")` no
+-- Uso (ver merchant.lua): `local shop = vael.load("game/shop.lua")` no
 -- top-level e `shop.update(dt)` dentro do `on_update`. O mercador leva
 -- `tag="always-active"`: sem isso o LOD de 45 m congelava o script, os
 -- cliques buy/sell acumulavam na fila e descarregavam todos ao voltar
@@ -38,7 +38,7 @@ local M = {}
 -- de compra.
 local function rows()
   local out = {}
-  for _, row in ipairs(viber.vael.shop_rows()) do
+  for _, row in ipairs(vael.vael.shop_rows()) do
     local label = row.label
     if row.selling then
       label = label .. " ×" .. tostring(row.stock)
@@ -54,7 +54,7 @@ local function rows()
   return out
 end
 
--- A lista só é reescrita quando o conteúdo muda: `viber.ui.list` sobe a
+-- A lista só é reescrita quando o conteúdo muda: `vael.ui.list` sobe a
 -- versão do repetidor e reconstrói as linhas (perde o scroll) se for
 -- chamada todos os frames com a mesma tabela.
 local last_sig = ""
@@ -74,12 +74,12 @@ local function refresh()
     return
   end
   last_sig = sig
-  viber.ui.list("shop", list)
+  vael.ui.list("shop", list)
 end
 
 -- top-level do módulo (corre 1× por mundo): reclama lista + ações.
-viber.own_action("buy")
-viber.own_action("sell")
+vael.own_action("buy")
+vael.own_action("sell")
 refresh()
 
 -- Fora de uma cena com mercador nada chamava `update` (é o mercador quem
@@ -87,12 +87,12 @@ refresh()
 -- o ouro/stock do jogo anterior até ao primeiro clique. Um tick lento
 -- mantém-na atual em qualquer cena; a assinatura evita reescrever a UI. O
 -- estado guarda o handle para o hot-reload não acumular timers.
-local ok_state, st = pcall(viber.state)
+local ok_state, st = pcall(vael.state)
 if ok_state and type(st) == "table" then
   if st.refresh_timer then
-    pcall(viber.timer_cancel, st.refresh_timer)
+    pcall(vael.timer_cancel, st.refresh_timer)
   end
-  local ok_timer, handle = pcall(viber.every, 0.5, refresh)
+  local ok_timer, handle = pcall(vael.every, 0.5, refresh)
   st.refresh_timer = ok_timer and handle or nil
 end
 
@@ -101,18 +101,18 @@ end
 local function fail_toast(action, result)
   local reason = result.reason
   if reason == "no_stock" or (reason == "no_price" and action == "sell") then
-    viber.toast("Sem isso para vender.")
+    vael.toast("Sem isso para vender.")
   elseif reason == "no_price" then
-    viber.toast("Não vendo isso.")
+    vael.toast("Não vendo isso.")
   elseif reason == "no_gold" then
     local label = result.label or ""
-    viber.toast(label .. " custa " .. result.price .. " de ouro — não chega.")
+    vael.toast(label .. " custa " .. result.price .. " de ouro — não chega.")
   elseif reason == "full" then
-    viber.toast("Já tens o máximo disso (" .. result.cap .. ").")
+    vael.toast("Já tens o máximo disso (" .. result.cap .. ").")
   elseif reason == "no_space" then
-    viber.toast("Não coube na mochila.")
+    vael.toast("Não coube na mochila.")
   elseif reason == "gold_full" then
-    viber.toast("Não coube o ouro na bolsa.")
+    vael.toast("Não coube o ouro na bolsa.")
   else
     return false
   end
@@ -120,7 +120,7 @@ local function fail_toast(action, result)
 end
 
 local function trade(action, id)
-  local result = viber.vael.shop_trade(action, id)
+  local result = vael.vael.shop_trade(action, id)
   if type(result) ~= "table" then
     return
   end
@@ -132,11 +132,11 @@ local function trade(action, id)
       sfx("buy")
       actions.record("comprar", "item", id)
       local label = tostring(result.label or id)
-      viber.toast("Comprado " .. label:gsub("^Comprar ", "") .. ".")
+      vael.toast("Comprado " .. label:gsub("^Comprar ", "") .. ".")
     elseif action == "sell" then
       sfx("coin")
       actions.record("vender", "item", id)
-      viber.toast("Vendido por " .. result.price .. " de ouro.")
+      vael.toast("Vendido por " .. result.price .. " de ouro.")
     end
   elseif not fail_toast(action, result) then
     return
@@ -147,7 +147,7 @@ local function trade(action, id)
 end
 
 -- Compra/venda direta para a UI (UI bevy_pf). O caminho por
--- `viber.ui.action` depende de quem carregou o módulo ser o dono da ação; em
+-- `vael.ui.action` depende de quem carregou o módulo ser o dono da ação; em
 -- interiores sem mercador a fila nunca era drenada. A UI autoload chama
 -- isto e a negociação funciona em qualquer cena, no frame do clique.
 M.trade = trade
@@ -158,10 +158,10 @@ function M.update(dt)
   -- seguinte — e o ouro de um abate nunca destrancava uma compra.
   refresh()
   -- Os CLIQUES das linhas são roteados pela UI bevy_pf
-  -- (`shop-{id}` → `viber.ui.action`). Várias entidades `merchant.lua` na
+  -- (`shop-{id}` → `vael.ui.action`). Várias entidades `merchant.lua` na
   -- mesma cena partilham ESTA fila (uma por path): a primeira drena, a
   -- segunda vê-a vazia — uma compra não cobra duas vezes.
-  for _, ev in ipairs(viber.events()) do
+  for _, ev in ipairs(vael.events()) do
     if ev.type == "ui_action" and (ev.name == "buy" or ev.name == "sell") then
       trade(ev.name, ev.arg)
     end

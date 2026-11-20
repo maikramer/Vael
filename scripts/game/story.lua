@@ -1,5 +1,5 @@
-local rules = viber.load("lib/rules.lua")
-local dev = viber.load("lib/dev.lua")
+local rules = vael.load("lib/rules.lua")
+local dev = vael.load("lib/dev.lua")
 -- game/story.lua: o fio do Capítulo I — O Silêncio de Vael (ver STORY.md).
 --
 --   * PRÓLOGO na primeira entrada no mundo (marca `story_prologo` no save);
@@ -7,7 +7,7 @@ local dev = viber.load("lib/dev.lua")
 --     `story_notas` do Ancião Edmar conta-as) e toca a cena `nota`;
 --   * ENTREGAR as quatro ao Ancião toca o `epilogo`.
 --
--- As marcas vivem em `viber.game()` (valores primitivos persistem no save):
+-- As marcas vivem em `vael.game()` (valores primitivos persistem no save):
 -- recarregar um save não repete cenas nem dá Notas a dobrar.
 --
 -- Host: `world/gameplay.xml` (`tag="always-active"`).
@@ -47,7 +47,7 @@ end
 -- O abate chega do FSM (regra do jogo) via `rules.award_kill`; não há
 -- evento global de kill na engine.
 local function award_guardian_note(kind)
-  local g = viber.game()
+  local g = vael.game()
   if not GUARDIANS[kind] or g["nota_" .. kind] then
     return
   end
@@ -55,34 +55,34 @@ local function award_guardian_note(kind)
   g["nota_" .. kind] = true
   local n = notes_found(g)
   -- O abate pode chegar durante a troca de cena: sem player não há burst.
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   if has then
-    viber.burst("sparkle", x, y + 1.2, z, 40)
-    viber.ring(x, z, 4, "#9fd8ff")
+    vael.burst("sparkle", x, y + 1.2, z, 40)
+    vael.ring(x, z, 4, "#9fd8ff")
   end
-  viber.toast(GUARDIANS[kind] .. " recuperada (" .. n .. "/4)")
+  vael.toast(GUARDIANS[kind] .. " recuperada (" .. n .. "/4)")
   -- Toca no `on_update` seguinte (ver NOTE_CINE_DELAY): se a cena mudou
   -- entretanto, este controller já não corre e a cena não aparece na sala.
-  note_cine_at = viber.time() + NOTE_CINE_DELAY
-  note_cine_scene = viber.scene_name and viber.scene_name() or nil
+  note_cine_at = vael.time() + NOTE_CINE_DELAY
+  note_cine_scene = vael.scene_name and vael.scene_name() or nil
   note_cine_kind = kind
 end
 
 rules.on_kill = award_guardian_note
 
 function on_update(dt)
-  local g = viber.game()
-  local st = viber.state()
+  local g = vael.game()
+  local st = vael.state()
   st.clock = (st.clock or 0) + dt
 
-  -- Arranque de DEBUG (`viber run --scene main --entry dev`): o título não
+  -- Arranque de DEBUG (`vael-tools run --scene main --entry dev`): o título não
   -- abriu, por isso o prólogo também não pode disparar. A marca fica em
-  -- `viber.game()` (persiste no save) porque esta entidade RENASCE ao voltar
+  -- `vael.game()` (persiste no save) porque esta entidade RENASCE ao voltar
   -- de um interior: com um latch só de `state`, a cena aparecia à primeira
   -- saída da vila. Um "Novo Jogo" normal limpa a tabela e volta a vê-la.
   --
   -- O latch de ENTIDADE impede o pior: um `load_slot` na MESMA cena repõe o
-  -- `viber.game()` do save (sem `story_prologo`) mas não recria este script;
+  -- `vael.game()` do save (sem `story_prologo`) mas não recria este script;
   -- sem o latch, o ramo voltava a marcar o prólogo como visto e poluía um
   -- save normal carregado durante a sessão de debug.
   if dev.skip_intro() and not st.dev_prologo then
@@ -102,7 +102,7 @@ function on_update(dt)
     -- Save antigo (anterior ao ecrã de título) carregado em `main`: a
     -- campanha já começou, o `nil` não pode calar o prólogo/epílogo para
     -- sempre. Num mundo avulso `scene_name` é nil e a campanha fica fora.
-    local scene = viber.scene_name and viber.scene_name() or nil
+    local scene = vael.scene_name and vael.scene_name() or nil
     if scene ~= "main" and scene ~= "menu" then
       return
     end
@@ -115,9 +115,9 @@ function on_update(dt)
   -- Uma assinatura anterior ou feita neste frame vale em qualquer ordem.
   if g["q.story_first_fold"] == "active" and (g["q.story_first_fold.stage"] or 1) == 1
       and g["mark.atalaia-do-vale"] then
-    if viber.vael.opening_action("sign") then
-      viber.toast("Marco assinado. Leva a folha à criança no portão norte.")
-      viber.save_slot(0)
+    if vael.vael.opening_action("sign") then
+      vael.toast("Marco assinado. Leva a folha à criança no portão norte.")
+      vael.save_slot(0)
     end
   end
 
@@ -133,46 +133,46 @@ function on_update(dt)
   -- diário aberto só toca quando o jogo volta a estar livre (e na mesma
   -- cena); fora da janela curta, perde-se a cena mas não a Nota.
   if note_cine_at > 0 then
-    local now = viber.time()
-    local scene = viber.scene_name and viber.scene_name() or nil
-    -- Um load na MESMA cena repõe `viber.game()` do save (a marca da Nota
+    local now = vael.time()
+    local scene = vael.scene_name and vael.scene_name() or nil
+    -- Um load na MESMA cena repõe `vael.game()` do save (a marca da Nota
     -- pode não estar lá) mas não recria este script: sem esta checagem a
     -- cena tocava por uma Nota que o save carregado não tem.
     local dropped = note_cine_kind ~= nil and not g["nota_" .. note_cine_kind]
     if dropped or now > note_cine_at + NOTE_CINE_TTL
         or scene ~= note_cine_scene then
       note_cine_at, note_cine_kind = 0, nil
-    elseif now >= note_cine_at and not viber.cinematic_playing()
-        and not viber.menu_open() and not hero_down() then
+    elseif now >= note_cine_at and not vael.cinematic_playing()
+        and not vael.menu_open() and not hero_down() then
       note_cine_at, note_cine_kind = 0, nil
-      viber.cinematic("nota")
+      vael.cinematic("nota")
     end
   end
 
   if not g.story_prologo and st.clock > PROLOGUE_DELAY
-      and not viber.cinematic_playing() and not viber.menu_open()
+      and not vael.cinematic_playing() and not vael.menu_open()
       and not hero_down() then
     g.story_prologo = true
-    viber.cinematic("prologo")
+    vael.cinematic("prologo")
   end
 
   -- A entrega vive em Lua (`quest_turn_in`). A engine já não emite
   -- `quest_done` para estas missões, por isso o epílogo nunca arrancava.
   if rules.quest_state("story_notas") == "done" and not g.story_epilogo
-      and not viber.cinematic_playing() and not viber.menu_open()
+      and not vael.cinematic_playing() and not vael.menu_open()
       and not hero_down() then
     g.story_epilogo = true
-    viber.cinematic("epilogo")
+    vael.cinematic("epilogo")
   end
 
-  for _, ev in ipairs(viber.events()) do
+  for _, ev in ipairs(vael.events()) do
     if ev.type == "cinematic_end" and ev.id == "prologo" then
-      viber.toast("Fala com o Ancião Edmar, junto ao salão comunal.")
+      vael.toast("Fala com o Ancião Edmar, junto ao salão comunal.")
     elseif ev.type == "cinematic_end" and ev.id == "epilogo" then
       -- A entrega grava o autosave ANTES de este controller marcar
       -- `story_epilogo` (a ordem dos `on_update` não é garantida). Carregar
       -- esse save repetia o epílogo; um autosave no fim fixa a marca.
-      viber.save_slot(0)
+      vael.save_slot(0)
     end
   end
 end

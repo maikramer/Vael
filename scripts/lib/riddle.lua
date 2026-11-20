@@ -7,13 +7,13 @@
 --   * extrai VÁRIAS entidades de uma frase ("pedra, madeira e fruta") e o
 --     enigma pode exigir todas.
 --
--- Estado em `viber.game()["riddle.<id>"]` (primitivo, persiste no save).
+-- Estado em `vael.game()["riddle.<id>"]` (primitivo, persiste no save).
 local M = {}
 
-local rules = viber.load("lib/rules.lua")
-local parley = viber.load("lib/parley.lua")
-local marks = viber.load("lib/landmarks.lua")
-local decide = viber.load("lib/decide.lua")
+local rules = vael.load("lib/rules.lua")
+local parley = vael.load("lib/parley.lua")
+local marks = vael.load("lib/landmarks.lua")
+local decide = vael.load("lib/decide.lua")
 
 local defs          -- id -> riddle
 local by_site       -- entity name -> riddle
@@ -23,9 +23,9 @@ local function load()
     return
   end
   defs, by_site = {}, {}
-  local ok, data = pcall(viber.load_json, "data/riddles.json")
+  local ok, data = pcall(vael.load_json, "data/riddles.json")
   if not ok or type(data) ~= "table" then
-    viber.log("enigmas: falha a ler data/riddles.json"
+    vael.log("enigmas: falha a ler data/riddles.json"
       .. (ok and "" or (" (" .. tostring(data) .. ")")))
     return
   end
@@ -52,11 +52,11 @@ function M.by_site(site)
 end
 
 function M.solved(id)
-  return viber.game()["riddle." .. tostring(id)] == true
+  return vael.game()["riddle." .. tostring(id)] == true
 end
 
 function M.mark_solved(id)
-  viber.game()["riddle." .. tostring(id)] = true
+  vael.game()["riddle." .. tostring(id)] = true
 end
 
 local function expect_list(r)
@@ -215,8 +215,8 @@ function M.reward(id)
   if missing > 0 then
     msg = msg .. " — " .. missing .. " item(ns) não coube(ram)."
   end
-  viber.toast(msg)
-  viber.sound("quest_complete")
+  vael.toast(msg)
+  vael.sound("quest_complete")
 end
 
 -- Abre a barra de fala com a pergunta do enigma. O chamador (santuário)
@@ -226,7 +226,7 @@ function M.ask(id, on_solved)
   if not r then
     return false
   end
-  local say = viber.load("ui/say.lua")
+  local say = vael.load("ui/say.lua")
   local use_decision = decide.ready()
   local resolved = false
   local asked = say.ask({
@@ -270,7 +270,7 @@ function M.ask(id, on_solved)
   return asked
 end
 
--- Teste do juiz (bridge: `viber.load("lib/riddle.lua").self_test()`).
+-- Teste do juiz (bridge: `vael.load("lib/riddle.lua").self_test()`).
 function M.self_test()
   load()
   local errors = {}
@@ -301,7 +301,7 @@ function M.self_test()
   if not route then
     errors[#errors + 1] = "menhir_route: enigma ausente"
   else
-    local game = viber.game()
+    local game = vael.game()
     local saved = {}
     for _, name in ipairs(route.require_marks or {}) do
       local key = marks.marked_key(name)

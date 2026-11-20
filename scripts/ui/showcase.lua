@@ -1,8 +1,8 @@
 -- ui/showcase.lua — comportamento da vitrina da UI declarativa.
 --
 -- Demonstra a metade dinâmica da API: alimentar listas por script
--- (viber.ui.list), ler o estado de widgets (viber.ui.read), reagir
--- a cliques e ligar/desligar animação em runtime (viber.ui.set_anim).
+-- (vael.ui.list), ler o estado de widgets (vael.ui.read), reagir
+-- a cliques e ligar/desligar animação em runtime (vael.ui.set_anim).
 
 -- Mochila de demonstração: uma fonte de lista que NÃO é da engine —
 -- só existe porque o script a alimenta.
@@ -20,18 +20,18 @@ local missoes = {
 }
 
 -- O top-level corre uma vez: instala as fontes e o estado inicial.
-viber.ui.list("bag-demo", mochila)
+vael.ui.list("bag-demo", mochila)
 
 -- Nota: `quests` já é fonte da engine (menu_data); reescrevê-la por
 -- script sobrepõe-se — só para a vitrina ficar autónoma.
-viber.ui.list("quests", missoes)
+vael.ui.list("quests", missoes)
 
 local function descreve()
-  local nome = viber.ui.read("hero-name")
-  local vol = viber.ui.read("volume")
-  local hud = viber.ui.read("check-hud")
-  local anim = viber.ui.read("check-anim")
-  local sfx = viber.ui.read("check-sfx")
+  local nome = vael.ui.read("hero-name")
+  local vol = vael.ui.read("volume")
+  local hud = vael.ui.read("check-hud")
+  local anim = vael.ui.read("check-anim")
+  local sfx = vael.ui.read("check-sfx")
   return string.format(
     "read() em vivo:\n" ..
     "  hero-name .text = %s\n" ..
@@ -45,36 +45,36 @@ local function descreve()
     hud and tostring(hud.checked) or "—",
     anim and tostring(anim.checked) or "—",
     sfx and tostring(sfx.checked) or "—",
-    viber.ui.list_count("quests"),
-    viber.ui.list_count("bag-demo")
+    vael.ui.list_count("quests"),
+    vael.ui.list_count("bag-demo")
   )
 end
 
-local st = viber.state() -- estado desta entidade UiRoot
+local st = vael.state() -- estado desta entidade UiRoot
 
 -- ── UI v2: bind por script — a tag do banner acende via class-bind
 -- (`<UiPanel class="banner" bind="demo.gradiente:on-tag">` + `.banner.on`).
 -- Nomes da engine têm prioridade; "demo.gradiente" é nosso.
-viber.ui.set("demo.gradiente", true)
+vael.ui.set("demo.gradiente", true)
 
 function on_update(dt)
-  viber.ui.set_text("readout-text", descreve())
+  vael.ui.set_text("readout-text", descreve())
 
   -- A vitrina não corre regras de jogo: nenhum script alimenta `xp`/`cd.*`
   -- neste mundo, por isso as barras e os cooldowns ficavam parados no valor
   -- autoral. A demo publica-os (bind de script) para se ver a animação.
   st.demo_t = (st.demo_t or 0) + dt
   local xp = 0.35 + 0.35 * (0.5 + 0.5 * math.sin(st.demo_t * 0.7))
-  viber.ui.set("xp", xp)
-  viber.ui.set("cd.dash", 1 - (st.demo_t % 6) / 6)
-  viber.ui.set("cd.heal", 1 - ((st.demo_t + 3) % 6) / 6)
+  vael.ui.set("xp", xp)
+  vael.ui.set("cd.dash", 1 - (st.demo_t % 6) / 6)
+  vael.ui.set("cd.heal", 1 - ((st.demo_t + 3) % 6) / 6)
 
   -- O selo roda só enquanto o check o manda (set_anim em runtime).
-  local anim = viber.ui.read("check-anim")
+  local anim = vael.ui.read("check-anim")
   local a_ligar = anim and anim.checked or false
   if a_ligar ~= st.selo_a_rodar then
     st.selo_a_rodar = a_ligar
-    viber.ui.set_anim("seal", a_ligar and "spin 6" or "none")
+    vael.ui.set_anim("seal", a_ligar and "spin 6" or "none")
   end
 
   -- ── Eventos: o lote do frame drenado UMA vez. Substitui o padrão
@@ -84,61 +84,61 @@ function on_update(dt)
   --    scripts de UI.
   local evs = {}
   for _, prefix in ipairs({ "demo-", "banner", "hero-", "volume", "check-" }) do
-    for _, ev in ipairs(viber.ui.events(prefix)) do
+    for _, ev in ipairs(vael.ui.events(prefix)) do
       evs[#evs + 1] = ev
     end
   end
   for _, ev in ipairs(evs) do
     if ev.type == "click" and ev.id == "demo-btn" then
       -- Tween explícito: o banner esbate — a volta começa no tween_done.
-      viber.ui.tween("banner", { property = "opacity", to = 0.25,
+      vael.ui.tween("banner", { property = "opacity", to = 0.25,
                                  duration = 0.3, easing = "ease-out" })
     elseif ev.type == "tween_done" and ev.id == "banner"
            and ev.property == "opacity" then
-      viber.ui.tween("banner", { property = "opacity", to = 1,
+      vael.ui.tween("banner", { property = "opacity", to = 1,
                                  duration = 0.5, easing = "ease-in-out" })
     elseif ev.type == "text_changed" then
-      viber.log("hero-name mudou -> " .. tostring(ev.text))
+      vael.log("hero-name mudou -> " .. tostring(ev.text))
     elseif ev.type == "value_changed" then
-      viber.log("volume -> " .. tostring(ev.value))
+      vael.log("volume -> " .. tostring(ev.value))
       -- O `<UiText class="slider-readout">` é autoral e estático: sem um
       -- consumidor ficava sempre no "70" enquanto o handle deslizava. O id é
       -- descoberto pelo seletor (a vitrina não pode declarar ids novos sem
       -- editar o XML).
       if ev.id == "volume" then
-        local readout = viber.ui.query(".slider-readout")
+        local readout = vael.ui.query(".slider-readout")
         if readout[1] then
-          viber.ui.set_text(readout[1], string.format("%.0f", ev.value))
+          vael.ui.set_text(readout[1], string.format("%.0f", ev.value))
         end
       end
     elseif ev.type == "checked_changed" then
       -- O check-sfx não tinha consumidor: o prefixo "check-" não estava na
       -- lista e o toggle não fazia (nem registava) nada.
-      viber.log(tostring(ev.id) .. " -> " .. tostring(ev.checked))
+      vael.log(tostring(ev.id) .. " -> " .. tostring(ev.checked))
     end
   end
 
   -- ── Criação dinâmica: uma linha nova a cada 4 s (cap 3), com tween
-  --    de entrada; contada por viber.ui.query(".linha-dinamica").
+  --    de entrada; contada por vael.ui.query(".linha-dinamica").
   st.spawn_timer = (st.spawn_timer or 0.0) + dt
   if st.spawn_timer >= 4.0 then
     st.spawn_timer = 0.0
-    local linhas = viber.ui.query(".linha-dinamica")
+    local linhas = vael.ui.query(".linha-dinamica")
     if #linhas >= 3 then
       -- cheio: remove a mais antiga (destroy tira a subárvore do registry)
-      viber.ui.destroy(linhas[1])
+      vael.ui.destroy(linhas[1])
     end
-    local id = viber.ui.create{
+    local id = vael.ui.create{
       tag = "uipanel", parent = "dynamic-area", class = "linha-dinamica",
       id = "dyn-" .. tostring((st.linhas or 0) + 1),
     }
-    viber.ui.create{
+    vael.ui.create{
       tag = "uitext", parent = id,
       text = "linha dinâmica #" .. tostring((st.linhas or 0) + 1),
     }
     st.linhas = (st.linhas or 0) + 1
-    viber.ui.tween(id, { property = "opacity", from = 0, to = 1, duration = 0.4 })
-    viber.log("criado " .. id .. " — query conta "
-              .. tostring(#viber.ui.query(".linha-dinamica")) .. " linha(s)")
+    vael.ui.tween(id, { property = "opacity", from = 0, to = 1, duration = 0.4 })
+    vael.log("criado " .. id .. " — query conta "
+              .. tostring(#vael.ui.query(".linha-dinamica")) .. " linha(s)")
   end
 end

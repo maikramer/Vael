@@ -1,26 +1,26 @@
 -- lib/craft.lua: a FORJA — a regra vive em `src/economy.rs`; aqui fica a UI.
 --
 -- Uma receita é `{ id, out, count, cost = { item = n, … } }`; o ouro entra no
--- custo como qualquer outro recurso. O Rust (`viber.vael.craft_status`/
+-- custo como qualquer outro recurso. O Rust (`vael.vael.craft_status`/
 -- `craft_make`) verifica o custo e o espaço na mochila ANTES de tirar o que
 -- quer que seja, e devolve o que tirou se o produto não couber. A bigorna
 -- (`scripts/anvil.lua`) abre o separador Forja do diário; a lista `forge` é
 -- montada aqui.
 
-local rules = viber.load("lib/rules.lua")
-local actions = viber.load("lib/actions.lua")
+local rules = vael.load("lib/rules.lua")
+local actions = vael.load("lib/actions.lua")
 
 local M = {}
 
 -- Receitas normalizadas em Rust (ids únicos, custos positivos ordenados).
-local RECIPES = viber.vael.craft_recipes()
+local RECIPES = vael.vael.craft_recipes()
 
 local function sfx(name)
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   if has then
-    viber.sound(name, { x = x, y = y, z = z })
+    vael.sound(name, { x = x, y = y, z = z })
   else
-    viber.sound(name)
+    vael.sound(name)
   end
 end
 
@@ -46,19 +46,19 @@ function M.status(r)
   if type(r) ~= "table" or type(r.id) ~= "string" or r.id == "" then
     return "missing"
   end
-  return viber.vael.craft_status(r.id) or "missing"
+  return vael.vael.craft_status(r.id) or "missing"
 end
 
 function M.make(id)
-  local result = viber.vael.craft_make(id)
+  local result = vael.vael.craft_make(id)
   if type(result) ~= "table" then
     return false
   end
   if not result.ok then
     if result.reason == "missing" then
-      viber.toast("Falta material para forjar isso.")
+      vael.toast("Falta material para forjar isso.")
     elseif result.reason == "full" then
-      viber.toast("Já não cabe mais disso na mochila.")
+      vael.toast("Já não cabe mais disso na mochila.")
     else
       -- Receita desconhecida: o Lua antigo saía em silêncio.
       return false
@@ -74,7 +74,7 @@ function M.make(id)
   rules.report_craft(out, count)
   rules.add_xp(10)
   sfx("mine_hit")
-  viber.toast("Forjado: " .. rules.item_label(out) .. (count > 1 and (" ×" .. count) or "") .. ".")
+  vael.toast("Forjado: " .. rules.item_label(out) .. (count > 1 and (" ×" .. count) or "") .. ".")
   return true
 end
 
@@ -102,12 +102,12 @@ function M.refresh()
     }
     parts[i] = r.id .. "\2" .. status .. "\2" .. rows[i].cost
   end
-  local sig = tostring(viber.game().lang) .. "\1" .. table.concat(parts, "\1")
+  local sig = tostring(vael.game().lang) .. "\1" .. table.concat(parts, "\1")
   if sig == last_sig then
     return
   end
   last_sig = sig
-  viber.ui.list("forge", rows)
+  vael.ui.list("forge", rows)
 end
 
 return M

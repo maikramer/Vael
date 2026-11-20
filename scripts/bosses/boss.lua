@@ -1,9 +1,9 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- bosses/boss.lua: ogro dos Picos Gelados com gating (loop 6): dorme
 -- enquanto houver OUTROS hostis vivos na banda sul. Toda a máquina vive em
--- lib/fsm.lua (viber.load). Chefe final: poise alto, SISMO a cada 3 golpes
+-- lib/fsm.lua (vael.load). Chefe final: poise alto, SISMO a cada 3 golpes
 -- (zona larga à volta dele) e fúria abaixo de 40 % de vida.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "boss",
   hp = 1200,
   intro = "guardiao-ogro", -- cena de despertar (world/cinematics.xml)

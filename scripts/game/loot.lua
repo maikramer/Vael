@@ -1,9 +1,9 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- game/loot.lua: DESPOJOS dos abates — o jogo decide, em Lua, o que cai.
 --
 -- A engine já dá XP, cadáver e o progresso de quest no abate; o ouro vinha
 -- só de quests e da venda de recursos, pelo que caçar não pagava nada.
--- Este controller ouve os eventos `kill` (`viber.events()`, fila própria)
+-- Este controller ouve os eventos `kill` (`vael.events()`, fila própria)
 -- e paga no sítio do cadáver: ouro por tipo de criatura (intervalo) e uma
 -- CHANCE de consumível — poção para toda a gente, antídoto sobretudo dos
 -- venenosos. Os chefes pagam uma bolsa grande e sempre poções.
@@ -64,7 +64,7 @@ function M.pay(kind, id, x, y, z)
   if not entry then return end
   -- Elites (lib/fsm.lua regista-os): ouro ×3, poção garantida e chance de
   -- bomba — vale a pena o risco.
-  local elites = viber.game().elites
+  local elites = vael.game().elites
   -- `elites[nil]` derruba o script no frame do abate e o ouro não cai.
   local elite = id ~= nil and elites and elites[id]
   if elite then
@@ -75,13 +75,13 @@ function M.pay(kind, id, x, y, z)
     -- Sem id, `entity_position()` cairia no controller do loot (origem do
     -- mundo) e o número saía na praça. O fallback certo é o HERÓI.
     if id then
-      local ok, ex, ey, ez = viber.entity_position(id)
+      local ok, ex, ey, ez = vael.entity_position(id)
       if ok then
         x, y, z = ex, ey, ez
       end
     end
     if x == nil then
-      local pok, px, py, pz = viber.player_position()
+      local pok, px, py, pz = vael.player_position()
       if pok then
         x, y, z = px, py, pz
       end
@@ -97,14 +97,14 @@ function M.pay(kind, id, x, y, z)
   -- negativo que a `vault_add` corrige) "+N ouro" mentia.
   local gold_in = rules.vault_add("gold", gold) or 0
   if gold_in > 0 and has_pos then
-    viber.damage_number("+" .. gold_in .. " ouro", { color = GOLD_COLOR, x = x, y = y + 1.6, z = z })
+    vael.damage_number("+" .. gold_in .. " ouro", { color = GOLD_COLOR, x = x, y = y + 1.6, z = z })
   end
   if has_pos then
-    viber.burst("sparkle", x, y + 0.8, z, 10)
-    viber.sound("coin", { x = x, y = y, z = z })
+    vael.burst("sparkle", x, y + 0.8, z, 10)
+    vael.sound("coin", { x = x, y = y, z = z })
   else
     -- Sem coordenadas, a origem do controller (a praça) é melhor que (0,0,0).
-    viber.sound("coin")
+    vael.sound("coin")
   end
   local potions, antidotes = roll_count(entry[3]), roll_count(entry[4])
   if potions > 0 then
@@ -113,35 +113,35 @@ function M.pay(kind, id, x, y, z)
     local added = rules.item_add("potion", potions) or 0
     if added > 0 and has_pos then
       local label = added == 1 and " poção" or " poções"
-      viber.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.2, z = z })
+      vael.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.2, z = z })
     end
     if added < potions then
       -- O que não coube também não pode desaparecer em silêncio.
       local missing = potions - added
       local label = missing == 1 and " poção" or " poções"
       local verb = missing == 1 and " não entrou." or " não entraram."
-      viber.toast("Mochila cheia: " .. missing .. label .. verb)
+      vael.toast("Mochila cheia: " .. missing .. label .. verb)
     end
   end
   local mat = MATERIALS[kind]
   if mat and math.random() < mat[2] * (elite and 2 or 1) then
     if (rules.item_add(mat[1], 1) or 0) > 0 and has_pos then
-      viber.damage_number("+1 " .. rules.item_label(mat[1]), { color = ITEM_COLOR, x = x, y = y + 3.4, z = z })
+      vael.damage_number("+1 " .. rules.item_label(mat[1]), { color = ITEM_COLOR, x = x, y = y + 3.4, z = z })
     end
   end
   if elite then
-    viber.toast("Elite derrotado!")
+    vael.toast("Elite derrotado!")
     if has_pos then
-      viber.burst("sparkle", x, y + 1.0, z, 24)
+      vael.burst("sparkle", x, y + 1.0, z, 24)
     end
     if math.random() < 0.35 then
       if (rules.item_add("bomb", 1) or 0) > 0 then
         if has_pos then
-          viber.damage_number("+1 bomba", { color = ITEM_COLOR, x = x, y = y + 3.0, z = z })
+          vael.damage_number("+1 bomba", { color = ITEM_COLOR, x = x, y = y + 3.0, z = z })
         end
       else
         -- A chance saiu e a bomba perdeu-se em silêncio: avisa que foi a bolsa.
-        viber.toast("A bomba do elite não coube na mochila (99).")
+        vael.toast("A bomba do elite não coube na mochila (99).")
       end
     end
   end
@@ -149,19 +149,19 @@ function M.pay(kind, id, x, y, z)
     local added = rules.item_add("antidote", antidotes) or 0
     if added > 0 and has_pos then
       local label = added == 1 and " antídoto" or " antídotos"
-      viber.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.6, z = z })
+      vael.damage_number("+" .. added .. label, { color = ITEM_COLOR, x = x, y = y + 2.6, z = z })
     end
     if added < antidotes then
       local missing = antidotes - added
       local label = missing == 1 and " antídoto" or " antídotos"
       local verb = missing == 1 and " não entrou." or " não entraram."
-      viber.toast("Mochila cheia: " .. missing .. label .. verb)
+      vael.toast("Mochila cheia: " .. missing .. label .. verb)
     end
   end
 end
 
 function on_update(dt)
-  for _, ev in ipairs(viber.events()) do
+  for _, ev in ipairs(vael.events()) do
     if ev.type == "kill" then
       M.pay(ev.name, ev.entity)
     end

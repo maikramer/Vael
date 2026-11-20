@@ -12,7 +12,7 @@
 //! * Quando o herói equipa a tocha de mão (`V`, `TorchLightOverride > 0`), a
 //!   lanterna da cintura esconde-se (passou para a mão) e a luz acompanha a
 //!   mão; ao voltar à espada, regressa à cintura mantendo o estado do botão.
-//! * `viber.vael.lantern_{on,lit,intensity,set}` expõe o estado aos scripts
+//! * `vael.vael.lantern_{on,lit,intensity,set}` expõe o estado aos scripts
 //!   Lua: `lib/fsm.lua` reduz o alcance de visão dos inimigos à noite com a
 //!   lanterna apagada e atrai-os quando acesa.
 
@@ -39,7 +39,7 @@ use crate::input::VaelGameplayActions;
 use crate::save::VaelSave;
 use crate::vault::{vael_fn, vael_table};
 
-/// Chave persistida no save (`viber.game().lantern_on`).
+/// Chave persistida no save (`vael.game().lantern_on`).
 pub const LANTERN_SAVE_KEY: &str = "lantern_on";
 /// Modelo 3D da lanterna (o mesmo do pool da tocha, escalado para o cinto).
 pub const WAIST_LANTERN_GLB: &str = "assets/meshes/interiors/lantern_hanging_lod0.glb";
@@ -83,7 +83,7 @@ pub struct LanternSnapshot {
     pub lit: bool,
     /// Intensidade normalizada atual (0..1) após o fade suave.
     pub intensity: f32,
-    /// Pedido pendente vindo do Lua (`viber.vael.lantern_set`).
+    /// Pedido pendente vindo do Lua (`vael.vael.lantern_set`).
     pending_set: Option<bool>,
 }
 
@@ -182,14 +182,14 @@ impl Plugin for VaelLanternPlugin {
     }
 }
 
-/// Arranque: regista `viber.vael.lantern_{on,lit,intensity,set}` nos contextos BMS e REPL.
+/// Arranque: regista `vael.vael.lantern_{on,lit,intensity,set}` nos contextos BMS e REPL.
 pub(crate) fn install_lantern_api(state: Res<VaelLanternState>) {
     let state = state.clone();
     crate::script_host::register_installer(move |lua| install(lua, &state));
-    info!("vael: lanterna de cintura registada nos contextos BMS (`viber.vael`)");
+    info!("vael: lanterna de cintura registada nos contextos BMS (`vael.vael`)");
 }
 
-/// Instala as funções da lanterna em `viber.vael`.
+/// Instala as funções da lanterna em `vael.vael`.
 pub(crate) fn install(lua: &Lua, state: &VaelLanternState) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
@@ -231,7 +231,7 @@ pub fn lantern_flicker(elapsed: f32) -> f32 {
 }
 
 /// Sincroniza o interruptor da lanterna com o save (load/novo jogo) e drena
-/// pedidos vindos de `viber.vael.lantern_set`.
+/// pedidos vindos de `vael.vael.lantern_set`.
 fn sync_lantern_from_save(
     time: Res<Time>,
     state: Res<VaelLanternState>,
@@ -851,17 +851,17 @@ mod tests {
         let state = VaelLanternState::default();
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().unwrap())
+            .set("vael", lua.create_table().unwrap())
             .unwrap();
         install(&lua, &state).unwrap();
 
-        assert!(!lua.load("return viber.vael.lantern_on()").eval::<bool>().unwrap());
-        assert!(!lua.load("return viber.vael.lantern_lit()").eval::<bool>().unwrap());
-        lua.load("viber.vael.lantern_set(true)").exec().unwrap();
-        assert!(lua.load("return viber.vael.lantern_on()").eval::<bool>().unwrap());
-        assert!(lua.load("return viber.vael.lantern_lit()").eval::<bool>().unwrap());
-        lua.load("viber.vael.lantern_set(false)").exec().unwrap();
-        assert!(!lua.load("return viber.vael.lantern_on()").eval::<bool>().unwrap());
+        assert!(!lua.load("return vael.vael.lantern_on()").eval::<bool>().unwrap());
+        assert!(!lua.load("return vael.vael.lantern_lit()").eval::<bool>().unwrap());
+        lua.load("vael.vael.lantern_set(true)").exec().unwrap();
+        assert!(lua.load("return vael.vael.lantern_on()").eval::<bool>().unwrap());
+        assert!(lua.load("return vael.vael.lantern_lit()").eval::<bool>().unwrap());
+        lua.load("vael.vael.lantern_set(false)").exec().unwrap();
+        assert!(!lua.load("return vael.vael.lantern_on()").eval::<bool>().unwrap());
     }
 
     #[test]

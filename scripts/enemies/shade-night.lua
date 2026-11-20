@@ -2,7 +2,7 @@
 -- Nasce perto do herói fora da vila (game/spawns.lua), é mais rápida e bate
 -- mais do que a sombra comum, e desfaz-se ao amanhecer sem deixar nada.
 -- Conta como "shade" nas missões (prefixo `shade-`). Máquina: lib/fsm.lua.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "shade-night",
   hp = 120,
   wander = 1.6, chase = 4.6,

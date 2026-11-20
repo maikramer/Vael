@@ -2,21 +2,21 @@
 -- Aceita, mostra progresso e entrega. Sem a quest nativa da engine.
 --@export dialogue_id: string = ""
 
-local rules = viber.load("lib/rules.lua")
-local opening = viber.load("lib/opening.lua")
-local marks = viber.load("lib/landmarks.lua")
-local talk = viber.load("ui/say.lua")
-local decide = viber.load("lib/decide.lua")
+local rules = vael.load("lib/rules.lua")
+local opening = vael.load("lib/opening.lua")
+local marks = vael.load("lib/landmarks.lua")
+local talk = vael.load("ui/say.lua")
+local decide = vael.load("lib/decide.lua")
 
 -- O UiInput focado come as teclas: não disparar [E]/diálogo enquanto se escreve.
 local function typing()
-  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+  return vael.ui and vael.ui.focused and vael.ui.focused() ~= nil
 end
 
 -- CADEIAS: uma quest entregue com `next` passa o dador para a seguinte
 -- (`rules.quest_chain`). O prop continua a apontar a primeira.
 local function quest_id()
-  local id = viber.prop("dialogue_id")
+  local id = vael.prop("dialogue_id")
   if id and id ~= "" and rules.quest_chain then
     return rules.quest_chain(id)
   end
@@ -40,7 +40,7 @@ local function say(lines, fallback, remaining)
   text = text:gsub("{remaining}", tostring(remaining or 0))
   talk.say(text)
   -- Balão aberto: 1/2/V são da conversa, não da hotbar/equipamento.
-  viber.ui.set("dialogue.until", viber.time() + 0.75)
+  vael.ui.set("dialogue.until", vael.time() + 0.75)
 end
 
 function on_update(_dt)
@@ -48,13 +48,13 @@ function on_update(_dt)
   if not id or id == "" then
     return
   end
-  local st = viber.state()
+  local st = vael.state()
   local def = rules.quest_def(id)
   local title = def and def.title or id
   local state = rules.quest_state(id)
   local label = state == "ready" and (title .. " · pronta") or title
   local region
-  local show_note = id == "forest_witch" and state == "ready" and viber.game()["campaign.opening"]
+  local show_note = id == "forest_witch" and state == "ready" and vael.game()["campaign.opening"]
   if show_note then label = "Mostrar a Nota do Bosque a Vessa" end
   local hidden = state == "not_taken" and not rules.quest_available(id)
   if hidden then
@@ -69,7 +69,7 @@ function on_update(_dt)
     end
   end
   opening.prompt(st, label)
-  if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
+  if vael.menu_open() or talk.active() or typing() or not vael.interacted("e") then
     return
   end
   -- Herói caído: o modal de morte só abre ao fim dos 2,2 s de `dying`, e
@@ -79,8 +79,8 @@ function on_update(_dt)
   if alive and hp <= 0 then
     return
   end
-  viber.face_player()
-  viber.gesture("talk")
+  vael.face_player()
+  vael.gesture("talk")
   local have, need = 0, 1
   if rules.quest_progress then
     have, need = rules.quest_progress(id)
@@ -103,23 +103,23 @@ function on_update(_dt)
     if not st.contract_open then
       st.contract_open = true
       say(def.lines_intro, "Escolhe uma terra.", 0)
-    elseif region and viber.vael.opening_action("contract", region) then
+    elseif region and vael.vael.opening_action("contract", region) then
       st.contract_open = false
       rules.sync_collect()
       talk.say("Contrato assinado. Assina a Atalaia do Vale [F] e volta à criança ao portão norte.", 7)
-      viber.save_slot(0)
+      vael.save_slot(0)
     end
-  elseif id == "story_notas" and state == "ready" and viber.game()["campaign.opening"]
+  elseif id == "story_notas" and state == "ready" and vael.game()["campaign.opening"]
       and rules.quest_state("story_first_fold") ~= "done" then
     talk.say("Primeiro mostra à criança o caminho de volta.")
   elseif state == "not_taken" then
     if not rules.quest_accept(id) then return end
-    if BOSS_QUEST[id] then viber.game().tracked_quest = id end
+    if BOSS_QUEST[id] then vael.game().tracked_quest = id end
     -- Aceitar pode mudar a meta (etapas): relê o que falta para a fala.
     have, need = rules.quest_progress(id)
     remaining = math.max(0, (need or 1) - (have or 0))
     local kind = BOSS_QUEST[id]
-    if kind and viber.game()["nota_" .. kind] then
+    if kind and vael.game()["nota_" .. kind] then
       rules.quest_set_progress(id, need or 1)
     end
     -- Marcos já MEDIDOS ([F]) antes de aceitar: `report_visit` só conta
@@ -136,7 +136,7 @@ function on_update(_dt)
   elseif show_note then
     if rules.quest_turn_in(id) then
       say(def.lines_complete, "O último verso é meu.")
-      viber.save_slot(0)
+      vael.save_slot(0)
     end
   elseif state == "ready" then
     local p = rules.quest_parley(id)

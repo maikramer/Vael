@@ -1,25 +1,25 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- poi/paradise-spring.lua: objeto místico (portado do TS) — prompt quando perto, leitura dá
 -- XP uma única vez (a marca vive no save — state() renasce vazio no load).
-local once = viber.load("lib/once.lua")
+local once = vael.load("lib/once.lua")
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
   if not st.ready then
     st.ready = true
     st.read = once.taken()
-    viber.set_interaction(st.read and "A fonte está calma" or "Banhar-se na fonte", "e", 3.5)
+    vael.set_interaction(st.read and "A fonte está calma" or "Banhar-se na fonte", "e", 3.5)
   end
-  -- Um Load na MESMA cena repõe `viber.game()` sem recriar a entidade; o
+  -- Um Load na MESMA cena repõe `vael.game()` sem recriar a entidade; o
   -- prompt tem de acompanhar a marca (antes ficava "Banhar-se" para sempre).
   local taken = once.taken()
   if taken ~= st.read then
     st.read = taken
-    viber.set_interaction(taken and "A fonte está calma" or "Banhar-se na fonte", "e", 3.5)
+    vael.set_interaction(taken and "A fonte está calma" or "Banhar-se na fonte", "e", 3.5)
   end
-  if viber.menu_open() then
+  if vael.menu_open() then
     return
   end
-  if viber.interacted("e") and not st.read then
+  if vael.interacted("e") and not st.read then
     local alive, hp = rules.player_hp()
     -- Consumir a fonte de uma vez enquanto o herói está caído dava a cura
     -- e o respawn por cima.
@@ -28,7 +28,7 @@ function on_update(dt)
     end
     st.read = true
     once.mark()
-    viber.set_interaction("A fonte está calma", "e", 3.5)
+    vael.set_interaction("A fonte está calma", "e", 3.5)
     local ok, _, max_hp = rules.player_hp()
     local healed = 40
     if ok then
@@ -39,9 +39,9 @@ function on_update(dt)
     end
     rules.add_xp(35)
     if healed >= 1 then
-      viber.toast("A água da fonte restaura o corpo e a mente (+" .. math.floor(healed) .. " HP, +35 XP).")
+      vael.toast("A água da fonte restaura o corpo e a mente (+" .. math.floor(healed) .. " HP, +35 XP).")
     else
-      viber.toast("A água da fonte clareia a mente (+35 XP).")
+      vael.toast("A água da fonte clareia a mente (+35 XP).")
     end
   end
 end

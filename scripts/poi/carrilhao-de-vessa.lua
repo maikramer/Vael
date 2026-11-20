@@ -10,11 +10,11 @@ local function play_voice(st, sample, pitch, duration, x, y, z)
   -- A voz posicional aceita um ficheiro do mundo. Cada toque tem a sua cauda,
   -- mesmo quando o viajante volta ao mesmo sino antes de o bronze se calar.
   st.serial = (st.serial or 0) + 1
-  local id = "carrilhao-" .. tostring(viber.self_id()) .. "-" .. tostring(st.serial)
-  viber.sound_loop(id, "world/" .. sample .. ".ogg", {
+  local id = "carrilhao-" .. tostring(vael.self_id()) .. "-" .. tostring(st.serial)
+  vael.sound_loop(id, "world/" .. sample .. ".ogg", {
     pitch = pitch, volume = .95, x = x, y = y, z = z,
   })
-  viber.after(duration, function() viber.sound_stop(id) end)
+  vael.after(duration, function() vael.sound_stop(id) end)
 end
 
 local function river_answer(st, x, y, z)
@@ -22,22 +22,22 @@ local function river_answer(st, x, y, z)
   st.answered = true
   st.wave = 0
   st.ripple = 0
-  local game = viber.game()
+  local game = vael.game()
   if not game.vessa_quarta_voz then
     game.vessa_quarta_voz = true
-    viber.toast("Três sinos na ponte. A quarta voz veio do rio.")
+    vael.toast("Três sinos na ponte. A quarta voz veio do rio.")
   end
 end
 
 function on_update(dt)
-  local st = viber.state()
-  local has, px, py, pz = viber.player_position()
-  if not has or viber.menu_open() then return end
-  local x, y, z = viber.position()
+  local st = vael.state()
+  local has, px, py, pz = vael.player_position()
+  if not has or vael.menu_open() then return end
+  local x, y, z = vael.position()
   local along, side = pz - z, px - x
   local deck = .18*(16-along)/32 + 2.75*math.cos(along*math.pi/32)
   if math.abs(along) > 16 or math.abs(side) > 1.68 or py < y + deck - .3
-      or py > y + deck + 2.7 or (viber.game().hp or 1) <= 0 then
+      or py > y + deck + 2.7 or (vael.game().hp or 1) <= 0 then
     st.station, st.rest, st.anchor_x, st.wave = nil, 0, nil, nil
     st.answered = false
     return
@@ -52,7 +52,7 @@ function on_update(dt)
         st.station = i
         local bx, by, bz = x + bell.side, y + bell.height, z + bell.along
         play_voice(st, "vessa_bronze", bell.pitch, 3.1/bell.pitch, bx, by, bz)
-        viber.burst("sparkle", bx, by, bz, 9)
+        vael.burst("sparkle", bx, by, bz, 9)
         break
       end
     end
@@ -73,7 +73,7 @@ function on_update(dt)
     st.wave = st.wave + dt
     while st.ripple < 8 and st.wave >= st.ripple*.35 do
       local i = st.ripple
-      viber.burst("sparkle", x - 1.9 - i*.77, y + 2.5 - i*.34,
+      vael.burst("sparkle", x - 1.9 - i*.77, y + 2.5 - i*.34,
                   z + math.sin(i*.67)*1.45, 10)
       st.ripple = i + 1
     end

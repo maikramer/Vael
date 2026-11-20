@@ -1,6 +1,6 @@
 -- enemies/shade.lua: criatura rápida do ermo (sem anti-stuck nem
 -- aggro-chain). Toda a máquina vive em lib/fsm.lua.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "shade",
   proto = "mob-shade",
   nocturnal = true, -- de noite vê mais longe e bate mais

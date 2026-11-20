@@ -1,13 +1,13 @@
-local rules = viber.load("lib/rules.lua")
-local talk = viber.load("ui/say.lua")
-local decide = viber.load("lib/decide.lua")
+local rules = vael.load("lib/rules.lua")
+local talk = vael.load("ui/say.lua")
+local decide = vael.load("lib/decide.lua")
 
 local function typing()
-  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+  return vael.ui and vael.ui.focused and vael.ui.focused() ~= nil
 end
 -- npc/forest-wolves.lua: diálogo 100% Lua de Hald, o do Gado (dador da
 -- quest `forest_wolves`). Prova do desacoplamento:
---   * `viber.own_system("dialogue")` — a engine CEDE o [E] deste NPC (o
+--   * `vael.own_system("dialogue")` — a engine CEDE o [E] deste NPC (o
 --     fluxo nativo de quests cala; o prompt/ação continuam arbitrados pelo
 --     mesmo InteractionFocus);
 --   * `talk.say(...)` publica a fala do NPC (o Vael desenha um balão no
@@ -31,19 +31,19 @@ local function say_lines(lines, fallback, remaining)
   end
   text = text:gsub("{remaining}", tostring(remaining or 0))
   talk.say(text)
-  viber.ui.set("dialogue.until", viber.time() + 0.75)
+  vael.ui.set("dialogue.until", vael.time() + 0.75)
 end
 
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE
+  local st = vael.state() -- POR ENTIDADE
   if not st.ready then
     st.ready = true
-    viber.set_interaction("Falar com Hald", "e", 3.5)
+    vael.set_interaction("Falar com Hald", "e", 3.5)
   end
   if def == nil then
     def = rules.quest_def(QUEST)
   end
-  if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
+  if vael.menu_open() or talk.active() or typing() or not vael.interacted("e") then
     return
   end
   -- Herói caído: o modal de morte só abre ao fim dos 2,2 s de `dying`, e
@@ -53,8 +53,8 @@ function on_update(dt)
   if alive and hp <= 0 then
     return
   end
-  viber.face_player()
-  viber.gesture("talk")
+  vael.face_player()
+  vael.gesture("talk")
   local state = rules.quest_state(QUEST)
   local have, need = rules.quest_progress(QUEST)
   local remaining = math.max(0, (need or 1) - (have or 0))

@@ -4,7 +4,7 @@
 -- ("o herói matou lobo em Floresta Sombria"). O `judge.lua` manda essa frase
 -- ao modelo, resolve as entidades e compara com a regra.
 --
--- O registo vive no store PARTILHADO (`viber.game()`), não num módulo local:
+-- O registo vive no store PARTILHADO (`vael.game()`), não num módulo local:
 -- no BMS cada script tem a sua VM/contexto, por isso um log de módulo só via
 -- as ações do próprio script (o juiz não via as de `equipment.lua`/`combat.lua`
 -- e o Rust da UI não conseguia escrever nenhuma). Só primitivas — é o que o
@@ -14,7 +14,7 @@
 --   act.<n>.v        verbo (matar|visitar|equipar|usar|comprar|vender|entoar|colher|forjar)
 --   act.<n>.k        kind (criatura|local|item|…), opcional
 --   act.<n>.i        id
---   act.<n>.t        segundos de `viber.time()` (uptime do PROCESSO)
+--   act.<n>.t        segundos de `vael.time()` (uptime do PROCESSO)
 --
 -- O Rust da UI escreve as mesmas chaves (equipar/visitar); o leitor aceita
 -- uma entrada sem `t` e carimba-a agora. O `t` é do uptime, que recomeça do
@@ -26,7 +26,7 @@ local MAX = 32
 local data
 
 local function game()
-  return viber.game()
+  return vael.game()
 end
 
 local function load_data()
@@ -34,19 +34,19 @@ local function load_data()
     return
   end
   data = { items = {}, marks = {}, creatures = {} }
-  local ok_items, items = pcall(viber.load_json, "data/items.json")
+  local ok_items, items = pcall(vael.load_json, "data/items.json")
   if ok_items and type(items) == "table" then
     for _, it in ipairs(items.items or {}) do
       data.items[it.id] = it.label
     end
   end
-  local ok_marks, marks = pcall(viber.load_json, "data/landmarks.json")
+  local ok_marks, marks = pcall(vael.load_json, "data/landmarks.json")
   if ok_marks and type(marks) == "table" then
     for _, m in ipairs(marks.landmarks or {}) do
       data.marks[m.name] = m.label
     end
   end
-  local ok_alias, alias = pcall(viber.load_json, "data/nlu_aliases.json")
+  local ok_alias, alias = pcall(vael.load_json, "data/nlu_aliases.json")
   if ok_alias and type(alias) == "table" then
     for id, list in pairs(alias.creatures or {}) do
       data.creatures[id] = list[1] or id
@@ -66,8 +66,8 @@ end
 
 local function place()
   local zone = ""
-  if viber.ui and viber.ui.get then
-    zone = viber.ui.get("zone.name") or ""
+  if vael.ui and vael.ui.get then
+    zone = vael.ui.get("zone.name") or ""
   end
   if type(zone) ~= "string" or zone == "" then
     return "o vale"
@@ -170,18 +170,18 @@ function M.record(verb, kind, id)
     g[key(n, "k")] = nil
   end
   g[key(n, "i")] = id
-  g[key(n, "t")] = viber.time()
+  g[key(n, "t")] = vael.time()
   g["act.seq"] = n + 1
   first = prune(g, first, n + 1)
   g["act.first"] = first
 end
 
--- Há entradas de um processo anterior? O `viber.time()` é o uptime do
+-- Há entradas de um processo anterior? O `vael.time()` é o uptime do
 -- processo e recomeça do zero no arranque, por isso uma entrada gravada no
 -- save fica com `t` no futuro. O juiz limpa o registo no arranque da sessão.
 function M.stale()
   local g = game()
-  local now = viber.time()
+  local now = vael.time()
   local seq, first = bounds(g)
   for n = first, seq - 1 do
     local t = tonumber(g[key(n, "t")])
@@ -195,7 +195,7 @@ end
 function M.since(t0)
   t0 = tonumber(t0) or 0
   local g = game()
-  local now = viber.time()
+  local now = vael.time()
   local seq, first = bounds(g)
   first = prune(g, first, seq)
   -- As entradas de outro processo formam um prefixo do registo (as novas

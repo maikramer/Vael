@@ -73,11 +73,11 @@ local function build()
   index = { item = {}, criatura = {}, ["local"] = {} }
   numbers = {}
 
-  local ok_alias, alias = pcall(viber.load_json, "data/nlu_aliases.json")
+  local ok_alias, alias = pcall(vael.load_json, "data/nlu_aliases.json")
   if not ok_alias or type(alias) ~= "table" then
     -- Sem aliases o resolver degrada para os labels autorais em silêncio:
     -- o relato de 1 palavra das quests deixava de funcionar sem explicação.
-    viber.log("parley: falha a ler data/nlu_aliases.json — só labels autorais"
+    vael.log("parley: falha a ler data/nlu_aliases.json — só labels autorais"
       .. (ok_alias and "" or (" (" .. tostring(alias) .. ")")))
     alias = {}
   end
@@ -112,13 +112,13 @@ local function build()
   end
 
   -- Labels autorais: itens e marcos entram sempre, mesmo que o alias mude.
-  local ok_items, items = pcall(viber.load_json, "data/items.json")
+  local ok_items, items = pcall(vael.load_json, "data/items.json")
   if ok_items and type(items) == "table" then
     for _, it in ipairs(items.items or {}) do
       add("item", it.id, it.label)
     end
   end
-  local ok_marks, marks = pcall(viber.load_json, "data/landmarks.json")
+  local ok_marks, marks = pcall(vael.load_json, "data/landmarks.json")
   if ok_marks and type(marks) == "table" then
     for _, mk in ipairs(marks.landmarks or {}) do
       add("local", mk.name, mk.name)
@@ -258,7 +258,7 @@ function M.describe(res)
   return table.concat(out, " ")
 end
 
--- Teste rápido (chamável pelo bridge: `viber.load("lib/parley.lua").self_test()`).
+-- Teste rápido (chamável pelo bridge: `vael.load("lib/parley.lua").self_test()`).
 function M.self_test()
   build()
   local cases = {

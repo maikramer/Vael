@@ -2,9 +2,9 @@
 -- pintura em ui/profiler.css).
 --
 -- Contract: a engine publica um snapshot a ~4 Hz enquanto o modal está aberto
--- (`viber.profiler()` → tabela ou nil fechado); este script espelha o estado
+-- (`vael.profiler()` → tabela ou nil fechado); este script espelha o estado
 -- para a UI (abas/classes/textos/listas) e devolve cliques como comandos
--- (`viber.profiler_cmd`). Teclas F5/F12/Pause/`/PageUp/PageDown são
+-- (`vael.profiler_cmd`). Teclas F5/F12/Pause/`/PageUp/PageDown são
 -- engine-side — o P é do modal declarativo (key="p", toggle nativo).
 --
 -- Tudo a 5 Hz (CADENCE): o passe de entidades do snapshot é o custo real;
@@ -46,7 +46,7 @@ local function fill_groups(systems)
       }
     end
   end
-  viber.ui.list("prof-groups", rows)
+  vael.ui.list("prof-groups", rows)
 end
 
 local function fill_systems(systems)
@@ -67,7 +67,7 @@ local function fill_systems(systems)
       val = string.format("%s · p95 %s%s", fmt_ms(s.avg_ms), fmt_ms(s.p95_ms), rw),
     }
   end
-  viber.ui.list("prof-systems", rows)
+  vael.ui.list("prof-systems", rows)
 end
 
 local function fill_scripts(systems)
@@ -76,13 +76,13 @@ local function fill_scripts(systems)
     if i > 8 then break end
     rows[#rows + 1] = { name = s.name, val = fmt_ms(s.avg_ms) }
   end
-  viber.ui.list("prof-scripts", rows)
+  vael.ui.list("prof-scripts", rows)
 end
 
 local function fill_nearby(world)
   local t = world.tabs and world.tabs.world
   if t == nil then return end
-  viber.ui.set_text("prof-nearby", string.format("%d/%d ≤%.0fm",
+  vael.ui.set_text("prof-nearby", string.format("%d/%d ≤%.0fm",
     #(t.nearby or {}), t.nearby_in_radius or 0, t.nearby_radius or 0))
   local rows = {}
   for i, n in ipairs(t.nearby or {}) do
@@ -93,7 +93,7 @@ local function fill_nearby(world)
         (n.tags and #n.tags > 0) and ("  [" .. table.concat(n.tags, ",") .. "]") or ""),
     }
   end
-  viber.ui.list("prof-nearby-rows", rows)
+  vael.ui.list("prof-nearby-rows", rows)
 end
 
 local function fill_shapes(physics)
@@ -103,15 +103,15 @@ local function fill_shapes(physics)
     rows[#rows + 1] = { name = shape, val = tostring(count) }
   end
   table.sort(rows, function(a, b) return a.name < b.name end)
-  viber.ui.list("prof-shapes", rows)
+  vael.ui.list("prof-shapes", rows)
 end
 
 local function fill_audio(audio)
   local buses = audio.buses or {}
-  viber.ui.set_text("prof-buses", string.format(
+  vael.ui.set_text("prof-buses", string.format(
     "master %.2f · música %.2f · sfx %.2f",
     buses.master or 0, buses.music or 0, buses.sfx or 0))
-  viber.ui.set_text("prof-sinks", string.format(
+  vael.ui.set_text("prof-sinks", string.format(
     "%d total · %d a tocar · %d pausados · %d spatial",
     audio.total or 0, audio.playing or 0, audio.paused or 0, audio.spatial or 0))
 
@@ -123,7 +123,7 @@ local function fill_audio(audio)
         l.paused and "  [pausa]" or "", l.muted and "  [mute]" or ""),
     }
   end
-  viber.ui.list("prof-layers", rows)
+  vael.ui.list("prof-layers", rows)
 
   local sinks = {}
   for _, s in ipairs(audio.sinks or {}) do
@@ -144,7 +144,7 @@ local function fill_audio(audio)
         s.layer and ("  [" .. s.layer .. "]") or ""),
     }
   end
-  viber.ui.list("prof-sink-rows", srows)
+  vael.ui.list("prof-sink-rows", srows)
 end
 
 local function fill_extras(snap)
@@ -157,21 +157,21 @@ local function fill_extras(snap)
     local e = list[i]
     local slot = tostring(i)
     if e then
-      viber.ui.set_visible("prof-extra-" .. slot, true)
-      viber.ui.set_text("prof-extra-label-" .. slot, e.label or e.id or "?")
-      viber.ui.set_text("prof-extra-state-" .. slot, e.on and "ON" or "OFF")
-      viber.ui.toggle_class("prof-extra-" .. slot, "on", e.on == true)
+      vael.ui.set_visible("prof-extra-" .. slot, true)
+      vael.ui.set_text("prof-extra-label-" .. slot, e.label or e.id or "?")
+      vael.ui.set_text("prof-extra-state-" .. slot, e.on and "ON" or "OFF")
+      vael.ui.toggle_class("prof-extra-" .. slot, "on", e.on == true)
       descs[#descs + 1] = (e.label or e.id) .. " — " .. (e.description or "")
     else
-      viber.ui.set_visible("prof-extra-" .. slot, false)
+      vael.ui.set_visible("prof-extra-" .. slot, false)
     end
   end
   -- Esconde slots que sobraram de um snapshot maior (senão ficavam com
   -- label/estado velhos e clicáveis).
   for i = #list + 1, 5 do
-    viber.ui.set_visible("prof-extra-" .. i, false)
+    vael.ui.set_visible("prof-extra-" .. i, false)
   end
-  viber.ui.set_text("prof-extra-desc", table.concat(descs, "\n"))
+  vael.ui.set_text("prof-extra-desc", table.concat(descs, "\n"))
 end
 
 -- ── aba FRAMES: série de frame-times, hitches e trace ─────────
@@ -201,13 +201,13 @@ local function fill_frames(snap)
   local t = snap.tabs and snap.tabs.frames
   if t == nil then return end
   local frame = t.frame_ms or {}
-  viber.ui.set_text("prof-f-frame", fmt_ms(frame.avg))
-  viber.ui.set_text("prof-f-p95", fmt_ms(frame.p95))
-  viber.ui.set_text("prof-f-max", fmt_ms(frame.max))
+  vael.ui.set_text("prof-f-frame", fmt_ms(frame.avg))
+  vael.ui.set_text("prof-f-p95", fmt_ms(frame.p95))
+  vael.ui.set_text("prof-f-max", fmt_ms(frame.max))
   local h = t.hitches or {}
-  viber.ui.set_text("prof-f-hitches", string.format("%d ≥%.0f",
+  vael.ui.set_text("prof-f-hitches", string.format("%d ≥%.0f",
     h.count or 0, h.threshold_ms or 50))
-  viber.ui.set_text("prof-f-history", sparkline(t.history or {}))
+  vael.ui.set_text("prof-f-history", sparkline(t.history or {}))
 
   local rows = {}
   local recent = h.recent or {}
@@ -221,7 +221,7 @@ local function fill_frames(snap)
     }
     if #rows >= 8 then break end
   end
-  viber.ui.list("prof-f-hitch-rows", rows)
+  vael.ui.list("prof-f-hitch-rows", rows)
 
   local top_rows = {}
   for i, s in ipairs(t.top or {}) do
@@ -231,24 +231,24 @@ local function fill_frames(snap)
       val = string.format("%.2f · p95 %.2f", s.avg_ms or 0, s.p95_ms or 0),
     }
   end
-  viber.ui.list("prof-f-top-rows", top_rows)
+  vael.ui.list("prof-f-top-rows", top_rows)
 
   local mem = t.memory or {}
-  viber.ui.set_text("prof-f-mem", mem.rss_mb and string.format(
+  vael.ui.set_text("prof-f-mem", mem.rss_mb and string.format(
     "rss %.0f MiB · pico %.0f MiB · %d threads",
     mem.rss_mb, mem.peak_rss_mb or 0, mem.threads or 0) or "—")
 
   local tr = t.trace or {}
   if tr.recording then
-    viber.ui.set_text("prof-f-trace", string.format(
+    vael.ui.set_text("prof-f-trace", string.format(
       "● a gravar %.1f/%.0f s · %d frames · %d eventos",
       tr.elapsed_s or 0, tr.max_seconds or 0, tr.frames or 0, tr.events or 0))
   elseif tr.last then
-    viber.ui.set_text("prof-f-trace", string.format(
+    vael.ui.set_text("prof-f-trace", string.format(
       "parado · último trace: %d frames · %d eventos · %.1f s",
       tr.last.frames or 0, tr.last.events or 0, tr.last.duration_s or 0))
   else
-    viber.ui.set_text("prof-f-trace", "parado · sem trace (TRAÇAR 10s)")
+    vael.ui.set_text("prof-f-trace", "parado · sem trace (TRAÇAR 10s)")
   end
 end
 
@@ -261,7 +261,7 @@ local function fill_active(snap)
   -- aba (ou uma publicação parcial) congelava também MUNDO/FÍSICA/ÁUDIO/
   -- FRAMES em "—" para sempre.
   if systems ~= nil then
-    viber.ui.set_text("prof-fps", string.format("%.0f", systems.fps or 0))
+    vael.ui.set_text("prof-fps", string.format("%.0f", systems.fps or 0))
   end
 
   -- A aba REAL é a do widget nativo (o espelho state.tab_name chega com
@@ -271,17 +271,17 @@ local function fill_active(snap)
   if which == "systems" then
     if systems == nil then return end
     local frame = systems.frame_ms or {}
-    viber.ui.set_text("prof-frame", fmt_ms(frame.avg))
-    viber.ui.set_text("prof-p95", fmt_ms(frame.p95))
-    viber.ui.set_text("prof-worst", (systems.min_fps_window ~= nil)
+    vael.ui.set_text("prof-frame", fmt_ms(frame.avg))
+    vael.ui.set_text("prof-p95", fmt_ms(frame.p95))
+    vael.ui.set_text("prof-worst", (systems.min_fps_window ~= nil)
       and string.format("%.0f", systems.min_fps_window) or "—")
     local avg = frame.avg or 0
     if avg > 0 then
       local h60 = 16.667 - avg
-      viber.ui.set_text("prof-head", string.format("%+.1f ms%s", h60,
+      vael.ui.set_text("prof-head", string.format("%+.1f ms%s", h60,
         avg > 16.667 and "  ✗" or ""))
     else
-      viber.ui.set_text("prof-head", "—")
+      vael.ui.set_text("prof-head", "—")
     end
     fill_groups(systems)
     fill_systems(systems)
@@ -290,12 +290,12 @@ local function fill_active(snap)
     local t = tabs.world or {}
     local sys = systems or {}
     local p = t.player
-    viber.ui.set_text("prof-player", p and string.format("%s  %s  yaw %.0f°",
+    vael.ui.set_text("prof-player", p and string.format("%s  %s  yaw %.0f°",
       p.name or "player", fmt_pos(p.pos), p.yaw_deg or 0) or "(nenhum)")
     local c = t.camera
-    viber.ui.set_text("prof-cam", c and string.format("%s  %s",
+    vael.ui.set_text("prof-cam", c and string.format("%s  %s",
       c.name or "câmera", fmt_pos(c.pos)) or "(nenhuma)")
-    viber.ui.set_text("prof-entities", string.format("%d  ·  scripts %d/%d activos  ·  partículas %d  ·  chunks %d",
+    vael.ui.set_text("prof-entities", string.format("%d  ·  scripts %d/%d activos  ·  partículas %d  ·  chunks %d",
       t.entity_count or 0,
       (sys.scripts or {}).active or 0, (sys.scripts or {}).total or 0,
       sys.particle_emitters or 0, sys.terrain_chunks or 0))
@@ -303,18 +303,18 @@ local function fill_active(snap)
   elseif which == "physics" then
     local ph = tabs.physics or {}
     local b = ph.bodies or {}
-    viber.ui.set_text("prof-bodies", string.format("%d  (fixos %d · din %d · cin %d)",
+    vael.ui.set_text("prof-bodies", string.format("%d  (fixos %d · din %d · cin %d)",
       b.total or 0, b.fixed or 0, b.dynamic or 0, b.kinematic or 0))
-    viber.ui.set_text("prof-sleep", string.format("%d dormindo · %d acordados",
+    vael.ui.set_text("prof-sleep", string.format("%d dormindo · %d acordados",
       b.sleeping or 0, b.awake or 0))
     local c = ph.colliders or {}
-    viber.ui.set_text("prof-colliders", string.format("%d  · sensores %d  · pendentes %d  · cct %d",
+    vael.ui.set_text("prof-colliders", string.format("%d  · sensores %d  · pendentes %d  · cct %d",
       c.total or 0, c.sensors or 0, ph.pending_colliders or 0, ph.cct or 0))
-    viber.ui.set_text("prof-step", ph.step and string.format(
+    vael.ui.set_text("prof-step", ph.step and string.format(
       "%.2f ms  (média %.2f · p95 %.2f)", ph.step.last_ms, ph.step.avg_ms, ph.step.p95_ms)
       or "—")
     local r = ph.rapier
-    viber.ui.set_text("prof-rapier", r and string.format(
+    vael.ui.set_text("prof-rapier", r and string.format(
       "corpos %d · colisores %d · juntas %d · dt %.4f",
       r.bodies, r.colliders, r.impulse_joints, r.timestep) or "sem contexto")
     fill_shapes(ph)
@@ -336,22 +336,22 @@ function on_update(dt)
   -- Cliques → comandos (todos os frames). ABAS: o tab-group nativo trata o
   -- clique sozinho — aqui só DETETAMOS a mudança e empurramos para a engine
   -- (sem depender de clicked(), que vale só no frame do press).
-  if viber.ui.clicked("prof-freeze") then viber.profiler_cmd("freeze") end
-  if viber.ui.clicked("prof-reset") then viber.profiler_cmd("reset") end
+  if vael.ui.clicked("prof-freeze") then vael.profiler_cmd("freeze") end
+  if vael.ui.clicked("prof-reset") then vael.profiler_cmd("reset") end
   -- Os botões de raio existiam no XML sem consumidor.
-  if viber.ui.clicked("prof-radius-down") then viber.profiler_cmd("radius:-10") end
-  if viber.ui.clicked("prof-radius-up") then viber.profiler_cmd("radius:+10") end
+  if vael.ui.clicked("prof-radius-down") then vael.profiler_cmd("radius:-10") end
+  if vael.ui.clicked("prof-radius-up") then vael.profiler_cmd("radius:+10") end
   -- COPIAR/EXPORTAR existem em TODAS as abas (o JSON é sempre o completo;
   -- o export escreve ficheiro, o copy vai ao clipboard via engine).
   for _, t in ipairs({ "systems", "world", "physics", "audio", "extras", "frames" }) do
-    if viber.ui.clicked("prof-copy-" .. t) then viber.profiler_cmd("copy") end
-    if viber.ui.clicked("prof-export-" .. t) then viber.profiler_cmd("export") end
+    if vael.ui.clicked("prof-copy-" .. t) then vael.profiler_cmd("copy") end
+    if vael.ui.clicked("prof-export-" .. t) then vael.profiler_cmd("export") end
   end
   -- Trace: 10 s por clique; PARAR fecha; EXPORTAR escreve o último trace.
-  if viber.ui.clicked("prof-trace-start") then viber.profiler_cmd("trace:start:10") end
-  if viber.ui.clicked("prof-trace-stop") then viber.profiler_cmd("trace:stop") end
-  if viber.ui.clicked("prof-trace-export") then viber.profiler_cmd("trace:export") end
-  local snap = viber.profiler()
+  if vael.ui.clicked("prof-trace-start") then vael.profiler_cmd("trace:start:10") end
+  if vael.ui.clicked("prof-trace-stop") then vael.profiler_cmd("trace:stop") end
+  if vael.ui.clicked("prof-trace-export") then vael.profiler_cmd("trace:export") end
+  local snap = vael.profiler()
   if snap == nil then
     ACC = 1.0 -- modal fechado: primeiro frame após abrir já preenche
     LAST_OPEN = false
@@ -367,8 +367,8 @@ function on_update(dt)
   end
   -- O comando sai do id REAL da linha do snapshot (a ordem é da engine).
   for i, e in ipairs(snap.extras or {}) do
-    if e.id and viber.ui.clicked("prof-extra-" .. i) then
-      viber.profiler_cmd("extra:" .. e.id)
+    if e.id and vael.ui.clicked("prof-extra-" .. i) then
+      vael.profiler_cmd("extra:" .. e.id)
     end
   end
   local state = snap.state or {}
@@ -378,18 +378,18 @@ function on_update(dt)
   -- mudança e espelha para a engine (o snapshot passa a refletir a aba).
   -- Sem force-back nenhum: dois sincronizadores a escrever a mesma aba
   -- ping-pongam via publish atrasado.
-  ui_tab = viber.ui.tab("prof")
+  ui_tab = vael.ui.tab("prof")
   if ui_tab ~= "" and ui_tab ~= LAST_UI_TAB then
     LAST_UI_TAB = ui_tab
-    viber.profiler_cmd("tab:" .. ui_tab)
+    vael.profiler_cmd("tab:" .. ui_tab)
   end
-  viber.ui.toggle_class("profiler-win", "frozen", state.frozen == true)
-  viber.ui.toggle_class("prof-freeze", "armed", state.frozen == true)
-  viber.ui.set_text("prof-freeze-label", state.frozen and "LIBERTAR" or "CONGELAR")
+  vael.ui.toggle_class("profiler-win", "frozen", state.frozen == true)
+  vael.ui.toggle_class("prof-freeze", "armed", state.frozen == true)
+  vael.ui.set_text("prof-freeze-label", state.frozen and "LIBERTAR" or "CONGELAR")
   local status = state.status or ""
   if status ~= LAST_STATUS then
     LAST_STATUS = status
-    viber.ui.set_text("prof-status", status ~= "" and status or "—")
+    vael.ui.set_text("prof-status", status ~= "" and status or "—")
   end
 
   -- Preenchimento pesado (listas/textos): ao ritmo do CADENCE.

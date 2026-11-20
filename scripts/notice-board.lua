@@ -1,6 +1,6 @@
-local rules = viber.load("lib/rules.lua")
-local talk = viber.load("ui/say.lua")
-local decide = viber.load("lib/decide.lua")
+local rules = vael.load("lib/rules.lua")
+local talk = vael.load("ui/say.lua")
+local decide = vael.load("lib/decide.lua")
 -- notice-board.lua: quadro de avisos da praça — bounties repetíveis da
 -- guarda (quest npc == "notice_board" nos JSONs).
 --
@@ -10,17 +10,17 @@ local decide = viber.load("lib/decide.lua")
 local BOUNTIES = { "city_wolves", "city_bandits", "city_goblins", "city_wood" }
 
 local function typing()
-  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+  return vael.ui and vael.ui.focused and vael.ui.focused() ~= nil
 end
 
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
   if not st.ready then
     st.ready = true
     st.index = 0
-    viber.set_interaction("Ler o quadro", "e", 3.0)
+    vael.set_interaction("Ler o quadro", "e", 3.0)
   end
-  if viber.menu_open() or talk.active() or typing() then
+  if vael.menu_open() or talk.active() or typing() then
     return
   end
   -- O `menu_open` não inclui o ecrã de morte: durante os 2,2 s de `dying` o
@@ -30,11 +30,11 @@ function on_update(dt)
   if alive and hp <= 0 then
     return
   end
-  if not viber.interacted("e") then
+  if not vael.interacted("e") then
     return
   end
 
-  if viber.game()["campaign.opening"] and rules.quest_state("story_notas") ~= "done" then
+  if vael.game()["campaign.opening"] and rules.quest_state("story_notas") ~= "done" then
     local pending = false
     for _, id in ipairs(BOUNTIES) do
       local state = rules.quest_state(id)
@@ -58,7 +58,7 @@ function on_update(dt)
     text = text:gsub("{remaining}", tostring(math.max(0, (need or 1) - (have or 0))))
     if text ~= "" then
       talk.say(text)
-      viber.ui.set("dialogue.until", viber.time() + 0.75)
+      vael.ui.set("dialogue.until", vael.time() + 0.75)
     end
   end
 
@@ -98,7 +98,7 @@ function on_update(dt)
       st.index = i
       return
     end
-    viber.toast("Nenhuma bounty nova — termine as que aceitou.")
+    vael.toast("Nenhuma bounty nova — termine as que aceitou.")
   end
 
   -- Uma palavra solta ("lobos") faz o d1 responder "nenhum"; os aliases

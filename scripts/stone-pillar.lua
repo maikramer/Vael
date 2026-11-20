@@ -1,13 +1,13 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- stone-pillar.lua: prompt de interação + efeito (portado do TS; colheita pesada chega
 -- com o Destructible/Inventory da Fase 3).
-local once = viber.load("lib/once.lua")
+local once = vael.load("lib/once.lua")
 local PROMPT, DONE_PROMPT = "Ler as runas", "Runas já lidas"
 local function set_prompt(done)
-  viber.set_interaction(done and DONE_PROMPT or PROMPT, "e", 3.0)
+  vael.set_interaction(done and DONE_PROMPT or PROMPT, "e", 3.0)
 end
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
   if not st.ready then
     st.ready = true
     st.done = once.taken()
@@ -18,15 +18,15 @@ function on_update(dt)
     st.done = taken
     set_prompt(taken)
   end
-  if viber.menu_open() then return end
+  if vael.menu_open() then return end
   -- O `menu_open` não inclui o ecrã de morte: o herói caído ainda lia (XP).
   local _, hp = rules.player_hp()
   if hp <= 0 then return end
-  if viber.interacted("e") and not st.done then
+  if vael.interacted("e") and not st.done then
     st.done = true
     once.mark()
     set_prompt(true)
     rules.add_xp(10)
-    viber.toast("Runas antigas: o caminho do sul serpenteia junto à água.")
+    vael.toast("Runas antigas: o caminho do sul serpenteia junto à água.")
   end
 end

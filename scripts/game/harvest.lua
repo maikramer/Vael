@@ -1,16 +1,23 @@
 -- game/harvest.lua: a COLHEITA é do jogo, em Lua.
 --
--- A engine só transporta DADOS autorais: `viber.player_nearby` devolve as
+-- A engine só transporta DADOS autorais: `vael.player_nearby` devolve as
 -- entidades nomeadas à volta do herói com a tabela `props` (o
 -- `destructible="…"`, `resource-kind` e `resource-yield` dos XMLs).
 -- O parser do component-string, os golpes, o loot e o XP vivem aqui.
--- FX/remoção usam primitivas genéricas: `viber.prompt`, `viber.play_clip`,
--- `viber.burst`, `viber.sound`, `viber.entity_despawn` e `viber.topple`.
+-- FX/remoção usam primitivas genéricas: `vael.prompt`, `vael.play_clip`,
+-- `vael.burst`, `vael.sound`, `vael.entity_despawn` e `vael.topple`.
 --
 -- Host: `world/gameplay.xml` (`tag="always-active"` — a colheita não pode
 -- congelar no LOD de 45 m).
 
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
+local feel
+do
+  local ok, mod = pcall(vael.load, "lib/feel.lua")
+  if ok and type(mod) == "table" and type(mod.blow) == "function" then
+    feel = mod
+  end
+end
 
 local SWING_COOLDOWN = 0.4
 local RANGE_DEFAULT = 3.5
@@ -41,7 +48,7 @@ local POPUP_COLOR = "#ffd35a"
 local LABEL = { fall = "Cortar", pick = "Colher frutas" }
 -- As tabelas de FX são indexadas pela FERRAMENTA (`tool_of`), não pelo
 -- estilo: `CLIP["chop"]` era nil e cada golpe numa árvore rebentava em
--- `viber.clip_duration(nil)` (a árvore nunca caía).
+-- `vael.clip_duration(nil)` (a árvore nunca caía).
 local CLIP = { chop = "chop", mine = "mine", pick = "gather" }
 local HIT_SFX = { chop = "chop_hit", mine = "mine_hit", pick = "harvest" }
 local BREAK_SFX = { chop = "chop_break", mine = "mine_break", pick = "harvest" }
@@ -76,7 +83,7 @@ local function label_of(style, kind)
 end
 
 local function duration_of(clip)
-  local d = viber.clip_duration and viber.clip_duration(clip)
+  local d = vael.clip_duration and vael.clip_duration(clip)
   if d and d > 0 then
     return d
   end
@@ -92,8 +99,8 @@ end
 -- O prompt de outro [J] (um `ScriptInteraction` mais próximo) tem prioridade
 -- sobre a colheita — lê-se o prompt que a engine publicou este frame.
 local function other_j_prompt(style, kind)
-  local key = viber.ui.get("prompt.key")
-  local label = viber.ui.get("prompt.label")
+  local key = vael.ui.get("prompt.key")
+  local label = vael.ui.get("prompt.label")
   return key == "J" and label ~= "" and label ~= label_of(style, kind)
 end
 
@@ -108,13 +115,13 @@ local function parse_components(value)
 end
 
 local function effective_range(base)
-  if viber.interact_range then
-    return viber.interact_range(base)
+  if vael.interact_range then
+    return vael.interact_range(base)
   end
   return base * 0.5
 end
 
--- Dados de colheita de uma entidade de `viber.player_nearby`: os props
+-- Dados de colheita de uma entidade de `vael.player_nearby`: os props
 -- autorais (`destructible`, `resource-kind`, `resource-yield`).
 local function prop_data(entity)
   local props = entity.props
@@ -153,7 +160,7 @@ local function prop_data(entity)
     hits = math.max(1, math.floor(hits))
   end
   -- O `parse_color` da engine aceita 3 ou 6 dígitos (não 7/8): uma cor
-  -- "válida" para o regex antigo mas inválida para o `viber.damage_number`
+  -- "válida" para o regex antigo mas inválida para o `vael.damage_number`
   -- rebentava o `break_prop` DEPOIS de creditar loot/XP — o prop ficava no
   -- mundo e podia ser colhido outra vez, para sempre.
   local popup_color = c["popup-color"]
@@ -161,13 +168,13 @@ local function prop_data(entity)
       or not (popup_color:match("^#%x%x%x$") or popup_color:match("^#%x%x%x%x%x%x$")) then
     popup_color = POPUP_COLOR
   end
-  -- `viber.interact_range` REJEITA um raio negativo/não finito (erro em cada
+  -- `vael.interact_range` REJEITA um raio negativo/não finito (erro em cada
   -- frame, a colheita inteira morria) e 0 deixava o prop inalcançável.
   local range = tonumber(c.range)
   if not range or range ~= range or range <= 0 or range == math.huge then
     range = RANGE_DEFAULT
   end
-  -- `viber.set_scale` (no `on_spawned` do substituto) só aceita 0.05..20;
+  -- `vael.set_scale` (no `on_spawned` do substituto) só aceita 0.05..20;
   -- um `replace-scale` fora do intervalo rebentava a callback e o toco
   -- ficava com a escala por omissão.
   local replace_scale = tonumber(c["replace-scale"])
@@ -202,11 +209,11 @@ end
 
 -- Prop mais próximo DENTRO do alcance efetivo autorado.
 local function nearest(st)
-  local list = viber.player_nearby(RANGE_DEFAULT * 2, 64) or {}
+  local list = vael.player_nearby(RANGE_DEFAULT * 2, 64) or {}
   local best
   for _, entity in ipairs(list) do
     local prop = prop_data(entity)
-    local native_tool = prop and viber.vael.harvest_tool_focus and tool_of(prop.style, prop.kind) ~= "pick"
+    local native_tool = prop and vael.vael.harvest_tool_focus and tool_of(prop.style, prop.kind) ~= "pick"
     if prop and not native_tool and not st.broken[prop.id] and prop.id ~= st.just_felled then
       if prop.distance <= effective_range(prop.range) then
         if not best or prop.distance < best.distance then
@@ -220,12 +227,12 @@ end
 
 local function publish(st, prop)
   if prop then
-    viber.prompt("J", label_of(prop.style, prop.kind))
+    vael.prompt("J", label_of(prop.style, prop.kind))
     st.prompting = true
   elseif st.prompting then
     -- Só limpa o que ESTE controller publicou: um prompt nativo (mercador,
     -- árvore de frutas) é do collect da engine e não pode ser pisado.
-    viber.prompt("", "")
+    vael.prompt("", "")
     st.prompting = false
   end
 end
@@ -241,15 +248,15 @@ local function publish_tool(st, prop)
     end
   end
   local aim = tool == "mine" and prop.id or nil
-  if st.mine_aim ~= aim and viber.vael and viber.vael.aim_pick then
-    viber.vael.aim_pick(aim)
+  if st.mine_aim ~= aim and vael.vael and vael.vael.aim_pick then
+    vael.vael.aim_pick(aim)
     st.mine_aim = aim
   end
   if st.tool == tool then
     return
   end
   st.tool = tool
-  viber.ui.set("harvest.tool", tool)
+  vael.ui.set("harvest.tool", tool)
 end
 
 local function swing(st, prop)
@@ -277,21 +284,21 @@ local function swing(st, prop)
     replacement = prop.replacement or "",
     replace_scale = prop.replace_scale or 1,
   }
-  if tool == "mine" and viber.vael and viber.vael.begin_mine then
-    viber.vael.begin_mine(prop.id)
+  if tool == "mine" and vael.vael and vael.vael.begin_mine then
+    vael.vael.begin_mine(prop.id)
     st.swing.probe = true
   end
-  local pid = viber.player_id()
+  local pid = vael.player_id()
   if pid then
     if duration then
-      viber.play_clip(clip, { duration = duration, blend = 0.065, id = pid })
-      local ok, px, _, pz = viber.player_position()
-      if ok and viber.vael and viber.vael.attack_motion then
-        viber.vael.attack_motion({ secs = contact + 0.08, slow = 0.25,
+      vael.play_clip(clip, { duration = duration, blend = 0.065, id = pid })
+      local ok, px, _, pz = vael.player_position()
+      if ok and vael.vael and vael.vael.attack_motion then
+        vael.vael.attack_motion({ secs = contact + 0.08, slow = 0.25,
           fx = prop.x - px, fz = prop.z - pz })
       end
     else
-      viber.play_clip(clip, { speed = speed_of(tool), id = pid })
+      vael.play_clip(clip, { speed = speed_of(tool), id = pid })
     end
   end
 end
@@ -318,30 +325,30 @@ local function break_prop(st, sw, emit)
         rules.vault_take(sw.kind, got)
       end
       if emit then emit(false) end
-      viber.damage_number("Bolsa cheia", {
+      vael.damage_number("Bolsa cheia", {
         color = "#ffb347", x = sw.x, y = (sw.y or 0) + 1.4, z = sw.z,
       })
-      viber.sound("error", { x = sw.x, y = sw.y, z = sw.z })
+      vael.sound("error", { x = sw.x, y = sw.y, z = sw.z })
       return
     end
   end
   if emit then emit(true) end
   if tool ~= "chop" then
-    viber.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
+    vael.burst(BREAK_BURST[tool] or "ground-dust", sw.x, (sw.y or 0) + 0.8, sw.z, 24)
   end
-  if viber.vael and viber.vael.collect_burst then
+  if vael.vael and vael.vael.collect_burst then
     local vkind = sw.kind ~= "" and sw.kind or (tool == "pick" and "berry" or tool == "chop" and "wood" or "stone")
     local count = math.clamp(got > 0 and got or (sw.amount or 3), 2, 6)
-    viber.vael.collect_burst(vkind, sw.x, (sw.y or 0) + 0.75, sw.z, count)
+    vael.vael.collect_burst(vkind, sw.x, (sw.y or 0) + 0.75, sw.z, count)
   end
-  local fell = replacement == "" and style == "fall" and viber.vael and viber.vael.fell_tree
-  viber.sound(fell and "chop_hit" or BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
+  local fell = replacement == "" and style == "fall" and vael.vael and vael.vael.fell_tree
+  vael.sound(fell and "chop_hit" or BREAK_SFX[tool] or "chop_break", { x = sw.x, y = sw.y, z = sw.z })
   if sw.popup ~= "" then
     local text = sw.popup
     if got > 0 then
       text = "+" .. got .. " " .. text
     end
-    viber.damage_number(text, {
+    vael.damage_number(text, {
       color = sw.popup_color or POPUP_COLOR, x = sw.x, y = (sw.y or 0) + 1.4, z = sw.z,
     })
   end
@@ -351,7 +358,7 @@ local function break_prop(st, sw, emit)
   -- pose/escala do substituto: a árvore sem frutas é um PROTÓTIPO e não
   -- sobrevive sozinha a um reload.
   if sw.name ~= "" and not fell then
-    local game = viber.game()
+    local game = vael.game()
     game["harvested." .. sw.name] = true
     st.reaped_names = st.reaped_names or {}
     st.reaped_names[sw.name] = true
@@ -368,28 +375,28 @@ local function break_prop(st, sw, emit)
     -- O protótipo é spawned no pós-frame; `on_spawned` acerta pose/escala.
     local px, py, pz = sw.x, sw.y, sw.z
     local scale = sw.replace_scale or 1
-    viber.entity_despawn(sw.id)
-    viber.spawn_prototype(replacement, px, pz, {
+    vael.entity_despawn(sw.id)
+    vael.spawn_prototype(replacement, px, pz, {
       y = py,
       on_spawned = function(bits)
         if py ~= nil then
-          viber.set_pose(px, py, pz, 0, bits)
+          vael.set_pose(px, py, pz, 0, bits)
         end
-        viber.set_scale(scale, bits)
+        vael.set_scale(scale, bits)
       end,
     })
   elseif style == "fall" then
-    -- Árvore procedural: `viber.vael.fell_tree` (Rust) move a árvore para uma
+    -- Árvore procedural: `vael.vael.fell_tree` (Rust) move a árvore para uma
     -- raiz com a pose global e pede o `FellTree` do bevy_flora — toco, queda e
-    -- tronco deitado. O `viber.topple` da engine fica como fallback para
+    -- tronco deitado. O `vael.topple` da engine fica como fallback para
     -- props antigos (tomba e despawna, sem toco).
-    if viber.vael and viber.vael.fell_tree then
-      viber.vael.fell_tree(sw.id)
+    if vael.vael and vael.vael.fell_tree then
+      vael.vael.fell_tree(sw.id)
     else
-      viber.topple(sw.id)
+      vael.topple(sw.id)
     end
   else
-    viber.entity_despawn(sw.id)
+    vael.entity_despawn(sw.id)
   end
   if fell then
     -- A estação perde os props no pós-frame. O mesmo id volta a ser colhível após o rebrote.
@@ -397,6 +404,10 @@ local function break_prop(st, sw, emit)
     st.fell_guard = 0.4
   else
     st.broken[sw.id] = true
+  end
+  -- Partir o prop muda o sítio. O lascar intermédio não pára o tempo.
+  if feel then
+    feel.blow("heavy")
   end
   st.hits[sw.id] = nil
   -- O `st.near` em cache (10 Hz) ainda apontava para este prop: sem isto o
@@ -413,7 +424,7 @@ local function impact(st)
   end
   -- O prop pode ter desaparecido entre o golpe e o impacto (outro sistema,
   -- despawn, troca de cena): topple/despawn com bits mortos rebenta o chunk.
-  local exists, x, y, z = viber.entity_position(sw.id)
+  local exists, x, y, z = vael.entity_position(sw.id)
   if not exists then
     st.hits[sw.id] = nil
     -- O alvo em cache também já não existe: o prompt não pode ficar no ecrã.
@@ -424,15 +435,22 @@ local function impact(st)
   local tool = tool_of(sw.style, sw.kind)
   local emit
   if tool == "chop" or tool == "mine" then
-    local ok, px, py, pz = viber.player_position()
+    local ok, px, py, pz = vael.player_position()
     if not ok then return end
     local dx, dy, dz = px - x, py - y, pz - z
-    local dodge = viber.game().hero_dodge
-    local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - viber.time()) or 0
+    local dodge = vael.game().hero_dodge
+    local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - vael.time()) or 0
     local reach = sw.range or effective_range(RANGE_DEFAULT)
-    if dx * dx + dy * dy + dz * dz > reach * reach
-        or (dodge_left > 0 and dodge_left < 1) then return end
-    local fx = viber.vael and viber.vael[tool == "chop" and "wood_hit" or "rock_hit"]
+    if dx * dx + dy * dy + dz * dz > reach * reach then
+      -- O [J] acertou no prop e o passo saiu do alcance: sem linha, a tecla
+      -- parece partida.
+      vael.damage_number("Fora de alcance", {
+        color = "#c8c2b4", x = x, y = (y or 0) + 1.3, z = z,
+      })
+      return
+    end
+    if dodge_left > 0 and dodge_left < 1 then return end
+    local fx = vael.vael and vael.vael[tool == "chop" and "wood_hit" or "rock_hit"]
     if fx then
       emit = function(final_hit) fx(sw.id, x, y, z, dx, dz, sw.cut_height or 0.5, final_hit) end
     end
@@ -442,17 +460,17 @@ local function impact(st)
     return
   end
   if emit then emit(false) end
-  if viber.vael and viber.vael.hit_flash then
-    viber.vael.hit_flash(sw.id)
+  if vael.vael and vael.vael.hit_flash then
+    vael.vael.hit_flash(sw.id)
   end
   st.hits[sw.id] = hits
-  viber.sound(HIT_SFX[tool] or "whoosh", {
+  vael.sound(HIT_SFX[tool] or "whoosh", {
     x = sw.x, y = sw.y, z = sw.z,
   })
   if tool ~= "pick" then return end
-  viber.burst(HIT_BURST[tool] or "sparks", sw.x, (sw.y or 0) + 1.0, sw.z, 7)
-  if viber.hit_flash then
-    viber.hit_flash(sw.id)
+  vael.burst(HIT_BURST[tool] or "sparks", sw.x, (sw.y or 0) + 1.0, sw.z, 7)
+  if vael.hit_flash then
+    vael.hit_flash(sw.id)
   end
 end
 
@@ -462,7 +480,7 @@ end
 -- `st.reaped_names` evita repetir o spawn quando a colheita acabou de
 -- acontecer nesta sessão (a chave `harvested.*` já lá está).
 local function reap_saved(st)
-  local game = viber.game()
+  local game = vael.game()
   st.reaped_names = st.reaped_names or {}
   local flora_names = {}
   for key in pairs(game) do
@@ -482,10 +500,10 @@ local function reap_saved(st)
         -- antes de a encontrar deixava a árvore colhida de fora do save:
         -- ao entrar na cena onde ela vive, `reaped_names` já a saltava e a
         -- árvore com frutas reaparecia.
-        local id = viber.find(name)
+        local id = vael.find(name)
         if id then
           st.reaped_names[name] = true
-          viber.entity_despawn(id)
+          vael.entity_despawn(id)
           local proto = game["stump." .. name .. ".proto"]
           local x = game["stump." .. name .. ".x"]
           local y = game["stump." .. name .. ".y"]
@@ -493,14 +511,14 @@ local function reap_saved(st)
           local scale = game["stump." .. name .. ".scale"]
           if type(proto) == "string" and REPLACEMENTS[proto]
               and type(x) == "number" and type(z) == "number" then
-            viber.spawn_prototype(proto, x, z, {
+            vael.spawn_prototype(proto, x, z, {
               y = type(y) == "number" and y or nil,
               on_spawned = function(bits)
                 if type(y) == "number" then
-                  viber.set_pose(x, y, z, 0, bits)
+                  vael.set_pose(x, y, z, 0, bits)
                 end
                 if type(scale) == "number" then
-                  viber.set_scale(scale, bits)
+                  vael.set_scale(scale, bits)
                 end
               end,
             })
@@ -515,10 +533,10 @@ function on_update(dt)
   -- Portão da migração: com `VAEL_HARVEST_RUST=1` a colheita corre em Rust
   -- (`src/harvest.rs`) e este controller cala-se por inteiro. Sem o flag o
   -- caminho é o de sempre (nada abaixo mudou).
-  if viber.game().vael_harvest_rust == true then
+  if vael.game().vael_harvest_rust == true then
     return
   end
-  local st = viber.state()
+  local st = vael.state()
   st.hits = st.hits or {}
   st.broken = st.broken or {}
   st.reap_t = (st.reap_t or 0) - dt
@@ -533,9 +551,9 @@ function on_update(dt)
   -- Título aberto (vive sobre `main` no arranque directo): [J] é da UI e o
   -- herói está parado atrás do véu. Sem o portão, machado/picareta batiam
   -- por baixo do título — XP e itens para uma partida que nem começou.
-  -- (`viber.menu_open()` já cobre diário/mapa/cinemática; o título não.)
-  if (viber.scene_name and viber.scene_name() == "menu")
-      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+  -- (`vael.menu_open()` já cobre diário/mapa/cinemática; o título não.)
+  if (vael.scene_name and vael.scene_name() == "menu")
+      or (vael.ui and vael.ui.is_open and vael.ui.is_open("title")) then
     st.swing = nil
     st.grip_t = 0
     publish_tool(st, nil)
@@ -545,7 +563,7 @@ function on_update(dt)
   -- Menu aberto ou herói caído: o golpe que estava armado não aterra por
   -- baixo (antes o `impact` corria primeiro e a árvore caía com o diário
   -- aberto ou depois da morte).
-  if viber.menu_open() or viber.ui.get("boat.grip") == "oars" then
+  if vael.menu_open() or vael.ui.get("boat.grip") == "oars" then
     st.swing = nil
     st.grip_t = 0
     publish_tool(st, nil)
@@ -562,7 +580,7 @@ function on_update(dt)
   end
   if st.swing then
     st.swing.t = st.swing.t - dt
-    local contact = st.swing.probe and viber.vael.mine_contact(st.swing.id) or "unshaped"
+    local contact = st.swing.probe and vael.vael.mine_contact(st.swing.id) or "unshaped"
     if contact == "hit" or (contact == "unshaped" and st.swing.t <= 0) then
       impact(st)
     elseif contact == "miss" or st.swing.t < -0.65 then
@@ -570,7 +588,7 @@ function on_update(dt)
     end
   end
   -- O machado e a picareta usam o foco físico publicado antes de ler o ataque.
-  if viber.vael.harvest_tool_focus and viber.vael.harvest_tool_focus() then
+  if vael.vael.harvest_tool_focus and vael.vael.harvest_tool_focus() then
     st.near, st.tool, st.prompting, st.scan_t = nil, nil, false, 0
     return
   end
@@ -593,7 +611,7 @@ function on_update(dt)
   -- O rato é do combate ([J]/clique). A colheita responde só ao J: com o
   -- clique também a colher, um clique perto de uma árvore disparava o golpe
   -- de espada E o machado no mesmo frame.
-  local pressed = viber.input.pressed("j")
+  local pressed = vael.input.pressed("j")
   if not pressed or not prop then
     return
   end
@@ -605,6 +623,14 @@ function on_update(dt)
   -- do J — uma varredura por pressão, não por frame.
   local target = nearest(st)
   if not target or other_j_prompt(target.style, target.kind) then
+    if not target and prop and not other_j_prompt(prop.style, prop.kind) then
+      local ok, hx, hy, hz = vael.player_position()
+      if ok then
+        vael.damage_number("Fora de alcance", {
+          color = "#c8c2b4", x = hx, y = hy + 1.6, z = hz,
+        })
+      end
+    end
     return
   end
   st.near = target

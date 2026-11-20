@@ -6,7 +6,7 @@
 //! equipados ([`EquippedItems`], `gear.<slot>` → id — o valor é uma string no
 //! Luau e não cabe num mapa de números). As funções puras recebem os dois em
 //! [`GearState`] e não tocam na VM; a bridge [`install`] instala
-//! `viber.vael.gear_*`/`player_stats`/`stat` no arranque e lê/escreve a
+//! `vael.vael.gear_*`/`player_stats`/`stat` no arranque e lê/escreve a
 //! tabela `viber_game`, como o cofre e o XP.
 //!
 //! As passivas já não são somadas à mão: os efeitos alimentam o grafo de
@@ -43,7 +43,7 @@ use crate::vault::{vael_fn, vael_table};
 /// Slots de equipamento, na ordem em que os efeitos são somados.
 pub const SLOTS: [&str; 3] = ["weapon", "armor", "charm"];
 
-/// Prefixos das chaves no `viber.game()`.
+/// Prefixos das chaves no `vael.game()`.
 pub const ITEM_KEY_PREFIX: &str = "item.";
 pub const GEAR_KEY_PREFIX: &str = "gear.";
 pub const SKILL_KEY_PREFIX: &str = "skill.";
@@ -147,12 +147,12 @@ impl GearRules {
     }
 }
 
-/// Chave da mochila no `viber.game()`.
+/// Chave da mochila no `vael.game()`.
 pub fn item_key(id: &str) -> String {
     format!("{ITEM_KEY_PREFIX}{id}")
 }
 
-/// Chave do slot equipado no `viber.game()`.
+/// Chave do slot equipado no `vael.game()`.
 pub fn gear_key(slot: &str) -> String {
     format!("{GEAR_KEY_PREFIX}{slot}")
 }
@@ -171,7 +171,7 @@ fn held(state: &GearState, id: &str) -> bool {
 /// Id equipado no slot, ou `None`.
 ///
 /// Uma marca de um item vendido/entregue ou de outro slot é limpa do estado
-/// (como o `viber.game()[key] = nil` do Lua).
+/// (como o `vael.game()[key] = nil` do Lua).
 pub fn equipped(rules: &GearRules, state: &mut GearState, slot: &str) -> Option<String> {
     let id = state.equipped.get(slot)?.clone();
     if id.is_empty() {
@@ -382,7 +382,7 @@ pub fn stat(
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin do equipamento: instala as funções em `viber.vael` depois do
+/// Plugin do equipamento: instala as funções em `vael.vael` depois do
 /// cofre e do XP.
 pub struct VaelGearPlugin;
 
@@ -403,18 +403,18 @@ impl Plugin for VaelGearPlugin {
     }
 }
 
-/// Arranque: acrescenta as funções de equipamento à tabela `viber.vael`.
+/// Arranque: acrescenta as funções de equipamento à tabela `vael.vael`.
 ///
 /// Público dentro do crate para as quests ordenarem depois dele.
 pub(crate) fn install_gear_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
-        warn!("vael: equipamento sem conteúdo carregado — `viber.vael` não estendido");
+        warn!("vael: equipamento sem conteúdo carregado — `vael.vael` não estendido");
         return;
     };
     // UM `Arc` de regras e UM `StatEngine` para o jogo todo. Antes cada
     // contexto BMS (~199 + as criaturas) clonava o equipamento/talentos e
     // criava a sua própria `World` do gauge. O motor é partilhado por um
-    // `Mutex`: os contextos leem o MESMO `viber.game()`, por isso o digest do
+    // `Mutex`: os contextos leem o MESMO `vael.game()`, por isso o digest do
     // último rebuild continua válido entre eles.
     let rules = Arc::new(GearRules::from_content(&content));
     let stats = Arc::new(Mutex::new(StatEngine::new(AttributeRules::default())));
@@ -426,11 +426,11 @@ pub(crate) fn install_gear_api(content: Option<Res<VaelContent>>) {
     });
     info!(
         itens,
-        talentos, "vael: equipamento em Rust registado nos contextos BMS (`viber.vael`)"
+        talentos, "vael: equipamento em Rust registado nos contextos BMS (`vael.vael`)"
     );
 }
 
-/// Acrescenta as funções de equipamento a `viber.vael`.
+/// Acrescenta as funções de equipamento a `vael.vael`.
 ///
 /// Usa a tabela já criada pelo cofre/XP; só cria uma nova se esta não existir.
 /// O [`StatEngine`] é partilhado por todas as funções que leem as passivas —
@@ -716,7 +716,7 @@ fn lock_stats(engine: &Arc<Mutex<StatEngine>>) -> MutexGuard<'_, StatEngine> {
 /// Lê os slots e as contagens que as funções puras precisam de validar.
 ///
 /// Só os `item.<id>` dos ids equipados são lidos; `gear_toggle` acrescenta a
-/// contagem do id pedido. O estado vem de `viber.game()` (proxy do store
+/// contagem do id pedido. O estado vem de `vael.game()` (proxy do store
 /// partilhado): `get`/`set` com metamétodos, não `raw_*`.
 fn read_state(lua: &Lua) -> mlua::Result<(Table, GearState)> {
     let game = vael_engine::luau::game::game_proxy(lua)?;
@@ -787,7 +787,7 @@ fn stats_table(lua: &Lua, stats: &Stats) -> mlua::Result<Table> {
     Ok(table)
 }
 
-/// `viber.vael.stat_sheet()`: atributos e stats derivadas para o diário.
+/// `vael.vael.stat_sheet()`: atributos e stats derivadas para o diário.
 fn stat_sheet_table(lua: &Lua, snapshot: &StatSnapshot) -> mlua::Result<Table> {
     let table = lua.create_table()?;
     let attributes = lua.create_table()?;
@@ -1159,11 +1159,11 @@ mod tests {
     fn lua_com_bridge(rules: GearRules) -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
-        install(&lua, rules).expect("instalar viber.vael");
+        install(&lua, rules).expect("instalar vael.vael");
         (lua, game)
     }
 
@@ -1173,19 +1173,19 @@ mod tests {
         game.raw_set("item.machado", 2).expect("machado");
 
         let result: Option<String> = lua
-            .load("return viber.vael.gear_toggle('machado')")
+            .load("return vael.vael.gear_toggle('machado')")
             .eval()
             .expect("gear_toggle");
         assert_eq!(result.as_deref(), Some("on"));
         assert_eq!(game.get::<String>("gear.weapon").expect("slot"), "machado");
         assert!(
-            lua.load("return viber.vael.gear_is_equipped('machado')")
+            lua.load("return vael.vael.gear_is_equipped('machado')")
                 .eval::<bool>()
                 .expect("is_equipped")
         );
 
         let result: Option<String> = lua
-            .load("return viber.vael.gear_toggle('machado')")
+            .load("return vael.vael.gear_toggle('machado')")
             .eval()
             .expect("gear_toggle off");
         assert_eq!(result.as_deref(), Some("off"));
@@ -1196,7 +1196,7 @@ mod tests {
 
         // Item fora da mochila: nil e nenhuma chave criada.
         assert!(
-            lua.load("return viber.vael.gear_toggle('manto') == nil")
+            lua.load("return vael.vael.gear_toggle('manto') == nil")
                 .eval::<bool>()
                 .expect("toggle sem item")
         );
@@ -1208,7 +1208,7 @@ mod tests {
         game.raw_set("gear.weapon", "machado").expect("slot");
         // `item.machado` ausente: a arma equipada deixou de contar.
         assert!(
-            lua.load("return viber.vael.gear_equipped('weapon') == nil")
+            lua.load("return vael.vael.gear_equipped('weapon') == nil")
                 .eval::<bool>()
                 .expect("equipped")
         );
@@ -1222,12 +1222,12 @@ mod tests {
     fn bridge_weapon_default_e_equipada() {
         let (lua, game) = lua_com_bridge(regras());
         let damage: f64 = lua
-            .load("return viber.vael.gear_weapon().damage")
+            .load("return vael.vael.gear_weapon().damage")
             .eval()
             .expect("arma base");
         assert_eq!(damage, 25.0);
         let grip: String = lua
-            .load("return viber.vael.gear_weapon().grip")
+            .load("return vael.vael.gear_weapon().grip")
             .eval()
             .expect("grip base");
         assert_eq!(grip, "espada");
@@ -1235,7 +1235,7 @@ mod tests {
         game.raw_set("item.machado", 1).expect("machado");
         game.raw_set("gear.weapon", "machado").expect("slot");
         let damage: f64 = lua
-            .load("return viber.vael.gear_weapon().damage")
+            .load("return vael.vael.gear_weapon().damage")
             .eval()
             .expect("arma equipada");
         assert_eq!(damage, 38.0);
@@ -1249,34 +1249,34 @@ mod tests {
         game.raw_set("skill.forca", true).expect("talento");
 
         let defense: f64 = lua
-            .load("return viber.vael.gear_effects().defense")
+            .load("return vael.vael.gear_effects().defense")
             .eval()
             .expect("effects");
         assert_eq!(defense, 0.15);
 
         let damage: f64 = lua
-            .load("return viber.vael.player_stats().bonus_damage")
+            .load("return vael.vael.player_stats().bonus_damage")
             .eval()
             .expect("bonus_damage");
         assert_eq!(damage, 5.0);
         let speed: f64 = lua
-            .load("return viber.vael.player_stats().speed_mult")
+            .load("return vael.vael.player_stats().speed_mult")
             .eval()
             .expect("speed_mult");
         assert!((speed - 1.1).abs() < f64::EPSILON);
         let burn: f64 = lua
-            .load("return viber.vael.player_stats().fx.strike_burn")
+            .load("return vael.vael.player_stats().fx.strike_burn")
             .eval()
             .expect("fx");
         assert_eq!(burn, 3.0);
 
         let defense: f64 = lua
-            .load("return viber.vael.stat('defense')")
+            .load("return vael.vael.stat('defense')")
             .eval()
             .expect("stat defense");
         assert_eq!(defense, 0.15);
         let ausente: f64 = lua
-            .load("return viber.vael.stat('nao-existe')")
+            .load("return vael.vael.stat('nao-existe')")
             .eval()
             .expect("stat ausente");
         assert_eq!(ausente, 0.0);
@@ -1287,30 +1287,30 @@ mod tests {
         let (lua, game) = lua_com_bridge(regras());
         // Sem talentos: base 5 e dano derivado 0.
         let base: f64 = lua
-            .load("return viber.vael.attribute('strength')")
+            .load("return vael.vael.attribute('strength')")
             .eval()
             .expect("strength base");
         assert_eq!(base, 5.0);
         let damage: f64 = lua
-            .load("return viber.vael.stat('damage')")
+            .load("return vael.vael.stat('damage')")
             .eval()
             .expect("damage base");
         assert_eq!(damage, 0.0);
 
         game.raw_set("skill.strength1", true).expect("talento");
         let strength: f64 = lua
-            .load("return viber.vael.attribute('strength')")
+            .load("return vael.vael.attribute('strength')")
             .eval()
             .expect("strength");
         assert_eq!(strength, 7.0);
         let damage: f64 = lua
-            .load("return viber.vael.stat('damage')")
+            .load("return vael.vael.stat('damage')")
             .eval()
             .expect("damage");
         assert_eq!(damage, 6.0);
 
         let sheet: Table = lua
-            .load("return viber.vael.stat_sheet()")
+            .load("return vael.vael.stat_sheet()")
             .eval()
             .expect("stat_sheet");
         let attributes: Table = sheet.get("attributes").expect("attributes");
@@ -1327,24 +1327,24 @@ mod tests {
         game.raw_set("item.machado_pesado", 1).expect("item");
 
         assert!(
-            lua.load("return viber.vael.gear_requirement('machado_pesado') == 'Strength >= 7'")
+            lua.load("return vael.vael.gear_requirement('machado_pesado') == 'Strength >= 7'")
                 .eval::<bool>()
                 .expect("expressão")
         );
         assert!(
-            lua.load("return viber.vael.gear_requirement_text('machado_pesado') == 'Força 7'")
+            lua.load("return vael.vael.gear_requirement_text('machado_pesado') == 'Força 7'")
                 .eval::<bool>()
                 .expect("texto")
         );
         assert!(
-            !lua.load("return viber.vael.gear_requirement_met('machado_pesado')")
+            !lua.load("return vael.vael.gear_requirement_met('machado_pesado')")
                 .eval::<bool>()
                 .expect("requisito")
         );
 
         // Base 5: o machado pesado fica bloqueado e o slot não muda.
         let blocked: Option<String> = lua
-            .load("return viber.vael.gear_toggle('machado_pesado')")
+            .load("return vael.vael.gear_toggle('machado_pesado')")
             .eval()
             .expect("toggle bloqueado");
         assert_eq!(blocked.as_deref(), Some("blocked"));
@@ -1356,12 +1356,12 @@ mod tests {
         // Um talento de Força chega aos 7 e o item equipa.
         game.raw_set("skill.strength1", true).expect("talento");
         assert!(
-            lua.load("return viber.vael.gear_requirement_met('machado_pesado')")
+            lua.load("return vael.vael.gear_requirement_met('machado_pesado')")
                 .eval::<bool>()
                 .expect("requisito cumprido")
         );
         let on: Option<String> = lua
-            .load("return viber.vael.gear_toggle('machado_pesado')")
+            .load("return vael.vael.gear_toggle('machado_pesado')")
             .eval()
             .expect("toggle");
         assert_eq!(on.as_deref(), Some("on"));
@@ -1379,7 +1379,7 @@ mod tests {
         game.raw_set("gear.weapon", "machado_pesado").expect("slot");
 
         let off: Option<String> = lua
-            .load("return viber.vael.gear_toggle('machado_pesado')")
+            .load("return vael.vael.gear_toggle('machado_pesado')")
             .eval()
             .expect("toggle off");
         assert_eq!(off.as_deref(), Some("off"));
@@ -1393,13 +1393,13 @@ mod tests {
     fn bridge_slot_of_delega_a_tabela_de_itens() {
         let (lua, _game) = lua_com_bridge(regras());
         assert_eq!(
-            lua.load("return viber.vael.gear_slot_of('manto')")
+            lua.load("return vael.vael.gear_slot_of('manto')")
                 .eval::<Option<String>>()
                 .expect("slot_of"),
             Some("armor".to_string())
         );
         assert!(
-            lua.load("return viber.vael.gear_slot_of('pocao') == nil")
+            lua.load("return vael.vael.gear_slot_of('pocao') == nil")
                 .eval::<bool>()
                 .expect("slot_of sem slot")
         );
@@ -1409,24 +1409,24 @@ mod tests {
     fn gear_lua_delega_para_a_bridge() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
         install_xp(&lua, XpRules::default()).expect("xp");
         install(&lua, regras()).expect("gear");
-        let game = vael_engine::luau::game::game_proxy(&lua).expect("viber.game");
+        let game = vael_engine::luau::game::game_proxy(&lua).expect("vael.game");
         game.set("item.machado", 1).expect("machado");
 
         let state: String = lua
             .load(
                 r#"
-                assert(viber.vael.gear_slot_of("machado") == "weapon")
-                local state = viber.vael.gear_toggle("machado")
+                assert(vael.vael.gear_slot_of("machado") == "weapon")
+                local state = vael.vael.gear_toggle("machado")
                 assert(state == "on", state)
-                assert(viber.vael.gear_weapon().damage == 38)
-                assert(viber.vael.gear_effects().crit == 0.05)
+                assert(vael.vael.gear_weapon().damage == 38)
+                assert(vael.vael.gear_effects().crit == 0.05)
                 return state
                 "#,
             )
@@ -1440,8 +1440,8 @@ mod tests {
     fn bridge_convive_com_cofre_e_xp() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         install_vault(&lua, VaultRules::from_items(&ItemsFile::default())).expect("cofre");
@@ -1450,14 +1450,14 @@ mod tests {
 
         let coexistem: bool = lua
             .load(
-                "return type(viber.vael.vault_add) == 'function' \
-                 and type(viber.vael.add_xp) == 'function' \
-                 and type(viber.vael.gear_toggle) == 'function' \
-                 and type(viber.vael.player_stats) == 'function'",
+                "return type(vael.vael.vault_add) == 'function' \
+                 and type(vael.vael.add_xp) == 'function' \
+                 and type(vael.vael.gear_toggle) == 'function' \
+                 and type(vael.vael.player_stats) == 'function'",
             )
             .eval()
             .expect("funções instaladas");
-        assert!(coexistem, "cofre, XP e equipamento partilham `viber.vael`");
+        assert!(coexistem, "cofre, XP e equipamento partilham `vael.vael`");
     }
 
     #[test]
@@ -1483,30 +1483,30 @@ mod tests {
         app.update();
 
         // Modelo BMS: os plugins registam instaladores; num contexto novo
-        // todos correm e as funções coexistem na MESMA tabela `viber.vael`.
+        // todos correm e as funções coexistem na MESMA tabela `vael.vael`.
         let lua = mlua::Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         crate::script_host::run_installers(&lua).expect("instaladores");
         let coexistem: bool = lua
             .load(
-                "return type(viber.vael.vault_add) == 'function' \
-                 and type(viber.vael.add_xp) == 'function' \
-                 and type(viber.vael.gear_toggle) == 'function' \
-                 and type(viber.vael.gear_weapon) == 'function' \
-                 and type(viber.vael.gear_effects) == 'function' \
-                 and type(viber.vael.gear_slot_of) == 'function' \
-                 and type(viber.vael.gear_requirement) == 'function' \
-                 and type(viber.vael.gear_requirement_met) == 'function' \
-                 and type(viber.vael.player_stats) == 'function' \
-                 and type(viber.vael.attribute) == 'function' \
-                 and type(viber.vael.attributes) == 'function' \
-                 and type(viber.vael.stat_sheet) == 'function' \
-                 and type(viber.vael.stat) == 'function'",
+                "return type(vael.vael.vault_add) == 'function' \
+                 and type(vael.vael.add_xp) == 'function' \
+                 and type(vael.vael.gear_toggle) == 'function' \
+                 and type(vael.vael.gear_weapon) == 'function' \
+                 and type(vael.vael.gear_effects) == 'function' \
+                 and type(vael.vael.gear_slot_of) == 'function' \
+                 and type(vael.vael.gear_requirement) == 'function' \
+                 and type(vael.vael.gear_requirement_met) == 'function' \
+                 and type(vael.vael.player_stats) == 'function' \
+                 and type(vael.vael.attribute) == 'function' \
+                 and type(vael.vael.attributes) == 'function' \
+                 and type(vael.vael.stat_sheet) == 'function' \
+                 and type(vael.vael.stat) == 'function'",
             )
             .eval()
             .expect("funções instaladas");
-        assert!(coexistem, "equipamento tem de partilhar `viber.vael`");
+        assert!(coexistem, "equipamento tem de partilhar `vael.vael`");
     }
 }

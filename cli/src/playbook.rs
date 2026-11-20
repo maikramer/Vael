@@ -11,7 +11,7 @@
 //!     { "op": "scene", "name": "qa/city-forge", "wait": true },
 //!     { "op": "step", "frames": 10 },
 //!     { "op": "key", "key": "KeyE" },
-//!     { "op": "until", "expr": "viber.vael.qa_snapshot():find('craft') ~= nil", "timeout_ms": 5000 },
+//!     { "op": "until", "expr": "vael.qa_snapshot():find('craft') ~= nil", "timeout_ms": 5000 },
 //!     { "op": "expect", "expect": {"items": {"hunter_cloak": 1}} },
 //!     { "op": "screenshot", "path": "out/fim.png" }
 //!   ]

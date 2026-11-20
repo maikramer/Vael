@@ -1,6 +1,6 @@
 -- enemies/bogling.lua: criatura lenta do pântano (sem anti-stuck nem
 -- aggro-chain — wander curto). Toda a máquina vive em lib/fsm.lua.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "bogling",
   proto = "mob-bogling",
   weak = { burn = 2.0 }, -- lodo seco arde bem

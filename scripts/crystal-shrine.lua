@@ -1,17 +1,17 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- crystal-shrine.lua: dois modos, escolhidos por prop:
 --   * `riddle_id` vazio — comportamento antigo: orar dá XP uma vez;
 --   * `riddle_id` definido — enigma mudo (data/riddles.json): a pista é som,
 --     objetos ou estátuas; a resposta é uma palavra validada pelo modelo.
 --@export riddle_id: string = ""
 
-local once = viber.load("lib/once.lua")
-local riddle = viber.load("lib/riddle.lua")
+local once = vael.load("lib/once.lua")
+local riddle = vael.load("lib/riddle.lua")
 
 local PROMPT, DONE_PROMPT = "Orar ao santuário", "O santuário está em silêncio"
 
 local function set_prompt(done)
-  viber.set_interaction(done and DONE_PROMPT or PROMPT, "e", 3.0)
+  vael.set_interaction(done and DONE_PROMPT or PROMPT, "e", 3.0)
 end
 
 -- Herói caído: o modal de morte só abre ao fim dos 2,2 s de `dying`, e nessa
@@ -53,39 +53,39 @@ local function update_riddle(st)
   local label = done and "O santuário está em silêncio" or (r.interact or "Examinar o santuário")
   if st.label ~= label then
     st.label = label
-    viber.set_interaction(label, "e", 3.0)
+    vael.set_interaction(label, "e", 3.0)
   end
 
   -- Pista sonora: toca enquanto o jogador estiver perto, sem spammar.
   local clue = r.clue or {}
   if not done and clue.kind == "audio" and clue.sound then
-    local okp, px, py, pz = viber.player_position()
-    local oks, sx, sy, sz = viber.entity_position()
+    local okp, px, py, pz = vael.player_position()
+    local oks, sx, sy, sz = vael.entity_position()
     if okp and oks then
       local dx, dz = px - sx, pz - sz
       local dist = math.sqrt(dx * dx + dz * dz)
-      local now = viber.time()
+      local now = vael.time()
       if dist <= (clue.radius or 12) and now >= (st.sound_t or 0) then
         st.sound_t = now + (clue.period or 7)
-        viber.sound(clue.sound)
+        vael.sound(clue.sound)
       end
     end
   end
 
-  if viber.menu_open() or hero_down() or not viber.interacted("e") then
+  if vael.menu_open() or hero_down() or not vael.interacted("e") then
     return
   end
   if done then
-    viber.say("O santuário está em silêncio.")
+    vael.say("O santuário está em silêncio.")
     return
   end
   local met, missing = riddle.require_met(st.rid)
   if not met then
-    viber.say("Faltam " .. missing .. " marcos por medir.")
+    vael.say("Faltam " .. missing .. " marcos por medir.")
     return
   end
   if not reward_fits(r) then
-    viber.say("A tua bolsa está cheia para o que o santuário guarda.")
+    vael.say("A tua bolsa está cheia para o que o santuário guarda.")
     return
   end
   riddle.ask(st.rid, function()
@@ -94,10 +94,10 @@ local function update_riddle(st)
 end
 
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
   if not st.ready then
     st.ready = true
-    st.rid = viber.prop("riddle_id") or ""
+    st.rid = vael.prop("riddle_id") or ""
     if st.rid == "" then
       st.done = once.taken()
       set_prompt(st.done)
@@ -112,12 +112,12 @@ function on_update(dt)
     st.done = taken
     set_prompt(taken)
   end
-  if viber.menu_open() or hero_down() then return end
-  if viber.interacted("e") and not st.done then
+  if vael.menu_open() or hero_down() then return end
+  if vael.interacted("e") and not st.done then
     st.done = true
     once.mark()
     set_prompt(true)
     rules.add_xp(20)
-    viber.toast("Uma luz fria percorre o cristal (+20 XP).")
+    vael.toast("Uma luz fria percorre o cristal (+20 XP).")
   end
 end

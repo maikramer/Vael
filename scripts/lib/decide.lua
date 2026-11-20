@@ -1,4 +1,4 @@
--- Ponte entre os scripts e a `viber.decision` (d1-omni).
+-- Ponte entre os scripts e a `vael.decision` (d1-omni).
 --
 -- Constrói perguntas tipadas (`choice`/`noul`/`score`) e resolve rótulos
 -- legíveis para os critérios. O modelo é um classificador semântico: a
@@ -6,22 +6,22 @@
 local M = {}
 
 local DIR = "assets/public/d1"
-local rules = viber.load("lib/rules.lua")
-local marks = viber.load("lib/landmarks.lua")
+local rules = vael.load("lib/rules.lua")
+local marks = vael.load("lib/landmarks.lua")
 local aliases
 
 function M.available()
-  return viber.decision and viber.decision.available
-    and viber.decision.available(DIR)
+  return vael.decision and vael.decision.available
+    and vael.decision.available(DIR)
 end
 
 function M.ready()
-  return viber.decision and viber.decision.ready and viber.decision.ready()
+  return vael.decision and vael.decision.ready and vael.decision.ready()
 end
 
 function M.load()
   if M.available() then
-    viber.decision.load(DIR)
+    vael.decision.load(DIR)
   end
 end
 
@@ -47,7 +47,7 @@ end
 -- "o herói equipou torch?" sobre uma ação registada como "equipou tocha".
 local function alias_table()
   if not aliases then
-    local ok, data = pcall(viber.load_json, "data/nlu_aliases.json")
+    local ok, data = pcall(vael.load_json, "data/nlu_aliases.json")
     aliases = ok and type(data) == "table" and data or {}
   end
   return aliases
@@ -97,9 +97,9 @@ end
 -- Bloqueante (QA/eventos raros, como o juiz). Devolve o mapa `answers`.
 function M.decide(state, questions)
   if not M.ready() then
-    return nil, "viber.decision não está carregado"
+    return nil, "vael.decision não está carregado"
   end
-  local result, err = viber.decision.decide(state or {}, questions or {})
+  local result, err = vael.decision.decide(state or {}, questions or {})
   if not result then
     return nil, err
   end

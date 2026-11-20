@@ -71,28 +71,28 @@ def measure(bridge, previous, seconds):
 def run_route(bridge, output, name, x, z):
     before = window(bridge)
     bridge.lua(
-        f"local h=viber.debug.terrain({x},{z}).height; "
-        f"viber.teleport_player({x},h+0.3,{z}); viber.camera_free(true); "
-        f"local eye=viber.debug.terrain({x + 4},{z + 6}).height; "
-        f"local target=viber.debug.terrain({x},{z - 8}).height; "
-        f"viber.camera_pose({x + 4},eye+5,{z + 6},{x},target+2,{z - 8})"
+        f"local h=vael.debug.terrain({x},{z}).height; "
+        f"vael.teleport_player({x},h+0.3,{z}); vael.camera_free(true); "
+        f"local eye=vael.debug.terrain({x + 4},{z + 6}).height; "
+        f"local target=vael.debug.terrain({x},{z - 8}).height; "
+        f"vael.camera_pose({x + 4},eye+5,{z + 6},{x},target+2,{z - 8})"
     )
     arrival = measure(bridge, before, 10)
     time.sleep(5)
     fixed = measure(bridge, window(bridge), 12)
     if not screenshot(bridge.port, output / f"{name}.png"):
         raise RuntimeError(f"Falha na captura de {name}")
-    climate = bridge.lua("return viber.vael.env_info()")
-    bridge.lua("viber.camera_free(false)")
+    climate = bridge.lua("return vael.vael.env_info()")
+    bridge.lua("vael.camera_free(false)")
     time.sleep(2)
-    start = bridge.lua("return viber.debug.player()")
+    start = bridge.lua("return vael.debug.player()")
     before = window(bridge)
     bridge.call("viber.input.key", {"key": "w", "state": "press"})
     try:
         walking = measure(bridge, before, 12)
     finally:
         bridge.call("viber.input.key", {"key": "w", "state": "release"})
-    end = bridge.lua("return viber.debug.player()")
+    end = bridge.lua("return vael.debug.player()")
     distance = math.hypot(end["x"] - start["x"], end["z"] - start["z"])
     report = dict(
         arrival=arrival,

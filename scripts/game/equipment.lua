@@ -1,6 +1,6 @@
 -- game/equipment.lua: o que o herói leva na mão é CONTEÚDO do jogo.
 --
--- A engine só tem `viber.attach(slot, url, {bone, x, y, z, rx, ry, rz, scale})`:
+-- A engine só tem `vael.attach(slot, url, {bone, x, y, z, rx, ry, rz, scale})`:
 -- encontra o osso pelo nome e pendura o GLB. A tabela de armas/grips e a
 -- decisão de qual usar vivem aqui, não no Rust.
 --
@@ -13,15 +13,15 @@
 -- próprias — sem isto o V e o grip desapareciam dentro das casas.
 
 -- Grip/offsets EXPORTADOS: o nó do host guarda os valores em `prop-*`; o
--- Inspector do editor (secção Script), o `viber scene set` e o jogo leem o
+-- Inspector do editor (secção Script), o inspector e o jogo leem o
 -- mesmo sítio. Distâncias em metros, ângulos em GRAUS (ordem XYZ, a mesma do
--- `viber.attach`). Sem `prop-*`, vale o default da anotação.
+-- `vael.attach`). Sem `prop-*`, vale o default da anotação.
 --
 -- `item-inicial` escolhe o item do arranque; `preview` escolhe a arma ou
 -- ferramenta que o editor pré-visualiza. Em Edit os scripts não correm: o
 -- plugin do editor prende o GLB ao osso lendo estas props (o nó marcado com
 -- `groups="grip-preview"` vive em `world/gameplay.xml`).
--- `--@group` só agrupa os campos no Inspector; o XML e o `viber.prop` não mudam.
+-- `--@group` só agrupa os campos no Inspector; o XML e o `vael.prop` não mudam.
 --@export preview: enum(espada, tocha, machado, picareta) = espada -- arma/ferramenta do preview no editor (o jogo ignora)
 --@export item-inicial: enum(espada, tocha) = espada -- equipado no arranque
 --@export osso: string = hand_r -- osso do rig onde o grip é preso
@@ -78,8 +78,8 @@
 -- BRAÇO (`braco-tocha`), não o lampião — o corpo fica vertical.
 -- A morte bloqueia o V (o herói caído não troca de arma enquanto o ecrã de
 -- morte não abre). É a mesma fonte de HP que o hotbar/combate usam.
-local rules = viber.load("lib/rules.lua")
-local actions = viber.load("lib/actions.lua")
+local rules = vael.load("lib/rules.lua")
+local actions = vael.load("lib/actions.lua")
 
 local ITEMS = {
   { name = "Espada", kind = "sword", prefix = "espada" },
@@ -90,15 +90,15 @@ local ITEMS = {
 -- no frame seguinte (o editor faz o mesmo em Edit, sem correr este script).
 local function grip_for(prefix)
   return {
-    url = viber.prop(prefix .. "-modelo"),
-    bone = viber.prop("osso"),
-    x = viber.prop(prefix .. "-x"),
-    y = viber.prop(prefix .. "-y"),
-    z = viber.prop(prefix .. "-z"),
-    rx = math.rad(viber.prop(prefix .. "-rx")),
-    ry = math.rad(viber.prop(prefix .. "-ry")),
-    rz = math.rad(viber.prop(prefix .. "-rz")),
-    scale = viber.prop(prefix .. "-escala"),
+    url = vael.prop(prefix .. "-modelo"),
+    bone = vael.prop("osso"),
+    x = vael.prop(prefix .. "-x"),
+    y = vael.prop(prefix .. "-y"),
+    z = vael.prop(prefix .. "-z"),
+    rx = math.rad(vael.prop(prefix .. "-rx")),
+    ry = math.rad(vael.prop(prefix .. "-ry")),
+    rz = math.rad(vael.prop(prefix .. "-rz")),
+    scale = vael.prop(prefix .. "-escala"),
   }
 end
 
@@ -126,31 +126,31 @@ local TORCH_LIGHT = 600000
 
 -- Diálogo/mapa abertos: o V é do grafo/UI, não do equipamento.
 local function ui_locked()
-  if viber.menu_open() then
+  if vael.menu_open() then
     return true
   end
   -- O título também é uma UI: o V não troca de item por baixo dele.
-  if viber.ui.is_open and viber.ui.is_open("title") then
+  if vael.ui.is_open and vael.ui.is_open("title") then
     return true
   end
-  local dialogue_until = tonumber(viber.ui.get("dialogue.until")) or 0
-  local left = dialogue_until - viber.time()
-  -- Um timestamp muito à frente é resto de outra sessão (`viber.time()`
+  local dialogue_until = tonumber(vael.ui.get("dialogue.until")) or 0
+  local left = dialogue_until - vael.time()
+  -- Um timestamp muito à frente é resto de outra sessão (`vael.time()`
   -- recomeça no load): não pode trancar o V para sempre.
   return left > 0 and left <= 2.0
 end
 
 function on_update(dt)
-  local st = viber.state()
+  local st = vael.state()
   -- Dois hosts do MESMO script: o de `world/gameplay.xml` (main, com as
   -- props do editor) e o do autoload (`game-lua-equipment-interior`), para o
   -- V e o grip continuarem vivos dentro das casas. Cada um só acorda na sua
   -- cena; em `main` correr os dois anexava/trocava duas vezes.
   if not st.role then
-    st.role = viber.entity_name() == "game-lua-equipment-interior" and "interior" or "main"
+    st.role = vael.entity_name() == "game-lua-equipment-interior" and "interior" or "main"
   end
   if st.role == "interior" then
-    local scene = viber.scene_name and viber.scene_name() or nil
+    local scene = vael.scene_name and vael.scene_name() or nil
     -- Mundo avulso (QA) e `main` são do host de `gameplay.xml`.
     if scene == nil or scene == "main" then
       -- Fora da cena própria, o estado visual em cache é do outro host: a
@@ -169,7 +169,7 @@ function on_update(dt)
       st.tries = 0
     end
   end
-  local pid = viber.player_id()
+  local pid = vael.player_id()
   -- O herói pode ser recriado (cena/load): reanexa quando o dono muda.
   if st.owner ~= pid then
     st.owner = pid
@@ -178,7 +178,7 @@ function on_update(dt)
   if not pid then
     return
   end
-  local game = viber.game()
+  local game = vael.game()
   -- Item escolhido vive no JOGO (primitivo no save): trocar para tocha em
   -- `main` e entrar numa casa não pode voltar a espada no host do interior.
   local index = game.equip_index
@@ -186,7 +186,7 @@ function on_update(dt)
     -- Sem índice no jogo (arranque/save antigo), vale SEMPRE o prop. O
     -- `st.index` de uma sessão anterior não pode decidir a arma de um jogo
     -- novo carregado directamente num interior.
-    index = (viber.prop("item-inicial") == "tocha") and 2 or 1
+    index = (vael.prop("item-inicial") == "tocha") and 2 or 1
   end
   -- Um save editado com 1.5 (ou NaN) fazia `ITEMS[index]` nil no V.
   index = math.floor(index)
@@ -201,7 +201,7 @@ function on_update(dt)
   -- herói aparecia com o machado na mão dentro do salão.
   local tool = ""
   if st.role ~= "interior" then
-    tool = viber.ui.get("harvest.tool")
+    tool = vael.ui.get("harvest.tool")
   end
   if type(tool) ~= "string" then
     tool = ""
@@ -210,10 +210,10 @@ function on_update(dt)
   local harvest_grip = tool_prefix and grip_for(tool_prefix) or nil
   local alive, hp = rules.player_hp()
   local dead = alive and hp <= 0
-  if not ui_locked() and not harvest_grip and not dead and viber.input.pressed("v") then
+  if not ui_locked() and not harvest_grip and not dead and vael.input.pressed("v") then
     index = index % #ITEMS + 1
     st.index = index
-    viber.game().equip_index = index
+    vael.game().equip_index = index
     actions.record("equipar", "item", ITEMS[index].kind)
     -- Reanexa no mesmo frame: o slot substitui o GLB anterior.
     st.tries = 0
@@ -221,7 +221,7 @@ function on_update(dt)
     if ITEMS[index].kind == "sword" then
       name = rules.weapon().label or name
     end
-    viber.toast("Equipado: " .. name)
+    vael.toast("Equipado: " .. name)
   end
   -- O grip pedido mudou (item, ferramenta ou offset editado ao vivo): reanexa
   -- já. A assinatura detecta também a chegada/partida do alvo de colheita e
@@ -243,14 +243,14 @@ function on_update(dt)
     .. "|" .. grip_signature(grip)
   -- The two oars occupy both hands. Keep the selected item in the save so
   -- leaving the boat restores the current grip.
-  local rowing = st.role == "main" and viber.ui.get("boat.grip") == "oars"
+  local rowing = st.role == "main" and vael.ui.get("boat.grip") == "oars"
   if rowing then grip_key = "oars" end
   if st.grip_key ~= grip_key then
     st.grip_key = grip_key
     st.tries = 0
   end
   -- O combate lê isto: com a tocha na mão não há arma para atacar. A
-  -- `viber.lantern` acende a luz da tocha (o `if` protege engines antigas
+  -- `vael.lantern` acende a luz da tocha (o `if` protege engines antigas
   -- durante o hot-reload, antes do rebuild). `lantern_kind` é separado do
   -- `kind` para o hot-reload REAPLICAR a luz mesmo que o item não mude.
   -- Com uma FERRAMENTA de colheita o slot `weapon` é a ferramenta, não o
@@ -259,20 +259,20 @@ function on_update(dt)
   local kind = harvest_grip and "tool" or ITEMS[index].kind
   if st.kind ~= kind then
     st.kind = kind
-    viber.ui.set("equip.kind", kind)
+    vael.ui.set("equip.kind", kind)
   end
   local held_torch = kind == "torch" and not rowing
-  if viber.lantern and st.lantern_kind ~= held_torch then
+  if vael.lantern and st.lantern_kind ~= held_torch then
     st.lantern_kind = held_torch
-    viber.lantern(held_torch and TORCH_LIGHT or 0)
+    vael.lantern(held_torch and TORCH_LIGHT or 0)
   end
   -- Braço à frente com a tocha: rotação ADITIVA no `upperarm_r`, somada à
   -- animação de idle/walk/run. `st.arm` guarda o valor enviado para o
   -- hot-reload reaplicar quando `braco-tocha` mudar.
-  local arm = held_torch and math.rad(viber.prop("braco-tocha")) or 0
-  if viber.bone_offset and st.arm ~= arm then
+  local arm = held_torch and math.rad(vael.prop("braco-tocha")) or 0
+  if vael.bone_offset and st.arm ~= arm then
     st.arm = arm
-    viber.bone_offset("upperarm_r", arm, 0, 0)
+    vael.bone_offset("upperarm_r", arm, 0, 0)
   end
   -- UM pedido por mudança (item, grip, dono, cena). Nos primeiros frames o
   -- GLB do herói ainda não tem hierarquia: a engine guarda o pedido até o
@@ -288,8 +288,8 @@ function on_update(dt)
   end
   st.tries = 1
   if rowing then
-    viber.detach("weapon")
+    vael.detach("weapon")
   else
-    viber.attach("weapon", grip.url, grip)
+    vael.attach("weapon", grip.url, grip)
   end
 end

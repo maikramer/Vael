@@ -52,7 +52,7 @@ vael-tools debug --port <p> wait-ready --timeout 300   # ANTES de screenshot/inp
 vael-tools debug --port <p> screenshot -o shot.png
 vael-tools debug --port <p> prof --tab frames
 vael-tools debug --port <p> key f3 --hold-ms 120
-vael-tools debug --port <p> lua 'return viber.ping()'
+vael-tools debug --port <p> lua 'return vael.ping()'
 ```
 
 `ready` vem do espelho `BridgeReadiness` no ping novo; depois de
@@ -70,7 +70,7 @@ vael-tools debug --port <p> --json wait-ready --timeout 300
 vael-tools debug --port <p> pause && vael-tools debug --port <p> step --frames 30
 vael-tools debug --port <p> state                       # quests/itens/ouro/hp em JSON
 vael-tools debug --port <p> expect '{"items":{"gold":">=150"}}'   # regras reais; exit 1 em falha
-vael-tools debug --port <p> until 'viber.game().hp >= 100' --timeout-ms 5000
+vael-tools debug --port <p> until 'vael.game().hp >= 100' --timeout-ms 5000
 vael-tools debug --port <p> tree --filter npc           # entidades por nome
 vael-tools debug --port <p> logs --tail 50 --grep error # ficheiro da sessão (ou --source bridge)
 vael-tools debug --port <p> engines --json              # sessões com [vivo]/[morto]; --prune apaga mortas

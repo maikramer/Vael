@@ -11,20 +11,20 @@
 -- objetivo com `rules.quest_set_progress` e entrega com `quest_turn_in`.
 --@export quest_id: string = ""
 
-local rules = viber.load("lib/rules.lua")
-local talk = viber.load("ui/say.lua")
-local decide = viber.load("lib/decide.lua")
+local rules = vael.load("lib/rules.lua")
+local talk = vael.load("ui/say.lua")
+local decide = vael.load("lib/decide.lua")
 
 local function typing()
-  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+  return vael.ui and vael.ui.focused and vael.ui.focused() ~= nil
 end
 
 local function flag(id, key)
-  return viber.game()["puzzle." .. id .. "." .. key] == true
+  return vael.game()["puzzle." .. id .. "." .. key] == true
 end
 
 local function set_flag(id, key)
-  viber.game()["puzzle." .. id .. "." .. key] = true
+  vael.game()["puzzle." .. id .. "." .. key] = true
 end
 
 local function known_text(id, puzzle)
@@ -67,7 +67,7 @@ local function say_lines(lines, fallback)
   end
   if text ~= "" then
     talk.say(text)
-    viber.ui.set("dialogue.until", viber.time() + 0.75)
+    vael.ui.set("dialogue.until", vael.time() + 0.75)
   end
 end
 
@@ -187,19 +187,19 @@ local function ask_final(id, puzzle, st)
 end
 
 function on_update(_dt)
-  local id = viber.prop("quest_id")
+  local id = vael.prop("quest_id")
   if not id or id == "" then
     return
   end
-  local st = viber.state()
+  local st = vael.state()
   local def = rules.quest_def(id)
   local puzzle = st.puzzle
   if not puzzle then
-    local ok, data = pcall(viber.load_json, "data/quest_puzzles/" .. id .. ".json")
+    local ok, data = pcall(vael.load_json, "data/quest_puzzles/" .. id .. ".json")
     if not ok or type(data) ~= "table" then
       -- Sem aviso o NPC ficava mudo (sem prompt de interação) e parecia bug
       -- de engine; o log diz o ficheiro e o motivo.
-      viber.log("puzzle: falha a ler data/quest_puzzles/" .. id .. ".json — NPC sem diálogo"
+      vael.log("puzzle: falha a ler data/quest_puzzles/" .. id .. ".json — NPC sem diálogo"
         .. (ok and "" or (" (" .. tostring(data) .. ")")))
       return
     end
@@ -210,9 +210,9 @@ function on_update(_dt)
   local label = hidden and "Cumprimentar" or ("Falar com " .. (puzzle.giver or (def and def.title) or id))
   if st.label ~= label then
     st.label = label
-    viber.set_interaction(label, "e", 3.5)
+    vael.set_interaction(label, "e", 3.5)
   end
-  if viber.menu_open() or talk.active() or typing() or not viber.interacted("e") then
+  if vael.menu_open() or talk.active() or typing() or not vael.interacted("e") then
     return
   end
   -- Herói caído: os 2,2 s de `dying` antecedem o modal de morte, por isso o
@@ -222,8 +222,8 @@ function on_update(_dt)
   if hp <= 0 then
     return
   end
-  viber.face_player()
-  viber.gesture("talk")
+  vael.face_player()
+  vael.gesture("talk")
 
   local state = rules.quest_state(id)
   if hidden then

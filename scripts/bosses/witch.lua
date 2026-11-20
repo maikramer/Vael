@@ -1,8 +1,8 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- bosses/witch.lua: bruxa do bosque. Toda a máquina vive em lib/fsm.lua
--- (viber.load). Especial: MALDIÇÃO — marca o chão onde o herói está; quem
+-- (vael.load). Especial: MALDIÇÃO — marca o chão onde o herói está; quem
 -- não sair da zona leva o golpe amplificado. Frágil (400 HP) e rápida.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "witch",
   hp = 400,
   intro = "guardiao-bruxa", -- cena de despertar (world/cinematics.xml)
@@ -35,7 +35,7 @@ local fsm = viber.load("lib/fsm.lua").new{
         on_hit = function() rules.apply_status("venom", 6) end,
       } },
   },
-  on_chase = function() viber.sound("roar") end,
+  on_chase = function() vael.sound("roar") end,
 }
 
 function on_player_attack(px, pz)

@@ -2,7 +2,7 @@
 -- para, vira-se e gesticula de vez em quando; [E] troca conversa.
 --
 -- Um só script para a rua, as salas e os balcões: o que muda é DADO de cada
--- instância (`prop-*` no XML, Inspector › Script no editor, `viber scene set`):
+-- instância (`prop-*`, Inspector › Script no editor):
 --   * rua (default): passeio de 4 m a 1.1 m/s;
 --   * dentro de casa: `prop-radius="1.6" prop-speed="0.6"` — com o passeio de
 --     rua o NPC atravessava a parede;
@@ -19,23 +19,23 @@
 --@export notice: string = ""                      -- fala quando reage a um sinal (`notice`); "" = só se vira
 --@export notice_range: number(0..60) = 18         -- só reage com o player a menos disto (m)
 
-local rules = viber.load("lib/rules.lua")
-local talk = viber.load("ui/say.lua")
-local marks = viber.load("lib/landmarks.lua")
-local parley = viber.load("lib/parley.lua")
-local decide = viber.load("lib/decide.lua")
-local clock = viber.load("lib/clock.lua")
+local rules = vael.load("lib/rules.lua")
+local talk = vael.load("ui/say.lua")
+local marks = vael.load("lib/landmarks.lua")
+local parley = vael.load("lib/parley.lua")
+local decide = vael.load("lib/decide.lua")
+local clock = vael.load("lib/clock.lua")
 
 -- HORÁRIO: de noite, quem vive NA RUA (cena `main`) recolhe — volta ao ponto
 -- de casa, deixa de passear e muda a conversa. Dentro das casas (cenas
 -- próprias) a vida continua igual: é lá que a vila passa a noite.
 local function night_outdoors()
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   return (scene == nil or scene == "main") and clock.is_night()
 end
 
 local function typing()
-  return viber.ui and viber.ui.focused and viber.ui.focused() ~= nil
+  return vael.ui and vael.ui.focused and vael.ui.focused() ~= nil
 end
 
 -- O mesmo fold do `parley.strip` (minúsculas, acentos, pontuação, espaços).
@@ -62,7 +62,7 @@ local function alias_place(text)
   local res = parley.resolve(text, nil)
   local raw = fold(res.raw)
   local best, best_d, exact
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   for id in pairs(res["local"] or {}) do
     local label = fold(marks.label(id))
     if raw ~= "" and label == raw and not exact then
@@ -104,7 +104,7 @@ local function ask_place()
         if not id then
           talk.say("Não conheço esse lugar.")
         else
-          if viber.vael and viber.vael.travel_pin then viber.vael.travel_pin(id) end
+          if vael.vael and vael.vael.travel_pin then vael.vael.travel_pin(id) end
           talk.say("Marquei no teu mapa.")
         end
       end,
@@ -127,24 +127,24 @@ function notice(...)
   -- Menu/diário/mapa abertos: o jogador parou para ler; um sinal de baú não
   -- pode virar o NPC e atirar um toast por cima do menu (os restantes
   -- handlers já devolvem cedo com `menu_open`).
-  if viber.menu_open() then return end
-  local has, px, _, pz = viber.player_position()
+  if vael.menu_open() then return end
+  local has, px, _, pz = vael.player_position()
   if not has then return end
-  local x, _, z = viber.position()
-  if math.sqrt((px - x) ^ 2 + (pz - z) ^ 2) > viber.prop("notice_range") then return end
-  viber.face_player()
-  viber.gesture("no")
-  local line = viber.prop("notice")
-  if line ~= "" then viber.toast(line) end
+  local x, _, z = vael.position()
+  if math.sqrt((px - x) ^ 2 + (pz - z) ^ 2) > vael.prop("notice_range") then return end
+  vael.face_player()
+  vael.gesture("no")
+  local line = vael.prop("notice")
+  if line ~= "" then vael.toast(line) end
 end
 
 -- ── grafo de diálogo em Lua ────────────────────────────────────────────
 -- O formato é o mesmo de `dialogues/<id>.json` (nós, escolhas 1..9,
--- `quest_accept`/`quest_turn_in`). O cursor vive em `viber.game()` para o
+-- `quest_accept`/`quest_turn_in`). O cursor vive em `vael.game()` para o
 -- save o guardar; `@chave` resolve pelo locale ativo.
 
 local function graph_for(id)
-  local ok, graph = pcall(viber.load_json, "dialogues/" .. id .. ".json")
+  local ok, graph = pcall(vael.load_json, "dialogues/" .. id .. ".json")
   if ok and type(graph) == "table" and type(graph.nodes) == "table" then
     return graph
   end
@@ -156,11 +156,11 @@ local function node_body(graph, node_id)
   if not node then
     return nil
   end
-  local speaker = viber.localize(node.speaker or "")
-  local text = viber.localize(node.text or "")
+  local speaker = vael.localize(node.speaker or "")
+  local text = vael.localize(node.text or "")
   local body = speaker ~= "" and (speaker .. ": " .. text) or text
   for i, choice in ipairs(node.choices or {}) do
-    body = body .. "\n" .. i .. ". " .. viber.localize(choice.text or "")
+    body = body .. "\n" .. i .. ". " .. vael.localize(choice.text or "")
   end
   body = body .. "\n9. Perguntar por um lugar"
   return body, node
@@ -168,14 +168,14 @@ end
 
 local function cursor(st)
   local id = st.dialogue_id
-  local saved = viber.game()["dialogue." .. id]
+  local saved = vael.game()["dialogue." .. id]
   if saved and st.graph.nodes[saved] then
     return saved
   end
   return st.graph.start
 end
 
-local BALLOON_SECS = 4.0 -- duração por omissão do `viber.say` (engine)
+local BALLOON_SECS = 4.0 -- duração por omissão do `vael.say` (engine)
 
 local function show_dialogue(st)
   local body, node = node_body(st.graph, cursor(st))
@@ -186,14 +186,14 @@ local function show_dialogue(st)
     -- desconhecido é erro de script com warn 1× (a conversa sobrevive).
     local voice = node and node.voice
     if type(voice) == "string" and voice ~= "" then
-      viber.sound(voice)
+      vael.sound(voice)
     end
-    viber.gesture("talk")
+    vael.gesture("talk")
     -- A hotbar também lê 1/2: enquanto o BALÃO está no ecrã, os dígitos são
     -- escolhas e não poção/antídoto. Depois de 4 s a conversa expira (antes
     -- renovávamos para sempre e beber uma poção perto do NPC era impossível).
-    st.dialog_until = viber.time() + BALLOON_SECS
-    viber.ui.set("dialogue.until", viber.time() + 0.75)
+    st.dialog_until = vael.time() + BALLOON_SECS
+    vael.ui.set("dialogue.until", vael.time() + 0.75)
   end
 end
 
@@ -211,13 +211,13 @@ local function choose(st, digit)
     rules.quest_turn_in(id)
   end
   if choice.goto and st.graph.nodes[choice.goto] then
-    viber.game()["dialogue." .. id] = choice.goto
+    vael.game()["dialogue." .. id] = choice.goto
   elseif not choice.goto or choice.goto == "" then
     -- O editor grava `goto` vazio como "(fim)". Sem isto o balão voltava a
     -- abrir o MESMO nó no [E] seguinte e a conversa não tinha saída.
-    viber.game()["dialogue." .. id] = nil
+    vael.game()["dialogue." .. id] = nil
     st.talking = false
-    viber.ui.set("dialogue.until", 0)
+    vael.ui.set("dialogue.until", 0)
     return true
   end
   show_dialogue(st)
@@ -225,29 +225,29 @@ local function choose(st, digit)
 end
 
 -- Reação a esbarrão (herói empurra → tropeço/queda/passo ao lado).
-local bump = viber.load("lib/bump.lua")
+local bump = vael.load("lib/bump.lua")
 
 function on_collision_enter(other)
-  bump.enter(viber.state(), other)
+  bump.enter(vael.state(), other)
 end
 
 function on_collision_stay(other, dt)
-  bump.stay(viber.state(), other, dt)
+  bump.stay(vael.state(), other, dt)
 end
 
 function on_collision_exit(other)
-  bump.exit(viber.state(), other)
+  bump.exit(vael.state(), other)
 end
 
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (o top-level é partilhado)
+  local st = vael.state() -- POR ENTIDADE (o top-level é partilhado)
   -- Relógio para trás = load: um `st.talking` de outra sessão não pode
   -- manter a hotbar trancada até o relógio alcançar o timestamp antigo.
-  local now = viber.time()
+  local now = vael.time()
   if st.clock and now < st.clock then
     st.talking = false
     st.dialog_until = 0
-    viber.ui.set("dialogue.until", 0)
+    vael.ui.set("dialogue.until", 0)
   end
   st.clock = now
   bump.sample(st, now)
@@ -257,11 +257,11 @@ function on_update(dt)
     st.gesture_t = 3 + math.random() * 4 -- 1.º gesto cedo
     -- O [E] é SEMPRE registado: com `dialogue_id` o grafo corre aqui (Lua);
     -- sem ele, a conversa é a banter. O foco de interação escolhe o NPC
-    -- mais próximo e só ele vê `viber.interacted("e")`.
-    st.dialogue_id = viber.prop("dialogue_id")
+    -- mais próximo e só ele vê `vael.interacted("e")`.
+    st.dialogue_id = vael.prop("dialogue_id")
     -- Um bind de diálogo de outra sessão/cena não pode trancar a hotbar.
-    viber.ui.set("dialogue.until", 0)
-    viber.set_interaction(viber.prop("prompt"), "e", viber.prop("interact_range"))
+    vael.ui.set("dialogue.until", 0)
+    vael.set_interaction(vael.prop("prompt"), "e", vael.prop("interact_range"))
     if st.dialogue_id ~= "" then
       st.graph = graph_for(st.dialogue_id)
     end
@@ -275,7 +275,7 @@ function on_update(dt)
       st.graph = graph_for(st.dialogue_id)
     end
   end
-  local has, px, py, pz = viber.player_position()
+  local has, px, py, pz = vael.player_position()
   if not has then return end
   -- Herói caído: os 2,2 s de `dying` antecedem o modal de morte e o [E]/1..9
   -- ainda chegam aqui nessa janela. Um cadáver não conversa — e o grafo pode
@@ -283,39 +283,39 @@ function on_update(dt)
   -- ouro/XP/itens. Mesmo portão dos dadores e dos POIs.
   local alive, hp = rules.player_hp()
   if alive and hp <= 0 then return end
-  local x, y, z = viber.position()
+  local x, y, z = vael.position()
   local dist = math.sqrt((px - x) ^ 2 + (pz - z) ^ 2)
-  if dist < viber.prop("talk_range") then
-    viber.face_player()
+  if dist < vael.prop("talk_range") then
+    vael.face_player()
     st.gesture_t = st.gesture_t - dt
     if st.gesture_t <= 0 then
       st.gesture_t = 7 + math.random() * 8 -- 7–15 s
-      local gestures = viber.prop("gestures")
+      local gestures = vael.prop("gestures")
       if #gestures > 0 then
-        viber.gesture(gestures[math.random(#gestures)])
+        vael.gesture(gestures[math.random(#gestures)])
       end
     end
-    if not viber.menu_open() then
+    if not vael.menu_open() then
       if st.dialogue_id ~= "" and st.graph then
-        if viber.interacted("e") and not typing() and not talk.active() then
+        if vael.interacted("e") and not typing() and not talk.active() then
           st.talking = true
           show_dialogue(st)
         end
         -- Escolhas só com a conversa ABERTA: antes, a 6 m de distância (o
         -- `talk_range`), 1/2 avançavam o grafo e ainda bebiam poções.
-        if st.talking and viber.time() >= (st.dialog_until or 0) then
+        if st.talking and vael.time() >= (st.dialog_until or 0) then
           -- O balão expirou (4 s sem escolha): a conversa fechou. Sem isto o
           -- `st.talking` ficava true para sempre e a hotbar/equipamento
           -- continuavam trancados enquanto o jogador estivesse perto.
           st.talking = false
-          viber.ui.set("dialogue.until", 0)
+          vael.ui.set("dialogue.until", 0)
         end
         if st.talking and not typing() and not talk.active() then
           -- Renova o portão da hotbar/equipamento ENQUANTO o balão está no
           -- ecrã (o timestamp de 0,75 s expirava se o jogador lesse devagar).
-          viber.ui.set("dialogue.until", viber.time() + 0.75)
+          vael.ui.set("dialogue.until", vael.time() + 0.75)
           for digit = 1, 9 do
-            if viber.input.pressed(tostring(digit)) then
+            if vael.input.pressed(tostring(digit)) then
               if digit == 9 then
                 ask_place()
               else
@@ -325,41 +325,41 @@ function on_update(dt)
             end
           end
         end
-      elseif (st.dialogue_id == "" or not st.graph) and viber.interacted("e") then
+      elseif (st.dialogue_id == "" or not st.graph) and vael.interacted("e") then
         -- Grafo em falta não pode matar a conversa: cai para a banter.
-        local banter = viber.prop("banter")
+        local banter = vael.prop("banter")
         if night_outdoors() then
-          local night = viber.prop("banter_night")
+          local night = vael.prop("banter_night")
           if #night > 0 then
             banter = night
           end
         end
         if #banter > 0 then
           st.i = ((st.i or 0) % #banter) + 1
-          viber.toast(banter[st.i])
+          vael.toast(banter[st.i])
         end
-        viber.gesture("talk")
+        vael.gesture("talk")
       end
     end
     return
   end
   if st.talking then
     st.talking = false
-    viber.ui.set("dialogue.until", 0)
+    vael.ui.set("dialogue.until", 0)
   end
-  local radius = viber.prop("radius")
+  local radius = vael.prop("radius")
   if radius <= 0 then return end -- balcão: não passeia
   if night_outdoors() then
     -- Recolher: de volta ao ponto de casa, e fica lá até amanhecer.
-    local hx, hz = viber.home()
+    local hx, hz = vael.home()
     st.target = nil
     if hx and hz and math.sqrt((hx - x) ^ 2 + (hz - z) ^ 2) > 0.8 then
-      viber.move_towards(hx, hz, viber.prop("speed"))
+      vael.move_towards(hx, hz, vael.prop("speed"))
     end
     return
   end
   if st.target == nil then
-    local tx, tz = viber.wander_target(radius)
+    local tx, tz = vael.wander_target(radius)
     st.target = { tx, tz }
   end
   local td = math.sqrt((st.target[1] - x) ^ 2 + (st.target[2] - z) ^ 2)
@@ -374,7 +374,7 @@ function on_update(dt)
   if st.last_td ~= nil and td >= st.last_td then
     st.stuck = (st.stuck or 0) + dt
     if st.stuck > math.min(6, 1 + radius) then
-      local tx, tz = viber.wander_target(radius)
+      local tx, tz = vael.wander_target(radius)
       st.target = { tx, tz }
       st.stuck, st.last_td = 0, nil
       return
@@ -383,5 +383,5 @@ function on_update(dt)
     st.stuck = 0
   end
   st.last_td = td
-  viber.move_towards(st.target[1], st.target[2], viber.prop("speed"))
+  vael.move_towards(st.target[1], st.target[2], vael.prop("speed"))
 end

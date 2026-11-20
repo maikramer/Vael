@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # Materializa os modelos do CelerAI dentro do jogo.
 #
-# Os scripts do Vael chamam `viber.nlu.load("assets/public/nlu")` e a engine só
+# Os scripts do Vael chamam `vael.nlu.load("assets/public/nlu")` e a engine só
 # aceita caminhos relativos sem '..' — por isso os modelos (que vivem no
 # checkout irmão ../CelerAI/models) aparecem aqui como symlinks. A engine lê
 # através deles sem saber.

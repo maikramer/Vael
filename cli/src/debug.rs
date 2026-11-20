@@ -186,7 +186,7 @@ pub enum DebugCommand {
         frames: u32,
     },
     /// Estado do jogo em JSON (quests/itens/ouro/hp/posição) via
-    /// `viber.vael.qa_snapshot()`. Requer o jogo com a API de QA (monólito).
+    /// `vael.qa_snapshot()`. Requer o jogo com a API de QA.
     State,
     /// Verifica um `expect` (mesma sintaxe dos cenários de QA: `{"itens":
     /// {"ouro": ">=150"}}`) contra o estado real, com as regras do jogo.
@@ -199,7 +199,7 @@ pub enum DebugCommand {
         file: Option<PathBuf>,
     },
     /// Sonda uma expressão Luau até ser verdadeira (mata os sleeps):
-    /// `until 'viber.vael.qa_snapshot():find("done") ~= nil'`. Exit 1 no
+    /// `until 'vael.qa_snapshot():find("done") ~= nil'`. Exit 1 no
     /// timeout.
     Until {
         /// Expressão Luau (avaliada como `return (<expr>)`).
@@ -752,9 +752,9 @@ pub(crate) fn until_poll(
     }
 }
 
-/// Estado do jogo via `viber.vael.qa_snapshot()` (JSON string do jogo).
+/// Estado do jogo via `vael.qa_snapshot()` (JSON string do jogo).
 pub(crate) fn state_snapshot(client: &BridgeClient) -> Result<Value> {
-    let raw = lua_eval(client, "return viber.vael.qa_snapshot()")?;
+    let raw = lua_eval(client, "return vael.qa_snapshot()")?;
     match &raw {
         // O jogo devolve uma string JSON; alguns caminhos podem devolver a
         // tabela já serializada — aceitar os dois.
@@ -769,8 +769,8 @@ pub(crate) fn state_snapshot(client: &BridgeClient) -> Result<Value> {
 /// `raw`, usa o expect do cenário de QA aplicado no arranque.
 pub(crate) fn expect_check(client: &BridgeClient, raw: Option<&str>) -> Result<Value> {
     let code = match raw {
-        Some(raw) => format!("return viber.vael.qa_check({})", lua_string_literal(raw)),
-        None => "return viber.vael.qa_check()".to_string(),
+        Some(raw) => format!("return vael.qa_check({})", lua_string_literal(raw)),
+        None => "return vael.qa_check()".to_string(),
     };
     let value = lua_eval(client, &code)?;
     if value.get("failures").is_none() || value.get("ok").is_none() {

@@ -18,16 +18,16 @@ function M.legend(dx, dz)
 end
 
 function M.offset()
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   if not has then return nil end
-  local x, _, z = viber.position()
+  local x, _, z = vael.position()
   return px - x, pz - z
 end
 
 function M.prompt(st, label)
   if st.label ~= label then
     st.label = label
-    viber.set_interaction(label, "e", 3.5)
+    vael.set_interaction(label, "e", 3.5)
   end
 end
 

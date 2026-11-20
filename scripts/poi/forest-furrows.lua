@@ -1,14 +1,14 @@
-local rules = viber.load("lib/rules.lua")
-local talk = viber.load("ui/say.lua")
+local rules = vael.load("lib/rules.lua")
+local talk = vael.load("ui/say.lua")
 function on_update(_dt)
-  local game = viber.game()
+  local game = vael.game()
   if not game["q.forest_witch"] then return end
-  local st = viber.state()
+  local st = vael.state()
   if not st.ready then
-    viber.set_interaction("Examinar os sulcos", "e", 6)
+    vael.set_interaction("Examinar os sulcos", "e", 6)
     st.ready = true
   end
-  if viber.menu_open() or talk.active() or not viber.interacted("e") then return end
+  if vael.menu_open() or talk.active() or not vael.interacted("e") then return end
   local _, hp = rules.player_hp()
   if hp <= 0 then return end
   game["campaign.seen.furrows"] = true

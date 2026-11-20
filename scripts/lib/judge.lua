@@ -12,10 +12,10 @@
 --   window:  segundos (não usada no filtro; o t0 já limita)
 local M = {}
 
-local rules = viber.load("lib/rules.lua")
-local parley = viber.load("lib/parley.lua")
-local actions = viber.load("lib/actions.lua")
-local decide = viber.load("lib/decide.lua")
+local rules = vael.load("lib/rules.lua")
+local parley = vael.load("lib/parley.lua")
+local actions = vael.load("lib/actions.lua")
+local decide = vael.load("lib/decide.lua")
 
 local defs
 -- Quantas entradas RECENTES vão ao modelo (as antigas só se forem uma ação
@@ -29,9 +29,9 @@ local function load()
     return
   end
   defs = {}
-  local ok, data = pcall(viber.load_json, "data/verdicts.json")
+  local ok, data = pcall(vael.load_json, "data/verdicts.json")
   if not ok or type(data) ~= "table" then
-    viber.log("juiz: falha a ler data/verdicts.json — sem veredictos"
+    vael.log("juiz: falha a ler data/verdicts.json — sem veredictos"
       .. (ok and "" or (" (" .. tostring(data) .. ")")))
     return
   end
@@ -43,24 +43,24 @@ local function load()
     if type(r) == "table" and type(r.id) == "string" and r.id ~= "" then
       local ok_rule = true
       if type(r.require) ~= "table" and r.require ~= nil then
-        viber.log("juiz: regra '" .. r.id .. "' com require malformado — regra ignorada")
+        vael.log("juiz: regra '" .. r.id .. "' com require malformado — regra ignorada")
         ok_rule = false
       end
       if ok_rule and type(r.forbid) ~= "table" and r.forbid ~= nil then
-        viber.log("juiz: regra '" .. r.id .. "' com forbid malformado — regra ignorada")
+        vael.log("juiz: regra '" .. r.id .. "' com forbid malformado — regra ignorada")
         ok_rule = false
       end
       for _, req in ipairs(type(r.require) == "table" and r.require or {}) do
         if type(req) ~= "table" or type(req.kind) ~= "string"
             or type(req.id) ~= "string" then
-          viber.log("juiz: regra '" .. r.id .. "' com requisito malformado — regra ignorada")
+          vael.log("juiz: regra '" .. r.id .. "' com requisito malformado — regra ignorada")
           ok_rule = false
           break
         end
       end
       for _, f in ipairs(type(r.forbid) == "table" and r.forbid or {}) do
         if type(f) ~= "table" or type(f.kind) ~= "string" or type(f.id) ~= "string" then
-          viber.log("juiz: regra '" .. r.id .. "' com proibição malformada — regra ignorada")
+          vael.log("juiz: regra '" .. r.id .. "' com proibição malformada — regra ignorada")
           ok_rule = false
           break
         end
@@ -78,13 +78,13 @@ function M.get(id)
 end
 
 function M.started(id)
-  local t0 = tonumber(viber.game()["judge." .. tostring(id) .. ".t0"])
-  -- `viber.time()` é o uptime do PROCESSO e nunca recua: um `t0` no futuro
+  local t0 = tonumber(vael.game()["judge." .. tostring(id) .. ".t0"])
+  -- `vael.time()` é o uptime do PROCESSO e nunca recua: um `t0` no futuro
   -- é resto de outro arranque (o save guarda números). A janela do juramento
   -- morreu com a sessão — devolver `false` faz o altar reabrir as marcas no
   -- [E] seguinte em vez de julgar um registo vazio (ou de ignorar ações até
   -- o relógio alcançar o valor gravado).
-  if t0 == nil or t0 > viber.time() then
+  if t0 == nil or t0 > vael.time() then
     return false
   end
   -- O registo de ações também é do save: se ainda tem entradas de outro
@@ -104,17 +104,17 @@ function M.start(id)
   if actions.stale() then
     actions.clear()
   end
-  viber.game()["judge." .. tostring(id) .. ".t0"] = viber.time()
-  viber.game()["judge." .. tostring(id) .. ".done"] = nil
+  vael.game()["judge." .. tostring(id) .. ".t0"] = vael.time()
+  vael.game()["judge." .. tostring(id) .. ".done"] = nil
 end
 
 function M.reset(id)
-  viber.game()["judge." .. tostring(id) .. ".t0"] = nil
-  viber.game()["judge." .. tostring(id) .. ".done"] = nil
+  vael.game()["judge." .. tostring(id) .. ".t0"] = nil
+  vael.game()["judge." .. tostring(id) .. ".done"] = nil
 end
 
 function M.solved(id)
-  return viber.game()["judge." .. tostring(id) .. ".done"] == true
+  return vael.game()["judge." .. tostring(id) .. ".done"] == true
 end
 
 -- Núcleo puro: recebe entradas com `verb` e `res` (kind -> {id=true}).
@@ -265,7 +265,7 @@ function M.evaluate(id)
   if not rule then
     return nil
   end
-  local t0 = tonumber(viber.game()["judge." .. tostring(id) .. ".t0"]) or 0
+  local t0 = tonumber(vael.game()["judge." .. tostring(id) .. ".t0"]) or 0
   local entries = cap_entries(rule, actions.since(t0))
   -- Caminho novo: o d1 diz qual requisito cada ação cumpre. A regra
   -- (ordem/proibições/recompensa) continua simbólica e explicável.
@@ -315,15 +315,15 @@ function M.evaluate(id)
     local result = M.evaluate_log(rule, entries)
     result.entries = #entries
     result.model = true
-    viber.game()["judge." .. tostring(id) .. ".last"] = result.verdict
+    vael.game()["judge." .. tostring(id) .. ".last"] = result.verdict
     return result
   end
 
-  local model_ready = viber.nlu and viber.nlu.ready and viber.nlu.ready()
+  local model_ready = vael.nlu and vael.nlu.ready and vael.nlu.ready()
   for _, e in ipairs(entries) do
     local parsed = nil
     if model_ready then
-      local ok, p = pcall(viber.nlu.parse, e.text)
+      local ok, p = pcall(vael.nlu.parse, e.text)
       if ok then
         parsed = p
       end
@@ -339,7 +339,7 @@ function M.evaluate(id)
   local result = M.evaluate_log(rule, entries)
   result.entries = #entries
   result.model = model_ready
-  viber.game()["judge." .. tostring(id) .. ".last"] = result.verdict
+  vael.game()["judge." .. tostring(id) .. ".last"] = result.verdict
   return result
 end
 
@@ -349,7 +349,7 @@ function M.reward(id, result)
     return
   end
   if result.verdict == "correct" then
-    viber.game()["judge." .. tostring(id) .. ".done"] = true
+    vael.game()["judge." .. tostring(id) .. ".done"] = true
     local rewards = rule.reward or {}
     if rewards.xp and rewards.xp > 0 then
       rules.add_xp(rewards.xp)
@@ -368,17 +368,17 @@ function M.reward(id, result)
       toast = toast .. ", +" .. rewards.gold .. " ouro"
     end
     toast = toast .. ")"
-    viber.toast(toast)
-    viber.sound("quest_complete")
+    vael.toast(toast)
+    vael.sound("quest_complete")
   elseif result.verdict == "partial" then
-    viber.toast("O altar reconhece parte do juramento.")
-    viber.sound("notification")
+    vael.toast("O altar reconhece parte do juramento.")
+    vael.sound("notification")
   else
-    viber.sound("error")
+    vael.sound("error")
   end
 end
 
--- Teste puro do juiz (bridge: `viber.load("lib/judge.lua").self_test()`).
+-- Teste puro do juiz (bridge: `vael.load("lib/judge.lua").self_test()`).
 function M.self_test()
   local function e(verb, kind, id)
     return { verb = verb, kind = kind, id = id, res = { [kind] = { [id] = true } } }

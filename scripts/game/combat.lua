@@ -1,17 +1,50 @@
 -- game/combat.lua: o MELEE do jogo, em Lua.
 --
--- A engine só expõe primitivas — `viber.play_clip`, `hit_stop`, `shake`,
+-- A engine só expõe primitivas — `vael.play_clip`, `hit_stop`, `shake`,
 -- `damage_number`, `hit_flash` e `entity_knockback`. Os alvos vêm do
--- registro `viber.game().enemies` (cada criatura escreve kind/hp/pos) e o
+-- registro `vael.game().enemies` (cada criatura escreve kind/hp/pos) e o
 -- dano é escrito nesse registro; a engine não tem Health/hostis.
 -- Aqui vive a regra: passos 0→1→2→0, janela da chain, buffer curto, dano,
 -- crítico, costas, combo, execução e o feedback do impacto.
 --
 -- Corre num controller `tag="always-active"` (`world/autoload/player.xml`),
--- por isso `viber.play_clip`/`entity_*` levam o id do HERÓI — o controller
+-- por isso `vael.play_clip`/`entity_*` levam o id do HERÓI — o controller
 -- não tem rig.
 
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
+local feel
+do
+  local ok, mod = pcall(vael.load, "lib/feel.lua")
+  if ok and type(mod) == "table" and type(mod.blow) == "function" then
+    feel = mod
+  end
+end
+
+-- Hit-stop e shake só sobem quando o golpe muda o estado. O contacto normal
+-- fica no flash, no som e nas partículas (já por instância).
+local function blow(tier)
+  if feel then
+    feel.blow(tier)
+    return
+  end
+  if tier == "kill" then
+    vael.hit_stop(0.09)
+    vael.shake(0.22)
+    if vael.punch then vael.punch(0.09, 0.02) end
+  elseif tier == "heavy" then
+    vael.hit_stop(0.06)
+    vael.shake(0.14)
+    if vael.punch then vael.punch(0.06, 0.02) end
+  elseif tier == "open" then
+    vael.hit_stop(0.03)
+    vael.shake(0.08)
+  elseif tier == "graze" then
+    vael.hit_stop(0.02)
+    vael.shake(0.04)
+  else
+    vael.shake(0.05)
+  end
+end
 
 -- Janela vertical do golpe. Igual à do `lib/fsm.lua` (REACH_VERTICAL) e à
 -- lista de alvos abaixo: com 2,5 m o melee acertava através de um piso/pontes
@@ -75,8 +108,8 @@ local function stats()
 end
 
 local function clip_duration(name)
-  if viber.clip_duration then
-    local d = viber.clip_duration(name)
+  if vael.clip_duration then
+    local d = vael.clip_duration(name)
     if d and d > 0 then
       return d
     end
@@ -101,22 +134,22 @@ local function publish_combo(st)
     return
   end
   st.combo_text = text
-  viber.ui.set("combo", n > 0)
-  viber.ui.set("combo.text", text)
+  vael.ui.set("combo", n > 0)
+  vael.ui.set("combo.text", text)
 end
 
 local function show_target(kind, hp, max_hp, locked, cue)
-  viber.ui.set("target.cue", locked and cue or "")
-  viber.ui.set("target.locked", locked == true)
-  viber.ui.set("target.name", kind or "")
+  vael.ui.set("target.cue", locked and cue or "")
+  vael.ui.set("target.locked", locked == true)
+  vael.ui.set("target.name", kind or "")
   if max_hp and max_hp > 0 then
-    viber.ui.set("target", math.max(0, hp or 0) / max_hp)
-    viber.ui.set("target.alive", (hp or 0) > 0)
+    vael.ui.set("target", math.max(0, hp or 0) / max_hp)
+    vael.ui.set("target.alive", (hp or 0) > 0)
   else
     -- Sem max válido a barra ficava com a fração do alvo ANTERIOR (cheia)
     -- enquanto o nome já era outro. Zera-a com o resto.
-    viber.ui.set("target", 0)
-    viber.ui.set("target.alive", false)
+    vael.ui.set("target", 0)
+    vael.ui.set("target.alive", false)
   end
 end
 
@@ -181,8 +214,8 @@ local function focus_attack(st, h)
 end
 
 local function start_swing(st, locked)
-  if viber.vael.spend_attack_stamina and not viber.vael.spend_attack_stamina() then
-    viber.toast("Sem fôlego para atacar.")
+  if vael.vael.spend_attack_stamina and not vael.vael.spend_attack_stamina() then
+    vael.toast("Sem fôlego para atacar.")
     return
   end
   -- Dentro da janela avança 0→1→2→0; fora, recomeça no primeiro corte.
@@ -221,8 +254,8 @@ local function start_swing(st, locked)
   -- A mira do golpe é a do PRESS (o corpo pode girar durante o windup, e um
   -- piparote no rato/A-D não pode fazer o corte aterrar atrás do herói).
   -- Com um hostil à frente, a mira vira para ele (mira suave).
-  local fx, fz = viber.player_forward()
-  local has, px, py, pz = viber.player_position()
+  local fx, fz = vael.player_forward()
+  local has, px, py, pz = vael.player_position()
   local lunge = LUNGE_MIN
   if has then
     local target, dist = aim_target(st, px, py, pz, fx, fz, reach)
@@ -239,26 +272,26 @@ local function start_swing(st, locked)
     end
   end
   st.swing = { t = delay, step = step, fx = fx, fz = fz, range = reach, damage = weapon.damage or BASE_DAMAGE }
-  if viber.vael and viber.vael.attack_motion then
-    viber.vael.attack_motion({
+  if vael.vael and vael.vael.attack_motion then
+    vael.vael.attack_motion({
       secs = delay + 0.08, slow = ATTACK_SLOW, lunge = lunge, fx = fx, fz = fz,
     })
   end
-  local pid = viber.player_id()
+  local pid = vael.player_id()
   if pid then
-    viber.play_clip(clip, { speed = speed, id = pid, blend = SWING_BLEND })
+    vael.play_clip(clip, { speed = speed, id = pid, blend = SWING_BLEND })
   end
   -- O controller vive na origem: sem posição o whoosh tocava a 40+ m.
   if has then
-    viber.sound("whoosh", { x = px, y = py, z = pz })
+    vael.sound("whoosh", { x = px, y = py, z = pz })
   else
-    viber.sound("whoosh")
+    vael.sound("whoosh")
   end
   return locked
 end
 
 local function resolve_swing(st, sw)
-  local has, px, py, pz = viber.player_position()
+  local has, px, py, pz = vael.player_position()
   if not has then
     return
   end
@@ -266,15 +299,15 @@ local function resolve_swing(st, sw)
   -- (hot-reload a meio do golpe) não traz `fx/fz`: cai no forward atual.
   local fx, fz = sw.fx, sw.fz
   if not fx or not fz then
-    fx, fz = viber.player_forward()
+    fx, fz = vael.player_forward()
   end
   local step = sw.step or 0
   local finisher = step >= 2
   -- Alcance e dano base vêm da arma equipada; o remate alcança +0,5 m.
   local range = sw.range or (finisher and FINISHER_RANGE or MELEE_RANGE)
   local arc = finisher and FINISHER_ARC or ATTACK_ARC
-  if viber.vael.strike_props then
-    viber.vael.strike_props(px, py, pz, fx, fz, range, arc, finisher)
+  if vael.vael.strike_props then
+    vael.vael.strike_props(px, py, pz, fx, fz, range, arc, finisher)
   end
   local bonus = stats()
   local base_damage = sw.damage or BASE_DAMAGE
@@ -288,7 +321,7 @@ local function resolve_swing(st, sw)
     knockback = 1.0
   end
   local dealt = 0
-  local hits, open_hits, crit_any, kill_any = 0, 0, false, false
+  local hits, open_hits, crit_any, kill_any, weight_any = 0, 0, false, false, false
   local alert_x, alert_z
   for _, h in ipairs(rules.hostiles(range + 1.0) or {}) do
     local hp = h.hp or 0
@@ -331,7 +364,7 @@ local function resolve_swing(st, sw)
           -- Propriocepção do corpo físico (bevy_ext_puppet): um inimigo em
           -- desequilíbrio real ou caído perde a guarda do escudo e fica
           -- vulnerável a dano de oportunidade.
-          local pinfo = viber.vael and viber.vael.puppet_info and viber.vael.puppet_info(h.id) or nil
+          local pinfo = vael.vael and vael.vael.puppet_info and vael.vael.puppet_info(h.id) or nil
           local off_balance = pinfo and (pinfo.busy or (pinfo.capture_margin or 0) > 0.08) or false
           local downed = pinfo and (pinfo.mode == "falling" or pinfo.mode == "down") or false
           if downed and not execute then
@@ -346,6 +379,7 @@ local function resolve_swing(st, sw)
             if facing > (h.shield.arc or 0.3) then
               if finisher then
                 rules.enemy_status(h.id, "shock", 1.2)
+                weight_any = true
               else
                 blocked = true
                 dmg = dmg * (1 - (h.shield.reduce or 0.8))
@@ -354,12 +388,12 @@ local function resolve_swing(st, sw)
           end
           local killed, _, removed = rules.damage_enemy(h.id, dmg, blocked)
           dealt = dealt + removed
-          local g = viber.game()
+          local g = vael.game()
           -- O Acorde dura ≤25 s de uptime (o save guarda o número). Muito à
           -- frente do relógio atual = gravado noutro processo: sem o corte,
           -- carregar um save deixava o burn/frost/choque "para sempre".
           local buff_until = tonumber(g and g.voice_buff_until) or 0
-          local now_t = viber.time()
+          local now_t = vael.time()
           if buff_until - now_t > 60 then
             buff_until = 0
           end
@@ -374,48 +408,49 @@ local function resolve_swing(st, sw)
             end
           end
           if blocked then
-            viber.sound("block", { x = h.x, y = h.y, z = h.z })
+            vael.sound("block", { x = h.x, y = h.y, z = h.z })
           elseif shock_chance > 0 and math.random() < shock_chance then
             -- Vara abençoada: o golpe pode dar choque (atordoa 0,8 s).
             rules.enemy_status(h.id, "shock", 0.8)
+            weight_any = true
           end
-          if viber.hit_flash then
-            viber.hit_flash(h.id)
+          if vael.hit_flash then
+            vael.hit_flash(h.id)
           end
           if not blocked then
             open_hits = open_hits + 1
-            viber.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
+            vael.sound("enemy_hurt", { x = h.x, y = h.y, z = h.z })
           end
-          if viber.entity_knockback and not blocked and not BOSSES[h.kind or ""] then
+          if vael.entity_knockback and not blocked and not BOSSES[h.kind or ""] then
             local meters = (crit and 0.65 or (finisher and 0.55 or 0.45)) * knockback
-            viber.entity_knockback(h.id, ux, uz, meters * 6.0)
+            vael.entity_knockback(h.id, ux, uz, meters * 6.0)
           end
           -- Remate ou crítico em alvo já desequilibrado: empurrão físico
           -- extra para acionar passos de captura IPM ou queda com CatchFall.
           if not blocked and not killed and not BOSSES[h.kind or ""]
             and (finisher or (crit and off_balance))
-            and viber.vael and viber.vael.puppet_push
+            and vael.vael and vael.vael.puppet_push
           then
             local imp = (finisher and 32.0 or 26.0) * math.max(0.8, knockback)
-            viber.vael.puppet_push(h.id, ux * imp, 0.0, uz * imp)
+            vael.vael.puppet_push(h.id, ux * imp, 0.0, uz * imp)
           end
-          viber.damage_number("-" .. math.floor(removed), {
+          vael.damage_number("-" .. math.floor(removed), {
             color = blocked and "#9aa3ad" or ((crit or execute) and "#ff8c47" or "#f5efe0"),
             x = h.x, y = (h.y or py) + 1.8, z = h.z,
           })
-          viber.burst("sparks", h.x or px, (h.y or py) + 1.1, h.z or pz,
+          vael.burst("sparks", h.x or px, (h.y or py) + 1.1, h.z or pz,
             crit and 22 or 14)
           -- Puff no ponto do golpe: lê-se mesmo de dia, quando as faíscas
           -- são pequenas contra o céu claro.
-          viber.burst("ground-dust", h.x or px, (h.y or py) + 0.9, h.z or pz,
+          vael.burst("ground-dust", h.x or px, (h.y or py) + 0.9, h.z or pz,
             crit and 8 or 5)
           -- Marca de impacto no chão (decal genérico): lê-se o golpe depois
           -- de as partículas apagarem. O chão vem do terreno, não do centro
           -- do inimigo (que pode estar acima do solo).
           local gx, gz = h.x or px, h.z or pz
-          local gy = viber.ground_below(gx, (h.y or py) + 2.0, gz) or (h.y or py)
-          if viber.decal then
-            viber.decal("/assets/particles/dirt_01.ktx2", gx, gy + 0.02, gz, {
+          local gy = vael.ground_below(gx, (h.y or py) + 2.0, gz) or (h.y or py)
+          if vael.decal then
+            vael.decal("/assets/particles/dirt_01.ktx2", gx, gy + 0.02, gz, {
               nx = 0, ny = 1, nz = 0,
               size = finisher and 0.85 or (crit and 0.65 or 0.5),
               life = 2.4,
@@ -436,10 +471,10 @@ local function resolve_swing(st, sw)
     -- Aggro-chain: a engine deixou de emitir `AttackAlert` (o melee nativo
     -- foi apagado), por isso o hook `on_player_attack` dos scripts das
     -- criaturas nunca corria — a matilha não acordava com o golpe no aliado.
-    -- O alerta vive numa TABELA do `viber.game()` (não viaja no save) e o
+    -- O alerta vive numa TABELA do `vael.game()` (não viaja no save) e o
     -- `lib/fsm.lua` acorda os aliados a 15 m do primeiro alvo batido.
     if alert_x then
-      local g = viber.game()
+      local g = vael.game()
       local alert = g.attack_alert
       if type(alert) ~= "table" then
         alert = {}
@@ -447,7 +482,7 @@ local function resolve_swing(st, sw)
         alert = g.attack_alert or alert -- tabela partilhada: escreve no proxy
       end
       alert.x, alert.z = alert_x, alert_z
-      alert.t = viber.time()
+      alert.t = vael.time()
       alert.seq = (alert.seq or 0) + 1
     end
     -- Roubo de vida (talento/relíquia): uma fração do dano volta como vida.
@@ -456,7 +491,7 @@ local function resolve_swing(st, sw)
       local back = math.min(dealt * lifesteal, math.max(0, (max_hp or 0) - (cur or 0)))
       if back >= 1 then
         rules.heal_player(back)
-        viber.damage_number("+" .. math.floor(back), {
+        vael.damage_number("+" .. math.floor(back), {
           color = "#7ef29d", x = px, y = py + 2.0, z = pz,
         })
       end
@@ -468,17 +503,24 @@ local function resolve_swing(st, sw)
     -- herói (a 2,8 m, com a câmara a ~5 m) saía GIGANTE por trás da barra do
     -- alvo e duplicava o mesmo "N HITS" (visto 2026-11-16).
     if open_hits == 0 and not kill_any then
-      viber.hit_stop(0.025)
-      viber.shake(0.06)
+      blow("graze")
       return
     end
-    viber.sound("hit", { x = px, y = py, z = pz })
-    viber.hit_stop(kill_any and 0.09 or (crit_any and 0.07 or 0.05))
-    viber.shake(kill_any and 0.36 or (crit_any and 0.28 or (finisher and 0.26 or 0.18)))
-    viber.punch(crit_any and 0.09 or 0.06, 0.02)
+    vael.sound("hit", { x = px, y = py, z = pz })
+    -- Remate, crítico, choque e morte mudam o que o jogador pode fazer a
+    -- seguir. O resto da chain só confirma o contacto.
+    local tier = "light"
+    if kill_any then
+      tier = "kill"
+    elseif crit_any or finisher or weight_any then
+      tier = "heavy"
+    elseif step == 0 then
+      tier = "open"
+    end
+    blow(tier)
     if finisher then
-      viber.ring(px, pz, range)
-      viber.burst("ground-dust", px, py + 0.15, pz, 8)
+      vael.ring(px, pz, range)
+      vael.burst("ground-dust", px, py + 0.15, pz, 8)
     end
   end
 end
@@ -493,12 +535,12 @@ local function clear_focus(st, preserve_combat)
 end
 
 local function select_focus(st, dt, strike_id)
-  local has, px, py, pz = viber.player_position()
+  local has, px, py, pz = vael.player_position()
   if not has then
     clear_focus(st)
     return
   end
-  local cycle = viber.action and viber.action("lock")
+  local cycle = vael.action and vael.action("lock")
   target_scan_t -= dt
   if cycle or strike_id or target_scan_t <= 0 or not target_ids then
     target_scan_t = 0.1
@@ -511,7 +553,7 @@ local function select_focus(st, dt, strike_id)
     end
   end
 
-  local resting = viber.vael.hero_at_rest and viber.vael.hero_at_rest()
+  local resting = vael.vael.hero_at_rest and vael.vael.hero_at_rest()
   st.aggro_grace = math.max(0, (st.aggro_grace or 0) - dt)
   local current, current_index, struck
   for i, h in ipairs(target_ids) do
@@ -533,8 +575,8 @@ local function select_focus(st, dt, strike_id)
 
   local candidate
   if resting then
-    local fx, fz = viber.player_forward()
-    local camera = viber.camera_state and viber.camera_state()
+    local fx, fz = vael.player_forward()
+    local camera = vael.camera_state and vael.camera_state()
     if camera and camera.yaw then
       local yaw = math.rad(camera.yaw)
       fx, fz = math.sin(yaw), math.cos(yaw)
@@ -555,18 +597,18 @@ local function select_focus(st, dt, strike_id)
 end
 
 function on_update(dt)
-  local st = viber.state()
+  local st = vael.state()
   -- Novo Jogo / save de outra partida: nada do combate anterior (golpe no
   -- ar, chain, combo, alvo) pode atravessar a fronteira.
-  -- Um LOAD na MESMA cena troca o `viber.game()` sem mudar `session_id` nem
+  -- Um LOAD na MESMA cena troca o `vael.game()` sem mudar `session_id` nem
   -- a cena, e o relógio da engine NÃO volta atrás (é o uptime): o sinal é o
   -- tempo de jogo a recuar. Sem isto, um golpe pendurado no jogo abandonado
   -- aterrava no sítio onde o herói carregou, com o combo/alvo antigos.
-  local game = viber.game()
+  local game = vael.game()
   local strike_id
   local strike = game.strike_focus
   if type(strike) == "table" then
-    local age = viber.time() - (tonumber(strike.t) or -math.huge)
+    local age = vael.time() - (tonumber(strike.t) or -math.huge)
     if age >= 0 and age < 0.3 then strike_id = strike.id end
     game.strike_focus = nil
   end
@@ -574,7 +616,7 @@ function on_update(dt)
   local playtime = tonumber(game.playtime_secs) or 0
   local loaded = st.playtime ~= nil and playtime < st.playtime - 1e-3
   st.playtime = playtime
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   if st.session ~= sid or loaded or st.scene ~= scene then
     st.session, st.scene = sid, scene
     clear_focus(st)
@@ -610,19 +652,19 @@ function on_update(dt)
   -- Título aberto (vive sobre `main` no arranque directo) ou cena de menu:
   -- o [J]/rato são da UI e o herói está parado atrás do véu. Sem o portão,
   -- a espada golpeia e mata por baixo do título — XP/loot para uma partida
-  -- que nem começou. (`viber.menu_open()` cobre diário/mapa/cinemática; o
+  -- que nem começou. (`vael.menu_open()` cobre diário/mapa/cinemática; o
   -- título e a cena de menu não.) O hotbar, o equipamento, a bomba, as
   -- habilidades e a colheita têm o mesmo portão.
-  if (viber.scene_name and viber.scene_name() == "menu")
-      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+  if (vael.scene_name and vael.scene_name() == "menu")
+      or (vael.ui and vael.ui.is_open and vael.ui.is_open("title")) then
     clear_focus(st)
     st.swing = nil
     st.buffer_queued = false
     st.buffer_t = 0
     return
   end
-  local talk_left = (tonumber(viber.ui.get("dialogue.until")) or 0) - viber.time()
-  if viber.menu_open() or (talk_left > 0 and talk_left <= 2.0) then
+  local talk_left = (tonumber(vael.ui.get("dialogue.until")) or 0) - vael.time()
+  if vael.menu_open() or (talk_left > 0 and talk_left <= 2.0) then
     -- Um golpe pendente não pode aterrar depois de fechar o menu, muito
     -- depois da animação/posição que o originou.
     clear_focus(st, true)
@@ -655,7 +697,7 @@ function on_update(dt)
   end
   st.last_hp = hp
 
-  if viber.ui.get("boat.grip") == "oars" or (viber.vael and viber.vael.harvest_tool_focus and viber.vael.harvest_tool_focus()) then
+  if vael.ui.get("boat.grip") == "oars" or (vael.vael and vael.vael.harvest_tool_focus and vael.vael.harvest_tool_focus()) then
     -- Boarding consumes a pending or buffered swing as well as new input.
     clear_focus(st)
     st.swing = nil
@@ -673,22 +715,22 @@ function on_update(dt)
   -- prompt "J" no ecrã, o golpe de espada disparava POR CIMA do machado
   -- (dois `play_clip` no herói e dano a inimigos vizinhos). O rato continua
   -- a atacar; só o J cede o lugar à interação.
-  local j_key = viber.input.pressed("j")
-  local prompt_j = viber.ui.get("prompt.key") == "J"
-    and viber.ui.get("prompt.label") ~= ""
-  -- `viber.action("attack")` é o mapa de ações (rebindável no save) e cobre
+  local j_key = vael.input.pressed("j")
+  local prompt_j = vael.ui.get("prompt.key") == "J"
+    and vael.ui.get("prompt.label") ~= ""
+  -- `vael.action("attack")` é o mapa de ações (rebindável no save) e cobre
   -- o botão do gamepad; ler só o J fixo deixava o ataque morto com o comando
   -- trocado e sem nenhum botão no pad. O J do mapa é a MESMA tecla do prompt
   -- de colheita: quando o prompt é dono do J, só rato/pad atacam (o pad não
   -- toca no J, por isso `not j_key` distingue-o).
-  local action_attack = viber.action ~= nil and viber.action("attack")
+  local action_attack = vael.action ~= nil and vael.action("attack")
   local pressed = (j_key and not prompt_j)
-    or viber.input.pressed("lmb")
+    or vael.input.pressed("lmb")
     or (action_attack and not j_key)
-  local torch = viber.ui.get("equip.kind") == "torch"
+  local torch = vael.ui.get("equip.kind") == "torch"
   if torch then
     if pressed then
-      viber.toast("Tocha na mão — troca com V para atacar.")
+      vael.toast("Tocha na mão — troca com V para atacar.")
     end
     pressed = false
     st.swing = nil
@@ -700,8 +742,8 @@ function on_update(dt)
   end
   -- Esquiva em curso: um golpe pendente é cancelado (a esquiva ganha) e o
   -- próximo espera pela aterragem, em buffer.
-  local dodge = viber.game().hero_dodge
-  local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - viber.time()) or 0
+  local dodge = vael.game().hero_dodge
+  local dodge_left = type(dodge) == "table" and ((tonumber(dodge.until_t) or 0) - vael.time()) or 0
   local dodging = dodge_left > 0 and dodge_left < 1.0
   if dodging then
     st.swing = nil
@@ -729,7 +771,7 @@ function on_update(dt)
     locked = start_swing(st, locked) or locked
   end
   if locked then
-    if viber.vael.combat_target then viber.vael.combat_target(locked.x, locked.z) end
+    if vael.vael.combat_target then vael.vael.combat_target(locked.x, locked.z) end
     show_target(TARGET_NAME[locked.kind or ""] or locked.kind, locked.hp, locked.max, true, locked.cue)
   else
     show_target(nil)

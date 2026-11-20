@@ -1,5 +1,5 @@
 -- Marcos da Nota. Os nomes são entidades do mundo; a posição vem de
--- `viber.find`. A engine não tem comportamento de marco.
+-- `vael.find`. A engine não tem comportamento de marco.
 --
 -- A lista vive em `data/landmarks.json` para o editor poder editá-la como
 -- conteúdo (o plugin `content_landmarks.lua`).
@@ -7,30 +7,30 @@
 local M = {}
 
 local DATA = (function()
-  local ok, data = pcall(viber.load_json, "data/landmarks.json")
+  local ok, data = pcall(vael.load_json, "data/landmarks.json")
   if ok and type(data) == "table" then
     return data
   end
-  viber.log("landmarks: falha a ler data/landmarks.json — sem marcos")
+  vael.log("landmarks: falha a ler data/landmarks.json — sem marcos")
   return {}
 end)()
 
 -- Com `VAEL_TRAVEL_RUST=1` o catálogo e a revelação vêm do Rust
--- (`viber.vael.travel_*`). Sem a chave — ou com a bridge em falta — tudo
+-- (`vael.vael.travel_*`). Sem a chave — ou com a bridge em falta — tudo
 -- abaixo fica como antes, a ler o JSON.
 local RUST = false
 local ROWS
 do
-  local ok, game = pcall(viber.game)
+  local ok, game = pcall(vael.game)
   if ok and type(game) == "table" and game.vael_travel_rust == true then
-    local vael = viber.vael
+    local vael = vael.vael
     if type(vael) == "table" and type(vael.travel_landmarks) == "function" then
       local rok, rows = pcall(vael.travel_landmarks)
       if rok and type(rows) == "table" and #rows > 0 then
         RUST = true
         ROWS = rows
       else
-        viber.log("landmarks: bridge Rust indisponível — fallback Lua")
+        vael.log("landmarks: bridge Rust indisponível — fallback Lua")
       end
     end
   end
@@ -91,14 +91,14 @@ function M.marked_key(name)
 end
 
 function M.is_marked(name)
-  return viber.game()[M.marked_key(name)] == true
+  return vael.game()[M.marked_key(name)] == true
 end
 
 -- Nome autoral de um marco. Os waypoints mostravam o id cru da entidade
 -- ("Visitar · forest-outpost-tower") em vez do nome que o mapa usa.
 function M.label(name)
   if RUST and type(name) == "string" and name ~= "" then
-    local ok, label = pcall(viber.vael.travel_label, name)
+    local ok, label = pcall(vael.vael.travel_label, name)
     if ok and type(label) == "string" and label ~= "" then
       return label
     end
@@ -130,7 +130,7 @@ function M.available(mark, rules)
     return false
   end
   if RUST then
-    local ok, revealed = pcall(viber.vael.travel_is_revealed, mark.biome)
+    local ok, revealed = pcall(vael.vael.travel_is_revealed, mark.biome)
     if ok then
       return revealed == true
     end
@@ -141,17 +141,17 @@ end
 -- Devolve `x, y, z, id` — o `id` é a entidade do marco; a viagem usa-o para
 -- a excluir do raio de aterragem (um poço/torre não é chão por cima de si).
 function M.position(name)
-  local id = viber.find(name)
+  local id = vael.find(name)
   if not id then
     return nil
   end
-  -- `viber.find` cai para SUBSTRING quando não há nome exato: um marco que
+  -- `vael.find` cai para SUBSTRING quando não há nome exato: um marco que
   -- saia do mundo (o conteúdo é editável) resolvia para outro prop cujo nome
   -- o contém e a bússola/viagem levavam ao sítio errado. Só vale o homónimo.
-  if viber.entity_name(id) ~= name then
+  if vael.entity_name(id) ~= name then
     return nil
   end
-  local ok, x, y, z = viber.entity_position(id)
+  local ok, x, y, z = vael.entity_position(id)
   if not ok then
     return nil
   end
@@ -159,8 +159,8 @@ function M.position(name)
 end
 
 function M.near_campfire(px, py, pz)
-  for _, id in ipairs(viber.find_all("campfire") or {}) do
-    local ok, x, y, z = viber.entity_position(id)
+  for _, id in ipairs(vael.find_all("campfire") or {}) do
+    local ok, x, y, z = vael.entity_position(id)
     if ok then
       local dx, dy, dz = x - px, y - py, z - pz
       if dx * dx + dy * dy + dz * dz < M.CAMPFIRE_RANGE * M.CAMPFIRE_RANGE then

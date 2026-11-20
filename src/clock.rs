@@ -3,7 +3,7 @@
 //!
 //! [`ClockSnapshot`] é a resposta que o Lua vê (`hour` em horas decimais e
 //! `rain` 0..1). [`VaelClock`] é o handle partilhado (`Arc<Mutex>`) que o
-//! sistema Bevy escreve e as closures de `viber.vael` leem. Sem
+//! sistema Bevy escreve e as closures de `vael.vael` leem. Sem
 //! `DayCycleState` (mundos QA) a hora é `None` e o Lua responde "não é de
 //! noite", como antes; sem `WeatherState` a chuva é 0.
 //!
@@ -181,7 +181,7 @@ fn update_clock_snapshot(
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin do relógio: instala `viber.vael.clock_*` depois do combate.
+/// Plugin do relógio: instala `vael.vael.clock_*` depois do combate.
 pub struct VaelClockPlugin;
 
 impl Plugin for VaelClockPlugin {
@@ -195,17 +195,17 @@ impl Plugin for VaelClockPlugin {
     }
 }
 
-/// Arranque: acrescenta as funções do relógio à tabela `viber.vael`.
+/// Arranque: acrescenta as funções do relógio à tabela `vael.vael`.
 pub(crate) fn install_clock_api(clock: Res<VaelClock>) {
     // `register_installer` exige `Fn` (corre por contexto novo): o snapshot
     // é um `Arc` barato — o closure fica com um clone próprio.
     let clock = clock.clone();
     crate::script_host::register_installer(move |lua| install(lua, &clock));
-    info!("vael: relógio em Rust registado nos contextos BMS (`viber.vael`)");
+    info!("vael: relógio em Rust registado nos contextos BMS (`vael.vael`)");
 }
 
 /// Acrescenta `clock_hour`, `clock_is_night`, `clock_rain` e `clock_raining`
-/// a `viber.vael` sem substituir as funções que já lá estão.
+/// a `vael.vael` sem substituir as funções que já lá estão.
 pub(crate) fn install(lua: &Lua, clock: &VaelClock) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
@@ -333,9 +333,9 @@ mod tests {
     fn lua_com_bridge(clock: VaelClock) -> Lua {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
-        install(&lua, &clock).expect("instalar viber.vael");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
+        install(&lua, &clock).expect("instalar vael.vael");
         lua
     }
 
@@ -346,22 +346,22 @@ mod tests {
         let lua = lua_com_bridge(clock);
 
         let hora: f64 = lua
-            .load("return viber.vael.clock_hour()")
+            .load("return vael.vael.clock_hour()")
             .eval()
             .expect("clock_hour");
         assert_eq!(hora, 21.5);
         let noite: bool = lua
-            .load("return viber.vael.clock_is_night()")
+            .load("return vael.vael.clock_is_night()")
             .eval()
             .expect("clock_is_night");
         assert!(noite);
         let chuva: f64 = lua
-            .load("return viber.vael.clock_rain()")
+            .load("return vael.vael.clock_rain()")
             .eval()
             .expect("clock_rain");
         assert_eq!(chuva, 0.4);
         let chove: bool = lua
-            .load("return viber.vael.clock_raining()")
+            .load("return vael.vael.clock_raining()")
             .eval()
             .expect("clock_raining");
         assert!(chove);
@@ -371,17 +371,17 @@ mod tests {
     fn bridge_sem_relogio_devolve_nil_e_dia() {
         let lua = lua_com_bridge(VaelClock::default());
         assert!(
-            lua.load("return viber.vael.clock_hour() == nil")
+            lua.load("return vael.vael.clock_hour() == nil")
                 .eval::<bool>()
                 .expect("clock_hour nil")
         );
         assert!(
-            !lua.load("return viber.vael.clock_is_night()")
+            !lua.load("return vael.vael.clock_is_night()")
                 .eval::<bool>()
                 .expect("clock_is_night")
         );
         let chuva: f64 = lua
-            .load("return viber.vael.clock_rain()")
+            .load("return vael.vael.clock_rain()")
             .eval()
             .expect("clock_rain");
         assert_eq!(chuva, 0.0);
@@ -440,19 +440,19 @@ mod tests {
     fn bridge_nao_substitui_funcoes_existentes() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
-        lua.load("viber.vael = { vault_add = function() return 7 end }")
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
+        lua.load("vael.vael = { vault_add = function() return 7 end }")
             .exec()
             .expect("vael antigo");
         install(&lua, &VaelClock::default()).expect("instalar");
         let valor: i64 = lua
-            .load("return viber.vael.vault_add()")
+            .load("return vael.vael.vault_add()")
             .eval()
             .expect("vault_add intacto");
         assert_eq!(valor, 7);
         assert!(
-            lua.load("return type(viber.vael.clock_hour) == 'function'")
+            lua.load("return type(vael.vael.clock_hour) == 'function'")
                 .eval::<bool>()
                 .expect("clock_hour")
         );

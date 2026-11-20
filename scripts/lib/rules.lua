@@ -1,22 +1,34 @@
 -- Regras do Vael: HP, cofre, XP, quests, veneno, passivas e biomas.
--- TUDO em `viber.game()` (save) e `viber.game().enemies` (registro vivo).
+-- TUDO em `vael.game()` (save) e `vael.game().enemies` (registro vivo).
 -- A engine só expõe primitivas; não conhece vida, ouro nem missões.
 
 local M = {}
 
 -- Resolvedor do NLU: texto do jogador -> ids do jogo (lib/parley.lua).
-local parley = viber.load("lib/parley.lua")
+local parley = vael.load("lib/parley.lua")
 -- Registo de ações para o juiz (lib/judge.lua).
-local actions = viber.load("lib/actions.lua")
+local actions = vael.load("lib/actions.lua")
 -- Equipamento (lib/gear.lua): efeitos dos itens equipados e a arma na mão.
-local gear = viber.load("lib/gear.lua")
-local clock = viber.load("lib/clock.lua")
+local gear = vael.load("lib/gear.lua")
+local clock = vael.load("lib/clock.lua")
 -- Tradução das frases dos scripts (toasts, prompts, balões): instala uma
 -- vez os embrulhos de saída. Em PT não faz nada.
 do
-  local ok, i18n = pcall(viber.load, "lib/i18n.lua")
+  local ok, i18n = pcall(vael.load, "lib/i18n.lua")
   if ok and type(i18n) == "table" and i18n.install then
     pcall(i18n.install)
+  end
+end
+-- Peso do golpe e duck da fala. Ausente (testes que stubam `vael.load`)
+-- deixa o feedback antigo no sítio da chamada.
+local feel = {}
+do
+  local ok, mod = pcall(vael.load, "lib/feel.lua")
+  if ok and type(mod) == "table" and type(mod.hurt) == "function" then
+    feel = mod
+    if feel.install then
+      pcall(feel.install)
+    end
   end
 end
 
@@ -24,7 +36,7 @@ end
 -- poderem tocar o som no herói e não na origem do controller.
 local sound_at_player
 -- Autosave PENDENTE (segundos de uptime): ver `award_kill`/`quest_turn_in`.
--- Vive no `tick` e não num `viber.after`: o timer pertence à entidade que
+-- Vive no `tick` e não num `vael.after`: o timer pertence à entidade que
 -- chamou (a criatura, no caminho do FSM) e morre com ela, e um save a meio
 -- da morte gravava um cadáver no slot 0.
 local save_at
@@ -33,11 +45,11 @@ local save_at
 -- `pcall`: um JSON ausente não pode impedir o jogo de arrancar; o log diz o
 -- que falhou e os defaults abaixo mantêm o jogo jogável.
 local function load_data(path, fallback)
-  local ok, data = pcall(viber.load_json, path)
+  local ok, data = pcall(vael.load_json, path)
   if ok and type(data) == "table" then
     return data
   end
-  viber.log("conteúdo: falha a ler " .. path .. (ok and "" or (" (" .. tostring(data) .. ")")))
+  vael.log("conteúdo: falha a ler " .. path .. (ok and "" or (" (" .. tostring(data) .. ")")))
   return fallback or {}
 end
 
@@ -47,7 +59,7 @@ local PROGRESSION = load_data("data/progression.json", {})
 -- O tecto das pilhas e o kit de arranque vivem em `src/vault.rs`; aqui fica
 -- só o `stack_max` global que `M.stack_max` publica.
 local STACK = tonumber(ITEMS_DATA.stack_max) or 99
--- Velocidade base do herói em m/s (o `viber.set_player_speed` fala m/s).
+-- Velocidade base do herói em m/s (o `vael.set_player_speed` fala m/s).
 -- Tem de casar com `VaelController::DEFAULT_SPEED` (src/player.rs) e com o
 -- `BASE_SPEED` do `bevy_ext_core`; o sprint multiplica por
 -- `sprint_multiplier` (1.5) no controller.
@@ -98,7 +110,7 @@ local QUEST_FILES = {
   "quests/swamp_quests.json",
 }
 local function quest_files()
-  local ok, data = pcall(viber.load_json, "quests/index.json")
+  local ok, data = pcall(vael.load_json, "quests/index.json")
   if ok and type(data) == "table" and #data > 0 then
     local out = {}
     for _, name in ipairs(data) do
@@ -113,7 +125,7 @@ local function quest_files()
   return QUEST_FILES
 end
 local REVEAL_SECS = 2.5
--- `scan_visits` faz `viber.find` por cada marco das quests de visita. A
+-- `scan_visits` faz `vael.find` por cada marco das quests de visita. A
 -- 60 Hz eram dezenas de buscas por segundo para uma mudança que só pode
 -- acontecer quando o herói anda; 5 Hz chegam.
 local SCAN_PERIOD = 0.2
@@ -123,7 +135,7 @@ local scan_acc = 0
 local echo = {}
 
 local function g()
-  return viber.game()
+  return vael.game()
 end
 
 -- NaN/±inf não são números úteis: um save corrompido não pode envenenar a
@@ -141,22 +153,22 @@ local function num(key, default)
 end
 
 -- A autoridade Rust (`VAEL_RULES_RUST=1`, `src/rules_authority.rs`) possui o
--- tick de vitais/status/morte. A flag é escrita em `viber.game()` pelo Rust
+-- tick de vitais/status/morte. A flag é escrita em `vael.game()` pelo Rust
 -- antes do primeiro frame; o `M.tick` salta só as secções portadas.
 local function rust_vitals()
   return g().vael_rust_vitals == true
 end
 
 -- Eventos de quest em Rust (`VAEL_QUEST_EVENTS_RUST=1`,
--- `src/quest_events.rs`): abates, recolha e visitas passam por `viber.vael`.
+-- `src/quest_events.rs`): abates, recolha e visitas passam por `vael.vael`.
 local function rust_quest_events()
   return g().vael_quest_events_rust == true
 end
 
--- Progressão em Rust (`src/xp.rs`, `viber.vael`): saneamento de saves
+-- Progressão em Rust (`src/xp.rs`, `vael.vael`): saneamento de saves
 -- antigos/corrompidos e a aritmética de níveis.
 local function ensure_xp()
-  viber.vael.ensure_xp()
+  vael.vael.ensure_xp()
 end
 
 -- O save é JSON PLANO: uma tabela `spawn_pos` era descartada em silêncio e o
@@ -173,7 +185,7 @@ local function stored_spawn(game)
   return nil
 end
 
--- HP do herói vive no JOGO (`viber.game()`), não em `Health` da engine.
+-- HP do herói vive no JOGO (`vael.game()`), não em `Health` da engine.
 local function ensure_hp()
   local game = g()
   if not finite(game.max_hp) or game.max_hp < 1 then game.max_hp = 100 end
@@ -189,12 +201,12 @@ end
 -- transform (o acampamento do título, y≈8, dentro de `main`, y≈39) como
 -- último descanso: o respawn caía a 30 m do sítio certo.
 local function grounded(x, y, z)
-  if not viber.ground_below then
+  if not vael.ground_below then
     return true
   end
   -- De muito acima para apanhar a superfície. Num mundo sem terreno (QA) é
   -- nil e não há como validar — aceita-se.
-  local top = viber.ground_below(x, y + 1000.0, z)
+  local top = vael.ground_below(x, y + 1000.0, z)
   if top == nil then
     return true
   end
@@ -209,11 +221,11 @@ local function capture_spawn(game)
   if stored_spawn(game) then
     return
   end
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   if scene ~= nil and scene ~= "main" then
     return
   end
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   if has and finite(x) and finite(y) and finite(z) and grounded(x, y, z) then
     game.spawn_x, game.spawn_y, game.spawn_z = x, y, z
   end
@@ -221,7 +233,7 @@ end
 
 -- Passivas do diário (talentos + equipamento) em Rust (`src/gear.rs`).
 local function learned_stats()
-  return viber.vael.player_stats()
+  return vael.vael.player_stats()
 end
 
 function M.set_spawn(x, y, z)
@@ -243,22 +255,22 @@ end
 
 -- Efeito genérico somado (talentos + equipamento); 0 quando ninguém o dá.
 function M.stat(key)
-  return viber.vael.stat(key)
+  return vael.vael.stat(key)
 end
 
 -- Atributos do herói e stats derivadas (grafo do bevy_gauge em `src/stats.rs`).
 -- `attribute("strength")` devolve o valor atual; `stat_sheet()` traz
 -- `{ attributes = {...}, stats = {...}, speed_mult = ... }` para o diário.
 function M.attribute(key)
-  return viber.vael.attribute(key)
+  return vael.vael.attribute(key)
 end
 
 function M.attributes()
-  return viber.vael.attributes()
+  return vael.vael.attributes()
 end
 
 function M.stat_sheet()
-  return viber.vael.stat_sheet()
+  return vael.vael.stat_sheet()
 end
 
 -- Arma na mão (números do melee) e equipamento: ver lib/gear.lua.
@@ -307,7 +319,7 @@ local function load_defs()
   end
   defs, defs_by_id = {}, {}
   for _, path in ipairs(quest_files()) do
-    local ok, data = pcall(viber.load_json, path)
+    local ok, data = pcall(vael.load_json, path)
     if ok and type(data) == "table" then
       for _, def in ipairs(data) do
         -- Ids repetidos entre ficheiros: a primeira definição ganha. O
@@ -397,35 +409,35 @@ local function objective(def)
 end
 
 -- Estado/progresso/objetivo/disponibilidade/cadeia vivem em `src/quest.rs`
--- (`viber.vael.quest_*`); estes embrulhos só mantêm a assinatura das regras.
+-- (`vael.vael.quest_*`); estes embrulhos só mantêm a assinatura das regras.
 -- `find_def`/`objective`/`load_defs`/`quest_def(s)` continuam em Lua: a UI, o
 -- `report_kill` e o `scan_visits` leem as tabelas do JSON.
 function M.quest_progress(id)
-  local r = viber.vael.quest_progress(id)
+  local r = vael.vael.quest_progress(id)
   return r.have, r.need
 end
 
 -- Objetivo EM CURSO (a etapa actual numa quest com `stages`) e a posição
 -- dela: `obj, etapa, total`. O diário, a seta e os dadores leem daqui.
 function M.quest_objective(id)
-  local r = viber.vael.quest_objective(id)
+  local r = vael.vael.quest_objective(id)
   return r.obj, r.at, r.total
 end
 
 -- `requires`: id (ou lista de ids) de quests que têm de estar ENTREGUES antes
 -- de esta poder ser aceite — cadeias e conteúdo de pós-jogo.
 function M.quest_available(id)
-  return viber.vael.quest_available(id)
+  return vael.vael.quest_available(id)
 end
 
 -- Cadeia de um dador: enquanto a quest estiver entregue e tiver `next`, o
 -- NPC passa a oferecer a seguinte.
 function M.quest_chain(id)
-  return viber.vael.quest_chain(id)
+  return vael.vael.quest_chain(id)
 end
 
 function M.quest_state(id)
-  return viber.vael.quest_state(id)
+  return vael.vael.quest_state(id)
 end
 
 -- `count: 0`/ausente é uma quest de um passo, não uma divisão por zero nem
@@ -473,14 +485,14 @@ local function mark_ready(def)
       clear_visits(def)
       local nxt = objective(def)
       g()[qkey(def.id) .. ".need"] = count_of(nxt)
-      viber.toast("Etapa " .. at .. "/" .. #def.stages .. " cumprida: " .. (def.title or def.id))
+      vael.toast("Etapa " .. at .. "/" .. #def.stages .. " cumprida: " .. (def.title or def.id))
       sound_at_player("notification")
       -- A etapa nova pode já estar satisfeita (o item está na mochila).
       M.sync_collect()
       return
     end
     g()[qkey(def.id)] = "ready"
-    viber.toast("Objetivo completo: " .. (def.title or def.id))
+    vael.toast("Objetivo completo: " .. (def.title or def.id))
     sound_at_player("notification")
   end
 end
@@ -489,16 +501,16 @@ end
 -- objetivo quando o jogador resolve; o Rust grava o progresso e promove a
 -- etapa seguinte ou a "ready". O toast e o som ficam aqui.
 function M.quest_set_progress(id, n)
-  local r = viber.vael.quest_set_progress(id, n)
+  local r = vael.vael.quest_set_progress(id, n)
   if not r.ok then
     return false
   end
   if r.stage_advanced then
-    viber.toast("Etapa " .. r.stage .. "/" .. r.total .. " cumprida: " .. r.title)
+    vael.toast("Etapa " .. r.stage .. "/" .. r.total .. " cumprida: " .. r.title)
     sound_at_player("notification")
   end
   if r.ready then
-    viber.toast("Objetivo completo: " .. r.title)
+    vael.toast("Objetivo completo: " .. r.title)
     sound_at_player("notification")
   end
   M.sync_collect()
@@ -525,20 +537,20 @@ end
 -- `accept`/`turn_in` correm em `src/quest.rs`; o embrulho só faz os efeitos
 -- locais (toast, som, `sync_collect`, `save_at`).
 function M.quest_accept(id)
-  if not viber.vael.quest_accept(id) then
+  if not vael.vael.quest_accept(id) then
     return false
   end
   local def = find_def(id)
-  viber.toast("Quest aceite: " .. (def and def.title or id))
+  vael.toast("Quest aceite: " .. (def and def.title or id))
   sound_at_player("quest_accept")
   M.sync_collect()
   return true
 end
 
 function M.quest_turn_in(id)
-  local r = viber.vael.quest_turn_in(id)
+  local r = vael.vael.quest_turn_in(id)
   if r.reason == "missing_items" then
-    viber.toast("Já não tens o que a missão pede.")
+    vael.toast("Já não tens o que a missão pede.")
     return false
   end
   if not r.ok then
@@ -549,12 +561,12 @@ function M.quest_turn_in(id)
   if r.missing_items > 0 then
     msg = msg .. " — " .. r.missing_items .. " item(ns) não coube(ram) na mochila."
   end
-  viber.toast(msg)
+  vael.toast(msg)
   sound_at_player("quest_complete")
   -- Save pelo `tick` (ver `save_at`): a entrega também acontece nos 2,2 s de
   -- `dying` (o [E] ainda chega aos NPCs) e o save síncrono gravava hp 0 +
   -- `dying` no slot 0 — o "Continuar" seguinte abria o ecrã de morte.
-  save_at = viber.time()
+  save_at = vael.time()
   M.sync_collect()
   return true
 end
@@ -715,7 +727,7 @@ function M.report_kill(kind, elite)
     return
   end
   if rust_quest_events() then
-    viber.vael.quest_report_kill(kind, elite and true or false)
+    vael.vael.quest_report_kill(kind, elite and true or false)
     return
   end
   for _, def in ipairs(load_defs()) do
@@ -739,7 +751,7 @@ local place_labels
 local function place_label(place)
   if not place_labels then
     place_labels = {}
-    local ok, marks = pcall(viber.load, "lib/landmarks.lua")
+    local ok, marks = pcall(vael.load, "lib/landmarks.lua")
     if ok and type(marks) == "table" and type(marks.LIST) == "table" then
       for _, mark in ipairs(marks.LIST) do
         if mark.name and mark.label then
@@ -780,7 +792,7 @@ function M.report_visit(place)
           end
           set_progress(def.id, math.min(need_of(def), n))
           mark_ready(def)
-          viber.toast("Marco visto: " .. place_label(place))
+          vael.toast("Marco visto: " .. place_label(place))
         end
       end
     end
@@ -788,7 +800,7 @@ function M.report_visit(place)
 end
 
 local function scan_visits_lua()
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   if not has then
     return
   end
@@ -806,9 +818,9 @@ local function scan_visits_lua()
         end
         for token in tostring(obj.target or ""):gmatch("%S+") do
           if g()[qkey(def.id) .. ".v." .. token] ~= true then
-            local id = viber.find(token)
+            local id = vael.find(token)
             if id then
-              local pok, x, _, z = viber.entity_position(id)
+              local pok, x, _, z = vael.entity_position(id)
               if pok then
                 local dx, dz = x - px, z - pz
                 if dx * dx + dz * dz <= radius * radius then
@@ -825,7 +837,7 @@ end
 
 function M.scan_visits()
   if rust_quest_events() then
-    viber.vael.quest_scan_visits()
+    vael.vael.quest_scan_visits()
     return
   end
   scan_visits_lua()
@@ -859,7 +871,7 @@ end
 
 function M.sync_collect()
   if rust_quest_events() then
-    viber.vael.quest_sync_collect()
+    vael.vael.quest_sync_collect()
     return
   end
   for _, def in ipairs(load_defs()) do
@@ -880,19 +892,19 @@ function M.sync_collect()
   end
 end
 
--- Cofre em Rust (`src/vault.rs`, `viber.vael`): contagem nunca negativa,
+-- Cofre em Rust (`src/vault.rs`, `vael.vael`): contagem nunca negativa,
 -- recursos em `resource_cap` e os outros itens no `stack`/`stack_max`.
 -- Aqui ficam só os embrulhos: espelho na API antiga da engine (quando
 -- existe) e `sync_collect` (objetivos de recolha).
 
 function M.vault_get(kind)
-  return viber.vael.vault_get(kind)
+  return vael.vael.vault_get(kind)
 end
 
--- Compat: se a engine ainda expuser `viber.vault_*`, espelha-se. A fonte da
--- verdade é SEMPRE `viber.game()`; um jogo novo não precisa da API antiga.
+-- Compat: se a engine ainda expuser `vael.vault_*`, espelha-se. A fonte da
+-- verdade é SEMPRE `vael.game()`; um jogo novo não precisa da API antiga.
 local function engine_fn(name)
-  local fn = viber[name]
+  local fn = vael[name]
   if type(fn) == "function" then
     return fn
   end
@@ -921,12 +933,12 @@ end
 function M.pull_engine()
   -- Kit de arranque (`data/items.json`) só quando o save ainda não gravou
   -- `item.gold` nem `item.potion`; um 0 explícito (ouro gasto) não enche.
-  viber.vael.seed_starting()
+  vael.vael.seed_starting()
   g().eco_pulled = true
 end
 
 function M.vault_add(kind, amount, mirror)
-  local added = viber.vael.vault_add(kind, amount)
+  local added = vael.vael.vault_add(kind, amount)
   if added > 0 and mirror ~= false then
     mirror_add(kind, added)
   end
@@ -935,7 +947,7 @@ function M.vault_add(kind, amount, mirror)
 end
 
 function M.vault_take(kind, amount)
-  local ok = viber.vael.vault_take(kind, amount)
+  local ok = vael.vael.vault_take(kind, amount)
   if ok then
     -- `amount or 1` como no `vault_add`/`vault_take` antigos.
     mirror_take(kind, amount or 1)
@@ -955,11 +967,11 @@ end
 function M.add_xp(gain, mirror)
   -- `mirror` mantém-se na assinatura por compatibilidade; o espelho na
   -- engine antiga morreu (o saneamento e a aritmética são do Rust).
-  viber.vael.add_xp(gain)
+  vael.vael.add_xp(gain)
 end
 
 function M.add_skill_points(n)
-  viber.vael.add_skill_points(n)
+  vael.vael.add_skill_points(n)
 end
 
 function M.reveal_biome(name)
@@ -983,14 +995,14 @@ local function region_of(x, z)
 end
 
 -- Registro vivo dos hostis: cada script de criatura mantém
--- `viber.game().enemies[id]` (kind/hp/max/pos/forward/t). O jogador lê daqui;
+-- `vael.game().enemies[id]` (kind/hp/max/pos/forward/t). O jogador lê daqui;
 -- a engine não tem lista de hostis nem Health.
 -- Hostis a `range` de um PONTO (o centro da explosão, não o herói).
 -- Com altura, seleciona alvos atingíveis no mesmo piso (áreas/efeitos).
 -- Sem ela, devolve o registo de proximidade usado pela mira, áudio e quests.
 function M.hostiles_near(cx, cz, range, impact_y)
   local game = g()
-  local now = viber.time()
+  local now = vael.time()
   local out = {}
   -- Cada `e.campo` é uma leitura do proxy partilhado (string de caminho +
   -- lookup no mapa): ler uma vez para locais. O registo tem centenas de
@@ -1033,7 +1045,7 @@ end
 
 function M.hostiles(range)
   ensure_hp()
-  local ok, px, _, pz = viber.player_position()
+  local ok, px, _, pz = vael.player_position()
   if not ok then
     return {}
   end
@@ -1044,7 +1056,7 @@ end
 -- de uma quest de abate precisa de saber onde está a presa, não só a que
 -- está ao alcance do melee.
 function M.hostiles_all()
-  local now = viber.time()
+  local now = vael.time()
   local out = {}
   for id, e in pairs(g().enemies or {}) do
     local hp = type(id) == "number" and e.hp or 0
@@ -1101,16 +1113,16 @@ function M.radial_damage(x, z, radius, damage, knockback, impact_y, burn_secs, s
       local killed, _, removed = M.damage_enemy(h.id, dmg)
       if not first_survivor and not killed and removed > 0 then first_survivor = h.id end
       if burn_secs and burn_secs > 0 then M.enemy_status(h.id, "burn", burn_secs) end
-      if viber.hit_flash then
-        viber.hit_flash(h.id)
+      if vael.hit_flash then
+        vael.hit_flash(h.id)
       end
-      if knockback and knockback > 0 and viber.entity_knockback then
+      if knockback and knockback > 0 and vael.entity_knockback then
         local len = math.sqrt(dx * dx + dz * dz)
         if len > 1e-3 then
-          viber.entity_knockback(h.id, dx / len, dz / len, knockback * falloff)
+          vael.entity_knockback(h.id, dx / len, dz / len, knockback * falloff)
         end
       end
-      viber.damage_number("-" .. math.floor(dmg), {
+      vael.damage_number("-" .. math.floor(dmg), {
         color = "#ffd35a", x = h.x, y = (h.y or 0) + 1.6, z = h.z,
       })
       hits = hits + 1
@@ -1138,7 +1150,7 @@ end
 
 -- ESTADOS do herói, guiados por tabela. `dps` = dano por segundo (tick de
 -- 1 s); `slow` = multiplicador da velocidade enquanto dura. O tempo vive em
--- `viber.game()[kind]` (viaja no save); `<kind>_resist` (talentos/itens)
+-- `vael.game()[kind]` (viaja no save); `<kind>_resist` (talentos/itens)
 -- encurta a duração.
 local STATUS = {
   venom = { dps = 4, color = "#7ed957" },
@@ -1220,14 +1232,14 @@ function M.award_kill(kind, id)
   -- e o save síncrono gravava o estado sem a bolsa/poções do chefe (morrer
   -- ou Carregar perdia-as). O flush só grava com o herói de pé.
   if KILL_XP[kind] then
-    save_at = viber.time() + 0.05
+    save_at = vael.time() + 0.05
   end
 end
 
 -- Direção do dano: quatro faixas no HUD. O atacante pode estar à frente,
 -- atrás, à esquerda ou à direita do FORWARD do herói; usa-se o produto
 -- interno (frente/trás) contra o produto externo (lados).
--- Faixa acesa e instante de apagar. O apagar é do `tick`: um `viber.after`
+-- Faixa acesa e instante de apagar. O apagar é do `tick`: um `vael.after`
 -- pertence ao DONO do golpe (a criatura) e morre com ele — um despawn ou
 -- uma troca de cena dentro dos 0,35 s deixava a seta de dano presa no HUD.
 local dmg_edge, dmg_until = nil, 0
@@ -1236,11 +1248,11 @@ local function flash_damage_direction(sx, sz)
   if not sx or not sz then
     return
   end
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   if not has then
     return
   end
-  local fx, fz = viber.player_forward()
+  local fx, fz = vael.player_forward()
   local dx, dz = sx - px, sz - pz
   local len = math.sqrt(dx * dx + dz * dz)
   if len < 0.25 then
@@ -1256,9 +1268,9 @@ local function flash_damage_direction(sx, sz)
     id = cross > 0 and "dmg-right" or "dmg-left"
   end
   -- As faixas são do HUD bevy_pf (`dmg_front`…, `src/ui/mod.rs`), que lê
-  -- `game.dmg_edge`/`dmg_until`; o `viber.ui.set_visible` antigo só gerava
+  -- `game.dmg_edge`/`dmg_until`; o `vael.ui.set_visible` antigo só gerava
   -- avisos de elemento desconhecido a cada golpe.
-  dmg_edge, dmg_until = id, viber.time() + 0.35
+  dmg_edge, dmg_until = id, vael.time() + 0.35
   -- O HUD visual é bevy_pf (`ui/hud.xaml`): publica a faixa acesa no KV.
   local game = g()
   game.dmg_edge = id
@@ -1266,20 +1278,20 @@ local function flash_damage_direction(sx, sz)
 end
 
 -- Guarda/parry [L]: a janela, o bloqueio e o lock vivem em `src/combat.rs`
--- (`viber.vael`). O estado da guarda é de SESSÃO (memória do Rust): não entra
+-- (`vael.vael`). O estado da guarda é de SESSÃO (memória do Rust): não entra
 -- no save, como os timers locais antigos.
 function M.guard()
-  viber.vael.guard(viber.time())
+  vael.vael.guard(vael.time())
 end
 
 -- Números/SFX sobre o HERÓI. O host das regras vive em (0, 38.73, 0):
 -- sem x/y/z o dano e o som apareciam na origem do mundo.
 function sound_at_player(name)
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   if has then
-    viber.sound(name, { x = x, y = y, z = z })
+    vael.sound(name, { x = x, y = y, z = z })
   else
-    viber.sound(name)
+    vael.sound(name)
   end
 end
 
@@ -1289,10 +1301,10 @@ end
 local HIT_PUSH_M = 0.9
 
 local function push_from_hit(sx, sz)
-  if not sx or not sz or not viber.push_player then
+  if not sx or not sz or not vael.push_player then
     return
   end
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   if not has then
     return
   end
@@ -1301,16 +1313,16 @@ local function push_from_hit(sx, sz)
   if len < 1e-3 then
     return
   end
-  viber.push_player(dx / len * HIT_PUSH_M, dz / len * HIT_PUSH_M)
+  vael.push_player(dx / len * HIT_PUSH_M, dz / len * HIT_PUSH_M)
 end
 
 local function player_fx(text, color, sfx)
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   local opts = { color = color }
   if has then
     opts.x, opts.y, opts.z = x, y + 2.0, z
   end
-  viber.damage_number(text, opts)
+  vael.damage_number(text, opts)
   if sfx then
     sound_at_player(sfx)
   end
@@ -1323,11 +1335,11 @@ local DEATH_GOLD_FRAC = 0.25
 local PURSE_RADIUS = 2.5
 
 local function drop_purse(game)
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   if scene ~= nil and scene ~= "main" then
     return
   end
-  local has, x, y, z = viber.player_position()
+  local has, x, y, z = vael.player_position()
   if not has or not finite(x) or not finite(y) or not finite(z) then
     return
   end
@@ -1346,11 +1358,11 @@ local function tick_purse(game, dt)
   if lost < 1 then
     return
   end
-  local scene = viber.scene_name and viber.scene_name() or nil
+  local scene = vael.scene_name and vael.scene_name() or nil
   if (scene ~= nil and scene ~= "main") or (game.hp or 0) <= 0 then
     return
   end
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   local x, y, z = game.lost_x, game.lost_y, game.lost_z
   if not has or not finite(x) or not finite(y) or not finite(z) then
     return
@@ -1360,18 +1372,18 @@ local function tick_purse(game, dt)
   if d2 <= PURSE_RADIUS * PURSE_RADIUS then
     game.lost_gold = 0
     local back = M.vault_add("gold", lost) or 0
-    viber.damage_number("+" .. back .. " ouro", { color = "#ffd35a", x = x, y = y + 1.6, z = z })
-    viber.burst("sparkle", x, y + 0.8, z, 16)
-    viber.sound("coin", { x = x, y = y, z = z })
-    viber.toast("Recuperaste a bolsa: +" .. back .. " de ouro.")
+    vael.damage_number("+" .. back .. " ouro", { color = "#ffd35a", x = x, y = y + 1.6, z = z })
+    vael.burst("sparkle", x, y + 0.8, z, 16)
+    vael.sound("coin", { x = x, y = y, z = z })
+    vael.toast("Recuperaste a bolsa: +" .. back .. " de ouro.")
     return
   end
   -- Brilho periódico: a bolsa lê-se de longe (a 70 m já se vê o anel).
   purse_fx_t = purse_fx_t - dt
   if purse_fx_t <= 0 and d2 <= 70 * 70 then
     purse_fx_t = 1.6
-    viber.burst("sparkle", x, y + 0.6, z, 8)
-    viber.ring(x, z, 1.2, "#ffd35a")
+    vael.burst("sparkle", x, y + 0.6, z, 8)
+    vael.ring(x, z, 1.2, "#ffd35a")
   end
 end
 
@@ -1391,12 +1403,12 @@ local function start_death(game)
   end
   game.dying = 2.2
   drop_purse(game)
-  local id = viber.player_id()
+  local id = vael.player_id()
   if id then
-    viber.play_clip("death", { id = id })
+    vael.play_clip("death", { id = id })
     -- Corpo físico: o herói cai mole (bevy_ext_puppet).
-    if viber.vael and viber.vael.puppet_kill then
-      viber.vael.puppet_kill(id)
+    if vael.vael and vael.vael.puppet_kill then
+      vael.vael.puppet_kill(id)
     end
   end
   sound_at_player("game_over")
@@ -1408,15 +1420,15 @@ end
 -- portão um golpe tirava vida por baixo do véu e, como o `tick` não avança,
 -- o `dying` nunca chegava ao ecrã de morte (herói "morto" atrás do título).
 local function title_blocking()
-  if viber.scene_name and viber.scene_name() == "menu" then
+  if vael.scene_name and vael.scene_name() == "menu" then
     return true
   end
-  return viber.ui ~= nil and viber.ui.is_open ~= nil
-    and viber.ui.is_open("title") == true
+  return vael.ui ~= nil and vael.ui.is_open ~= nil
+    and vael.ui.is_open("title") == true
 end
 
 -- MODO DEV (`scripts/game/devmode.lua`): invulnerabilidade do [F2] e do voo.
--- Vive no MÓDULO, não em `viber.game()`, de propósito: um cheat ligado numa
+-- Vive no MÓDULO, não em `vael.game()`, de propósito: um cheat ligado numa
 -- sessão de debug não pode ficar gravado no save.
 M.god = false
 
@@ -1437,17 +1449,21 @@ function M.damage_player(amount, sx, sz)
   -- Menu/diário/mapa abertos: o jogador parou para ler. As criaturas já
   -- suspendem o golpe (lib/fsm.lua); sem este portão uma seta já no ar
   -- continuava a tirar vida por baixo do menu.
-  if viber.menu_open() or title_blocking() then
+  if vael.menu_open() or title_blocking() then
     return false
   end
   if M.god then
     return false
   end
   ensure_hp()
-  local r = viber.vael.damage_player(amount or 0, viber.time())
+  local r = vael.vael.damage_player(amount or 0, vael.time())
   if r.parried then
     sound_at_player("block")
-    viber.hit_stop(0.055)
+    if feel.parry then
+      feel.parry()
+    else
+      vael.hit_stop(0.055)
+    end
     return false, true
   end
   if not r.entered then
@@ -1455,24 +1471,36 @@ function M.damage_player(amount, sx, sz)
   end
   if r.blocked then
     player_fx("-" .. math.floor(r.amount), "#9fd8ff", "block")
-    viber.shake(0.06)
+    if feel.hurt then
+      feel.hurt(false, true)
+    else
+      vael.hit_stop(0.02)
+      vael.shake(0.06)
+    end
   else
     player_fx("-" .. math.floor(r.amount), "#ff6b6b", "hurt")
-    local id = viber.player_id()
+    local id = vael.player_id()
     -- Golpes direcionais (`sx, sz`) usam o HitReaction físico 360° do
     -- `bevy_ext_puppet` (costas dobra para a frente + chicote cervical; frente
     -- recua para trás; flanco torce o ombro). O clip fixo `"hit"` é frontal e
     -- só corre sem origem direcional (veneno/queda) ou com `VAEL_PUPPET=0`.
     local directional_puppet = sx and sz
-      and viber.vael and viber.vael.puppet_enabled and viber.vael.puppet_enabled()
+      and vael.vael and vael.vael.puppet_enabled and vael.vael.puppet_enabled()
     if id and not r.died and not directional_puppet then
       -- O clip `hit` do herói dura 1,78 s e o recuo forte está no FIM
       -- (~1,6 s; medido por BRP a 2026-11-19): tocado a 1× a reação chegava
       -- mais de 1 s depois do golpe. Comprimido a 0,6 s o recuo cai a ~0,55 s.
-      viber.play_clip("hit", { id = id, blend = 0.08, duration = 0.6 })
+      vael.play_clip("hit", { id = id, blend = 0.08, duration = 0.6 })
     end
     push_from_hit(sx, sz)
-    viber.shake(0.18)
+    -- A vida a descer é mudança de estado: stop curto para o golpe pesar
+    -- mesmo com o clip de reação atrasado. A morte pesa mais.
+    if feel.hurt then
+      feel.hurt(r.died == true, false)
+    else
+      vael.hit_stop(r.died and 0.09 or 0.05)
+      vael.shake(r.died and 0.2 or 0.12)
+    end
   end
   flash_damage_direction(sx, sz)
   if r.died then
@@ -1482,11 +1510,11 @@ function M.damage_player(amount, sx, sz)
 end
 
 function M.heal_player(amount)
-  viber.vael.heal_player(amount)
+  vael.vael.heal_player(amount)
 end
 
 function M.grant_iframes(secs)
-  viber.vael.grant_iframes(secs)
+  vael.vael.grant_iframes(secs)
 end
 
 local function sync_passives()
@@ -1499,7 +1527,7 @@ local function sync_passives()
     game.max_hp = new_max
     game.hp = math.max(0, math.min(new_max, (game.hp or new_max) + delta))
   end
-  -- Velocidade ABSOLUTA (m/s): `viber.set_player_speed` do host novo fala
+  -- Velocidade ABSOLUTA (m/s): `vael.set_player_speed` do host novo fala
   -- m/s; a API antiga do monólito falava multiplicador e passava
   -- `stats.speed_mult` (1.0) direto — o herói ficava a 1 m/s (4× mais
   -- lento, sem nunca chegar ao gate do clip de corrida).
@@ -1508,9 +1536,9 @@ local function sync_passives()
   local speed = HERO_BASE_SPEED
     * stats.speed_mult
     * ((num("frost", 0) > 0) and STATUS.frost.slow or 1.0)
-  if viber.set_player_speed and M._speed ~= speed then
+  if vael.set_player_speed and M._speed ~= speed then
     M._speed = speed
-    viber.set_player_speed(speed)
+    vael.set_player_speed(speed)
   end
 end
 
@@ -1527,47 +1555,47 @@ function M.respawn()
   game.dying = 0
   game.death_pending = false
   -- Larga o corpo físico da morte: o herói volta inteiro à animação.
-  local pid = viber.player_id and viber.player_id()
-  if pid and viber.vael and viber.vael.puppet_release then
-    viber.vael.puppet_release(pid)
+  local pid = vael.player_id and vael.player_id()
+  if pid and vael.vael and vael.vael.puppet_release then
+    vael.vael.puppet_release(pid)
   end
   game.death_wait = 0
   M.status_clear()
   M.flask_refill()
   game.iframes = 2.0
-  viber.ui.open("death", false)
-  viber.ui.set_visible("hud", true)
+  vael.ui.open("death", false)
+  vael.ui.set_visible("hud", true)
   if num("lost_gold", 0) >= 1 then
-    viber.toast("Renasces no último descanso. A tua bolsa ("
+    vael.toast("Renasces no último descanso. A tua bolsa ("
       .. math.floor(num("lost_gold", 0)) .. " de ouro) ficou onde caíste.")
   else
-    viber.toast("Renasces no último descanso.")
+    vael.toast("Renasces no último descanso.")
   end
   sound_at_player("levelup")
   -- Morrer dentro de uma casa e "Tentar de novo" teleportava para as
   -- coordenadas do mundo grande DENTRO da cena do interior (fora das
   -- paredes, a cair). O respawn troca primeiro para `main`; o teleporte
   -- corre no `scene_loaded`, já com o mundo certo carregado.
-  local scene = viber.scene_name and viber.scene_name() or nil
-  if scene and scene ~= "main" and scene ~= "menu" and viber.change_scene then
+  local scene = vael.scene_name and vael.scene_name() or nil
+  if scene and scene ~= "main" and scene ~= "menu" and vael.change_scene then
     game.pending_respawn = true
-    local ok = viber.change_scene("main")
+    local ok = vael.change_scene("main")
     if ok then
       return
     end
     game.pending_respawn = false
   end
-  viber.teleport_player(s.x, s.y, s.z)
+  vael.teleport_player(s.x, s.y, s.z)
 end
 
 function M.tick(dt)
   -- Os flashes do HUD e o autosave pendente são locals do módulo e
-  -- sobrevivem ao `viber.game()`; a guarda vive na memória do Rust e reinicia
+  -- sobrevivem ao `vael.game()`; a guarda vive na memória do Rust e reinicia
   -- sozinha quando o `session_id` muda. Um LOAD na MESMA cena troca a tabela
   -- do jogo mas não muda `session_id` nem recua o relógio da engine (é o
   -- uptime): o sinal — o mesmo que combat/abilities/hotbar usam — é o tempo
   -- de jogo a recuar.
-  local now = viber.time()
+  local now = vael.time()
   local playtime = num("playtime_secs", 0)
   local loaded = M._playtime ~= nil and playtime < M._playtime - 1e-3
   M._playtime = playtime
@@ -1615,9 +1643,9 @@ function M.tick(dt)
     game.iframes = math.max(0, num("iframes", 0) - dt)
   end
 
-  -- Apaga a faixa de dano no tick (ver `dmg_edge`): o `viber.after` antigo
+  -- Apaga a faixa de dano no tick (ver `dmg_edge`): o `vael.after` antigo
   -- era do atacante e um despawn dentro dos 0,35 s deixava-a acesa.
-  -- Lê o estado PARTILHADO (`viber.game()`), não os locais: cada script
+  -- Lê o estado PARTILHADO (`vael.game()`), não os locais: cada script
   -- corre na sua própria VM, a faixa acende-se na VM da criatura que bateu e
   -- quem corre este tick é outra — com os locais a faixa ficava acesa para
   -- sempre no HUD (2026-11-15).
@@ -1638,7 +1666,7 @@ function M.tick(dt)
   -- subia pelo `tick` em todos os frames.
   -- Com `VAEL_RULES_RUST=1` este bloco passa para `src/rules_authority.rs`.
   if not rust_vitals() then
-    local frozen = viber.menu_open() or M.god
+    local frozen = vael.menu_open() or M.god
     for _, kind in ipairs(STATUS_ORDER) do
       local spec = STATUS[kind]
       local tick_key = kind .. "_tick"
@@ -1678,10 +1706,10 @@ function M.tick(dt)
   -- Respawn em Rust (`respawn_now` / load): se o herói já está vivo e sem morte
   -- em curso, garante que o corpo físico da morte (`puppet_kill`) é libertado.
   if (tonumber(game.hp) or 0) > 0 and num("dying", 0) <= 0 and not game.death_pending then
-    local pid = viber.player_id and viber.player_id()
-    if pid and viber.vael and viber.vael.puppet_state and viber.vael.puppet_release
-        and viber.vael.puppet_state(pid) == "dead" then
-      viber.vael.puppet_release(pid)
+    local pid = vael.player_id and vael.player_id()
+    if pid and vael.vael and vael.vael.puppet_state and vael.vael.puppet_release
+        and vael.vael.puppet_state(pid) == "dead" then
+      vael.vael.puppet_release(pid)
     end
   end
 
@@ -1690,7 +1718,7 @@ function M.tick(dt)
     if game.death_pending and (game.hp or 0) > 0 then
       game.death_pending = false
       game.dying = 0
-      viber.ui.open("death", false)
+      vael.ui.open("death", false)
     end
 
     -- 0 HP sem `dying` (save corrompido ou gravado a meio de uma morte): o
@@ -1707,12 +1735,12 @@ function M.tick(dt)
         game.death_pending = true
         game.death_wait = 5.0
         -- A morte fecha os menus abertos; o ecrã de morte é o topo.
-        viber.ui.open("menu", false)
-        viber.ui.open("profiler-win", false)
-        viber.ui.open("death", true)
+        vael.ui.open("menu", false)
+        vael.ui.open("profiler-win", false)
+        vael.ui.open("death", true)
       end
     elseif game.death_pending then
-      if viber.ui.is_open("death") then
+      if vael.ui.is_open("death") then
         game.death_wait = 5.0
       else
         -- `num`: idem para o contador do respawn automático.
@@ -1724,7 +1752,7 @@ function M.tick(dt)
     end
   end
 
-  for _, ev in ipairs(viber.events()) do
+  for _, ev in ipairs(vael.events()) do
     if ev.type == "kill" and ev.name then
       -- Mesmo caminho do abate do FSM: XP + quests + `on_kill` (as Notas da
       -- story) + autosave de chefe. Duplicar aqui `add_xp`/`report_kill`
@@ -1737,7 +1765,7 @@ function M.tick(dt)
         -- desaparecia de `hostiles`); `damage_enemy` sanea o valor.
         M.damage_enemy(ev.entity, ev.amount or 0)
         if ev.x then
-          viber.damage_number("-" .. tostring(math.floor(ev.amount or 0)), {
+          vael.damage_number("-" .. tostring(math.floor(ev.amount or 0)), {
             x = ev.x, y = (ev.y or 0) + 1.8, z = ev.z, color = "#8cd9ff",
           })
         end
@@ -1767,13 +1795,13 @@ function M.tick(dt)
         -- Respawn pedido dentro de uma cena própria: agora que `main`
         -- carregou, o spawn guardado volta a ser coordenadas válidas.
         game.pending_respawn = false
-        local pid = viber.player_id and viber.player_id()
-        if pid and viber.vael and viber.vael.puppet_release then
-          viber.vael.puppet_release(pid)
+        local pid = vael.player_id and vael.player_id()
+        if pid and vael.vael and vael.vael.puppet_release then
+          vael.vael.puppet_release(pid)
         end
         local s = stored_spawn(game)
         if s then
-          viber.teleport_player(s.x, s.y, s.z)
+          vael.teleport_player(s.x, s.y, s.z)
           game.iframes = math.max(num("iframes", 0), 2.0)
         end
       end
@@ -1782,7 +1810,7 @@ function M.tick(dt)
   scan_acc = scan_acc + dt
   if scan_acc >= SCAN_PERIOD then
     scan_acc = 0
-    if not viber.menu_open() then
+    if not vael.menu_open() then
       M.scan_visits()
     end
   end
@@ -1794,7 +1822,7 @@ function M.tick(dt)
   if save_at and now >= save_at
       and (game.hp or 0) > 0 and num("dying", 0) <= 0 and not game.death_pending then
     save_at = nil
-    viber.save_slot(0)
+    vael.save_slot(0)
   end
   M.publish()
 end
@@ -1806,9 +1834,9 @@ function M.publish()
   -- Vida, status, XP, talentos, economia e o cartão de quest são publicados
   -- pelo `VaelHudPlugin` (Rust). O Lua só publica o que ainda não tem dono em
   -- Rust: netplay, alvo, chefe, recargas e quests.others.
-  local net_role = (viber.net_role and viber.net_role()) or "off"
-  viber.ui.set("net.on", net_role ~= "off")
-  viber.ui.set("net.label", net_role == "host" and "HOST"
+  local net_role = (vael.net_role and vael.net_role()) or "off"
+  vael.ui.set("net.on", net_role ~= "off")
+  vael.ui.set("net.label", net_role == "host" and "HOST"
     or (net_role == "join" and "CLIENTE" or ""))
   local title, text = "", ""
   local best, best_score
@@ -1846,19 +1874,19 @@ function M.publish()
   end
   -- `quest.title`/`quest`/`quest.text`/`quest.active` são do `VaelHudPlugin`;
   -- escrevê-los aqui dava dois donos e o Lua ganhava no fim do frame.
-  viber.ui.set("abilities.active", true)
-  viber.ui.set("vitals.active", true)
+  vael.ui.set("abilities.active", true)
+  vael.ui.set("vitals.active", true)
   -- Uma vez: o analyze avisa "unknown binding" se ninguém escreveu o nome.
   -- Todos os frames apagava a barra de alvo, o chefe e as recargas quando
   -- este script corria depois dos outros.
   if not M._hud_seeded then
     M._hud_seeded = true
-    viber.ui.set("target", 0)
-    viber.ui.set("target.alive", false)
-    viber.ui.set("target.name", "")
-    viber.ui.set("combo", false)
-    viber.ui.set("combo.text", "")
-    viber.ui.set("quests.others", false)
+    vael.ui.set("target", 0)
+    vael.ui.set("target.alive", false)
+    vael.ui.set("target.name", "")
+    vael.ui.set("combo", false)
+    vael.ui.set("combo.text", "")
+    vael.ui.set("quests.others", false)
   end
   -- O número de XP e o brilho da missão só aparecem com a classe `shown`/
   -- `fresh`. Forçar false todos os frames apagava-os para sempre. Alvo,
@@ -1867,19 +1895,19 @@ function M.publish()
   local xp_sig = string.format("%d/%d/%d", game.level, math.floor(game.xp), math.floor(game.xp_next))
   if M._xp_sig ~= xp_sig then
     if M._xp_sig ~= nil then
-      M._xp_until = viber.time() + REVEAL_SECS
+      M._xp_until = vael.time() + REVEAL_SECS
     end
     M._xp_sig = xp_sig
   end
-  viber.ui.set("xp.recent", (M._xp_until or 0) > viber.time())
+  vael.ui.set("xp.recent", (M._xp_until or 0) > vael.time())
   local quest_sig = title .. "\0" .. text
   if M._quest_sig ~= quest_sig then
     if M._quest_sig ~= nil then
-      M._quest_until = viber.time() + REVEAL_SECS
+      M._quest_until = vael.time() + REVEAL_SECS
     end
     M._quest_sig = quest_sig
   end
-  viber.ui.set("quest.recent", (M._quest_until or 0) > viber.time())
+  vael.ui.set("quest.recent", (M._quest_until or 0) > vael.time())
 end
 
 return M

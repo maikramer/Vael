@@ -1,10 +1,10 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- enemies/bogling-hexer.lua: bogling FEITICEIRO do Pântano — arquétipo de
 -- zona. Mantém 5–13 m e marca a roxo o chão onde o herói ESTÁ; 1,2 s depois a
 -- zona rebenta e envenena quem ficou. Frágil: fecha a distância e cai depressa
 -- (encurralado, defende-se à unhada).
 -- Conta como "bogling" nas missões (prefixo `bogling-`). Máquina: lib/fsm.lua.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "bogling-hexer",
   proto = "mob-bogling-hexer",
   hp = 80,

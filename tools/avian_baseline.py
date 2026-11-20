@@ -3,8 +3,8 @@
 
 Antes de trocar o motor, captura o que o jogo actual responde; depois da
 troca, o `compare` diz exactamente o que mudou. O oráculo é o bridge: os
-mesmos endpoints (`viber.raycast`, `viber.debug.colliders`,
-`viber.debug.player/stats`) têm de continuar a responder no build novo.
+mesmos endpoints (`viber.raycast`, `vael.debug.colliders`,
+`vael.debug.player/stats`) têm de continuar a responder no build novo.
 
   avian_baseline.py capture --port 15740 [--out docs/qa/avian] [--perf]
   avian_baseline.py hero    --port 15740 [--out docs/qa/avian]
@@ -87,17 +87,17 @@ def binary_info() -> dict[str, object]:
 
 
 def player(bridge: Bridge) -> dict | None:
-    res = bridge.lua("return viber.debug.player()")
+    res = bridge.lua("return vael.debug.player()")
     return res if isinstance(res, dict) else None
 
 
 def stats(bridge: Bridge) -> dict:
-    res = bridge.lua("return viber.debug.stats()")
+    res = bridge.lua("return vael.debug.stats()")
     return res if isinstance(res, dict) else {}
 
 
 def teleport(bridge: Bridge, pos: list[float]) -> None:
-    bridge.lua(f"return viber.debug.teleport({pos[0]}, {pos[1]}, {pos[2]})")
+    bridge.lua(f"return vael.debug.teleport({pos[0]}, {pos[1]}, {pos[2]})")
     time.sleep(0.25)
 
 
@@ -171,9 +171,9 @@ def collider_fixture(bridge: Bridge, origin: list[float]) -> list[dict]:
     picked: dict[str, dict] = {}
     for dx, dz in anchors:
         if (dx, dz) != (0.0, 0.0):
-            bridge.lua(f"return viber.debug.move_player({dx}, {dz})")
+            bridge.lua(f"return vael.debug.move_player({dx}, {dz})")
             time.sleep(0.35)
-        rows = bridge.lua("return viber.debug.colliders(8)") or []
+        rows = bridge.lua("return vael.debug.colliders(8)") or []
         for row in rows if isinstance(rows, list) else []:
             if not isinstance(row, dict):
                 continue
@@ -197,8 +197,8 @@ def collider_fixture(bridge: Bridge, origin: list[float]) -> list[dict]:
                 },
             )
     # Volta à origem.
-    bridge.lua(f"return viber.debug.move_player({-12.0}, {0.0})")
-    bridge.lua(f"return viber.debug.move_player({0.0}, {-12.0})")
+    bridge.lua(f"return vael.debug.move_player({-12.0}, {0.0})")
+    bridge.lua(f"return vael.debug.move_player({0.0}, {-12.0})")
     return sorted(picked.values(), key=lambda item: (item["name"], item["x"], item["z"]))
 
 

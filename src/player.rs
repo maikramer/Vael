@@ -50,7 +50,7 @@ pub enum VaelHeroScheme {
     /// direção dada — o deslocamento VERTICAL do `displacement` é o hop da
     /// esquiva lateral (sem efeito físico desde a migração Rapier→tnua).
     Dash(TnuaBuiltinDash),
-    /// Empurrão (`viber.push_player`): impulso + boundary de Pushover que a
+    /// Empurrão (`vael.push_player`): impulso + boundary de Pushover que a
     /// basis não anula. Via `action_interrupt` (incancelável até passar).
     Knockback(TnuaBuiltinKnockback),
     /// Agachar (feed contínuo `action_start`/`action_end`): desce o corpo
@@ -215,7 +215,7 @@ pub const SWIM_IDLE_DEPTH: f32 = 1.00;
 /// Velocidade vertical mínima de queda (m/s) para amortecimento e salpico de entrada.
 pub const WATER_ENTRY_SPEED_MIN: f32 = 3.0;
 
-/// Esquiva do herói (`viber.vael.dodge()`), escolhida pelas teclas de
+/// Esquiva do herói (`vael.vael.dodge()`), escolhida pelas teclas de
 /// movimento no momento do pedido.
 #[derive(Debug, Clone, Copy, PartialEq, Eq, Reflect)]
 pub enum DodgeKind {
@@ -319,7 +319,7 @@ pub fn dodge_direction(
     }
 }
 
-/// Pedido de movimento de um golpe (`viber.vael.attack_motion`).
+/// Pedido de movimento de um golpe (`vael.vael.attack_motion`).
 #[derive(Debug, Clone, Copy, Default, PartialEq)]
 pub struct AttackMotion {
     /// Quanto tempo o golpe trava o passo e manda na frente do herói.
@@ -361,7 +361,7 @@ impl HeroMotionBus {
             .unwrap_or_else(|poisoned| poisoned.into_inner())
     }
 
-    /// `viber.vael.dodge()`: aceita se o herói está no chão e livre.
+    /// `vael.vael.dodge()`: aceita se o herói está no chão e livre.
     pub fn request_dodge(&self) -> Option<DodgeKind> {
         let mut shared = self.lock();
         if !shared.grounded || shared.dodging || shared.dodge.is_some() {
@@ -465,7 +465,7 @@ impl Default for VaelController {
 }
 
 /// Última velocidade que o Lua escreveu no `Player` da engine
-/// (`viber.set_player_speed`: passivas de equipamento, gelo), em m/s.
+/// (`vael.set_player_speed`: passivas de equipamento, gelo), em m/s.
 ///
 /// O `<PlayerGLTF>` é re-spawnado a cada troca de cena com um
 /// `Player::default()` (4 m/s), mas o `rules.lua` só reenvia o multiplicador
@@ -759,11 +759,11 @@ impl Plugin for VaelPlayerPlugin {
     }
 }
 
-/// Arranque: `viber.vael.dodge()` e `viber.vael.attack_motion{…}`.
+/// Arranque: `vael.vael.dodge()` e `vael.vael.attack_motion{…}`.
 fn install_motion_api(bus: Res<HeroMotionBus>) {
     let bus = bus.clone();
     crate::script_host::register_installer(move |lua| install_motion(lua, bus.clone()));
-    info!("vael: esquiva/golpe em Rust registados nos contextos BMS (`viber.vael`)");
+    info!("vael: esquiva/golpe em Rust registados nos contextos BMS (`vael.vael`)");
 }
 
 fn table_f32(table: &Table, key: &str, default: f32) -> f32 {
@@ -791,13 +791,13 @@ pub(crate) fn install_motion(lua: &Lua, bus: HeroMotionBus) -> mlua::Result<()> 
         bus.lock().combat_target = target.is_finite().then_some(target);
         Ok(())
     });
-    // viber.vael.dodge() -> kind, duração | nil. `kind` ∈ roll/side/back
+    // vael.vael.dodge() -> kind, duração | nil. `kind` ∈ roll/side/back
     // (o script escolhe o clip); nil = no ar ou já a esquivar.
     vael_fn!(lua, vael, "dodge", [bus = bus.clone()], move |_, ()| {
         let kind = bus.request_dodge();
         Ok((kind.map(DodgeKind::name), kind.map(|kind| kind.profile().0)))
     });
-    // viber.vael.attack_motion{ secs, slow, lunge, fx, fz }
+    // vael.vael.attack_motion{ secs, slow, lunge, fx, fz }
     vael_fn!(
         lua,
         vael,
@@ -1186,8 +1186,8 @@ fn player_movement(
         .or_else(|| water_cfg.map(|c| (c.0.wind, c.0.wind_strength)))
         .unwrap_or(([0.7, 0.25], 1.5));
     let wave_amp = water_cfg.map_or(1.0, |c| c.0.wave_amp);
-    // Um script reclamou o corpo (`viber.own_system("locomotion")` +
-    // `viber.set_pose`): o controller a pé não escreve por cima.
+    // Um script reclamou o corpo (`vael.own_system("locomotion")` +
+    // `vael.set_pose`): o controller a pé não escreve por cima.
     if locomotion
         .as_ref()
         .is_some_and(|owners| owners.owns(vael_engine::luau::ownership::SYSTEM_LOCOMOTION))
@@ -1447,7 +1447,7 @@ fn player_movement(
         // assar e uma queda a 55 m/s atravessa o trimesh antes disso.
         //
         // Settle FRESCO é a CHEGADA de um teleporte (viagem pelo mapa,
-        // `viber.teleport_player`, load do save): a chegada tem de ser limpa,
+        // `vael.teleport_player`, load do save): a chegada tem de ser limpa,
         // sem a inércia nem o knockback do sítio antigo. Quem teleporta repõe
         // o `Player` da engine — agora um espelho que este sync reescreve —
         // por isso o reset do MOVIMENTO vive aqui, no dono.
@@ -1831,7 +1831,7 @@ fn player_movement(
             if with_body && let Some(tnua) = tnua.as_deref_mut() {
                 // AÇÃO Knockback: impulso + boundary de Pushover que a basis
                 // não anula nem deixa cancelar. O componente é a API externa
-                // (Lua `viber.push_player`); consome-o aqui.
+                // (Lua `vael.push_player`); consome-o aqui.
                 let shove = knockback.velocity.with_y(0.0);
                 tnua.action_interrupt(VaelHeroScheme::Knockback(TnuaBuiltinKnockback {
                     shove,
@@ -2323,7 +2323,7 @@ pub fn settle_arriving(frames: u8, seen: u8) -> bool {
 }
 
 /// Espelha o controller no `Player` da engine e adopta a velocidade que o Lua
-/// escreveu nele (`viber.set_player_speed`: passivas de equipamento, gelo).
+/// escreveu nele (`vael.set_player_speed`: passivas de equipamento, gelo).
 ///
 /// A adopção tem de ser AQUI (e não só no caminho do movimento): com o menu
 /// aberto ou o corpo entregue a um script este sync também corre, e escrever
@@ -2441,7 +2441,7 @@ mod tests {
         assert_eq!(bus.lock().dodge, Some((DodgeKind::Side, Vec2::NEG_X)));
     }
 
-    /// Os scripts que chamam `viber.vael.dodge`/`attack_motion` compilam no
+    /// Os scripts que chamam `vael.vael.dodge`/`attack_motion` compilam no
     /// Luau do jogo (sem isto um erro de sintaxe só aparecia ao correr).
     #[test]
     fn dodge_and_melee_scripts_compile() {
@@ -2464,11 +2464,11 @@ mod tests {
         let bus = HeroMotionBus::default();
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().unwrap())
+            .set("vael", lua.create_table().unwrap())
             .unwrap();
         install_motion(&lua, bus.clone()).unwrap();
         let resting = || {
-            lua.load("return viber.vael.hero_at_rest()")
+            lua.load("return vael.vael.hero_at_rest()")
                 .eval::<bool>()
                 .unwrap()
         };
@@ -2516,19 +2516,19 @@ mod tests {
     fn install_motion_exposes_dodge_to_lua() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().unwrap())
+            .set("vael", lua.create_table().unwrap())
             .unwrap();
         let bus = HeroMotionBus::default();
         install_motion(&lua, bus.clone()).unwrap();
         let (kind, _): (Option<String>, Option<f32>) =
-            lua.load("return viber.vael.dodge()").eval().unwrap();
+            lua.load("return vael.vael.dodge()").eval().unwrap();
         assert_eq!(kind, None, "no ar não esquiva");
         bus.lock().grounded = true;
         let (kind, duration): (Option<String>, Option<f32>) =
-            lua.load("return viber.vael.dodge()").eval().unwrap();
+            lua.load("return vael.vael.dodge()").eval().unwrap();
         assert_eq!(kind.as_deref(), Some("back"));
         assert!(duration.is_some_and(|d| d > 0.0));
-        lua.load("viber.vael.attack_motion({ secs = 0.3, lunge = 0.8, fx = 1, fz = 0 })")
+        lua.load("vael.vael.attack_motion({ secs = 0.3, lunge = 0.8, fx = 1, fz = 0 })")
             .exec()
             .unwrap();
         let attack = bus.lock().attack.expect("pedido de golpe");

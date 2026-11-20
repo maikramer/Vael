@@ -3,7 +3,7 @@
 -- da chain (3.º golpe) parte a guarda e atordoa, as costas não têm escudo, e
 -- depois de atacar fica aberto durante o `recover`.
 -- Conta como "bandit" nas missões (prefixo `bandit-`). Máquina: lib/fsm.lua.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "bandit-shield",
   proto = "mob-bandit-shield",
   hp = 150,

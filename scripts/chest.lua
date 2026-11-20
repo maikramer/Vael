@@ -1,4 +1,4 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- chest.lua: baú de uma abertura só — loot real no vault/inventário via hooks
 -- da economia. O conteúdo é de CADA baú (`prop-*` no XML / Inspector › Script).
 --@export xp: int(0..) = 30                 -- XP ao abrir
@@ -10,25 +10,25 @@ local rules = viber.load("lib/rules.lua")
 --@export range: number(0.5..10) = 2.8      -- alcance do [E] (m)
 --@signal opened(gold, xp)                  -- abriu (1×) — quem ouve é dado do baú: connect-opened="@grupo:método"
 
-local once = viber.load("lib/once.lua")
+local once = vael.load("lib/once.lua")
 
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (o top-level é partilhado)
+  local st = vael.state() -- POR ENTIDADE (o top-level é partilhado)
   if not st.ready then
     st.ready = true
-    -- state() morre no load: sem a marca em viber.game() cada baú pagava outra vez.
+    -- state() morre no load: sem a marca em vael.game() cada baú pagava outra vez.
     st.opened = once.taken()
-    viber.set_interaction(st.opened and "Vazio" or viber.prop("prompt"), "e", viber.prop("range"))
+    vael.set_interaction(st.opened and "Vazio" or vael.prop("prompt"), "e", vael.prop("range"))
   end
   -- Relê a marca todos os frames: um Load na MESMA cena troca o
-  -- `viber.game()` sem recriar a entidade; com `st.opened` em cache o baú
+  -- `vael.game()` sem recriar a entidade; com `st.opened` em cache o baú
   -- voltava a pagar (ou ficava "Abrir" depois de carregar um save aberto).
   local taken = once.taken()
   if taken ~= st.opened then
     st.opened = taken
-    viber.set_interaction(taken and "Vazio" or viber.prop("prompt"), "e", viber.prop("range"))
+    vael.set_interaction(taken and "Vazio" or vael.prop("prompt"), "e", vael.prop("range"))
   end
-  if viber.menu_open() then
+  if vael.menu_open() then
     return
   end
   -- O `menu_open` não inclui o ecrã de morte: o herói caído continuava a
@@ -37,8 +37,8 @@ function on_update(dt)
   if hp <= 0 then
     return
   end
-  if viber.interacted("e") and not st.opened then
-    local p = viber.props()
+  if vael.interacted("e") and not st.opened then
+    local p = vael.props()
     local loot = {}
     local want_items = (p.item ~= "" and p.item_count > 0) and p.item_count or 0
     -- Capacidade ANTES de marcar/entregar: o baú é o único detentor deste
@@ -54,8 +54,8 @@ function on_update(dt)
         if paid_items > 0 then
           rules.vault_take(p.item, paid_items)
         end
-        viber.toast("Não cabe tudo na mochila — o baú continua fechado.")
-        viber.sound("error")
+        vael.toast("Não cabe tudo na mochila — o baú continua fechado.")
+        vael.sound("error")
         return
       end
     end
@@ -69,8 +69,8 @@ function on_update(dt)
         if paid_items > 0 then
           rules.vault_take(p.item, paid_items)
         end
-        viber.toast("Não cabe o ouro na bolsa — o baú continua fechado.")
-        viber.sound("error")
+        vael.toast("Não cabe o ouro na bolsa — o baú continua fechado.")
+        vael.sound("error")
         return
       end
     end
@@ -78,7 +78,7 @@ function on_update(dt)
     st.opened = true
     once.mark()
     -- O prompt nasce no ready: sem o re-registar continuava "Abrir o baú".
-    viber.set_interaction("Vazio", "e", viber.prop("range"))
+    vael.set_interaction("Vazio", "e", vael.prop("range"))
     if p.xp > 0 then
       rules.add_xp(p.xp)
       loot[#loot + 1] = "+" .. p.xp .. " XP"
@@ -90,27 +90,27 @@ function on_update(dt)
       loot[#loot + 1] = "+" .. paid_items .. " " .. p.item_label
     end
     -- O sinal leva o que foi pago, não o que estava autorado no baú.
-    viber.emit("opened", paid_gold, p.xp)
-    local ok, x, y, z = viber.entity_position()
+    vael.emit("opened", paid_gold, p.xp)
+    local ok, x, y, z = vael.entity_position()
     if ok then
-      viber.sound("chest_open", { x = x, y = y, z = z })
+      vael.sound("chest_open", { x = x, y = y, z = z })
       if #loot > 0 then
-        if viber.burst then
-          viber.burst("sparkle", x, y + 0.85, z, 18)
+        if vael.burst then
+          vael.burst("sparkle", x, y + 0.85, z, 18)
         end
-        if viber.vael and viber.vael.collect_burst then
-          viber.vael.collect_burst("gold", x, y + 0.85, z, 6)
+        if vael.vael and vael.vael.collect_burst then
+          vael.vael.collect_burst("gold", x, y + 0.85, z, 6)
         end
       end
     else
-      viber.sound("chest_open")
+      vael.sound("chest_open")
     end
     if #loot == 0 then
-      viber.toast("O baú range e cede... está vazio.")
+      vael.toast("O baú range e cede... está vazio.")
     else
-      viber.toast("O baú range e cede... " .. table.concat(loot, ", "))
+      vael.toast("O baú range e cede... " .. table.concat(loot, ", "))
     end
-  elseif viber.interacted("e") then
-    viber.toast("O baú está vazio.")
+  elseif vael.interacted("e") then
+    vael.toast("O baú está vazio.")
   end
 end

@@ -1,7 +1,7 @@
 -- game/devmode.lua: ferramentas de um ARRANQUE de debug
--- (`viber run --scene main --entry dev`). O sinal é o `lib/dev.lua`
+-- (`vael-tools run --scene main --entry dev`). O sinal é o `lib/dev.lua`
 -- (`skip_intro`) — num jogo normal (menu, `Novo Jogo`, save) este controller
--- não faz nada. O latch vive em `viber.state()`: atravessa trocas de cena,
+-- não faz nada. O latch vive em `vael.state()`: atravessa trocas de cena,
 -- NÃO vai para o save.
 --
 --   [F1] voo livre      — o herói fica invisível e anda com a câmara
@@ -17,8 +17,8 @@
 -- Host: `world/autoload/player.xml` (`tag="always-active"`): corre em todas
 -- as cenas, como as regras.
 
-local dev = viber.load("lib/dev.lua")
-local rules = viber.load("lib/rules.lua")
+local dev = vael.load("lib/dev.lua")
+local rules = vael.load("lib/rules.lua")
 
 -- Voar: velocidade base e multiplicador do Shift. Longe o suficiente para
 -- atravessar o mapa em segundos; perto o suficiente para mirar props.
@@ -85,18 +85,18 @@ local function is_internal_name(name)
   return false
 end
 
--- Estado em `viber.state()` (e não em locals): o hot-reload troca o chunk
+-- Estado em `vael.state()` (e não em locals): o hot-reload troca o chunk
 -- e os locals voltavam a nil — a câmara ficava em modo livre sem ninguém a
 -- conduzir. O estado da entidade sobrevive à recarga.
 --   fly         = { pid, x, y, z, yaw, pitch } | nil (a pé)
 --   god         = preferência do [F2] (o voo força por cima)
 --   look_target = último alvo do Tab (para ciclar)
 local function state()
-  return viber.state()
+  return vael.state()
 end
 
 local function toast(msg)
-  viber.toast("[dev] " .. msg)
+  vael.toast("[dev] " .. msg)
 end
 
 local function clamp(v, lo, hi)
@@ -116,7 +116,7 @@ local function apply_god()
   rules.set_god(st.god == true or st.fly ~= nil or rawget(_G, "vael_qa_god") == true)
 end
 
--- Forward da vista: a MESMA convenção do `viber.camera_pose`.
+-- Forward da vista: a MESMA convenção do `vael.camera_pose`.
 local function view_forward(fly)
   local cy = math.cos(math.rad(fly.yaw))
   local sy = math.sin(math.rad(fly.yaw))
@@ -126,14 +126,14 @@ local function view_forward(fly)
 end
 
 local function start_fly()
-  local pid = viber.player_id()
-  local has, px, py, pz = viber.player_position()
+  local pid = vael.player_id()
+  local has, px, py, pz = vael.player_position()
   if not pid or not has then
     return
   end
   -- Arranca na POSE EXATA da câmara (sem salto de enquadramento): o herói
   -- invisível passa a andar com ela.
-  local cam = viber.camera_state and viber.camera_state() or nil
+  local cam = vael.camera_state and vael.camera_state() or nil
   local st = state()
   st.fly = {
     pid = pid,
@@ -145,12 +145,12 @@ local function start_fly()
   }
   st.look_target = nil
   local fly = st.fly
-  viber.own_system("locomotion")
-  viber.set_visible(false, pid)
-  viber.camera_free(true)
+  vael.own_system("locomotion")
+  vael.set_visible(false, pid)
+  vael.camera_free(true)
   apply_god()
   local fx, fy, fz = view_forward(fly)
-  viber.camera_pose(
+  vael.camera_pose(
     fly.x,
     fly.y,
     fly.z,
@@ -171,13 +171,13 @@ local function stop_fly()
   local x, y, z = fly.x, fly.y, fly.z
   st.fly = nil
   st.look_target = nil
-  viber.camera_free(false)
+  vael.camera_free(false)
   -- Volta a mostrar e a entregar o corpo ANTES de teleportar: o
   -- `player_movement` retoma no frame seguinte e o `teleport_player` (fila
   -- diferida) assenta no chão com `TeleportSettle`.
-  viber.set_visible(true, pid)
-  viber.release_system("locomotion")
-  viber.teleport_player(x, y, z)
+  vael.set_visible(true, pid)
+  vael.release_system("locomotion")
+  vael.teleport_player(x, y, z)
   apply_god()
   toast("voo desligado — o herói aterrou onde estavas a olhar.")
 end
@@ -191,22 +191,22 @@ local function update_fly(dt)
     return
   end
   dt = math.min(dt, 0.1)
-  local look_x = (viber.input.down("right") and 1 or 0)
-    - (viber.input.down("left") and 1 or 0)
-  local look_y = (viber.input.down("up") and 1 or 0)
-    - (viber.input.down("down") and 1 or 0)
+  local look_x = (vael.input.down("right") and 1 or 0)
+    - (vael.input.down("left") and 1 or 0)
+  local look_y = (vael.input.down("up") and 1 or 0)
+    - (vael.input.down("down") and 1 or 0)
   -- Virar à DIREITA diminui o yaw: forward = (sin yaw, cos yaw) e o steering
   -- nativo também subtrai (`cam.yaw_deg -= move_x * …` em player.rs). Com
   -- `+` a seta direita virava a vista para a ESQUERDA do ecrã.
   fly.yaw = fly.yaw - look_x * YAW_SPEED * dt
   fly.pitch = clamp(fly.pitch + look_y * PITCH_SPEED * dt, -MAX_PITCH, MAX_PITCH)
 
-  local move_x = (viber.input.down("d") and 1 or 0)
-    - (viber.input.down("a") and 1 or 0)
-  local move_z = (viber.input.down("w") and 1 or 0)
-    - (viber.input.down("s") and 1 or 0)
-  local move_y = (viber.input.down("space") and 1 or 0)
-    - ((viber.input.down("lctrl") or viber.input.down("rctrl")) and 1 or 0)
+  local move_x = (vael.input.down("d") and 1 or 0)
+    - (vael.input.down("a") and 1 or 0)
+  local move_z = (vael.input.down("w") and 1 or 0)
+    - (vael.input.down("s") and 1 or 0)
+  local move_y = (vael.input.down("space") and 1 or 0)
+    - ((vael.input.down("lctrl") or vael.input.down("rctrl")) and 1 or 0)
 
   local fx, fy, fz = view_forward(fly)
   -- Direita do ecrã no plano: forward × up = (-cos yaw, 0, sin yaw) — a mão
@@ -221,7 +221,7 @@ local function update_fly(dt)
   if len > 1e-6 then
     dx, dy, dz = dx / len, dy / len, dz / len
   end
-  local boost = (viber.input.down("lshift") or viber.input.down("rshift")) and FLY_BOOST or 1
+  local boost = (vael.input.down("lshift") or vael.input.down("rshift")) and FLY_BOOST or 1
   local speed = FLY_SPEED * boost
   fly.x = fly.x + dx * speed * dt
   fly.y = fly.y + dy * speed * dt
@@ -234,9 +234,9 @@ local function update_fly(dt)
 
   -- O herói invisível vai com a câmara: streaming/LOD, `player_nearby`,
   -- áudio e gatilhos de quest continuam a olhar para o sítio certo.
-  viber.set_pose(fly.x, fly.y, fly.z, fly.yaw, fly.pid)
+  vael.set_pose(fly.x, fly.y, fly.z, fly.yaw, fly.pid)
   local lx, ly, lz = view_forward(fly)
-  viber.camera_pose(
+  vael.camera_pose(
     fly.x,
     fly.y,
     fly.z,
@@ -244,10 +244,10 @@ local function update_fly(dt)
     fly.y + ly * 10.0,
     fly.z + lz * 10.0
   )
-  -- O centro do `viber.nearby` é o próprio controller (invisível): 30 m à
+  -- O centro do `vael.nearby` é o próprio controller (invisível): 30 m à
   -- frente da câmara NO PLANO, para os nós do herói não ocuparem o cap. O
   -- resto do jogo não usa a pose deste controller.
-  viber.set_pose(
+  vael.set_pose(
     fly.x + sy * LOOK_AT_PROBE_M,
     fly.y,
     fly.z + cy * LOOK_AT_PROBE_M,
@@ -289,19 +289,19 @@ local function look_at()
   -- IDs dos nós do herói (esqueleto, arma, tocha, FX) que estão SOBRE a
   -- câmara — o herói invisível viaja nela. Não são alvos.
   local local_nodes = {}
-  for _, e in ipairs(viber.player_nearby(4.0, 64) or {}) do
+  for _, e in ipairs(vael.player_nearby(4.0, 64) or {}) do
     local_nodes[e.id] = true
   end
-  -- `viber.nearby` está centrado no controller, que o `update_fly` põe
+  -- `vael.nearby` está centrado no controller, que o `update_fly` põe
   -- 30 m à frente: os alvos reais chegam à lista antes dos nós do herói.
-  for _, e in ipairs(viber.nearby(LOOK_AT_RADIUS, 64) or {}) do
+  for _, e in ipairs(vael.nearby(LOOK_AT_RADIUS, 64) or {}) do
     if not local_nodes[e.id] then
       consider(e.id, e.name, e.x, e.y, e.z, LOOK_AT_MIN_M)
     end
   end
   -- Criaturas de spawner não têm nome (`nearby` não as vê) e estão
   -- legitimamente perto.
-  for _, h in ipairs(viber.hostiles(LOOK_AT_RADIUS) or {}) do
+  for _, h in ipairs(vael.hostiles(LOOK_AT_RADIUS) or {}) do
     consider(h.id, h.kind or "criatura", h.x, h.y, h.z, LOOK_AT_MIN_M)
   end
   if not best then
@@ -315,15 +315,15 @@ local function look_at()
 end
 
 function on_update(dt)
-  local st = viber.state()
+  local st = vael.state()
   if not st.dev then
     -- Reavaliado até ligar (fica ligado): no arranque directo
-    -- (`--scene main --entry dev`) é verdade no 1.º frame. `viber_dev` é o
+    -- (`--scene main --entry dev`) é verdade no 1.º frame. `vael_dev` é o
     -- atalho de QA pela bridge: o REPL não drena comandos de script (um
-    -- `change_scene` de lá é um no-op), mas PARTILHA a VM — `_G.viber_dev =
+    -- `change_scene` de lá é um no-op), mas PARTILHA a VM — `_G.vael_dev =
     -- true` liga as ferramentas sem reiniciar a engine. Nenhum caminho
     -- normal escreve esse global (precisa de `--bridge` + REPL).
-    st.dev = dev.skip_intro() == true or rawget(_G, "viber_dev") == true
+    st.dev = dev.skip_intro() == true or rawget(_G, "vael_dev") == true
     if st.dev then
       toast("[F1] voar · [F2] invulnerável")
     end
@@ -338,18 +338,18 @@ function on_update(dt)
   -- autoload e sobrevivem, mas o voo tem de acabar antes da cena nova — o
   -- `place_player` da chegada seria desfeito pelo `set_pose` do frame
   -- seguinte e a câmara livre tapava o enquadramento da cena.
-  for _, ev in ipairs(viber.events()) do
+  for _, ev in ipairs(vael.events()) do
     if ev.type == "scene_unloading" and st.fly then
       stop_fly()
       break
     end
   end
   -- Menus/mapa/viagem/cinemática roubam o input (o mesmo portão do jogo).
-  if viber.menu_open() then
+  if vael.menu_open() then
     return
   end
 
-  if viber.input.pressed("f1") then
+  if vael.input.pressed("f1") then
     if st.fly then
       stop_fly()
     else
@@ -357,14 +357,14 @@ function on_update(dt)
     end
     return
   end
-  if viber.input.pressed("f2") then
+  if vael.input.pressed("f2") then
     st.god = not (st.god == true)
     apply_god()
     toast(st.god and "invulnerável ligado." or "invulnerável desligado.")
   end
 
   if st.fly then
-    if viber.input.pressed("tab") then
+    if vael.input.pressed("tab") then
       look_at()
     end
     update_fly(dt)

@@ -1,10 +1,10 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- poi/song-seed.lua — Semente de Canção (o "Korok" de Vael).
 --
 -- Colecionável escondido com MICRO-PUZZLE, recompensa própria (item
 -- "korok-seed", nunca ouro) e contador de coleção: a cada 5 sementes,
 -- +1 ponto de talento (rules.add_skill_points). Persistência: o estado de
--- coleta vive em `viber.game()` (world_kv) → sobrevive a save→load; a
+-- coleta vive em `vael.game()` (world_kv) → sobrevive a save→load; a
 -- entidade despawnata-se ao ser coletada e volta a auto-despintar-se na
 -- próxima sessão se a semente já foi contada.
 --
@@ -56,11 +56,11 @@ local function seed_cap()
 end
 
 function on_update(dt)
-  local st = viber.state()
+  local st = vael.state()
 
   local function reward_key()
     if st.mode == "ring" then
-      return "korok-reward-" .. viber.prop("group")
+      return "korok-reward-" .. vael.prop("group")
     end
     return st.key
   end
@@ -71,30 +71,30 @@ function on_update(dt)
 
   if not st.ready then
     st.ready = true
-    st.mode = viber.prop("mode")
-    local name = viber.entity_name() or "anon"
-    st.key = "korok-" .. (viber.prop("seed_key") ~= "" and viber.prop("seed_key") or name)
-    local game = viber.game()
+    st.mode = vael.prop("mode")
+    local name = vael.entity_name() or "anon"
+    st.key = "korok-" .. (vael.prop("seed_key") ~= "" and vael.prop("seed_key") or name)
+    local game = vael.game()
     st.taken = (game[st.key] or 0) > 0
     if st.mode == "ring" then
-      st.ring_key = "korokring-" .. viber.prop("group")
+      st.ring_key = "korokring-" .. vael.prop("group")
       st.ring_done = (game[st.ring_key] or 0) >= 3 or already_rewarded(game)
     end
     if st.taken or (st.mode == "ring" and st.ring_done) then
       -- Já coletada (sessão anterior): sai de cena sem prompt.
-      viber.despawn_self()
+      vael.despawn_self()
       return
     end
-    viber.set_interaction(viber.prop("prompt"), "e", viber.prop("range"))
+    vael.set_interaction(vael.prop("prompt"), "e", vael.prop("range"))
   end
 
   local function collect(phrase)
-    local game = viber.game()
+    local game = vael.game()
     -- O anel marca a recompensa no GRUPO, não no cristal que fechou.
     -- Sem isto os outros dois cristais (ainda no mundo neste frame)
     -- também chamavam collect e davam semente extra + talento.
     if already_rewarded(game) then
-      viber.despawn_self()
+      vael.despawn_self()
       return
     end
     -- Bolsa cheia: NÃO marca a recompensa nem despawna. Antes a semente era
@@ -103,7 +103,7 @@ function on_update(dt)
     -- só porque a bolsa encheu.)
     local cap = seed_cap()
     if rules.vault_get("korok-seed") >= cap then
-      viber.toast("A bolsa de sementes está cheia (" .. cap .. ").")
+      vael.toast("A bolsa de sementes está cheia (" .. cap .. ").")
       return
     end
     -- Crédito PRIMEIRO: a marca de recompensa é permanente e o `item_add`
@@ -111,67 +111,67 @@ function on_update(dt)
     -- sempre — o anel/cristal já não voltava a pagar.
     local added = rules.item_add("korok-seed", 1) or 0
     if added < 1 then
-      viber.toast("A bolsa de sementes está cheia (" .. cap .. ").")
+      vael.toast("A bolsa de sementes está cheia (" .. cap .. ").")
       return
     end
     game[reward_key()] = 1
     game[st.key] = 1
-    local okp, x, y, z = viber.entity_position()
-    viber.despawn_self()
+    local okp, x, y, z = vael.entity_position()
+    vael.despawn_self()
     if okp then
-      viber.burst("sparkle", x, y + 0.6, z, 16)
-      if viber.vael and viber.vael.collect_burst then
-        viber.vael.collect_burst("crystal", x, y + 0.55, z, 5)
+      vael.burst("sparkle", x, y + 0.6, z, 16)
+      if vael.vael and vael.vael.collect_burst then
+        vael.vael.collect_burst("crystal", x, y + 0.55, z, 5)
       end
     end
-    viber.sound("loot")
+    vael.sound("loot")
     local count = rules.vault_get("korok-seed")
     local every = rules.talent_every()
     if every > 0 and count % every == 0 then
       rules.add_skill_points(1)
-      viber.toast(phrase .. " — semente " .. count .. "/" .. TOTAL_REWARDS .. ": +1 PONTO DE TALENTO!")
+      vael.toast(phrase .. " — semente " .. count .. "/" .. TOTAL_REWARDS .. ": +1 PONTO DE TALENTO!")
     else
-      viber.toast(phrase .. " (" .. count .. " na bolsa)")
+      vael.toast(phrase .. " (" .. count .. " na bolsa)")
     end
   end
 
   if st.mode == "ring" then
-    local game = viber.game()
+    local game = vael.game()
     -- Relê o contador todos os frames: `st.ring_done` era só no arranque,
     -- por isso os cristais que sobravam continuavam a pagar semente.
     if st.ring_done or (game[st.ring_key] or 0) >= 3 or already_rewarded(game) then
-      viber.despawn_self()
+      vael.despawn_self()
       return
     end
     -- Cristal já aceso num save carregado na MESMA cena: a entidade não é
     -- recriada pelo load, por isso a marca individual tem de ser relida.
     if (game[st.key] or 0) > 0 then
       st.taken = true
-      viber.despawn_self()
+      vael.despawn_self()
       return
     end
-    if viber.menu_open() or hero_down() then return end
-    if viber.interacted("e") then
+    if vael.menu_open() or hero_down() then return end
+    if vael.interacted("e") then
       if (game[st.key] or 0) > 0 then
-        viber.despawn_self()
+        vael.despawn_self()
         return
       end
       local cap = seed_cap()
       if rules.vault_get("korok-seed") >= cap then
-        viber.toast("A bolsa de sementes está cheia (" .. cap .. ").")
+        vael.toast("A bolsa de sementes está cheia (" .. cap .. ").")
         return
       end
       game[st.key] = 1
       local n = (game[st.ring_key] or 0) + 1
       game[st.ring_key] = n
-      local x, y, z = viber.position()
-      viber.despawn_self()
-      viber.burst("sparkle", x, y + 0.4, z, 12)
+      local x, y, z = vael.position()
+      vael.despawn_self()
+      vael.burst("sparkle", x, y + 0.4, z, 12)
       if n >= 3 then
         collect("O anel ressoa inteiro: semente de canção!")
       else
-        viber.sound("ui")
-        viber.toast("Uma nota se acende no ar (" .. n .. "/3)...")
+        vael.sound("ui")
+        vael.toast("Uma nota se acende no ar (" .. n .. "/3)...")
       end
     end
     return
@@ -179,16 +179,16 @@ function on_update(dt)
 
   -- rock / odd / hide: um [E] e a semente é tua.
   -- A marca tem de ser relida todos os frames: um Load na MESMA cena troca
-  -- `viber.game()` sem recriar a entidade, e com `st.taken` só do arranque a
+  -- `vael.game()` sem recriar a entidade, e com `st.taken` só do arranque a
   -- semente colectada no save voltava a pagar (semente + talento).
-  local game = viber.game()
+  local game = vael.game()
   if (game[st.key] or 0) > 0 then
     st.taken = true
-    viber.despawn_self()
+    vael.despawn_self()
     return
   end
-  if viber.menu_open() or hero_down() then return end
-  if viber.interacted("e") and not st.taken then
+  if vael.menu_open() or hero_down() then return end
+  if vael.interacted("e") and not st.taken then
     local phrase = ({
       rock = "A pedra ergue-se: uma semente de canção!",
       odd = "A pedra que canta guarda uma semente!",

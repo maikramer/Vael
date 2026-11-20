@@ -1,6 +1,6 @@
 //! Eventos de quest em Bevy (`report_kill`/`scan_visits`/`sync_collect`).
 //!
-//! As funções puras trabalham sobre [`QuestKv`] (o `viber.game()`) e reutilizam
+//! As funções puras trabalham sobre [`QuestKv`] (o `vael.game()`) e reutilizam
 //! o [`QuestRules`] e o `quest_set_progress` do [`crate::quest`] — nenhuma
 //! regra de aceitar/entregar é duplicada aqui. O Lua (`scripts/lib/rules.lua`)
 //! é a fonte de verdade por omissão; com `VAEL_QUEST_EVENTS_RUST=1` os três
@@ -46,7 +46,7 @@ use crate::vault::{item_key, vael_fn, vael_table};
 
 /// Variável de ambiente que liga os eventos de quest em Rust.
 pub const RUST_ENV: &str = "VAEL_QUEST_EVENTS_RUST";
-/// Chave do `viber.game()` que avisa o Lua de que os relatos são do Rust.
+/// Chave do `vael.game()` que avisa o Lua de que os relatos são do Rust.
 pub const RUST_GATE_KEY: &str = "vael_quest_events_rust";
 /// Período da varredura de visitas (o `SCAN_PERIOD` do Lua).
 pub const VISIT_PERIOD_SECS: f32 = 0.2;
@@ -96,7 +96,7 @@ pub enum QuestEvent {
     ScanVisits,
 }
 
-/// Fila partilhada entre as closures de `viber.vael` e os sistemas Bevy.
+/// Fila partilhada entre as closures de `vael.vael` e os sistemas Bevy.
 #[derive(Resource, Debug, Clone, Default)]
 pub struct QuestEventQueue(Arc<Mutex<Vec<QuestEvent>>>);
 
@@ -271,7 +271,7 @@ fn advance_objective(rules: &QuestRules, kv: &mut QuestKv, id: &str, have: i64, 
 ///
 /// Chamado pelo caminho Rust da forja (`src/ui/screens.rs::forge_click`); o
 /// `lib/craft.lua` continua a chamar o `M.report_craft` do Lua, que faz esta
-/// mesma aritmética sobre o `viber.game()`.
+/// mesma aritmética sobre o `vael.game()`.
 pub fn report_craft(rules: &QuestRules, kv: &mut QuestKv, item: &str, amount: i64) -> Vec<String> {
     if item.is_empty() {
         return Vec::new();
@@ -443,7 +443,7 @@ pub fn pending_visit_tokens(rules: &QuestRules, kv: &QuestKv) -> BTreeSet<String
 /// `scan_visits`: marca os marcos dentro do raio do herói (plano XZ).
 ///
 /// `positions` tem de trazer o nome exacto do marco; quem chama resolve os
-/// tokens com [`resolve_positions`] (o `viber.find` exacto/substring).
+/// tokens com [`resolve_positions`] (o `vael.find` exacto/substring).
 pub fn scan_visits(
     rules: &QuestRules,
     kv: &mut QuestKv,
@@ -486,7 +486,7 @@ pub fn scan_visits(
     hits
 }
 
-/// Resolve os tokens de visita em posições, com a semântica do `viber.find`:
+/// Resolve os tokens de visita em posições, com a semântica do `vael.find`:
 /// nome exacto primeiro; depois a chave lexicograficamente menor que o contém.
 ///
 /// Devolve as posições e os tokens sem nenhuma entidade no mundo.
@@ -666,7 +666,7 @@ fn emit_notices(
         if let Some(toasts) = toasts.as_mut() {
             toasts.write(ScriptToast(text));
         }
-        // O `viber.sound("notification", …)` corria na VM partilhada; a
+        // O `vael.sound("notification", …)` corria na VM partilhada; a
         // conversa de som agora é a mensagem SfxEvent (o mesmo caminho do
         // dreno dos comandos BMS).
         if let Some(sfx) = sfx.as_deref_mut() {
@@ -690,7 +690,7 @@ impl Plugin for VaelQuestEventsPlugin {
         app.init_resource::<VaelQuestEventsConfig>()
             .init_resource::<QuestEventQueue>()
             // `PostStartup` corre depois de TODOS os `Startup` (economia,
-            // viagem): a tabela `viber.vael` já tem as funções dos outros
+            // viagem): a tabela `vael.vael` já tem as funções dos outros
             // módulos e não há escritas concorrentes na mesma tabela Lua.
             .add_systems(PostStartup, install_quest_events_api)
             // Um save antigo pode trazer o gate a `true`; corrige-se antes
@@ -704,14 +704,14 @@ impl Plugin for VaelQuestEventsPlugin {
                 (drain_quest_events, scan_visits_system)
                     .chain()
                     // Os sistemas leem o que o Lua acabou de fazer no frame e
-                    // escrevem o estado de voltar ao `viber.game()`.
+                    // escrevem o estado de voltar ao `vael.game()`.
                     .after(vael_engine::luau::bms_bridge::apply_bms_commands)
                     .run_if(vael_engine::app::scripts_enabled),
             );
     }
 }
 
-/// Instala `viber.vael.quest_report_kill`/`quest_sync_collect`/
+/// Instala `vael.vael.quest_report_kill`/`quest_sync_collect`/
 /// `quest_scan_visits` e o gate do arranque.
 pub(crate) fn install_quest_events_api(
     queue: Res<QuestEventQueue>,
@@ -720,7 +720,7 @@ pub(crate) fn install_quest_events_api(
     let queue = queue.clone();
     crate::script_host::register_installer(move |lua| install(lua, &queue));
     // O gate (`vael_quest_events_rust`) vive no STORE do processo: escrito
-    // AQUI, uma vez — o Lua lê-o de `viber.game()` em qualquer contexto.
+    // AQUI, uma vez — o Lua lê-o de `vael.game()` em qualquer contexto.
     let kv = game_to_json_process();
     let mut patch = QuestKv::new();
     gate_patch(&kv, config.rust, &mut patch);
@@ -729,11 +729,11 @@ pub(crate) fn install_quest_events_api(
     }
     info!(
         rust = config.rust,
-        "vael: eventos de quest em Rust registados nos contextos BMS (`viber.vael`)"
+        "vael: eventos de quest em Rust registados nos contextos BMS (`vael.vael`)"
     );
 }
 
-/// Acrescenta as três funções à tabela `viber.vael` existente.
+/// Acrescenta as três funções à tabela `vael.vael` existente.
 pub(crate) fn install(lua: &Lua, queue: &QuestEventQueue) -> mlua::Result<()> {
     let vael = vael_table(lua)?;
 
@@ -819,7 +819,7 @@ fn ensure_gate(kv: &mut QuestKv, rust: bool) {
 /// Lê só a chave (não clona o jogo): um save escrito com o gate ligado não
 /// pode deixar o Lua a saltar os relatos numa sessão sem Rust.
 fn enforce_quest_events_gate(config: Res<VaelQuestEventsConfig>) {
-    // Store do processo: o `viber.game()` de todos os contextos BMS lê daqui.
+    // Store do processo: o `vael.game()` de todos os contextos BMS lê daqui.
     let current = vael_engine::luau::game::game_get_bool(RUST_GATE_KEY) == Some(true);
     if config.rust == current {
         return;
@@ -836,7 +836,7 @@ fn enforce_quest_events_gate(config: Res<VaelQuestEventsConfig>) {
     apply_patch_json(&patch);
 }
 
-/// Drena os relatos de abate/recolha e aplica-os ao `viber.game()`.
+/// Drena os relatos de abate/recolha e aplica-os ao `vael.game()`.
 fn drain_quest_events(
     config: Res<VaelQuestEventsConfig>,
     queue: Res<QuestEventQueue>,
@@ -856,7 +856,7 @@ fn drain_quest_events(
         return;
     }
     // `before` é também o KV que as funções puras alteram (store do processo —
-    // o `viber.game()` de todos os contextos BMS).
+    // o `vael.game()` de todos os contextos BMS).
     let before = game_to_json_process();
     if before.is_empty() {
         // A tabela ainda não existe (arranque): não zerar nem escrever.
@@ -1377,16 +1377,16 @@ mod tests {
     fn bridge_lua_empurra_os_tres_eventos() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let queue = QuestEventQueue::default();
         install(&lua, &queue).expect("instalar bridge");
 
         lua.load(
-            "viber.vael.quest_report_kill('wolf', true)\n\
-             viber.vael.quest_report_kill('', false)\n\
-             viber.vael.quest_sync_collect()\n\
-             viber.vael.quest_scan_visits()",
+            "vael.vael.quest_report_kill('wolf', true)\n\
+             vael.vael.quest_report_kill('', false)\n\
+             vael.vael.quest_sync_collect()\n\
+             vael.vael.quest_scan_visits()",
         )
         .exec()
         .expect("chamar bridge");
@@ -1551,7 +1551,7 @@ mod tests {
         assert_eq!(
             kv.get(RUST_GATE_KEY),
             Some(&Json::Bool(true)),
-            "o gate fica ligado no viber.game()"
+            "o gate fica ligado no vael.game()"
         );
         let log = app.world().resource::<QuestLog>();
         assert_eq!(log.states.get("wolves").map(String::as_str), Some("active"));

@@ -9,7 +9,7 @@
 -- descoberta e ativa `voice_stone_boost_until` por 60s (reduzindo pela
 -- metade a recarga do canto [T]).
 
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 
 local LESSONS = {
   brasa = {
@@ -45,11 +45,11 @@ local LESSONS = {
 }
 
 local function stone_flag_key(chord)
-  local custom = tostring(viber.prop("stone_key") or "")
+  local custom = tostring(vael.prop("stone_key") or "")
   if custom ~= "" then
     return "echo_stone." .. custom
   end
-  local ename = viber.entity_name and viber.entity_name()
+  local ename = vael.entity_name and vael.entity_name()
   if ename and ename ~= "" then
     return "echo_stone." .. ename
   end
@@ -57,15 +57,15 @@ local function stone_flag_key(chord)
 end
 
 function on_update(_dt)
-  local st = viber.state()
+  local st = vael.state()
   if not st.ready then
     st.ready = true
-    local prompt = viber.prop("prompt")
-    local range = tonumber(viber.prop("range")) or 3.0
-    viber.set_interaction(prompt ~= "" and prompt or "Escutar a Pedra de Eco", "e", range)
+    local prompt = vael.prop("prompt")
+    local range = tonumber(vael.prop("range")) or 3.0
+    vael.set_interaction(prompt ~= "" and prompt or "Escutar a Pedra de Eco", "e", range)
   end
 
-  if viber.menu_open and viber.menu_open() then
+  if vael.menu_open and vael.menu_open() then
     return
   end
   local alive, hp = rules.player_hp()
@@ -73,31 +73,31 @@ function on_update(_dt)
     return
   end
 
-  if viber.interacted and viber.interacted("e") then
-    local chord = tostring(viber.prop("chord") or "brasa")
+  if vael.interacted and vael.interacted("e") then
+    local chord = tostring(vael.prop("chord") or "brasa")
     local info = LESSONS[chord] or LESSONS.brasa
 
     local has, x, y, z = false, 0, 0, 0
-    if viber.entity_position then
-      has, x, y, z = viber.entity_position()
+    if vael.entity_position then
+      has, x, y, z = vael.entity_position()
     end
-    if not has and viber.player_position then
-      has, x, y, z = viber.player_position()
+    if not has and vael.player_position then
+      has, x, y, z = vael.player_position()
     end
     local pos = has and { x = x, y = y, z = z } or nil
 
-    if pos and viber.sound then
-      viber.sound("notification", pos)
+    if pos and vael.sound then
+      vael.sound("notification", pos)
     end
-    if has and viber.burst then
-      viber.burst(info.burst, x, y + 1.1, z, 20)
+    if has and vael.burst then
+      vael.burst(info.burst, x, y + 1.1, z, 20)
     end
-    if has and viber.ring then
-      viber.ring(x, z, 3.2, info.color)
+    if has and vael.ring then
+      vael.ring(x, z, 3.2, info.color)
     end
 
-    local g = viber.game()
-    local now = (viber.time and viber.time()) or 0
+    local g = vael.game()
+    local now = (vael.time and vael.time()) or 0
     g.voice_stone_boost_until = now + 60.0
 
     local flag = stone_flag_key(chord)
@@ -105,9 +105,9 @@ function on_update(_dt)
     if first then
       g[flag] = true
       rules.add_xp(15, "Pedra de Eco")
-      viber.toast("Pedra de Eco (" .. info.title .. "): " .. info.verse .. " Ressonância 60s (recarga [T] reduzida a metade). Prima [T]! (+15 XP)")
+      vael.toast("Pedra de Eco (" .. info.title .. "): " .. info.verse .. " Ressonância 60s (recarga [T] reduzida a metade). Prima [T]! (+15 XP)")
     else
-      viber.toast("Pedra de Eco (" .. info.title .. "): " .. info.verse .. " Ressonância 60s renovada. Prima [T]!")
+      vael.toast("Pedra de Eco (" .. info.title .. "): " .. info.verse .. " Ressonância 60s renovada. Prima [T]!")
     end
   end
 end

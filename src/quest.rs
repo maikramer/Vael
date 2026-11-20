@@ -2,8 +2,8 @@
 //! recompensas — a aritmética de `scripts/lib/rules.lua`.
 //!
 //! As funções puras trabalham sobre um [`QuestKv`] (`BTreeMap` de chaves
-//! primitivas, como o `viber.game()`) para poderem ser testadas sem a VM. A
-//! bridge [`install`] instala `viber.vael.quest_*` depois do equipamento e
+//! primitivas, como o `vael.game()`) para poderem ser testadas sem a VM. A
+//! bridge [`install`] instala `vael.vael.quest_*` depois do equipamento e
 //! lê/escreve a tabela `viber_game`; o `rules.lua` fica com os embrulhos
 //! (toasts, sons, `sync_collect`, `save_at`) e com tudo o que não é o ciclo
 //! da quest (`report_kill`, `scan_visits`, parley, diálogo).
@@ -42,7 +42,7 @@ use crate::content::{Objective, Reward, VaelContent};
 use crate::vault::{VaultRules, item_key, vael_fn, vael_table, vault_add, vault_take};
 use crate::xp::{XP_KEYS, XpMap, XpRules, add_xp};
 
-/// Prefixo das chaves de quest no `viber.game()`.
+/// Prefixo das chaves de quest no `vael.game()`.
 pub const QUEST_KEY_PREFIX: &str = "q.";
 /// Chave da missão seguida pelo HUD.
 pub const KEY_TRACKED_QUEST: &str = "tracked_quest";
@@ -56,7 +56,7 @@ pub const STATE_UNKNOWN: &str = "unknown";
 /// Limite do encadeamento `next` (o `while seen < 16` do Lua).
 pub const MAX_CHAIN: usize = 16;
 
-/// Estado primitivo do jogo: as chaves de `viber.game()`.
+/// Estado primitivo do jogo: as chaves de `vael.game()`.
 pub type QuestKv = BTreeMap<String, serde_json::Value>;
 
 /// Definição de uma quest com o que as regras precisam (sem falas/retratos).
@@ -647,7 +647,7 @@ pub fn quest_turn_in(
 
 // ── bridge Luau ─────────────────────────────────────────────────────────
 
-/// Plugin das quests: instala as funções em `viber.vael` depois do
+/// Plugin das quests: instala as funções em `vael.vael` depois do
 /// equipamento.
 pub struct VaelQuestPlugin;
 
@@ -664,10 +664,10 @@ impl Plugin for VaelQuestPlugin {
     }
 }
 
-/// Arranque: acrescenta as funções de quest à tabela `viber.vael`.
+/// Arranque: acrescenta as funções de quest à tabela `vael.vael`.
 pub(crate) fn install_quest_api(content: Option<Res<VaelContent>>) {
     let Some(content) = content else {
-        warn!("vael: quests sem conteúdo carregado — `viber.vael` não estendido");
+        warn!("vael: quests sem conteúdo carregado — `vael.vael` não estendido");
         return;
     };
     // Um `Arc` por conjunto de regras: cada contexto BMS (~199 + criaturas)
@@ -682,11 +682,11 @@ pub(crate) fn install_quest_api(content: Option<Res<VaelContent>>) {
     });
     info!(
         quests,
-        "vael: quests em Rust registadas nos contextos BMS (`viber.vael`)"
+        "vael: quests em Rust registadas nos contextos BMS (`vael.vael`)"
     );
 }
 
-/// Acrescenta as funções `quest_*` a `viber.vael` sem substituir as que já lá
+/// Acrescenta as funções `quest_*` a `vael.vael` sem substituir as que já lá
 /// estão (cofre, XP, equipamento).
 ///
 /// O caminho dos testes/host sem plugin: embrulha as regras em `Arc`s novos.
@@ -1457,8 +1457,8 @@ mod tests {
     fn lua_com_bridge() -> (Lua, Table) {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         let vault = vault_rules();
@@ -1484,7 +1484,7 @@ mod tests {
 
         let (ok, gold, missing, title, reason): (bool, i64, i64, String, String) = lua
             .load(
-                "local r = viber.vael.quest_turn_in('wolves') \
+                "local r = vael.vael.quest_turn_in('wolves') \
                  return r.ok, r.gold, r.missing_items, r.title, r.reason",
             )
             .eval()
@@ -1502,7 +1502,7 @@ mod tests {
 
         // `pelt` exige `wolves` entregue (já está) e aceita.
         assert!(
-            lua.load("return viber.vael.quest_accept('pelt')")
+            lua.load("return vael.vael.quest_accept('pelt')")
                 .eval::<bool>()
                 .expect("accept")
         );
@@ -1514,14 +1514,14 @@ mod tests {
         assert_eq!(game.raw_get::<i64>("q.pelt.need").expect("need"), 3);
 
         let (have, need): (i64, i64) = lua
-            .load("local r = viber.vael.quest_progress('pelt'); return r.have, r.need")
+            .load("local r = vael.vael.quest_progress('pelt'); return r.have, r.need")
             .eval()
             .expect("progress");
         assert_eq!((have, need), (0, 3));
 
         let (kind, at, total): (String, i64, i64) = lua
             .load(
-                "local r = viber.vael.quest_objective('staged') \
+                "local r = vael.vael.quest_objective('staged') \
                  return r.obj.type, r.at, r.total",
             )
             .eval()
@@ -1529,12 +1529,12 @@ mod tests {
         assert_eq!((kind.as_str(), at, total), ("collect", 1, 2));
 
         assert!(
-            lua.load("return viber.vael.quest_available('pelt')")
+            lua.load("return vael.vael.quest_available('pelt')")
                 .eval::<bool>()
                 .expect("available")
         );
         assert_eq!(
-            lua.load("return viber.vael.quest_state('wolves')")
+            lua.load("return vael.vael.quest_state('wolves')")
                 .eval::<String>()
                 .expect("state"),
             STATE_DONE
@@ -1551,7 +1551,7 @@ mod tests {
         vael_engine::luau::game::restore_game_json(&std::collections::BTreeMap::new());
         let (lua, game) = lua_com_bridge();
         assert!(
-            lua.load("return viber.vael.quest_accept('staged')")
+            lua.load("return vael.vael.quest_accept('staged')")
                 .eval::<bool>()
                 .expect("accept")
         );
@@ -1559,7 +1559,7 @@ mod tests {
 
         let (ok, advanced, stage, total, ready): (bool, bool, i64, i64, bool) = lua
             .load(
-                "local r = viber.vael.quest_set_progress('staged', 2) \
+                "local r = vael.vael.quest_set_progress('staged', 2) \
                  return r.ok, r.stage_advanced, r.stage, r.total, r.ready",
             )
             .eval()
@@ -1575,7 +1575,7 @@ mod tests {
         ));
 
         let ready: bool = lua
-            .load("return viber.vael.quest_set_progress('staged', 1).ready")
+            .load("return vael.vael.quest_set_progress('staged', 1).ready")
             .eval()
             .expect("pronta");
         assert!(ready);
@@ -1589,8 +1589,8 @@ mod tests {
     fn bridge_mantem_as_funcoes_existentes() {
         let lua = Lua::new();
         lua.globals()
-            .set("viber", lua.create_table().expect("tabela viber"))
-            .expect("global viber");
+            .set("vael", lua.create_table().expect("tabela vael"))
+            .expect("global vael");
         let game = lua.create_table().expect("tabela do jogo");
         crate::vault::install_test_game(&lua, &game);
         let vault = vault_rules();
@@ -1600,14 +1600,14 @@ mod tests {
 
         let coexistem: bool = lua
             .load(
-                "return type(viber.vael.vault_add) == 'function' \
-                 and type(viber.vael.add_xp) == 'function' \
-                 and type(viber.vael.quest_state) == 'function' \
-                 and type(viber.vael.quest_turn_in) == 'function'",
+                "return type(vael.vael.vault_add) == 'function' \
+                 and type(vael.vael.add_xp) == 'function' \
+                 and type(vael.vael.quest_state) == 'function' \
+                 and type(vael.vael.quest_turn_in) == 'function'",
             )
             .eval()
             .expect("funções");
-        assert!(coexistem, "cofre, XP e quests partilham `viber.vael`");
+        assert!(coexistem, "cofre, XP e quests partilham `vael.vael`");
     }
 
     #[test]

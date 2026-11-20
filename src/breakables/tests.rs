@@ -69,7 +69,7 @@ fn walkover_only_pays_once_and_leaves_full_stacks() -> mlua::Result<()> {
           vault_add=function(_,n) if capped then return 0 end stock+=n return n end,
           item_label=function(k) return k end, player_hp=function() return true,hp,100 end
         }
-        viber = {
+        vael = {
           load=function() return rules end, prop=function(k) if k=="loot" then return kind end return k=="floor" and "0" or "0.45" end,
           state=function() return st end, menu_open=function() return false end, ui={is_open=function() return false end},
           entity_position=function() return true,0,0.45,0 end, player_position=function() return true,hero,0,0 end,

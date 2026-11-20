@@ -5,9 +5,9 @@
 -- e encadeia `rules.on_kill` de forma segura (preservando `game/story.lua`)
 -- para resolver Pactos de Caça.
 
-local rules = viber.load("lib/rules.lua")
-local say = viber.load("ui/say.lua")
-local voice = viber.load("lib/voice.lua")
+local rules = vael.load("lib/rules.lua")
+local say = vael.load("ui/say.lua")
+local voice = vael.load("lib/voice.lua")
 
 local our_on_kill
 
@@ -15,19 +15,19 @@ local function dialogue_open()
   if say.active and say.active() then
     return true
   end
-  if not (viber.ui and viber.ui.get and viber.time) then
+  if not (vael.ui and vael.ui.get and vael.time) then
     return false
   end
-  local now = viber.time()
-  local t = tonumber(viber.ui.get("dialogue.until")) or 0
+  local now = vael.time()
+  local t = tonumber(vael.ui.get("dialogue.until")) or 0
   return t > now and (t - now) <= 2.0
 end
 
 local function handle_pact_kill(kind, _id)
-  local g = viber.game()
+  local g = vael.game()
   local pact_kind = g.voice_pact_kind
   local pact_until = tonumber(g.voice_pact_until) or 0
-  local now = (viber.time and viber.time()) or 0
+  local now = (vael.time and vael.time()) or 0
   -- O prazo do Pacto é uptime do PROCESSO (vai no save como número): um
   -- valor no futuro é de outra execução e não pode manter o pacto vivo por
   -- minutos depois de carregar um save.
@@ -42,8 +42,8 @@ local function handle_pact_kill(kind, _id)
   g.voice_pact_until = 0
 
   local has_pos, px, py, pz = false, 0, 0, 0
-  if viber.player_position then
-    has_pos, px, py, pz = viber.player_position()
+  if vael.player_position then
+    has_pos, px, py, pz = vael.player_position()
   end
   local pos = has_pos and { x = px, y = py, z = pz } or nil
 
@@ -54,22 +54,22 @@ local function handle_pact_kill(kind, _id)
     local label = voice.label_for_creature(pact_kind)
     rules.add_xp(15, "Pacto de Caça")
     rules.heal_player(15)
-    if has_pos and viber.burst then
-      viber.burst("sparkle", px, py + 1.1, pz, 22)
+    if has_pos and vael.burst then
+      vael.burst("sparkle", px, py + 1.1, pz, 22)
     end
-    if pos and viber.sound then
-      viber.sound("levelup", pos)
+    if pos and vael.sound then
+      vael.sound("levelup", pos)
     end
-    viber.toast("Pacto cumprido contra " .. label .. "! (+15 XP, +15 vida)")
+    vael.toast("Pacto cumprido contra " .. label .. "! (+15 XP, +15 vida)")
   else
     g.hp = math.max(1, (tonumber(g.hp) or 10) - 10)
-    if pos and viber.sound then
-      viber.sound("error", pos)
+    if pos and vael.sound then
+      vael.sound("error", pos)
     end
-    if has_pos and viber.burst then
-      viber.burst("smoke", px, py + 0.9, pz, 12)
+    if has_pos and vael.burst then
+      vael.burst("smoke", px, py + 0.9, pz, 12)
     end
-    viber.toast("Pacto quebrado: o eco volta-se contra ti! (-10 vida)")
+    vael.toast("Pacto quebrado: o eco volta-se contra ti! (-10 vida)")
   end
 end
 
@@ -96,18 +96,18 @@ ensure_kill_hook()
 function on_update(_dt)
   ensure_kill_hook()
 
-  if (viber.scene_name and viber.scene_name() == "menu")
-      or (viber.ui and viber.ui.is_open and viber.ui.is_open("title")) then
+  if (vael.scene_name and vael.scene_name() == "menu")
+      or (vael.ui and vael.ui.is_open and vael.ui.is_open("title")) then
     return
   end
-  if viber.menu_open and viber.menu_open() then
+  if vael.menu_open and vael.menu_open() then
     return
   end
   if dialogue_open() then
     return
   end
 
-  local g = viber.game()
+  local g = vael.game()
   if (tonumber(g.hp) or 1) <= 0 then
     return
   end
@@ -116,11 +116,11 @@ function on_update(_dt)
     return
   end
 
-  if viber.input and viber.input.pressed and viber.input.pressed("t") and not say.active() then
+  if vael.input and vael.input.pressed and vael.input.pressed("t") and not say.active() then
     say.ask({
       prompt = "Entoar no Coro:",
       hint = "Diga um verso elemental ou o nome de uma fera...",
-      speaker = viber.player_id and viber.player_id() or nil,
+      speaker = vael.player_id and vael.player_id() or nil,
       allow_fallback = true,
       on_result = function(parsed, text)
         if text and text ~= "" then

@@ -1,6 +1,6 @@
 -- enemies/bandit.lua: FSM wander/chase com aggro-chain e anti-stuck.
--- Toda a máquina vive em lib/fsm.lua (viber.load).
-local fsm = viber.load("lib/fsm.lua").new{
+-- Toda a máquina vive em lib/fsm.lua (vael.load).
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "bandit",
   proto = "mob-bandit",
   wander = 1.8, chase = 3.8,

@@ -1,24 +1,24 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- campfire.lua: sentar/descansar na fogueira da praça (cura + toast).
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
   if not st.ready then
     st.ready = true
     -- A fogueira é uma caixa de 2 m (meia-largura 1 m) e o herói tem 0,35 m
     -- de raio: com o alcance autorado de 2,5 (1,25 efetivo) o [E] só aparecia
     -- de pé EM CIMA da fogueira. 5 m = 2,5 efetivo, na borda da área.
-    viber.set_interaction("Descansar", "e", 5.0)
+    vael.set_interaction("Descansar", "e", 5.0)
     -- Crepitar contínuo do fogo no bus de ambiente (o `fire_crackle` é um
     -- one-shot). Atenuado por distância (40 m) como qualquer loop.
-    local ok, x, y, z = viber.entity_position()
+    local ok, x, y, z = vael.entity_position()
     if ok then
-      viber.sound_loop("campfire", "ambient/fire_loop.ogg", {
+      vael.sound_loop("campfire", "ambient/fire_loop.ogg", {
         x = x, y = y + 0.6, z = z, bus = "ambience", volume = 0.28,
       })
-      viber.log("fogueira: loop de fogo")
+      vael.log("fogueira: loop de fogo")
     end
   end
-  if viber.menu_open() or not viber.interacted("e") then
+  if vael.menu_open() or not vael.interacted("e") then
     return
   end
   local ok, hp, max_hp = rules.player_hp()
@@ -33,25 +33,25 @@ function on_update(dt)
     rules.heal_player(healed)
     -- A cura do poço confirma com `heal`; o descanso na fogueira era a única
     -- cura do mundo sem confirmação audível.
-    viber.sound("heal")
+    vael.sound("heal")
   end
   -- Descansar repõe o cantil de cura [E] e limpa os estados.
   rules.flask_refill()
   rules.status_clear()
-  local has, px, py, pz = viber.player_position()
+  local has, px, py, pz = vael.player_position()
   if has then
     rules.set_spawn(px, py, pz)
     -- Checkpoint = autosave (slot 0). O jogador pode sempre Tentar de novo.
     -- No máximo 1×/2 s: bater E à fogueira não pode escrever o save a 60 Hz.
-    local now = viber.time()
+    local now = vael.time()
     if st.save_t == nil or now < st.save_t or now - st.save_t >= 2.0 then
       st.save_t = now
-      viber.save_slot(0)
+      vael.save_slot(0)
     end
   end
   if healed < 1 then
-    viber.toast("Cantil cheio. Ponto de descanso marcado.")
+    vael.toast("Cantil cheio. Ponto de descanso marcado.")
     return
   end
-  viber.toast("O calor da fogueira restaura " .. math.floor(healed) .. " de vida. Cantil cheio.")
+  vael.toast("O calor da fogueira restaura " .. math.floor(healed) .. " de vida. Cantil cheio.")
 end

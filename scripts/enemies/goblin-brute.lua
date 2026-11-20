@@ -3,7 +3,7 @@
 -- linha recta: sai do corredor (ou dá dash [C]) e ele passa ao lado, exposto
 -- durante 1,4 s. Colado, bate devagar e com força.
 -- Conta como "goblin" nas missões (prefixo `goblin-`). Máquina: lib/fsm.lua.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "goblin-brute",
   proto = "mob-goblin-brute",
   hp = 220,
@@ -14,8 +14,8 @@ local fsm = viber.load("lib/fsm.lua").new{
   radius = 7,
   charge = { min = 5, max = 12, cooldown = 6, windup = 0.9, speed = 10,
              trample_push = 7, mult = 1.7, recover = 1.4 },
-  on_first = function() viber.set_scale(1.25) end,
-  on_chase = function() viber.sound("roar") end,
+  on_first = function() vael.set_scale(1.25) end,
+  on_chase = function() vael.sound("roar") end,
 }
 
 function on_player_attack(px, pz)

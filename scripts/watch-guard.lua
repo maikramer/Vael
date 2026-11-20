@@ -1,37 +1,37 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- watch-guard.lua: [E] cumpre com gesto + som; a 1.ª vez dá XP (portado do TS).
-local once = viber.load("lib/once.lua")
+local once = vael.load("lib/once.lua")
 local function prompt_for(done)
   return done and "Cumprimentar o guarda" or "Falar com o guarda"
 end
 function on_update(dt)
-  local st = viber.state() -- POR ENTIDADE (no top-level era partilhado)
+  local st = vael.state() -- POR ENTIDADE (no top-level era partilhado)
   if not st.ready then
     st.ready = true
     st.done = once.taken()
-    viber.set_interaction(prompt_for(st.done), "e", 3.5)
+    vael.set_interaction(prompt_for(st.done), "e", 3.5)
   end
   local taken = once.taken()
   if taken ~= st.done then
     st.done = taken
-    viber.set_interaction(prompt_for(taken), "e", 3.5)
+    vael.set_interaction(prompt_for(taken), "e", 3.5)
   end
-  if viber.menu_open() then return end
-  if viber.interacted("e") then
+  if vael.menu_open() then return end
+  if vael.interacted("e") then
     -- Herói caído (a caminho do ecrã de morte): o cumprimento não paga XP nem
     -- gasta a marca de "uma vez" — o mesmo portão do poço e da fonte.
     local alive, hp = rules.player_hp()
     if alive and hp <= 0 then return end
-    viber.face_player()
+    vael.face_player()
     -- "salute" 1.º; rigs sem o clip caem para "yes"/"talk" (fuzzy do gesto)
-    viber.gesture("salute,yes,talk")
-    viber.sound("ui")
+    vael.gesture("salute,yes,talk")
+    vael.sound("ui")
     if not st.done then
       st.done = true
       once.mark()
-      viber.set_interaction(prompt_for(true), "e", 3.5)
+      vael.set_interaction(prompt_for(true), "e", 3.5)
       rules.add_xp(5)
-      viber.toast("“Mantenha os olhos na estrada, viajante.” (+5 XP)")
+      vael.toast("“Mantenha os olhos na estrada, viajante.” (+5 XP)")
     end
   end
 end

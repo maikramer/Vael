@@ -1,14 +1,14 @@
 -- Controller sempre ativo: veneno, eventos de morte, binds do HUD.
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 
 -- A cena principal é recriada ao voltar de um interior. O registo de
--- inimigos vive em `viber.game()` e sobrevivia: entradas de criaturas já
+-- inimigos vive em `vael.game()` e sobrevivia: entradas de criaturas já
 -- destruídas contavam para o gate do chefe (soft-lock) e cresciam a sessão
--- inteira. `viber.state()` distingue arranque de hot-reload.
-local st = viber.state()
+-- inteira. `vael.state()` distingue arranque de hot-reload.
+local st = vael.state()
 if not st.ready then
   st.ready = true
-  local game = viber.game()
+  local game = vael.game()
   game.enemies = {}
   game.elites = {}
 end
@@ -18,28 +18,28 @@ end
 -- por baixo do véu. `scene_name` nil = mundo avulso (QA), que continua a
 -- tickar. O título pode viver sobre `main` (arranque direto no mundo).
 local function ui_owns_frame()
-  if viber.scene_name and viber.scene_name() == "menu" then
+  if vael.scene_name and vael.scene_name() == "menu" then
     return true
   end
-  return viber.ui ~= nil and viber.ui.is_open ~= nil
-    and viber.ui.is_open("title") == true
+  return vael.ui ~= nil and vael.ui.is_open ~= nil
+    and vael.ui.is_open("title") == true
 end
 
 function on_update(dt)
   if ui_owns_frame() then
     -- Drena a fila deste path para os eventos da última frame de jogo
     -- (hit/kill) não serem aplicados quando o jogador entrar em `main`.
-    for _ in ipairs(viber.events()) do end
+    for _ in ipairs(vael.events()) do end
     return
   end
-  local game = viber.game()
+  local game = vael.game()
   if (tonumber(game.hp) or 0) > 0
       and (tonumber(game.dying) or 0) <= 0
       and not game.death_pending then
-    local pid = viber.player_id and viber.player_id()
-    if pid and viber.vael and viber.vael.puppet_state and viber.vael.puppet_release
-        and viber.vael.puppet_state(pid) == "dead" then
-      viber.vael.puppet_release(pid)
+    local pid = vael.player_id and vael.player_id()
+    if pid and vael.vael and vael.vael.puppet_state and vael.vael.puppet_release
+        and vael.vael.puppet_state(pid) == "dead" then
+      vael.vael.puppet_release(pid)
     end
   end
   rules.tick(dt)

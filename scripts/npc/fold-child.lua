@@ -1,20 +1,20 @@
-local rules = viber.load("lib/rules.lua")
-local opening = viber.load("lib/opening.lua")
-local talk = viber.load("ui/say.lua")
+local rules = vael.load("lib/rules.lua")
+local opening = vael.load("lib/opening.lua")
+local talk = vael.load("ui/say.lua")
 
 local QUEST = "story_first_fold"
 
 function on_update(_dt)
-  local st = viber.state()
-  local game = viber.game()
+  local st = vael.state()
+  local game = vael.game()
   local state = game["q." .. QUEST]
   local stage = game["q." .. QUEST .. ".stage"] or 1
   local dx, dz = opening.offset()
   if not dx then return end
-  local x, _, z = viber.position()
-  local gate = viber.find("gate_north")
+  local x, _, z = vael.position()
+  local gate = vael.find("gate_north")
   if not gate then return end
-  local found, gx, _, gz = viber.entity_position(gate)
+  local found, gx, _, gz = vael.entity_position(gate)
   if not found then return end
   local at_gate = (x - gx - 1.5)^2 + (z - gz + 1.5)^2 < 1.4
   if dx * dx + dz * dz > 25 or state ~= "active" or stage ~= 2 then st.paper = false end
@@ -31,24 +31,24 @@ function on_update(_dt)
     label = "Abrir a folha assinada"
   end
   opening.prompt(st, label)
-  if viber.menu_open() or talk.active() or viber.ui.focused() ~= nil then return end
+  if vael.menu_open() or talk.active() or vael.ui.focused() ~= nil then return end
   if (state == "done" or (state == "active" and stage == 3)) and not at_gate then
-    viber.move_towards(gx + 1.5, gz - 1.5, 1.5)
+    vael.move_towards(gx + 1.5, gz - 1.5, 1.5)
     return
   end
   if state == "active" and stage == 2 and st.wrong then
     local tx, tz = gx + 5.5, gz - 6
     if (x - tx)^2 + (z - tz)^2 > 1 then
-      viber.move_towards(tx, tz, 1.6)
+      vael.move_towards(tx, tz, 1.6)
       return
     end
     st.wrong = false
     talk.say("Isto é o curral! Vira a folha e tenta outra vez.")
   end
-  if not viber.interacted("e") then return end
+  if not vael.interacted("e") then return end
   local _, hp = rules.player_hp()
   if hp <= 0 then return end
-  viber.face_player()
+  vael.face_player()
   if state == "done" then
     talk.say(game["campaign.fold"] == "roof" and "Sigo o telhado branco até casa." or "A curva do muro leva-me a casa.")
   elseif state ~= "active" then
@@ -63,14 +63,14 @@ function on_update(_dt)
       st.paper = false
       st.wrong = true
       talk.say("A seta diz para ali. Vem ver!")
-    elseif viber.vael.opening_action("draw", legend) then
+    elseif vael.vael.opening_action("draw", legend) then
       st.paper = false
       talk.say("Já vejo o portão. Vem comigo!")
-      viber.save_slot(0)
+      vael.save_slot(0)
     end
-  elseif at_gate and viber.vael.opening_action("arrive") then
+  elseif at_gate and vael.vael.opening_action("arrive") then
     talk.say("Assim já sei voltar. Fico com a folha! Segue para a terra que escolheste.", 6)
-    viber.sound("quest_complete")
-    viber.save_slot(0)
+    vael.sound("quest_complete")
+    vael.save_slot(0)
   end
 end

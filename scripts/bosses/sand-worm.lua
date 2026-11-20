@@ -1,7 +1,7 @@
 -- bosses/sand-worm.lua: verme do deserto. Toda a máquina vive em
--- lib/fsm.lua (viber.load). Especial: TREMOR — mergulha e rebenta a areia à
+-- lib/fsm.lua (vael.load). Especial: TREMOR — mergulha e rebenta a areia à
 -- volta; o aviso cobre um círculo largo, sair dele a correr ou com dash.
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "sand-worm",
   hp = 500,
   intro = "guardiao-verme", -- cena de despertar (world/cinematics.xml)
@@ -29,7 +29,7 @@ local fsm = viber.load("lib/fsm.lua").new{
     { at = 0.3, toast = "A duna inteira mexe-se!", color = "#ff8a2a", speed = 1.1,
       burrow = { every = 6, under = 1.2, windup = 0.85, radius = 5.0, mult = 1.7 } },
   },
-  on_chase = function() viber.sound("roar") end,
+  on_chase = function() vael.sound("roar") end,
 }
 
 function on_player_attack(px, pz)

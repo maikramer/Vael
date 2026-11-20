@@ -1,7 +1,7 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- enemies/scorpion.lua: steering + pivô rápido + veneno no golpe (dá uso ao
--- antídoto [2]). Toda a máquina vive em lib/fsm.lua (viber.load).
-local fsm = viber.load("lib/fsm.lua").new{
+-- antídoto [2]). Toda a máquina vive em lib/fsm.lua (vael.load).
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "scorpion",
   proto = "mob-scorpion",
   weak = { frost = 1.0, shock = 1.5 },

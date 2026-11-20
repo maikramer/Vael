@@ -6,14 +6,14 @@
 -- andar dá tropeço + passo ao lado (clips `stumble`), sprint/dash dá queda +
 -- levantar (`knockdown`/`getup`); insistir encostado desloca o NPC.
 --
--- Uso no script (um só FSM por entidade, `viber.state()`):
---   local bump = viber.load("lib/bump.lua")
---   function on_collision_enter(o) bump.enter(viber.state(), o) end
---   function on_collision_stay(o, dt) bump.stay(viber.state(), o, dt) end
---   function on_collision_exit(o) bump.exit(viber.state(), o) end
+-- Uso no script (um só FSM por entidade, `vael.state()`):
+--   local bump = vael.load("lib/bump.lua")
+--   function on_collision_enter(o) bump.enter(vael.state(), o) end
+--   function on_collision_stay(o, dt) bump.stay(vael.state(), o, dt) end
+--   function on_collision_exit(o) bump.exit(vael.state(), o) end
 --   -- no topo do on_update, ANTES do resto:
---   if bump.tick(viber.state(), viber.time()) then return end
---   bump.sample(viber.state(), viber.time())  -- mede a velocidade do herói
+--   if bump.tick(vael.state(), vael.time()) then return end
+--   bump.sample(vael.state(), vael.time())  -- mede a velocidade do herói
 --
 -- Os clips vivem nos GLB dos NPCs (motion3d; ver tools/make_lods). O herói
 -- anda a 4,0 m/s e sprint a 6,0 (src/player.rs); a esquiva/lunge em burst
@@ -34,14 +34,14 @@ local KNOCKDOWN_SECS = 1.6
 local GETUP_SECS = 1.6
 
 function B.hero_is(other)
-  local pid = viber.player_id and viber.player_id()
+  local pid = vael.player_id and vael.player_id()
   return pid ~= nil and other ~= nil and other.id == pid
 end
 
 -- Props opcionais: scripts diferentes exportam conjuntos diferentes; um
--- `viber.prop` de chave não exportada é ERRO (não nil) e matava o handler.
+-- `vael.prop` de chave não exportada é ERRO (não nil) e matava o handler.
 local function prop_num(name, default)
-  local ok, value = pcall(viber.prop, name)
+  local ok, value = pcall(vael.prop, name)
   if not ok then return default end
   return tonumber(value) or default
 end
@@ -50,10 +50,10 @@ end
 local function home_clamped(tx, tz)
   local radius = prop_num("radius", 0)
   if radius <= 0 then
-    local x, _, z = viber.position()
+    local x, _, z = vael.position()
     return x, z
   end
-  local ok, hx, hz = pcall(viber.home)
+  local ok, hx, hz = pcall(vael.home)
   if not ok or not hx or not hz then return tx, tz end
   local dx, dz = tx - hx, tz - hz
   local d = math.sqrt(dx * dx + dz * dz)
@@ -63,7 +63,7 @@ end
 
 -- Perpendicular ao vetor NPC→herói, do lado que afasta mais do herói.
 local function side_step_target(ox, oz)
-  local x, _, z = viber.position()
+  local x, _, z = vael.position()
   local dx, dz = x - ox, z - oz
   local d = math.sqrt(dx * dx + dz * dz)
   if d < 1e-3 then dx, dz, d = 1, 0, 1 end
@@ -80,10 +80,10 @@ local function busy(st, now)
 end
 
 local function react_bump(st, other)
-  local now = viber.time()
+  local now = vael.time()
   if busy(st, now) then return end
   if (st.pspeed_peak or 0) < WALK then return end
-  local x, _, z = viber.position()
+  local x, _, z = vael.position()
   local ox = other and other.x or x
   local oz = other and other.z or z
   if st.pspeed_peak >= RUN then
@@ -97,7 +97,7 @@ local function react_bump(st, other)
     st.bump_target = { tx, tz }
     st.bump_speed = 0.9
     st.bump_cd = now + KNOCKDOWN_SECS + GETUP_SECS + COOLDOWN
-    viber.play_clip("knockdown")
+    vael.play_clip("knockdown")
     return
   end
   local tx, tz = side_step_target(ox, oz)
@@ -105,11 +105,11 @@ local function react_bump(st, other)
   st.bump_target = { tx, tz }
   st.bump_speed = 1.6
   st.bump_cd = now + STUMBLE_SECS + COOLDOWN
-  viber.play_clip("stumble")
+  vael.play_clip("stumble")
 end
 
 local function react_yield(st, other)
-  local now = viber.time()
+  local now = vael.time()
   if busy(st, now) then return end
   local ox = other and other.x
   local oz = other and other.z
@@ -121,10 +121,10 @@ local function react_yield(st, other)
   st.bump_cd = now + 0.55 + YIELD_COOLDOWN
 end
 
--- Velocidade do herói por amostragem (não há viber.player_velocity): pico com
+-- Velocidade do herói por amostragem (não há vael.player_velocity): pico com
 -- decaimento, porque o KCC trava o herói no instante do contacto.
 function B.sample(st, now)
-  local has, px, _, pz = viber.player_position()
+  local has, px, _, pz = vael.player_position()
   if not has then return end
   if st.last_px and st.last_pt then
     local step = now - st.last_pt
@@ -165,14 +165,14 @@ end
 function B.tick(st, now)
   if st.bump_until and now < st.bump_until then
     if st.bump_target then
-      viber.move_towards(st.bump_target[1], st.bump_target[2], st.bump_speed or 1.3)
+      vael.move_towards(st.bump_target[1], st.bump_target[2], st.bump_speed or 1.3)
     end
     return true
   elseif st.bump_until then
     st.bump_until, st.bump_target = nil, nil
     if st.bump_next == "getup" then
       st.bump_next = nil
-      viber.play_clip("getup")
+      vael.play_clip("getup")
       st.bump_until = now + GETUP_SECS
     end
     return true

@@ -1,8 +1,8 @@
-local rules = viber.load("lib/rules.lua")
+local rules = vael.load("lib/rules.lua")
 -- bosses/bog-warden.lua: guardião do pântano. Toda a máquina vive em
--- lib/fsm.lua (viber.load). Especial: GOLPE DE LODO — pancada no chão que
+-- lib/fsm.lua (vael.load). Especial: GOLPE DE LODO — pancada no chão que
 -- envenena quem ficar na zona (o antídoto [2] ganha uso).
-local fsm = viber.load("lib/fsm.lua").new{
+local fsm = vael.load("lib/fsm.lua").new{
   kind = "bog-warden",
   hp = 600,
   intro = "guardiao-lodo", -- cena de despertar (world/cinematics.xml)
@@ -33,7 +33,7 @@ local fsm = viber.load("lib/fsm.lua").new{
         on_hit = function() rules.apply_status("venom", 7) end,
       } },
   },
-  on_chase = function() viber.sound("roar") end,
+  on_chase = function() vael.sound("roar") end,
 }
 
 function on_player_attack(px, pz)
